@@ -1,0 +1,109 @@
+resources:
+  repositories:
+  - repository: templates
+    type: git
+    name: Approvpay/DevOps
+    ref: refs/heads/main
+stages:
+- stage: Build_DEV
+  variables:
+  - name: system.debug
+    value: true
+  - name: APNG_REGION
+    value: EU
+  - name: ATLAS_REGION
+    value: eu
+  - name: ATLAS_ENVIRONMENT
+    value: dev
+  - name: ENV_FILE
+    value: env.devops
+  jobs:
+  - job: 'Build'
+    #variables:
+     # - group: ATLAS-DEV-EU
+    pool:
+      name: atlas-agent-dev
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 14.x
+      displayName: 'Install Node '
+    - task: SonarCloudPrepare@1
+      condition: and(succeeded(), eq('DEV', 'DEV'))
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'technology-internal'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'Technology-Internal_$(Build.Repository.Name)'
+        cliProjectName: '$(Build.Repository.Name)'
+        cliSources: '.'
+        extraProperties: |
+          # Source
+          sonar.sources=src
+          # Where to find tests file, also src
+          sonar.tests=src
+          # But we get specific here
+          # We don't need to exclude it in sonar.sources because it is automatically taken care of
+          sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
+          # Path to report coverage and unit tests
+          sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
+          sonar.testExecutionReportPaths.reportsPath=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
+          # Log
+          sonar.log.level=DEBUG
+          sonar.verbose=true
+    - task: npmAuthenticate@0
+      condition: eq('True', 'true')
+      inputs:
+        workingFile: '.npmrc'
+      displayName: Connecting to NPM Feed
+    - task: CmdLine@2
+      displayName: 'yarn install and build'
+      condition: and(succeeded(), eq('yarn', 'yarn'))
+      inputs:
+        script: |
+          #envsubst < $(ENV_FILE) > src/environments/environment.ts
+          #cat src/environments/environment.ts
+          npm i -g yarn
+          npm install atlasuikit@1.0.40
+          yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
+          yarn install
+          yarn build
+    - task: CmdLine@2
+      displayName: 'FrontEndApp Unit Test'
+      condition: and(succeeded(), eq('yarn', 'yarn'), eq('true', 'true'))
+      inputs:
+        script: |
+          yarn test
+    - task: PublishTestResults@2
+      condition: and(succeeded(), eq('true', 'true'))
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-RESULTS.xml'
+      displayName: Publish Unit Test Results
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
+
+    - task: SonarCloudAnalyze@1
+      condition: and(succeeded(), eq('DEV', 'DEV'))
+    - task: SonarCloudPublish@1
+      condition: and(succeeded(), eq('DEV', 'DEV'))
+      inputs:
+        pollingTimeoutSec: '300'
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'dist/**'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+        cleanTargetFolder: true
+      displayName: 'Copy dist folder to Artifacts'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Build Artifacts'
+      inputs:
+        PathtoPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: DEV
+    # - task: sonarcloud-buildbreaker@2
+    #   inputs:
+    #     SonarCloud: 'SonarCloud'
+    #     organization: 'technology-internal'
