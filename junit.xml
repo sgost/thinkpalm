@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="4" failures="0" errors="0" time="5.205">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-10T11:16:32" time="3.062" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.242">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-10T11:16:32" time="3.3" tests="3">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.227">
+    </testcase>
+    <testcase classname=" Should render dropdowns" name=" Should render dropdowns" time="0.161">
+    </testcase>
+    <testcase classname=" Should render table" name=" Should render table" time="0.098">
+    </testcase>
+  </testsuite>
+</testsuites>
