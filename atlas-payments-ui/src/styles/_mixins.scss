@@ -1,0 +1,46 @@
+@mixin atlas-scroll-bar {
+  ::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: $light-gray;
+    border-radius: 0.25rem;
+  }
+}
+
+@mixin d-none {
+  display: none;
+}
+
+@mixin d-block {
+  display: block;
+}
+
+@mixin d-flex {
+  display: flex;
+}
+
+@mixin d-align-center {
+  @include d-flex;
+  align-items: center;
+}
+
+@mixin d-justify-center {
+  @include d-flex;
+  justify-content: center;
+}
+
+@mixin d-align-justify-center {
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin d-flex-center {
+  @include d-flex;
+  @include d-align-justify-center;
+}
+
+@mixin d-flex-column {
+  @include d-flex;
+  flex-direction: column;
+}

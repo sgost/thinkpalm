@@ -1,0 +1,59 @@
+@import './variables';
+
+.primary-blue {
+  background-color: $primary-blue;
+  color: $white;
+
+  &:hover {
+    background-color: $primary-blue-hover;
+    cursor: pointer;
+  }
+}
+.secondary-blue {
+  background-color: $secondary-blue;
+}
+.primary-gray {
+  background-color: $primary-gray;
+}
+.secondary-gray {
+  background-color: $secondary-gray;
+}
+.medium-gray {
+  background-color: $medium-gray;
+}
+.light-gray {
+  background-color: $light-gray;
+}
+.bg-fill {
+  background-color: $bg-fill;
+}
+.white {
+  background-color: $white;
+}
+.alt-bg {
+  background-color: $alt-bg;
+}
+.active {
+  background-color: $active;
+}
+.yellow {
+  background-color: $yellow;
+}
+.red {
+  background-color: $red;
+}
+.green {
+  background-color: $green;
+}
+.disabled {
+  background-color: $disabled;
+}
+.none {
+  background-color: $none;
+}
+.transparent {
+  background-color: $transparent;
+}
+.warning-lite {
+  background-color: $warning-lite;
+}

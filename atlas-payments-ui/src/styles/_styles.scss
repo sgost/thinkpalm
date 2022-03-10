@@ -1,0 +1,119 @@
+@import "mixins";
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+//  You can add global styles to this file, and also import other style files
+//  Provide sufficient contrast against white background
+
+// Breakpoints
+$bp-768: 48em; // 768px - DONE
+$bp-1024: 64em; // 1024px - DONE
+$bp-1366: 85.375em; //1366px
+$bp-1440: 90em; // 1440px - DONE
+$bp-1536: 96em; //1536
+$bp-1600: 100em; //1600
+$bp-1920: 120em; //1920
+$bp-2560: 160em; // 2560px
+
+// Media Queries
+$mq-768: "(min-width: #{$bp-768})";
+$mq-1024: "(min-width: #{$bp-1024})";
+$mq-1366: "(min-width: #{$bp-1366})";
+$mq-1440: "(min-width: #{$bp-1440})";
+$mq-1536: "(min-width: #{$bp-1536})";
+$mq-1600: "(min-width: #{$bp-1600})";
+$mq-1920: "(min-width: #{$bp-1920})";
+$mq-2560: "(min-width: #{$bp-2560})";
+
+$mq-retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+
+html,
+body {
+  height: 100%;
+  font-size: 6px;
+
+  @media #{$mq-1024} {
+    font-size: 8px;
+  }
+
+  @media #{$mq-1366} {
+    font-size: 11.5px;
+  }
+
+  @media #{$mq-1440} {
+    font-size: 13px;
+  }
+
+  @media #{$mq-1536} {
+    font-size: 14px;
+  }
+
+  @media #{$mq-1600} {
+    font-size: 15.5px;
+  }
+
+  @media #{$mq-1920} {
+    font-size: 18px;
+  }
+
+  @media #{$mq-2560} {
+    font-size: 20px;
+  }
+}
+.main-page-container {
+  min-width: 100%;
+  height: 100%;
+  .sidebar {
+    position: fixed;
+    width: 8.333rem;
+    .sidebar__container img {
+      width: calc(100% - 4rem);
+    }
+  }
+}
+.main-container {
+  width: calc(100% - 14.333rem);
+  margin-left: 8.333rem;
+  float: right;
+  height: auto;
+  min-height: 100vh;
+  background-color: #eff1f4;
+  padding: 3rem 3rem 0rem 3rem;
+
+  &.grid-page {
+    padding: 5rem 4rem 4rem 4rem;
+    min-width: 88rem;
+    overflow: auto;
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #526fd6 0%, #526fd6 100%);
+  border-radius: 10px;
+}
+::selection {
+  background: #526fd6;
+  color: #fff;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+.hide-text {
+  @include d-none;
+}
