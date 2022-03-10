@@ -1,0 +1,76 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.container {
+  padding-bottom: 20px;
+}
+
+.pay {
+  //   font-weight: normal;
+  //   font-family: CircularXX;
+  //   border-style: solid;
+}
+
+.tab {
+  display: flex;
+  //   justify-content: space-around;
+  //   max-width: 30%;
+  //   border-style: solid;
+  padding: 12px 0px;
+
+  .tabTextActive {
+    border-bottom: 3px solid $primary-blue;
+    padding: 12px 12px;
+    color: $primary-blue;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tabTextPassive {
+    border-bottom: 3px solid $light-gray;
+    padding: 12px 12px;
+    color: $secondary-gray;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+.dropdowns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  //   border-style: solid;
+  padding: 20px 0px;
+
+  .inputContainer {
+    display: flex;
+    align-items: center;
+    background-color: $white;
+    padding: 0px 12px;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: $secondary-gray;
+    height: 46px;
+
+    textarea:focus,
+    input:focus {
+      outline: none;
+    }
+    .input {
+      border-style: hidden;
+      width: 180px;
+    }
+  }
+
+  .pickers {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    // border-style: solid;
+  }
+
+  .icon {
+    color: $primary-blue;
+    margin-top: 12px;
+  }
+}
