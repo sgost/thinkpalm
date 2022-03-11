@@ -181,7 +181,7 @@ stages:
                 az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.js.map" --content-type "application/octet-stream"
                 az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.json" --content-type "application/json"
                 # target new version
-                # az cdn endpoint purge --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --no-wait --name $azureCdnName --content-paths '/*'
+                az cdn endpoint purge --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --no-wait --name $azureCdnName --content-paths '/*'
                 # ##az cdn endpoint update --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --name $azureCdnName --origin-path '/$(Build.BuildID)'
                 # AZURE_CDN_ENDPOINT_HOSTNAME=$(az cdn endpoint show --resource-group $azureResourceGroup --name $azureCdnName --profile-name $azureCdnprofileName --query hostName -o tsv)
                 echo "Azure CDN endpoint host ${AZURE_CDN_ENDPOINT_HOSTNAME}"
