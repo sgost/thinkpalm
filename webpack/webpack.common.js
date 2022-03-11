@@ -7,7 +7,7 @@ const { ModuleFederationPlugin } = webpack.container;
 const deps = require("../package.json").dependencies;
 
 module.exports = {
-  entry: path.resolve(__dirname, "..", "./src/index.tsx"),
+  entry: path.resolve(__dirname, "..", "./src/index.ts"),
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     plugins: [new TsconfigPathsPlugin()],
@@ -59,23 +59,27 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "..", "./src/index.html"),
     }),
-    // new ModuleFederationPlugin({
-    // 	name: "dashboard",
-    // 	filename: "remoteEntry.js",
-    // 	exposes: {
-    // 		// expose each component
-    // 		"./CustomerDashboard": path.resolve(__dirname, '..', './src/layouts/views/Dashboard'),
-    // 	},
-    // 	shared: {
-    // 		...deps,
-    // 		react: { singleton: true, eager: true, requiredVersion: deps.react },
-    // 		"react-dom": {
-    // 			singleton: true,
-    // 			eager: true,
-    // 			requiredVersion: deps["react-dom"],
-    // 		},
-    // 	},
-    // }),
+    new ModuleFederationPlugin({
+      name: "invoice",
+      filename: "remoteEntry.js",
+      exposes: {
+        // expose each component
+        "./InvoicePay": path.resolve(
+          __dirname,
+          "..",
+          "./src/layouts/views/Invoices"
+        ),
+      },
+      shared: {
+        ...deps,
+        react: { singleton: true, eager: true, requiredVersion: deps.react },
+        "react-dom": {
+          singleton: true,
+          eager: true,
+          requiredVersion: deps["react-dom"],
+        },
+      },
+    }),
   ],
   stats: "errors-only",
 };
