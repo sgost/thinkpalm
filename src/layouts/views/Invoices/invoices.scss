@@ -69,6 +69,12 @@
     gap: 20px;
     // width: 60%;
     // border-style: solid;
+
+    .download {
+      color: $primary-blue;
+      margin-top: 12px;
+      cursor: pointer;
+    }
   }
 
   .icon {

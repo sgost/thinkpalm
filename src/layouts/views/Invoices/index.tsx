@@ -4,6 +4,7 @@ import { Icon, DatePicker, Table } from "atlasuikit";
 import { tableData } from "./mockdata";
 import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
+import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 
 export default function Invoices() {
   const [types, setTypes] = useState([
@@ -40,6 +41,7 @@ export default function Invoices() {
   ]);
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isDateOpen, setIsDateOpen] = useState(false);
 
   useEffect(() => {
     console.log("type", isTypeOpen);
@@ -61,6 +63,24 @@ export default function Invoices() {
           <input className="input" placeholder="Search Customer, Invoice No." />
         </div>
         <div className="pickers">
+          <Icon
+            className="download"
+            color="#526fd6"
+            icon="download"
+            size="large"
+          />
+
+          <DatepickerDropdown
+            title="Date"
+            isOpen={isDateOpen}
+            handleDropOptionClick={() => {
+              setIsDateOpen(!isDateOpen);
+            }}
+            handleDropdownClick={() => {
+              setIsDateOpen(!isDateOpen);
+            }}
+          />
+
           <MyDropdown
             title="Types"
             isOpen={isTypeOpen}
@@ -104,11 +124,11 @@ export default function Invoices() {
             options={status}
           />
 
-          <DatePicker
+          {/* <DatePicker
             handleDateChange={function noRefCheck() {}}
             label="Start Date"
             required
-          />
+          /> */}
           <FaEllipsisH className="icon" />
         </div>
       </div>
