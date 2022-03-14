@@ -137,7 +137,7 @@ export default function Invoices() {
         options={tableData}
         colSort
         pagination
-        pagingOptions={[10, 20, 30, 40]}
+        pagingOptions={[15, 30, 50, 100]}
       />
     </div>
   );
