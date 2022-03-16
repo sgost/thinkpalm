@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="246"/>
+    <testCase name="renders learn react link" duration="335"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\test\invoices.test.js">
-    <testCase name="renders without crashing" duration="234"/>
-    <testCase name="Should render dropdowns" duration="113"/>
-    <testCase name="Should render table" duration="98"/>
+    <testCase name="renders without crashing" duration="90"/>
+    <testCase name="Should render dropdowns" duration="384"/>
+    <testCase name="Should render table" duration="114"/>
+    <testCase name="Dropdown should open" duration="28"/>
   </file>
 </testExecutions>

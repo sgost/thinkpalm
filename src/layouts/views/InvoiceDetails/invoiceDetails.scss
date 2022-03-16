@@ -1,0 +1,176 @@
+@import "../../../styles/variables";
+
+.invoiceDetailsHeaderRow {
+  display: flex;
+  justify-content: space-between;
+
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      margin-top: 4px;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    .text {
+      font-weight: bold;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+
+    .download {
+      display: flex;
+      align-items: center;
+      background-color: $white;
+      border-style: solid;
+      border-color: $primary-blue;
+      border-radius: 4px;
+      height: 2.4rem;
+      border-width: 2px;
+      cursor: pointer;
+
+      .text {
+        padding: 0px 20px;
+        margin: 0px;
+        color: $primary-blue;
+      }
+
+      .icon {
+        margin-top: 12px;
+      }
+    }
+  }
+}
+
+.payrollInvoiceInfo {
+  background-color: $white;
+  border-radius: 8px;
+  //   overflow: hidden;
+
+  .topBar {
+    background-color: $secondary-blue;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 30px;
+
+    .status {
+      border-radius: 20px;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #cbd4f3;
+      background-color: #e0e5f81a;
+      color: #cbd4f3;
+      width: 10rem;
+      text-align: center;
+      padding: 4px 0px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+
+      .invoiceNo {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        p {
+          color: $white;
+        }
+      }
+
+      .amount {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        p {
+          color: #cbd4f3;
+          margin: 0px;
+
+          span {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  .infoDetails {
+    display: flex;
+    padding: 30px;
+
+    @mixin heading {
+      color: $primary-blue;
+    }
+    @mixin value {
+      font-weight: bold;
+    }
+
+    div {
+      width: 25%;
+      border-right-style: solid;
+      border-right-width: 1px;
+      border-color: #ebebed;
+      padding-left: 20px;
+    }
+
+    .heading {
+      @include heading();
+    }
+    .value {
+      @include value();
+    }
+
+    .lastCloumn {
+      border-style: hidden;
+    }
+  }
+}
+
+.tab {
+  display: flex;
+  //   justify-content: space-around;
+  //   max-width: 30%;
+  //   border-style: solid;
+  padding: 12px 0px;
+
+  .tabTextActive {
+    border-bottom: 3px solid $primary-blue;
+    padding: 12px 12px;
+    color: $primary-blue;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tabTextPassive {
+    border-bottom: 3px solid $light-gray;
+    padding: 12px 12px;
+    color: $secondary-gray;
+    font-weight: 500;
+    cursor: pointer;
+  }
+}
+
+.countrySummaryCalc {
+  display: flex;
+  background-color: $white;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 20px;
+  gap: 20px;
+
+  p {
+    color: $primary-blue;
+  }
+  h3 {
+    color: $primary-blue;
+    background-color: $active;
+    padding: 16px;
+    border-radius: 8px;
+  }
+}

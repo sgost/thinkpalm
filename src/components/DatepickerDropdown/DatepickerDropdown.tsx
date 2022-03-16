@@ -34,7 +34,7 @@ export default function DatepickerDropdown({
   // }, [options]);
 
   return (
-    <div className="dropdownContainer">
+    <div data-testid="type-dd" className="dropdownContainer">
       <span className="title">{title}</span>
       <div onClick={() => handleDropdownClick()} className="dropdown">
         <p className="text">{selected ? selected : "Please Select"}</p>

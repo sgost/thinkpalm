@@ -5,6 +5,7 @@ import { tableData } from "./mockdata";
 import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
+import { useNavigate } from "react-router-dom";
 
 export default function Invoices() {
   const [types, setTypes] = useState([
@@ -42,6 +43,8 @@ export default function Invoices() {
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     console.log("type", isTypeOpen);
@@ -82,6 +85,7 @@ export default function Invoices() {
           />
 
           <MyDropdown
+            // data-testid="type-dd"
             title="Types"
             isOpen={isTypeOpen}
             handleDropdownClick={() => {
@@ -103,6 +107,7 @@ export default function Invoices() {
             options={types}
           />
           <MyDropdown
+            data-testid=""
             title="Status"
             isOpen={isStatusOpen}
             handleDropdownClick={() => {
@@ -138,6 +143,10 @@ export default function Invoices() {
         colSort
         pagination
         pagingOptions={[15, 30, 50, 100]}
+        handleRowClick={() => {
+          console.log("fire");
+          navigate("/details");
+        }}
       />
     </div>
   );
