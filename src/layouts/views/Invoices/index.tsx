@@ -6,6 +6,8 @@ import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { format } from 'date-fns'
+import getRequest from "src/components/Comman/api";
 
 
 export default function Invoices() {
@@ -50,7 +52,6 @@ export default function Invoices() {
   ]);
 
   const [isTypeOpen, setIsTypeOpen] = useState(false);
-
   const [status, setStatus] = useState([
     {
       isSelected: false,
@@ -82,8 +83,9 @@ export default function Invoices() {
   
 
   let navigate = useNavigate();
+  const apiData: any = getRequest(api)
   const [checkedData, setCheckedData] = useState([]);
-  const [Data, setData] = useState({
+  const [Tabledata, seTabletData] = useState({
     columns: [
       {
         header: "Invoice No.",
@@ -134,34 +136,23 @@ export default function Invoices() {
   }, [isTypeOpen]);
 
   useEffect(() => {
-    axios.get(api, {
-      headers: {
-        "authorization": `Bearer ${token}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-        "x-apng-external": "true",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        "customer_id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f"
+   if (apiData?.data?.results) {
+      const apiTableData = apiData?.data?.results;
+
+       
+    apiTableData?.map((item: any) => {
+      if (item.customer === null) {
+        item.customer = ''
       }
-    })
-      .then((res) => {
+      item.totalAmount = `USD ${item.totalAmount}`
+      item.invoiceBalance = `USD ${item.invoiceBalance}`
+      item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+      item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
+    });
 
-        const myData = res.data.results.map((item: any) => {
-          if (item.customer === null) {
-            item.customer = ''
-          }
-          return item
-        })
-
-        myData.map((item: any) => {
-          item.totalAmount = `USD ${item.totalAmount}`
-          item.invoiceBalance = `USD ${item.invoiceBalance}`
-        })
-
-        setData({ ...Data, data: myData });
-      })
-  }, [transactionTypes,statusType]);
+    seTabletData({ ...Tabledata, data: apiTableData });
+   }
+  }, [apiData,transactionTypes,statusType])
 
   const onRowCheckboxChange = (selectedRows: any) => {
     setCheckedData(selectedRows)
@@ -267,7 +258,7 @@ export default function Invoices() {
 
       <Table
         options={{
-          ...Data,
+          ...Tabledata,
           showDefaultColumn: true,
           enableMultiSelect: true,
           onRowCheckboxChange: onRowCheckboxChange
