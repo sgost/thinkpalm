@@ -4,6 +4,8 @@ import { Icon, DatePicker, Table } from "atlasuikit";
 import { tableData } from "./mockdata";
 import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
+import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
+import { useNavigate } from "react-router-dom";
 
 export default function Invoices() {
   const [types, setTypes] = useState([
@@ -40,6 +42,9 @@ export default function Invoices() {
   ]);
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isDateOpen, setIsDateOpen] = useState(false);
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     console.log("type", isTypeOpen);
@@ -61,7 +66,26 @@ export default function Invoices() {
           <input className="input" placeholder="Search Customer, Invoice No." />
         </div>
         <div className="pickers">
+          <Icon
+            className="download"
+            color="#526fd6"
+            icon="download"
+            size="large"
+          />
+
+          <DatepickerDropdown
+            title="Date"
+            isOpen={isDateOpen}
+            handleDropOptionClick={() => {
+              setIsDateOpen(!isDateOpen);
+            }}
+            handleDropdownClick={() => {
+              setIsDateOpen(!isDateOpen);
+            }}
+          />
+
           <MyDropdown
+            // data-testid="type-dd"
             title="Types"
             isOpen={isTypeOpen}
             handleDropdownClick={() => {
@@ -83,6 +107,7 @@ export default function Invoices() {
             options={types}
           />
           <MyDropdown
+            data-testid=""
             title="Status"
             isOpen={isStatusOpen}
             handleDropdownClick={() => {
@@ -104,11 +129,11 @@ export default function Invoices() {
             options={status}
           />
 
-          <DatePicker
+          {/* <DatePicker
             handleDateChange={function noRefCheck() {}}
             label="Start Date"
             required
-          />
+          /> */}
           <FaEllipsisH className="icon" />
         </div>
       </div>
@@ -117,7 +142,11 @@ export default function Invoices() {
         options={tableData}
         colSort
         pagination
-        pagingOptions={[10, 20, 30, 40]}
+        pagingOptions={[15, 30, 50, 100]}
+        handleRowClick={() => {
+          console.log("fire");
+          navigate("/details");
+        }}
       />
     </div>
   );
