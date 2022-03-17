@@ -206,6 +206,4 @@ export const tableData = {
       balance: "USD 0.00",
     },
   ],
-  showDefaultColumn: true,
-  enableMultiSelect: true,
 };

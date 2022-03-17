@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Icon, DatePicker } from "atlasuikit";
 import "./DatepickerDropdown.scss";
+import { format } from 'date-fns'
 
 interface Iprops {
   title: string;
@@ -14,8 +15,12 @@ export default function DatepickerDropdown({
   isOpen,
   handleDropdownClick,
   handleDropOptionClick,
-}: Iprops) {
+  setDateTo,
+  setDateFrom
+}: any) {
   const [selected, setSelected] = useState(null);
+  
+
   const options = [
     "Today",
     "Yesterday",
@@ -47,7 +52,13 @@ export default function DatepickerDropdown({
         <div className="openDropdownDatepicker">
           <DatePicker
             id="dp"
-            handleDateChange={function noRefCheck() {}}
+            handleDateChange={function noRefCheck(e : any) 
+              {
+             const endDate = format(e.endDate, "yyyy-MM-dd")
+            const startDate =  format(e.startDate, "yyyy-MM-dd")
+              setDateTo(endDate)
+              setDateFrom(startDate)          
+            }}
             // label="Start Date"
             required
             range
