@@ -10,12 +10,6 @@ it("renders without crashing", () => {
   ReactDom.render(<Invoices />, div);
 });
 
-// test("Should render tabs", () => {
-//   render(<Invoices />);
-//   const element = document.querySelector(".tab");
-//   expect(element).toBeInTheDocument();
-// });
-
 test("Should render dropdowns", () => {
   render(<Invoices />);
   const element = document.querySelector(".dropdowns");
@@ -28,36 +22,30 @@ test("Should render table", () => {
   expect(element).toBeInTheDocument();
 });
 
-// test("Dropdown should open", () => {
-//   render(<Invoices />);
-//   const dropdown = screen.getByTestId("type-dd");
-//   userEvent.click(dropdown);
-
-//   setTimeout(() => {
-//     const element = document.querySelector(".openDropdown");
-//     expect(element).toBeInTheDocument();
-//   }, 3000);
-// });
-
 test("Dropdown should open", () => {
+  let fn = jest.fn();
+
   render(
     <MyDropdown
       data-testid="type-dd"
       title="Types"
       isOpen={true}
-      handleDropdownClick={() => {}}
+      handleDropdownClick={() => fn()}
       handleDropOptionClick={() => {}}
-      options={[]}
+      options={[
+        {
+          isSelected: false,
+          label: "Contractor Invoice",
+          value: "contractorInvoice",
+        },
+      ]}
     />
   );
   const dropdown = screen.getByText(/Types/);
-  // userEvent.click(dropdown);
 
   fireEvent.click(dropdown);
-  const element = document.querySelector(".openDropdown");
-  expect(element).toBeInTheDocument();
-  // setTimeout(() => {
-  //   const element = document.querySelector(".openDropdown");
-  //   expect(element).toBeInTheDocument();
-  // }, 3000);
+  const option = document.querySelector(".openDropdownOption");
+  fireEvent.click(option);
+
+  expect(fn.mock.calls.length).toBe(2);
 });
