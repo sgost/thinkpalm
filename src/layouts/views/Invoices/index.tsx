@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, DatePicker, Table } from "atlasuikit";
+import { Icon, Table } from "atlasuikit";
 import { tableData } from "./mockdata";
 import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";

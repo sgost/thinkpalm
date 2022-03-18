@@ -67,7 +67,7 @@ module.exports = {
         "./InvoicePay": path.resolve(
           __dirname,
           "..",
-          "./src/layouts/views/Invoices"
+          "./src/layouts/views/Router"
         ),
       },
       shared: {
