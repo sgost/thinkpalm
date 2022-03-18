@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="420"/>
+    <testCase name="renders learn react link" duration="134"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="invoice details renders without crashing" duration="153"/>
-    <testCase name="tabs are working" duration="565"/>
-    <testCase name="Dropdown opens" duration="135"/>
+    <testCase name="invoice details renders without crashing" duration="103"/>
+    <testCase name="tabs are working" duration="370"/>
+    <testCase name="Dropdown opens" duration="110"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\test\invoices.test.js">
-    <testCase name="renders without crashing" duration="92"/>
-    <testCase name="Should render dropdowns" duration="347"/>
-    <testCase name="Should render table" duration="93"/>
-    <testCase name="Dropdown should open" duration="36"/>
-    <testCase name="Datepicker dropwdown working" duration="89"/>
-    <testCase name="Types  dropwdown working" duration="125"/>
-    <testCase name="Status  dropwdown working" duration="107"/>
-    <testCase name="table click navigation" duration="89"/>
+    <testCase name="renders without crashing" duration="40"/>
+    <testCase name="Should render dropdowns" duration="87"/>
+    <testCase name="Dropdown should open" duration="42"/>
+    <testCase name="Datepicker dropwdown working" duration="22"/>
+    <testCase name="Types  dropwdown working" duration="26"/>
+    <testCase name="Status  dropwdown working" duration="26"/>
   </file>
 </testExecutions>

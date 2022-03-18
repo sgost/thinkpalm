@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="12" failures="0" errors="0" time="7.493">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-17T12:50:06" time="3.911" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.42">
+<testsuites name="jest tests" tests="10" failures="0" errors="0" time="4.329">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-18T05:48:22" time="2.618" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.134">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-17T12:50:06" time="4.165" tests="3">
-    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.153">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-18T05:48:22" time="2.662" tests="3">
+    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.103">
     </testcase>
-    <testcase classname=" tabs are working" name=" tabs are working" time="0.565">
+    <testcase classname=" tabs are working" name=" tabs are working" time="0.37">
     </testcase>
-    <testcase classname=" Dropdown opens" name=" Dropdown opens" time="0.135">
+    <testcase classname=" Dropdown opens" name=" Dropdown opens" time="0.11">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-17T12:50:06" time="5.065" tests="8">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.092">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-18T05:48:22" time="3.045" tests="6">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.04">
     </testcase>
-    <testcase classname=" Should render dropdowns" name=" Should render dropdowns" time="0.347">
+    <testcase classname=" Should render dropdowns" name=" Should render dropdowns" time="0.087">
     </testcase>
-    <testcase classname=" Should render table" name=" Should render table" time="0.093">
+    <testcase classname=" Dropdown should open" name=" Dropdown should open" time="0.042">
     </testcase>
-    <testcase classname=" Dropdown should open" name=" Dropdown should open" time="0.036">
+    <testcase classname=" Datepicker dropwdown working" name=" Datepicker dropwdown working" time="0.022">
     </testcase>
-    <testcase classname=" Datepicker dropwdown working" name=" Datepicker dropwdown working" time="0.089">
+    <testcase classname=" Types  dropwdown working" name=" Types  dropwdown working" time="0.026">
     </testcase>
-    <testcase classname=" Types  dropwdown working" name=" Types  dropwdown working" time="0.125">
-    </testcase>
-    <testcase classname=" Status  dropwdown working" name=" Status  dropwdown working" time="0.107">
-    </testcase>
-    <testcase classname=" table click navigation" name=" table click navigation" time="0.089">
+    <testcase classname=" Status  dropwdown working" name=" Status  dropwdown working" time="0.026">
     </testcase>
   </testsuite>
 </testsuites>

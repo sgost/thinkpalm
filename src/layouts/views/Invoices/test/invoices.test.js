@@ -26,15 +26,15 @@ test("Should render dropdowns", () => {
   expect(element).toBeInTheDocument();
 });
 
-test("Should render table", () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
-  const element = document.querySelector(".table");
-  expect(element).toBeInTheDocument();
-});
+// test("Should render table", () => {
+//   render(
+//     <HashRouter>
+//       <Invoices />
+//     </HashRouter>
+//   );
+//   const element = document.querySelector(".table");
+//   expect(element).toBeInTheDocument();
+// });
 
 test("Dropdown should open", () => {
   let fn = jest.fn();
@@ -125,16 +125,16 @@ test("Status  dropwdown working", () => {
   }, 100);
 });
 
-test("table click navigation", () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
+// test("table click navigation", () => {
+//   render(
+//     <HashRouter>
+//       <Invoices />
+//     </HashRouter>
+//   );
 
-  const tblrow = document.querySelector(".table__row");
-  fireEvent.click(tblrow);
-  setTimeout(() => {
-    expect(screen.getByText(/Payroll Journal/)).toBeInTheDocument();
-  }, 100);
-});
+//   const tblrow = document.querySelector(".table__row");
+//   fireEvent.click(tblrow);
+//   setTimeout(() => {
+//     expect(screen.getByText(/Payroll Journal/)).toBeInTheDocument();
+//   }, 100);
+// });
