@@ -1,0 +1,283 @@
+@import "../../../styles/variables";
+
+.invoiceDetailsContainer {
+  padding-bottom: 40px;
+
+  .invoiceDetailsHeaderRow {
+    display: flex;
+    justify-content: space-between;
+
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+
+      .icon {
+        margin-top: 4px;
+        margin-left: 20px;
+        font-weight: bold;
+      }
+
+      .text {
+        font-weight: bold;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+
+      .download {
+        display: flex;
+        align-items: center;
+        background-color: $white;
+        border-style: solid;
+        border-color: $primary-blue;
+        border-radius: 4px;
+        height: 2.4rem;
+        border-width: 2px;
+        cursor: pointer;
+
+        .text {
+          padding: 0px 20px;
+          margin: 0px;
+          color: $primary-blue;
+        }
+
+        .icon {
+          margin-top: 12px;
+        }
+      }
+
+      .openDownloadDropdown {
+        position: absolute;
+        background-color: $white;
+        top: 6rem;
+        padding: 8px;
+
+        p {
+          color: $secondary-gray;
+          margin: 0px;
+          padding: 8px 4px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $active;
+          }
+        }
+      }
+    }
+  }
+
+  .payrollInvoiceInfo {
+    background-color: $white;
+    border-radius: 8px;
+    //   overflow: hidden;
+
+    .topBar {
+      background-color: $secondary-blue;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      padding: 30px;
+
+      .status {
+        border-radius: 20px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: #cbd4f3;
+        background-color: #e0e5f81a;
+        color: #cbd4f3;
+        width: 10rem;
+        text-align: center;
+        padding: 4px 0px;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+
+        .invoiceNo {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          p {
+            color: $white;
+          }
+        }
+
+        .amount {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          p {
+            color: #cbd4f3;
+            margin: 0px;
+
+            span {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+
+    .infoDetails {
+      display: flex;
+      padding: 30px;
+
+      @mixin heading {
+        color: $primary-blue;
+      }
+      @mixin value {
+        font-weight: bold;
+      }
+
+      div {
+        width: 25%;
+        border-right-style: solid;
+        border-right-width: 1px;
+        border-color: #ebebed;
+        padding-left: 20px;
+      }
+
+      .heading {
+        @include heading();
+      }
+      .value {
+        @include value();
+      }
+
+      .lastCloumn {
+        border-style: hidden;
+      }
+    }
+  }
+
+  .tab {
+    display: flex;
+    //   justify-content: space-around;
+    //   max-width: 30%;
+    //   border-style: solid;
+    padding: 12px 0px;
+
+    .tabTextActive {
+      border-bottom: 3px solid $primary-blue;
+      padding: 12px 12px;
+      color: $primary-blue;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tabTextPassive {
+      border-bottom: 3px solid $light-gray;
+      padding: 12px 12px;
+      color: $secondary-gray;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+
+  .tableHeader {
+    margin-left: 16px;
+  }
+
+  .countrySummaryCalc {
+    display: flex;
+    background-color: $white;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+    gap: 20px;
+
+    p {
+      color: $primary-blue;
+    }
+    h3 {
+      color: $primary-blue;
+      background-color: $active;
+      padding: 16px;
+      border-radius: 8px;
+    }
+  }
+
+  .feeSummaryCalc {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background-color: $white;
+    padding: 20px;
+
+    .row {
+      display: flex;
+      border-bottom-style: solid;
+      border-bottom-width: 1;
+      border-color: $light-gray;
+      border-width: 2px;
+      width: 30%;
+      justify-content: space-between;
+
+      .title {
+        color: $secondary-gray;
+      }
+      .amount {
+        font-weight: bold;
+      }
+    }
+
+    .row2 {
+      display: flex;
+      width: 30%;
+      justify-content: space-between;
+
+      .title {
+        color: $secondary-gray;
+      }
+      .amount {
+        font-weight: bold;
+      }
+    }
+
+    .totalRow {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      p {
+        color: $primary-blue;
+      }
+      h3 {
+        color: $primary-blue;
+        background-color: $active;
+        padding: 16px;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  .countryHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .totalContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    div {
+      display: flex;
+      align-items: center;
+      background-color: $secondary-blue;
+      padding: 0px 20px;
+      gap: 80px;
+      border-radius: 8px;
+      p {
+        color: $disabled;
+      }
+      h3 {
+        color: $white;
+      }
+    }
+  }
+}
