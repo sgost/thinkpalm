@@ -1,146 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="353"/>
+    <testCase name="renders learn react link" duration="117"/>
+  </file>
+  <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
+    <testCase name="invoice details renders without crashing" duration="106"/>
+    <testCase name="tabs are working" duration="372"/>
+    <testCase name="Dropdown opens" duration="105"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\test\invoices.test.js">
-    <testCase name="renders without crashing" duration="135">
-      <failure message="Error: useNavigate() may be used only in the context of a &lt;Router&gt; component."><![CDATA[Error: useNavigate() may be used only in the context of a <Router> component.
-    at invariant (C:\Projects\packages\react-router\index.tsx:24:20)
-    at useNavigate (C:\Projects\packages\react-router\index.tsx:512:3)
-    at Invoices (C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\index.tsx:47:18)
-    at renderWithHooks (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:14985:18)
-    at mountIndeterminateComponent (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:17811:13)
-    at beginWork (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
-    at innerInvokeEventListeners (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
-    at invokeEventListeners (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
-    at HTMLUnknownElementImpl._dispatch (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
-    at HTMLUnknownElementImpl.dispatchEvent (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
-    at HTMLUnknownElement.dispatchEvent (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
-    at Object.invokeGuardedCallbackDev (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
-    at invokeGuardedCallback (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
-    at beginWork$1 (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23964:7)
-    at performUnitOfWork (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22779:12)
-    at workLoopSync (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22707:5)
-    at renderRootSync (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22293:18)
-    at scheduleUpdateOnFiber (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:21881:7)
-    at updateContainer (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:25482:3)
-    at C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26021:7
-    at unbatchedUpdates (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22431:12)
-    at legacyRenderSubtreeIntoContainer (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26020:5)
-    at Object.render (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26103:10)
-    at Object.<anonymous> (C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\test\invoices.test.js:11:12)
-    at Promise.then.completed (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
-    at _callCircusTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
-    at _runTestsForDescribeBlock (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
-    at run (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
-    at runAndTransformResultsToJestFormat (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
-    at jestAdapter (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
-    at runTestInternal (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
-    at runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
-    at Object.worker (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
-    </testCase>
-    <testCase name="Should render dropdowns" duration="16">
-      <failure message="Error: useNavigate() may be used only in the context of a &lt;Router&gt; component."><![CDATA[Error: useNavigate() may be used only in the context of a <Router> component.
-    at invariant (C:\Projects\packages\react-router\index.tsx:24:20)
-    at useNavigate (C:\Projects\packages\react-router\index.tsx:512:3)
-    at Invoices (C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\index.tsx:47:18)
-    at renderWithHooks (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:14985:18)
-    at mountIndeterminateComponent (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:17811:13)
-    at beginWork (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
-    at innerInvokeEventListeners (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
-    at invokeEventListeners (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
-    at HTMLUnknownElementImpl._dispatch (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
-    at HTMLUnknownElementImpl.dispatchEvent (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
-    at HTMLUnknownElement.dispatchEvent (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
-    at Object.invokeGuardedCallbackDev (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
-    at invokeGuardedCallback (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
-    at beginWork$1 (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23964:7)
-    at performUnitOfWork (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22779:12)
-    at workLoopSync (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22707:5)
-    at renderRootSync (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22293:18)
-    at scheduleUpdateOnFiber (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:21881:7)
-    at updateContainer (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:25482:3)
-    at C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26021:7
-    at unbatchedUpdates (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22431:12)
-    at legacyRenderSubtreeIntoContainer (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26020:5)
-    at Object.render (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26103:10)
-    at C:\Projects\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:101:25
-    at batchedUpdates$1 (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22380:12)
-    at act (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom-test-utils.development.js:1042:14)
-    at render (C:\Projects\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:97:26)
-    at Object.<anonymous> (C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\test\invoices.test.js:21:3)
-    at Promise.then.completed (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
-    at _callCircusTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
-    at _runTestsForDescribeBlock (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
-    at run (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
-    at runAndTransformResultsToJestFormat (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
-    at jestAdapter (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
-    at runTestInternal (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
-    at runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
-    at Object.worker (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
-    </testCase>
-    <testCase name="Should render table" duration="9">
-      <failure message="Error: useNavigate() may be used only in the context of a &lt;Router&gt; component."><![CDATA[Error: useNavigate() may be used only in the context of a <Router> component.
-    at invariant (C:\Projects\packages\react-router\index.tsx:24:20)
-    at useNavigate (C:\Projects\packages\react-router\index.tsx:512:3)
-    at Invoices (C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\index.tsx:47:18)
-    at renderWithHooks (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:14985:18)
-    at mountIndeterminateComponent (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:17811:13)
-    at beginWork (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:19049:16)
-    at HTMLUnknownElement.callCallback (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
-    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
-    at innerInvokeEventListeners (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
-    at invokeEventListeners (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
-    at HTMLUnknownElementImpl._dispatch (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
-    at HTMLUnknownElementImpl.dispatchEvent (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
-    at HTMLUnknownElement.dispatchEvent (C:\Projects\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
-    at Object.invokeGuardedCallbackDev (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
-    at invokeGuardedCallback (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
-    at beginWork$1 (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23964:7)
-    at performUnitOfWork (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22779:12)
-    at workLoopSync (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22707:5)
-    at renderRootSync (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22670:7)
-    at performSyncWorkOnRoot (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22293:18)
-    at scheduleUpdateOnFiber (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:21881:7)
-    at updateContainer (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:25482:3)
-    at C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26021:7
-    at unbatchedUpdates (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22431:12)
-    at legacyRenderSubtreeIntoContainer (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26020:5)
-    at Object.render (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:26103:10)
-    at C:\Projects\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:101:25
-    at batchedUpdates$1 (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22380:12)
-    at act (C:\Projects\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom-test-utils.development.js:1042:14)
-    at render (C:\Projects\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:97:26)
-    at Object.<anonymous> (C:\Projects\Atlas-Payments-UI\src\layouts\views\Invoices\test\invoices.test.js:27:3)
-    at Promise.then.completed (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
-    at new Promise (<anonymous>)
-    at callAsyncCircusFn (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
-    at _callCircusTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at _runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
-    at _runTestsForDescribeBlock (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
-    at run (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
-    at runAndTransformResultsToJestFormat (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
-    at jestAdapter (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
-    at runTestInternal (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
-    at runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
-    at Object.worker (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
-    </testCase>
-    <testCase name="Dropdown should open" duration="55"/>
+    <testCase name="renders without crashing" duration="25"/>
+    <testCase name="Client View" duration="223"/>
+    <testCase name="Internal View" duration="23"/>
   </file>
 </testExecutions>

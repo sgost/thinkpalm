@@ -82,7 +82,7 @@ export default function InvoiceDetails() {
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">ToGlobal Enterprise Solutions</p>
+            <p className="value">Global Enterprise Solutions</p>
             <p>
               1101 15th Street NW90001, Los Angeles, CAUnited States of America
             </p>

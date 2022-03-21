@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, DatePicker, Table } from "atlasuikit";
+import { Icon, Button, Table } from "atlasuikit";
 import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
 import { format } from 'date-fns'
 import getRequest from "../../../components/Comman/api";
+import { clientTableData } from "./mockdata";
 
 
 export default function Invoices() {
-
   let navigate = useNavigate(); 
-
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
-  const [transactionTypes, setTransactionTypes] = useState('');
-  const [statusType, setStatusType] = useState('');
-  const [dateTo, setDateTo] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
+  const [transactionTypes, setTransactionTypes] = useState("");
+  const [statusType, setStatusType] = useState("");
+  const [dateTo, setDateTo] = useState("");
+  const [dateFrom, setDateFrom] = useState("");
 
   const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+  const [isClient, setIsClient] = useState<any>(null);
+
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -77,7 +78,8 @@ export default function Invoices() {
       value: 8,
     },
   ]);
-  const apiData: any = getRequest(api)
+
+  const apiData: any = getRequest(api);
   const [checkedData, setCheckedData] = useState([]);
   const [Tabledata, seTabletData] = useState({
     columns: [
@@ -149,7 +151,31 @@ export default function Invoices() {
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo])
 
   const onRowCheckboxChange = (selectedRows: any) => {
-    setCheckedData(selectedRows)
+    setCheckedData(selectedRows);
+  };
+
+  if (isClient === null) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "20px",
+        }}
+      >
+        <Button
+          handleOnClick={() => setIsClient(true)}
+          className="primary-blue small"
+          label="Client View"
+        />
+        <Button
+          handleOnClick={() => setIsClient(false)}
+          className="secondary-btn small"
+          label="Internal View"
+        />
+      </div>
+    );
   }
 
   return (
@@ -178,7 +204,6 @@ export default function Invoices() {
             handleDropdownClick={() => {
               setIsDateOpen(!isDateOpen);
             }}
-
           />
 
           <MyDropdown
@@ -188,14 +213,11 @@ export default function Invoices() {
             handleDropdownClick={() => {
               setIsTypeOpen(!isTypeOpen);
             }}
-
             handleDropOptionClick={(opt: any) => {
-
               let index = types.findIndex((e) => e.value === opt.value);
 
               let copy = [...types];
               copy.forEach((e, i) => {
-
                 if (i === index) {
                   copy[index] = { ...opt, isSelected: true };
                 } else {
@@ -209,10 +231,8 @@ export default function Invoices() {
               setIsTypeOpen(false);
               setTransactionTypes(typesValue);
             }}
-
             options={types}
           />
-
 
           <MyDropdown
             data-testid=""
@@ -251,12 +271,16 @@ export default function Invoices() {
       </div>
 
       <Table
-        options={{
-          ...Tabledata,
-          showDefaultColumn: true,
-          enableMultiSelect: true,
-          onRowCheckboxChange: onRowCheckboxChange
-        }}
+        options={
+          isClient
+            ? clientTableData
+            : {
+                ...Tabledata,
+                showDefaultColumn: true,
+                enableMultiSelect: true,
+                onRowCheckboxChange: onRowCheckboxChange,
+              }
+        }
         colSort
         pagination
         pagingOptions={[15, 30, 50, 100]}
