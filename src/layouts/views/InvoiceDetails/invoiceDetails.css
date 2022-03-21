@@ -1,0 +1,347 @@
+.invoiceDetailsContainer {
+  padding-bottom: 40px;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .breadcrumbs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .breadcrumbs .icon {
+  margin-top: 4px;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .breadcrumbs .text {
+  font-weight: bold;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .download {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #ffffff !important;
+  border-style: solid;
+  border-color: #526fd6 !important;
+  border-radius: 4px;
+  height: 2.4rem;
+  border-width: 2px;
+  cursor: pointer;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .download .text {
+  padding: 0px 20px;
+  margin: 0px;
+  color: #526fd6 !important;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .download .icon {
+  margin-top: 12px;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .openDownloadDropdown {
+  position: absolute;
+  background-color: #ffffff !important;
+  top: 6rem;
+  padding: 8px;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .openDownloadDropdown p {
+  color: #767676 !important;
+  margin: 0px;
+  padding: 8px 4px;
+  cursor: pointer;
+}
+
+.invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .openDownloadDropdown p:hover {
+  background-color: #eef1fb !important;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo {
+  background-color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar {
+  background-color: #17224e !important;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 30px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .status {
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #cbd4f3;
+  background-color: #e0e5f81a;
+  color: #cbd4f3;
+  width: 10rem;
+  text-align: center;
+  padding: 4px 0px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .invoiceNo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 6px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .invoiceNo p {
+  color: #ffffff !important;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .amount {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 10px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .amount p {
+  color: #cbd4f3;
+  margin: 0px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .amount p span {
+  color: #ffffff !important;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 30px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails div {
+  width: 25%;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-color: #ebebed;
+  padding-left: 20px;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .heading {
+  color: #526fd6 !important;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .value {
+  font-weight: bold;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .lastCloumn {
+  border-style: hidden;
+}
+
+.invoiceDetailsContainer .tab {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 12px 0px;
+}
+
+.invoiceDetailsContainer .tab .tabTextActive {
+  border-bottom: 3px solid #526fd6 !important;
+  padding: 12px 12px;
+  color: #526fd6 !important;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.invoiceDetailsContainer .tab .tabTextPassive {
+  border-bottom: 3px solid #ebebed !important;
+  padding: 12px 12px;
+  color: #767676 !important;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.invoiceDetailsContainer .tableHeader {
+  margin-left: 16px;
+}
+
+.invoiceDetailsContainer .countrySummaryCalc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #ffffff !important;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding: 20px;
+  gap: 20px;
+}
+
+.invoiceDetailsContainer .countrySummaryCalc p {
+  color: #526fd6 !important;
+}
+
+.invoiceDetailsContainer .countrySummaryCalc h3 {
+  color: #526fd6 !important;
+  background-color: #eef1fb !important;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  background-color: #ffffff !important;
+  padding: 20px;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  border-bottom-style: solid;
+  border-bottom-width: 1;
+  border-color: #ebebed !important;
+  border-width: 2px;
+  width: 30%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .row .title {
+  color: #767676 !important;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .row .amount {
+  font-weight: bold;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .row2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 30%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .row2 .title {
+  color: #767676 !important;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .row2 .amount {
+  font-weight: bold;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .totalRow {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 20px;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .totalRow p {
+  color: #526fd6 !important;
+}
+
+.invoiceDetailsContainer .feeSummaryCalc .totalRow h3 {
+  color: #526fd6 !important;
+  background-color: #eef1fb !important;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.invoiceDetailsContainer .countryHeader {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 10px;
+}
+
+.invoiceDetailsContainer .totalContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.invoiceDetailsContainer .totalContainer div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #17224e !important;
+  padding: 0px 20px;
+  gap: 80px;
+  border-radius: 8px;
+}
+
+.invoiceDetailsContainer .totalContainer div p {
+  color: #cbd4f3 !important;
+}
+
+.invoiceDetailsContainer .totalContainer div h3 {
+  color: #ffffff !important;
+}
+/*# sourceMappingURL=invoiceDetails.css.map */

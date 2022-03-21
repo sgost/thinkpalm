@@ -5,12 +5,13 @@ import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { format } from 'date-fns'
-import getRequest from "src/components/Comman/api";
+import getRequest from "../../../components/Comman/api";
 
 
 export default function Invoices() {
+
+  let navigate = useNavigate(); 
 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -19,9 +20,7 @@ export default function Invoices() {
   const [dateTo, setDateTo] = useState('');
   const [dateFrom, setDateFrom] = useState('');
 
-
-  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}`;
-  
+  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -78,10 +77,6 @@ export default function Invoices() {
       value: 8,
     },
   ]);
-
-  
-
-  let navigate = useNavigate();
   const apiData: any = getRequest(api)
   const [checkedData, setCheckedData] = useState([]);
   const [Tabledata, seTabletData] = useState({
@@ -135,23 +130,23 @@ export default function Invoices() {
   }, [isTypeOpen]);
 
   useEffect(() => {
-   if (apiData?.data?.results) {
+    if (apiData?.data?.results) {
       const apiTableData = apiData?.data?.results;
 
-       
-    apiTableData?.map((item: any) => {
-      if (item.customer === null) {
-        item.customer = ''
-      }
-      item.totalAmount = `USD ${item.totalAmount}`
-      item.invoiceBalance = `USD ${item.invoiceBalance}`
-      item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
-      item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
-    });
 
-    seTabletData({ ...Tabledata, data: apiTableData });
-   }
-  }, [apiData,transactionTypes,statusType])
+      apiTableData?.map((item: any) => {
+        if (item.customer === null) {
+          item.customer = ''
+        }
+        item.totalAmount = `USD ${item.totalAmount}`
+        item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+        item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
+      });
+
+      seTabletData({ ...Tabledata, data: apiTableData });
+    }
+  }, [apiData, transactionTypes, statusType, dateFrom, dateTo])
 
   const onRowCheckboxChange = (selectedRows: any) => {
     setCheckedData(selectedRows)
@@ -193,7 +188,7 @@ export default function Invoices() {
             handleDropdownClick={() => {
               setIsTypeOpen(!isTypeOpen);
             }}
-            
+
             handleDropOptionClick={(opt: any) => {
 
               let index = types.findIndex((e) => e.value === opt.value);
@@ -208,7 +203,7 @@ export default function Invoices() {
                 }
               });
 
-              let typesValue :any= copy[index]?.value;
+              let typesValue: any = copy[index]?.value;
 
               setTypes(copy);
               setIsTypeOpen(false);
@@ -218,7 +213,7 @@ export default function Invoices() {
             options={types}
           />
 
-        
+
           <MyDropdown
             data-testid=""
             title="Status"
@@ -237,7 +232,7 @@ export default function Invoices() {
                 }
               });
 
-              let statusValue : any = copy[index]?.value;
+              let statusValue: any = copy[index]?.value;
 
               setStatus(copy);
               setIsStatusOpen(false);
