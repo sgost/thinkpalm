@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">55.55% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>5/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/8</span>
+                <span class='fraction'>3/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>3/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">55.55% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>5/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -144,18 +144,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">13x</span>
-<span class="cline-any cline-yes">61x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">17x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,9 +167,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,7 +217,7 @@ export default function Dropdown({
   }, [options]);
 &nbsp;
   return (
-    &lt;div onClick={() =&gt; handleDropdownClick()} className="dropdownContainer"&gt;
+    &lt;div onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleDropdownClick()}</span> className="dropdownContainer"&gt;
       &lt;span className="title"&gt;{title}&lt;/span&gt;
       &lt;div className="dropdown"&gt;
         &lt;p className="text"&gt;{selected ? <span class="branch-0 cbranch-no" title="branch not covered" >selected </span>: "Please Select"}&lt;/p&gt;
@@ -227,17 +227,17 @@ export default function Dropdown({
       &lt;/div&gt;
 &nbsp;
       {isOpen &amp;&amp; (
-        &lt;div className="openDropdown"&gt;
-          {options.map((item) =&gt; {
-            return (
+<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;div className="openDropdown"&gt;</span>
+          {options.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; {
+<span class="cstat-no" title="statement not covered" >            return (</span>
               &lt;div
-                onClick={() =&gt; handleDropOptionClick(item)}
+                onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleDropOptionClick(item)}</span>
                 className="openDropdownOption"
               &gt;
                 &lt;span className="text"&gt;{item.label}&lt;/span&gt;
 &nbsp;
                 {item.isSelected &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >                  &lt;div className="icon"&gt;</span>
+                  &lt;div className="icon"&gt;
                     &lt;Icon icon="checkMark" size="small" title="Order Summary" /&gt;
                   &lt;/div&gt;
                 )}
@@ -256,7 +256,7 @@ export default function Dropdown({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Mar 18 2022 10:48:25 GMT+0500 (Pakistan Standard Time)
+                at Mon Mar 21 2022 10:15:20 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, DatePicker, Table } from "atlasuikit";
+import { Icon, Button, Table } from "atlasuikit";
 import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { format } from "date-fns";
 import getRequest from "../../../components/Comman/api";
+import { clientTableData, tableData } from "./mockdata";
 
 export default function Invoices() {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -16,6 +17,8 @@ export default function Invoices() {
   const [statusType, setStatusType] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
+
+  const [isClient, setIsClient] = useState<any>(null);
 
   const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}`;
 
@@ -151,6 +154,30 @@ export default function Invoices() {
     setCheckedData(selectedRows);
   };
 
+  if (isClient === null) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "20px",
+        }}
+      >
+        <Button
+          handleOnClick={() => setIsClient(true)}
+          className="primary-blue small"
+          label="Client View"
+        />
+        <Button
+          handleOnClick={() => setIsClient(false)}
+          className="secondary-btn small"
+          label="Internal View"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="container">
       <div className="dropdowns">
@@ -244,12 +271,16 @@ export default function Invoices() {
       </div>
 
       <Table
-        options={{
-          ...Tabledata,
-          showDefaultColumn: true,
-          enableMultiSelect: true,
-          onRowCheckboxChange: onRowCheckboxChange,
-        }}
+        options={
+          isClient
+            ? clientTableData
+            : {
+                ...Tabledata,
+                showDefaultColumn: true,
+                enableMultiSelect: true,
+                onRowCheckboxChange: onRowCheckboxChange,
+              }
+        }
         colSort
         pagination
         pagingOptions={[15, 30, 50, 100]}
