@@ -5,12 +5,13 @@ import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { format } from "date-fns";
+import { format } from 'date-fns'
 import getRequest from "../../../components/Comman/api";
-import { clientTableData, tableData } from "./mockdata";
+import { clientTableData } from "./mockdata";
+
 
 export default function Invoices() {
+  let navigate = useNavigate(); 
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [transactionTypes, setTransactionTypes] = useState("");
@@ -18,9 +19,8 @@ export default function Invoices() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
 
+  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
   const [isClient, setIsClient] = useState<any>(null);
-
-  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}`;
 
   const [types, setTypes] = useState([
     {
@@ -79,7 +79,6 @@ export default function Invoices() {
     },
   ]);
 
-  let navigate = useNavigate();
   const apiData: any = getRequest(api);
   const [checkedData, setCheckedData] = useState([]);
   const [Tabledata, seTabletData] = useState({
@@ -136,19 +135,20 @@ export default function Invoices() {
     if (apiData?.data?.results) {
       const apiTableData = apiData?.data?.results;
 
+
       apiTableData?.map((item: any) => {
         if (item.customer === null) {
-          item.customer = "";
+          item.customer = ''
         }
-        item.totalAmount = `USD ${item.totalAmount}`;
-        item.invoiceBalance = `USD ${item.invoiceBalance}`;
-        item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
-        item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
+        item.totalAmount = `USD ${item.totalAmount}`
+        item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+        item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
       });
 
       seTabletData({ ...Tabledata, data: apiTableData });
     }
-  }, [apiData, transactionTypes, statusType]);
+  }, [apiData, transactionTypes, statusType, dateFrom, dateTo])
 
   const onRowCheckboxChange = (selectedRows: any) => {
     setCheckedData(selectedRows);

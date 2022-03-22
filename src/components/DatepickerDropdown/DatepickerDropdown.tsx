@@ -18,8 +18,31 @@ export default function DatepickerDropdown({
   setDateTo,
   setDateFrom
 }: any) {
-  const [selected, setSelected] = useState(null);
-  
+
+  const [selected, setSelected] = useState({
+    startDate: '',
+    endDate: '',
+    day: ''
+  });
+
+  const displayDate = () => {
+    if (selected.startDate && selected.endDate) {
+      return `${selected.startDate} to ${selected.endDate}`
+    }
+    else if (selected.endDate) {
+      return selected.endDate
+    }
+    else if (selected.startDate) {
+      return selected.startDate
+    }
+    else if (selected.day) {
+      return selected.day
+    }
+    else {
+      return 'Please Select'
+    }
+  }
+
 
   const options = [
     "Today",
@@ -42,7 +65,7 @@ export default function DatepickerDropdown({
     <div data-testid="datedd" className="dropdownContainer">
       <span className="title">{title}</span>
       <div onClick={() => handleDropdownClick()} className="dropdown">
-        <p className="text">{selected ? selected : "Please Select"}</p>
+        {displayDate()}
         <div className="icon">
           <Icon icon="chevronDown" size="small" title="Order Summary" />
         </div>
@@ -52,12 +75,18 @@ export default function DatepickerDropdown({
         <div className="openDropdownDatepicker">
           <DatePicker
             id="dp"
-            handleDateChange={function noRefCheck(e : any) 
-              {
-             const endDate = format(e.endDate, "yyyy-MM-dd")
-            const startDate =  format(e.startDate, "yyyy-MM-dd")
-              setDateTo(endDate)
-              setDateFrom(startDate)          
+            handleDateChange={function noRefCheck(e: any) {
+              if (e.startDate) {
+                const startDate = format(e.startDate, "yyyy-MM-dd")
+                setDateFrom(startDate)
+                setSelected({ ...selected, startDate: startDate })
+              }
+
+              if (e.endDate) {
+                const endDate = format(e.endDate, "yyyy-MM-dd")
+                setDateTo(endDate)
+                setSelected({ ...selected, endDate: endDate })
+              }
             }}
             // label="Start Date"
             required
@@ -72,7 +101,10 @@ export default function DatepickerDropdown({
           {options.map((item) => {
             return (
               <div
-                onClick={() => handleDropOptionClick(item)}
+                onClick={() => {
+                  handleDropOptionClick(item);
+                  setSelected({ ...selected, day: item })
+                }}
                 className="openDropdownOption"
               >
                 <span className="text">{item}</span>
