@@ -13,32 +13,20 @@ export default function Invoices() {
   let navigate = useNavigate();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [checkedData, setCheckedData] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState("");
   const [statusType, setStatusType] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
-
-  const [token, setToken] = useState("");
-
   const [isClient, setIsClient] = useState<any>(null);
-
-  let api = ``;
-  console.log("isClient::::::::::", isClient)
-
-  const apiFunc = () => {
-    if (isClient) {
-      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&statuses=paid`
-      return api
-    }
-    else if (!isClient) {
-       api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`  
-        return api
-    }
-    else {
-      return api = ``;
-    }
-  }
-
+  const [selectedDropdown, setSelectedDropdown] = useState(null);
+  const [selectedDate, setSelectedDate] = useState({
+    startDate: '',
+    endDate: '',
+    day: ''
+  });
+  const [token, setToken] = useState("");
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -66,8 +54,6 @@ export default function Invoices() {
       value: 3,
     },
   ]);
-
-  const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [status, setStatus] = useState([
     {
       isSelected: false,
@@ -95,13 +81,7 @@ export default function Invoices() {
       value: 8,
     },
   ]);
-
-  // let apiData: any = getRequest(api, token);
-  const apiData: any = getRequest(apiFunc(), token);
-  console.log("api22222222222222::::::::::", api)
-
-  const [checkedData, setCheckedData] = useState([]);
-  const [Tabledata, seTabletData] = useState({
+  const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
         header: "Invoice No.",
@@ -117,12 +97,12 @@ export default function Invoices() {
       {
         header: "Status",
         isDefault: true,
-        key: "statusLabel",
+        key: "status",
       },
       {
         header: "Type",
         isDefault: true,
-        key: "transactionTypeLabel",
+        key: "transactionType",
       },
       {
         header: "Invoice Date",
@@ -147,6 +127,80 @@ export default function Invoices() {
     ],
     data: [],
   });
+  const [clientTableData, setClientTableData] = useState({
+    columns: [
+      {
+        header: "Invoice No.",
+        isDefault: true,
+        key: "invoiceNo",
+      },
+  
+      {
+        header: "Status",
+        isDefault: true,
+        key: "statusLabel",
+      },
+      {
+        header: "Type",
+        isDefault: true,
+        key: "transactionTypeLabel",
+      },
+      {
+        header: "Invoice Date",
+        isDefault: true,
+        key: "createdDate",
+      },
+      {
+        header: "Payment Due",
+        isDefault: true,
+        key: "dueDate",
+      },
+      {
+        header: "Total",
+        isDefault: true,
+        key: "totalAmount",
+      },
+      {
+        header: "Balance",
+        isDefault: true,
+        key: "invoiceBalance",
+      },
+    ],
+    data: [],
+  })
+
+  let api = ``;
+
+  const apiFunc = () => {
+    if (isClient !== null && isClient === true) {
+
+      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+      return api
+    }
+    else if (isClient !== null && isClient === false) {
+      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+      return api
+    }
+    else {
+      api = ''
+      return api;
+    }
+  }
+
+  const apiData: any = getRequest(apiFunc(), token);
+
+  const clearFilter = () => {
+    setTransactionTypes('');
+    setStatusType('');
+    setDateTo('');
+    setDateFrom('');
+    setSelectedDate({
+      startDate: '',
+      endDate: '',
+      day: ''
+    });
+    setSelectedDropdown(null)
+  }
 
   useEffect(() => {
     console.log("type", isTypeOpen);
@@ -166,9 +220,25 @@ export default function Invoices() {
         item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
       });
 
-      seTabletData({ ...Tabledata, data: apiTableData });
+      setInternalTabletData({ ...internalTabledata, data: apiTableData });
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
+
+  useEffect(() => {
+    if(apiData?.data?.results) {
+      const apiTableData = apiData?.data?.results;
+
+      apiTableData?.map((item: any) => {
+        // item.totalAmount = `USD ${item.totalAmount}`
+        // item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+        item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
+      });
+
+      setClientTableData({ ...clientTableData, data: apiTableData });
+
+    }
+  }, [apiData, transactionTypes, statusType, dateFrom, dateTo])
 
   const onRowCheckboxChange = (selectedRows: any) => {
     setCheckedData(selectedRows);
@@ -226,6 +296,8 @@ export default function Invoices() {
             isOpen={isDateOpen}
             setDateTo={setDateTo}
             setDateFrom={setDateFrom}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
             handleDropOptionClick={(item: any) => {
               console.log("month::::", item)
               var date = new Date();
@@ -291,6 +363,8 @@ export default function Invoices() {
             // data-testid="type-dd"
             title="Types"
             isOpen={isTypeOpen}
+            selectedDropdown={selectedDropdown}
+            setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsTypeOpen(!isTypeOpen);
             }}
@@ -319,6 +393,8 @@ export default function Invoices() {
             data-testid=""
             title="Status"
             isOpen={isStatusOpen}
+            selectedDropdown={selectedDropdown}
+            setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsStatusOpen(!isStatusOpen);
             }}
@@ -351,12 +427,27 @@ export default function Invoices() {
         </div>
       </div>
 
+      <div className="clearfilter" onClick={clearFilter}>
+        <Icon
+          className="remove"
+          color="#526fd6"
+          icon="remove"
+          size="medium"
+        />
+        <h5>Clear Filters</h5>
+      </div>
+
       <Table
         options={
           isClient
-            ? clientTableData
+            ? {
+              ...clientTableData,
+              showDefaultColumn: true,
+              enableMultiSelect: true,
+              onRowCheckboxChange: onRowCheckboxChange,
+            }
             : {
-              ...Tabledata,
+              ...internalTabledata,
               showDefaultColumn: true,
               enableMultiSelect: true,
               onRowCheckboxChange: onRowCheckboxChange,
