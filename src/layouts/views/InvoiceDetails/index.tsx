@@ -1,12 +1,120 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Icon, Table } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
+import getRequest from "src/components/Comman/api";
+import moment from "moment";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+
+  const api =
+    "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/13628D5B-3D1C-4D5E-8483-110E13B66A7B";
+  const apiData: any = getRequest(api);
+
+  const [payrollTables, setPayrollTables] = useState([]);
+  const payrollOptions: any = {
+    columns: [
+      {
+        header: "Employee ID",
+        isDefault: true,
+        key: "employeeID",
+      },
+      {
+        header: "Name",
+        isDefault: true,
+        key: "name",
+      },
+      {
+        header: "Gross Wages",
+        isDefault: true,
+        key: "grossWages",
+      },
+      {
+        header: "Allowances",
+        isDefault: true,
+        key: "allowances",
+      },
+      {
+        header: "Expense Reimb.",
+        isDefault: true,
+        key: "expenseReimb",
+      },
+      {
+        header: "Employer Liability",
+        isDefault: true,
+        key: "employerLiability",
+      },
+      {
+        header: "Country VAT",
+        isDefault: true,
+        key: "countryVAT",
+      },
+      {
+        header: "Admin Fees",
+        isDefault: true,
+        key: "adminFees",
+      },
+      {
+        header: "Healthcare Benefits",
+        isDefault: true,
+        key: "healthcareBenefits",
+      },
+    ],
+    showDefaultColumn: true,
+  };
+  const [invoiceDetail, setInvoiceDetail] = useState<any>(null);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    if (apiData.data) {
+      console.log(apiData.data?.invoice?.invoiceNo);
+      setInvoiceDetail(apiData.data);
+      if (apiData.data.countryPayroll) {
+        let data: any = [];
+        let tempTotal = 0;
+        apiData.data?.countryPayroll.forEach((e: any) => {
+          let country = e.countryName;
+          let currencyCode = e.currencyCode;
+          let arr: any = [];
+
+          e.payrollItems.forEach((item: any) => {
+            arr.push({
+              employeeID: item.employeeId,
+              name: {
+                value: item.firstName + " " + item.lastName,
+                img: { src: null },
+              },
+              grossWages: currencyCode + " " + item.totalWage.toFixed(2),
+              allowances: currencyCode + " " + item.allowance.toFixed(2),
+              expenseReimb: currencyCode + " " + item.expenseRe.toFixed(2),
+              employerLiability: currencyCode + " " + item.liability.toFixed(2),
+              countryVAT: item.countryVat.toFixed(2),
+              adminFees: currencyCode + " " + item.adminFee.toFixed(2),
+              healthcareBenefits:
+                currencyCode + " " + item.healthcare.toFixed(2),
+            });
+          });
+
+          tempTotal += e.feeSummary.total;
+
+          data.push({
+            country,
+            exchangeRate: e.exchangeRate,
+            currencyCode: e.currencyCode,
+            feeSummary: e.feeSummary,
+            data: arr,
+          });
+        });
+
+        // console.log(data);
+        setPayrollTables(data);
+        setTotal(tempTotal);
+      }
+    }
+  }, [apiData]);
 
   return (
     <div className="invoiceDetailsContainer">
@@ -14,7 +122,9 @@ export default function InvoiceDetails() {
         <div className="breadcrumbs">
           <p className="text">Invoices</p>
           <Icon className="icon" icon="chevronRight" size="medium" />
-          <p className="text">Payroll Invoice No. 791230</p>
+          <p className="text">
+            Payroll Invoice No. {invoiceDetail?.invoice?.invoiceNo}
+          </p>
         </div>
         <div className="buttons">
           <div
@@ -62,14 +172,18 @@ export default function InvoiceDetails() {
                 size="small"
                 title="Order Summary"
               />
-              <p>Payroll Invoice No. 791230</p>
+              <p>Payroll Invoice No. {invoiceDetail?.invoice?.invoiceNo}</p>
             </div>
             <div className="amount">
               <p>
-                Open <span>USD 300,523.15</span>
+                Open{" "}
+                <span>
+                  - {invoiceDetail?.invoice?.invoiceBalance.toFixed(2)}
+                </span>
               </p>
               <p>
-                Total <span>USD 300,523.15</span>
+                Total{" "}
+                <span>- {invoiceDetail?.invoice?.totalAmount.toFixed(2)}</span>
               </p>
             </div>
           </div>
@@ -78,32 +192,36 @@ export default function InvoiceDetails() {
         <div className="infoDetails">
           <div className="column1">
             <p className="heading">From</p>
-            <p className="value">Elements Global Services</p>
+            <p className="value">{invoiceDetail?.invoice?.customerName}</p>
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">Global Enterprise Solutions</p>
-            <p>
-              1101 15th Street NW90001, Los Angeles, CAUnited States of America
-            </p>
+            <p className="value">-</p>
+            <p>-</p>
             <p>PO Number</p>
-            <input />
+            <p className="poNo">{invoiceDetail?.invoice?.poNumber}</p>
           </div>
           <div>
             <p className="heading">Invoice Date</p>
-            <p className="value">01 Nov 2021</p>
+            <p className="value">
+              {moment(invoiceDetail?.invoice?.createdDate).format(
+                "DD MMM YYYY"
+              )}
+            </p>
             <p className="heading">Invoice Changes</p>
-            <p className="value">05 Nov 2021</p>
+            <p className="value">-</p>
             <p className="heading">Payment Due</p>
-            <p className="value">10 Nov 2021</p>
+            <p className="value">
+              {moment(invoiceDetail?.invoice?.dueDate).format("DD MMM YYYY")}
+            </p>
           </div>
           <div className="lastCloumn">
             <p className="heading">Location</p>
-            <p className="value">USA – United States of America</p>
+            <p className="value">{invoiceDetail?.invoice?.customerLocation}</p>
             <p className="heading">Region</p>
-            <p className="value">Americas</p>
+            <p className="value">-</p>
             <p className="heading">Billing Currency</p>
-            <p className="value">USD</p>
+            <p className="value">-</p>
           </div>
         </div>
       </div>
@@ -155,77 +273,79 @@ export default function InvoiceDetails() {
         </div>
       ) : (
         <div>
-          <div>
-            <div className="countryHeader">
-              <img src={spainFlag} alt="flag" />
-              <h3>Spain</h3>
-            </div>
-            <Table options={payrollData} colSort />
-            <div className="feeSummaryCalc">
-              <div className="row">
-                <p className="title">Country Subtotal Due</p>
-                <p className="amount">EUR 271,410.90</p>
+          {payrollTables.map((item: any) => {
+            return (
+              <div>
+                <div className="countryHeader">
+                  <img src={spainFlag} alt="flag" />
+                  <h3>{item.country}</h3>
+                </div>
+                <div>
+                  <Table
+                    options={{
+                      ...payrollOptions,
+                      ...{ data: item.data },
+                    }}
+                    colSort
+                  />
+                  <div className="feeSummaryCalc">
+                    <div className="row">
+                      <p className="title">Country Subtotal Due</p>
+                      <p className="amount">
+                        {item.currencyCode +
+                          " " +
+                          item.feeSummary.subTotalDue.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="row">
+                      <p className="title">
+                        Country EXC Rate {item.exchangeRate.toFixed(2)}
+                      </p>
+                      <p className="amount">
+                        {item.currencyCode +
+                          " " +
+                          item.feeSummary.subTotalDue *
+                            item.exchangeRate.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="row">
+                      <p className="title">In Coutry Processing Fee</p>
+                      <p className="amount">{item.currencyCode + " "}</p>
+                    </div>
+                    <div className="row">
+                      <p className="title">FX Bill</p>
+                      <p className="amount">
+                        {item.currencyCode +
+                          " " +
+                          item.feeSummary.fxBill.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="row2">
+                      <p className="title">Total Country VAT</p>
+                      <p className="amount">
+                        {item.currencyCode +
+                          " " +
+                          item.feeSummary.totalCountryVat.toFixed(2)}
+                      </p>
+                    </div>
+                    <div className="totalRow">
+                      <p>Country Total Due</p>
+                      <h3>
+                        {item.currencyCode +
+                          " " +
+                          item.feeSummary.total.toFixed(2)}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="row">
-                <p className="title">Country EXC Rate 0.75355</p>
-                <p className="amount">USD 121,411.98</p>
-              </div>
-              <div className="row">
-                <p className="title">In Coutry Processing Fee</p>
-                <p className="amount">USD 0.00</p>
-              </div>
-              <div className="row">
-                <p className="title">FX Bill</p>
-                <p className="amount">USD 1,821.17</p>
-              </div>
-              <div className="row2">
-                <p className="title">Total Country VAT</p>
-                <p className="amount">USD 0.00</p>
-              </div>
-              <div className="totalRow">
-                <p>Country Total Due</p>
-                <h3>USD 271,410.90</h3>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="countryHeader">
-              <img src={spainFlag} alt="flag" />
-              <h3>Spain</h3>
-            </div>
-            <Table options={payrollData} colSort />
-            <div className="feeSummaryCalc">
-              <div className="row">
-                <p className="title">Country Subtotal Due</p>
-                <p className="amount">EUR 271,410.90</p>
-              </div>
-              <div className="row">
-                <p className="title">Country EXC Rate 0.75355</p>
-                <p className="amount">USD 121,411.98</p>
-              </div>
-              <div className="row">
-                <p className="title">In Coutry Processing Fee</p>
-                <p className="amount">USD 0.00</p>
-              </div>
-              <div className="row">
-                <p className="title">FX Bill</p>
-                <p className="amount">USD 1,821.17</p>
-              </div>
-              <div className="row2">
-                <p className="title">Total Country VAT</p>
-                <p className="amount">USD 0.00</p>
-              </div>
-              <div className="totalRow">
-                <p>Country Total Due</p>
-                <h3>USD 271,410.90</h3>
-              </div>
-            </div>
-          </div>
+            );
+          })}
 
           <div className="totalContainer">
             <div>
               <p>Total</p>
-              <h3>USD 300,523.15</h3>
+              <h3>- {total}</h3>
             </div>
           </div>
         </div>
