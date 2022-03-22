@@ -20,8 +20,24 @@ export default function Invoices() {
 
   const [token, setToken] = useState("");
 
-  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
   const [isClient, setIsClient] = useState<any>(null);
+
+  let api = ``;
+  console.log("isClient::::::::::", isClient)
+
+  const apiFunc = () => {
+    if (isClient) {
+      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&statuses=paid`
+      return api
+    }
+    else if (!isClient) {
+       api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`  
+        return api
+    }
+    else {
+      return api = ``;
+    }
+  }
 
   const [types, setTypes] = useState([
     {
@@ -80,7 +96,10 @@ export default function Invoices() {
     },
   ]);
 
-  let apiData: any = getRequest(api, token);
+  // let apiData: any = getRequest(api, token);
+  const apiData: any = getRequest(apiFunc(), token);
+  console.log("api22222222222222::::::::::", api)
+
   const [checkedData, setCheckedData] = useState([]);
   const [Tabledata, seTabletData] = useState({
     columns: [
@@ -92,7 +111,8 @@ export default function Invoices() {
       {
         header: "Customer",
         isDefault: true,
-        key: "customer",
+        // key: "customer",
+        key: "customerName",
       },
       {
         header: "Status",
@@ -137,13 +157,13 @@ export default function Invoices() {
       const apiTableData = apiData?.data?.results;
 
       apiTableData?.map((item: any) => {
-        if (item.customer === null) {
-          item.customer = "";
-        }
-        item.totalAmount = `USD ${item.totalAmount}`;
-        item.invoiceBalance = `USD ${item.invoiceBalance}`;
-        item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
-        item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
+        // if (item.customer === null) {
+        //   item.customer = ''
+        // }
+        item.totalAmount = `USD ${item.totalAmount}`
+        item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+        item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
       });
 
       seTabletData({ ...Tabledata, data: apiTableData });
@@ -206,7 +226,60 @@ export default function Invoices() {
             isOpen={isDateOpen}
             setDateTo={setDateTo}
             setDateFrom={setDateFrom}
-            handleDropOptionClick={() => {
+            handleDropOptionClick={(item: any) => {
+              console.log("month::::", item)
+              var date = new Date();
+              switch (item) {
+                case 'Today':
+                  const todayDate = format(date, "yyyy-MM-dd")
+                  setDateFrom(todayDate);
+                  setDateTo(todayDate);
+                  break;
+
+                case 'Yesterday':
+                  const yesterdayDate = date.setDate(date.getDate() - 1);
+                  const yesterdayFormatDate = format(yesterdayDate, "yyyy-MM-dd")
+                  setDateFrom(yesterdayFormatDate);
+                  setDateTo(yesterdayFormatDate);
+                  break;
+
+                case 'This Week':
+                  const thisWeekStartDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+                  const thisWeekEndDate = date.setDate(date.getDate() - 1);
+                  const thisWeekStartFormatDate = format(thisWeekStartDate, "yyyy-MM-dd")
+                  const thisWeekEndFormatDate = format(thisWeekEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisWeekStartFormatDate);
+                  setDateTo(thisWeekEndFormatDate);
+                  break;
+
+                case 'This Month':
+                  const thisMonthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
+                  const thisMonthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                  const thisMonthStartFormatDate = format(thisMonthStartDate, "yyyy-MM-dd")
+                  const thisMonthEndFormatDate = format(thisMonthEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisMonthStartFormatDate);
+                  setDateTo(thisMonthEndFormatDate);
+                  break;
+
+                case 'This Quarter':
+                  const quarter = Math.floor((date.getMonth() / 3));
+                  const thisQuarterStartDate = new Date(date.getFullYear(), quarter * 3, 1);
+                  const thisQuarterEndDate = new Date(thisQuarterStartDate.getFullYear(), thisQuarterStartDate.getMonth() + 3, 0);
+                  const thisQuarterStartFormatDate = format(thisQuarterStartDate, "yyyy-MM-dd")
+                  const thisQuarterEndFormatDate = format(thisQuarterEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisQuarterStartFormatDate);
+                  setDateTo(thisQuarterEndFormatDate);
+                  break;
+
+                case 'This Year':
+                  const thisYearStartDate = new Date(date.getFullYear(), 0, 1);
+                  const thisYearEndDate = new Date(date.getFullYear(), 11, 31);
+                  const thisYearStartFormatDate = format(thisYearStartDate, "yyyy-MM-dd")
+                  const thisYearEndFormatDate = format(thisYearEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisYearStartFormatDate);
+                  setDateTo(thisYearEndFormatDate);
+                  break;
+              }
               setIsDateOpen(!isDateOpen);
             }}
             handleDropdownClick={() => {
@@ -283,11 +356,11 @@ export default function Invoices() {
           isClient
             ? clientTableData
             : {
-                ...Tabledata,
-                showDefaultColumn: true,
-                enableMultiSelect: true,
-                onRowCheckboxChange: onRowCheckboxChange,
-              }
+              ...Tabledata,
+              showDefaultColumn: true,
+              enableMultiSelect: true,
+              onRowCheckboxChange: onRowCheckboxChange,
+            }
         }
         colSort
         pagination

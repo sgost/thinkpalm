@@ -25,9 +25,17 @@ export default function DatepickerDropdown({
     day: ''
   });
 
+  
+
   const displayDate = () => {
+
+  // selected.startDate =  format(new Date(selected.startDate), 'd MMM yyyy')
+  // selected.endDate =  format(new Date(selected.endDate), 'd MMM yyyy')
+
     if (selected.startDate && selected.endDate) {
-      return `${selected.startDate} to ${selected.endDate}`
+      return (
+        `${selected.startDate} - ${selected.endDate}`
+      ) 
     }
     else if (selected.endDate) {
       return selected.endDate
@@ -79,13 +87,15 @@ export default function DatepickerDropdown({
               if (e.startDate) {
                 const startDate = format(e.startDate, "yyyy-MM-dd")
                 setDateFrom(startDate)
-                setSelected({ ...selected, startDate: startDate })
+                const startFormatDate =  format(e.startDate, "d MMM yyyy")
+                setSelected({ ...selected, startDate: startFormatDate })
               }
 
               if (e.endDate) {
                 const endDate = format(e.endDate, "yyyy-MM-dd")
                 setDateTo(endDate)
-                setSelected({ ...selected, endDate: endDate })
+                const endFormatDate =  format(e.endDate, "d MMM yyyy")
+                setSelected({ ...selected, endDate: endFormatDate })
               }
             }}
             // label="Start Date"
