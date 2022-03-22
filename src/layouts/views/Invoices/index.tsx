@@ -5,12 +5,12 @@ import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { format } from "date-fns";
 import getRequest from "../../../components/Comman/api";
-import { clientTableData, tableData } from "./mockdata";
+import { clientTableData } from "./mockdata";
 
 export default function Invoices() {
+  let navigate = useNavigate();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [transactionTypes, setTransactionTypes] = useState("");
@@ -18,9 +18,10 @@ export default function Invoices() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
 
-  const [isClient, setIsClient] = useState<any>(null);
+  const [token, setToken] = useState("");
 
-  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}`;
+  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+  const [isClient, setIsClient] = useState<any>(null);
 
   const [types, setTypes] = useState([
     {
@@ -79,8 +80,7 @@ export default function Invoices() {
     },
   ]);
 
-  let navigate = useNavigate();
-  const apiData: any = getRequest(api);
+  let apiData: any = getRequest(api, token);
   const [checkedData, setCheckedData] = useState([]);
   const [Tabledata, seTabletData] = useState({
     columns: [
@@ -148,7 +148,7 @@ export default function Invoices() {
 
       seTabletData({ ...Tabledata, data: apiTableData });
     }
-  }, [apiData, transactionTypes, statusType]);
+  }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
   const onRowCheckboxChange = (selectedRows: any) => {
     setCheckedData(selectedRows);
@@ -164,13 +164,21 @@ export default function Invoices() {
           gap: "20px",
         }}
       >
+        <p>Enter token</p>
+        <input value={token} onChange={(e) => setToken(e.target.value)} />
         <Button
-          handleOnClick={() => setIsClient(true)}
+          handleOnClick={() => {
+            localStorage.setItem("temptoken", token);
+            setIsClient(true);
+          }}
           className="primary-blue small"
           label="Client View"
         />
         <Button
-          handleOnClick={() => setIsClient(false)}
+          handleOnClick={() => {
+            localStorage.setItem("temptoken", token);
+            setIsClient(false);
+          }}
           className="secondary-btn small"
           label="Internal View"
         />

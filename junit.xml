@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="4.42">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-21T05:15:17" time="2.622" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.117">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="8.901">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-22T05:36:36" time="5.748" tests="3">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.068">
+    </testcase>
+    <testcase classname=" Client View" name=" Client View" time="0.564">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.061">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-21T05:15:17" time="2.698" tests="3">
-    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.106">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-22T05:36:36" time="6.236" tests="3">
+    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.174">
     </testcase>
-    <testcase classname=" tabs are working" name=" tabs are working" time="0.372">
+    <testcase classname=" tabs are working" name=" tabs are working" time="0.427">
     </testcase>
-    <testcase classname=" Dropdown opens" name=" Dropdown opens" time="0.105">
+    <testcase classname=" Dropdown opens" name=" Dropdown opens" time="0.039">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-21T05:15:17" time="3.094" tests="3">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.025">
-    </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.223">
-    </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.023">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-22T05:36:36" time="6.466" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.206">
     </testcase>
   </testsuite>
 </testsuites>

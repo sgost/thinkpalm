@@ -125,29 +125,6 @@ body {
   padding-bottom: 20px;
 }
 
-.tab {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 12px 0px;
-}
-
-.tab .tabTextActive {
-  border-bottom: 3px solid #526fd6 !important;
-  padding: 12px 12px;
-  color: #526fd6 !important;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.tab .tabTextPassive {
-  border-bottom: 3px solid #ebebed !important;
-  padding: 12px 12px;
-  color: #767676 !important;
-  font-weight: 500;
-  cursor: pointer;
-}
-
 .dropdowns {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -195,6 +172,12 @@ body {
       -ms-flex-pack: justify;
           justify-content: space-between;
   gap: 20px;
+}
+
+.dropdowns .pickers .download {
+  color: #526fd6 !important;
+  margin-top: 12px;
+  cursor: pointer;
 }
 
 .dropdowns .icon {

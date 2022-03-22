@@ -3,7 +3,7 @@ import { Button, Icon, Table } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
-import getRequest from "src/components/Comman/api";
+import getRequest from "../../../components/Comman/api";
 import moment from "moment";
 
 export default function InvoiceDetails() {
@@ -12,7 +12,7 @@ export default function InvoiceDetails() {
 
   const api =
     "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/13628D5B-3D1C-4D5E-8483-110E13B66A7B";
-  const apiData: any = getRequest(api);
+  const apiData: any = getRequest(api, localStorage.getItem("temptoken"));
 
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
