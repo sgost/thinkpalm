@@ -175,6 +175,16 @@
   border-style: hidden;
 }
 
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .poNo {
+  border-style: solid;
+  border-width: 1px;
+  width: 6rem;
+  border-color: #767676 !important;
+  border-radius: 4px;
+  padding: 8px;
+  text-align: center;
+}
+
 .invoiceDetailsContainer .tab {
   display: -webkit-box;
   display: -ms-flexbox;

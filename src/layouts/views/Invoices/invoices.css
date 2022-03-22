@@ -189,4 +189,30 @@ body {
   margin-top: 19px;
   cursor: pointer;
 }
+
+.clearfilter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  cursor: pointer;
+}
+
+.clearfilter .remove {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
+.clearfilter h5 {
+  color: #526fd6;
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 10px;
+}
 /*# sourceMappingURL=invoices.css.map */

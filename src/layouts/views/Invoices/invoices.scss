@@ -64,3 +64,23 @@
     cursor: pointer;
   }
 }
+
+.clearfilter {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  cursor: pointer;
+
+  .remove{
+    margin-top: 10px;
+    margin-left: 20px;
+
+  }
+
+  h5 {
+    color: #526fd6;
+    font-size: 16px;
+    font-weight: 400;
+    margin-top: 10px;
+  }
+}
