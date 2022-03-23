@@ -7,8 +7,6 @@ import DatepickerDropdown from "../../../components/DatepickerDropdown/Datepicke
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import getRequest from "../../../components/Comman/api";
-import { clientTableData } from "./mockdata";
-
 export default function Invoices() {
   let navigate = useNavigate();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -21,6 +19,10 @@ export default function Invoices() {
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
   const [selectedDropdown, setSelectedDropdown] = useState(null);
+  const [ dropdownLabel, setDropdownLabel ] = useState({
+    types: '',
+    status: ''
+  })
   const [selectedDate, setSelectedDate] = useState({
     startDate: '',
     endDate: '',
@@ -199,7 +201,11 @@ export default function Invoices() {
       endDate: '',
       day: ''
     });
-    setSelectedDropdown(null)
+    setSelectedDropdown(null);
+    setDropdownLabel({
+      types: '',
+      status: ''
+    })
   }
 
   useEffect(() => {
@@ -363,7 +369,7 @@ export default function Invoices() {
             // data-testid="type-dd"
             title="Types"
             isOpen={isTypeOpen}
-            selectedDropdown={selectedDropdown}
+            dropdownLabel={dropdownLabel}
             setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsTypeOpen(!isTypeOpen);
@@ -385,6 +391,7 @@ export default function Invoices() {
               setTypes(copy);
               setIsTypeOpen(false);
               setTransactionTypes(typesValue);
+              setDropdownLabel({...dropdownLabel, types: copy[index]?.label})
             }}
             options={types}
           />
@@ -393,7 +400,7 @@ export default function Invoices() {
             data-testid=""
             title="Status"
             isOpen={isStatusOpen}
-            selectedDropdown={selectedDropdown}
+            dropdownLabel={dropdownLabel}
             setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsStatusOpen(!isStatusOpen);
@@ -414,6 +421,7 @@ export default function Invoices() {
               setStatus(copy);
               setIsStatusOpen(false);
               setStatusType(statusValue);
+              setDropdownLabel({...dropdownLabel, status: copy[index]?.label})
             }}
             options={status}
           />
