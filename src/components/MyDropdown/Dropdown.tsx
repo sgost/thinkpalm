@@ -8,6 +8,8 @@ interface Iprops {
   handleDropdownClick: Function;
   handleDropOptionClick: Function;
   options: Array<any>;
+  setSelectedDropdown: any;
+  dropdownLabel: any;
 }
 
 export default function Dropdown({
@@ -16,22 +18,33 @@ export default function Dropdown({
   handleDropdownClick,
   handleDropOptionClick,
   options,
+  setSelectedDropdown,
+  dropdownLabel
 }: Iprops) {
-  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     options.forEach((e) => {
       if (e.isSelected) {
-        setSelected(e.label);
+        setSelectedDropdown(e.label);
       }
     });
   }, [options]);
+
+  const dropdownLabelFunc = () => {
+    if (title === 'Types' && dropdownLabel.types !== ''){
+      return dropdownLabel.types;
+    }
+    if(title === 'Status' && dropdownLabel.status !== '') {
+      return dropdownLabel.status;
+    }
+    return 'Please Select'
+  }
 
   return (
     <div onClick={() => handleDropdownClick()} className="dropdownContainer">
       <span className="title">{title}</span>
       <div className="dropdown">
-        <p className="text">{selected ? selected : "Please Select"}</p>
+        {dropdownLabelFunc()}
         <div className="icon">
           <Icon icon="chevronDown" size="small" title="Order Summary" />
         </div>

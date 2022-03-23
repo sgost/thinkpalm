@@ -16,27 +16,26 @@ export default function DatepickerDropdown({
   handleDropdownClick,
   handleDropOptionClick,
   setDateTo,
-  setDateFrom
+  setDateFrom,
+  selectedDate,
+  setSelectedDate
 }: any) {
 
-  const [selected, setSelected] = useState({
-    startDate: '',
-    endDate: '',
-    day: ''
-  });
-
   const displayDate = () => {
-    if (selected.startDate && selected.endDate) {
-      return `${selected.startDate} to ${selected.endDate}`
+
+    if (selectedDate.startDate && selectedDate.endDate) {
+      return (
+        `${selectedDate.startDate} - ${selectedDate.endDate}`
+      ) 
     }
-    else if (selected.endDate) {
-      return selected.endDate
+    else if (selectedDate.endDate) {
+      return selectedDate.endDate
     }
-    else if (selected.startDate) {
-      return selected.startDate
+    else if (selectedDate.startDate) {
+      return selectedDate.startDate
     }
-    else if (selected.day) {
-      return selected.day
+    else if (selectedDate.day) {
+      return selectedDate.day
     }
     else {
       return 'Please Select'
@@ -79,13 +78,15 @@ export default function DatepickerDropdown({
               if (e.startDate) {
                 const startDate = format(e.startDate, "yyyy-MM-dd")
                 setDateFrom(startDate)
-                setSelected({ ...selected, startDate: startDate })
+                const startFormatDate =  format(e.startDate, "d MMM yyyy")
+                setSelectedDate({ ...selectedDate, startDate: startFormatDate })
               }
 
               if (e.endDate) {
                 const endDate = format(e.endDate, "yyyy-MM-dd")
                 setDateTo(endDate)
-                setSelected({ ...selected, endDate: endDate })
+                const endFormatDate =  format(e.endDate, "d MMM yyyy")
+                setSelectedDate({ ...selectedDate, endDate: endFormatDate })
               }
             }}
             // label="Start Date"
@@ -103,7 +104,7 @@ export default function DatepickerDropdown({
               <div
                 onClick={() => {
                   handleDropOptionClick(item);
-                  setSelected({ ...selected, day: item })
+                  setSelectedDate({ ...selectedDate, day: item })
                 }}
                 className="openDropdownOption"
               >

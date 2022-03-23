@@ -7,22 +7,28 @@ import DatepickerDropdown from "../../../components/DatepickerDropdown/Datepicke
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import getRequest from "../../../components/Comman/api";
-import { clientTableData } from "./mockdata";
-
 export default function Invoices() {
   let navigate = useNavigate();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
+  const [isTypeOpen, setIsTypeOpen] = useState(false);
+  const [checkedData, setCheckedData] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState("");
   const [statusType, setStatusType] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
-
-  const [token, setToken] = useState("");
-
-  const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
   const [isClient, setIsClient] = useState<any>(null);
-
+  const [selectedDropdown, setSelectedDropdown] = useState(null);
+  const [ dropdownLabel, setDropdownLabel ] = useState({
+    types: '',
+    status: ''
+  })
+  const [selectedDate, setSelectedDate] = useState({
+    startDate: '',
+    endDate: '',
+    day: ''
+  });
+  const [token, setToken] = useState("");
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -50,8 +56,6 @@ export default function Invoices() {
       value: 3,
     },
   ]);
-
-  const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [status, setStatus] = useState([
     {
       isSelected: false,
@@ -79,10 +83,7 @@ export default function Invoices() {
       value: 8,
     },
   ]);
-
-  let apiData: any = getRequest(api, token);
-  const [checkedData, setCheckedData] = useState([]);
-  const [Tabledata, seTabletData] = useState({
+  const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
         header: "Invoice No.",
@@ -92,17 +93,18 @@ export default function Invoices() {
       {
         header: "Customer",
         isDefault: true,
-        key: "customer",
+        // key: "customer",
+        key: "customerName",
       },
       {
         header: "Status",
         isDefault: true,
-        key: "statusLabel",
+        key: "status",
       },
       {
         header: "Type",
         isDefault: true,
-        key: "transactionTypeLabel",
+        key: "transactionType",
       },
       {
         header: "Invoice Date",
@@ -127,6 +129,84 @@ export default function Invoices() {
     ],
     data: [],
   });
+  const [clientTableData, setClientTableData] = useState({
+    columns: [
+      {
+        header: "Invoice No.",
+        isDefault: true,
+        key: "invoiceNo",
+      },
+  
+      {
+        header: "Status",
+        isDefault: true,
+        key: "statusLabel",
+      },
+      {
+        header: "Type",
+        isDefault: true,
+        key: "transactionTypeLabel",
+      },
+      {
+        header: "Invoice Date",
+        isDefault: true,
+        key: "createdDate",
+      },
+      {
+        header: "Payment Due",
+        isDefault: true,
+        key: "dueDate",
+      },
+      {
+        header: "Total",
+        isDefault: true,
+        key: "totalAmount",
+      },
+      {
+        header: "Balance",
+        isDefault: true,
+        key: "invoiceBalance",
+      },
+    ],
+    data: [],
+  })
+
+  let api = ``;
+
+  const apiFunc = () => {
+    if (isClient !== null && isClient === true) {
+
+      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+      return api
+    }
+    else if (isClient !== null && isClient === false) {
+      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+      return api
+    }
+    else {
+      api = ''
+      return api;
+    }
+  }
+
+  const apiData: any = getRequest(apiFunc(), token);
+
+  const clearFilter = () => {
+    setTransactionTypes('');
+    setStatusType('');
+    setDateTo('');
+    setDateFrom('');
+    setSelectedDate({
+      startDate: '',
+      endDate: '',
+      day: ''
+    });
+    setSelectedDropdown(null);
+    setDropdownLabel({
+      types: '',
+      status: ''
+    })
+  }
 
   useEffect(() => {
     console.log("type", isTypeOpen);
@@ -137,18 +217,34 @@ export default function Invoices() {
       const apiTableData = apiData?.data?.results;
 
       apiTableData?.map((item: any) => {
-        if (item.customer === null) {
-          item.customer = "";
-        }
-        item.totalAmount = `USD ${item.totalAmount}`;
-        item.invoiceBalance = `USD ${item.invoiceBalance}`;
-        item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
-        item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
+        // if (item.customer === null) {
+        //   item.customer = ''
+        // }
+        item.totalAmount = `USD ${item.totalAmount}`
+        item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+        item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
       });
 
-      seTabletData({ ...Tabledata, data: apiTableData });
+      setInternalTabletData({ ...internalTabledata, data: apiTableData });
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
+
+  useEffect(() => {
+    if(apiData?.data?.results) {
+      const apiTableData = apiData?.data?.results;
+
+      apiTableData?.map((item: any) => {
+        // item.totalAmount = `USD ${item.totalAmount}`
+        // item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
+        item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
+      });
+
+      setClientTableData({ ...clientTableData, data: apiTableData });
+
+    }
+  }, [apiData, transactionTypes, statusType, dateFrom, dateTo])
 
   const onRowCheckboxChange = (selectedRows: any) => {
     setCheckedData(selectedRows);
@@ -206,7 +302,62 @@ export default function Invoices() {
             isOpen={isDateOpen}
             setDateTo={setDateTo}
             setDateFrom={setDateFrom}
-            handleDropOptionClick={() => {
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            handleDropOptionClick={(item: any) => {
+              console.log("month::::", item)
+              var date = new Date();
+              switch (item) {
+                case 'Today':
+                  const todayDate = format(date, "yyyy-MM-dd")
+                  setDateFrom(todayDate);
+                  setDateTo(todayDate);
+                  break;
+
+                case 'Yesterday':
+                  const yesterdayDate = date.setDate(date.getDate() - 1);
+                  const yesterdayFormatDate = format(yesterdayDate, "yyyy-MM-dd")
+                  setDateFrom(yesterdayFormatDate);
+                  setDateTo(yesterdayFormatDate);
+                  break;
+
+                case 'This Week':
+                  const thisWeekStartDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+                  const thisWeekEndDate = date.setDate(date.getDate() - 1);
+                  const thisWeekStartFormatDate = format(thisWeekStartDate, "yyyy-MM-dd")
+                  const thisWeekEndFormatDate = format(thisWeekEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisWeekStartFormatDate);
+                  setDateTo(thisWeekEndFormatDate);
+                  break;
+
+                case 'This Month':
+                  const thisMonthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
+                  const thisMonthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                  const thisMonthStartFormatDate = format(thisMonthStartDate, "yyyy-MM-dd")
+                  const thisMonthEndFormatDate = format(thisMonthEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisMonthStartFormatDate);
+                  setDateTo(thisMonthEndFormatDate);
+                  break;
+
+                case 'This Quarter':
+                  const quarter = Math.floor((date.getMonth() / 3));
+                  const thisQuarterStartDate = new Date(date.getFullYear(), quarter * 3, 1);
+                  const thisQuarterEndDate = new Date(thisQuarterStartDate.getFullYear(), thisQuarterStartDate.getMonth() + 3, 0);
+                  const thisQuarterStartFormatDate = format(thisQuarterStartDate, "yyyy-MM-dd")
+                  const thisQuarterEndFormatDate = format(thisQuarterEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisQuarterStartFormatDate);
+                  setDateTo(thisQuarterEndFormatDate);
+                  break;
+
+                case 'This Year':
+                  const thisYearStartDate = new Date(date.getFullYear(), 0, 1);
+                  const thisYearEndDate = new Date(date.getFullYear(), 11, 31);
+                  const thisYearStartFormatDate = format(thisYearStartDate, "yyyy-MM-dd")
+                  const thisYearEndFormatDate = format(thisYearEndDate, "yyyy-MM-dd")
+                  setDateFrom(thisYearStartFormatDate);
+                  setDateTo(thisYearEndFormatDate);
+                  break;
+              }
               setIsDateOpen(!isDateOpen);
             }}
             handleDropdownClick={() => {
@@ -218,6 +369,8 @@ export default function Invoices() {
             // data-testid="type-dd"
             title="Types"
             isOpen={isTypeOpen}
+            dropdownLabel={dropdownLabel}
+            setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsTypeOpen(!isTypeOpen);
             }}
@@ -238,6 +391,7 @@ export default function Invoices() {
               setTypes(copy);
               setIsTypeOpen(false);
               setTransactionTypes(typesValue);
+              setDropdownLabel({...dropdownLabel, types: copy[index]?.label})
             }}
             options={types}
           />
@@ -246,6 +400,8 @@ export default function Invoices() {
             data-testid=""
             title="Status"
             isOpen={isStatusOpen}
+            dropdownLabel={dropdownLabel}
+            setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsStatusOpen(!isStatusOpen);
             }}
@@ -265,6 +421,7 @@ export default function Invoices() {
               setStatus(copy);
               setIsStatusOpen(false);
               setStatusType(statusValue);
+              setDropdownLabel({...dropdownLabel, status: copy[index]?.label})
             }}
             options={status}
           />
@@ -278,16 +435,31 @@ export default function Invoices() {
         </div>
       </div>
 
+      <div className="clearfilter" onClick={clearFilter}>
+        <Icon
+          className="remove"
+          color="#526fd6"
+          icon="remove"
+          size="medium"
+        />
+        <h5>Clear Filters</h5>
+      </div>
+
       <Table
         options={
           isClient
-            ? clientTableData
+            ? {
+              ...clientTableData,
+              showDefaultColumn: true,
+              enableMultiSelect: true,
+              onRowCheckboxChange: onRowCheckboxChange,
+            }
             : {
-                ...Tabledata,
-                showDefaultColumn: true,
-                enableMultiSelect: true,
-                onRowCheckboxChange: onRowCheckboxChange,
-              }
+              ...internalTabledata,
+              showDefaultColumn: true,
+              enableMultiSelect: true,
+              onRowCheckboxChange: onRowCheckboxChange,
+            }
         }
         colSort
         pagination
