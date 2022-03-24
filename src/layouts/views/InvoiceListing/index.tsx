@@ -507,7 +507,7 @@ export default function InvoiceListing() {
         pagination
         pagingOptions={[15, 30, 50, 100]}
         handleRowClick={() => {
-          navigate("/invoicedetails");
+          navigate("/pay/invoicedetails");
         }}
       />
     </div>
