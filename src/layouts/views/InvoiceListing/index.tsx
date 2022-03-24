@@ -89,7 +89,7 @@ export default function InvoiceListing() {
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
-        header: "Invoice No.",
+        header: "Invoice Number",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -135,7 +135,7 @@ export default function InvoiceListing() {
   const [clientTableData, setClientTableData] = useState({
     columns: [
       {
-        header: "Invoice No.",
+        header: "Invoice Number",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -515,18 +515,19 @@ export default function InvoiceListing() {
           isClient
             ? {
               ...clientTableData,
-              showDefaultColumn: true,
+              // showDefaultColumn: true,
               enableMultiSelect: true,
               onRowCheckboxChange: onRowCheckboxChange,
             }
             : {
               ...internalTabledata,
-              showDefaultColumn: true,
+              // showDefaultColumn: true,
               enableMultiSelect: true,
               onRowCheckboxChange: onRowCheckboxChange,
             }
         }
         colSort
+        className="table"
         pagination
         pagingOptions={[15, 30, 50, 100]}
         handleRowClick={() => {
