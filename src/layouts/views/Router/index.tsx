@@ -7,8 +7,10 @@ export default function Router() {
   return (
     <HashRouter>
       <Routes>
-        <Route path="/" element={<InvoiceListing />} />
-        <Route path="/details" element={<InvoiceDetails />} />
+        <Route path="/pay">
+          <Route path="" element={<InvoiceListing />} />
+          <Route path="/pay/invoicedetails" element={<InvoiceDetails />} />
+        </Route>
       </Routes>
     </HashRouter>
   );
