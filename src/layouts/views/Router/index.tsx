@@ -3,15 +3,13 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import InvoiceDetails from "../InvoiceDetails";
 import InvoiceListing from "../InvoiceListing";
 
-export default function Router() {
+export default function RouterComponent() {
   return (
-    <HashRouter>
-      <Routes>
-        <Route path="/pay">
-          <Route path="" element={<InvoiceListing />} />
-          <Route path="/pay/invoicedetails" element={<InvoiceDetails />} />
-        </Route>
-      </Routes>
-    </HashRouter>
+    // <HashRouter>
+    <Routes>
+      <Route path="/" element={<InvoiceListing />} />
+      <Route path="/invoicedetails" element={<InvoiceDetails />} />
+    </Routes>
+    // </HashRouter>
   );
 }
