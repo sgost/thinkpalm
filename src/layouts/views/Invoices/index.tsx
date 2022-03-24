@@ -1,6 +1,9 @@
-import React from "react";
-import Router from "../Router";
+import RouterComponent from "../Router";
 
 export default function Invoices() {
-  return <Router />;
+  return (
+    <div>
+      <RouterComponent />
+    </div>
+  );
 }

@@ -5,6 +5,7 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import ReactDom from "react-dom";
+import { HashRouter } from "react-router-dom";
 import InvoiceDetails from "..";
 
 it("invoice details renders without crashing", () => {

@@ -208,7 +208,7 @@ export default function InvoiceDetails() {
               <Icon
                 color="#FFFFFF"
                 icon="orderSummary"
-                size="small"
+                size="medium"
                 title="Order Summary"
               />
               <p>Payroll Invoice No. {invoiceDetail?.invoice?.invoiceNo}</p>
@@ -235,16 +235,15 @@ export default function InvoiceDetails() {
         <div className="infoDetails">
           <div className="column1">
             <p className="heading">From</p>
-            <p className="value">{invoiceDetail?.invoice?.customerName}</p>
+            <p className="value">{invoiceDetail?.invoiceFrom?.customerName}</p>
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">{addressData?.data?.billingAddress?.street}</p>
-            <p className="value">{addressData?.data?.billingAddress?.city}</p>
-            <p className="value">{addressData?.data?.billingAddress?.state}</p>
-            <p className="value">
-              {addressData?.data?.billingAddress?.country}
-            </p>
+            <p className="value">{invoiceDetail?.invoice?.customerName}</p>
+            <p>{addressData?.data?.billingAddress?.street}</p>
+            <p>{addressData?.data?.billingAddress?.city}</p>
+            <p>{addressData?.data?.billingAddress?.state}</p>
+            <p>{addressData?.data?.billingAddress?.country}</p>
             <p>PO Number</p>
             <p className="poNo">{invoiceDetail?.invoice?.poNumber}</p>
           </div>
