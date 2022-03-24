@@ -212,6 +212,7 @@ export default function InvoiceListing() {
   useEffect(() => {
     if (apiData?.data?.results) {
       const apiTableData = apiData?.data?.results;
+      console.log("api data", apiTableData);
 
       apiTableData?.map((item: any) => {
         // if (item.customer === null) {
@@ -506,7 +507,7 @@ export default function InvoiceListing() {
         pagination
         pagingOptions={[15, 30, 50, 100]}
         handleRowClick={() => {
-          navigate("/details");
+          navigate("/pay/invoicedetails");
         }}
       />
     </div>
