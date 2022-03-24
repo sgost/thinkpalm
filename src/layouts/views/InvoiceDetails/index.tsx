@@ -11,8 +11,21 @@ export default function InvoiceDetails() {
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
 
   const api =
-    "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/13628D5B-3D1C-4D5E-8483-110E13B66A7B";
-  const apiData: any = getRequest(api, localStorage.getItem("temptoken"));
+    "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/fffe8547-379a-4495-90ed-24dea6e7aac0";
+  const addressApi =
+    "https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/a9bbee6d-797a-4724-a86a-5b1a2e28763f?includes=BillingAddress";
+
+  const countriesApi =
+    "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name";
+
+  const feeApi =
+    "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees";
+
+  const tempToken = localStorage.getItem("temptoken");
+  const apiData: any = getRequest(api, tempToken);
+  const addressData: any = getRequest(addressApi, tempToken);
+  const countriesData: any = getRequest(countriesApi, tempToken);
+  const feeData: any = getRequest(feeApi, tempToken);
 
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
@@ -116,6 +129,32 @@ export default function InvoiceDetails() {
     }
   }, [apiData]);
 
+  useEffect(() => {
+    console.log("address", addressData);
+  }, [addressData]);
+
+  if (!apiData.data) {
+    return <p>Loading...</p>;
+  }
+
+  const getBillingCurrency = () => {
+    let currency = countriesData.data.find(
+      (e: any) => e.currencyId === apiData.data.invoice.currencyId
+    );
+    console.log("currency", currency);
+    return currency.code;
+  };
+
+  const getInCountryProcessingFee = () => {
+    feeData.data.forEach((e: any) => {
+      if (e.name === "In Country Processing Fee") {
+        return e.payrollFees || 0;
+      }
+    });
+
+    return 0;
+  };
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -178,12 +217,16 @@ export default function InvoiceDetails() {
               <p>
                 Open{" "}
                 <span>
-                  - {invoiceDetail?.invoice?.invoiceBalance.toFixed(2)}
+                  {getBillingCurrency()}{" "}
+                  {invoiceDetail?.invoice?.invoiceBalance.toFixed(2)}
                 </span>
               </p>
               <p>
                 Total{" "}
-                <span>- {invoiceDetail?.invoice?.totalAmount.toFixed(2)}</span>
+                <span>
+                  {getBillingCurrency()}{" "}
+                  {invoiceDetail?.invoice?.totalAmount.toFixed(2)}
+                </span>
               </p>
             </div>
           </div>
@@ -196,8 +239,12 @@ export default function InvoiceDetails() {
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">-</p>
-            <p>-</p>
+            <p className="value">{addressData?.data?.billingAddress?.street}</p>
+            <p className="value">{addressData?.data?.billingAddress?.city}</p>
+            <p className="value">{addressData?.data?.billingAddress?.state}</p>
+            <p className="value">
+              {addressData?.data?.billingAddress?.country}
+            </p>
             <p>PO Number</p>
             <p className="poNo">{invoiceDetail?.invoice?.poNumber}</p>
           </div>
@@ -219,9 +266,9 @@ export default function InvoiceDetails() {
             <p className="heading">Location</p>
             <p className="value">{invoiceDetail?.invoice?.customerLocation}</p>
             <p className="heading">Region</p>
-            <p className="value">-</p>
+            <p className="value">{invoiceDetail?.regionItemCode}</p>
             <p className="heading">Billing Currency</p>
-            <p className="value">-</p>
+            <p className="value">{getBillingCurrency()}</p>
           </div>
         </div>
       </div>
@@ -304,13 +351,18 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {item.currencyCode +
                           " " +
-                          item.feeSummary.subTotalDue *
-                            item.exchangeRate.toFixed(2)}
+                          (
+                            item.feeSummary.subTotalDue * item.exchangeRate
+                          ).toFixed(2)}
                       </p>
                     </div>
                     <div className="row">
-                      <p className="title">In Coutry Processing Fee</p>
-                      <p className="amount">{item.currencyCode + " "}</p>
+                      <p className="title">In Country Processing Fee</p>
+                      <p className="amount">
+                        {item.currencyCode +
+                          " " +
+                          getInCountryProcessingFee().toFixed(2)}
+                      </p>
                     </div>
                     <div className="row">
                       <p className="title">FX Bill</p>
