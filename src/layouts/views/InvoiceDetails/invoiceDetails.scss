@@ -94,6 +94,7 @@
       .row {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         .invoiceNo {
           display: flex;
@@ -102,6 +103,8 @@
 
           p {
             color: $white;
+            font-size: 32px;
+            font-weight: 400;
           }
         }
 
@@ -113,6 +116,7 @@
           p {
             color: #cbd4f3;
             margin: 0px;
+            font-size: 1.25rem;
 
             span {
               color: $white;
@@ -128,9 +132,11 @@
 
       @mixin heading {
         color: $primary-blue;
+        font-size: 0.8rem;
       }
       @mixin value {
         font-weight: bold;
+        font-size: 1rem;
       }
 
       div {
@@ -146,6 +152,12 @@
       }
       .value {
         @include value();
+      }
+
+      .smallText {
+        font-size: 0.813;
+        line-height: 140%;
+        margin: 0px;
       }
 
       .lastCloumn {
