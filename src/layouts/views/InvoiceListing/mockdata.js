@@ -1,7 +1,7 @@
 export const tableData = {
   columns: [
     {
-      header: "Invoice No.",
+      header: "Invoice Number",
       isDefault: true,
       key: "invoiceNo",
     },

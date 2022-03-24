@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { Icon, DatePicker } from "atlasuikit";
-import "./DatepickerDropdown.scss";
 import { format } from 'date-fns'
+import "./DatepickerDropdown.scss";
 
 interface Iprops {
   title: string;
@@ -26,7 +25,7 @@ export default function DatepickerDropdown({
     if (selectedDate.startDate && selectedDate.endDate) {
       return (
         `${selectedDate.startDate} - ${selectedDate.endDate}`
-      ) 
+      )
     }
     else if (selectedDate.endDate) {
       return selectedDate.endDate
@@ -66,7 +65,7 @@ export default function DatepickerDropdown({
       <div onClick={() => handleDropdownClick()} className="dropdown">
         {displayDate()}
         <div className="icon">
-          <Icon icon="chevronDown" size="small" title="Order Summary" />
+          <Icon icon="chevronDown" size="large" title="Order Summary" />
         </div>
       </div>
 
@@ -78,14 +77,14 @@ export default function DatepickerDropdown({
               if (e.startDate) {
                 const startDate = format(e.startDate, "yyyy-MM-dd")
                 setDateFrom(startDate)
-                const startFormatDate =  format(e.startDate, "d MMM yyyy")
+                const startFormatDate = format(e.startDate, "d MMM yyyy")
                 setSelectedDate({ ...selectedDate, startDate: startFormatDate })
               }
 
               if (e.endDate) {
                 const endDate = format(e.endDate, "yyyy-MM-dd")
                 setDateTo(endDate)
-                const endFormatDate =  format(e.endDate, "d MMM yyyy")
+                const endFormatDate = format(e.endDate, "d MMM yyyy")
                 setSelectedDate({ ...selectedDate, endDate: endFormatDate })
               }
             }}

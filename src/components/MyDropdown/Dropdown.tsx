@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Icon } from "atlasuikit";
 import "./Dropdown.scss";
 
@@ -8,7 +8,6 @@ interface Iprops {
   handleDropdownClick: Function;
   handleDropOptionClick: Function;
   options: Array<any>;
-  setSelectedDropdown: any;
   dropdownLabel: any;
 }
 
@@ -18,20 +17,11 @@ export default function Dropdown({
   handleDropdownClick,
   handleDropOptionClick,
   options,
-  setSelectedDropdown,
   dropdownLabel
 }: Iprops) {
 
-  useEffect(() => {
-    options.forEach((e) => {
-      if (e.isSelected) {
-        setSelectedDropdown(e.label);
-      }
-    });
-  }, [options]);
-
   const dropdownLabelFunc = () => {
-    if (title === 'Types' && dropdownLabel.types !== ''){
+    if (title === 'Type' && dropdownLabel.types !== ''){
       return dropdownLabel.types;
     }
     if(title === 'Status' && dropdownLabel.status !== '') {
@@ -46,7 +36,7 @@ export default function Dropdown({
       <div className="dropdown">
         {dropdownLabelFunc()}
         <div className="icon">
-          <Icon icon="chevronDown" size="small" title="Order Summary" />
+          <Icon icon="chevronDown" size="large" title="Order Summary" />
         </div>
       </div>
 
@@ -62,7 +52,7 @@ export default function Dropdown({
 
                 {item.isSelected && (
                   <div className="icon">
-                    <Icon icon="checkMark" size="small" title="Order Summary" />
+                    <Icon icon="checkMark" size="large" title="Order Summary" />
                   </div>
                 )}
               </div>

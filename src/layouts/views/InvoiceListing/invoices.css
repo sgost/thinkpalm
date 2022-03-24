@@ -84,7 +84,7 @@ body {
   float: right;
   height: auto;
   min-height: 100vh;
-  background-color: #eff1f4;
+  background-color: #E5E5E5;
   padding: 3rem 3rem 0rem 3rem;
 }
 
@@ -205,13 +205,17 @@ body {
 }
 
 .clearfilter .remove {
-  margin-top: 10px;
-  margin-left: 20px;
+  margin-top: 30px;
+  margin-left: 25px;
 }
 
 .clearfilter h5 {
+  width: 98px;
+  height: 22px;
   color: #526fd6;
-  font-size: 16px;
+  font-size: 18px;
+  font-style: normal;
+  line-height: 22px;
   font-weight: 400;
   margin-top: 10px;
 }
