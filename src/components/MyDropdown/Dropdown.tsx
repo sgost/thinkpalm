@@ -8,7 +8,6 @@ interface Iprops {
   handleDropdownClick: Function;
   handleDropOptionClick: Function;
   options: Array<any>;
-  setSelectedDropdown: any;
   dropdownLabel: any;
 }
 
@@ -18,17 +17,8 @@ export default function Dropdown({
   handleDropdownClick,
   handleDropOptionClick,
   options,
-  setSelectedDropdown,
   dropdownLabel
 }: Iprops) {
-
-  useEffect(() => {
-    options.forEach((e) => {
-      if (e.isSelected) {
-        setSelectedDropdown(e.label);
-      }
-    });
-  }, [options]);
 
   const dropdownLabelFunc = () => {
     if (title === 'Types' && dropdownLabel.types !== ''){
