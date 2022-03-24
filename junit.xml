@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="7" failures="0" errors="0" time="8.901">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-22T05:36:36" time="5.748" tests="3">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.068">
-    </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.564">
-    </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.061">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="4.525">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-24T05:20:28" time="2.268" tests="1">
+    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.019">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-22T05:36:36" time="6.236" tests="3">
-    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.174">
-    </testcase>
-    <testcase classname=" tabs are working" name=" tabs are working" time="0.427">
-    </testcase>
-    <testcase classname=" Dropdown opens" name=" Dropdown opens" time="0.039">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-24T05:20:28" time="2.564" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.122">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-22T05:36:36" time="6.466" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.206">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-24T05:20:28" time="2.707" tests="3">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.03">
+    </testcase>
+    <testcase classname=" Client View" name=" Client View" time="0.175">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.033">
     </testcase>
   </testsuite>
 </testsuites>
