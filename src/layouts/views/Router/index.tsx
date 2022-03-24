@@ -5,11 +5,11 @@ import InvoiceListing from "../InvoiceListing";
 
 export default function Router() {
   return (
-    <HashRouter>
+    // <HashRouter>
       <Routes>
         <Route path="/" element={<InvoiceListing />} />
         <Route path="/details" element={<InvoiceDetails />} />
       </Routes>
-    </HashRouter>
+    // </HashRouter>
   );
 }
