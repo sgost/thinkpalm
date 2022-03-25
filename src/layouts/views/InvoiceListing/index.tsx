@@ -6,8 +6,8 @@ import { FaEllipsisH } from "react-icons/fa";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import axios from "axios";
 import getRequest from "../../../components/Comman/api";
-import GetFlag from "../InvoiceDetails/getFlag";
 export default function InvoiceListing() {
   let navigate = useNavigate();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -19,7 +19,6 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
-  const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [dropdownLabel, setDropdownLabel] = useState({
     types: "",
     status: "",
@@ -29,7 +28,11 @@ export default function InvoiceListing() {
     endDate: "",
     day: "",
   });
-  const [token, setToken] = useState("");
+  const [singleInvoiceId, setSingleInvoiceId] = useState("");
+  const [multiInvoiceId, setMultiInvoiveId] = useState([]);
+  const [token, setToken] = useState(
+    "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDgxOTQxMjcsImlhdCI6MTY0ODA5OTE3MSwiYXV0aF90aW1lIjoxNjQ4MDIxMzI3LCJqdGkiOiIwOGE1ZDEyYi1hMDM5LTRlYmYtYWVhYS02YmI3YTZjNTE3ZjEiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjhhMjY2MDYxLTRlNTQtNGYyOS05Y2I3LWZmMWQ4MGRhZTM3NCIsInNlc3Npb25fc3RhdGUiOiI0M2NjY2E3Mi05OWFhLTRhNjYtYjI3My04ZGM5OWVhYzliZWIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.VcLK41fFtcJ7IIhQbeonFbDZpD3yciBoAQUoANUAcKK-gMQUDIF0ZmKRwhQH7J87QZIDzTH5xDaoSi2OZeROfODh2BxEMyuqJGFOOAxT7-Ah0iee4HiA6esr3kbYgLm0tuma3cpWKsYTXx73YGUAx-5dUgmu_W72n40c7OC_rypswwFGzgZuVFC7e9LURXIoRJysNPPNEQimwEgsAJT2xsq8HYhzQO0urBhrj4on4tE9r8xyaC3RlNBocWoZwNvwoYCMaewPnivQksMgcnRl267oXkhErKyi-reIEAjB6kFSsj_KYyizQq7iaRQyCgirhdhxxvgLUX5jv0rCzqeovQ"
+  );
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -87,7 +90,7 @@ export default function InvoiceListing() {
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
-        header: "Invoice No.",
+        header: "Invoice Number",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -100,12 +103,12 @@ export default function InvoiceListing() {
       {
         header: "Status",
         isDefault: true,
-        key: "status",
+        key: "statusLabel",
       },
       {
         header: "Type",
         isDefault: true,
-        key: "transactionType",
+        key: "transactionTypeLabel",
       },
       {
         header: "Invoice Date",
@@ -133,7 +136,7 @@ export default function InvoiceListing() {
   const [clientTableData, setClientTableData] = useState({
     columns: [
       {
-        header: "Invoice No.",
+        header: "Invoice Number",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -199,7 +202,6 @@ export default function InvoiceListing() {
       endDate: "",
       day: "",
     });
-    setSelectedDropdown(null);
     setDropdownLabel({
       types: "",
       status: "",
@@ -216,9 +218,6 @@ export default function InvoiceListing() {
       console.log("api data", apiTableData);
 
       apiTableData?.map((item: any) => {
-        // if (item.customer === null) {
-        //   item.customer = ''
-        // }
         item.totalAmount = `USD ${item.totalAmount}`;
         item.invoiceBalance = `USD ${item.invoiceBalance}`;
         item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
@@ -234,8 +233,6 @@ export default function InvoiceListing() {
       const apiTableData = apiData?.data?.results;
 
       apiTableData?.map((item: any) => {
-        // item.totalAmount = `USD ${item.totalAmount}`
-        // item.invoiceBalance = `USD ${item.invoiceBalance}`
         item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
         item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
       });
@@ -245,7 +242,75 @@ export default function InvoiceListing() {
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
   const onRowCheckboxChange = (selectedRows: any) => {
-    setCheckedData(selectedRows);
+    if (selectedRows.length == 1) {
+      let id: any;
+      selectedRows.map((item: any) => {
+        id = item.id;
+      });
+      setSingleInvoiceId(id);
+      setMultiInvoiveId([]);
+      setCheckedData(selectedRows);
+    } else if (selectedRows.length >= 1) {
+      const multiId = selectedRows.map((items: any) => {
+        return items.id;
+      });
+
+      setMultiInvoiveId(multiId);
+      setSingleInvoiceId("");
+      setCheckedData(selectedRows);
+    }
+  };
+
+  const downloadFunction = () => {
+    const headers = {
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-external": "true",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "Content-Type": "application/json",
+      },
+    };
+    if (singleInvoiceId) {
+      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
+      axios
+        .get(api, headers)
+        .then((res: any) => {
+          if (res.status === 200) {
+            let url = res.data.url;
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = `${res.data.name}`;
+            a.click();
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
+    } else if (multiInvoiceId) {
+      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple`;
+      axios({
+        method: "get",
+        url: api,
+        headers: headers.headers,
+        data: multiInvoiceId,
+      })
+        .then((res: any) => {
+          if (res.status === 200) {
+            let url = res.data.url;
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = `${res.data.name}`;
+            a.click();
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
+    }
   };
 
   if (isClient === null) {
@@ -285,15 +350,17 @@ export default function InvoiceListing() {
       <div className="dropdowns">
         <div className="inputContainer">
           <Icon icon="search" size="small" />
-          <input className="input" placeholder="Search Customer, Invoice No." />
+          <input className="input" placeholder="Search Invoices" />
         </div>
         <div className="pickers">
-          <Icon
-            className="download"
-            color="#526fd6"
-            icon="download"
-            size="large"
-          />
+          <div onClick={downloadFunction}>
+            <Icon
+              className="download"
+              color="#526fd6"
+              icon="download"
+              size="large"
+            />
+          </div>
 
           <DatepickerDropdown
             title="Date"
@@ -303,7 +370,6 @@ export default function InvoiceListing() {
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             handleDropOptionClick={(item: any) => {
-              console.log("month::::", item);
               var date = new Date();
               switch (item) {
                 case "Today":
@@ -415,7 +481,6 @@ export default function InvoiceListing() {
             title="Types"
             isOpen={isTypeOpen}
             dropdownLabel={dropdownLabel}
-            setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsTypeOpen(!isTypeOpen);
             }}
@@ -446,7 +511,6 @@ export default function InvoiceListing() {
             title="Status"
             isOpen={isStatusOpen}
             dropdownLabel={dropdownLabel}
-            setSelectedDropdown={setSelectedDropdown}
             handleDropdownClick={() => {
               setIsStatusOpen(!isStatusOpen);
             }}
@@ -475,10 +539,10 @@ export default function InvoiceListing() {
           />
 
           {/* <DatePicker
-            handleDateChange={function noRefCheck() {}}
-            label="Start Date"
-            required
-          /> */}
+          handleDateChange={function noRefCheck() {}}
+          label="Start Date"
+          required
+        /> */}
           <FaEllipsisH className="icon" />
         </div>
       </div>
@@ -488,29 +552,30 @@ export default function InvoiceListing() {
         <h5>Clear Filters</h5>
       </div>
 
-      <GetFlag />
-
       <Table
         options={
           isClient
             ? {
                 ...clientTableData,
-                showDefaultColumn: true,
+                // showDefaultColumn: true,
                 enableMultiSelect: true,
                 onRowCheckboxChange: onRowCheckboxChange,
               }
             : {
                 ...internalTabledata,
-                showDefaultColumn: true,
+                // showDefaultColumn: true,
                 enableMultiSelect: true,
                 onRowCheckboxChange: onRowCheckboxChange,
               }
         }
         colSort
+        className="table"
         pagination
         pagingOptions={[15, 30, 50, 100]}
-        handleRowClick={() => {
-          navigate("/pay/invoicedetails");
+        handleRowClick={(row: any) => {
+          console.log("row", row);
+
+          navigate("/pay/invoicedetails" + row.id);
         }}
       />
     </div>

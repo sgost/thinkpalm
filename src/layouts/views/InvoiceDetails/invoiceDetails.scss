@@ -34,8 +34,8 @@
         border-style: solid;
         border-color: $primary-blue;
         border-radius: 4px;
-        height: 2.4rem;
-        border-width: 2px;
+        height: 2.1rem;
+        border-width: 0.1rem;
         cursor: pointer;
 
         .text {
@@ -138,6 +138,8 @@
       @mixin value {
         font-weight: bold;
         font-size: 1rem;
+        margin-top: 0px;
+        margin-bottom: 1.875rem;
       }
 
       div {
@@ -153,6 +155,9 @@
       }
       .value {
         @include value();
+      }
+      .address {
+        margin: 2px 0px;
       }
 
       .smallText {
@@ -202,6 +207,14 @@
 
   .tableHeader {
     margin-left: 16px;
+  }
+
+  .table__row__data img,
+  .table__row__header img {
+    margin-right: 0.5rem;
+    border-radius: 2rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .countrySummaryCalc {
