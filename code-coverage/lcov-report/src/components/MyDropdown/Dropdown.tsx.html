@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>6/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/7</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/14</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
@@ -128,17 +128,7 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a>
-<a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -156,16 +146,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">20x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,7 +193,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect } from "react";
 import { Icon } from "atlasuikit";
 import "./Dropdown.scss";
 &nbsp;
@@ -223,7 +203,6 @@ interface Iprops {
   handleDropdownClick: Function;
   handleDropOptionClick: Function;
   options: Array&lt;any&gt;;
-  setSelectedDropdown: any;
   dropdownLabel: any;
 }
 &nbsp;
@@ -233,20 +212,11 @@ export default function Dropdown({
   handleDropdownClick,
   handleDropOptionClick,
   options,
-  setSelectedDropdown,
   dropdownLabel
 }: Iprops) {
 &nbsp;
-  useEffect(() =&gt; {
-    options.forEach((e) =&gt; {
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (e.isSelected) {
-<span class="cstat-no" title="statement not covered" >        setSelectedDropdown(e.label);</span>
-      }
-    });
-  }, [options]);
-&nbsp;
   const dropdownLabelFunc = () =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (title === 'Types' &amp;&amp; dropdownLabel.types !== ''){
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (title === 'Type' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >dropdownLabel.types !== '')</span>{
 <span class="cstat-no" title="statement not covered" >      return dropdownLabel.types;</span>
     }
     <span class="missing-if-branch" title="if path not taken" >I</span>if(title === 'Status' &amp;&amp; dropdownLabel.status !== '') {
@@ -261,7 +231,7 @@ export default function Dropdown({
       &lt;div className="dropdown"&gt;
         {dropdownLabelFunc()}
         &lt;div className="icon"&gt;
-          &lt;Icon icon="chevronDown" size="small" title="Order Summary" /&gt;
+          &lt;Icon icon="chevronDown" size="large" title="Order Summary" /&gt;
         &lt;/div&gt;
       &lt;/div&gt;
 &nbsp;
@@ -277,7 +247,7 @@ export default function Dropdown({
 &nbsp;
                 {item.isSelected &amp;&amp; (
                   &lt;div className="icon"&gt;
-                    &lt;Icon icon="checkMark" size="small" title="Order Summary" /&gt;
+                    &lt;Icon icon="checkMark" size="large" title="Order Summary" /&gt;
                   &lt;/div&gt;
                 )}
               &lt;/div&gt;
@@ -295,7 +265,7 @@ export default function Dropdown({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu Mar 24 2022 15:49:26 GMT+0500 (Pakistan Standard Time)
+                at Fri Mar 25 2022 15:31:35 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -7,9 +7,9 @@ function App() {
   return (
     <div className="main-page-container">
       <div className="main-container">
-        <HashRouter>
-          <Invoices />
-        </HashRouter>
+        {/* <HashRouter> */}
+        <Invoices />
+        {/* </HashRouter> */}
       </div>
     </div>
   );
