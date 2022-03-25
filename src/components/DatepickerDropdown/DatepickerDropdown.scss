@@ -127,3 +127,34 @@
     }
   }
 }
+
+@media (max-width:1700px) {
+.dropdownContainer .openDropdownDatepicker {
+  width: 124px;
+}
+.dropdownContainer .openDropdownDatepicker .react-datepicker__day-name {
+  padding: 0 12px;
+}
+.dropdownContainer .openDropdownDatepicker .react-datepicker__day {
+  width: 29px;
+  height: 23px;
+}
+.dropdownContainer .openDropdownDatepicker .react-datepicker__month-container {
+  left: 148px;
+  top: -23px;
+  box-shadow: 0px 0px 23px -10px gray;
+  width: fit-content;
+  height: auto;
+}
+.dropdownContainer .a-dpicker .react-datepicker__label {
+  font-size: 15px;
+  top: -22px;
+}
+.dropdownContainer .openDropdownOption .text {
+  font-size: 11px;
+}
+.dropdownContainer .a-dpicker .react-datepicker__input-container input {
+  font-size: 10px;
+  height: 4.778rem;
+}
+}
