@@ -1,12 +1,5 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
 html,
@@ -57,12 +50,23 @@ body {
   }
 }
 
+
 @media (min-width: 160em) {
   html,
   body {
     font-size: 20px;
   }
 }
+
+
+
+
+
+
+
+
+
+
 
 .main-page-container {
   min-width: 100%;
@@ -84,7 +88,7 @@ body {
   float: right;
   height: auto;
   min-height: 100vh;
-  background-color: #E5E5E5;
+  background-color: #eff1f4;
   padding: 3rem 3rem 0rem 3rem;
 }
 
@@ -135,7 +139,6 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 20px 0px;
   gap: 20px;
 }
 
@@ -143,15 +146,20 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #ffffff !important;
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #b4b3bb;
   border-radius: 4px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #767676 !important;
-  padding: 11px 12px;
+  height: 50px;
+  margin: 6px 0px;
+  padding: 0px 5px 0px 20px;
 }
 
 .dropdowns .inputContainer textarea:focus,
@@ -162,6 +170,31 @@ body {
 .dropdowns .inputContainer .input {
   border-style: hidden;
   width: 180px;
+  position: static;
+  left: 10.17%;
+  right: 47.12%;
+  top: 0%;
+  bottom: 0%;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 140%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #767676;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  -ms-flex-positive: 0;
+      flex-grow: 0;
+  margin: 0px 8px;
 }
 
 .dropdowns .pickers {
@@ -176,8 +209,14 @@ body {
 
 .dropdowns .pickers .download {
   color: #526fd6 !important;
-  margin-top: 12px;
+  margin-top: 16px;
   cursor: pointer;
+  width: 35.66px;
+  height: 40px;
+}
+
+.dropdowns .pickers .downloadpointer {
+  pointer-events: none;
 }
 
 .dropdowns .icon {
@@ -205,18 +244,28 @@ body {
 }
 
 .clearfilter .remove {
-  margin-top: 30px;
-  margin-left: 25px;
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .clearfilter h5 {
-  width: 98px;
-  height: 22px;
   color: #526fd6;
-  font-size: 18px;
-  font-style: normal;
-  line-height: 22px;
+  font-size: 16px;
   font-weight: 400;
   margin-top: 10px;
+}
+
+.table__row__header {
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.table__header {
+  background-color: #e0e5f8 !important;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.pagination {
+  border-radius: 0px 0px 10px 10px;
 }
 /*# sourceMappingURL=invoices.css.map */

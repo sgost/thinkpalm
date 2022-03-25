@@ -16,6 +16,7 @@
   .dropdown {
     margin-bottom: 0px;
     display: flex;
+    font-size: 18px;
     justify-content: space-between;
     align-items: center;
     border-style: solid;
@@ -27,6 +28,7 @@
 
     .text {
       color: $secondary-gray;
+      
       margin: 12px 0px;
       padding-right: 20px;
     }
@@ -59,4 +61,30 @@
       font-size: 0.889rem;
     }
   }
+}
+
+
+@media (max-width:1700px) {
+  .dropdown {
+    width: 146px !important;
+}
+.dropdowns .pickers {
+  gap: 0px !important;
+}
+
+.dropdowns .inputContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 250px;
+  background: #ffffff;
+  border: 1px solid #b4b3bb;
+  border-radius: 4px;
+  height: 50px;
+  margin: 6px 0px;
+}
+.dropdownContainer .openDropdown { 
+  padding: 7px 7px;
+  width: 158px;
+}
 }

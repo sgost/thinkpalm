@@ -112,6 +112,9 @@
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .invoiceNo {
@@ -126,6 +129,8 @@
 
 .invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .invoiceNo p {
   color: #ffffff !important;
+  font-size: 32px;
+  font-weight: 400;
 }
 
 .invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .amount {
@@ -142,6 +147,7 @@
 .invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .amount p {
   color: #cbd4f3;
   margin: 0px;
+  font-size: 1.25rem;
 }
 
 .invoiceDetailsContainer .payrollInvoiceInfo .topBar .row .amount p span {
@@ -165,10 +171,18 @@
 
 .invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .heading {
   color: #526fd6 !important;
+  font-size: 0.8rem;
 }
 
 .invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .value {
   font-weight: bold;
+  font-size: 1rem;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .smallText {
+  font-size: 0.813;
+  line-height: 140%;
+  margin: 0px;
 }
 
 .invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .lastCloumn {
