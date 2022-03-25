@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Button, Table } from "atlasuikit";
+import "./invoices.scss";
+import { Icon, Button, Table, Banner } from "atlasuikit";
 import { FaEllipsisH } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -31,7 +32,7 @@ export default function InvoiceListing() {
   });
   const [singleInvoiceId, setSingleInvoiceId] = useState('')
   const [multiInvoiceId, setMultiInvoiveId] = useState([])
-  const [token, setToken] = useState("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDgxOTQxMjcsImlhdCI6MTY0ODA5OTE3MSwiYXV0aF90aW1lIjoxNjQ4MDIxMzI3LCJqdGkiOiIwOGE1ZDEyYi1hMDM5LTRlYmYtYWVhYS02YmI3YTZjNTE3ZjEiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjhhMjY2MDYxLTRlNTQtNGYyOS05Y2I3LWZmMWQ4MGRhZTM3NCIsInNlc3Npb25fc3RhdGUiOiI0M2NjY2E3Mi05OWFhLTRhNjYtYjI3My04ZGM5OWVhYzliZWIiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.VcLK41fFtcJ7IIhQbeonFbDZpD3yciBoAQUoANUAcKK-gMQUDIF0ZmKRwhQH7J87QZIDzTH5xDaoSi2OZeROfODh2BxEMyuqJGFOOAxT7-Ah0iee4HiA6esr3kbYgLm0tuma3cpWKsYTXx73YGUAx-5dUgmu_W72n40c7OC_rypswwFGzgZuVFC7e9LURXIoRJysNPPNEQimwEgsAJT2xsq8HYhzQO0urBhrj4on4tE9r8xyaC3RlNBocWoZwNvwoYCMaewPnivQksMgcnRl267oXkhErKyi-reIEAjB6kFSsj_KYyizQq7iaRQyCgirhdhxxvgLUX5jv0rCzqeovQ");
+  const [token, setToken] = useState("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDgzNzE1MjAsImlhdCI6MTY0ODE5OTAwMiwiYXV0aF90aW1lIjoxNjQ4MTk4NzIwLCJqdGkiOiJhZDViYzM5MS01ZjgwLTRhYTAtOGMxOC04N2Y5Y2FhZDk1YzUiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjE3NTVkZDhkLTIyZmItNGE2NS05YWNmLWM5NzU0YTdjNWFiNSIsInNlc3Npb25fc3RhdGUiOiI3MjYxYzBiMC01NGU5LTQ4YzYtOGJkZS02MjVlZTQ5NWY5ZmUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.E3T-ZPCmemebmmP0YdSR72VvGxmsy_--aj6owqkPDWmNcf9FnmeonDKLTqs0dBhEiHPJRS8fg_o2GNjBm_waNWFAS7BUOZY_7FtC_Zk6f2ikz1fn6VSW7xFv0wpW69QnIvFG7cLO2wLfGtfuDruKr3jhtx-2B5k0xe0OPaKiJTplKseLfD2Jz9oqMPV1Ifra1hgsAxg-0wn9Al34-EyZ2TIxZUHKSM6HLIF2C-4GbJnZabGHyfF5IjpuBEYAyMgxFjYGzKFTVtrHNZApCoPTORMTA4vhRDc118Dn0x_ceTLsjGeGmAiOHQA9uiXWsNqdgS04swqBlPUtVHgiH168LA");
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -174,6 +175,13 @@ export default function InvoiceListing() {
     data: [],
   })
 
+  const [toastType, setToastType] = useState({
+    downSuccess: false,
+    type: "warning"
+  })
+  const [downloadDisable, setDownloadDisable] = useState(false)
+
+
   let api = ``;
 
   const apiFunc = () => {
@@ -273,12 +281,15 @@ export default function InvoiceListing() {
   };
 
   const downloadFunction = () => {
+    console.log("downloading true")
+    // setToastType({ ...toastType, downSuccess: true })
+    setDownloadDisable(true)
     const headers = {
       headers: {
         "authorization": `Bearer ${token}`,
         "x-apng-base-region": "EMEA",
         "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-        "x-apng-external": "true",
+        "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
         "customer_id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
@@ -290,6 +301,9 @@ export default function InvoiceListing() {
       axios.get(api, headers)
         .then((res: any) => {
           if (res.status === 200) {
+            setDownloadDisable(false)
+            console.log("downloading false")
+            // setToastType({ downSuccess: true, type: "alert" })
             let url = res.data.url
             let a = document.createElement('a');
             a.href = url;
@@ -302,12 +316,14 @@ export default function InvoiceListing() {
         });
     }
     else if (multiInvoiceId) {
-      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple`;
+      console.log("multiInvoiceId", multiInvoiceId)
+      const multiDownloadInvoiceId = multiInvoiceId.join(',')
+      console.log("multiDownloadInvoiceId", multiDownloadInvoiceId)
+      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
       axios({
         method: 'get',
         url: api,
-        headers: headers.headers,
-        data: multiInvoiceId
+        headers: headers.headers
       })
         .then((res: any) => {
           if (res.status === 200) {
@@ -358,191 +374,218 @@ export default function InvoiceListing() {
   }
 
   return (
-    <div className="container" onClick={() => handleDropdown()}>
-      <div className="dropdowns">
-        <div className="inputContainer">
-          <Icon icon="search" size="large" />
-          <input className="input" placeholder={isClient ? "Search Invoices" : "Search by Invoice, Customer"} />
-        </div>
-        <div className="pickers">
-          <div onClick={downloadFunction}>
-            <Icon
-              className="download"
-              color="#526fd6"
-              icon="download"
-              size="large"
-            />
+    <>
+      <div className="container">
+        <div className="dropdowns">
+          <div className="inputContainer">
+            <Icon icon="search" size="small" />  
+                <input className="input" placeholder={isClient ? "Search Invoices" : "Search by Invoice, Customer" } />       
           </div>
+          <div className="pickers">
+            {console.log("downloadDisable", downloadDisable)}
+            
+                <div onClick={downloadFunction}  className={downloadDisable ? "downloadpointer":""} >
+                  <Icon
+                    className="download"
+                    color={downloadDisable ? "#CBD4F3" : "#526fd6" }
+                    icon="download"
+                    size="large"
+                  />
+                </div>
+            
 
-          <DatepickerDropdown
-            title="Date"
-            isOpen={isDateOpen}
-            setDateTo={setDateTo}
-            setDateFrom={setDateFrom}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            handleDropOptionClick={(item: any) => {
-              var date = new Date();
-              switch (item) {
-                case 'Today':
-                  const todayDate = format(date, "yyyy-MM-dd")
-                  setDateFrom(todayDate);
-                  setDateTo(todayDate);
-                  break;
+            <DatepickerDropdown
+              title="Date"
+              isOpen={isDateOpen}
+              setDateTo={setDateTo}
+              setDateFrom={setDateFrom}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              handleDropOptionClick={(item: any) => {
+                var date = new Date();
+                switch (item) {
+                  case 'Today':
+                    const todayDate = format(date, "yyyy-MM-dd")
+                    setDateFrom(todayDate);
+                    setDateTo(todayDate);
+                    break;
 
-                case 'Yesterday':
-                  const yesterdayDate = date.setDate(date.getDate() - 1);
-                  const yesterdayFormatDate = format(yesterdayDate, "yyyy-MM-dd")
-                  setDateFrom(yesterdayFormatDate);
-                  setDateTo(yesterdayFormatDate);
-                  break;
+                  case 'Yesterday':
+                    const yesterdayDate = date.setDate(date.getDate() - 1);
+                    const yesterdayFormatDate = format(yesterdayDate, "yyyy-MM-dd")
+                    setDateFrom(yesterdayFormatDate);
+                    setDateTo(yesterdayFormatDate);
+                    break;
 
-                case 'This Week':
-                  const thisWeekStartDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
-                  const thisWeekEndDate = date.setDate(date.getDate() - 1);
-                  const thisWeekStartFormatDate = format(thisWeekStartDate, "yyyy-MM-dd")
-                  const thisWeekEndFormatDate = format(thisWeekEndDate, "yyyy-MM-dd")
-                  setDateFrom(thisWeekStartFormatDate);
-                  setDateTo(thisWeekEndFormatDate);
-                  break;
+                  case 'This Week':
+                    const thisWeekStartDate = new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7);
+                    const thisWeekEndDate = date.setDate(date.getDate() - 1);
+                    const thisWeekStartFormatDate = format(thisWeekStartDate, "yyyy-MM-dd")
+                    const thisWeekEndFormatDate = format(thisWeekEndDate, "yyyy-MM-dd")
+                    setDateFrom(thisWeekStartFormatDate);
+                    setDateTo(thisWeekEndFormatDate);
+                    break;
 
-                case 'This Month':
-                  const thisMonthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
-                  const thisMonthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-                  const thisMonthStartFormatDate = format(thisMonthStartDate, "yyyy-MM-dd")
-                  const thisMonthEndFormatDate = format(thisMonthEndDate, "yyyy-MM-dd")
-                  setDateFrom(thisMonthStartFormatDate);
-                  setDateTo(thisMonthEndFormatDate);
-                  break;
+                  case 'This Month':
+                    const thisMonthStartDate = new Date(date.getFullYear(), date.getMonth(), 1);
+                    const thisMonthEndDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+                    const thisMonthStartFormatDate = format(thisMonthStartDate, "yyyy-MM-dd")
+                    const thisMonthEndFormatDate = format(thisMonthEndDate, "yyyy-MM-dd")
+                    setDateFrom(thisMonthStartFormatDate);
+                    setDateTo(thisMonthEndFormatDate);
+                    break;
 
-                case 'This Quarter':
-                  const quarter = Math.floor((date.getMonth() / 3));
-                  const thisQuarterStartDate = new Date(date.getFullYear(), quarter * 3, 1);
-                  const thisQuarterEndDate = new Date(thisQuarterStartDate.getFullYear(), thisQuarterStartDate.getMonth() + 3, 0);
-                  const thisQuarterStartFormatDate = format(thisQuarterStartDate, "yyyy-MM-dd")
-                  const thisQuarterEndFormatDate = format(thisQuarterEndDate, "yyyy-MM-dd")
-                  setDateFrom(thisQuarterStartFormatDate);
-                  setDateTo(thisQuarterEndFormatDate);
-                  break;
+                  case 'This Quarter':
+                    const quarter = Math.floor((date.getMonth() / 3));
+                    const thisQuarterStartDate = new Date(date.getFullYear(), quarter * 3, 1);
+                    const thisQuarterEndDate = new Date(thisQuarterStartDate.getFullYear(), thisQuarterStartDate.getMonth() + 3, 0);
+                    const thisQuarterStartFormatDate = format(thisQuarterStartDate, "yyyy-MM-dd")
+                    const thisQuarterEndFormatDate = format(thisQuarterEndDate, "yyyy-MM-dd")
+                    setDateFrom(thisQuarterStartFormatDate);
+                    setDateTo(thisQuarterEndFormatDate);
+                    break;
 
-                case 'This Year':
-                  const thisYearStartDate = new Date(date.getFullYear(), 0, 1);
-                  const thisYearEndDate = new Date(date.getFullYear(), 11, 31);
-                  const thisYearStartFormatDate = format(thisYearStartDate, "yyyy-MM-dd")
-                  const thisYearEndFormatDate = format(thisYearEndDate, "yyyy-MM-dd")
-                  setDateFrom(thisYearStartFormatDate);
-                  setDateTo(thisYearEndFormatDate);
-                  break;
-              }
-              setIsDateOpen(!isDateOpen);
-            }}
-            handleDropdownClick={() => {
-              setIsDateOpen(!isDateOpen);
-            }}
-          />
-
-          <MyDropdown
-            // data-testid="type-dd"
-            title="Type"
-            isOpen={isTypeOpen}
-            dropdownLabel={dropdownLabel}
-            handleDropdownClick={() => {
-              setIsTypeOpen(!isTypeOpen);
-            }}
-            handleDropOptionClick={(opt: any) => {
-              let index = types.findIndex((e) => e.value === opt.value);
-
-              let copy = [...types];
-              copy.forEach((e, i) => {
-                if (i === index) {
-                  copy[index] = { ...opt, isSelected: true };
-                } else {
-                  copy[i] = { ...copy[i], isSelected: false };
+                  case 'This Year':
+                    const thisYearStartDate = new Date(date.getFullYear(), 0, 1);
+                    const thisYearEndDate = new Date(date.getFullYear(), 11, 31);
+                    const thisYearStartFormatDate = format(thisYearStartDate, "yyyy-MM-dd")
+                    const thisYearEndFormatDate = format(thisYearEndDate, "yyyy-MM-dd")
+                    setDateFrom(thisYearStartFormatDate);
+                    setDateTo(thisYearEndFormatDate);
+                    break;
                 }
-              });
+                setIsDateOpen(!isDateOpen);
+              }}
+              handleDropdownClick={() => {
+                setIsDateOpen(!isDateOpen);
+              }}
+            />
 
-              let typesValue: any = copy[index]?.value;
+            <MyDropdown
+              // data-testid="type-dd"
+              title="Types"
+              isOpen={isTypeOpen}
+              dropdownLabel={dropdownLabel}
+              handleDropdownClick={() => {
+                setIsTypeOpen(!isTypeOpen);
+              }}
+              handleDropOptionClick={(opt: any) => {
+                let index = types.findIndex((e) => e.value === opt.value);
 
-              setTypes(copy);
-              setIsTypeOpen(false);
-              setTransactionTypes(typesValue);
-              setDropdownLabel({ ...dropdownLabel, types: copy[index]?.label })
-            }}
-            options={types}
-          />
+                let copy = [...types];
+                copy.forEach((e, i) => {
+                  if (i === index) {
+                    copy[index] = { ...opt, isSelected: true };
+                  } else {
+                    copy[i] = { ...copy[i], isSelected: false };
+                  }
+                });
 
-          <MyDropdown
-            data-testid=""
-            title="Status"
-            isOpen={isStatusOpen}
-            dropdownLabel={dropdownLabel}
-            handleDropdownClick={() => {
-              setIsStatusOpen(!isStatusOpen);
-            }}
-            handleDropOptionClick={(opt: any) => {
-              let index = status.findIndex((e) => e.value === opt.value);
-              let copy = [...status];
-              copy.forEach((e, i) => {
-                if (i === index) {
-                  copy[index] = { ...opt, isSelected: true };
-                } else {
-                  copy[i] = { ...copy[i], isSelected: false };
-                }
-              });
+                let typesValue: any = copy[index]?.value;
 
-              let statusValue: any = copy[index]?.value;
+                setTypes(copy);
+                setIsTypeOpen(false);
+                setTransactionTypes(typesValue);
+                setDropdownLabel({ ...dropdownLabel, types: copy[index]?.label })
+              }}
+              options={types}
+            />
 
-              setStatus(copy);
-              setIsStatusOpen(false);
-              setStatusType(statusValue);
-              setDropdownLabel({ ...dropdownLabel, status: copy[index]?.label })
-            }}
-            options={status}
-          />
+            <MyDropdown
+              data-testid=""
+              title="Status"
+              isOpen={isStatusOpen}
+              dropdownLabel={dropdownLabel}
+              handleDropdownClick={() => {
+                setIsStatusOpen(!isStatusOpen);
+              }}
+              handleDropOptionClick={(opt: any) => {
+                let index = status.findIndex((e) => e.value === opt.value);
+                let copy = [...status];
+                copy.forEach((e, i) => {
+                  if (i === index) {
+                    copy[index] = { ...opt, isSelected: true };
+                  } else {
+                    copy[i] = { ...copy[i], isSelected: false };
+                  }
+                });
 
-          {/* <DatePicker
+                let statusValue: any = copy[index]?.value;
+
+                setStatus(copy);
+                setIsStatusOpen(false);
+                setStatusType(statusValue);
+                setDropdownLabel({ ...dropdownLabel, status: copy[index]?.label })
+              }}
+              options={status}
+            />
+
+            {/* <DatePicker
           handleDateChange={function noRefCheck() {}}
           label="Start Date"
           required
         /> */}
-          <FaEllipsisH className="icon" />
+            <FaEllipsisH className="icon" />
+          </div>
         </div>
-      </div>
 
-      <div className="clearfilter" onClick={clearFilter}>
-        <Icon
-          className="remove"
-          color="#526fd6"
-          icon="remove"
-          size="medium"
+        <div className="clearfilter" onClick={clearFilter}>
+          <Icon
+            className="remove"
+            color="#526fd6"
+            icon="remove"
+            size="medium"
+          />
+          <h5>Clear Filters</h5>
+        </div>
+
+        <Table
+          options={
+            isClient
+              ? {
+                ...clientTableData,
+                // showDefaultColumn: true,
+                enableMultiSelect: true,
+                onRowCheckboxChange: onRowCheckboxChange,
+              }
+              : {
+                ...internalTabledata,
+                // showDefaultColumn: true,
+                enableMultiSelect: true,
+                onRowCheckboxChange: onRowCheckboxChange,
+              }
+          }
+          colSort
+          className="table"
+          pagination
+          pagingOptions={[15, 30, 50, 100]}
+          handleRowClick={() => {
+            navigate("/pay/invoicedetails");
+          }}
         />
-        <h5>Clear Filters</h5>
       </div>
+      {toastType?.downSuccess &&
+        <Banner type={toastType?.type}>
+          <div
+            style={{
+              display: 'flex',
+              width: '100%'
+            }}
+          >
+            <Icon
+              color="orange"
+              icon="info"
+              size="large"
+              viewBox="3 0 24 24"
+            />
+            <span>
+              {toastType?.type}
+            </span>
+          </div>
+        </Banner>
 
-      <Table
-        options={
-          isClient
-            ? {
-              ...clientTableData,
-              // showDefaultColumn: true,
-              enableMultiSelect: true,
-              onRowCheckboxChange: onRowCheckboxChange,
-            }
-            : {
-              ...internalTabledata,
-              // showDefaultColumn: true,
-              enableMultiSelect: true,
-              onRowCheckboxChange: onRowCheckboxChange,
-            }
-        }
-        colSort
-        className="table"
-        pagination
-        pagingOptions={[15, 30, 50, 100]}
-        handleRowClick={() => {
-          navigate("/pay/invoicedetails");
-        }}
-      />
-    </div>
+      }
+
+    </>
   );
 }

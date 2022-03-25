@@ -21,7 +21,7 @@ export default function Dropdown({
 }: Iprops) {
 
   const dropdownLabelFunc = () => {
-    if (title === 'Type' && dropdownLabel.types !== ''){
+    if (title === 'Types' && dropdownLabel.types !== ''){
       return dropdownLabel.types;
     }
     if(title === 'Status' && dropdownLabel.status !== '') {
