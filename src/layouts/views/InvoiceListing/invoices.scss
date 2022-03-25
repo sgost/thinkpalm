@@ -3,6 +3,7 @@
 
 .container {
   padding-bottom: 20px;
+  margin-top: 60px;
 }
 
 .dropdowns {
@@ -15,7 +16,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 320px;
+    max-width: 320px;
     background: #ffffff;
     border: 1px solid #b4b3bb;
     border-radius: 4px;
@@ -30,11 +31,6 @@
 
     .input {
       border-style: hidden;
-      position: static;
-      left: 10.17%;
-      right: 47.12%;
-      top: 0%;
-      bottom: 0%;
       font-style: normal;
       font-weight: 400;
       font-size: 18px;
@@ -42,13 +38,9 @@
       display: flex;
       align-items: center;
       color: #767676;
-      flex: none;
-      order: 1;
-      flex-grow: 0;
       margin: 0px 8px;
-    }
   }
-
+  }
   .pickers {
     display: flex;
     justify-content: space-between;
@@ -103,4 +95,17 @@
 }
 .pagination {
   border-radius: 0px 0px 10px 10px;
+}
+
+@media (max-width:1200px) {
+.dropdowns .inputContainer {
+  max-width: 271px;
+  padding: 0px 2px 0px 2px;
+}
+.table__row__header {
+  font-size: 10px;
+}
+.table__row {
+  font-size: 10px;
+}
 }
