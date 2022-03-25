@@ -6,10 +6,10 @@ import InvoiceListing from "../InvoiceListing";
 export default function RouterComponent() {
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<InvoiceListing />} />
-        <Route path="/invoicedetails" element={<InvoiceDetails />} />
-      </Routes>
-    </HashRouter>
+    <Routes>
+      <Route path="/" element={<InvoiceListing />} />
+      <Route path="/invoicedetails:id" element={<InvoiceDetails />} />
+    </Routes>
+     </HashRouter>
   );
 }

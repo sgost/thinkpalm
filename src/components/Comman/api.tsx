@@ -11,13 +11,13 @@ const getRequest = (url: any, token: any) => {
 
   const headers = {
     headers: {
-      "authorization": `Bearer ${token}`,
+      authorization: `Bearer ${token}`,
       "x-apng-base-region": "EMEA",
       "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       "x-apng-external": "false",
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
-      "customer_id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
     },
   };
 
