@@ -5,6 +5,7 @@ import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
 import getRequest from "../../../components/Comman/api";
 import moment from "moment";
+import GetFlag from "./getFlag";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
@@ -21,11 +22,15 @@ export default function InvoiceDetails() {
   const feeApi =
     "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees";
 
+  const lookupApi =
+    "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
+
   const tempToken = localStorage.getItem("temptoken");
   const apiData: any = getRequest(api, tempToken);
   const addressData: any = getRequest(addressApi, tempToken);
   const countriesData: any = getRequest(countriesApi, tempToken);
   const feeData: any = getRequest(feeApi, tempToken);
+  const lookupData: any = getRequest(lookupApi, tempToken);
 
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
@@ -80,6 +85,7 @@ export default function InvoiceDetails() {
   };
   const [invoiceDetail, setInvoiceDetail] = useState<any>(null);
   const [total, setTotal] = useState(0);
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     if (apiData.data) {
@@ -98,7 +104,7 @@ export default function InvoiceDetails() {
               employeeID: item.employeeId,
               name: {
                 value: item.firstName + " " + item.lastName,
-                img: { src: null },
+                img: { src: item.employeeProfilePicture },
               },
               grossWages: currencyCode + " " + item.totalWage.toFixed(2),
               allowances: currencyCode + " " + item.allowance.toFixed(2),
@@ -130,8 +136,23 @@ export default function InvoiceDetails() {
   }, [apiData]);
 
   useEffect(() => {
-    console.log("address", addressData);
-  }, [addressData]);
+    if (lookupData.data && invoiceDetail) {
+      console.log("lookupData", lookupData.data.invoiceStatuses);
+      lookupData.data.invoiceStatuses.forEach((e: any) => {
+        if (e.value === invoiceDetail.invoice.status) {
+          setStatus(e.text);
+        }
+      });
+    }
+  }, [lookupData, invoiceDetail]);
+
+  useEffect(() => {
+    document.addEventListener("click", () => {
+      if (isDownloadOpen) {
+        setIsDownloadOpen(false);
+      }
+    });
+  }, []);
 
   if (!apiData.data) {
     return <p>Loading...</p>;
@@ -201,7 +222,7 @@ export default function InvoiceDetails() {
 
       <div className="payrollInvoiceInfo">
         <div className="topBar">
-          <p className="status">Pending Approval</p>
+          <p className="status">{status}</p>
 
           <div className="row">
             <div className="invoiceNo">
@@ -235,7 +256,7 @@ export default function InvoiceDetails() {
         <div className="infoDetails">
           <div className="column1">
             <p className="heading">From</p>
-            <p className="value">{invoiceDetail?.invoiceFrom?.customerName}</p>
+            <p className="value">{invoiceDetail?.invoiceFrom?.companyName}</p>
           </div>
           <div>
             <p className="heading">To</p>
@@ -323,7 +344,8 @@ export default function InvoiceDetails() {
             return (
               <div>
                 <div className="countryHeader">
-                  <img src={spainFlag} alt="flag" />
+                  {/* <img src={spainFlag} alt="flag" /> */}
+                  <GetFlag />
                   <h3>{item.country}</h3>
                 </div>
                 <div>

@@ -7,6 +7,7 @@ import DatepickerDropdown from "../../../components/DatepickerDropdown/Datepicke
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import getRequest from "../../../components/Comman/api";
+import GetFlag from "../InvoiceDetails/getFlag";
 export default function InvoiceListing() {
   let navigate = useNavigate();
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -486,6 +487,8 @@ export default function InvoiceListing() {
         <Icon className="remove" color="#526fd6" icon="remove" size="medium" />
         <h5>Clear Filters</h5>
       </div>
+
+      <GetFlag />
 
       <Table
         options={

@@ -25,6 +25,7 @@
     .buttons {
       display: flex;
       gap: 20px;
+      position: relative;
 
       .download {
         display: flex;
@@ -51,7 +52,7 @@
       .openDownloadDropdown {
         position: absolute;
         background-color: $white;
-        top: 6rem;
+        top: 3rem;
         padding: 8px;
 
         p {
@@ -280,6 +281,11 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
+    img {
+      width: 1.563rem;
+      height: 1.172rem;
+    }
   }
 
   .totalContainer {
