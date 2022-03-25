@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="8.329">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-24T10:49:20" time="4.052" tests="1">
-    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.042">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="11.549">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-25T11:48:29" time="4.927" tests="1">
+    <testcase classname=" invoice details renders without crashing" name=" invoice details renders without crashing" time="0.033">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-24T10:49:20" time="5.028" tests="3">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.05">
-    </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.308">
-    </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.092">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-25T11:48:29" time="7.358" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.18">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-24T10:49:20" time="5.323" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.26">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-25T11:48:29" time="8.001" tests="3">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.043">
+    </testcase>
+    <testcase classname=" Client View" name=" Client View" time="0.301">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.078">
     </testcase>
   </testsuite>
 </testsuites>

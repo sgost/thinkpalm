@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table } from "atlasuikit";
-import MyDropdown from "../../../components/MyDropdown/Dropdown";
+import { Icon, Button, Table, Banner } from "atlasuikit";
 import { FaEllipsisH } from "react-icons/fa";
-import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import axios from "axios";
+import MyDropdown from "../../../components/MyDropdown/Dropdown";
+import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -18,7 +19,6 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
-  const [selectedDropdown, setSelectedDropdown] = useState(null);
   const [dropdownLabel, setDropdownLabel] = useState({
     types: "",
     status: "",
@@ -28,6 +28,8 @@ export default function InvoiceListing() {
     endDate: "",
     day: "",
   });
+  const [singleInvoiceId, setSingleInvoiceId] = useState("");
+  const [multiInvoiceId, setMultiInvoiveId] = useState([]);
   const [token, setToken] = useState("");
   const [types, setTypes] = useState([
     {
@@ -86,7 +88,7 @@ export default function InvoiceListing() {
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
-        header: "Invoice No.",
+        header: "Invoice Number",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -99,12 +101,12 @@ export default function InvoiceListing() {
       {
         header: "Status",
         isDefault: true,
-        key: "status",
+        key: "statusLabel",
       },
       {
         header: "Type",
         isDefault: true,
-        key: "transactionType",
+        key: "transactionTypeLabel",
       },
       {
         header: "Invoice Date",
@@ -132,7 +134,7 @@ export default function InvoiceListing() {
   const [clientTableData, setClientTableData] = useState({
     columns: [
       {
-        header: "Invoice No.",
+        header: "Invoice Number",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -170,6 +172,7 @@ export default function InvoiceListing() {
     ],
     data: [],
   });
+  const [downloadDisable, setDownloadDisable] = useState(false);
 
   let api = ``;
 
@@ -198,7 +201,6 @@ export default function InvoiceListing() {
       endDate: "",
       day: "",
     });
-    setSelectedDropdown(null);
     setDropdownLabel({
       types: "",
       status: "",
@@ -215,11 +217,8 @@ export default function InvoiceListing() {
       console.log("api data", apiTableData);
 
       apiTableData?.map((item: any) => {
-        // if (item.customer === null) {
-        //   item.customer = ''
-        // }
-        item.totalAmount = `USD ${item.totalAmount}`;
-        item.invoiceBalance = `USD ${item.invoiceBalance}`;
+        item.totalAmount = `USD ${item.totalAmount.toLocaleString()}`;
+        item.invoiceBalance = `USD ${item.invoiceBalance.toLocaleString()}`;
         item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
         item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
       });
@@ -233,8 +232,6 @@ export default function InvoiceListing() {
       const apiTableData = apiData?.data?.results;
 
       apiTableData?.map((item: any) => {
-        // item.totalAmount = `USD ${item.totalAmount}`
-        // item.invoiceBalance = `USD ${item.invoiceBalance}`
         item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
         item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
       });
@@ -243,8 +240,87 @@ export default function InvoiceListing() {
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
+  const handleDropdown = () => {
+    if (isTypeOpen || isStatusOpen || isDateOpen) {
+      setIsTypeOpen(false);
+      setIsStatusOpen(false);
+      setIsDateOpen(false);
+    }
+  };
+
   const onRowCheckboxChange = (selectedRows: any) => {
-    setCheckedData(selectedRows);
+    if (selectedRows.length == 1) {
+      let id: any;
+      selectedRows.map((item: any) => {
+        id = item.id;
+      });
+      setSingleInvoiceId(id);
+      setMultiInvoiveId([]);
+      setCheckedData(selectedRows);
+    } else if (selectedRows.length >= 1) {
+      const multiId = selectedRows.map((items: any) => {
+        return items.id;
+      });
+
+      setMultiInvoiveId(multiId);
+      setSingleInvoiceId("");
+      setCheckedData(selectedRows);
+    }
+  };
+
+  const downloadFunction = () => {
+    console.log("downloading true");
+    setDownloadDisable(true);
+    const headers = {
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "Content-Type": "application/json",
+      },
+    };
+    if (singleInvoiceId) {
+      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
+      axios
+        .get(api, headers)
+        .then((res: any) => {
+          if (res.status === 200) {
+            setDownloadDisable(false);
+            let url = res.data.url;
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = `${res.data.name}`;
+            a.click();
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
+    } else if (multiInvoiceId) {
+      const multiDownloadInvoiceId = multiInvoiceId.join(",");
+      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
+      axios({
+        method: "get",
+        url: api,
+        headers: headers.headers,
+      })
+        .then((res: any) => {
+          if (res.status === 200) {
+            let url = res.data.url;
+            let a = document.createElement("a");
+            a.href = url;
+            a.download = `${res.data.name}`;
+            a.click();
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
+    }
   };
 
   if (isClient === null) {
@@ -280,236 +356,266 @@ export default function InvoiceListing() {
   }
 
   return (
-    <div className="container">
-      <div className="dropdowns">
-        <div className="inputContainer">
-          <Icon icon="search" size="small" />
-          <input className="input" placeholder="Search Customer, Invoice No." />
+    <>
+      <div className="container">
+        <div className="dropdowns">
+          <div className="inputContainer">
+            <Icon icon="search" size="small" />
+            <input
+              className="input"
+              placeholder={
+                isClient ? "Search Invoices" : "Search by Invoice, Customer"
+              }
+            />
+          </div>
+          <div className="pickers">
+            {console.log("downloadDisable", downloadDisable)}
+
+            <div
+              onClick={downloadFunction}
+              className={downloadDisable ? "downloadpointer" : ""}
+            >
+              <Icon
+                className="download"
+                color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                icon="download"
+                size="large"
+              />
+            </div>
+
+            <DatepickerDropdown
+              title="Date"
+              isOpen={isDateOpen}
+              setDateTo={setDateTo}
+              setDateFrom={setDateFrom}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              handleDropOptionClick={(item: any) => {
+                var date = new Date();
+                switch (item) {
+                  case "Today":
+                    const todayDate = format(date, "yyyy-MM-dd");
+                    setDateFrom(todayDate);
+                    setDateTo(todayDate);
+                    break;
+
+                  case "Yesterday":
+                    const yesterdayDate = date.setDate(date.getDate() - 1);
+                    const yesterdayFormatDate = format(
+                      yesterdayDate,
+                      "yyyy-MM-dd"
+                    );
+                    setDateFrom(yesterdayFormatDate);
+                    setDateTo(yesterdayFormatDate);
+                    break;
+
+                  case "This Week":
+                    const thisWeekStartDate = new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate() - 7
+                    );
+                    const thisWeekEndDate = date.setDate(date.getDate() - 1);
+                    const thisWeekStartFormatDate = format(
+                      thisWeekStartDate,
+                      "yyyy-MM-dd"
+                    );
+                    const thisWeekEndFormatDate = format(
+                      thisWeekEndDate,
+                      "yyyy-MM-dd"
+                    );
+                    setDateFrom(thisWeekStartFormatDate);
+                    setDateTo(thisWeekEndFormatDate);
+                    break;
+
+                  case "This Month":
+                    const thisMonthStartDate = new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      1
+                    );
+                    const thisMonthEndDate = new Date(
+                      date.getFullYear(),
+                      date.getMonth() + 1,
+                      0
+                    );
+                    const thisMonthStartFormatDate = format(
+                      thisMonthStartDate,
+                      "yyyy-MM-dd"
+                    );
+                    const thisMonthEndFormatDate = format(
+                      thisMonthEndDate,
+                      "yyyy-MM-dd"
+                    );
+                    setDateFrom(thisMonthStartFormatDate);
+                    setDateTo(thisMonthEndFormatDate);
+                    break;
+
+                  case "This Quarter":
+                    const quarter = Math.floor(date.getMonth() / 3);
+                    const thisQuarterStartDate = new Date(
+                      date.getFullYear(),
+                      quarter * 3,
+                      1
+                    );
+                    const thisQuarterEndDate = new Date(
+                      thisQuarterStartDate.getFullYear(),
+                      thisQuarterStartDate.getMonth() + 3,
+                      0
+                    );
+                    const thisQuarterStartFormatDate = format(
+                      thisQuarterStartDate,
+                      "yyyy-MM-dd"
+                    );
+                    const thisQuarterEndFormatDate = format(
+                      thisQuarterEndDate,
+                      "yyyy-MM-dd"
+                    );
+                    setDateFrom(thisQuarterStartFormatDate);
+                    setDateTo(thisQuarterEndFormatDate);
+                    break;
+
+                  case "This Year":
+                    const thisYearStartDate = new Date(
+                      date.getFullYear(),
+                      0,
+                      1
+                    );
+                    const thisYearEndDate = new Date(
+                      date.getFullYear(),
+                      11,
+                      31
+                    );
+                    const thisYearStartFormatDate = format(
+                      thisYearStartDate,
+                      "yyyy-MM-dd"
+                    );
+                    const thisYearEndFormatDate = format(
+                      thisYearEndDate,
+                      "yyyy-MM-dd"
+                    );
+                    setDateFrom(thisYearStartFormatDate);
+                    setDateTo(thisYearEndFormatDate);
+                    break;
+                }
+                setIsDateOpen(!isDateOpen);
+              }}
+              handleDropdownClick={() => {
+                setIsDateOpen(!isDateOpen);
+              }}
+            />
+
+            <MyDropdown
+              // data-testid="type-dd"
+              title="Types"
+              isOpen={isTypeOpen}
+              dropdownLabel={dropdownLabel}
+              handleDropdownClick={() => {
+                setIsTypeOpen(!isTypeOpen);
+              }}
+              handleDropOptionClick={(opt: any) => {
+                let index = types.findIndex((e) => e.value === opt.value);
+
+                let copy = [...types];
+                copy.forEach((e, i) => {
+                  if (i === index) {
+                    copy[index] = { ...opt, isSelected: true };
+                  } else {
+                    copy[i] = { ...copy[i], isSelected: false };
+                  }
+                });
+
+                let typesValue: any = copy[index]?.value;
+
+                setTypes(copy);
+                setIsTypeOpen(false);
+                setTransactionTypes(typesValue);
+                setDropdownLabel({
+                  ...dropdownLabel,
+                  types: copy[index]?.label,
+                });
+              }}
+              options={types}
+            />
+
+            <MyDropdown
+              data-testid=""
+              title="Status"
+              isOpen={isStatusOpen}
+              dropdownLabel={dropdownLabel}
+              handleDropdownClick={() => {
+                setIsStatusOpen(!isStatusOpen);
+              }}
+              handleDropOptionClick={(opt: any) => {
+                let index = status.findIndex((e) => e.value === opt.value);
+                let copy = [...status];
+                copy.forEach((e, i) => {
+                  if (i === index) {
+                    copy[index] = { ...opt, isSelected: true };
+                  } else {
+                    copy[i] = { ...copy[i], isSelected: false };
+                  }
+                });
+
+                let statusValue: any = copy[index]?.value;
+
+                setStatus(copy);
+                setIsStatusOpen(false);
+                setStatusType(statusValue);
+                setDropdownLabel({
+                  ...dropdownLabel,
+                  status: copy[index]?.label,
+                });
+              }}
+              options={status}
+            />
+
+            {/* <DatePicker
+          handleDateChange={function noRefCheck() {}}
+          label="Start Date"
+          required
+        /> */}
+            <FaEllipsisH className="icon" />
+          </div>
         </div>
-        <div className="pickers">
+
+        <div className="clearfilter" onClick={clearFilter}>
           <Icon
-            className="download"
+            className="remove"
             color="#526fd6"
-            icon="download"
-            size="large"
+            icon="remove"
+            size="medium"
           />
-
-          <DatepickerDropdown
-            title="Date"
-            isOpen={isDateOpen}
-            setDateTo={setDateTo}
-            setDateFrom={setDateFrom}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
-            handleDropOptionClick={(item: any) => {
-              console.log("month::::", item);
-              var date = new Date();
-              switch (item) {
-                case "Today":
-                  const todayDate = format(date, "yyyy-MM-dd");
-                  setDateFrom(todayDate);
-                  setDateTo(todayDate);
-                  break;
-
-                case "Yesterday":
-                  const yesterdayDate = date.setDate(date.getDate() - 1);
-                  const yesterdayFormatDate = format(
-                    yesterdayDate,
-                    "yyyy-MM-dd"
-                  );
-                  setDateFrom(yesterdayFormatDate);
-                  setDateTo(yesterdayFormatDate);
-                  break;
-
-                case "This Week":
-                  const thisWeekStartDate = new Date(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    date.getDate() - 7
-                  );
-                  const thisWeekEndDate = date.setDate(date.getDate() - 1);
-                  const thisWeekStartFormatDate = format(
-                    thisWeekStartDate,
-                    "yyyy-MM-dd"
-                  );
-                  const thisWeekEndFormatDate = format(
-                    thisWeekEndDate,
-                    "yyyy-MM-dd"
-                  );
-                  setDateFrom(thisWeekStartFormatDate);
-                  setDateTo(thisWeekEndFormatDate);
-                  break;
-
-                case "This Month":
-                  const thisMonthStartDate = new Date(
-                    date.getFullYear(),
-                    date.getMonth(),
-                    1
-                  );
-                  const thisMonthEndDate = new Date(
-                    date.getFullYear(),
-                    date.getMonth() + 1,
-                    0
-                  );
-                  const thisMonthStartFormatDate = format(
-                    thisMonthStartDate,
-                    "yyyy-MM-dd"
-                  );
-                  const thisMonthEndFormatDate = format(
-                    thisMonthEndDate,
-                    "yyyy-MM-dd"
-                  );
-                  setDateFrom(thisMonthStartFormatDate);
-                  setDateTo(thisMonthEndFormatDate);
-                  break;
-
-                case "This Quarter":
-                  const quarter = Math.floor(date.getMonth() / 3);
-                  const thisQuarterStartDate = new Date(
-                    date.getFullYear(),
-                    quarter * 3,
-                    1
-                  );
-                  const thisQuarterEndDate = new Date(
-                    thisQuarterStartDate.getFullYear(),
-                    thisQuarterStartDate.getMonth() + 3,
-                    0
-                  );
-                  const thisQuarterStartFormatDate = format(
-                    thisQuarterStartDate,
-                    "yyyy-MM-dd"
-                  );
-                  const thisQuarterEndFormatDate = format(
-                    thisQuarterEndDate,
-                    "yyyy-MM-dd"
-                  );
-                  setDateFrom(thisQuarterStartFormatDate);
-                  setDateTo(thisQuarterEndFormatDate);
-                  break;
-
-                case "This Year":
-                  const thisYearStartDate = new Date(date.getFullYear(), 0, 1);
-                  const thisYearEndDate = new Date(date.getFullYear(), 11, 31);
-                  const thisYearStartFormatDate = format(
-                    thisYearStartDate,
-                    "yyyy-MM-dd"
-                  );
-                  const thisYearEndFormatDate = format(
-                    thisYearEndDate,
-                    "yyyy-MM-dd"
-                  );
-                  setDateFrom(thisYearStartFormatDate);
-                  setDateTo(thisYearEndFormatDate);
-                  break;
-              }
-              setIsDateOpen(!isDateOpen);
-            }}
-            handleDropdownClick={() => {
-              setIsDateOpen(!isDateOpen);
-            }}
-          />
-
-          <MyDropdown
-            // data-testid="type-dd"
-            title="Types"
-            isOpen={isTypeOpen}
-            dropdownLabel={dropdownLabel}
-            setSelectedDropdown={setSelectedDropdown}
-            handleDropdownClick={() => {
-              setIsTypeOpen(!isTypeOpen);
-            }}
-            handleDropOptionClick={(opt: any) => {
-              let index = types.findIndex((e) => e.value === opt.value);
-
-              let copy = [...types];
-              copy.forEach((e, i) => {
-                if (i === index) {
-                  copy[index] = { ...opt, isSelected: true };
-                } else {
-                  copy[i] = { ...copy[i], isSelected: false };
-                }
-              });
-
-              let typesValue: any = copy[index]?.value;
-
-              setTypes(copy);
-              setIsTypeOpen(false);
-              setTransactionTypes(typesValue);
-              setDropdownLabel({ ...dropdownLabel, types: copy[index]?.label });
-            }}
-            options={types}
-          />
-
-          <MyDropdown
-            data-testid=""
-            title="Status"
-            isOpen={isStatusOpen}
-            dropdownLabel={dropdownLabel}
-            setSelectedDropdown={setSelectedDropdown}
-            handleDropdownClick={() => {
-              setIsStatusOpen(!isStatusOpen);
-            }}
-            handleDropOptionClick={(opt: any) => {
-              let index = status.findIndex((e) => e.value === opt.value);
-              let copy = [...status];
-              copy.forEach((e, i) => {
-                if (i === index) {
-                  copy[index] = { ...opt, isSelected: true };
-                } else {
-                  copy[i] = { ...copy[i], isSelected: false };
-                }
-              });
-
-              let statusValue: any = copy[index]?.value;
-
-              setStatus(copy);
-              setIsStatusOpen(false);
-              setStatusType(statusValue);
-              setDropdownLabel({
-                ...dropdownLabel,
-                status: copy[index]?.label,
-              });
-            }}
-            options={status}
-          />
-
-          {/* <DatePicker
-            handleDateChange={function noRefCheck() {}}
-            label="Start Date"
-            required
-          /> */}
-          <FaEllipsisH className="icon" />
+          <h5>Clear Filters</h5>
         </div>
-      </div>
 
-      <div className="clearfilter" onClick={clearFilter}>
-        <Icon className="remove" color="#526fd6" icon="remove" size="medium" />
-        <h5>Clear Filters</h5>
-      </div>
+        <Table
+          options={
+            isClient
+              ? {
+                  ...clientTableData,
+                  // showDefaultColumn: true,
+                  enableMultiSelect: true,
+                  onRowCheckboxChange: onRowCheckboxChange,
+                }
+              : {
+                  ...internalTabledata,
+                  // showDefaultColumn: true,
+                  enableMultiSelect: true,
+                  onRowCheckboxChange: onRowCheckboxChange,
+                }
+          }
+          colSort
+          className="table"
+          pagination
+          pagingOptions={[15, 30, 50, 100]}
+          handleRowClick={(row: any) => {
+            navigate("/pay/invoicedetails" + row.id);
 
-      <Table
-        options={
-          isClient
-            ? {
-                ...clientTableData,
-                showDefaultColumn: true,
-                enableMultiSelect: true,
-                onRowCheckboxChange: onRowCheckboxChange,
-              }
-            : {
-                ...internalTabledata,
-                showDefaultColumn: true,
-                enableMultiSelect: true,
-                onRowCheckboxChange: onRowCheckboxChange,
-              }
-        }
-        colSort
-        pagination
-        pagingOptions={[15, 30, 50, 100]}
-        handleRowClick={() => {
-          navigate("/pay/invoicedetails");
-        }}
-      />
-    </div>
+            // navigate("/pay/invoicedetails");
+          }}
+        />
+      </div>
+    </>
   );
 }

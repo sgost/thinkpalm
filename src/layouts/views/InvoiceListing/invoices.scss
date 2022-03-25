@@ -3,54 +3,59 @@
 
 .container {
   padding-bottom: 20px;
+  margin-top: 60px;
 }
-
-// .pay {
-//   //   font-weight: normal;
-//   //   font-family: CircularXX;
-//   //   border-style: solid;
-// }
 
 .dropdowns {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  //   border-style: solid;
-  padding: 20px 0px;
   gap: 20px;
 
   .inputContainer {
     display: flex;
+    flex-direction: row;
     align-items: center;
-    background-color: $white;
+    max-width: 320px;
+    background: #ffffff;
+    border: 1px solid #b4b3bb;
     border-radius: 4px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: $secondary-gray;
-    // height: 46px;
-    padding: 11px 12px;
+    height: 50px;
+    margin: 6px 0px;
+    padding: 0px 5px 0px 20px;
 
     textarea:focus,
     input:focus {
       outline: none;
     }
+
     .input {
       border-style: hidden;
-      width: 180px;
-    }
+      font-style: normal;
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 140%;
+      display: flex;
+      align-items: center;
+      color: #767676;
+      margin: 0px 8px;
   }
-
+  }
   .pickers {
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    // width: 60%;
-    // border-style: solid;
 
     .download {
       color: $primary-blue;
-      margin-top: 12px;
+      margin-top: 16px;
       cursor: pointer;
+      width: 35.66px;
+      height: 40px;
+    }
+
+    .downloadpointer{
+      pointer-events: none;
     }
   }
 
@@ -71,10 +76,9 @@
   justify-content: flex-end;
   cursor: pointer;
 
-  .remove{
+  .remove {
     margin-top: 10px;
     margin-left: 20px;
-
   }
 
   h5 {
@@ -83,4 +87,29 @@
     font-weight: 400;
     margin-top: 10px;
   }
+}
+
+.table__row__header {
+  font-weight: 700;
+  line-height: 22px;
+}
+.table__header {
+  background-color: #e0e5f8 !important;
+  border-radius: 10px 10px 0px 0px;
+}
+.pagination {
+  border-radius: 0px 0px 10px 10px;
+}
+
+@media (max-width:1200px) {
+.dropdowns .inputContainer {
+  max-width: 271px;
+  padding: 0px 2px 0px 2px;
+}
+.table__row__header {
+  font-size: 10px;
+}
+.table__row {
+  font-size: 10px;
+}
 }

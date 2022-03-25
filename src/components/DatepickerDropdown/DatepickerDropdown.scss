@@ -5,45 +5,47 @@
   cursor: pointer;
   position: relative;
   .title {
-    color: $secondary-gray;
+    color: #3e3e3e !important;
     position: absolute;
     top: -20px;
-    font-size: 0.889rem;
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
   }
 
   .dropdown {
-    margin-bottom: 0px;
-    height: 48px;
-    color: grey;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
-    border-style: solid;
-    border-width: 1px;
-    border-color: $secondary-gray;
+    width: 320px;
+    background: #ffffff;
+    border: 1px solid #b4b3bb !important ;
     border-radius: 4px;
-    padding: 0px 12px;
-    background-color: $white;
+    height: 50px;
+    margin: 6px 0px;
+    padding: 0px 5px 0px 20px;
+    color: grey;
+    justify-content: space-between;
 
     .text {
       color: $secondary-gray;
       margin: 12px 0px;
       padding-right: 20px;
     }
-
-    .icon {
-      margin-top: 6px;
-    }
   }
 
   .openDropdownDatepicker {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 24px 0px;
+    width: 300px;
+    height: 511px;
+    background: #ffffff;
+    box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+    border-radius: 0px 0px 4px 4px;
     position: absolute;
-    // width: 250px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     z-index: 10;
-    top: 50px;
-    background-color: $white;
-    padding: 12px;
 
     .a-dpicker.a-range-picker {
       flex-direction: column;
@@ -55,19 +57,60 @@
     .a-dpicker__container {
       margin-top: 20px;
     }
+
     .react-datepicker__month-container {
       position: absolute;
-      left: 17rem;
-      background-color: $white;
+      left: 18rem;
+      top: -68px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      width: 296px;
+      height: 356px;
+      background: #ffffff;
+      border-radius: 4px 0px;
+    }
+    .react-datepicker__header__dropdown {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 0.667rem;
     }
     .react-datepicker__day-names {
       display: flex;
       flex-direction: row;
       justify-content: space-evenly;
-      // margin-left: 0px 0.6rem;
+    }
+    .react-datepicker__day {
+      width: 43px;
+      height: 43px;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
+    .react-datepicker__day-name {
+      color: #3e3e3e !important;
+      font-size: 0.889rem;
+      font-weight: 600;
+      padding: 0 16px;
+      height: 32px;
     }
   }
 
+  .a-dpicker .react-datepicker__label {
+    color: #3e3e3e !important;
+    font-size: 0.889rem;
+    left: 0;
+    position: absolute;
+    top: -1.125rem;
+  }
+  .a-dpicker .react-datepicker__input-container input {
+    color: #b4b3bb !important;
+    font-size: 1rem;
+    height: 2.778rem;
+    width: 15rem;
+  }
   .openDropdownOption {
     background-color: $white;
     display: flex;
@@ -78,16 +121,40 @@
     border-radius: 2px;
 
     .text {
-      color: $secondary-gray;
+      color: #3e3e3e;
       padding: 12px 0px;
       font-size: 0.889rem;
     }
-
-    // .icon {
-    //   display: none;
-    //   .openDropdown:hover {
-    //     display: inline;
-    //   }
-    // }
   }
+}
+
+@media (max-width:1700px) {
+.dropdownContainer .openDropdownDatepicker {
+  width: 124px;
+}
+.dropdownContainer .openDropdownDatepicker .react-datepicker__day-name {
+  padding: 0 12px;
+}
+.dropdownContainer .openDropdownDatepicker .react-datepicker__day {
+  width: 29px;
+  height: 23px;
+}
+.dropdownContainer .openDropdownDatepicker .react-datepicker__month-container {
+  left: 148px;
+  top: -23px;
+  box-shadow: 0px 0px 23px -10px gray;
+  width: fit-content;
+  height: auto;
+}
+.dropdownContainer .a-dpicker .react-datepicker__label {
+  font-size: 15px;
+  top: -22px;
+}
+.dropdownContainer .openDropdownOption .text {
+  font-size: 11px;
+}
+.dropdownContainer .a-dpicker .react-datepicker__input-container input {
+  font-size: 10px;
+  height: 4.778rem;
+}
 }

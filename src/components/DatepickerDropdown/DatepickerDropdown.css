@@ -5,31 +5,36 @@
 }
 
 .dropdownContainer .title {
-  color: #767676 !important;
+  color: #3e3e3e !important;
   position: absolute;
   top: -20px;
-  font-size: 0.889rem;
+  font-size: 13px;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .dropdownContainer .dropdown {
-  margin-bottom: 0px;
-  height: 48px;
-  color: grey;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #767676 !important;
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid #b4b3bb !important;
   border-radius: 4px;
-  padding: 0px 12px;
-  background-color: #ffffff !important;
+  height: 50px;
+  margin: 6px 0px;
+  padding: 0px 5px 0px 20px;
+  color: grey;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .dropdownContainer .dropdown .text {
@@ -38,18 +43,26 @@
   padding-right: 20px;
 }
 
-.dropdownContainer .dropdown .icon {
-  margin-top: 6px;
-}
-
 .dropdownContainer .openDropdownDatepicker {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  padding: 24px 24px 0px;
+  width: 300px;
+  height: 511px;
+  background: #ffffff;
+  -webkit-box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+          box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+  border-radius: 0px 0px 4px 4px;
   position: absolute;
-  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   z-index: 10;
-  top: 50px;
-  background-color: #ffffff !important;
-  padding: 12px;
 }
 
 .dropdownContainer .openDropdownDatepicker .a-dpicker.a-range-picker {
@@ -70,8 +83,36 @@
 
 .dropdownContainer .openDropdownDatepicker .react-datepicker__month-container {
   position: absolute;
-  left: 17rem;
-  background-color: #ffffff !important;
+  left: 18rem;
+  top: -68px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 15px;
+  width: 296px;
+  height: 356px;
+  background: #ffffff;
+  border-radius: 4px 0px;
+}
+
+.dropdownContainer .openDropdownDatepicker .react-datepicker__header__dropdown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 0.667rem;
 }
 
 .dropdownContainer .openDropdownDatepicker .react-datepicker__day-names {
@@ -85,6 +126,43 @@
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
+}
+
+.dropdownContainer .openDropdownDatepicker .react-datepicker__day {
+  width: 43px;
+  height: 43px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.dropdownContainer .openDropdownDatepicker .react-datepicker__day-name {
+  color: #3e3e3e !important;
+  font-size: 0.889rem;
+  font-weight: 600;
+  padding: 0 16px;
+  height: 32px;
+}
+
+.dropdownContainer .a-dpicker .react-datepicker__label {
+  color: #3e3e3e !important;
+  font-size: 0.889rem;
+  left: 0;
+  position: absolute;
+  top: -1.125rem;
+}
+
+.dropdownContainer .a-dpicker .react-datepicker__input-container input {
+  color: #b4b3bb !important;
+  font-size: 1rem;
+  height: 2.778rem;
+  width: 15rem;
 }
 
 .dropdownContainer .openDropdownOption {
@@ -104,7 +182,7 @@
 }
 
 .dropdownContainer .openDropdownOption .text {
-  color: #767676 !important;
+  color: #3e3e3e;
   padding: 12px 0px;
   font-size: 0.889rem;
 }

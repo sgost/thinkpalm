@@ -5,15 +5,18 @@
   cursor: pointer;
   position: relative;
   .title {
-    color: $secondary-gray;
+    color: #3e3e3e !important;
     position: absolute;
     top: -20px;
-    font-size: 0.889rem;
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
   }
 
   .dropdown {
     margin-bottom: 0px;
     display: flex;
+    font-size: 18px;
     justify-content: space-between;
     align-items: center;
     border-style: solid;
@@ -25,22 +28,23 @@
 
     .text {
       color: $secondary-gray;
+      
       margin: 12px 0px;
       padding-right: 20px;
-    }
-
-    .icon {
-      margin-top: 6px;
     }
   }
 
   .openDropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 24px;
+    width: 300px;
+    background: #ffffff;
+    box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+    border-radius: 0px 0px 4px 4px;
     position: absolute;
-    width: 250px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     z-index: 10;
-    top: 50px;
-    background-color: $white;
   }
 
   .openDropdownOption {
@@ -52,16 +56,35 @@
     border-radius: 2px;
 
     .text {
-      color: $secondary-gray;
+      color: #3e3e3e;
       padding: 12px 0px;
       font-size: 0.889rem;
     }
-
-    // .icon {
-    //   display: none;
-    //   .openDropdown:hover {
-    //     display: inline;
-    //   }
-    // }
   }
+}
+
+
+@media (max-width:1700px) {
+  .dropdown {
+    width: 146px !important;
+}
+.dropdowns .pickers {
+  gap: 0px !important;
+}
+
+.dropdowns .inputContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 250px;
+  background: #ffffff;
+  border: 1px solid #b4b3bb;
+  border-radius: 4px;
+  height: 50px;
+  margin: 6px 0px;
+}
+.dropdownContainer .openDropdown { 
+  padding: 7px 7px;
+  width: 158px;
+}
 }
