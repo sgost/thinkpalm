@@ -8,6 +8,7 @@ import moment from "moment";
 import GetFlag from "./getFlag";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import avatar from "./avatar.png";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
@@ -110,7 +111,7 @@ export default function InvoiceDetails() {
                 value: item.firstName + " " + item.lastName,
                 // img: { src: item.employeeProfilePicture },
 
-                img: { src: "https://via.placeholder.com/150" },
+                img: { src: avatar },
                 style: { borderRadius: 12 },
               },
               grossWages: currencyCode + " " + item.totalWage.toFixed(2),
