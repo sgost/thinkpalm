@@ -16,6 +16,7 @@
   .dropdown {
     margin-bottom: 0px;
     display: flex;
+    font-size: 18px;
     justify-content: space-between;
     align-items: center;
     border-style: solid;
@@ -27,6 +28,7 @@
 
     .text {
       color: $secondary-gray;
+      
       margin: 12px 0px;
       padding-right: 20px;
     }

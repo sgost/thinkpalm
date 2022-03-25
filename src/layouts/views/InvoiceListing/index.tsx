@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import "./invoices.scss";
 import { Icon, Button, Table } from "atlasuikit";
-import MyDropdown from "../../../components/MyDropdown/Dropdown";
 import { FaEllipsisH } from "react-icons/fa";
-import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
+import MyDropdown from "../../../components/MyDropdown/Dropdown";
+import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
+import "./invoices.scss";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -219,8 +219,8 @@ export default function InvoiceListing() {
       console.log("api data", apiTableData);
 
       apiTableData?.map((item: any) => {
-        item.totalAmount = `USD ${item.totalAmount}`
-        item.invoiceBalance = `USD ${item.invoiceBalance}`
+        item.totalAmount = `USD ${item.totalAmount.toLocaleString()}`
+        item.invoiceBalance = `USD ${item.invoiceBalance.toLocaleString()}`
         item.createdDate = format(new Date(item.createdDate), 'd MMM yyyy')
         item.dueDate = format(new Date(item.dueDate), 'd MMM yyyy')
       });
@@ -242,6 +242,14 @@ export default function InvoiceListing() {
 
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo])
+
+  const handleDropdown = () => {
+    if (isTypeOpen || isStatusOpen || isDateOpen) {
+      setIsTypeOpen(false);
+      setIsStatusOpen(false);
+      setIsDateOpen(false);
+    }
+  }
 
   const onRowCheckboxChange = (selectedRows: any) => {
     if (selectedRows.length == 1) {
@@ -350,11 +358,11 @@ export default function InvoiceListing() {
   }
 
   return (
-    <div className="container">
+    <div className="container" onClick={() => handleDropdown()}>
       <div className="dropdowns">
         <div className="inputContainer">
-          <Icon icon="search" size="small" />
-          <input className="input" placeholder="Search Invoices" />
+          <Icon icon="search" size="large" />
+          <input className="input" placeholder={isClient ? "Search Invoices" : "Search by Invoice, Customer"} />
         </div>
         <div className="pickers">
           <div onClick={downloadFunction}>
@@ -435,7 +443,7 @@ export default function InvoiceListing() {
 
           <MyDropdown
             // data-testid="type-dd"
-            title="Types"
+            title="Type"
             isOpen={isTypeOpen}
             dropdownLabel={dropdownLabel}
             handleDropdownClick={() => {
