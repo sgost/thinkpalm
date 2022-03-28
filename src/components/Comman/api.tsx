@@ -21,7 +21,7 @@ const getRequest = (url: any, token: any, cid?: any) => {
     },
   };
 
-  console.log("headers", headers);
+  // console.log("headers", headers);
 
   useEffect(() => {
     axios
