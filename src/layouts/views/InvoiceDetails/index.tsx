@@ -13,12 +13,11 @@ import avatar from "./avatar.png";
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
-  const { id } = useParams();
+  const { id, cid } = useParams();
 
   const api =
     "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id;
-  const addressApi =
-    "https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/a9bbee6d-797a-4724-a86a-5b1a2e28763f?includes=BillingAddress";
+  const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
 
   const countriesApi =
     "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name";
@@ -30,11 +29,11 @@ export default function InvoiceDetails() {
     "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
 
   const tempToken = localStorage.getItem("temptoken");
-  const apiData: any = getRequest(api, tempToken);
-  const addressData: any = getRequest(addressApi, tempToken);
-  const countriesData: any = getRequest(countriesApi, tempToken);
-  const feeData: any = getRequest(feeApi, tempToken);
-  const lookupData: any = getRequest(lookupApi, tempToken);
+  const apiData: any = getRequest(api, tempToken, cid);
+  const addressData: any = getRequest(addressApi, tempToken, cid);
+  const countriesData: any = getRequest(countriesApi, tempToken, cid);
+  const feeData: any = getRequest(feeApi, tempToken, cid);
+  const lookupData: any = getRequest(lookupApi, tempToken, cid);
 
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
@@ -162,7 +161,7 @@ export default function InvoiceDetails() {
         setIsDownloadOpen(false);
       }
     }
-    console.log("id", id);
+    console.log("id", id, "cid", cid);
     document.addEventListener("click", handleClick);
     return document.removeEventListener("click", handleClick);
   }, []);
@@ -192,18 +191,18 @@ export default function InvoiceDetails() {
   const downloadFunction = () => {
     const headers = {
       headers: {
-        authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDgyOTQ0MTMsImlhdCI6MTY0ODE4NTQ4MCwiYXV0aF90aW1lIjoxNjQ4MTIxNjEzLCJqdGkiOiIyMDhlODA5MS1lYzY0LTQ5NzAtYmJiOC1lYTA2ZjFlNjU4NjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI4ZDdkYjFhMi0zMmVmLTRmZDYtODdmNi1mNWMyOGNhNGM1NjgiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjUzN2E2MjJmLTVhYjktNDRiNS1iYzFjLThjOTFmNWViZDRkNyIsInNlc3Npb25fc3RhdGUiOiI5NzhiOTQ2NC04ZTZiLTQxNTEtYWQ1Ny05ZWMwNjRjMTdhNGUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoiUHJlbWthbnQgUHJlbSIsImlkIjoiOGQ3ZGIxYTItMzJlZi00ZmQ2LTg3ZjYtZjVjMjhjYTRjNTY4IiwicHJlZmVycmVkX3VzZXJuYW1lIjoicHJlbWthbnRwQGVsZW1lbnRzZ3MuY29tIiwiZ2l2ZW5fbmFtZSI6IlByZW1rYW50IiwiZmFtaWx5X25hbWUiOiJQcmVtIiwiZW1haWwiOiJwcmVta2FudHBAZWxlbWVudHNncy5jb20ifQ.gLALGnjHACUFJ_j4PL6cOGYQdtrPk8pv8WXJe4ESfqvQbqOc_2UwykN5BlAKz7cThs-mbf_KrLFXCecKcTFaPJ5UfdoopLrK2iVt01dgcu2_c3X_CfpFHPW-mjZhO06Z_eGMzYAu91bpluiiuhnM95P6jBO_7RZ2xnIQC3Rey8GMPYdieGNY4NWrAFUt9z6-Bms7IWRqCdwNdjpiLcFnemBO7lHS05lxvjdVK8D8glhiHpkQ7QXy_3FxMR_lbu60GjdO4nfmmRMxIFfoBCuJtzOyXkhjbBQ9yVPcPSjQeyyaADYADUgFtZ0Z-p0zrnwubx3G9uDxHPQY6wI0-lTWDQ`,
+        authorization: `Bearer ${tempToken}`,
         "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "094b3c66-5787-47ba-9bdc-48762fbd9104",
+        "x-apng-customer-id": cid?.toString() || "",
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
-        customer_id: "094b3c66-5787-47ba-9bdc-48762fbd9104",
+        customer_id: cid?.toString() || "",
         // "Content-Type": "application/json",
       },
     };
 
-    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/ab327a85-81cb-40a4-8fe4-16b74912d1a7`;
+    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`;
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
@@ -224,18 +223,18 @@ export default function InvoiceDetails() {
   const downloadExcelFunction = () => {
     const headers = {
       headers: {
-        authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDgyOTQ0MTMsImlhdCI6MTY0ODE4NTQ4MCwiYXV0aF90aW1lIjoxNjQ4MTIxNjEzLCJqdGkiOiIyMDhlODA5MS1lYzY0LTQ5NzAtYmJiOC1lYTA2ZjFlNjU4NjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI4ZDdkYjFhMi0zMmVmLTRmZDYtODdmNi1mNWMyOGNhNGM1NjgiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjUzN2E2MjJmLTVhYjktNDRiNS1iYzFjLThjOTFmNWViZDRkNyIsInNlc3Npb25fc3RhdGUiOiI5NzhiOTQ2NC04ZTZiLTQxNTEtYWQ1Ny05ZWMwNjRjMTdhNGUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoiUHJlbWthbnQgUHJlbSIsImlkIjoiOGQ3ZGIxYTItMzJlZi00ZmQ2LTg3ZjYtZjVjMjhjYTRjNTY4IiwicHJlZmVycmVkX3VzZXJuYW1lIjoicHJlbWthbnRwQGVsZW1lbnRzZ3MuY29tIiwiZ2l2ZW5fbmFtZSI6IlByZW1rYW50IiwiZmFtaWx5X25hbWUiOiJQcmVtIiwiZW1haWwiOiJwcmVta2FudHBAZWxlbWVudHNncy5jb20ifQ.gLALGnjHACUFJ_j4PL6cOGYQdtrPk8pv8WXJe4ESfqvQbqOc_2UwykN5BlAKz7cThs-mbf_KrLFXCecKcTFaPJ5UfdoopLrK2iVt01dgcu2_c3X_CfpFHPW-mjZhO06Z_eGMzYAu91bpluiiuhnM95P6jBO_7RZ2xnIQC3Rey8GMPYdieGNY4NWrAFUt9z6-Bms7IWRqCdwNdjpiLcFnemBO7lHS05lxvjdVK8D8glhiHpkQ7QXy_3FxMR_lbu60GjdO4nfmmRMxIFfoBCuJtzOyXkhjbBQ9yVPcPSjQeyyaADYADUgFtZ0Z-p0zrnwubx3G9uDxHPQY6wI0-lTWDQ`,
+        authorization: `Bearer ${tempToken}`,
         "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "094b3c66-5787-47ba-9bdc-48762fbd9104",
+        "x-apng-customer-id": cid?.toString() || "",
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
-        customer_id: "094b3c66-5787-47ba-9bdc-48762fbd9104",
+        customer_id: cid?.toString() || "",
         // "Content-Type": "application/json",
       },
     };
 
-    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/ab327a85-81cb-40a4-8fe4-16b74912d1a7`;
+    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`;
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
