@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const getRequest = (url: any, token: any) => {
+const getRequest = (url: any, token: any, cid?: any) => {
   const [data, setData] = useState([]);
 
   // const token =
@@ -13,13 +13,15 @@ const getRequest = (url: any, token: any) => {
     headers: {
       authorization: `Bearer ${token}`,
       "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      "x-apng-customer-id": cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       "x-apng-external": "false",
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
-      customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
     },
   };
+
+  // console.log("headers", headers);
 
   useEffect(() => {
     axios
