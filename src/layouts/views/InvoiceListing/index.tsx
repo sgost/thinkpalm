@@ -511,7 +511,7 @@ export default function InvoiceListing() {
             />
 
             <MyDropdown
-              // data-testid="type-dd"
+              data-testid="dropdown"
               title="Types"
               isOpen={isTypeOpen}
               dropdownLabel={dropdownLabel}
