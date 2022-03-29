@@ -35,6 +35,7 @@
   display: -ms-flexbox;
   display: flex;
   gap: 20px;
+  position: relative;
 }
 
 .invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .download {
@@ -48,8 +49,8 @@
   border-style: solid;
   border-color: #526fd6 !important;
   border-radius: 4px;
-  height: 2.4rem;
-  border-width: 2px;
+  height: 2.1rem;
+  border-width: 0.1rem;
   cursor: pointer;
 }
 
@@ -66,7 +67,7 @@
 .invoiceDetailsContainer .invoiceDetailsHeaderRow .buttons .openDownloadDropdown {
   position: absolute;
   background-color: #ffffff !important;
-  top: 6rem;
+  top: 3rem;
   padding: 8px;
 }
 
@@ -177,6 +178,12 @@
 .invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .value {
   font-weight: bold;
   font-size: 1rem;
+  margin-top: 0px;
+  margin-bottom: 1.875rem;
+}
+
+.invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .address {
+  margin: 2px 0px;
 }
 
 .invoiceDetailsContainer .payrollInvoiceInfo .infoDetails .smallText {
@@ -224,6 +231,14 @@
 
 .invoiceDetailsContainer .tableHeader {
   margin-left: 16px;
+}
+
+.invoiceDetailsContainer .table__row__data img,
+.invoiceDetailsContainer .table__row__header img {
+  margin-right: 0.5rem;
+  border-radius: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .invoiceDetailsContainer .countrySummaryCalc {
@@ -336,6 +351,11 @@
       -ms-flex-align: center;
           align-items: center;
   gap: 10px;
+}
+
+.invoiceDetailsContainer .countryHeader img {
+  width: 1.563rem;
+  height: 1.172rem;
 }
 
 .invoiceDetailsContainer .totalContainer {

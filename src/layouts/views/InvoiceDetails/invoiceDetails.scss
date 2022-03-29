@@ -321,4 +321,24 @@
       }
     }
   }
+
+  .filesNotes {
+    display: flex;
+    gap: 1.25rem;
+
+    .box {
+      width: 40%;
+      height: 45.75rem;
+      border-radius: 10px;
+      background-color: $white;
+      padding: 4rem;
+    }
+    .box2 {
+      width: 60%;
+      height: 45.75rem;
+      border-radius: 10px;
+      background-color: $white;
+      padding: 4rem;
+    }
+  }
 }

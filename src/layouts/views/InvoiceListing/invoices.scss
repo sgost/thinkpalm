@@ -4,112 +4,137 @@
 .container {
   padding-bottom: 20px;
   margin-top: 60px;
-}
 
-.dropdowns {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-
-  .inputContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    max-width: 320px;
-    background: #ffffff;
-    border: 1px solid #b4b3bb;
-    border-radius: 4px;
-    height: 50px;
-    margin: 6px 0px;
-    padding: 0px 5px 0px 20px;
-
-    textarea:focus,
-    input:focus {
-      outline: none;
-    }
-
-    .input {
-      border-style: hidden;
-      font-style: normal;
-      font-weight: 400;
-      font-size: 18px;
-      line-height: 140%;
-      display: flex;
-      align-items: center;
-      color: #767676;
-      margin: 0px 8px;
-  }
-  }
-  .pickers {
+  .dropdowns {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 20px;
 
-    .download {
+    .inputContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 320px;
+      background: #ffffff;
+      border: 1px solid #b4b3bb;
+      border-radius: 4px;
+      height: 50px;
+      margin: 6px 0px;
+      padding: 0px 5px 0px 20px;
+
+      textarea:focus,
+      .input {
+        border-style: hidden;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 140%;
+        display: flex;
+        align-items: center;
+        color: #767676;
+        margin: 0px 8px;
+        height: 2.188rem;
+      }
+      input:focus {
+        outline: none;
+      }
+    }
+    .pickers {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      .download {
+        color: $primary-blue;
+        margin-top: 16px;
+        cursor: pointer;
+        width: 35.66px;
+        height: 40px;
+      }
+
+      .downloadpointer {
+        pointer-events: none;
+      }
+    }
+
+    .icon {
       color: $primary-blue;
-      margin-top: 16px;
+      margin-top: 12px;
+    }
+
+    .downloadicon {
+      margin-top: 19px;
       cursor: pointer;
-      width: 35.66px;
-      height: 40px;
-    }
-
-    .downloadpointer{
-      pointer-events: none;
     }
   }
 
-  .icon {
-    color: $primary-blue;
-    margin-top: 12px;
-  }
-
-  .downloadicon {
-    margin-top: 19px;
+  .clearfilter {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
     cursor: pointer;
+
+    .remove {
+      margin-top: 10px;
+      margin-left: 20px;
+    }
+
+    h5 {
+      color: #526fd6;
+      font-size: 16px;
+      font-weight: 400;
+      margin-top: 10px;
+    }
   }
-}
 
-.clearfilter {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  cursor: pointer;
-
-  .remove {
-    margin-top: 10px;
-    margin-left: 20px;
+  .table__row__header {
+    font-weight: 700;
+    line-height: 22px;
+  }
+  .table__header {
+    background-color: #e0e5f8 !important;
+    border-radius: 10px 10px 0px 0px;
+  }
+  .pagination {
+    border-radius: 0px 0px 10px 10px;
   }
 
-  h5 {
-    color: #526fd6;
-    font-size: 16px;
-    font-weight: 400;
-    margin-top: 10px;
+  .toast {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 1.531rem;
+    position: absolute;
+    width: fit-content;
+    height: 2.2rem;
+    left: 2.5rem;
+    margin-top: -3rem;
+    margin-left: 30rem;
+    background-color: rgba(8, 18, 58, 0.8);
+    color: #ffffff;
+    font-size: 20px;
+    letter-spacing: 2px;
+    box-shadow: 0rem 0.25rem 0.5rem rgba(112, 128, 144, 0.6);
+    border-radius: 0.25rem;
+    z-index: 2;
   }
-}
 
-.table__row__header {
-  font-weight: 700;
-  line-height: 22px;
-}
-.table__header {
-  background-color: #e0e5f8 !important;
-  border-radius: 10px 10px 0px 0px;
-}
-.pagination {
-  border-radius: 0px 0px 10px 10px;
-}
+  .toast-action {
+    margin-top: -3px;
+    margin-left: 10px;
+  }
 
-@media (max-width:1200px) {
-.dropdowns .inputContainer {
-  max-width: 271px;
-  padding: 0px 2px 0px 2px;
-}
-.table__row__header {
-  font-size: 10px;
-}
-.table__row {
-  font-size: 10px;
-}
+  @media (max-width: 1200px) {
+    .dropdowns .inputContainer {
+      max-width: 271px;
+      padding: 0px 2px 0px 2px;
+    }
+    .table__row__header {
+      font-size: 10px;
+    }
+    .table__row {
+      font-size: 10px;
+    }
+  }
 }

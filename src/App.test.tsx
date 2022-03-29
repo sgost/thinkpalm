@@ -5,9 +5,9 @@ import { HashRouter } from "react-router-dom";
 
 test("renders learn react link", () => {
   render(
-    <HashRouter>
-      <App />
-    </HashRouter>
+    // <HashRouter>
+    <App />
+    // </HashRouter>
   );
   // const linkElement = screen.getByText(/Pay/i);
   // expect(linkElement).toBeInTheDocument();

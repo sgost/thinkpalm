@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="8.527">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-28T12:47:24" time="4.418" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.254">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="7.789">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T10:51:32" time="4.354" tests="3">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.044">
+    </testcase>
+    <testcase classname=" Client View" name=" Client View" time="0.189">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.05">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-28T12:47:24" time="4.628" tests="3">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.05">
-    </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.342">
-    </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.064">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T10:51:32" time="5.219" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.166">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-28T12:47:24" time="5.692" tests="1">
-    <testcase classname=" tabs are working" name=" tabs are working" time="0.319">
+  <testsuite name="Invoice detail" errors="0" failures="0" skipped="0" timestamp="2022-03-29T10:51:32" time="5.488" tests="1">
+    <testcase classname="Invoice detail routing" name="Invoice detail routing" time="0.45">
     </testcase>
   </testsuite>
 </testsuites>

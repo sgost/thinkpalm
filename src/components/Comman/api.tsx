@@ -24,14 +24,17 @@ const getRequest = (url: any, token: any, cid?: any) => {
   // console.log("headers", headers);
 
   useEffect(() => {
+    if (url) {
     axios
       .get(url, headers)
       .then((res: any) => {
+        // console.log(res);
         setData(res);
       })
       .catch((e: any) => {
         console.log("error", e);
       });
+    }
   }, [url, token]);
 
   return data;

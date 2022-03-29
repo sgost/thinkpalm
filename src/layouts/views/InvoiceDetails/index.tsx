@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Table } from "atlasuikit";
+import { Button, Icon, Table, Cards } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
@@ -29,11 +29,16 @@ export default function InvoiceDetails() {
     "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
 
   const tempToken = localStorage.getItem("temptoken");
-  const apiData: any = getRequest(api, tempToken, cid);
-  const addressData: any = getRequest(addressApi, tempToken, cid);
-  const countriesData: any = getRequest(countriesApi, tempToken, cid);
-  const feeData: any = getRequest(feeApi, tempToken, cid);
-  const lookupData: any = getRequest(lookupApi, tempToken, cid);
+  // const apiData: any = getRequest(api, tempToken, cid);
+  // const addressData: any = getRequest(addressApi, tempToken, cid);
+  // const countriesData: any = getRequest(countriesApi, tempToken, cid);
+  // const feeData: any = getRequest(feeApi, tempToken, cid);
+  // const lookupData: any = getRequest(lookupApi, tempToken, cid);
+  const [apiData, setApiData] = useState<any>(null);
+  const [addressData, setAddressData] = useState<any>(null);
+  const [countriesData, setCountriesData] = useState<any>(null);
+  const [feeData, setFeeData] = useState<any>(null);
+  const [lookupData, setLookupData] = useState<any>(null);
 
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
@@ -91,13 +96,31 @@ export default function InvoiceDetails() {
   const [status, setStatus] = useState("");
 
   useEffect(() => {
-    if (apiData.data) {
-      console.log(apiData.data?.invoice?.invoiceNo);
-      setInvoiceDetail(apiData.data);
-      if (apiData.data.countryPayroll) {
+    const headers = {
+      headers: {
+        authorization: `Bearer ${tempToken}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": cid
+          ? cid
+          : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      },
+    };
+
+    axios
+      .get(api, headers)
+      .then((res: any) => {
+        console.log("working", res);
+        setApiData(res);
+
+        setInvoiceDetail(res.data);
+
         let data: any = [];
         let tempTotal = 0;
-        apiData.data?.countryPayroll.forEach((e: any) => {
+        res.data?.countryPayroll.forEach((e: any) => {
           let country = e.countryName;
           let countryCode = e.countryCode;
           let currencyCode = e.currencyCode;
@@ -139,12 +162,214 @@ export default function InvoiceDetails() {
         // console.log(data);
         setPayrollTables(data);
         setTotal(tempTotal);
-      }
-    }
-  }, [apiData]);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(feeApi, headers)
+      .then((res: any) => {
+        console.log("working", res);
+        setFeeData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(countriesApi, headers)
+      .then((res: any) => {
+        console.log("working", res);
+        setCountriesData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(lookupApi, headers)
+      .then((res: any) => {
+        console.log("working", res);
+        setLookupData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(addressApi, headers)
+      .then((res: any) => {
+        console.log("working", res);
+        setAddressData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  }, []);
+
+  // useEffect(() => {
+  //   // const headers = {
+  //   //   headers: {
+  //   //     authorization: `Bearer ${tempToken}`,
+  //   //     "x-apng-base-region": "EMEA",
+  //   //     "x-apng-customer-id": cid
+  //   //       ? cid
+  //   //       : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   //     "x-apng-external": "false",
+  //   //     "x-apng-inter-region": "0",
+  //   //     "x-apng-target-region": "EMEA",
+  //   //     customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   //   },
+  //   // };
+
+  //   // axios
+  //   //   .get(api, headers)
+  //   //   .then((res: any) => {
+  //   //     setApiData(res);
+  //   //     setInvoiceDetail(res.data);
+  //   //     if (res.data.countryPayroll) {
+  //   //       let data: any = [];
+  //   //       let tempTotal = 0;
+  //   //       res.data?.countryPayroll.forEach((e: any) => {
+  //   //         let country = e.countryName;
+  //   //         let countryCode = e.countryCode;
+  //   //         let currencyCode = e.currencyCode;
+  //   //         let arr: any = [];
+
+  //   //         e.payrollItems.forEach((item: any) => {
+  //   //           arr.push({
+  //   //             employeeID: item.employeeId,
+  //   //             name: {
+  //   //               value: item.firstName + " " + item.lastName,
+  //   //               // img: { src: item.employeeProfilePicture },
+
+  //   //               img: { src: avatar },
+  //   //               style: { borderRadius: 12 },
+  //   //             },
+  //   //             grossWages: currencyCode + " " + item.totalWage.toFixed(2),
+  //   //             allowances: currencyCode + " " + item.allowance.toFixed(2),
+  //   //             expenseReimb: currencyCode + " " + item.expenseRe.toFixed(2),
+  //   //             employerLiability:
+  //   //               currencyCode + " " + item.liability.toFixed(2),
+  //   //             countryVAT: item.countryVat.toFixed(2),
+  //   //             adminFees: currencyCode + " " + item.adminFee.toFixed(2),
+  //   //             healthcareBenefits:
+  //   //               currencyCode + " " + item.healthcare.toFixed(2),
+  //   //           });
+  //   //         });
+
+  //   //         tempTotal += e.feeSummary.total;
+
+  //   //         data.push({
+  //   //           country,
+  //   //           countryCode,
+  //   //           exchangeRate: e.exchangeRate,
+  //   //           currencyCode: e.currencyCode,
+  //   //           feeSummary: e.feeSummary,
+  //   //           data: arr,
+  //   //         });
+  //   //       });
+
+  //   //       // console.log(data);
+  //   //       setPayrollTables(data);
+  //   //       setTotal(tempTotal);
+  //   //     }
+  //   //   })
+  //   //   .catch((e: any) => {
+  //   //     console.log("error", e);
+  //   //   });
+
+  //   // axios
+  //   //   .get(addressApi, headers)
+  //   //   .then((res: any) => {
+  //   //     setAddressData(res);
+  //   //   })
+  //   //   .catch((e: any) => {
+  //   //     console.log("error", e);
+  //   //   });
+
+  //   // axios
+  //   //   .get(feeApi, headers)
+  //   //   .then((res: any) => {
+  //   //     setFeeData(res);
+  //   //   })
+  //   //   .catch((e: any) => {
+  //   //     console.log("error", e);
+  //   //   });
+
+  //   // axios
+  //   //   .get(countriesApi, headers)
+  //   //   .then((res: any) => {
+  //   //     setCountriesData(res);
+  //   //   })
+  //   //   .catch((e: any) => {
+  //   //     console.log("error", e);
+  //   //   });
+
+  //   // axios
+  //   //   .get(lookupApi, headers)
+  //   //   .then((res: any) => {
+  //   //     setLookupData(res);
+  //   //   })
+  //   //   .catch((e: any) => {
+  //   //     console.log("error", e);
+  //   //   });
+
+  //   if (apiData.data) {
+  //     console.log(apiData.data?.invoice?.invoiceNo);
+  //     setInvoiceDetail(apiData.data);
+  //     if (apiData.data.countryPayroll) {
+  //       let data: any = [];
+  //       let tempTotal = 0;
+  //       apiData.data?.countryPayroll.forEach((e: any) => {
+  //         let country = e.countryName;
+  //         let countryCode = e.countryCode;
+  //         let currencyCode = e.currencyCode;
+  //         let arr: any = [];
+
+  //         e.payrollItems.forEach((item: any) => {
+  //           arr.push({
+  //             employeeID: item.employeeId,
+  //             name: {
+  //               value: item.firstName + " " + item.lastName,
+  //               // img: { src: item.employeeProfilePicture },
+
+  //               img: { src: avatar },
+  //               style: { borderRadius: 12 },
+  //             },
+  //             grossWages: currencyCode + " " + item.totalWage.toFixed(2),
+  //             allowances: currencyCode + " " + item.allowance.toFixed(2),
+  //             expenseReimb: currencyCode + " " + item.expenseRe.toFixed(2),
+  //             employerLiability: currencyCode + " " + item.liability.toFixed(2),
+  //             countryVAT: item.countryVat.toFixed(2),
+  //             adminFees: currencyCode + " " + item.adminFee.toFixed(2),
+  //             healthcareBenefits:
+  //               currencyCode + " " + item.healthcare.toFixed(2),
+  //           });
+  //         });
+
+  //         tempTotal += e.feeSummary.total;
+
+  //         data.push({
+  //           country,
+  //           countryCode,
+  //           exchangeRate: e.exchangeRate,
+  //           currencyCode: e.currencyCode,
+  //           feeSummary: e.feeSummary,
+  //           data: arr,
+  //         });
+  //       });
+
+  //       // console.log(data);
+  //       setPayrollTables(data);
+  //       setTotal(tempTotal);
+  //     }
+  //   }
+  // }, [apiData]);
 
   useEffect(() => {
-    if (lookupData.data && invoiceDetail) {
+    if (lookupData?.data && invoiceDetail) {
       console.log("lookupData", lookupData.data.invoiceStatuses);
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === invoiceDetail.invoice.status) {
@@ -166,7 +391,7 @@ export default function InvoiceDetails() {
     return document.removeEventListener("click", handleClick);
   }, []);
 
-  if (!apiData.data) {
+  if (!apiData?.data) {
     return <p>Loading...</p>;
   }
 
@@ -393,9 +618,14 @@ export default function InvoiceDetails() {
         >
           Master Invoice
         </p>
-        <p className="tabTextPassive">Files & Notes</p>
+        <p
+          onClick={() => setActiveTab("files")}
+          className={activeTab === "files" ? "tabTextActive" : "tabTextPassive"}
+        >
+          Files & Notes
+        </p>
       </div>
-      {activeTab === "master" ? (
+      {activeTab === "master" && (
         <div>
           <h3 className="tableHeader">Country Summary</h3>
           <Table options={countrySummaryData} colSort />
@@ -421,7 +651,8 @@ export default function InvoiceDetails() {
             </div>
           </div>
         </div>
-      ) : (
+      )}
+      {activeTab === "payroll" && (
         <div>
           {payrollTables.map((item: any) => {
             console.log("item", item);
@@ -505,6 +736,18 @@ export default function InvoiceDetails() {
               <h3>- {total}</h3>
             </div>
           </div>
+        </div>
+      )}
+      {activeTab === "files" && (
+        <div className="filesNotes">
+          <div className="box">
+            <h3>Notes</h3>
+            <p>Write a Note relevant for this Invoice.</p>
+            <input placeholder="Add a Note..." />
+            <br />
+            <Button className="primary-blue medium" label="Publish Note" />
+          </div>
+          <div className="box2"></div>
         </div>
       )}
     </div>
