@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">45.53% </span>
+                <span class="strong">45.13% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>51/112</span>
+                <span class='fraction'>51/113</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.42% </span>
+                <span class="strong">15.9% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/38</span>
+                <span class='fraction'>7/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">32.35% </span>
+                <span class="strong">31.42% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>11/34</span>
+                <span class='fraction'>11/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">45.53% </span>
+                <span class="strong">45.13% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>51/112</span>
+                <span class='fraction'>51/113</span>
             </div>
         
             
@@ -800,7 +800,25 @@
 <a name='L735'></a><a href='#L735'>735</a>
 <a name='L736'></a><a href='#L736'>736</a>
 <a name='L737'></a><a href='#L737'>737</a>
-<a name='L738'></a><a href='#L738'>738</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L738'></a><a href='#L738'>738</a>
+<a name='L739'></a><a href='#L739'>739</a>
+<a name='L740'></a><a href='#L740'>740</a>
+<a name='L741'></a><a href='#L741'>741</a>
+<a name='L742'></a><a href='#L742'>742</a>
+<a name='L743'></a><a href='#L743'>743</a>
+<a name='L744'></a><a href='#L744'>744</a>
+<a name='L745'></a><a href='#L745'>745</a>
+<a name='L746'></a><a href='#L746'>746</a>
+<a name='L747'></a><a href='#L747'>747</a>
+<a name='L748'></a><a href='#L748'>748</a>
+<a name='L749'></a><a href='#L749'>749</a>
+<a name='L750'></a><a href='#L750'>750</a>
+<a name='L751'></a><a href='#L751'>751</a>
+<a name='L752'></a><a href='#L752'>752</a>
+<a name='L753'></a><a href='#L753'>753</a>
+<a name='L754'></a><a href='#L754'>754</a>
+<a name='L755'></a><a href='#L755'>755</a>
+<a name='L756'></a><a href='#L756'>756</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1421,6 +1439,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1453,6 +1477,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1538,7 +1574,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";
-import { Button, Icon, Table } from "atlasuikit";
+import { Button, Icon, Table, Cards } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
@@ -2157,9 +2193,14 @@ export default function InvoiceDetails() {
         &gt;
           Master Invoice
         &lt;/p&gt;
-        &lt;p className="tabTextPassive"&gt;Files &amp; Notes&lt;/p&gt;
+        &lt;p
+          onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setActiveTab("files")}</span>
+          className={activeTab === "files" ? "tabTextActive" : "tabTextPassive"}
+        &gt;
+          Files &amp; Notes
+        &lt;/p&gt;
       &lt;/div&gt;
-      {activeTab === "master" ? (
+      {activeTab === "master" &amp;&amp; (
         &lt;div&gt;
           &lt;h3 className="tableHeader"&gt;Country Summary&lt;/h3&gt;
           &lt;Table options={countrySummaryData} colSort /&gt;
@@ -2185,7 +2226,8 @@ export default function InvoiceDetails() {
             &lt;/div&gt;
           &lt;/div&gt;
         &lt;/div&gt;
-      ) : (
+      )}
+      {activeTab === "payroll" &amp;&amp; (
         &lt;div&gt;
           {payrollTables.map(<span class="fstat-no" title="function not covered" >(i</span>tem: any) =&gt; {
 <span class="cstat-no" title="statement not covered" >            console.log("item", item);</span>
@@ -2271,6 +2313,18 @@ export default function InvoiceDetails() {
           &lt;/div&gt;
         &lt;/div&gt;
       )}
+      {activeTab === "files" &amp;&amp; (
+        &lt;div className="filesNotes"&gt;
+          &lt;div className="box"&gt;
+            &lt;h3&gt;Notes&lt;/h3&gt;
+            &lt;p&gt;Write a Note relevant for this Invoice.&lt;/p&gt;
+            &lt;input placeholder="Add a Note..." /&gt;
+            &lt;br /&gt;
+            &lt;Button className="primary-blue medium" label="Publish Note" /&gt;
+          &lt;/div&gt;
+          &lt;div className="box2"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      )}
     &lt;/div&gt;
   );
 }
@@ -2281,7 +2335,7 @@ export default function InvoiceDetails() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Mar 29 2022 14:54:00 GMT+0500 (Pakistan Standard Time)
+                at Tue Mar 29 2022 15:51:38 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

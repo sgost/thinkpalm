@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Table } from "atlasuikit";
+import { Button, Icon, Table, Cards } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
@@ -618,9 +618,14 @@ export default function InvoiceDetails() {
         >
           Master Invoice
         </p>
-        <p className="tabTextPassive">Files & Notes</p>
+        <p
+          onClick={() => setActiveTab("files")}
+          className={activeTab === "files" ? "tabTextActive" : "tabTextPassive"}
+        >
+          Files & Notes
+        </p>
       </div>
-      {activeTab === "master" ? (
+      {activeTab === "master" && (
         <div>
           <h3 className="tableHeader">Country Summary</h3>
           <Table options={countrySummaryData} colSort />
@@ -646,7 +651,8 @@ export default function InvoiceDetails() {
             </div>
           </div>
         </div>
-      ) : (
+      )}
+      {activeTab === "payroll" && (
         <div>
           {payrollTables.map((item: any) => {
             console.log("item", item);
@@ -730,6 +736,18 @@ export default function InvoiceDetails() {
               <h3>- {total}</h3>
             </div>
           </div>
+        </div>
+      )}
+      {activeTab === "files" && (
+        <div className="filesNotes">
+          <div className="box">
+            <h3>Notes</h3>
+            <p>Write a Note relevant for this Invoice.</p>
+            <input placeholder="Add a Note..." />
+            <br />
+            <Button className="primary-blue medium" label="Publish Note" />
+          </div>
+          <div className="box2"></div>
         </div>
       )}
     </div>

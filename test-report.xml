@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="146"/>
-  </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="renders without crashing" duration="56"/>
-    <testCase name="Client View" duration="245"/>
-    <testCase name="Internal View" duration="80"/>
+    <testCase name="renders without crashing" duration="44"/>
+    <testCase name="Client View" duration="189"/>
+    <testCase name="Internal View" duration="50"/>
+  </file>
+  <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
+    <testCase name="renders learn react link" duration="166"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice detail routing" duration="711"/>
+    <testCase name="Invoice detail routing" duration="450"/>
   </file>
 </testExecutions>
