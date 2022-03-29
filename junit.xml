@@ -1,37 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="6" failures="1" errors="0" time="15.131">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T09:39:47" time="3.825" tests="1">
-    <testcase classname=" abc" name=" abc" time="0.211">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="10.686">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T09:53:52" time="7.222" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.146">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T09:39:47" time="5.395" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.246">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T09:53:52" time="7.65" tests="3">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.056">
+    </testcase>
+    <testcase classname=" Client View" name=" Client View" time="0.245">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.08">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T09:39:47" time="5.547" tests="3">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.051">
-    </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.318">
-    </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.081">
-    </testcase>
-  </testsuite>
-  <testsuite name="Invoice detail" errors="0" failures="1" skipped="0" timestamp="2022-03-29T09:39:47" time="11.601" tests="1">
-    <testcase classname="Invoice detail routing" name="Invoice detail routing" time="5.011">
-      <failure>Error: thrown: &quot;Exceeded timeout of 5000 ms for a test.
-Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test.&quot;
-    at C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js:6780:3
-    at _dispatchDescribe (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:98:26)
-    at describe (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:60:5)
-    at Object.&lt;anonymous&gt; (C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js:6770:1)
-    at Runtime._execModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
-    at Runtime._loadModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
-    at Runtime.requireModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
-    at jestAdapter (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:13)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at runTestInternal (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
-    at runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
-    at Object.worker (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)</failure>
+  <testsuite name="Invoice detail" errors="0" failures="0" skipped="0" timestamp="2022-03-29T09:53:52" time="7.717" tests="1">
+    <testcase classname="Invoice detail routing" name="Invoice detail routing" time="0.711">
     </testcase>
   </testsuite>
 </testsuites>
