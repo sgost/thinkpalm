@@ -225,31 +225,23 @@ export default function InvoiceListing() {
         item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
         item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
       });
-
-      setInternalTabletData({ ...internalTabledata, data: apiTableData });
+      if (isClient) {
+        setClientTableData({ ...clientTableData, data: apiTableData })
+      } else {
+        setInternalTabletData({ ...internalTabledata, data: apiTableData });
+      }
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
-  useEffect(() => {
-    if (apiData?.data?.results) {
-      const apiTableData = apiData?.data?.results;
 
-      apiTableData?.map((item: any) => {
-        item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
-        item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
-      });
-
-      setClientTableData({ ...clientTableData, data: apiTableData });
-    }
-  }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
   useEffect(() => {
-    if (showSuccessToast) {
+    if (showSuccessToast.type) {
       setTimeout(() => {
         setShowSuccessToast({ ...showSuccessToast, type: false });
       }, 4000);
     }
-  }, [showSuccessToast]);
+  }, [showSuccessToast.type]);
 
   const onRowCheckboxChange = (selectedRows: any) => {
     if (selectedRows.length == 1) {
@@ -344,7 +336,7 @@ export default function InvoiceListing() {
         }}
       >
         <p>Enter token</p>
-        <input value={token} onChange={(e) => setToken(e.target.value)} />
+        <input data-testid="custom-element" value={token} onChange={(e) => setToken(e.target.value)} />
         <Button
           handleOnClick={() => {
             localStorage.setItem("temptoken", token);
@@ -381,6 +373,7 @@ export default function InvoiceListing() {
           <div className="pickers">
             <div
               onClick={downloadFunction}
+              data-testid="download"
               className={downloadDisable ? "downloadpointer" : ""}
             >
               <Icon
@@ -587,7 +580,7 @@ export default function InvoiceListing() {
           </div>
         </div>
 
-        <div className="clearfilter" onClick={clearFilter}>
+        <div className="clearfilter" data-testid="clearfilter" onClick={clearFilter}>
           <Icon
             className="remove"
             color="#526fd6"
@@ -598,24 +591,23 @@ export default function InvoiceListing() {
         </div>
 
         {showSuccessToast.type && (
-        <div className="toast">
-          {showSuccessToast.message}
-          <span
-            className="toast-action"
-            onClick={() => {
-              setShowSuccessToast({ ...showSuccessToast, type: false });
-            }}
-          >
-            <Icon
-              icon="remove"
-              color="#ffff"
-              size="medium"
-              viewBox="-6 -6 20 20"
-            />
-          </span>
-        </div>
-      )}
-
+          <div className="toast">
+            {showSuccessToast.message}
+            <span
+              className="toast-action"
+              onClick={() => {
+                setShowSuccessToast({ ...showSuccessToast, type: false });
+              }}
+            >
+              <Icon
+                icon="remove"
+                color="#ffff"
+                size="medium"
+                viewBox="-6 -6 20 20"
+              />
+            </span>
+          </div>
+        )}
         <Table
           options={
             isClient
