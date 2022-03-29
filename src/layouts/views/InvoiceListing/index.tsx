@@ -334,7 +334,11 @@ export default function InvoiceListing() {
         }}
       >
         <p>Enter token</p>
-        <input value={token} onChange={(e) => setToken(e.target.value)} />
+        <input
+          data-testid="token"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+        />
         <Button
           handleOnClick={() => {
             localStorage.setItem("temptoken", token);

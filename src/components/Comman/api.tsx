@@ -27,6 +27,7 @@ const getRequest = (url: any, token: any, cid?: any) => {
     axios
       .get(url, headers)
       .then((res: any) => {
+        // console.log(res);
         setData(res);
       })
       .catch((e: any) => {
