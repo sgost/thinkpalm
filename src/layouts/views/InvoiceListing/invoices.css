@@ -50,23 +50,12 @@ body {
   }
 }
 
-
 @media (min-width: 160em) {
   html,
   body {
     font-size: 20px;
   }
 }
-
-
-
-
-
-
-
-
-
-
 
 .main-page-container {
   min-width: 100%;
@@ -127,6 +116,7 @@ body {
 
 .container {
   padding-bottom: 20px;
+  margin-top: 60px;
 }
 
 .dropdowns {
@@ -153,7 +143,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 320px;
+  max-width: 320px;
   background: #ffffff;
   border: 1px solid #b4b3bb;
   border-radius: 4px;
@@ -169,12 +159,6 @@ body {
 
 .dropdowns .inputContainer .input {
   border-style: hidden;
-  width: 180px;
-  position: static;
-  left: 10.17%;
-  right: 47.12%;
-  top: 0%;
-  bottom: 0%;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -186,14 +170,6 @@ body {
       -ms-flex-align: center;
           align-items: center;
   color: #767676;
-  -webkit-box-flex: 0;
-      -ms-flex: none;
-          flex: none;
-  -webkit-box-ordinal-group: 2;
-      -ms-flex-order: 1;
-          order: 1;
-  -ms-flex-positive: 0;
-      flex-grow: 0;
   margin: 0px 8px;
 }
 
@@ -256,7 +232,7 @@ body {
 }
 
 .table__row__header {
-  font-weight: 500;
+  font-weight: 700;
   line-height: 22px;
 }
 
@@ -267,5 +243,53 @@ body {
 
 .pagination {
   border-radius: 0px 0px 10px 10px;
+}
+
+.toast {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  padding: 1.531rem;
+  position: absolute;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  height: 2.20rem;
+  left: 2.5rem;
+  margin-top: -3rem;
+  margin-left: 30rem;
+  background-color: rgba(8, 18, 58, 0.8);
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 2px;
+  -webkit-box-shadow: 0rem 0.25rem 0.5rem rgba(112, 128, 144, 0.6);
+          box-shadow: 0rem 0.25rem 0.5rem rgba(112, 128, 144, 0.6);
+  border-radius: 0.25rem;
+  z-index: 2;
+}
+
+.toast-action {
+  margin-top: -3px;
+  margin-left: 10px;
+}
+
+@media (max-width: 1200px) {
+  .dropdowns .inputContainer {
+    max-width: 271px;
+    padding: 0px 2px 0px 2px;
+  }
+  .table__row__header {
+    font-size: 10px;
+  }
+  .table__row {
+    font-size: 10px;
+  }
 }
 /*# sourceMappingURL=invoices.css.map */

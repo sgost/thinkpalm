@@ -19,6 +19,10 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
+  const [showSuccessToast, setShowSuccessToast] = useState({
+    type: false,
+    message: "Downloading..."
+  });
   const [dropdownLabel, setDropdownLabel] = useState({
     types: "",
     status: "",
@@ -30,7 +34,7 @@ export default function InvoiceListing() {
   });
   const [singleInvoiceId, setSingleInvoiceId] = useState("");
   const [multiInvoiceId, setMultiInvoiveId] = useState([]);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState("eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg");
   const [types, setTypes] = useState([
     {
       isSelected: false,
@@ -173,6 +177,7 @@ export default function InvoiceListing() {
     data: [],
   });
   const [downloadDisable, setDownloadDisable] = useState(false);
+  const [customerID, setCustomerId] = useState("");
 
   let api = ``;
 
@@ -214,8 +219,6 @@ export default function InvoiceListing() {
   useEffect(() => {
     if (apiData?.data?.results) {
       const apiTableData = apiData?.data?.results;
-      console.log("api data", apiTableData);
-
       apiTableData?.map((item: any) => {
         item.totalAmount = `USD ${item.totalAmount.toLocaleString()}`;
         item.invoiceBalance = `USD ${item.invoiceBalance.toLocaleString()}`;
@@ -240,20 +243,23 @@ export default function InvoiceListing() {
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
-  const handleDropdown = () => {
-    if (isTypeOpen || isStatusOpen || isDateOpen) {
-      setIsTypeOpen(false);
-      setIsStatusOpen(false);
-      setIsDateOpen(false);
+  useEffect(() => {
+    if (showSuccessToast) {
+      setTimeout(() => {
+        setShowSuccessToast({ ...showSuccessToast, type: false });
+      }, 4000);
     }
-  };
+  }, [showSuccessToast]);
 
   const onRowCheckboxChange = (selectedRows: any) => {
     if (selectedRows.length == 1) {
       let id: any;
+      let custmId: any;
       selectedRows.map((item: any) => {
         id = item.id;
+        custmId = item.customerId
       });
+      setCustomerId(custmId)
       setSingleInvoiceId(id);
       setMultiInvoiveId([]);
       setCheckedData(selectedRows);
@@ -269,8 +275,8 @@ export default function InvoiceListing() {
   };
 
   const downloadFunction = () => {
-    console.log("downloading true");
     setDownloadDisable(true);
+    setShowSuccessToast({ ...showSuccessToast, type: true })
     const headers = {
       headers: {
         authorization: `Bearer ${token}`,
@@ -279,7 +285,7 @@ export default function InvoiceListing() {
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
-        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "customer_id": customerID,
         "Content-Type": "application/json",
       },
     };
@@ -290,6 +296,7 @@ export default function InvoiceListing() {
         .then((res: any) => {
           if (res.status === 200) {
             setDownloadDisable(false);
+            setShowSuccessToast({ type: true, message: "Downloaded..." })
             let url = res.data.url;
             let a = document.createElement("a");
             a.href = url;
@@ -301,6 +308,7 @@ export default function InvoiceListing() {
           console.log("error", e);
         });
     } else if (multiInvoiceId) {
+      setShowSuccessToast({ ...showSuccessToast, type: true })
       const multiDownloadInvoiceId = multiInvoiceId.join(",");
       const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
       axios({
@@ -310,6 +318,8 @@ export default function InvoiceListing() {
       })
         .then((res: any) => {
           if (res.status === 200) {
+            setDownloadDisable(false)
+            setShowSuccessToast({ type: true, message: "Downloaded..." })
             let url = res.data.url;
             let a = document.createElement("a");
             a.href = url;
@@ -369,8 +379,6 @@ export default function InvoiceListing() {
             />
           </div>
           <div className="pickers">
-            {console.log("downloadDisable", downloadDisable)}
-
             <div
               onClick={downloadFunction}
               className={downloadDisable ? "downloadpointer" : ""}
@@ -589,28 +597,46 @@ export default function InvoiceListing() {
           <h5>Clear Filters</h5>
         </div>
 
+        {showSuccessToast.type && (
+        <div className="toast">
+          {showSuccessToast.message}
+          <span
+            className="toast-action"
+            onClick={() => {
+              setShowSuccessToast({ ...showSuccessToast, type: false });
+            }}
+          >
+            <Icon
+              icon="remove"
+              color="#ffff"
+              size="medium"
+              viewBox="-6 -6 20 20"
+            />
+          </span>
+        </div>
+      )}
+
         <Table
           options={
             isClient
               ? {
-                  ...clientTableData,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
+                ...clientTableData,
+                // showDefaultColumn: true,
+                enableMultiSelect: true,
+                onRowCheckboxChange: onRowCheckboxChange,
+              }
               : {
-                  ...internalTabledata,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
+                ...internalTabledata,
+                // showDefaultColumn: true,
+                enableMultiSelect: true,
+                onRowCheckboxChange: onRowCheckboxChange,
+              }
           }
           colSort
           className="table"
           pagination
           pagingOptions={[15, 30, 50, 100]}
           handleRowClick={(row: any) => {
-            console.log("row", row);
             navigate("/pay/invoicedetails" + row.id + "/" + row.customerId);
 
             // navigate("/pay/invoicedetails");
