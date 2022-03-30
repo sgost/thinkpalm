@@ -283,10 +283,10 @@ stages:
       inputs:
         PathtoPublish: $(Build.ArtifactStagingDirectory)
         artifactName: QA
-    # - task: sonarcloud-buildbreaker@2
-    #   inputs:
-    #     SonarCloud: 'SonarCloud'
-    #     organization: 'technology-internal'
+    - task: sonarcloud-buildbreaker@2
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'technology-internal'
 - stage: Deploy_QA
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
@@ -463,10 +463,10 @@ stages:
       inputs:
         PathtoPublish: $(Build.ArtifactStagingDirectory)
         artifactName: UAT
-    # - task: sonarcloud-buildbreaker@2
-    #   inputs:
-    #     SonarCloud: 'SonarCloud'
-    #     organization: 'technology-internal'    
+    - task: sonarcloud-buildbreaker@2
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'technology-internal'    
         
 - stage: Deploy_UAT
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
