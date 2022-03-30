@@ -19,6 +19,7 @@
     "react-onclickoutside": "^6.12.1",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
+    "react-test-renderer": "^17.0.2",
     "typescript": "^4.6.2",
     "web-vitals": "^2.1.4"
   },
@@ -26,7 +27,7 @@
     "start": "webpack serve --config webpack/webpack.config.js --env env=dev",
     "build": "webpack --config webpack/webpack.config.js --env env=prod",
     "eject": "react-scripts eject",
-    "test": "jest --reporters=default --reporters=jest-junit"
+    "test": "jest --reporters=default --reporters=jest-junit --updateSnapshot"
   },
   "eslintConfig": {
     "extends": [

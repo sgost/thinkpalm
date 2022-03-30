@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="7.789">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T10:51:32" time="4.354" tests="3">
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.044">
-    </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.189">
-    </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.05">
+<testsuites name="jest tests" tests="9" failures="0" errors="0" time="6.037">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-30T13:07:13" time="3.299" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.1">
     </testcase>
   </testsuite>
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-29T10:51:32" time="5.219" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.166">
+  <testsuite name="Invoice details" errors="0" failures="0" skipped="0" timestamp="2022-03-30T13:07:13" time="3.502" tests="1">
+    <testcase classname="Invoice details tabs are working" name="Invoice details tabs are working" time="0.242">
     </testcase>
   </testsuite>
-  <testsuite name="Invoice detail" errors="0" failures="0" skipped="0" timestamp="2022-03-29T10:51:32" time="5.488" tests="1">
-    <testcase classname="Invoice detail routing" name="Invoice detail routing" time="0.45">
+  <testsuite name="client view" errors="0" failures="0" skipped="0" timestamp="2022-03-30T13:07:13" time="4.132" tests="7">
+    <testcase classname="client view dropdowns clickable" name="client view dropdowns clickable" time="0.574">
+    </testcase>
+    <testcase classname="client view table row clickable" name="client view table row clickable" time="0.112">
+    </testcase>
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.007">
+    </testcase>
+    <testcase classname=" Client View" name=" Client View" time="0.026">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.023">
+    </testcase>
+    <testcase classname=" Enter token client" name=" Enter token client" time="0.02">
+    </testcase>
+    <testcase classname=" Enter token internal" name=" Enter token internal" time="0.04">
     </testcase>
   </testsuite>
 </testsuites>

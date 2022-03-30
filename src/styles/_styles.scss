@@ -1,12 +1,18 @@
 @import "mixins";
 
 body {
+  // @font-face {
+  //   font-family: circular;
+  //   src: url("../asset/fonts/CircularXXSub-Regular.woff") format("woff");
+  // }
+
   margin: 0;
   // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
   //   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
   //   sans-serif;
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
+  // font-family: circular;
 }
 
 // code {

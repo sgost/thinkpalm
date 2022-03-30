@@ -178,7 +178,7 @@ export default function InvoiceListing() {
     ],
     data: [],
   });
-  const [downloadDisable, setDownloadDisable] = useState(false);
+  const [downloadDisable, setDownloadDisable] = useState(true);
   const [customerID, setCustomerId] = useState("");
 
   let api = ``;
@@ -244,6 +244,11 @@ export default function InvoiceListing() {
   }, [showSuccessToast.type]);
 
   const onRowCheckboxChange = (selectedRows: any) => {
+    if (selectedRows.length) {
+      setDownloadDisable(false);
+    } else {
+      setDownloadDisable(true);
+    }
     if (selectedRows.length == 1) {
       let id: any;
       let custmId: any;
@@ -511,7 +516,7 @@ export default function InvoiceListing() {
             />
 
             <MyDropdown
-              // data-testid="type-dd"
+              data-testid="dropdown"
               title="Types"
               isOpen={isTypeOpen}
               dropdownLabel={dropdownLabel}

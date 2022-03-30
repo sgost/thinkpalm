@@ -332,6 +332,30 @@
       border-radius: 10px;
       background-color: $white;
       padding: 4rem;
+
+      h3 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 1.125rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .inpContinaer {
+        display: flex;
+
+        textarea {
+          width: 100%;
+          padding: 1rem;
+          margin-bottom: 1rem;
+          border-color: $medium-gray;
+          border-radius: 0.125rem;
+        }
+      }
+      .btnContainer {
+        display: flex;
+        justify-content: flex-end;
+      }
     }
     .box2 {
       width: 60%;
@@ -339,6 +363,35 @@
       border-radius: 10px;
       background-color: $white;
       padding: 4rem;
+
+      h3 {
+        font-size: 1.5rem;
+      }
+      p {
+        font-size: 1.125rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .fileHandlerContainer {
+        display: flex;
+
+        .a-fhandler {
+          width: 100%;
+        }
+      }
+
+      .uploadConatiner {
+        display: flex;
+        margin-top: 5rem;
+
+        .a-upload {
+          width: 100%;
+        }
+
+        .a-upload__label {
+          font-size: 1.125rem;
+        }
+      }
     }
   }
 }
