@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Table, Cards } from "atlasuikit";
+import { Button, Icon, Table, FileHandler, FileUpload } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary, payrollData } from "./mockData";
 import spainFlag from "./spainFlag.png";
@@ -113,11 +113,9 @@ export default function InvoiceDetails() {
     axios
       .get(api, headers)
       .then((res: any) => {
-        console.log("working", res);
+        console.log("invoice details", res);
+        setInvoiceDetail(res?.data);
         setApiData(res);
-
-        setInvoiceDetail(res.data);
-
         let data: any = [];
         let tempTotal = 0;
         res.data?.countryPayroll.forEach((e: any) => {
@@ -170,7 +168,7 @@ export default function InvoiceDetails() {
     axios
       .get(feeApi, headers)
       .then((res: any) => {
-        console.log("working", res);
+        console.log("fee res", res);
         setFeeData(res);
       })
       .catch((e: any) => {
@@ -180,7 +178,7 @@ export default function InvoiceDetails() {
     axios
       .get(countriesApi, headers)
       .then((res: any) => {
-        console.log("working", res);
+        console.log("countries res", res);
         setCountriesData(res);
       })
       .catch((e: any) => {
@@ -190,7 +188,7 @@ export default function InvoiceDetails() {
     axios
       .get(lookupApi, headers)
       .then((res: any) => {
-        console.log("working", res);
+        console.log("lookup res", res);
         setLookupData(res);
       })
       .catch((e: any) => {
@@ -200,7 +198,7 @@ export default function InvoiceDetails() {
     axios
       .get(addressApi, headers)
       .then((res: any) => {
-        console.log("working", res);
+        // console.log("working", res);
         setAddressData(res);
       })
       .catch((e: any) => {
@@ -391,10 +389,6 @@ export default function InvoiceDetails() {
     return document.removeEventListener("click", handleClick);
   }, []);
 
-  if (!apiData?.data) {
-    return <p>Loading...</p>;
-  }
-
   const getBillingCurrency = () => {
     let currency = countriesData.data.find(
       (e: any) => e.currencyId === apiData.data.invoice.currencyId
@@ -476,6 +470,10 @@ export default function InvoiceDetails() {
       });
     setIsDownloadOpen(false);
   };
+
+  if (!apiData?.data) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div className="invoiceDetailsContainer">
@@ -743,11 +741,54 @@ export default function InvoiceDetails() {
           <div className="box">
             <h3>Notes</h3>
             <p>Write a Note relevant for this Invoice.</p>
-            <input placeholder="Add a Note..." />
-            <br />
-            <Button className="primary-blue medium" label="Publish Note" />
+            <div className="inpContinaer">
+              <textarea placeholder="Add a Note..." />
+            </div>
+            <div className="btnContainer">
+              <Button className="primary-blue medium" label="Publish Note" />
+            </div>
           </div>
-          <div className="box2"></div>
+
+          <div className="box2">
+            <h3>Files</h3>
+            <p>Upload files relevant for this Invoice.</p>
+            <div className="fileHandlerContainer">
+              <FileHandler
+                icons={{
+                  prefix: {
+                    color: "#526FD6",
+                    height: "40",
+                    icon: "docUpload",
+                    width: "40",
+                  },
+                  suffix: [
+                    {
+                      color: "#526FD6",
+                      height: "30",
+                      icon: "remove",
+                      width: "30",
+                    },
+                  ],
+                }}
+                label={{
+                  footer: "235 MB",
+                  header: "Sample.pdf",
+                }}
+              />
+            </div>
+
+            <div className="uploadConatiner">
+              <FileUpload
+                fileList={[]}
+                formats={[".PDF", ".EXCEL", ".JPEG", ".PNG", ".WORD"]}
+                handleUpload={function noRefCheck() {}}
+                isError={null}
+                maxSize={25}
+                resetFiles={function noRefCheck() {}}
+                title="Upload"
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>

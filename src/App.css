@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: circular;
+  src: url("./asset/Fonts/CircularXXSub-Regular.woff") format("woff");
+}
+body {
+  font-family: circular;
+}
