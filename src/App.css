@@ -37,10 +37,10 @@
   }
 }
 
-@font-face {
+/* @font-face {
   font-family: circular;
-  src: url("./asset/Fonts/CircularXXSub-Regular.woff") format("woff");
+  src: url("./assets/fonts/CircularStd-Book.ttf") format("woff");
 }
 body {
   font-family: circular;
-}
+} */

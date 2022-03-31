@@ -25,18 +25,25 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          "style-loader",
+          "css-loader",
+          "resolve-url-loader", // add this before sass-loader
+          "sass-loader",
+        ],
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              outputPath: "fonts",
-            },
-          },
-        ],
+        type: "asset/resource",
+        // use: [
+        //   {
+        //     loader: "file-loader",
+        //     options: {
+        //       name: "[name].[ext]",
+        //       outputPath: "fonts",
+        //     },
+        //   },
+        // ],
       },
       {
         test: /\.(gif|jpe?g|tiff|png|svg|webp|otf|bmp)$/,

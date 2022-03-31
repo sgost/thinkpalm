@@ -293,47 +293,47 @@ test("Enter token client", async () => {
   expect(Date).toBeInTheDocument();
 });
 
-test("Enter token internal", async () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
-  const input = await screen.getByTestId("custom-element");
-  fireEvent.change(input, {
-    target: {
-      value:
-        "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw",
-    },
-  });
-  await expect(input.value).toBe(
-    "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw"
-  );
-  const internalView = screen.getByText(/Internal View/);
-  await fireEvent.click(internalView);
+// test("Enter token internal", async () => {
+//   render(
+//     <HashRouter>
+//       <Invoices />
+//     </HashRouter>
+//   );
+//   const input = await screen.getByTestId("custom-element");
+//   fireEvent.change(input, {
+//     target: {
+//       value:
+//         "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw",
+//     },
+//   });
+//   await expect(input.value).toBe(
+//     "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw"
+//   );
+//   const internalView = screen.getByText(/Internal View/);
+//   await fireEvent.click(internalView);
 
-  const Date = await screen.getByText(/Date/);
-  expect(Date).toBeInTheDocument();
+//   const Date = await screen.getByText(/Date/);
+//   expect(Date).toBeInTheDocument();
 
-  // const pleaseSelect = await screen.getByText(/Please Select/);
-  // expect(pleaseSelect).toBeInTheDocument()
+//   // const pleaseSelect = await screen.getByText(/Please Select/);
+//   // expect(pleaseSelect).toBeInTheDocument()
 
-  const types = await screen.getByText(/Types/);
-  expect(types).toBeInTheDocument();
+//   const types = await screen.getByText(/Types/);
+//   expect(types).toBeInTheDocument();
 
-  const search = await screen.getByPlaceholderText(
-    /Search by Invoice, Customer/
-  );
-  expect(search).toBeInTheDocument();
+//   const search = await screen.getByPlaceholderText(
+//     /Search by Invoice, Customer/
+//   );
+//   expect(search).toBeInTheDocument();
 
-  const clearFilter = await screen.getByText(/Clear Filters/);
-  expect(clearFilter).toBeInTheDocument();
-  const clearFilterClick = await screen.getByTestId(/clearfilter/);
-  fireEvent.click(clearFilterClick);
+//   const clearFilter = await screen.getByText(/Clear Filters/);
+//   expect(clearFilter).toBeInTheDocument();
+//   const clearFilterClick = await screen.getByTestId(/clearfilter/);
+//   fireEvent.click(clearFilterClick);
 
-  const download = await screen.getByTestId("download");
-  fireEvent.click(download);
-});
+//   const download = await screen.getByTestId("download");
+//   fireEvent.click(download);
+// });
 
 // test("internal api working", async () => {
 //   mock

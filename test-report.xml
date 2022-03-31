@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="100"/>
+    <testCase name="renders learn react link" duration="72"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="242"/>
+    <testCase name="Invoice details tabs are working" duration="322"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view dropdowns clickable" duration="574"/>
-    <testCase name="client view table row clickable" duration="112"/>
-    <testCase name="renders without crashing" duration="7"/>
-    <testCase name="Client View" duration="26"/>
-    <testCase name="Internal View" duration="23"/>
-    <testCase name="Enter token client" duration="20"/>
-    <testCase name="Enter token internal" duration="40"/>
+    <testCase name="client view dropdowns clickable" duration="804"/>
+    <testCase name="client view table row clickable" duration="94"/>
+    <testCase name="renders without crashing" duration="4"/>
+    <testCase name="Client View" duration="32"/>
+    <testCase name="Internal View" duration="40"/>
+    <testCase name="Enter token client" duration="41"/>
   </file>
 </testExecutions>
