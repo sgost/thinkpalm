@@ -7,6 +7,8 @@ import {
   fireEvent,
   within,
   waitFor,
+  queryByAttribute,
+  waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MyDropdown from "../../../../components/MyDropdown/Dropdown";
@@ -220,7 +222,7 @@ describe("client view", () => {
     fireEvent.click(clientView);
   });
 
-  test("dropdowns clickable", async () => {
+  test("Datepicker dropdowns today clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
     // fireEvent.click(dd[1]);
@@ -232,11 +234,148 @@ describe("client view", () => {
     fireEvent.click(today);
   });
 
+  test("Datepicker dropdowns Yesterday clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    // fireEvent.click(dd[1]);
+    // fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/Yesterday/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
+  test("Datepicker dropdowns This Week clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    // fireEvent.click(dd[1]);
+    // fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/This Week/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
+  test("Datepicker dropdowns This Month clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    // fireEvent.click(dd[1]);
+    // fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/This Month/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
+  test("Datepicker dropdowns This Quarter clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    // fireEvent.click(dd[1]);
+    // fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/This Quarter/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
+  test("Datepicker dropdowns This Year clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    // fireEvent.click(dd[1]);
+    // fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/This Year/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
   test("table row clickable", async () => {
     const row = await waitFor(() => screen.getByText("1000992"));
     fireEvent.click(row);
   });
+
+  test("Status clickable", async () => {
+    const status = await waitFor(() => screen.getByText(/Status/));
+    fireEvent.click(status);
+    const paid = await waitFor(() => screen.getByText(/Paid/));
+    fireEvent.click(paid);
+  });
+
+  test("Type clickable", async () => {
+    const status = await waitFor(() => screen.getByText(/Type/));
+    fireEvent.click(status);
+    const paid = await waitFor(() => screen.getAllByText(/Payroll/));
+    fireEvent.click(paid[0]);
+  });
+
+  // test("tbl checkbox clickable", async () => {
+  //   // const row = await waitFor(() => screen.getByText("1000992"));
+  //   // const chkbox = await waitFor(() => screen.getByRole("checkbox"), {
+  //   //   timeout: 5000,
+  //   // });
+  //   // const chkbox = document.querySelector(
+  //   //   ".a-dropdown__option__item__check-box"
+  //   // );
+  //   // const chkbox = await waitFor(() =>
+  //   //   document.querySelector(
+  //   //     "#sandbox > div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1)"
+  //   //   )
+  //   // );
+  //   // const e = document.getElementById("chkbx0");
+  //   // const someElement = getById("#chkbx0");
+  //   // fireEvent.click(someElement);
+  //   // screen.logTestingPlaygroundURL();
+  // });
 });
+
+// test("test", () => {
+//   const mock = new MockAdapter(axios);
+//   mock
+//     .onGet(
+//       `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+//     )
+//     .reply(200, resDataClient);
+//   // const getById = queryByAttribute.bind(null, "id");
+
+//   const dom = render(
+//     <HashRouter>
+//       <Invoices />
+//     </HashRouter>
+//   );
+
+//   const input = screen.getByTestId("custom-element");
+//   fireEvent.change(input, {
+//     target: {
+//       value:
+//         "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
+//     },
+//   });
+//   const clientView = screen.getByText(/Client View/);
+//   fireEvent.click(clientView);
+
+//   await act(() => waitForElementToBeRemoved(/Client View/));
+
+//   dom.setState({ downloadDisable: false });
+
+//   // const someElement = getById(dom.container, "#chkbx0");
+
+//   // const x = dom.container.querySelector(
+//   //   "div > div > div:nth-child(2) > div:nth-child(2) > div:nth-child(2) > span:nth-child(1)"
+//   // );
+//   // fireEvent.click(x);
+//   // const download = dom.container.querySelector(
+//   //   "div > div > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > svg"
+//   // );
+//   // // fireEvent.change(someElement, { target: { checked: true } });
+//   // setTimeout(() => {
+//   //   fireEvent.click(download);
+//   // }, 3000);
+// });
 
 it("renders without crashing", () => {
   const div = document.createElement("div");
@@ -293,47 +432,47 @@ test("Enter token client", async () => {
   expect(Date).toBeInTheDocument();
 });
 
-test("Enter token internal", async () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
-  const input = await screen.getByTestId("custom-element");
-  fireEvent.change(input, {
-    target: {
-      value:
-        "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw",
-    },
-  });
-  await expect(input.value).toBe(
-    "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw"
-  );
-  const internalView = screen.getByText(/Internal View/);
-  await fireEvent.click(internalView);
+// test("Enter token internal", async () => {
+//   render(
+//     <HashRouter>
+//       <Invoices />
+//     </HashRouter>
+//   );
+//   const input = await screen.getByTestId("custom-element");
+//   fireEvent.change(input, {
+//     target: {
+//       value:
+//         "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw",
+//     },
+//   });
+//   await expect(input.value).toBe(
+//     "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NDg2OTg1NjgsImlhdCI6MTY0ODU0MTA5MiwiYXV0aF90aW1lIjoxNjQ4NTI1NzY4LCJqdGkiOiIyNmY3OGViOC1jMjY4LTRjZDAtYmZiMy03MWE2YjY3Mjk1Y2IiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI5YmVmMTY3Mi0zZTZlLTRmZWUtYTg5ZS1mM2FiMGIwMDI1NDAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjM1MTI1OTk5LWIyNjItNGQwNS05M2EzLWI2YTUxYjcyMzAxZSIsInNlc3Npb25fc3RhdGUiOiI2MDVlYjhhOC00MTE3LTQwMzgtOTk3Zi1jODk1ZmJkNTUzYzAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoicmFudml0LnMgc3VyaSIsImlkIjoiOWJlZjE2NzItM2U2ZS00ZmVlLWE4OWUtZjNhYjBiMDAyNTQwIiwicHJlZmVycmVkX3VzZXJuYW1lIjoicmFudml0LnNAdGhpbmtwYWxtLmluZm8iLCJnaXZlbl9uYW1lIjoicmFudml0LnMiLCJmYW1pbHlfbmFtZSI6InN1cmkiLCJlbWFpbCI6InJhbnZpdC5zQHRoaW5rcGFsbS5pbmZvIn0.UDfHRek5E4M7efC2hbYsjt8V05ikpPXEl2RqzulH_3pBnSqT4L0URc5Lq3xlEleXxrNE3vz8MAgf8V8yGY1ALMqyokLiL3PA4mWkeC1J7KonPDQD7zLvU-MSLiT0SEFGdIrImr-ZNs1uS9cwfBpml0eVxYCPxN0UO9Va3x_hkP_vSfxnk0Hh_znV90O9XseOM2C_p8lw8NymOOxiWQXSzg63OMKmJJk6eL9lmbotA1258SOW3xFs4uVpbpiygG5d-ckWeka_lGYGEVsuXFln4QIdyCPuXV8gl7T5IZS5TVG_Xpq3fepsbpKo5-K9giyzPjMTic5R5pmx8Q6UlTDnIw"
+//   );
+//   const internalView = screen.getByText(/Internal View/);
+//   await fireEvent.click(internalView);
 
-  const Date = await screen.getByText(/Date/);
-  expect(Date).toBeInTheDocument();
+//   const Date = await screen.getByText(/Date/);
+//   expect(Date).toBeInTheDocument();
 
-  // const pleaseSelect = await screen.getByText(/Please Select/);
-  // expect(pleaseSelect).toBeInTheDocument()
+//   // const pleaseSelect = await screen.getByText(/Please Select/);
+//   // expect(pleaseSelect).toBeInTheDocument()
 
-  const types = await screen.getByText(/Types/);
-  expect(types).toBeInTheDocument();
+//   const types = await screen.getByText(/Types/);
+//   expect(types).toBeInTheDocument();
 
-  const search = await screen.getByPlaceholderText(
-    /Search by Invoice, Customer/
-  );
-  expect(search).toBeInTheDocument();
+//   const search = await screen.getByPlaceholderText(
+//     /Search by Invoice, Customer/
+//   );
+//   expect(search).toBeInTheDocument();
 
-  const clearFilter = await screen.getByText(/Clear Filters/);
-  expect(clearFilter).toBeInTheDocument();
-  const clearFilterClick = await screen.getByTestId(/clearfilter/);
-  fireEvent.click(clearFilterClick);
+//   const clearFilter = await screen.getByText(/Clear Filters/);
+//   expect(clearFilter).toBeInTheDocument();
+//   const clearFilterClick = await screen.getByTestId(/clearfilter/);
+//   fireEvent.click(clearFilterClick);
 
-  const download = await screen.getByTestId("download");
-  fireEvent.click(download);
-});
+//   const download = await screen.getByTestId("download");
+//   fireEvent.click(download);
+// });
 
 // test("internal api working", async () => {
 //   mock

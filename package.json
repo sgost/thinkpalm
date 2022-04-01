@@ -82,6 +82,7 @@
     "lint-staged": "^12.3.3",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.5.1",
+    "resolve-url-loader": "^4.0.0",
     "sass-loader": "^12.4.0",
     "sonarqube-scanner": "^2.8.1",
     "style-loader": "^3.3.1",

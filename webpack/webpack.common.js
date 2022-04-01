@@ -8,6 +8,7 @@ const deps = require("../package.json").dependencies;
 
 module.exports = {
   entry: path.resolve(__dirname, "..", "./src/index.ts"),
+  // devtool: "source-map", // to resolve url in prod
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     plugins: [new TsconfigPathsPlugin()],
@@ -25,15 +26,23 @@ module.exports = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          "style-loader",
+          "css-loader",
+          // "resolve-url-loader", // add this before sass-loader
+          "sass-loader",
+        ],
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
+        // type: "asset/resource",
         use: [
           {
             loader: "file-loader",
             options: {
+              // name: "[name].[ext]",
               outputPath: "fonts",
+              // esModule: false,
             },
           },
         ],

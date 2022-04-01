@@ -6,7 +6,7 @@ import spainFlag from "./spainFlag.png";
 import getRequest from "../../../components/Comman/api";
 import moment from "moment";
 import GetFlag from "./getFlag";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
 
@@ -94,6 +94,8 @@ export default function InvoiceDetails() {
   const [invoiceDetail, setInvoiceDetail] = useState<any>(null);
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const headers = {
@@ -479,7 +481,9 @@ export default function InvoiceDetails() {
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
-          <p className="text">Invoices</p>
+          <p onClick={() => navigate("/pay")} className="navtext">
+            Invoices
+          </p>
           <Icon className="icon" icon="chevronRight" size="medium" />
           <p className="text">
             Payroll Invoice No. {invoiceDetail?.invoice?.invoiceNo}

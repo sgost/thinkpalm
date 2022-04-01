@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table, Banner } from "atlasuikit";
+import { Icon, Button, Table, Dropdown } from "atlasuikit";
 import { FaEllipsisH } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -180,6 +180,7 @@ export default function InvoiceListing() {
   });
   const [downloadDisable, setDownloadDisable] = useState(true);
   const [customerID, setCustomerId] = useState("");
+  const [isClearFilter, setIsClearFilter] = useState(false);
 
   let api = ``;
 
@@ -212,11 +213,62 @@ export default function InvoiceListing() {
       types: "",
       status: "",
     });
-  };
+    setStatus([
+      {
+        isSelected: false,
+        label: "Approved",
+        value: "approved",
+      },
+      {
+        isSelected: false,
+        label: "Paid",
+        value: 5,
+      },
+      {
+        isSelected: false,
+        label: "Pending Approval",
+        value: 3,
+      },
+      {
+        isSelected: false,
+        label: "Voided",
+        value: 9,
+      },
+      {
+        isSelected: false,
+        label: "Closed",
+        value: 8,
+      },
+    ]);
 
-  useEffect(() => {
-    console.log("type", isTypeOpen);
-  }, [isTypeOpen]);
+    setTypes([
+      {
+        isSelected: false,
+        label: "Contractor Invoice",
+        value: "contractorInvoice",
+      },
+      {
+        isSelected: false,
+        label: "Credit Memo",
+        value: 4,
+      },
+      {
+        isSelected: false,
+        label: "Payroll",
+        value: 1,
+      },
+      {
+        isSelected: false,
+        label: "Miscellaneous",
+        value: 2,
+      },
+      {
+        isSelected: false,
+        label: "Proforma",
+        value: 3,
+      },
+    ]);
+  };
 
   useEffect(() => {
     if (apiData?.data?.results) {
@@ -232,6 +284,12 @@ export default function InvoiceListing() {
       } else {
         setInternalTabletData({ ...internalTabledata, data: apiTableData });
       }
+    }
+
+    if (transactionTypes || statusType || dateFrom || dateTo) {
+      setIsClearFilter(true);
+    } else {
+      setIsClearFilter(false);
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
@@ -383,7 +441,7 @@ export default function InvoiceListing() {
             <div
               onClick={downloadFunction}
               data-testid="download"
-              className={downloadDisable ? "downloadpointer" : ""}
+              className={downloadDisable ? "downloadpointer" : "download"}
             >
               <Icon
                 className="download"
@@ -396,6 +454,7 @@ export default function InvoiceListing() {
             <DatepickerDropdown
               title="Date"
               isOpen={isDateOpen}
+              setIsOpen={setIsDateOpen}
               setDateTo={setDateTo}
               setDateFrom={setDateFrom}
               selectedDate={selectedDate}
@@ -515,7 +574,38 @@ export default function InvoiceListing() {
               }}
             />
 
-            <MyDropdown
+            <Dropdown
+              title="Type"
+              isOpen={isTypeOpen}
+              handleDropdownClick={(bool: any) => {
+                setIsTypeOpen(bool);
+              }}
+              handleDropOptionClick={(opt: any) => {
+                let index = types.findIndex((e) => e.value === opt.value);
+
+                let copy = [...types];
+                copy.forEach((e, i) => {
+                  if (i === index) {
+                    copy[index] = { ...opt, isSelected: true };
+                  } else {
+                    copy[i] = { ...copy[i], isSelected: false };
+                  }
+                });
+
+                let typesValue: any = copy[index]?.value;
+
+                setTypes(copy);
+                setIsTypeOpen(false);
+                setTransactionTypes(typesValue);
+                setDropdownLabel({
+                  ...dropdownLabel,
+                  types: copy[index]?.label,
+                });
+              }}
+              options={types}
+            />
+
+            {/* <MyDropdown
               data-testid="dropdown"
               title="Types"
               isOpen={isTypeOpen}
@@ -546,9 +636,39 @@ export default function InvoiceListing() {
                 });
               }}
               options={types}
+            /> */}
+
+            <Dropdown
+              title="Status"
+              isOpen={isStatusOpen}
+              handleDropdownClick={(bool: any) => {
+                setIsStatusOpen(bool);
+              }}
+              handleDropOptionClick={(opt: any) => {
+                let index = status.findIndex((e) => e.value === opt.value);
+                let copy = [...status];
+                copy.forEach((e, i) => {
+                  if (i === index) {
+                    copy[index] = { ...opt, isSelected: true };
+                  } else {
+                    copy[i] = { ...copy[i], isSelected: false };
+                  }
+                });
+
+                let statusValue: any = copy[index]?.value;
+
+                setStatus(copy);
+                setIsStatusOpen(false);
+                setStatusType(statusValue);
+                setDropdownLabel({
+                  ...dropdownLabel,
+                  status: copy[index]?.label,
+                });
+              }}
+              options={status}
             />
 
-            <MyDropdown
+            {/* <MyDropdown
               data-testid=""
               title="Status"
               isOpen={isStatusOpen}
@@ -578,7 +698,7 @@ export default function InvoiceListing() {
                 });
               }}
               options={status}
-            />
+            /> */}
 
             {/* <DatePicker
           handleDateChange={function noRefCheck() {}}
@@ -589,19 +709,21 @@ export default function InvoiceListing() {
           </div>
         </div>
 
-        <div
-          className="clearfilter"
-          data-testid="clearfilter"
-          onClick={clearFilter}
-        >
-          <Icon
-            className="remove"
-            color="#526fd6"
-            icon="remove"
-            size="medium"
-          />
-          <h5>Clear Filters</h5>
-        </div>
+        {isClearFilter && (
+          <div
+            className="clearfilter"
+            data-testid="clearfilter"
+            onClick={clearFilter}
+          >
+            <Icon
+              className="remove"
+              color="#526fd6"
+              icon="remove"
+              size="medium"
+            />
+            <h5>Clear Filters</h5>
+          </div>
+        )}
 
         {showSuccessToast.type && (
           <div className="toast">

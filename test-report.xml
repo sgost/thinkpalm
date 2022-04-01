@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="100"/>
+    <testCase name="renders learn react link" duration="207"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="242"/>
+    <testCase name="Invoice details tabs are working" duration="531"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view dropdowns clickable" duration="574"/>
-    <testCase name="client view table row clickable" duration="112"/>
-    <testCase name="renders without crashing" duration="7"/>
-    <testCase name="Client View" duration="26"/>
-    <testCase name="Internal View" duration="23"/>
-    <testCase name="Enter token client" duration="20"/>
-    <testCase name="Enter token internal" duration="40"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="865"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="423"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="246"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="181"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="138"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="127"/>
+    <testCase name="client view table row clickable" duration="109"/>
+    <testCase name="client view Status clickable" duration="94"/>
+    <testCase name="client view Type clickable" duration="107"/>
+    <testCase name="renders without crashing" duration="3"/>
+    <testCase name="Client View" duration="32"/>
+    <testCase name="Internal View" duration="25"/>
+    <testCase name="Enter token client" duration="31"/>
   </file>
 </testExecutions>

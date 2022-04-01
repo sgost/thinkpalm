@@ -8,20 +8,34 @@
   .dropdowns {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    // align-items: center;
     gap: 20px;
+    margin-bottom: 16px;
 
     .inputContainer {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      max-width: 320px;
-      background: #ffffff;
-      border: 1px solid #b4b3bb;
-      border-radius: 4px;
-      height: 50px;
-      margin: 6px 0px;
+      // display: flex;
+      // flex-direction: row;
+      // align-items: center;
+      // max-width: 320px;
+      // background: #ffffff;
+      // border: 1px solid #b4b3bb;
+      // border-radius: 4px;
+      // height: 50px;
+      // margin: 6px 0px;
+      // padding: 0px 5px 0px 20px;
+      // margin: 6px 0px;
       padding: 0px 5px 0px 20px;
+      align-items: center;
+      background: #fff !important;
+      border: 0.056rem solid #767676 !important;
+      border-radius: 0.222rem;
+      cursor: pointer;
+      display: flex;
+      font-size: 0.778rem;
+      height: 2.778rem;
+      position: relative;
+      width: 272px;
+      z-index: 998;
 
       textarea:focus,
       .input {
@@ -35,6 +49,7 @@
         color: #767676;
         margin: 0px 8px;
         height: 2.188rem;
+        width: 100%;
       }
       input:focus {
         outline: none;
@@ -47,7 +62,7 @@
 
       .download {
         color: $primary-blue;
-        margin-top: 16px;
+        margin-top: 0.2rem;
         cursor: pointer;
         width: 35.66px;
         height: 40px;
@@ -55,6 +70,7 @@
 
       .downloadpointer {
         pointer-events: none;
+        margin-top: 0.2rem;
       }
     }
 
