@@ -481,7 +481,7 @@ export default function InvoiceDetails() {
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
-          <p onClick={() => navigate("/pay")} className="text">
+          <p onClick={() => navigate("/pay")} className="navtext">
             Invoices
           </p>
           <Icon className="icon" icon="chevronRight" size="medium" />
