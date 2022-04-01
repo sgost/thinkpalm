@@ -35,16 +35,17 @@ module.exports = {
       },
       {
         test: /\.(eot|otf|ttf|woff|woff2)$/,
-        type: "asset/resource",
-        // use: [
-        //   {
-        //     loader: "file-loader",
-        //     options: {
-        //       name: "[name].[ext]",
-        //       outputPath: "fonts",
-        //     },
-        //   },
-        // ],
+        // type: "asset/resource",
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts",
+              esModule: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(gif|jpe?g|tiff|png|svg|webp|otf|bmp)$/,

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="8" failures="0" errors="0" time="7.666">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-03-31T13:04:14" time="4.07" tests="1">
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="12.061">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-04-01T06:20:09" time="7.34" tests="1">
     <testcase classname=" renders learn react link" name=" renders learn react link" time="0.065">
     </testcase>
   </testsuite>
-  <testsuite name="Invoice details" errors="0" failures="0" skipped="0" timestamp="2022-03-31T13:04:14" time="4.478" tests="1">
-    <testcase classname="Invoice details tabs are working" name="Invoice details tabs are working" time="0.297">
+  <testsuite name="Invoice details" errors="0" failures="0" skipped="0" timestamp="2022-04-01T06:20:09" time="7.688" tests="1">
+    <testcase classname="Invoice details tabs are working" name="Invoice details tabs are working" time="0.351">
     </testcase>
   </testsuite>
-  <testsuite name="client view" errors="0" failures="0" skipped="0" timestamp="2022-03-31T13:04:14" time="4.985" tests="6">
-    <testcase classname="client view dropdowns clickable" name="client view dropdowns clickable" time="0.542">
+  <testsuite name="client view" errors="0" failures="0" skipped="0" timestamp="2022-04-01T06:20:09" time="8.911" tests="6">
+    <testcase classname="client view dropdowns clickable" name="client view dropdowns clickable" time="0.872">
     </testcase>
-    <testcase classname="client view table row clickable" name="client view table row clickable" time="0.134">
+    <testcase classname="client view table row clickable" name="client view table row clickable" time="0.244">
     </testcase>
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.003">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.007">
     </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.078">
+    <testcase classname=" Client View" name=" Client View" time="0.046">
     </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.056">
+    <testcase classname=" Internal View" name=" Internal View" time="0.033">
     </testcase>
-    <testcase classname=" Enter token client" name=" Enter token client" time="0.069">
+    <testcase classname=" Enter token client" name=" Enter token client" time="0.053">
     </testcase>
   </testsuite>
 </testsuites>

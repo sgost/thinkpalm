@@ -4,14 +4,14 @@
     <testCase name="renders learn react link" duration="65"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="297"/>
+    <testCase name="Invoice details tabs are working" duration="351"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view dropdowns clickable" duration="542"/>
-    <testCase name="client view table row clickable" duration="134"/>
-    <testCase name="renders without crashing" duration="3"/>
-    <testCase name="Client View" duration="78"/>
-    <testCase name="Internal View" duration="56"/>
-    <testCase name="Enter token client" duration="69"/>
+    <testCase name="client view dropdowns clickable" duration="872"/>
+    <testCase name="client view table row clickable" duration="244"/>
+    <testCase name="renders without crashing" duration="7"/>
+    <testCase name="Client View" duration="46"/>
+    <testCase name="Internal View" duration="33"/>
+    <testCase name="Enter token client" duration="53"/>
   </file>
 </testExecutions>
