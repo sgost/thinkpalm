@@ -575,7 +575,7 @@ export default function InvoiceListing() {
             />
 
             <Dropdown
-              title="Types"
+              title="Type"
               isOpen={isTypeOpen}
               handleDropdownClick={(bool: any) => {
                 setIsTypeOpen(bool);

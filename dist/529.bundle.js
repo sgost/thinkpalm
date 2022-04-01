@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkatlas_payments_ui=self.webpackChunkatlas_payments_ui||[]).push([[529],{8529:function(n,t,u){u.r(t),u.d(t,{default:function(){return a}});var e=u(1143),s=u(5893);function a(){return(0,s.jsx)("div",{children:(0,s.jsx)(e.Z,{})})}}}]);
+//# sourceMappingURL=529.bundle.js.map
