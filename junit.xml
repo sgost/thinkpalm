@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="15" failures="0" errors="0" time="11.391">
-  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-04-01T11:37:59" time="5.548" tests="1">
-    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.207">
+<testsuites name="jest tests" tests="17" failures="0" errors="0" time="12.015">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-04-02T03:59:54" time="5.856" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.074">
     </testcase>
   </testsuite>
-  <testsuite name="Invoice details" errors="0" failures="0" skipped="0" timestamp="2022-04-01T11:37:59" time="6.077" tests="1">
-    <testcase classname="Invoice details tabs are working" name="Invoice details tabs are working" time="0.531">
+  <testsuite name="Invoice details" errors="0" failures="0" skipped="0" timestamp="2022-04-02T03:59:54" time="6.201" tests="1">
+    <testcase classname="Invoice details tabs are working" name="Invoice details tabs are working" time="0.306">
     </testcase>
   </testsuite>
-  <testsuite name="client view" errors="0" failures="0" skipped="0" timestamp="2022-04-01T11:37:59" time="8.073" tests="13">
-    <testcase classname="client view Datepicker dropdowns today clickable" name="client view Datepicker dropdowns today clickable" time="0.865">
+  <testsuite name="client view" errors="0" failures="0" skipped="0" timestamp="2022-04-02T03:59:54" time="8.437" tests="15">
+    <testcase classname="client view Datepicker dropdowns today clickable" name="client view Datepicker dropdowns today clickable" time="0.844">
     </testcase>
-    <testcase classname="client view Datepicker dropdowns Yesterday clickable" name="client view Datepicker dropdowns Yesterday clickable" time="0.423">
+    <testcase classname="client view Datepicker dropdowns Yesterday clickable" name="client view Datepicker dropdowns Yesterday clickable" time="0.142">
     </testcase>
-    <testcase classname="client view Datepicker dropdowns This Week clickable" name="client view Datepicker dropdowns This Week clickable" time="0.246">
+    <testcase classname="client view Datepicker dropdowns This Week clickable" name="client view Datepicker dropdowns This Week clickable" time="0.115">
     </testcase>
-    <testcase classname="client view Datepicker dropdowns This Month clickable" name="client view Datepicker dropdowns This Month clickable" time="0.181">
+    <testcase classname="client view Datepicker dropdowns This Month clickable" name="client view Datepicker dropdowns This Month clickable" time="0.166">
     </testcase>
-    <testcase classname="client view Datepicker dropdowns This Quarter clickable" name="client view Datepicker dropdowns This Quarter clickable" time="0.138">
+    <testcase classname="client view Datepicker dropdowns This Quarter clickable" name="client view Datepicker dropdowns This Quarter clickable" time="0.093">
     </testcase>
-    <testcase classname="client view Datepicker dropdowns This Year clickable" name="client view Datepicker dropdowns This Year clickable" time="0.127">
+    <testcase classname="client view Datepicker dropdowns This Year clickable" name="client view Datepicker dropdowns This Year clickable" time="0.088">
     </testcase>
-    <testcase classname="client view table row clickable" name="client view table row clickable" time="0.109">
+    <testcase classname="client view table row clickable" name="client view table row clickable" time="0.082">
     </testcase>
-    <testcase classname="client view Status clickable" name="client view Status clickable" time="0.094">
+    <testcase classname="client view Status clickable" name="client view Status clickable" time="0.086">
     </testcase>
-    <testcase classname="client view Type clickable" name="client view Type clickable" time="0.107">
+    <testcase classname="client view Type clickable" name="client view Type clickable" time="0.089">
     </testcase>
-    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.003">
+    <testcase classname="client view Clear filters clickable" name="client view Clear filters clickable" time="0.146">
     </testcase>
-    <testcase classname=" Client View" name=" Client View" time="0.032">
+    <testcase classname="hard test" name="hard test" time="0.154">
     </testcase>
-    <testcase classname=" Internal View" name=" Internal View" time="0.025">
+    <testcase classname=" renders without crashing" name=" renders without crashing" time="0.006">
     </testcase>
-    <testcase classname=" Enter token client" name=" Enter token client" time="0.031">
+    <testcase classname=" Client View" name=" Client View" time="0.02">
+    </testcase>
+    <testcase classname=" Internal View" name=" Internal View" time="0.016">
+    </testcase>
+    <testcase classname=" Enter token client" name=" Enter token client" time="0.028">
     </testcase>
   </testsuite>
 </testsuites>
