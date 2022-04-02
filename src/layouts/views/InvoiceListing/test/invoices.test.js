@@ -11,7 +11,6 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import MyDropdown from "../../../../components/MyDropdown/Dropdown";
 import { HashRouter } from "react-router-dom";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -342,8 +341,8 @@ describe("client view", () => {
   // });
 });
 
-describe("hard", () => {
-  test("test", async () => {
+describe("checkbox and download", () => {
+  test("checkbox and download are clickable in client view", async () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
@@ -380,7 +379,15 @@ describe("hard", () => {
     screen.debug(download);
     fireEvent.click(download);
 
-    screen.logTestingPlaygroundURL();
+    fireEvent.click(chkbx);
+
+    const singlechkbx = container.querySelectorAll(
+      ".a-dropdown__option__item__check-box"
+    );
+
+    fireEvent.click(singlechkbx[1]);
+
+    // screen.logTestingPlaygroundURL();
 
     // const someElement = getById(dom.container, "#chkbx0");
 
