@@ -42,7 +42,7 @@
         border-style: hidden;
         font-style: normal;
         font-weight: 400;
-        font-size: 18px;
+        // font-size: 18px;
         line-height: 140%;
         display: flex;
         align-items: center;
@@ -151,6 +151,30 @@
     }
     .table__row {
       font-size: 10px;
+    }
+  }
+
+  .invalidSearch {
+    background-color: white;
+    padding: 3rem;
+    border-radius: 12px;
+
+    .uhohContainer {
+      display: flex;
+      align-items: center;
+
+      p {
+        padding-left: 1rem;
+        color: $primary-gray;
+        font-size: 1.5rem;
+      }
+    }
+
+    ul {
+      padding-left: 5.5rem;
+      font-size: 1.25rem;
+      color: $secondary-gray;
+      margin: 0px;
     }
   }
 }

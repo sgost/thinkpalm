@@ -102,24 +102,64 @@ export default function InvoiceDetails() {
       headers: {
         authorization: `Bearer ${tempToken}`,
         "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid
-          ? cid
-          : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
-        customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       },
     };
 
     axios
+      .get(feeApi, headers)
+      .then((res: any) => {
+        // console.log("fee res", res);
+        setFeeData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(countriesApi, headers)
+      .then((res: any) => {
+        // console.log("countries res", res);
+        setCountriesData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(lookupApi, headers)
+      .then((res: any) => {
+        // console.log("lookup res", res);
+        setLookupData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
+      .get(addressApi, headers)
+      .then((res: any) => {
+        // console.log("working", res);
+        setAddressData(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+
+    axios
       .get(api, headers)
       .then((res: any) => {
-        console.log("invoice details", res);
-        setInvoiceDetail(res?.data);
-        setApiData(res);
         let data: any = [];
         let tempTotal = 0;
+        if (res.status !== 200) {
+          throw new Error("Something went wrong");
+        }
+        console.log("invoice details", res);
+
         res.data?.countryPayroll.forEach((e: any) => {
           let country = e.countryName;
           let countryCode = e.countryCode;
@@ -158,238 +198,39 @@ export default function InvoiceDetails() {
             data: arr,
           });
         });
-
-        // console.log(data);
         setPayrollTables(data);
         setTotal(tempTotal);
+        // console.log(data);
+        // setInvoiceDetail(res?.data);
+        setApiData(res);
       })
       .catch((e: any) => {
-        console.log("error", e);
-      });
-
-    axios
-      .get(feeApi, headers)
-      .then((res: any) => {
-        console.log("fee res", res);
-        setFeeData(res);
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
-
-    axios
-      .get(countriesApi, headers)
-      .then((res: any) => {
-        console.log("countries res", res);
-        setCountriesData(res);
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
-
-    axios
-      .get(lookupApi, headers)
-      .then((res: any) => {
-        console.log("lookup res", res);
-        setLookupData(res);
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
-
-    axios
-      .get(addressApi, headers)
-      .then((res: any) => {
-        // console.log("working", res);
-        setAddressData(res);
-      })
-      .catch((e: any) => {
-        console.log("error", e);
+        console.log("error e", e);
       });
   }, []);
 
-  // useEffect(() => {
-  //   // const headers = {
-  //   //   headers: {
-  //   //     authorization: `Bearer ${tempToken}`,
-  //   //     "x-apng-base-region": "EMEA",
-  //   //     "x-apng-customer-id": cid
-  //   //       ? cid
-  //   //       : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-  //   //     "x-apng-external": "false",
-  //   //     "x-apng-inter-region": "0",
-  //   //     "x-apng-target-region": "EMEA",
-  //   //     customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-  //   //   },
-  //   // };
-
-  //   // axios
-  //   //   .get(api, headers)
-  //   //   .then((res: any) => {
-  //   //     setApiData(res);
-  //   //     setInvoiceDetail(res.data);
-  //   //     if (res.data.countryPayroll) {
-  //   //       let data: any = [];
-  //   //       let tempTotal = 0;
-  //   //       res.data?.countryPayroll.forEach((e: any) => {
-  //   //         let country = e.countryName;
-  //   //         let countryCode = e.countryCode;
-  //   //         let currencyCode = e.currencyCode;
-  //   //         let arr: any = [];
-
-  //   //         e.payrollItems.forEach((item: any) => {
-  //   //           arr.push({
-  //   //             employeeID: item.employeeId,
-  //   //             name: {
-  //   //               value: item.firstName + " " + item.lastName,
-  //   //               // img: { src: item.employeeProfilePicture },
-
-  //   //               img: { src: avatar },
-  //   //               style: { borderRadius: 12 },
-  //   //             },
-  //   //             grossWages: currencyCode + " " + item.totalWage.toFixed(2),
-  //   //             allowances: currencyCode + " " + item.allowance.toFixed(2),
-  //   //             expenseReimb: currencyCode + " " + item.expenseRe.toFixed(2),
-  //   //             employerLiability:
-  //   //               currencyCode + " " + item.liability.toFixed(2),
-  //   //             countryVAT: item.countryVat.toFixed(2),
-  //   //             adminFees: currencyCode + " " + item.adminFee.toFixed(2),
-  //   //             healthcareBenefits:
-  //   //               currencyCode + " " + item.healthcare.toFixed(2),
-  //   //           });
-  //   //         });
-
-  //   //         tempTotal += e.feeSummary.total;
-
-  //   //         data.push({
-  //   //           country,
-  //   //           countryCode,
-  //   //           exchangeRate: e.exchangeRate,
-  //   //           currencyCode: e.currencyCode,
-  //   //           feeSummary: e.feeSummary,
-  //   //           data: arr,
-  //   //         });
-  //   //       });
-
-  //   //       // console.log(data);
-  //   //       setPayrollTables(data);
-  //   //       setTotal(tempTotal);
-  //   //     }
-  //   //   })
-  //   //   .catch((e: any) => {
-  //   //     console.log("error", e);
-  //   //   });
-
-  //   // axios
-  //   //   .get(addressApi, headers)
-  //   //   .then((res: any) => {
-  //   //     setAddressData(res);
-  //   //   })
-  //   //   .catch((e: any) => {
-  //   //     console.log("error", e);
-  //   //   });
-
-  //   // axios
-  //   //   .get(feeApi, headers)
-  //   //   .then((res: any) => {
-  //   //     setFeeData(res);
-  //   //   })
-  //   //   .catch((e: any) => {
-  //   //     console.log("error", e);
-  //   //   });
-
-  //   // axios
-  //   //   .get(countriesApi, headers)
-  //   //   .then((res: any) => {
-  //   //     setCountriesData(res);
-  //   //   })
-  //   //   .catch((e: any) => {
-  //   //     console.log("error", e);
-  //   //   });
-
-  //   // axios
-  //   //   .get(lookupApi, headers)
-  //   //   .then((res: any) => {
-  //   //     setLookupData(res);
-  //   //   })
-  //   //   .catch((e: any) => {
-  //   //     console.log("error", e);
-  //   //   });
-
-  //   if (apiData.data) {
-  //     console.log(apiData.data?.invoice?.invoiceNo);
-  //     setInvoiceDetail(apiData.data);
-  //     if (apiData.data.countryPayroll) {
-  //       let data: any = [];
-  //       let tempTotal = 0;
-  //       apiData.data?.countryPayroll.forEach((e: any) => {
-  //         let country = e.countryName;
-  //         let countryCode = e.countryCode;
-  //         let currencyCode = e.currencyCode;
-  //         let arr: any = [];
-
-  //         e.payrollItems.forEach((item: any) => {
-  //           arr.push({
-  //             employeeID: item.employeeId,
-  //             name: {
-  //               value: item.firstName + " " + item.lastName,
-  //               // img: { src: item.employeeProfilePicture },
-
-  //               img: { src: avatar },
-  //               style: { borderRadius: 12 },
-  //             },
-  //             grossWages: currencyCode + " " + item.totalWage.toFixed(2),
-  //             allowances: currencyCode + " " + item.allowance.toFixed(2),
-  //             expenseReimb: currencyCode + " " + item.expenseRe.toFixed(2),
-  //             employerLiability: currencyCode + " " + item.liability.toFixed(2),
-  //             countryVAT: item.countryVat.toFixed(2),
-  //             adminFees: currencyCode + " " + item.adminFee.toFixed(2),
-  //             healthcareBenefits:
-  //               currencyCode + " " + item.healthcare.toFixed(2),
-  //           });
-  //         });
-
-  //         tempTotal += e.feeSummary.total;
-
-  //         data.push({
-  //           country,
-  //           countryCode,
-  //           exchangeRate: e.exchangeRate,
-  //           currencyCode: e.currencyCode,
-  //           feeSummary: e.feeSummary,
-  //           data: arr,
-  //         });
-  //       });
-
-  //       // console.log(data);
-  //       setPayrollTables(data);
-  //       setTotal(tempTotal);
-  //     }
-  //   }
-  // }, [apiData]);
-
   useEffect(() => {
-    if (lookupData?.data && invoiceDetail) {
+    if (lookupData?.data && apiData?.data) {
       console.log("lookupData", lookupData.data.invoiceStatuses);
       lookupData.data.invoiceStatuses.forEach((e: any) => {
-        if (e.value === invoiceDetail.invoice.status) {
+        if (e.value === apiData.data.invoice.status) {
           setStatus(e.text);
         }
       });
     }
-  }, [lookupData, invoiceDetail]);
+  }, [lookupData, apiData]);
 
-  useEffect(() => {
-    function handleClick() {
-      console.log("fired");
-      if (isDownloadOpen) {
-        setIsDownloadOpen(false);
-      }
-    }
-    console.log("id", id, "cid", cid);
-    document.addEventListener("click", handleClick);
-    return document.removeEventListener("click", handleClick);
-  }, []);
+  // useEffect(() => {
+  //   function handleClick() {
+  //     console.log("fired");
+  //     if (isDownloadOpen) {
+  //       setIsDownloadOpen(false);
+  //     }
+  //   }
+  //   console.log("id", id, "cid", cid);
+  //   document.addEventListener("click", handleClick);
+  //   return document.removeEventListener("click", handleClick);
+  // }, []);
 
   const getBillingCurrency = () => {
     let currency = countriesData.data.find(
@@ -486,7 +327,7 @@ export default function InvoiceDetails() {
           </p>
           <Icon className="icon" icon="chevronRight" size="medium" />
           <p className="text">
-            Payroll Invoice No. {invoiceDetail?.invoice?.invoiceNo}
+            Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}
           </p>
         </div>
         <div className="buttons">
@@ -536,21 +377,21 @@ export default function InvoiceDetails() {
                 size="medium"
                 title="Order Summary"
               />
-              <p>Payroll Invoice No. {invoiceDetail?.invoice?.invoiceNo}</p>
+              <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
             </div>
             <div className="amount">
               <p>
                 Open{" "}
                 <span>
                   {getBillingCurrency()}{" "}
-                  {invoiceDetail?.invoice?.invoiceBalance.toFixed(2)}
+                  {apiData?.data?.invoice?.invoiceBalance.toFixed(2)}
                 </span>
               </p>
               <p>
                 Total{" "}
                 <span>
                   {getBillingCurrency()}{" "}
-                  {invoiceDetail?.invoice?.totalAmount.toFixed(2)}
+                  {apiData?.data?.invoice?.totalAmount.toFixed(2)}
                 </span>
               </p>
             </div>
@@ -560,11 +401,11 @@ export default function InvoiceDetails() {
         <div className="infoDetails">
           <div className="column1">
             <p className="heading">From</p>
-            <p className="value">{invoiceDetail?.invoiceFrom?.companyName}</p>
+            <p className="value">{apiData?.data?.invoiceFrom?.companyName}</p>
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">{invoiceDetail?.invoice?.customerName}</p>
+            <p className="value">{apiData?.data?.invoice?.customerName}</p>
             <p className="address">
               {addressData?.data?.billingAddress?.street}
             </p>
@@ -576,12 +417,12 @@ export default function InvoiceDetails() {
               {addressData?.data?.billingAddress?.country}
             </p>
             <p>PO Number</p>
-            <p className="poNo">{invoiceDetail?.invoice?.poNumber}</p>
+            <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
           </div>
           <div>
             <p className="heading">Invoice Date</p>
             <p className="value">
-              {moment(invoiceDetail?.invoice?.createdDate).format(
+              {moment(apiData?.data?.invoice?.createdDate).format(
                 "DD MMM YYYY"
               )}
             </p>
@@ -589,14 +430,14 @@ export default function InvoiceDetails() {
             <p className="value">-</p>
             <p className="heading">Payment Due</p>
             <p className="value">
-              {moment(invoiceDetail?.invoice?.dueDate).format("DD MMM YYYY")}
+              {moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY")}
             </p>
           </div>
           <div className="lastCloumn">
             <p className="heading">Location</p>
-            <p className="value">{invoiceDetail?.invoice?.customerLocation}</p>
+            <p className="value">{apiData?.data?.invoice?.customerLocation}</p>
             <p className="heading">Region</p>
-            <p className="value">{invoiceDetail?.regionItemCode}</p>
+            <p className="value">{apiData?.data?.regionItemCode}</p>
             <p className="heading">Billing Currency</p>
             <p className="value">{getBillingCurrency()}</p>
           </div>

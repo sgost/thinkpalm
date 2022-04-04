@@ -5,16 +5,13 @@ import {
   waitForElementToBeRemoved,
   waitFor,
 } from "@testing-library/react";
-import ReactDom from "react-dom";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { act } from "react-dom/test-utils";
-import InvoiceListing from "../../InvoiceListing";
-import renderer from "react-test-renderer";
 import { mockapidata } from "./mockdata";
 import axios from "axios";
+import { act } from "react-dom/test-utils";
 
 // describe("Invoice detail", () => {
 //   let mock;
@@ -143,11 +140,34 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await act(() =>
-      waitForElementToBeRemoved(() => screen.getByText(/Loading/))
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    screen.logTestingPlaygroundURL();
+    fireEvent.click(payrollTab);
+    const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
+    fireEvent.click(masterTab);
+    const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    fireEvent.click(filesTab);
+
+    // expect(payrollTab).toBeInTheDocument();
+  });
+
+  test("download clickable ", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
     );
 
-    // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
-    // expect(payrollTab).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const download = screen.getByText(/Download/);
+    fireEvent.click(download);
+    const pdf = await waitFor(() => screen.getByText(/Invoice as PDF/));
+    fireEvent.click(pdf);
+    fireEvent.click(download);
+    const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
+    fireEvent.click(excel);
   });
 });

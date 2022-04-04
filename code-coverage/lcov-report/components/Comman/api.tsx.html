@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/9</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/6</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">88.88% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/9</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -110,14 +110,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -131,56 +131,56 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";
 import axios from "axios";
 &nbsp;
-const getRequest = <span class="fstat-no" title="function not covered" >(u</span>rl: any, token: any, cid?: any) =&gt; {
-  const [data, setData] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
+const getRequest = (url: any, token: any, cid?: any) =&gt; {
+  const [data, setData] = useState([]);
 &nbsp;
   // const token =
   //   "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDgwMTM0MDksImlhdCI6MTY0Nzg0MTgxMiwiYXV0aF90aW1lIjoxNjQ3ODQwNjA5LCJqdGkiOiI2ODlkMDE2NS1mYWE1LTQwZTctODE2Yy0xOTQzNDQxZDFjNDkiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjRiOThiOWRjLWY0MTMtNGJmOC05YTg2LWVjMGY5MWE2MDM5MiIsInNlc3Npb25fc3RhdGUiOiJkZmJkMWU5Yy0wMGI1LTQ3NTItODk2ZS04ZTIzZTE5YTZiNWYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.Z-u67CuZfOakexCaEkuKCHxG0IhzQBZ5Iihgi6EkWp3jD4cW6aK528pP8OP7KJ39dEkKMKO50YPfkXb3dFg4fhDgWfajCr7juP7nORR0X9IPxXUo1bqW9frNZ5K_cbNbWFbDEsm2hDtF06-GCpbOQSlIDOQFPJviXWwt27Q4JsIhfxj_zDNl7Mww9YxS2rABCmiFZBAOuhINSayJ7gbKQAepv0w12QYHEm99xLUXzpg7k-XTHPmytBTLXgWl3oQinJY3_Mne4-16cISQavhVNrhjKagJIZxjPQoWpIJgRAaf_xchxDg58OOZQVuJ2CpoqNr_2sPmF2nRWx5b6lnZxg";
 &nbsp;
   // const token = localStorage.getItem("temptoken");
 &nbsp;
-  const headers = <span class="cstat-no" title="statement not covered" >{</span>
+  const headers = {
     headers: {
       authorization: `Bearer ${token}`,
       "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      "x-apng-customer-id": cid ? <span class="branch-0 cbranch-no" title="branch not covered" >cid </span>: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       "x-apng-external": "false",
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
-      customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      customer_id: cid ? <span class="branch-0 cbranch-no" title="branch not covered" >cid </span>: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
     },
   };
 &nbsp;
   // console.log("headers", headers);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (url) {</span>
-<span class="cstat-no" title="statement not covered" >    axios</span>
+  useEffect(() =&gt; {
+    if (url) {
+    axios
       .get(url, headers)
-      .then(<span class="fstat-no" title="function not covered" >(r</span>es: any) =&gt; {
+      .then((res: any) =&gt; {
         // console.log(res);
-<span class="cstat-no" title="statement not covered" >        setData(res);</span>
+        setData(res);
       })
       .catch(<span class="fstat-no" title="function not covered" >(e</span>: any) =&gt; {
 <span class="cstat-no" title="statement not covered" >        console.log("error", e);</span>
@@ -188,7 +188,7 @@ const getRequest = <span class="fstat-no" title="function not covered" >(u</span
     }
   }, [url, token]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return data;</span>
+  return data;
 };
 &nbsp;
 export default getRequest;
@@ -199,7 +199,7 @@ export default getRequest;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Fri Apr 01 2022 15:35:00 GMT+0500 (Pakistan Standard Time)
+                at Mon Apr 04 2022 15:13:26 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
