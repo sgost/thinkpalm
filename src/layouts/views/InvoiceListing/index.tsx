@@ -37,12 +37,14 @@ export default function InvoiceListing() {
   const [token, setToken] = useState(
     "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg"
   );
+
+  // Contractor, payroll, credit memos, proformas, miscellaneous
   const [types, setTypes] = useState([
-    {
-      isSelected: false,
-      label: "Contractor Invoice",
-      value: "contractorInvoice",
-    },
+    // {
+    //   isSelected: false,
+    //   label: "Contractor Invoice",
+    //   value: "contractorInvoice",
+    // },
     {
       isSelected: false,
       label: "Credit Memo",
@@ -63,17 +65,49 @@ export default function InvoiceListing() {
       label: "Proforma",
       value: 3,
     },
+    {
+      isSelected: false,
+      label: "LateFee ",
+      value: 5,
+    },
+    {
+      isSelected: false,
+      label: "Payment ",
+      value: 6,
+    },
   ]);
+
+  //  open, AR review, Pending Approval, Approved, Paid, Partially paid, cancelled, voided,
   const [status, setStatus] = useState([
     {
       isSelected: false,
+      label: "Open",
+      value: "1",
+    },
+    {
+      isSelected: false,
+      label: "In Review",
+      value: "2",
+    },
+    {
+      isSelected: false,
       label: "Approved",
-      value: "approved",
+      value: "4",
     },
     {
       isSelected: false,
       label: "Paid",
       value: 5,
+    },
+    {
+      isSelected: false,
+      label: "Partially Paid",
+      value: 6,
+    },
+    {
+      isSelected: false,
+      label: "Partial",
+      value: 7,
     },
     {
       isSelected: false,
@@ -181,6 +215,8 @@ export default function InvoiceListing() {
   const [downloadDisable, setDownloadDisable] = useState(true);
   const [customerID, setCustomerId] = useState("");
   const [isClearFilter, setIsClearFilter] = useState(false);
+  const [searchText, setSearchText] = useState<any>("");
+  const [searchedTableData, setSearchedTableData] = useState<any>(null);
 
   let api = ``;
 
@@ -216,13 +252,33 @@ export default function InvoiceListing() {
     setStatus([
       {
         isSelected: false,
+        label: "Open",
+        value: "1",
+      },
+      {
+        isSelected: false,
+        label: "In Review",
+        value: "2",
+      },
+      {
+        isSelected: false,
         label: "Approved",
-        value: "approved",
+        value: "4",
       },
       {
         isSelected: false,
         label: "Paid",
         value: 5,
+      },
+      {
+        isSelected: false,
+        label: "Partially Paid",
+        value: 6,
+      },
+      {
+        isSelected: false,
+        label: "Partial",
+        value: 7,
       },
       {
         isSelected: false,
@@ -242,11 +298,11 @@ export default function InvoiceListing() {
     ]);
 
     setTypes([
-      {
-        isSelected: false,
-        label: "Contractor Invoice",
-        value: "contractorInvoice",
-      },
+      // {
+      //   isSelected: false,
+      //   label: "Contractor Invoice",
+      //   value: "contractorInvoice",
+      // },
       {
         isSelected: false,
         label: "Credit Memo",
@@ -266,6 +322,16 @@ export default function InvoiceListing() {
         isSelected: false,
         label: "Proforma",
         value: 3,
+      },
+      {
+        isSelected: false,
+        label: "LateFee ",
+        value: 5,
+      },
+      {
+        isSelected: false,
+        label: "Payment ",
+        value: 6,
       },
     ]);
   };
@@ -301,33 +367,35 @@ export default function InvoiceListing() {
     }
   }, [showSuccessToast.type]);
 
-  const onRowCheckboxChange = (selectedRows: any) => {
-    if (selectedRows.length) {
-      setDownloadDisable(false);
+  useEffect(() => {
+    if (isClient) {
+      const filteredData = {
+        columns: clientTableData.columns,
+        data: clientTableData.data.filter((e: any) =>
+          e.invoiceNo.includes(searchText)
+        ),
+      };
+      if (searchText && filteredData.data.length) {
+        setSearchedTableData(filteredData);
+      } else {
+        setSearchedTableData(null);
+      }
     } else {
-      setDownloadDisable(true);
+      const filteredData = {
+        columns: internalTabledata.columns,
+        data: internalTabledata.data.filter(
+          (e: any) =>
+            e.invoiceNo.includes(searchText) ||
+            e.customerName.toLowerCase().includes(searchText.toLowerCase())
+        ),
+      };
+      if (searchText && filteredData.data.length) {
+        setSearchedTableData(filteredData);
+      } else {
+        setSearchedTableData(null);
+      }
     }
-    if (selectedRows.length == 1) {
-      let id: any;
-      let custmId: any;
-      selectedRows.map((item: any) => {
-        id = item.id;
-        custmId = item.customerId;
-      });
-      setCustomerId(custmId);
-      setSingleInvoiceId(id);
-      setMultiInvoiveId([]);
-      setCheckedData(selectedRows);
-    } else if (selectedRows.length >= 1) {
-      const multiId = selectedRows.map((items: any) => {
-        return items.id;
-      });
-
-      setMultiInvoiveId(multiId);
-      setSingleInvoiceId("");
-      setCheckedData(selectedRows);
-    }
-  };
+  }, [searchText]);
 
   const downloadFunction = () => {
     setDownloadDisable(true);
@@ -388,6 +456,60 @@ export default function InvoiceListing() {
     }
   };
 
+  const onRowCheckboxChange = (selectedRows: any) => {
+    if (selectedRows.length) {
+      setDownloadDisable(false);
+    } else {
+      setDownloadDisable(true);
+    }
+    if (selectedRows.length == 1) {
+      let id: any;
+      let custmId: any;
+      selectedRows.map((item: any) => {
+        id = item.id;
+        custmId = item.customerId;
+      });
+      setCustomerId(custmId);
+      setSingleInvoiceId(id);
+      setMultiInvoiveId([]);
+      setCheckedData(selectedRows);
+    } else if (selectedRows.length >= 1) {
+      const multiId = selectedRows.map((items: any) => {
+        return items.id;
+      });
+
+      setSingleInvoiceId("");
+      setCheckedData(selectedRows);
+      setMultiInvoiveId(multiId);
+    }
+  };
+
+  const getTableOptions = () => {
+    if (searchedTableData) {
+      return {
+        ...searchedTableData,
+        // showDefaultColumn: true,
+        enableMultiSelect: true,
+        onRowCheckboxChange: onRowCheckboxChange,
+      };
+    }
+    if (isClient) {
+      return {
+        ...clientTableData,
+        // showDefaultColumn: true,
+        enableMultiSelect: true,
+        onRowCheckboxChange: onRowCheckboxChange,
+      };
+    } else {
+      return {
+        ...internalTabledata,
+        // showDefaultColumn: true,
+        enableMultiSelect: true,
+        onRowCheckboxChange: onRowCheckboxChange,
+      };
+    }
+  };
+
   if (isClient === null) {
     return (
       <div
@@ -435,6 +557,7 @@ export default function InvoiceListing() {
               placeholder={
                 isClient ? "Search Invoices" : "Search by Invoice, Customer"
               }
+              onChange={(e: any) => setSearchText(e.target.value)}
             />
           </div>
           <div className="pickers">
@@ -576,6 +699,7 @@ export default function InvoiceListing() {
 
             <Dropdown
               title="Type"
+              multiple
               isOpen={isTypeOpen}
               handleDropdownClick={(bool: any) => {
                 setIsTypeOpen(bool);
@@ -584,18 +708,31 @@ export default function InvoiceListing() {
                 let index = types.findIndex((e) => e.value === opt.value);
 
                 let copy = [...types];
+
                 copy.forEach((e, i) => {
                   if (i === index) {
-                    copy[index] = { ...opt, isSelected: true };
-                  } else {
-                    copy[i] = { ...copy[i], isSelected: false };
+                    if (copy[index].isSelected) {
+                      copy[index] = { ...opt, isSelected: false };
+                    } else {
+                      copy[index] = { ...opt, isSelected: true };
+                    }
                   }
                 });
 
-                let typesValue: any = copy[index]?.value;
+                let typesValue = "";
+
+                copy.forEach((e) => {
+                  if (e.isSelected) {
+                    if (typesValue) {
+                      typesValue += "," + e.value.toString();
+                    } else {
+                      typesValue = e.value.toString();
+                    }
+                  }
+                });
 
                 setTypes(copy);
-                setIsTypeOpen(false);
+                // setIsTypeOpen(false);
                 setTransactionTypes(typesValue);
                 setDropdownLabel({
                   ...dropdownLabel,
@@ -640,6 +777,7 @@ export default function InvoiceListing() {
 
             <Dropdown
               title="Status"
+              multiple
               isOpen={isStatusOpen}
               handleDropdownClick={(bool: any) => {
                 setIsStatusOpen(bool);
@@ -649,13 +787,24 @@ export default function InvoiceListing() {
                 let copy = [...status];
                 copy.forEach((e, i) => {
                   if (i === index) {
-                    copy[index] = { ...opt, isSelected: true };
-                  } else {
-                    copy[i] = { ...copy[i], isSelected: false };
+                    if (copy[index].isSelected) {
+                      copy[index] = { ...opt, isSelected: false };
+                    } else {
+                      copy[index] = { ...opt, isSelected: true };
+                    }
                   }
                 });
 
-                let statusValue: any = copy[index]?.value;
+                let statusValue = "";
+                copy.forEach((e) => {
+                  if (e.isSelected) {
+                    if (statusValue) {
+                      statusValue += "," + e.value.toString();
+                    } else {
+                      statusValue = e.value.toString();
+                    }
+                  }
+                });
 
                 setStatus(copy);
                 setIsStatusOpen(false);
@@ -743,32 +892,61 @@ export default function InvoiceListing() {
             </span>
           </div>
         )}
-        <Table
-          options={
-            isClient
-              ? {
-                  ...clientTableData,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
-              : {
-                  ...internalTabledata,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
-          }
-          colSort
-          className="table"
-          pagination
-          pagingOptions={[15, 30, 50, 100]}
-          handleRowClick={(row: any) => {
-            navigate("/pay/invoicedetails" + row.id + "/" + row.customerId);
+        {searchText && !searchedTableData ? (
+          <div className="invalidSearch">
+            <div className="uhohContainer">
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 48 48"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21 38C30.389 38 38 30.389 38 21C38 11.611 30.389 4 21 4C11.611 4 4 11.611 4 21C4 30.389 11.611 38 21 38Z"
+                  fill="#526FD6"
+                  fill-opacity="0.4"
+                  stroke="#3E3E3E"
+                  stroke-width="4"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M26.6568 14.343C25.9147 13.599 25.0329 13.0091 24.0621 12.607C23.0913 12.2049 22.0506 11.9986 20.9998 12C18.7898 12 16.7898 12.895 15.3428 14.343"
+                  stroke="white"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M33.2222 33.2227L41.7072 41.7077"
+                  stroke="#3E3E3E"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
 
-            // navigate("/pay/invoicedetails");
-          }}
-        />
+              <p>Uh-oh! We found no matches for your search.</p>
+            </div>
+            <ul>
+              <li>Try modifiying your search or;</li>
+              <li>Use filters to refine your search.</li>
+            </ul>
+          </div>
+        ) : (
+          <Table
+            options={getTableOptions()}
+            colSort
+            className="table"
+            pagination
+            pagingOptions={[15, 30, 50, 100]}
+            handleRowClick={(row: any) => {
+              navigate("/pay/invoicedetails" + row.id + "/" + row.customerId);
+
+              // navigate("/pay/invoicedetails");
+            }}
+          />
+        )}
       </div>
     </>
   );

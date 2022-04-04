@@ -56,6 +56,12 @@ import cw from "./flags/4x3/cw.svg";
 import cx from "./flags/4x3/cx.svg";
 import cy from "./flags/4x3/cy.svg";
 import cz from "./flags/4x3/cz.svg";
+import de from "./flags/4x3/de.svg";
+import dg from "./flags/4x3/dg.svg";
+import dj from "./flags/4x3/dj.svg";
+import dk from "./flags/4x3/dk.svg";
+import dm from "./flags/4x3/dm.svg";
+import dz from "./flags/4x3/dz.svg";
 
 import ke from "./flags/4x3/ke.svg";
 import us from "./flags/4x3/us.svg";
@@ -67,8 +73,20 @@ const flags: any = {
   us,
 };
 
+// function importAll(r: any) {
+//   let images: any = {};
+//   r.keys().map((item: any) => {
+//     images[item.replace("./", "")] = r(item);
+//   });
+//   return images;
+// }
+
+// const images = importAll(require.context("./flags/4x3", false, /\.svg/));
+
 export default function GetFlag(props: any) {
+  // const Flag = images[props.code.toLowerCase() + ".svg"].default;
   const Flag = flags[props.code.toLowerCase()];
+  // console.log("flags", images[props.code.toLowerCase() + ".svg"]);
   return (
     <img src={Flag} />
     // <div>
