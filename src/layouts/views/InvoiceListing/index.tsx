@@ -13,7 +13,6 @@ export default function InvoiceListing() {
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
-  const [checkedData, setCheckedData] = useState([]);
   const [transactionTypes, setTransactionTypes] = useState("");
   const [statusType, setStatusType] = useState("");
   const [dateTo, setDateTo] = useState("");
@@ -442,7 +441,7 @@ export default function InvoiceListing() {
         .then((res: any) => {
           if (res.status === 200) {
             setDownloadDisable(false);
-            setShowSuccessToast({ type: true, message: "Downloaded..." });
+            setShowSuccessToast({ type: true, message: "Downloaded...." });
             let url = res.data.url;
             let a = document.createElement("a");
             a.href = url;
@@ -456,6 +455,7 @@ export default function InvoiceListing() {
     }
   };
 
+  /* istanbul ignore next */
   const onRowCheckboxChange = (selectedRows: any) => {
     if (selectedRows.length) {
       setDownloadDisable(false);
@@ -472,41 +472,13 @@ export default function InvoiceListing() {
       setCustomerId(custmId);
       setSingleInvoiceId(id);
       setMultiInvoiveId([]);
-      setCheckedData(selectedRows);
     } else if (selectedRows.length >= 1) {
       const multiId = selectedRows.map((items: any) => {
         return items.id;
       });
 
       setSingleInvoiceId("");
-      setCheckedData(selectedRows);
       setMultiInvoiveId(multiId);
-    }
-  };
-
-  const getTableOptions = () => {
-    if (searchedTableData) {
-      return {
-        ...searchedTableData,
-        // showDefaultColumn: true,
-        enableMultiSelect: true,
-        onRowCheckboxChange: onRowCheckboxChange,
-      };
-    }
-    if (isClient) {
-      return {
-        ...clientTableData,
-        // showDefaultColumn: true,
-        enableMultiSelect: true,
-        onRowCheckboxChange: onRowCheckboxChange,
-      };
-    } else {
-      return {
-        ...internalTabledata,
-        // showDefaultColumn: true,
-        enableMultiSelect: true,
-        onRowCheckboxChange: onRowCheckboxChange,
-      };
     }
   };
 
@@ -732,7 +704,6 @@ export default function InvoiceListing() {
                 });
 
                 setTypes(copy);
-                // setIsTypeOpen(false);
                 setTransactionTypes(typesValue);
                 setDropdownLabel({
                   ...dropdownLabel,
@@ -742,39 +713,6 @@ export default function InvoiceListing() {
               options={types}
             />
 
-            {/* <MyDropdown
-              data-testid="dropdown"
-              title="Types"
-              isOpen={isTypeOpen}
-              dropdownLabel={dropdownLabel}
-              handleDropdownClick={() => {
-                setIsTypeOpen(!isTypeOpen);
-              }}
-              handleDropOptionClick={(opt: any) => {
-                let index = types.findIndex((e) => e.value === opt.value);
-
-                let copy = [...types];
-                copy.forEach((e, i) => {
-                  if (i === index) {
-                    copy[index] = { ...opt, isSelected: true };
-                  } else {
-                    copy[i] = { ...copy[i], isSelected: false };
-                  }
-                });
-
-                let typesValue: any = copy[index]?.value;
-
-                setTypes(copy);
-                setIsTypeOpen(false);
-                setTransactionTypes(typesValue);
-                setDropdownLabel({
-                  ...dropdownLabel,
-                  types: copy[index]?.label,
-                });
-              }}
-              options={types}
-            /> */}
-
             <Dropdown
               title="Status"
               multiple
@@ -783,10 +721,10 @@ export default function InvoiceListing() {
                 setIsStatusOpen(bool);
               }}
               handleDropOptionClick={(opt: any) => {
-                let index = status.findIndex((e) => e.value === opt.value);
                 let copy = [...status];
-                copy.forEach((e, i) => {
-                  if (i === index) {
+                let index = status.findIndex((e) => e.value === opt.value);
+                copy.forEach((e, ind) => {
+                  if (ind === index) {
                     if (copy[index].isSelected) {
                       copy[index] = { ...opt, isSelected: false };
                     } else {
@@ -817,43 +755,6 @@ export default function InvoiceListing() {
               options={status}
             />
 
-            {/* <MyDropdown
-              data-testid=""
-              title="Status"
-              isOpen={isStatusOpen}
-              dropdownLabel={dropdownLabel}
-              handleDropdownClick={() => {
-                setIsStatusOpen(!isStatusOpen);
-              }}
-              handleDropOptionClick={(opt: any) => {
-                let index = status.findIndex((e) => e.value === opt.value);
-                let copy = [...status];
-                copy.forEach((e, i) => {
-                  if (i === index) {
-                    copy[index] = { ...opt, isSelected: true };
-                  } else {
-                    copy[i] = { ...copy[i], isSelected: false };
-                  }
-                });
-
-                let statusValue: any = copy[index]?.value;
-
-                setStatus(copy);
-                setIsStatusOpen(false);
-                setStatusType(statusValue);
-                setDropdownLabel({
-                  ...dropdownLabel,
-                  status: copy[index]?.label,
-                });
-              }}
-              options={status}
-            /> */}
-
-            {/* <DatePicker
-          handleDateChange={function noRefCheck() {}}
-          label="Start Date"
-          required
-        /> */}
             <FaEllipsisH className="icon" />
           </div>
         </div>
@@ -935,15 +836,34 @@ export default function InvoiceListing() {
           </div>
         ) : (
           <Table
-            options={getTableOptions()}
+            options={
+              searchText
+                ? {
+                    ...searchedTableData,
+                    // showDefaultColumn: true,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
+                : isClient
+                ? {
+                    ...clientTableData,
+                    // showDefaultColumn: true,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
+                : {
+                    ...internalTabledata,
+                    // showDefaultColumn: true,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
+            }
             colSort
             className="table"
             pagination
             pagingOptions={[15, 30, 50, 100]}
             handleRowClick={(row: any) => {
               navigate("/pay/invoicedetails" + row.id + "/" + row.customerId);
-
-              // navigate("/pay/invoicedetails");
             }}
           />
         )}

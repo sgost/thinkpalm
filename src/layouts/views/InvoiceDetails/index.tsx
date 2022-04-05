@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Icon, Table, FileHandler, FileUpload } from "atlasuikit";
 import "./invoiceDetails.scss";
-import { countrySummaryData, feeSummary, payrollData } from "./mockData";
-import spainFlag from "./spainFlag.png";
-import getRequest from "../../../components/Comman/api";
+import { countrySummaryData, feeSummary } from "./mockData";
+
 import moment from "moment";
 import GetFlag from "./getFlag";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,11 +28,7 @@ export default function InvoiceDetails() {
     "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
 
   const tempToken = localStorage.getItem("temptoken");
-  // const apiData: any = getRequest(api, tempToken, cid);
-  // const addressData: any = getRequest(addressApi, tempToken, cid);
-  // const countriesData: any = getRequest(countriesApi, tempToken, cid);
-  // const feeData: any = getRequest(feeApi, tempToken, cid);
-  // const lookupData: any = getRequest(lookupApi, tempToken, cid);
+
   const [apiData, setApiData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
@@ -91,7 +86,6 @@ export default function InvoiceDetails() {
     ],
     showDefaultColumn: true,
   };
-  const [invoiceDetail, setInvoiceDetail] = useState<any>(null);
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
 
@@ -113,7 +107,6 @@ export default function InvoiceDetails() {
     axios
       .get(feeApi, headers)
       .then((res: any) => {
-        // console.log("fee res", res);
         setFeeData(res);
       })
       .catch((e: any) => {
@@ -123,7 +116,6 @@ export default function InvoiceDetails() {
     axios
       .get(countriesApi, headers)
       .then((res: any) => {
-        // console.log("countries res", res);
         setCountriesData(res);
       })
       .catch((e: any) => {
@@ -133,7 +125,6 @@ export default function InvoiceDetails() {
     axios
       .get(lookupApi, headers)
       .then((res: any) => {
-        // console.log("lookup res", res);
         setLookupData(res);
       })
       .catch((e: any) => {
@@ -143,7 +134,6 @@ export default function InvoiceDetails() {
     axios
       .get(addressApi, headers)
       .then((res: any) => {
-        // console.log("working", res);
         setAddressData(res);
       })
       .catch((e: any) => {
@@ -200,8 +190,7 @@ export default function InvoiceDetails() {
         });
         setPayrollTables(data);
         setTotal(tempTotal);
-        // console.log(data);
-        // setInvoiceDetail(res?.data);
+
         setApiData(res);
       })
       .catch((e: any) => {
@@ -219,18 +208,6 @@ export default function InvoiceDetails() {
       });
     }
   }, [lookupData, apiData]);
-
-  // useEffect(() => {
-  //   function handleClick() {
-  //     console.log("fired");
-  //     if (isDownloadOpen) {
-  //       setIsDownloadOpen(false);
-  //     }
-  //   }
-  //   console.log("id", id, "cid", cid);
-  //   document.addEventListener("click", handleClick);
-  //   return document.removeEventListener("click", handleClick);
-  // }, []);
 
   const getBillingCurrency = () => {
     let currency = countriesData.data.find(
@@ -301,9 +278,9 @@ export default function InvoiceDetails() {
       .get(downloadApi, headers)
       .then((res: any) => {
         if (res.status === 200) {
-          let url = res.data.url;
+          let url2 = res.data.url;
           let a = document.createElement("a");
-          a.href = url;
+          a.href = url2;
           a.download = `${res.data.name}`;
           a.click();
         }
@@ -515,7 +492,7 @@ export default function InvoiceDetails() {
                     colSort
                   />
                   <div className="feeSummaryCalc">
-                    <div className="row">
+                    <div className="rowFee">
                       <p className="title">Country Subtotal Due</p>
                       <p className="amount">
                         {item.currencyCode +
@@ -523,7 +500,7 @@ export default function InvoiceDetails() {
                           item.feeSummary.subTotalDue.toFixed(2)}
                       </p>
                     </div>
-                    <div className="row">
+                    <div className="rowFee">
                       <p className="title">
                         Country EXC Rate {item.exchangeRate.toFixed(2)}
                       </p>
@@ -535,7 +512,7 @@ export default function InvoiceDetails() {
                           ).toFixed(2)}
                       </p>
                     </div>
-                    <div className="row">
+                    <div className="rowFee">
                       <p className="title">In Country Processing Fee</p>
                       <p className="amount">
                         {item.currencyCode +
@@ -543,7 +520,7 @@ export default function InvoiceDetails() {
                           getInCountryProcessingFee().toFixed(2)}
                       </p>
                     </div>
-                    <div className="row">
+                    <div className="rowFee">
                       <p className="title">FX Bill</p>
                       <p className="amount">
                         {item.currencyCode +
