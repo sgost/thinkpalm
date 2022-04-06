@@ -248,10 +248,10 @@
     background-color: $white;
     padding: 20px;
 
-    .row {
+    .rowFee {
       display: flex;
       border-bottom-style: solid;
-      border-bottom-width: 1;
+      // border-bottom-width: 1;
       border-color: $light-gray;
       border-width: 2px;
       width: 30%;

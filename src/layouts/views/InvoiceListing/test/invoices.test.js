@@ -191,8 +191,6 @@ let resDataClient = {
   regionItemCode: "emea",
 };
 
-// const mock = new MockAdapter(axios);
-
 describe("client view", () => {
   beforeEach(() => {
     const mock = new MockAdapter(axios);
@@ -224,8 +222,7 @@ describe("client view", () => {
   test("Datepicker dropdowns clickoutside clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-
-    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
   });
   test("Datepicker dropdowns today clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
@@ -315,11 +312,6 @@ describe("client view", () => {
     fireEvent.click(dr[1]);
     let date2 = await waitFor(() => screen.getAllByText(/15/));
     fireEvent.click(date2[2]);
-
-    // const start = await waitFor(() => screen.getByText(/This Year/), {
-    //   timeout: 5000,
-    // });
-    // fireEvent.click(today);
   });
 
   test("table row clickable", async () => {
@@ -407,11 +399,13 @@ describe("checkbox and download", () => {
     const chkbx = container.querySelector(
       ".a-dropdown__option__item__check-box"
     );
+    // const chkbx = container.querySelector(".table__row__default");
     screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
     screen.debug(download);
+    screen.logTestingPlaygroundURL();
     fireEvent.click(download);
 
     fireEvent.click(chkbx);
