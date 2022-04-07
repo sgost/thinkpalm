@@ -97,7 +97,7 @@
         padding: 4px 0px;
       }
 
-      .row {
+      .topBarrow {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -205,7 +205,7 @@
       border-bottom: 3px solid $light-gray;
       padding: 12px 12px;
       color: $secondary-gray;
-      font-weight: 500;
+      // font-weight: 500;
       cursor: pointer;
     }
   }
@@ -337,6 +337,7 @@
       border-radius: 10px;
       background-color: $white;
       padding: 4rem;
+      overflow: auto;
 
       h3 {
         font-size: 1.5rem;
@@ -344,6 +345,12 @@
       p {
         font-size: 1.125rem;
         margin-bottom: 2.5rem;
+      }
+
+      .notesContainer {
+        .notes {
+          font-size: 0.8rem;
+        }
       }
 
       .inpContinaer {
@@ -398,5 +405,14 @@
         }
       }
     }
+  }
+
+  .approvalMsg {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background-color: $medium-gray;
+    padding: 20px;
+    border-radius: 2px;
   }
 }

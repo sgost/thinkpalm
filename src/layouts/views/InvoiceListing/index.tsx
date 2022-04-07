@@ -863,7 +863,15 @@ export default function InvoiceListing() {
             pagination
             pagingOptions={[15, 30, 50, 100]}
             handleRowClick={(row: any) => {
-              navigate("/pay/invoicedetails" + row.id + "/" + row.customerId);
+              let isClientStr = isClient ? "true" : "false";
+              navigate(
+                "/pay/invoicedetails" +
+                  row.id +
+                  "/" +
+                  row.customerId +
+                  "/" +
+                  isClientStr
+              );
             }}
           />
         )}

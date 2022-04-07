@@ -12,7 +12,7 @@ import avatar from "./avatar.png";
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
-  const { id, cid } = useParams();
+  const { id, cid, isClient } = useParams();
 
   const api =
     "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id;
@@ -26,6 +26,8 @@ export default function InvoiceDetails() {
 
   const lookupApi =
     "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
+
+  const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
 
   const tempToken = localStorage.getItem("temptoken");
 
@@ -88,6 +90,11 @@ export default function InvoiceDetails() {
   };
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
+  const [isErr, setIsErr] = useState(false);
+  const [approvalMsg, setApprovalMsg] = useState("");
+  const [noteText, setNoteText] = useState("");
+  const [notes, setNotes] = useState<any>([]);
+  const [isFileError, setIsFileError] = useState<any>(null);
 
   const navigate = useNavigate();
 
@@ -195,6 +202,16 @@ export default function InvoiceDetails() {
       })
       .catch((e: any) => {
         console.log("error e", e);
+        setIsErr(true);
+      });
+
+    axios
+      .get(notesApi, headers)
+      .then((res: any) => {
+        setNotes(res.data.reverse());
+      })
+      .catch((e: any) => {
+        console.log("error e", e);
       });
   }, []);
 
@@ -214,6 +231,8 @@ export default function InvoiceDetails() {
       (e: any) => e.currencyId === apiData.data.invoice.currencyId
     );
     console.log("currency", currency);
+    console.log("isClient", isClient);
+
     return currency.code;
   };
 
@@ -259,6 +278,77 @@ export default function InvoiceDetails() {
     setIsDownloadOpen(false);
   };
 
+  const handleApproveInvoice = () => {
+    // const headers = {
+    //   headers: {
+    //     authorization: `Bearer ${tempToken}`,
+    //     "x-apng-base-region": "EMEA",
+    //     "x-apng-customer-id": cid?.toString() || "",
+    //     "x-apng-external": "false",
+    //     "x-apng-inter-region": "0",
+    //     "x-apng-target-region": "EMEA",
+    //     customer_id: cid?.toString() || "",
+    //   },
+    // };
+
+    const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
+
+    axios({
+      method: "PUT",
+      url: approveApi,
+      headers: {
+        authorization: `Bearer ${tempToken}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": cid?.toString() || "",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: cid?.toString() || "",
+      },
+    })
+      .then((res: any) => {
+        console.log(res);
+        if (res.status === 201) {
+          setStatus("Approved");
+          setApprovalMsg("Invoice approve successfully");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        } else {
+          setApprovalMsg("Invoice approve failed");
+        }
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+        setApprovalMsg("Invoice approve failed");
+        setTimeout(() => {
+          setApprovalMsg("");
+        }, 3000);
+      });
+
+    // axios
+    //   .put(approveApi, headers)
+    //   .then((res: any) => {
+    //     console.log(res);
+    //     if (res.status === 201) {
+    //       setStatus("Approved");
+    //       setApprovalMsg("Invoice approve successfully");
+    //       setTimeout(() => {
+    //         setApprovalMsg("");
+    //       }, 3000);
+    //     } else {
+    //       setApprovalMsg("Invoice approve failed");
+    //     }
+    //   })
+    //   .catch((e: any) => {
+    //     console.log("error", e);
+    //     setApprovalMsg("Invoice approve failed");
+    //     setTimeout(() => {
+    //       setApprovalMsg("");
+    //     }, 3000);
+    //   });
+  };
+
   const downloadExcelFunction = () => {
     const headers = {
       headers: {
@@ -291,8 +381,11 @@ export default function InvoiceDetails() {
     setIsDownloadOpen(false);
   };
 
-  if (!apiData?.data) {
+  if (!apiData?.data && !isErr) {
     return <p>Loading...</p>;
+  }
+  if (isErr) {
+    return <p>Something went wrong!</p>;
   }
 
   return (
@@ -329,16 +422,22 @@ export default function InvoiceDetails() {
             </div>
           )}
 
-          <Button
-            className="primary-blue small"
-            disabled
-            icon={{
-              color: "#fff",
-              icon: "checkMark",
-              size: "medium",
-            }}
-            label="Approve Invoice"
-          />
+          <div>
+            {isClient == "true" && status === "Pending Approval" && (
+              <Button
+                handleOnClick={() => {
+                  handleApproveInvoice();
+                }}
+                className="primary-blue small"
+                icon={{
+                  color: "#fff",
+                  icon: "checkMark",
+                  size: "medium",
+                }}
+                label="Approve Invoice"
+              />
+            )}
+          </div>
         </div>
       </div>
 
@@ -346,7 +445,7 @@ export default function InvoiceDetails() {
         <div className="topBar">
           <p className="status">{status}</p>
 
-          <div className="row">
+          <div className="topBarrow">
             <div className="invoiceNo">
               <Icon
                 color="#FFFFFF"
@@ -564,10 +663,65 @@ export default function InvoiceDetails() {
             <h3>Notes</h3>
             <p>Write a Note relevant for this Invoice.</p>
             <div className="inpContinaer">
-              <textarea placeholder="Add a Note..." />
+              <textarea
+                value={noteText}
+                onChange={(e: any) => setNoteText(e.target.value)}
+                placeholder="Add a Note..."
+              />
             </div>
             <div className="btnContainer">
-              <Button className="primary-blue medium" label="Publish Note" />
+              <Button
+                handleOnClick={() => {
+                  const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
+                  let currDate = new Date();
+
+                  axios({
+                    method: "POST",
+                    url: url,
+                    headers: {
+                      authorization: `Bearer ${tempToken}`,
+                      "x-apng-base-region": "EMEA",
+                      "x-apng-customer-id": cid?.toString() || "",
+                      "x-apng-external": "false",
+                      "x-apng-inter-region": "0",
+                      "x-apng-target-region": "EMEA",
+                      customer_id: cid?.toString() || "",
+                      // "Content-Type": "application/json",
+                    },
+                    data: {
+                      invoiceId: id,
+                      noteType: "2",
+                      note: noteText,
+                      isCustomerVisible: false,
+                      exportToQuickbooks: false,
+                      createdDate: currDate,
+                      modifiedBy: "00000000-0000-0000-0000-000000000000",
+                      modifiedByUser: null,
+                      displayInPDF: false,
+                      customerId: cid,
+                    },
+                  })
+                    .then((res: any) => {
+                      setNotes([res.data, ...notes]);
+                      setNoteText("");
+                    })
+                    .catch((e: any) => {
+                      console.log(e);
+                    });
+                }}
+                className="primary-blue medium"
+                label="Publish Note"
+              />
+            </div>
+            <div className="notesContainer">
+              {notes.map((item: any) => {
+                return (
+                  <p className="notes">
+                    -{item.note}{" "}
+                    {moment(item.createdDate).format("DD/MM/YYYY hh:mm A")}
+                  </p>
+                );
+              })}
             </div>
           </div>
 
@@ -575,44 +729,87 @@ export default function InvoiceDetails() {
             <h3>Files</h3>
             <p>Upload files relevant for this Invoice.</p>
             <div className="fileHandlerContainer">
-              <FileHandler
-                icons={{
-                  prefix: {
-                    color: "#526FD6",
-                    height: "40",
-                    icon: "docUpload",
-                    width: "40",
-                  },
-                  suffix: [
-                    {
-                      color: "#526FD6",
-                      height: "30",
-                      icon: "remove",
-                      width: "30",
-                    },
-                  ],
-                }}
-                label={{
-                  footer: "235 MB",
-                  header: "Sample.pdf",
-                }}
-              />
+              {apiData?.data?.invoice?.invoiceDocuments.map((item: any) => {
+                return (
+                  <FileHandler
+                    icons={{
+                      prefix: {
+                        color: "#526FD6",
+                        height: "40",
+                        icon: "docUpload",
+                        width: "40",
+                      },
+                      suffix: [
+                        {
+                          color: "#526FD6",
+                          height: "40",
+                          icon: "download",
+                          width: "40",
+                        },
+                        {
+                          color: "#526FD6",
+                          height: "30",
+                          icon: "remove",
+                          width: "30",
+                        },
+                      ],
+                    }}
+                    label={{
+                      footer: "235 MB",
+                      header: item.document.documentName,
+                    }}
+                  />
+                );
+              })}
             </div>
 
             <div className="uploadConatiner">
               <FileUpload
                 fileList={[]}
-                formats={[".PDF", ".EXCEL", ".JPEG", ".PNG", ".WORD"]}
-                handleUpload={function noRefCheck() {}}
-                isError={null}
+                formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
+                handleUpload={(file: any) => {
+                  setTimeout(() => {
+                    console.log(file);
+                    var formData = new FormData();
+                    formData.append("asset", file[0]);
+                    axios
+                      .post(
+                        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+                        formData,
+                        {
+                          headers: {
+                            authorization: `Bearer ${tempToken}`,
+                            "x-apng-base-region": "EMEA",
+                            "x-apng-customer-id":
+                              "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                            "x-apng-external": "false",
+                            "x-apng-inter-region": "0",
+                            "x-apng-target-region": "EMEA",
+                            customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                          },
+                        }
+                      )
+                      .then((res: any) => {
+                        console.log(res);
+                        setIsFileError(false);
+                      })
+                      .catch((e: any) => {
+                        console.log(e);
+                        setIsFileError(true);
+                      });
+                  });
+                }}
+                isError={isFileError}
                 maxSize={25}
-                resetFiles={function noRefCheck() {}}
+                // resetFiles={function noRefCheck() {}}
                 title="Upload"
               />
             </div>
           </div>
         </div>
       )}
+
+      {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
     </div>
   );
 }
