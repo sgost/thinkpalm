@@ -8,7 +8,10 @@ export default function RouterComponent() {
     // <HashRouter>
     <Routes>
       <Route path="/" element={<InvoiceListing />} />
-      <Route path="/invoicedetails:id/:cid" element={<InvoiceDetails />} />
+      <Route
+        path="/invoicedetails:id/:cid/:isClient"
+        element={<InvoiceDetails />}
+      />
     </Routes>
     //  </HashRouter>
   );

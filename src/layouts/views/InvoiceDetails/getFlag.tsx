@@ -69,6 +69,8 @@ import eg from "./flags/4x3/eg.svg";
 import eh from "./flags/4x3/eh.svg";
 import er from "./flags/4x3/er.svg";
 import es from "./flags/4x3/es.svg";
+import es_ct from "./flags/4x3/es-ct.svg";
+import es_ga from "./flags/4x3/es-ga.svg";
 import et from "./flags/4x3/et.svg";
 import eu from "./flags/4x3/eu.svg";
 import fi from "./flags/4x3/fi.svg";
@@ -79,6 +81,10 @@ import fo from "./flags/4x3/fo.svg";
 import fr from "./flags/4x3/fr.svg";
 import ga from "./flags/4x3/ga.svg";
 import gb from "./flags/4x3/gb.svg";
+import gb_eng from "./flags/4x3/gb-eng.svg";
+import gb_nir from "./flags/4x3/gb-nir.svg";
+import gb_sct from "./flags/4x3/gb-sct.svg";
+import gb_wls from "./flags/4x3/gb-wls.svg";
 import gd from "./flags/4x3/gd.svg";
 import ge from "./flags/4x3/ge.svg";
 import gf from "./flags/4x3/gf.svg";
@@ -324,6 +330,8 @@ const flags: any = {
   eh,
   er,
   es,
+  es_ct,
+  es_ga,
   et,
   eu,
   fi,
@@ -334,6 +342,10 @@ const flags: any = {
   fr,
   ga,
   gb,
+  gb_eng,
+  gb_nir,
+  gb_sct,
+  gb_wls,
   gd,
   ge,
   gf,
