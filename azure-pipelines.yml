@@ -287,6 +287,7 @@ stages:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'technology-internal'
+      continueOnError: true
 - stage: Deploy_QA
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
