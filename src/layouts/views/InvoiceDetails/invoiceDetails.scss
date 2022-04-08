@@ -337,7 +337,6 @@
       border-radius: 10px;
       background-color: $white;
       padding: 4rem;
-      overflow: auto;
 
       h3 {
         font-size: 1.5rem;
@@ -348,6 +347,10 @@
       }
 
       .notesContainer {
+        height: 30rem;
+        overflow: auto;
+        margin-top: 1rem;
+
         .notes {
           font-size: 0.8rem;
         }
@@ -384,17 +387,25 @@
         margin-bottom: 2.5rem;
       }
 
+      .boxsubcontainer {
+        height: 38rem;
+        overflow: auto;
+      }
+
       .fileHandlerContainer {
         display: flex;
+        flex-direction: column;
+        gap: 1rem;
 
         .a-fhandler {
-          width: 100%;
+          width: 88%;
         }
       }
 
       .uploadConatiner {
         display: flex;
         margin-top: 5rem;
+        width: 98%;
 
         .a-upload {
           width: 100%;

@@ -36,6 +36,7 @@ export default function InvoiceDetails() {
   const [countriesData, setCountriesData] = useState<any>(null);
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
+  const [documents, setDocuments] = useState<any>([]);
 
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
@@ -173,14 +174,31 @@ export default function InvoiceDetails() {
                 img: { src: avatar },
                 style: { borderRadius: 12 },
               },
-              grossWages: currencyCode + " " + item.totalWage.toFixed(2),
-              allowances: currencyCode + " " + item.allowance.toFixed(2),
-              expenseReimb: currencyCode + " " + item.expenseRe.toFixed(2),
-              employerLiability: currencyCode + " " + item.liability.toFixed(2),
+              grossWages:
+                currencyCode +
+                " " +
+                item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+              allowances:
+                currencyCode +
+                " " +
+                item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+              expenseReimb:
+                currencyCode +
+                " " +
+                item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+              employerLiability:
+                currencyCode +
+                " " +
+                item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
               countryVAT: item.countryVat.toFixed(2),
-              adminFees: currencyCode + " " + item.adminFee.toFixed(2),
+              adminFees:
+                currencyCode +
+                " " +
+                item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
               healthcareBenefits:
-                currencyCode + " " + item.healthcare.toFixed(2),
+                currencyCode +
+                " " +
+                item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
             });
           });
 
@@ -197,7 +215,7 @@ export default function InvoiceDetails() {
         });
         setPayrollTables(data);
         setTotal(tempTotal);
-
+        setDocuments(res.data.invoice.invoiceDocuments);
         setApiData(res);
       })
       .catch((e: any) => {
@@ -503,7 +521,11 @@ export default function InvoiceDetails() {
               )}
             </p>
             <p className="heading">Invoice Changes</p>
-            <p className="value">-</p>
+            <p className="value">
+              {moment(apiData?.data?.invoice?.createdDate).format(
+                "DD MMM YYYY"
+              )}
+            </p>
             <p className="heading">Payment Due</p>
             <p className="value">
               {moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY")}
@@ -556,7 +578,7 @@ export default function InvoiceDetails() {
           <h3 className="tableHeader">Fee Summary</h3>
           <Table options={feeSummary} colSort />
           <div className="feeSummaryCalc">
-            <div className="row">
+            <div className="rowFee">
               <p className="title">Incoming Wire Payment</p>
               <p className="amount">USD 35.00</p>
             </div>
@@ -596,19 +618,24 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {item.currencyCode +
                           " " +
-                          item.feeSummary.subTotalDue.toFixed(2)}
+                          item.feeSummary.subTotalDue
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </p>
                     </div>
                     <div className="rowFee">
                       <p className="title">
-                        Country EXC Rate {item.exchangeRate.toFixed(2)}
+                        Country EXC Rate{" "}
+                        {item.exchangeRate
+                          .toFixed(2)
+                          .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </p>
                       <p className="amount">
                         {item.currencyCode +
                           " " +
-                          (
-                            item.feeSummary.subTotalDue * item.exchangeRate
-                          ).toFixed(2)}
+                          (item.feeSummary.subTotalDue * item.exchangeRate)
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </p>
                     </div>
                     <div className="rowFee">
@@ -616,7 +643,9 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {item.currencyCode +
                           " " +
-                          getInCountryProcessingFee().toFixed(2)}
+                          getInCountryProcessingFee()
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </p>
                     </div>
                     <div className="rowFee">
@@ -624,7 +653,9 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {item.currencyCode +
                           " " +
-                          item.feeSummary.fxBill.toFixed(2)}
+                          item.feeSummary.fxBill
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </p>
                     </div>
                     <div className="row2">
@@ -632,7 +663,9 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {item.currencyCode +
                           " " +
-                          item.feeSummary.totalCountryVat.toFixed(2)}
+                          item.feeSummary.totalCountryVat
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </p>
                     </div>
                     <div className="totalRow">
@@ -640,7 +673,9 @@ export default function InvoiceDetails() {
                       <h3>
                         {item.currencyCode +
                           " " +
-                          item.feeSummary.total.toFixed(2)}
+                          item.feeSummary.total
+                            .toFixed(2)
+                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
                       </h3>
                     </div>
                   </div>
@@ -652,7 +687,7 @@ export default function InvoiceDetails() {
           <div className="totalContainer">
             <div>
               <p>Total</p>
-              <h3>- {total}</h3>
+              <h3>- {total.toString().replace(/\d(?=(\d{3})+\.)/g, "$&,")}</h3>
             </div>
           </div>
         </div>
@@ -728,82 +763,135 @@ export default function InvoiceDetails() {
           <div className="box2">
             <h3>Files</h3>
             <p>Upload files relevant for this Invoice.</p>
-            <div className="fileHandlerContainer">
-              {apiData?.data?.invoice?.invoiceDocuments.map((item: any) => {
-                return (
-                  <FileHandler
-                    icons={{
-                      prefix: {
-                        color: "#526FD6",
-                        height: "40",
-                        icon: "docUpload",
-                        width: "40",
-                      },
-                      suffix: [
-                        {
+            <div className="boxsubcontainer">
+              <div className="fileHandlerContainer">
+                {documents.map((item: any, index: any) => {
+                  console.log(item);
+                  return (
+                    <FileHandler
+                      icons={{
+                        prefix: {
                           color: "#526FD6",
                           height: "40",
-                          icon: "download",
+                          icon: "docUpload",
                           width: "40",
                         },
-                        {
-                          color: "#526FD6",
-                          height: "30",
-                          icon: "remove",
-                          width: "30",
-                        },
-                      ],
-                    }}
-                    label={{
-                      footer: "235 MB",
-                      header: item.document.documentName,
-                    }}
-                  />
-                );
-              })}
-            </div>
+                        suffix: [
+                          {
+                            color: "#526FD6",
+                            height: "40",
+                            icon: "download",
+                            width: "40",
+                            handleOnClick: () => {
+                              const headers = {
+                                headers: {
+                                  authorization: `Bearer ${tempToken}`,
+                                  "x-apng-base-region": "EMEA",
+                                  "x-apng-customer-id": cid?.toString() || "",
+                                  "x-apng-external": "false",
+                                  "x-apng-inter-region": "0",
+                                  "x-apng-target-region": "EMEA",
+                                  customer_id: cid?.toString() || "",
+                                  // "Content-Type": "application/json",
+                                },
+                              };
 
-            <div className="uploadConatiner">
-              <FileUpload
-                fileList={[]}
-                formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
-                handleUpload={(file: any) => {
-                  setTimeout(() => {
-                    console.log(file);
-                    var formData = new FormData();
-                    formData.append("asset", file[0]);
-                    axios
-                      .post(
-                        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
-                        formData,
-                        {
-                          headers: {
-                            authorization: `Bearer ${tempToken}`,
-                            "x-apng-base-region": "EMEA",
-                            "x-apng-customer-id":
-                              "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-                            "x-apng-external": "false",
-                            "x-apng-inter-region": "0",
-                            "x-apng-target-region": "EMEA",
-                            customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                              const downloadApi = `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=${item.document.url}`;
+                              axios
+                                .get(downloadApi, headers)
+                                .then((res: any) => {
+                                  if (res.status === 200) {
+                                    let url = res.data.url;
+                                    let a = document.createElement("a");
+                                    a.href = url;
+                                    a.download = `${res.data.name}`;
+                                    a.click();
+                                  }
+                                })
+                                .catch((e: any) => {
+                                  console.log("error", e);
+                                });
+                            },
                           },
-                        }
-                      )
-                      .then((res: any) => {
-                        console.log(res);
-                        setIsFileError(false);
-                      })
-                      .catch((e: any) => {
-                        console.log(e);
-                        setIsFileError(true);
+                          {
+                            color: "#526FD6",
+                            height: "30",
+                            icon: "remove",
+                            width: "30",
+                            handleOnClick: () => {
+                              let cpy = [...documents];
+                              cpy.splice(index, 1);
+                              setDocuments(cpy);
+                            },
+                          },
+                        ],
+                      }}
+                      label={{
+                        footer: "235 MB",
+                        header: item.document.documentName,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+
+              <div className="uploadConatiner">
+                <FileUpload
+                  fileList={[]}
+                  formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
+                  handleUpload={
+                    /* istanbul ignore next */
+                    (file: any) => {
+                      setTimeout(() => {
+                        console.log(file);
+                        var formData = new FormData();
+                        formData.append("asset", file[0]);
+                        axios
+                          .post(
+                            "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+                            formData,
+                            {
+                              headers: {
+                                authorization: `Bearer ${tempToken}`,
+                                "x-apng-base-region": "EMEA",
+                                "x-apng-customer-id":
+                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                                "x-apng-external": "false",
+                                "x-apng-inter-region": "0",
+                                "x-apng-target-region": "EMEA",
+                                customer_id:
+                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                              },
+                            }
+                          )
+                          .then((res: any) => {
+                            console.log("file res", res);
+                            setDocuments([
+                              ...documents,
+                              {
+                                document: {
+                                  documentName: res.data.fileName,
+                                  url: res.data.url,
+                                },
+                              },
+                            ]);
+                            setIsFileError(false);
+                          })
+                          .catch((e: any) => {
+                            console.log(e);
+                            setIsFileError(true);
+                          });
                       });
-                  });
-                }}
-                isError={isFileError}
-                maxSize={25}
-                // resetFiles={function noRefCheck() {}}
-                title="Upload"
-              />
+                    }
+                  }
+                  isError={isFileError}
+                  maxSize={25}
+                  resetFiles={function noRefCheck() {
+                    setIsFileError(null);
+                  }}
+                  title="Upload"
+                />
+              </div>
             </div>
           </div>
         </div>
