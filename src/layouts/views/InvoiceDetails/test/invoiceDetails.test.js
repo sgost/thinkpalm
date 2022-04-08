@@ -263,4 +263,19 @@ describe("Invoice details", () => {
     );
     fireEvent.click(download);
   });
+  test("delete file", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    fireEvent.click(filesTab);
+    const download = await waitFor(() =>
+      screen.getByTestId(/file-upload-button-1/)
+    );
+    fireEvent.click(download);
+  });
 });
