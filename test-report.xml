@@ -1,33 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="68"/>
+    <testCase name="renders learn react link" duration="39"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="810"/>
-    <testCase name="Invoice details download clickable " duration="235"/>
+    <testCase name="Invoice details tabs are working" duration="519"/>
+    <testCase name="Invoice details download clickable " duration="169"/>
+    <testCase name="Invoice details approve invoice clickable " duration="100"/>
+    <testCase name="Invoice details publish notes" duration="129"/>
+    <testCase name="Invoice details download file" duration="113"/>
+    <testCase name="Invoice details delete file" duration="128"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="790"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="276"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="226"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="190"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="210"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="180"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="190"/>
-    <testCase name="client view Datepicker dropdowns date range clickable" duration="4107"/>
-    <testCase name="client view table row clickable" duration="85"/>
-    <testCase name="client view Status clickable" duration="117"/>
-    <testCase name="client view Type clickable" duration="87"/>
-    <testCase name="client view Clear filters clickable" duration="101"/>
-    <testCase name="client view search" duration="76"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="190"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="110"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="153"/>
-    <testCase name="Client View search intenal" duration="99"/>
-    <testCase name="renders without crashing" duration="3"/>
-    <testCase name="Client View" duration="34"/>
-    <testCase name="Internal View" duration="24"/>
-    <testCase name="Enter token client" duration="26"/>
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="428"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="163"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="114"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="115"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="104"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="83"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="91"/>
+    <testCase name="client view Datepicker dropdowns date range clickable" duration="2791"/>
+    <testCase name="client view table row clickable" duration="68"/>
+    <testCase name="client view Status clickable" duration="80"/>
+    <testCase name="client view Type clickable" duration="70"/>
+    <testCase name="client view Clear filters clickable" duration="73"/>
+    <testCase name="client view search" duration="59"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="143"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="88"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="118"/>
+    <testCase name="Client View search intenal" duration="82"/>
+    <testCase name="renders without crashing" duration="2"/>
+    <testCase name="Client View" duration="23"/>
+    <testCase name="Internal View" duration="20"/>
+    <testCase name="Enter token client" duration="21"/>
   </file>
 </testExecutions>
