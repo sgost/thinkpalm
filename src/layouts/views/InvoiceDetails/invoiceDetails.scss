@@ -427,4 +427,11 @@
     padding: 20px;
     border-radius: 2px;
   }
+
+  .a-upload__progress__bar .label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 18rem;
+    overflow: hidden;
+  }
 }

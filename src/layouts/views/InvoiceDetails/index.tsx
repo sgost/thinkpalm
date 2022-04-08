@@ -535,7 +535,9 @@ export default function InvoiceDetails() {
             <p className="heading">Location</p>
             <p className="value">{apiData?.data?.invoice?.customerLocation}</p>
             <p className="heading">Region</p>
-            <p className="value">{apiData?.data?.regionItemCode}</p>
+            <p className="value">
+              {apiData?.data?.regionItemCode.toUpperCase()}
+            </p>
             <p className="heading">Billing Currency</p>
             <p className="value">{getBillingCurrency()}</p>
           </div>
@@ -671,11 +673,9 @@ export default function InvoiceDetails() {
                     <div className="totalRow">
                       <p>Country Total Due</p>
                       <h3>
-                        {item.currencyCode +
+                        {getBillingCurrency() +
                           " " +
-                          item.feeSummary.total
-                            .toFixed(2)
-                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                          item.feeSummary.total.toFixed(2)}
                       </h3>
                     </div>
                   </div>
