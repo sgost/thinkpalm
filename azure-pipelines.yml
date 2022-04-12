@@ -114,7 +114,7 @@ stages:
         targetType: 'inline'
         script: |
           echo "##vso[task.setvariable variable=buildbreaker]false"
-      condition: failed()
+      # condition: failed()
 
 
 - stage: Deploy_DEV
