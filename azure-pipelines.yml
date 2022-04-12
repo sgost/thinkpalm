@@ -103,12 +103,22 @@ stages:
       inputs:
         PathtoPublish: $(Build.ArtifactStagingDirectory)
         artifactName: DEV
-    # - task: sonarcloud-buildbreaker@2
-    #   inputs:
-    #     SonarCloud: 'SonarCloud'
-    #     organization: 'technology-internal'
+    - task: sonarcloud-buildbreaker@2
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'technology-internal'
+      continueOnError: true
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "##vso[task.setvariable variable=buildbreaker]false"
+      condition: failed()
+
+
 - stage: Deploy_DEV
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['buildbreaker'], 'true'))
   variables:
   - name: system.debug
     value: true
