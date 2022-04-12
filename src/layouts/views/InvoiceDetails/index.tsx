@@ -174,31 +174,26 @@ export default function InvoiceDetails() {
                 img: { src: avatar },
                 style: { borderRadius: 12 },
               },
-              grossWages:
-                currencyCode +
-                " " +
-                item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
-              allowances:
-                currencyCode +
-                " " +
-                item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+              grossWages: currencyCode + " " + toCurrencyFormat(item.totalWage),
+              // item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+              allowances: currencyCode + " " + toCurrencyFormat(item.allowance),
+
+              // item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
               expenseReimb:
-                currencyCode +
-                " " +
-                item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+                currencyCode + " " + toCurrencyFormat(item.expenseRe),
+
+              // item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
               employerLiability:
-                currencyCode +
-                " " +
-                item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+                currencyCode + " " + toCurrencyFormat(item.liability),
+
+              // item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
               countryVAT: item.countryVat.toFixed(2),
-              adminFees:
-                currencyCode +
-                " " +
-                item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+              adminFees: currencyCode + " " + toCurrencyFormat(item.adminFee),
+              // item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
               healthcareBenefits:
-                currencyCode +
-                " " +
-                item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,"),
+                currencyCode + " " + toCurrencyFormat(item.healthcare),
+
+              // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
             });
           });
 
@@ -252,6 +247,15 @@ export default function InvoiceDetails() {
     console.log("isClient", isClient);
 
     return currency.code;
+  };
+
+  const toCurrencyFormat = (amount: number) => {
+    const cFormat = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+
+    return cFormat.format(amount).slice(1);
   };
 
   const getInCountryProcessingFee = () => {
@@ -478,14 +482,30 @@ export default function InvoiceDetails() {
                 Open{" "}
                 <span>
                   {getBillingCurrency()}{" "}
-                  {apiData?.data?.invoice?.invoiceBalance.toFixed(2)}
+                  {
+                    toCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
+
+                    // Intl.NumberFormat().format(
+                    //   apiData?.data?.invoice?.invoiceBalance.toLocaleString('en-US')
+                    // )
+
+                    // apiData?.data?.invoice?.invoiceBalance
+                    //   .toFixed(2)
+                    //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                  }
                 </span>
               </p>
               <p>
                 Total{" "}
                 <span>
                   {getBillingCurrency()}{" "}
-                  {apiData?.data?.invoice?.totalAmount.toFixed(2)}
+                  {
+                    toCurrencyFormat(apiData?.data?.invoice?.totalAmount)
+
+                    // apiData?.data?.invoice?.totalAmount
+                    //   .toFixed(2)
+                    //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                  }
                 </span>
               </p>
             </div>
@@ -618,64 +638,95 @@ export default function InvoiceDetails() {
                     <div className="rowFee">
                       <p className="title">Country Subtotal Due</p>
                       <p className="amount">
-                        {item.currencyCode +
-                          " " +
-                          item.feeSummary.subTotalDue
-                            .toFixed(2)
-                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                        {
+                          item.currencyCode +
+                            " " +
+                            toCurrencyFormat(item.feeSummary.subTotalDue)
+
+                          // item.feeSummary.subTotalDue
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </p>
                     </div>
                     <div className="rowFee">
                       <p className="title">
                         Country EXC Rate{" "}
-                        {item.exchangeRate
-                          .toFixed(2)
-                          .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                        {
+                          toCurrencyFormat(item.exchangeRate)
+
+                          // item.exchangeRate
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </p>
                       <p className="amount">
-                        {item.currencyCode +
-                          " " +
-                          (item.feeSummary.subTotalDue * item.exchangeRate)
-                            .toFixed(2)
-                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                        {
+                          item.currencyCode +
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.subTotalDue * item.exchangeRate
+                            )
+                          // (item.feeSummary.subTotalDue * item.exchangeRate)
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </p>
                     </div>
                     <div className="rowFee">
                       <p className="title">In Country Processing Fee</p>
                       <p className="amount">
-                        {item.currencyCode +
-                          " " +
-                          getInCountryProcessingFee()
-                            .toFixed(2)
-                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                        {
+                          item.currencyCode +
+                            " " +
+                            toCurrencyFormat(getInCountryProcessingFee())
+
+                          // getInCountryProcessingFee()
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </p>
                     </div>
                     <div className="rowFee">
                       <p className="title">FX Bill</p>
                       <p className="amount">
-                        {item.currencyCode +
-                          " " +
-                          item.feeSummary.fxBill
-                            .toFixed(2)
-                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                        {
+                          item.currencyCode +
+                            " " +
+                            toCurrencyFormat(item.feeSummary.fxBill)
+
+                          // item.feeSummary.fxBill
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </p>
                     </div>
                     <div className="row2">
                       <p className="title">Total Country VAT</p>
                       <p className="amount">
-                        {item.currencyCode +
-                          " " +
-                          item.feeSummary.totalCountryVat
-                            .toFixed(2)
-                            .replace(/\d(?=(\d{3})+\.)/g, "$&,")}
+                        {
+                          item.currencyCode +
+                            " " +
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)
+
+                          // item.feeSummary.totalCountryVat
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </p>
                     </div>
                     <div className="totalRow">
                       <p>Country Total Due</p>
                       <h3>
-                        {getBillingCurrency() +
-                          " " +
-                          item.feeSummary.total.toFixed(2)}
+                        {
+                          getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(item.feeSummary.total)
+
+                          // item.feeSummary.total
+                          //   .toFixed(2)
+                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                        }
                       </h3>
                     </div>
                   </div>
@@ -687,7 +738,13 @@ export default function InvoiceDetails() {
           <div className="totalContainer">
             <div>
               <p>Total</p>
-              <h3>- {total.toString().replace(/\d(?=(\d{3})+\.)/g, "$&,")}</h3>
+              <h3>
+                {getBillingCurrency()}{" "}
+                {
+                  toCurrencyFormat(total)
+                  // total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                }
+              </h3>
             </div>
           </div>
         </div>
@@ -696,7 +753,27 @@ export default function InvoiceDetails() {
         <div className="filesNotes">
           <div className="box">
             <h3>Notes</h3>
-            <p>Write a Note relevant for this Invoice.</p>
+            {/* <p>Write a Note relevant for this Invoice.</p> */}
+
+            <div className="notesContainer">
+              {notes.map((item: any) => {
+                return (
+                  <div className="notesSubContainer">
+                    <div>
+                      <p className="noteDate">
+                        {moment(item.createdDate).format("DD/MM/YYYY, HH:mm")}
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="notes">
+                        <span>test@email.com</span> {item.note}{" "}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
             <div className="inpContinaer">
               <textarea
                 value={noteText}
@@ -705,6 +782,11 @@ export default function InvoiceDetails() {
               />
             </div>
             <div className="btnContainer">
+              <div>
+                <input type="checkbox" /> <label>Visible to Customer</label>
+                <input type="checkbox" /> <label>Export to QB</label> <br />
+                <input type="checkbox" /> <label>Visible on PDF Invoice</label>
+              </div>
               <Button
                 handleOnClick={() => {
                   const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
@@ -744,19 +826,9 @@ export default function InvoiceDetails() {
                       console.log(e);
                     });
                 }}
-                className="primary-blue medium"
+                className="primary-blue small"
                 label="Publish Note"
               />
-            </div>
-            <div className="notesContainer">
-              {notes.map((item: any) => {
-                return (
-                  <p className="notes">
-                    -{item.note}{" "}
-                    {moment(item.createdDate).format("DD/MM/YYYY hh:mm A")}
-                  </p>
-                );
-              })}
             </div>
           </div>
 
@@ -801,9 +873,9 @@ export default function InvoiceDetails() {
                                 .get(downloadApi, headers)
                                 .then((res: any) => {
                                   if (res.status === 200) {
-                                    let url = res.data.url;
+                                    // let url = res.data.url;
                                     let a = document.createElement("a");
-                                    a.href = url;
+                                    a.href = res.data.url;
                                     a.download = `${res.data.name}`;
                                     a.click();
                                   }
@@ -819,9 +891,58 @@ export default function InvoiceDetails() {
                             icon: "remove",
                             width: "30",
                             handleOnClick: () => {
-                              let cpy = [...documents];
-                              cpy.splice(index, 1);
-                              setDocuments(cpy);
+                              console.log("docs", documents[index]);
+                              const headers = {
+                                authorization: `Bearer ${tempToken}`,
+                                "x-apng-base-region": "EMEA",
+                                "x-apng-customer-id":
+                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                                "x-apng-external": "false",
+                                "x-apng-inter-region": "0",
+                                "x-apng-target-region": "EMEA",
+                                customer_id:
+                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                              };
+
+                              axios({
+                                method: "DELETE",
+                                url: "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
+                                data: {
+                                  invoiceId: id,
+                                  documentId: documents[index].documentId,
+                                },
+                                headers: headers,
+                              })
+                                .then((res: any) => {
+                                  console.log("del rs", res);
+                                  let cpy = [...documents];
+                                  cpy.splice(index, 1);
+                                  setDocuments(cpy);
+                                })
+                                .catch((e: any) => {
+                                  console.log(e);
+                                });
+
+                              // axios
+                              //   .post(
+                              //     "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
+                              //     {
+                              //       invoiceId: id,
+                              //       documentId: documents[index].documentId,
+                              //     },
+                              //     {
+                              //       headers: headers,
+                              //     }
+                              //   )
+                              //   .then((res: any) => {
+                              //     console.log("del rs", res);
+                              //     let cpy = [...documents];
+                              //     cpy.splice(index, 1);
+                              //     setDocuments(cpy);
+                              //   })
+                              //   .catch((e: any) => {
+                              //     console.log(e);
+                              //   });
                             },
                           },
                         ],
@@ -842,6 +963,16 @@ export default function InvoiceDetails() {
                   handleUpload={
                     /* istanbul ignore next */
                     (file: any) => {
+                      const headers = {
+                        authorization: `Bearer ${tempToken}`,
+                        "x-apng-base-region": "EMEA",
+                        "x-apng-customer-id":
+                          "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        "x-apng-external": "false",
+                        "x-apng-inter-region": "0",
+                        "x-apng-target-region": "EMEA",
+                        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                      };
                       setTimeout(() => {
                         console.log(file);
                         var formData = new FormData();
@@ -851,31 +982,46 @@ export default function InvoiceDetails() {
                             "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
                             formData,
                             {
-                              headers: {
-                                authorization: `Bearer ${tempToken}`,
-                                "x-apng-base-region": "EMEA",
-                                "x-apng-customer-id":
-                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-                                "x-apng-external": "false",
-                                "x-apng-inter-region": "0",
-                                "x-apng-target-region": "EMEA",
-                                customer_id:
-                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-                              },
+                              headers: headers,
                             }
                           )
                           .then((res: any) => {
                             console.log("file res", res);
-                            setDocuments([
-                              ...documents,
-                              {
-                                document: {
-                                  documentName: res.data.fileName,
-                                  url: res.data.url,
+
+                            axios
+                              .post(
+                                " https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+                                {
+                                  invoiceId: id,
+
+                                  document: {
+                                    url: res.data.url,
+
+                                    documentName: res.data.fileName,
+                                  },
                                 },
-                              },
-                            ]);
-                            setIsFileError(false);
+                                {
+                                  headers: headers,
+                                }
+                              )
+                              .then((response: any) => {
+                                console.log("create res", response);
+                                setDocuments([
+                                  ...documents,
+                                  {
+                                    documentId: response.data.documentId,
+                                    document: {
+                                      documentName: res.data.fileName,
+                                      url: res.data.url,
+                                    },
+                                  },
+                                ]);
+                                setIsFileError(false);
+                              })
+                              .catch((e: any) => {
+                                console.log(e);
+                                setIsFileError(true);
+                              });
                           })
                           .catch((e: any) => {
                             console.log(e);

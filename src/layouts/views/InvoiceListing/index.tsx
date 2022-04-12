@@ -38,7 +38,7 @@ export default function InvoiceListing() {
   );
 
   // Contractor, payroll, credit memos, proformas, miscellaneous
-  const [types, setTypes] = useState([
+  const typeOptions = [
     // {
     //   isSelected: false,
     //   label: "Contractor Invoice",
@@ -74,10 +74,11 @@ export default function InvoiceListing() {
       label: "Payment ",
       value: 6,
     },
-  ]);
+  ];
+  const [types, setTypes] = useState(typeOptions);
 
   //  open, AR review, Pending Approval, Approved, Paid, Partially paid, cancelled, voided,
-  const [status, setStatus] = useState([
+  const statusOptions = [
     {
       isSelected: false,
       label: "Open",
@@ -87,6 +88,11 @@ export default function InvoiceListing() {
       isSelected: false,
       label: "In Review",
       value: "2",
+    },
+    {
+      isSelected: false,
+      label: "Pending Approval",
+      value: 3,
     },
     {
       isSelected: false,
@@ -108,11 +114,7 @@ export default function InvoiceListing() {
       label: "Partial",
       value: 7,
     },
-    {
-      isSelected: false,
-      label: "Pending Approval",
-      value: 3,
-    },
+
     {
       isSelected: false,
       label: "Voided",
@@ -123,7 +125,8 @@ export default function InvoiceListing() {
       label: "Closed",
       value: 8,
     },
-  ]);
+  ];
+  const [status, setStatus] = useState(statusOptions);
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
@@ -166,6 +169,11 @@ export default function InvoiceListing() {
         header: "Balance",
         isDefault: true,
         key: "invoiceBalance",
+      },
+      {
+        header: "Exported to QB",
+        isDefault: true,
+        key: "exportToQB",
       },
     ],
     data: [],
@@ -248,102 +256,53 @@ export default function InvoiceListing() {
       types: "",
       status: "",
     });
-    setStatus([
-      {
-        isSelected: false,
-        label: "Open",
-        value: "1",
-      },
-      {
-        isSelected: false,
-        label: "In Review",
-        value: "2",
-      },
-      {
-        isSelected: false,
-        label: "Approved",
-        value: "4",
-      },
-      {
-        isSelected: false,
-        label: "Paid",
-        value: 5,
-      },
-      {
-        isSelected: false,
-        label: "Partially Paid",
-        value: 6,
-      },
-      {
-        isSelected: false,
-        label: "Partial",
-        value: 7,
-      },
-      {
-        isSelected: false,
-        label: "Pending Approval",
-        value: 3,
-      },
-      {
-        isSelected: false,
-        label: "Voided",
-        value: 9,
-      },
-      {
-        isSelected: false,
-        label: "Closed",
-        value: 8,
-      },
-    ]);
+    setStatus(statusOptions);
 
-    setTypes([
-      // {
-      //   isSelected: false,
-      //   label: "Contractor Invoice",
-      //   value: "contractorInvoice",
-      // },
-      {
-        isSelected: false,
-        label: "Credit Memo",
-        value: 4,
-      },
-      {
-        isSelected: false,
-        label: "Payroll",
-        value: 1,
-      },
-      {
-        isSelected: false,
-        label: "Miscellaneous",
-        value: 2,
-      },
-      {
-        isSelected: false,
-        label: "Proforma",
-        value: 3,
-      },
-      {
-        isSelected: false,
-        label: "LateFee ",
-        value: 5,
-      },
-      {
-        isSelected: false,
-        label: "Payment ",
-        value: 6,
-      },
-    ]);
+    setTypes(typeOptions);
   };
 
   useEffect(() => {
     if (apiData?.data?.results) {
-      const apiTableData = apiData?.data?.results;
-      apiTableData?.map((item: any) => {
-        item.totalAmount = `USD ${item.totalAmount.toLocaleString()}`;
-        item.invoiceBalance = `USD ${item.invoiceBalance.toLocaleString()}`;
-        item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
-        item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
+      const apiTableData: any = [];
+
+      // const apiTableData = apiData?.data?.results;
+
+      apiData?.data?.results.forEach((item: any) => {
+        const cFormat = Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        });
+        apiTableData.push({
+          ...item,
+          totalAmount: `USD ${cFormat.format(item.totalAmount).slice(1)}`,
+          invoiceBalance: `USD ${cFormat.format(item.invoiceBalance).slice(1)}`,
+          createdDate: format(new Date(item.createdDate), "d MMM yyyy"),
+          dueDate: format(new Date(item.dueDate), "d MMM yyyy"),
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        });
       });
+
+      // apiTableData?.map((item: any) => {
+      //   if (!item.totalAmount.toString().includes("USD")) {
+      //     const cFormat = Intl.NumberFormat("en-US", {
+      //       style: "currency",
+      //       currency: "USD",
+      //     });
+      //     item.totalAmount = `USD ${cFormat.format(item.totalAmount).slice(1)}`;
+      //     item.invoiceBalance = `USD ${cFormat
+      //       .format(item.invoiceBalance)
+      //       .slice(1)}`;
+      //     item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
+      //     item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
+
+      //   }
+      // });
+
+      // console.log("internal data", apiTableData);
+
       if (isClient) {
         setClientTableData({ ...clientTableData, data: apiTableData });
       } else {
@@ -397,6 +356,18 @@ export default function InvoiceListing() {
   }, [searchText]);
 
   const downloadFunction = () => {
+    const download = (res: any) => {
+      if (res.status === 200) {
+        setDownloadDisable(false);
+        setShowSuccessToast({ type: true, message: "Downloaded..." });
+        let url = res.data.url;
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = `${res.data.name}`;
+        a.click();
+      }
+    };
+
     setDownloadDisable(true);
     setShowSuccessToast({ ...showSuccessToast, type: true });
     const headers = {
@@ -416,15 +387,16 @@ export default function InvoiceListing() {
       axios
         .get(api, headers)
         .then((res: any) => {
-          if (res.status === 200) {
-            setDownloadDisable(false);
-            setShowSuccessToast({ type: true, message: "Downloaded..." });
-            let url = res.data.url;
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = `${res.data.name}`;
-            a.click();
-          }
+          download(res);
+          // if (res.status === 200) {
+          //   setDownloadDisable(false);
+          //   setShowSuccessToast({ type: true, message: "Downloaded..." });
+          //   let url = res.data.url;
+          //   let a = document.createElement("a");
+          //   a.href = url;
+          //   a.download = `${res.data.name}`;
+          //   a.click();
+          // }
         })
         .catch((e: any) => {
           console.log("error", e);
@@ -439,15 +411,17 @@ export default function InvoiceListing() {
         headers: headers.headers,
       })
         .then((res: any) => {
-          if (res.status === 200) {
-            setDownloadDisable(false);
-            setShowSuccessToast({ type: true, message: "Downloaded...." });
-            let url = res.data.url;
-            let a = document.createElement("a");
-            a.href = url;
-            a.download = `${res.data.name}`;
-            a.click();
-          }
+          download(res);
+
+          // if (res.status === 200) {
+          //   setDownloadDisable(false);
+          //   setShowSuccessToast({ type: true, message: "Downloaded...." });
+          //   let url = res.data.url;
+          //   let a = document.createElement("a");
+          //   a.href = url;
+          //   a.download = `${res.data.name}`;
+          //   a.click();
+          // }
         })
         .catch((e: any) => {
           console.log("error", e);

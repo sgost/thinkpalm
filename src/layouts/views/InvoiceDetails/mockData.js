@@ -228,111 +228,111 @@ export const feeSummary = {
   ],
 };
 
-export const payrollData = {
-  columns: [
-    {
-      header: "Employee ID",
-      isDefault: true,
-      key: "employeeID",
-    },
-    {
-      header: "Name",
-      isDefault: true,
-      key: "name",
-    },
-    {
-      header: "Gross Wages",
-      isDefault: true,
-      key: "grossWages",
-    },
-    {
-      header: "Allowances",
-      isDefault: true,
-      key: "allowances",
-    },
-    {
-      header: "Expense Reimb.",
-      isDefault: true,
-      key: "expenseReimb",
-    },
-    {
-      header: "Employer Liability",
-      isDefault: true,
-      key: "employerLiability",
-    },
-    {
-      header: "Country VAT",
-      isDefault: true,
-      key: "countryVAT",
-    },
-    {
-      header: "Admin Fees",
-      isDefault: true,
-      key: "adminFees",
-    },
-    {
-      header: "Healthcare Benefits",
-      isDefault: true,
-      key: "healthcareBenefits",
-    },
-  ],
-  showDefaultColumn: true,
-  data: [
-    {
-      employeeID: "73917",
-      name: {
-        value: "Marcos Rodriguez",
-        img: { src: user },
-      },
-      grossWages: "EUR 32,000.00",
-      allowances: "EUR 0.00",
-      expenseReimb: "EUR 0.00",
-      employerLiability: "EUR 7,210.00",
-      countryVAT: "0.63",
-      adminFees: "USD 650.00",
-      healthcareBenefits: "USD 1260.00",
-    },
-    {
-      employeeID: "73917",
-      name: {
-        value: "Marcos Rodriguez",
-        img: { src: user },
-      },
-      grossWages: "EUR 32,000.00",
-      allowances: "EUR 0.00",
-      expenseReimb: "EUR 0.00",
-      employerLiability: "EUR 7,210.00",
-      countryVAT: "0.63",
-      adminFees: "USD 650.00",
-      healthcareBenefits: "USD 1260.00",
-    },
-    {
-      employeeID: "73917",
-      name: {
-        value: "Marcos Rodriguez",
-        img: { src: user },
-      },
-      grossWages: "EUR 32,000.00",
-      allowances: "EUR 0.00",
-      expenseReimb: "EUR 0.00",
-      employerLiability: "EUR 7,210.00",
-      countryVAT: "0.63",
-      adminFees: "USD 650.00",
-      healthcareBenefits: "USD 1260.00",
-    },
-    {
-      employeeID: "73917",
-      name: {
-        value: "Marcos Rodriguez",
-        img: { src: user },
-      },
-      grossWages: "EUR 32,000.00",
-      allowances: "EUR 0.00",
-      expenseReimb: "EUR 0.00",
-      employerLiability: "EUR 7,210.00",
-      countryVAT: "0.63",
-      adminFees: "USD 650.00",
-      healthcareBenefits: "USD 1260.00",
-    },
-  ],
-};
+// export const payrollData = {
+//   columns: [
+//     {
+//       header: "Employee ID",
+//       isDefault: true,
+//       key: "employeeID",
+//     },
+//     {
+//       header: "Name",
+//       isDefault: true,
+//       key: "name",
+//     },
+//     {
+//       header: "Gross Wages",
+//       isDefault: true,
+//       key: "grossWages",
+//     },
+//     {
+//       header: "Allowances",
+//       isDefault: true,
+//       key: "allowances",
+//     },
+//     {
+//       header: "Expense Reimb.",
+//       isDefault: true,
+//       key: "expenseReimb",
+//     },
+//     {
+//       header: "Employer Liability",
+//       isDefault: true,
+//       key: "employerLiability",
+//     },
+//     {
+//       header: "Country VAT",
+//       isDefault: true,
+//       key: "countryVAT",
+//     },
+//     {
+//       header: "Admin Fees",
+//       isDefault: true,
+//       key: "adminFees",
+//     },
+//     {
+//       header: "Healthcare Benefits",
+//       isDefault: true,
+//       key: "healthcareBenefits",
+//     },
+//   ],
+//   showDefaultColumn: true,
+//   data: [
+//     {
+//       employeeID: "73917",
+//       name: {
+//         value: "Marcos Rodriguez",
+//         img: { src: user },
+//       },
+//       grossWages: "EUR 32,000.00",
+//       allowances: "EUR 0.00",
+//       expenseReimb: "EUR 0.00",
+//       employerLiability: "EUR 7,210.00",
+//       countryVAT: "0.63",
+//       adminFees: "USD 650.00",
+//       healthcareBenefits: "USD 1260.00",
+//     },
+//     {
+//       employeeID: "73917",
+//       name: {
+//         value: "Marcos Rodriguez",
+//         img: { src: user },
+//       },
+//       grossWages: "EUR 32,000.00",
+//       allowances: "EUR 0.00",
+//       expenseReimb: "EUR 0.00",
+//       employerLiability: "EUR 7,210.00",
+//       countryVAT: "0.63",
+//       adminFees: "USD 650.00",
+//       healthcareBenefits: "USD 1260.00",
+//     },
+//     {
+//       employeeID: "73917",
+//       name: {
+//         value: "Marcos Rodriguez",
+//         img: { src: user },
+//       },
+//       grossWages: "EUR 32,000.00",
+//       allowances: "EUR 0.00",
+//       expenseReimb: "EUR 0.00",
+//       employerLiability: "EUR 7,210.00",
+//       countryVAT: "0.63",
+//       adminFees: "USD 650.00",
+//       healthcareBenefits: "USD 1260.00",
+//     },
+//     {
+//       employeeID: "73917",
+//       name: {
+//         value: "Marcos Rodriguez",
+//         img: { src: user },
+//       },
+//       grossWages: "EUR 32,000.00",
+//       allowances: "EUR 0.00",
+//       expenseReimb: "EUR 0.00",
+//       employerLiability: "EUR 7,210.00",
+//       countryVAT: "0.63",
+//       adminFees: "USD 650.00",
+//       healthcareBenefits: "USD 1260.00",
+//     },
+//   ],
+// };
