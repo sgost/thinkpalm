@@ -126,6 +126,7 @@
 
             span {
               color: $white;
+              font-size: 1rem;
             }
           }
         }
@@ -351,8 +352,24 @@
         overflow: auto;
         margin-top: 1rem;
 
-        .notes {
-          font-size: 0.8rem;
+        .notesSubContainer {
+          display: flex;
+          align-items: center;
+
+          .noteDate {
+            font-size: 1.125rem;
+            color: $primary-blue;
+            margin-right: 1rem;
+          }
+
+          .notes {
+            font-size: 1.125rem;
+            color: $secondary-gray;
+
+            span {
+              color: $black;
+            }
+          }
         }
       }
 
@@ -365,12 +382,16 @@
           margin-bottom: 1rem;
           border-color: $medium-gray;
           border-radius: 0.125rem;
-          font-family: "Circular";
+          font-family: "Circular", sans-serif;
         }
       }
       .btnContainer {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
+
+        button.a-button.small {
+          width: 7.31rem;
+        }
       }
     }
     .box2 {
@@ -431,7 +452,7 @@
   .a-upload__progress__bar .label {
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 18rem;
+    width: 13rem;
     overflow: hidden;
   }
 }

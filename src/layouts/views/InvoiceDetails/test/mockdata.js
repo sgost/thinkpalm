@@ -1131,7 +1131,7 @@ export const mockapidata = {
     name: "DSM Nutritional Products AGtestupdate",
     domain: "dsmnutritionalproductsag",
     email: "test1@gmail.com",
-    webSite: "http://www.dsm.com",
+    webSite: "https://www.dsm.com",
     billingAddressId: "f2caf4d2-fe4a-4abf-b4ca-7b7cfccd441d",
     shippingAddressId: "333f8266-dd77-4729-88e4-22d9b7480635",
     note: null,
