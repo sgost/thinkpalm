@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Table, FileHandler, FileUpload } from "atlasuikit";
+import { Button, Icon, Table, FileHandler, FileUpload, BreadCrumb } from "atlasuikit";
 import "./invoiceDetails.scss";
-import { countrySummaryData, feeSummary } from "./mockData";
+import { apiInvoiceMockData, countrySummaryData, feeSummary } from "./mockData";
 
 import moment from "moment";
 import GetFlag from "./getFlag";
@@ -96,6 +96,7 @@ export default function InvoiceDetails() {
   const [noteText, setNoteText] = useState("");
   const [notes, setNotes] = useState<any>([]);
   const [isFileError, setIsFileError] = useState<any>(null);
+  const [transactionType, setTransactionType] = useState();
 
   const navigate = useNavigate();
 
@@ -157,7 +158,11 @@ export default function InvoiceDetails() {
           throw new Error("Something went wrong");
         }
         console.log("invoice details", res);
-
+        //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+        if(res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71"){
+          res.data = apiInvoiceMockData;
+        }
+        
         res.data?.countryPayroll.forEach((e: any) => {
           let country = e.countryName;
           let countryCode = e.countryCode;
@@ -212,6 +217,7 @@ export default function InvoiceDetails() {
         setTotal(tempTotal);
         setDocuments(res.data.invoice.invoiceDocuments);
         setApiData(res);
+        setTransactionType(res.data.invoice.transactionType);
       })
       .catch((e: any) => {
         console.log("error e", e);
@@ -414,13 +420,22 @@ export default function InvoiceDetails() {
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
-          <p onClick={() => navigate("/pay")} className="navtext">
-            Invoices
-          </p>
-          <Icon className="icon" icon="chevronRight" size="medium" />
-          <p className="text">
-            Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}
-          </p>
+          <BreadCrumb
+            hideHeaderTitle={true}
+            hideHeaderTabs = {true}
+            steps={[
+              {
+                isActive: true,
+                key: 'Invoices',
+                label: 'Invoices',
+                onClickLabel: () =>{ navigate("/pay")}
+              },
+              {
+                key: 'profile',
+                label: transactionType == 7 ? "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo : "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo,
+              }
+            ]}
+          />
         </div>
         <div className="buttons">
           <div
@@ -447,6 +462,7 @@ export default function InvoiceDetails() {
           <div>
             {isClient == "true" && status === "Pending Approval" && (
               <Button
+                disabled = {transactionType == 7}
                 handleOnClick={() => {
                   handleApproveInvoice();
                 }}
@@ -475,7 +491,7 @@ export default function InvoiceDetails() {
                 size="medium"
                 title="Order Summary"
               />
-              <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
+              {transactionType != 7 ? <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>: <p>Contractor Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>}
             </div>
             <div className="amount">
               <p>
@@ -564,31 +580,34 @@ export default function InvoiceDetails() {
         </div>
       </div>
 
-      <div className="tab">
-        <p
-          onClick={() => setActiveTab("payroll")}
-          className={
-            activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
-          }
-        >
-          Payroll Journal
-        </p>
-        <p
-          onClick={() => setActiveTab("master")}
-          className={
-            activeTab === "master" ? "tabTextActive" : "tabTextPassive"
-          }
-        >
-          Master Invoice
-        </p>
-        <p
-          onClick={() => setActiveTab("files")}
-          className={activeTab === "files" ? "tabTextActive" : "tabTextPassive"}
-        >
-          Files & Notes
-        </p>
-      </div>
-      {activeTab === "master" && (
+      {transactionType != 7 &&
+        <div className="tab">
+          <p
+            onClick={() => setActiveTab("payroll")}
+            className={
+              activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Payroll Journal
+          </p>
+          <p
+            onClick={() => setActiveTab("master")}
+            className={
+              activeTab === "master" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Master Invoice
+          </p>
+          <p
+            onClick={() => setActiveTab("files")}
+            className={activeTab === "files" ? "tabTextActive" : "tabTextPassive"}
+          >
+            Files & Notes
+          </p>
+        </div>
+      }
+      
+      {activeTab === "master" && transactionType != 7 && (
         <div>
           <h3 className="tableHeader">Country Summary</h3>
           <Table options={countrySummaryData} colSort />
@@ -615,7 +634,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "payroll" && (
+      {activeTab === "payroll" && transactionType != 7 && (
         <div>
           {payrollTables.map((item: any) => {
             console.log("item", item);
@@ -749,7 +768,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "files" && (
+      {activeTab === "files" && transactionType != 7 && (
         <div className="filesNotes">
           <div className="box">
             <h3>Notes</h3>
