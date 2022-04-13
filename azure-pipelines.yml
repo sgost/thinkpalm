@@ -45,6 +45,7 @@ stages:
           sonar.tests=src
           # But we get specific here
           # We don't need to exclude it in sonar.sources because it is automatically taken care of
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js
           sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
           # Path to report coverage and unit tests
           sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
@@ -109,16 +110,16 @@ stages:
         organization: 'technology-internal'
       continueOnError: true
 
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          echo "##vso[task.setvariable variable=buildbreaker]true"
-      # condition: failed()
+    # - task: Bash@3
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       echo "##vso[task.setvariable variable=buildbreaker]true"
+    #   # condition: failed()
 
 
 - stage: Deploy_DEV
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['buildbreaker'], 'true'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
   - name: system.debug
     value: true
@@ -232,17 +233,17 @@ stages:
         cliProjectName: '$(Build.Repository.Name)'
         cliSources: '.'
         extraProperties: |
+          # Source
           sonar.sources=src
           # Where to find tests file, also src
           sonar.tests=src
           # But we get specific here
           # We don't need to exclude it in sonar.sources because it is automatically taken care of
-          sonar.exclusions=src/index.js,src/contractor-pay.js
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js
           sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
           # Path to report coverage and unit tests
           sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
-          sonar.typescript.tsconfigPath=tsconfig.json
-          sonar.testExecutionReportPaths=$(System.DefaultWorkingDirectory)/test-report.xml
+          sonar.testExecutionReportPaths.reportsPath=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
           # Log
           sonar.log.level=DEBUG
           sonar.verbose=true
@@ -414,7 +415,7 @@ stages:
           sonar.tests=src
           # But we get specific here
           # We don't need to exclude it in sonar.sources because it is automatically taken care of
-          sonar.exclusions=src/index.js,src/contractor-pay.js
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js
           sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
           # Path to report coverage and unit tests
           sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
