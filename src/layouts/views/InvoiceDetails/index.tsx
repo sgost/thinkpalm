@@ -481,14 +481,15 @@ export default function InvoiceDetails() {
 
       <div className="payrollInvoiceInfo">
         <div className="topBar">
-          <p className="status">{status}</p>
-
+          <div className="invoic-status">
+            <p className="status">{status}</p>
+          </div>
           <div className="topBarrow">
             <div className="invoiceNo">
               <Icon
                 color="#FFFFFF"
                 icon="orderSummary"
-                size="medium"
+                size="large"
                 title="Order Summary"
               />
               {transactionType != 7 ? <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>: <p>Contractor Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>}
