@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/runtime": "^7.17.9",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/user-event": "^13.5.0",
     "@types/node": "^16.11.26",
@@ -14,6 +15,7 @@
     "moment": "^2.29.1",
     "postcss": "^8.4.8",
     "react": "^17.0.2",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-onclickoutside": "^6.12.1",
@@ -42,13 +44,14 @@
       "not op_mini all"
     ],
     "development": [
-      "last 1 chrome version",
+      "last 2 chrome versions",
       "last 1 firefox version",
       "last 1 safari version"
     ]
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@testing-library/jest-dom": "^5.16.2",

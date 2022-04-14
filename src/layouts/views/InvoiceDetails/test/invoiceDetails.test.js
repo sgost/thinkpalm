@@ -241,10 +241,10 @@ describe("Invoice details", () => {
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     fireEvent.click(filesTab);
     const input = await waitFor(() =>
-      screen.getByPlaceholderText(/Add a Note.../)
+      screen.getByPlaceholderText(/Add a note here.../)
     );
     fireEvent.change(input, { target: { value: "Pending" } });
-    const publish = screen.getByText(/Publish Note/);
+    const publish = screen.getByText(/Save/);
     fireEvent.click(publish);
   });
 

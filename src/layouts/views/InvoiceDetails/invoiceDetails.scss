@@ -55,6 +55,29 @@
           margin-top: 0.667rem;
         }
       }
+      .download_disable {
+        display: flex;
+        align-items: center;
+        background-color: $white;
+        border-style: solid;
+        border-color: $primary-blue;
+        border-radius: 4px;
+        height: 2.3rem;
+        font-size: 1rem;
+        border-width: 0.1rem;
+        cursor: no-drop;
+        opacity: 50%;
+
+        .text {
+          padding: 0px 20px;
+          margin: 0px;
+          color: $primary-blue;
+        }
+
+        .icon {
+          margin-top: 0.667rem;
+        }
+      }
 
       .openDownloadDropdown {
         position: absolute;
@@ -95,13 +118,12 @@
         border: 1px solid #cbd4f3;
         background-color: #e0e5f81a;
         color: #cbd4f3;
-        margin-bottom: 16px;
-        p{
+        margin-bottom: 1rem;
+        p {
           margin: 0;
         }
       }
 
-      
       .topBarrow {
         display: flex;
         justify-content: space-between;
@@ -346,6 +368,7 @@
       border-radius: 10px;
       background-color: $white;
       padding: 4rem;
+      // overflow: auto;
 
       h3 {
         font-size: 1.5rem;
@@ -356,26 +379,45 @@
       }
 
       .notesContainer {
-        height: 30rem;
-        overflow: auto;
+        height: 24rem;
+        // overflow: auto;
         margin-top: 1rem;
+        margin-right: 3rem;
 
         .notesSubContainer {
-          display: flex;
-          align-items: center;
+          // display: flex;
+          // align-items: center;
+          // justify-content: space-between;
 
-          .noteDate {
-            font-size: 1.125rem;
-            color: $primary-blue;
-            margin-right: 1rem;
+          .noteInfoBtn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .noteInfo {
+              display: flex;
+              align-items: center;
+
+              span {
+                color: $medium-gray;
+                font-size: 0.8rem;
+              }
+            }
+            .noteBtn {
+              display: flex;
+              gap: 1rem;
+            }
           }
 
-          .notes {
-            font-size: 1.125rem;
-            color: $secondary-gray;
-
+          .note {
             span {
-              color: $black;
+              display: flex;
+              background-color: $active;
+              padding: 1rem;
+              border-radius: 4px;
+              color: $primary-gray;
+              margin: 1rem 0px;
+              font-size: 0.8rem;
             }
           }
         }
@@ -383,19 +425,56 @@
 
       .inpContinaer {
         display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
 
-        textarea {
-          width: 100%;
-          padding: 1rem;
+        input {
+          // width: 100%;
+          // padding: 1rem;
           margin-bottom: 1rem;
-          border-color: $medium-gray;
-          border-radius: 0.125rem;
+          // border-color: $medium-gray;
+          // border-radius: 0.125rem;
           font-family: "Circular", sans-serif;
+          // height: 6.25rem;
+          padding: 0.8rem;
+          padding-bottom: 3rem;
+        }
+        input:focus {
+          outline-color: $primary-blue;
+        }
+
+        span {
+          color: $medium-gray;
+          font-size: 0.7rem;
         }
       }
       .btnContainer {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+        // justify-content: space-between;
+
+        .btnContainercheckbox {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1rem;
+          width: 100%;
+
+          .a-checkbox-wrapper {
+            align-items: flex-start;
+          }
+
+          .a-checkbox-wrapper input[type="checkbox"] {
+            width: 0.7rem;
+            height: 0.7rem;
+          }
+
+          label {
+            font-size: 0.7rem;
+          }
+        }
 
         button.a-button.small {
           width: 7.31rem;
@@ -465,14 +544,14 @@
   }
   .a-breadcrumb {
     margin-bottom: 0.5rem;
-    &__label{
+    &__label {
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .steps:last-child {
+      span {
         font-weight: 400;
-        cursor: pointer;
+      }
     }
-    .steps:last-child{
-        span{
-            font-weight: 400;
-        } 
-    }
-}
+  }
 }

@@ -110,11 +110,11 @@ export default function InvoiceListing() {
       label: "Partially Paid",
       value: 6,
     },
-    {
-      isSelected: false,
-      label: "Partial",
-      value: 7,
-    },
+    // {
+    //   isSelected: false,
+    //   label: "Partial",
+    //   value: 7,
+    // },
 
     {
       isSelected: false,
@@ -650,6 +650,9 @@ export default function InvoiceListing() {
               isOpen={isTypeOpen}
               handleDropdownClick={(bool: any) => {
                 setIsTypeOpen(bool);
+                if (bool) {
+                  setIsStatusOpen(false);
+                }
               }}
               handleDropOptionClick={(opt: any) => {
                 let index = types.findIndex((e) => e.value === opt.value);
@@ -694,6 +697,9 @@ export default function InvoiceListing() {
               isOpen={isStatusOpen}
               handleDropdownClick={(bool: any) => {
                 setIsStatusOpen(bool);
+                if (bool) {
+                  setIsTypeOpen(false);
+                }
               }}
               handleDropOptionClick={(opt: any) => {
                 let copy = [...status];
