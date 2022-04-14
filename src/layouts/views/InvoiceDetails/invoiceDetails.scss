@@ -55,6 +55,29 @@
           margin-top: 0.667rem;
         }
       }
+      .download_disable {
+        display: flex;
+        align-items: center;
+        background-color: $white;
+        border-style: solid;
+        border-color: $primary-blue;
+        border-radius: 4px;
+        height: 2.3rem;
+        font-size: 1rem;
+        border-width: 0.1rem;
+        cursor: no-drop;
+        opacity: 50%;
+
+        .text {
+          padding: 0px 20px;
+          margin: 0px;
+          color: $primary-blue;
+        }
+
+        .icon {
+          margin-top: 0.667rem;
+        }
+      }
 
       .openDownloadDropdown {
         position: absolute;
