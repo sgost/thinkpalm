@@ -109,11 +109,11 @@ export default function InvoiceListing() {
       label: "Partially Paid",
       value: 6,
     },
-    {
-      isSelected: false,
-      label: "Partial",
-      value: 7,
-    },
+    // {
+    //   isSelected: false,
+    //   label: "Partial",
+    //   value: 7,
+    // },
 
     {
       isSelected: false,

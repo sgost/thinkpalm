@@ -338,6 +338,7 @@
       border-radius: 10px;
       background-color: $white;
       padding: 4rem;
+      // overflow: auto;
 
       h3 {
         font-size: 1.5rem;
@@ -348,26 +349,44 @@
       }
 
       .notesContainer {
-        height: 30rem;
-        overflow: auto;
+        height: 24rem;
+        // overflow: auto;
         margin-top: 1rem;
 
         .notesSubContainer {
-          display: flex;
-          align-items: center;
+          // display: flex;
+          // align-items: center;
+          // justify-content: space-between;
 
-          .noteDate {
-            font-size: 1.125rem;
-            color: $primary-blue;
-            margin-right: 1rem;
+          .noteInfoBtn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .noteInfo {
+              display: flex;
+              align-items: center;
+
+              span {
+                color: $medium-gray;
+                font-size: 0.8rem;
+              }
+            }
+            .noteBtn {
+              display: flex;
+              gap: 1rem;
+            }
           }
 
-          .notes {
-            font-size: 1.125rem;
-            color: $secondary-gray;
-
+          .note {
             span {
-              color: $black;
+              display: flex;
+              background-color: $active;
+              padding: 1rem;
+              border-radius: 4px;
+              color: $primary-gray;
+              margin: 1rem 0px;
+              font-size: 0.8rem;
             }
           }
         }
@@ -375,19 +394,44 @@
 
       .inpContinaer {
         display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
 
-        textarea {
-          width: 100%;
-          padding: 1rem;
+        input {
+          // width: 100%;
+          // padding: 1rem;
           margin-bottom: 1rem;
-          border-color: $medium-gray;
-          border-radius: 0.125rem;
+          // border-color: $medium-gray;
+          // border-radius: 0.125rem;
           font-family: "Circular", sans-serif;
+          // height: 6.25rem;
+          padding: 0.8rem;
+          padding-bottom: 3rem;
+        }
+        input:focus {
+          outline-color: $primary-blue;
+        }
+
+        span {
+          color: $medium-gray;
+          font-size: 0.7rem;
         }
       }
       .btnContainer {
-        display: flex;
+        // display: flex;
         justify-content: space-between;
+
+        .btnContainercheckbox {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1rem;
+
+          label {
+            font-size: 0.7rem;
+          }
+        }
 
         button.a-button.small {
           width: 7.31rem;
@@ -454,5 +498,9 @@
     text-overflow: ellipsis;
     width: 13rem;
     overflow: hidden;
+  }
+
+  .box::-webkit-scrollbar-thumb {
+    background-color: $light-gray;
   }
 }

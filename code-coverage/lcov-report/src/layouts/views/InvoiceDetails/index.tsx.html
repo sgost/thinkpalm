@@ -1093,7 +1093,26 @@
 <a name='L1028'></a><a href='#L1028'>1028</a>
 <a name='L1029'></a><a href='#L1029'>1029</a>
 <a name='L1030'></a><a href='#L1030'>1030</a>
-<a name='L1031'></a><a href='#L1031'>1031</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1031'></a><a href='#L1031'>1031</a>
+<a name='L1032'></a><a href='#L1032'>1032</a>
+<a name='L1033'></a><a href='#L1033'>1033</a>
+<a name='L1034'></a><a href='#L1034'>1034</a>
+<a name='L1035'></a><a href='#L1035'>1035</a>
+<a name='L1036'></a><a href='#L1036'>1036</a>
+<a name='L1037'></a><a href='#L1037'>1037</a>
+<a name='L1038'></a><a href='#L1038'>1038</a>
+<a name='L1039'></a><a href='#L1039'>1039</a>
+<a name='L1040'></a><a href='#L1040'>1040</a>
+<a name='L1041'></a><a href='#L1041'>1041</a>
+<a name='L1042'></a><a href='#L1042'>1042</a>
+<a name='L1043'></a><a href='#L1043'>1043</a>
+<a name='L1044'></a><a href='#L1044'>1044</a>
+<a name='L1045'></a><a href='#L1045'>1045</a>
+<a name='L1046'></a><a href='#L1046'>1046</a>
+<a name='L1047'></a><a href='#L1047'>1047</a>
+<a name='L1048'></a><a href='#L1048'>1048</a>
+<a name='L1049'></a><a href='#L1049'>1049</a>
+<a name='L1050'></a><a href='#L1050'>1050</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2009,8 +2028,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -2018,6 +2035,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3029,17 +3067,15 @@ export default function InvoiceDetails() {
                                   "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
                               };
 &nbsp;
-                              axios
-                                .post(
-                                  "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
-                                  {
-                                    invoiceId: id,
-                                    documentId: documents[index].documentId,
-                                  },
-                                  {
-                                    headers: headers,
-                                  }
-                                )
+                              axios({
+                                method: "DELETE",
+                                url: "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
+                                data: {
+                                  invoiceId: id,
+                                  documentId: documents[index].documentId,
+                                },
+                                headers: headers,
+                              })
                                 .then(<span class="fstat-no" title="function not covered" >(r</span>es: any) =&gt; {
 <span class="cstat-no" title="statement not covered" >                                  console.log("del rs", res);</span>
                                   let cpy = <span class="cstat-no" title="statement not covered" >[...documents];</span>
@@ -3049,6 +3085,27 @@ export default function InvoiceDetails() {
                                 .catch((e: any) =&gt; {
                                   console.log(e);
                                 });
+&nbsp;
+                              // axios
+                              //   .post(
+                              //     "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
+                              //     {
+                              //       invoiceId: id,
+                              //       documentId: documents[index].documentId,
+                              //     },
+                              //     {
+                              //       headers: headers,
+                              //     }
+                              //   )
+                              //   .then((res: any) =&gt; {
+                              //     console.log("del rs", res);
+                              //     let cpy = [...documents];
+                              //     cpy.splice(index, 1);
+                              //     setDocuments(cpy);
+                              //   })
+                              //   .catch((e: any) =&gt; {
+                              //     console.log(e);
+                              //   });
                             },
                           },
                         ],
@@ -3160,7 +3217,7 @@ export default function InvoiceDetails() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Apr 12 2022 14:26:01 GMT+0500 (Pakistan Standard Time)
+                at Tue Apr 12 2022 15:43:38 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

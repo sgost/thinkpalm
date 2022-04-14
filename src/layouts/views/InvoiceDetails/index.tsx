@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Table, FileHandler, FileUpload } from "atlasuikit";
+import {
+  Button,
+  Icon,
+  Table,
+  FileHandler,
+  FileUpload,
+  NoDataCard,
+} from "atlasuikit";
 import "./invoiceDetails.scss";
 import { countrySummaryData, feeSummary } from "./mockData";
 
@@ -8,6 +15,7 @@ import GetFlag from "./getFlag";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
+import { Scrollbars } from "react-custom-scrollbars";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
@@ -752,14 +760,87 @@ export default function InvoiceDetails() {
       {activeTab === "files" && (
         <div className="filesNotes">
           <div className="box">
-            <h3>Notes</h3>
-            {/* <p>Write a Note relevant for this Invoice.</p> */}
+            <Scrollbars style={{ width: "98%", height: " 45.75rem" }}>
+              <h3>Notes</h3>
+              {/* <p>Write a Note relevant for this Invoice.</p> */}
 
-            <div className="notesContainer">
-              {notes.map((item: any) => {
-                return (
-                  <div className="notesSubContainer">
-                    <div>
+              <div className="notesContainer">
+                {!notes.length ? (
+                  <div>
+                    <NoDataCard
+                      title=""
+                      bodyContents={[
+                        "No notes have been added yet.",
+                        "Add one below!",
+                      ]}
+                      style={{
+                        height: "19rem",
+                        width: "auto",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  notes.map((item: any) => {
+                    return (
+                      <div className="notesSubContainer">
+                        <div className="noteInfoBtn">
+                          <div className="noteInfo">
+                            <span>
+                              test@email.com (You){" "}
+                              {moment(item.createdDate).format(
+                                "hh:mm A DD MMM, YYYY "
+                              )}
+                            </span>
+                            <Icon color="#b4b3bb" icon="info" size="small" />
+                          </div>
+                          <div className="noteBtn">
+                            <Icon color="#526FD6" icon="edit" size="small" />
+                            {/* <Icon icon="trash" color="#FBAF00" size="small" /> */}
+
+                            <svg
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 26"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M4.38086 3.85719H19.619V22.1429C19.619 22.9512 19.2979 23.7264 18.7263 24.2979C18.1548 24.8694 17.3796 25.1905 16.5713 25.1905H7.42848C6.6202 25.1905 5.84503 24.8694 5.27349 24.2979C4.70195 23.7264 4.38086 22.9512 4.38086 22.1429V3.85719ZM11.9999 0.80957C12.7688 0.809327 13.5093 1.09971 14.0731 1.62252C14.6369 2.14532 14.9822 2.86191 15.0399 3.62862L15.0475 3.85719H8.95229C8.95229 3.04891 9.27338 2.27374 9.84492 1.7022C10.4165 1.13066 11.1916 0.80957 11.9999 0.80957V0.80957Z"
+                                stroke="#E32C15"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M1.33398 3.85742H22.6673"
+                                stroke="#E32C15"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M8.95312 8.42871V20.6192"
+                                stroke="#E32C15"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M15.0488 8.42871V20.6192"
+                                stroke="#E32C15"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="note">
+                          <span>{item.note}</span>
+                        </div>
+                        {/* <div>
                       <p className="noteDate">
                         {moment(item.createdDate).format("DD/MM/YYYY, HH:mm")}
                       </p>
@@ -769,67 +850,71 @@ export default function InvoiceDetails() {
                       <p className="notes">
                         <span>test@email.com</span> {item.note}{" "}
                       </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="inpContinaer">
-              <textarea
-                value={noteText}
-                onChange={(e: any) => setNoteText(e.target.value)}
-                placeholder="Add a Note..."
-              />
-            </div>
-            <div className="btnContainer">
-              <div>
-                <input type="checkbox" /> <label>Visible to Customer</label>
-                <input type="checkbox" /> <label>Export to QB</label> <br />
-                <input type="checkbox" /> <label>Visible on PDF Invoice</label>
-              </div>
-              <Button
-                handleOnClick={() => {
-                  const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
-                  let currDate = new Date();
-
-                  axios({
-                    method: "POST",
-                    url: url,
-                    headers: {
-                      authorization: `Bearer ${tempToken}`,
-                      "x-apng-base-region": "EMEA",
-                      "x-apng-customer-id": cid?.toString() || "",
-                      "x-apng-external": "false",
-                      "x-apng-inter-region": "0",
-                      "x-apng-target-region": "EMEA",
-                      customer_id: cid?.toString() || "",
-                      // "Content-Type": "application/json",
-                    },
-                    data: {
-                      invoiceId: id,
-                      noteType: "2",
-                      note: noteText,
-                      isCustomerVisible: false,
-                      exportToQuickbooks: false,
-                      createdDate: currDate,
-                      modifiedBy: "00000000-0000-0000-0000-000000000000",
-                      modifiedByUser: null,
-                      displayInPDF: false,
-                      customerId: cid,
-                    },
+                    </div> */}
+                      </div>
+                    );
                   })
-                    .then((res: any) => {
-                      setNotes([res.data, ...notes]);
-                      setNoteText("");
+                )}
+              </div>
+              <div className="inpContinaer">
+                <input
+                  value={noteText}
+                  onChange={(e: any) => setNoteText(e.target.value)}
+                  placeholder="Add a note here..."
+                />
+                <span>Characters left: {400 - noteText.length}</span>
+              </div>
+              <div className="btnContainer">
+                <div className="btnContainercheckbox">
+                  <input type="checkbox" /> <label>Visible to Customer</label>
+                  <input type="checkbox" /> <label>Export to Quickbooks</label>
+                  <input type="checkbox" />{" "}
+                  <label>Visible on PDF Invoice</label>
+                </div>
+                <Button
+                  handleOnClick={() => {
+                    const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
+                    let currDate = new Date();
+
+                    axios({
+                      method: "POST",
+                      url: url,
+                      headers: {
+                        authorization: `Bearer ${tempToken}`,
+                        "x-apng-base-region": "EMEA",
+                        "x-apng-customer-id": cid?.toString() || "",
+                        "x-apng-external": "false",
+                        "x-apng-inter-region": "0",
+                        "x-apng-target-region": "EMEA",
+                        customer_id: cid?.toString() || "",
+                        // "Content-Type": "application/json",
+                      },
+                      data: {
+                        invoiceId: id,
+                        noteType: "2",
+                        note: noteText,
+                        isCustomerVisible: false,
+                        exportToQuickbooks: false,
+                        createdDate: currDate,
+                        modifiedBy: "00000000-0000-0000-0000-000000000000",
+                        modifiedByUser: null,
+                        displayInPDF: false,
+                        customerId: cid,
+                      },
                     })
-                    .catch((e: any) => {
-                      console.log(e);
-                    });
-                }}
-                className="primary-blue small"
-                label="Publish Note"
-              />
-            </div>
+                      .then((res: any) => {
+                        setNotes([res.data, ...notes]);
+                        setNoteText("");
+                      })
+                      .catch((e: any) => {
+                        console.log(e);
+                      });
+                  }}
+                  className="primary-blue small"
+                  label="Save"
+                />
+              </div>
+            </Scrollbars>
           </div>
 
           <div className="box2">

@@ -27,7 +27,8 @@
       padding: 0px 5px 0px 20px;
       align-items: center;
       background: #fff !important;
-      border: 0.056rem solid #767676 !important;
+      // border: 0.056rem solid #767676 !important;
+      border: 0.056rem solid #ced4da;
       border-radius: 0.222rem;
       cursor: pointer;
       display: flex;
@@ -59,6 +60,10 @@
       display: flex;
       justify-content: space-between;
       gap: 20px;
+
+      .a-dropdown {
+        width: 15rem;
+      }
 
       .download {
         color: $primary-blue;
