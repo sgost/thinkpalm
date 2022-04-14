@@ -459,8 +459,14 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           <div
-            onClick={() => transactionType != 7 ? setIsDownloadOpen(!isDownloadOpen): function noRefCheck(){}}
-            className={`${transactionType ==7 ? "download_disable": "download"}`}
+            onClick={() =>
+              transactionType != 7
+                ? setIsDownloadOpen(!isDownloadOpen)
+                : function noRefCheck() {}
+            }
+            className={`${
+              transactionType == 7 ? "download_disable" : "download"
+            }`}
             // className="download"
           >
             <p className="text">Download</p>
@@ -804,7 +810,32 @@ export default function InvoiceDetails() {
             <h3>Notes</h3>
             {/* <p>Write a Note relevant for this Invoice.</p> */}
 
-            <Scrollbars style={{ width: "110%", height: "26.75rem" }}>
+            <Scrollbars
+              renderView={(props: any) => (
+                <div
+                  {...props}
+                  style={{
+                    overflowX: "hidden",
+                  }}
+                  className="filesscroll"
+                />
+              )}
+              renderTrackVertical={(props: any) => (
+                <div
+                  style={{ backgroundColor: "black" }}
+                  {...props}
+                  className="track-vertical"
+                />
+              )}
+              renderThumbVertical={(props: any) => (
+                <div
+                  style={{ backgroundColor: "gray" }}
+                  {...props}
+                  className="thumb-vertical"
+                />
+              )}
+              style={{ width: "110%", height: "26.75rem" }}
+            >
               <div className="notesContainer">
                 {!notes.length ? (
                   <div>
