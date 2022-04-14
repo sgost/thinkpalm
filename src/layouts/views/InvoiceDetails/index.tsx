@@ -439,8 +439,9 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           <div
-            onClick={() => setIsDownloadOpen(!isDownloadOpen)}
-            className="download"
+            onClick={() => transactionType != 7 ? setIsDownloadOpen(!isDownloadOpen): function noRefCheck(){}}
+            className={`${transactionType ==7 ? "download_disable": "download"}`}
+            // className="download"
           >
             <p className="text">Download</p>
             <Icon
