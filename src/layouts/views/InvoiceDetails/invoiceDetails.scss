@@ -159,7 +159,7 @@
         border-right-style: solid;
         border-right-width: 1px;
         border-color: #ebebed;
-        padding-left: 20px;
+        padding: 0rem 4rem; 
       }
 
       .heading {
@@ -167,9 +167,11 @@
       }
       .value {
         @include value();
+        color: #3E3E3E;
       }
       .address {
         margin: 2px 0px;
+        color: #3E3E3E;
       }
 
       .smallText {
