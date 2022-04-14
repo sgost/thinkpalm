@@ -6,9 +6,11 @@ import {
   FileHandler,
   FileUpload,
   NoDataCard,
+  BreadCrumb,
+  Checkbox,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
-import { countrySummaryData, feeSummary } from "./mockData";
+import { apiInvoiceMockData, countrySummaryData, feeSummary } from "./mockData";
 
 import moment from "moment";
 import GetFlag from "./getFlag";
@@ -104,6 +106,10 @@ export default function InvoiceDetails() {
   const [noteText, setNoteText] = useState("");
   const [notes, setNotes] = useState<any>([]);
   const [isFileError, setIsFileError] = useState<any>(null);
+  const [transactionType, setTransactionType] = useState();
+  const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
+  const [isExportToQb, setIsExportToQb] = useState(false);
+  const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
 
   const navigate = useNavigate();
 
@@ -165,6 +171,10 @@ export default function InvoiceDetails() {
           throw new Error("Something went wrong");
         }
         console.log("invoice details", res);
+        //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+        if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
+          res.data = apiInvoiceMockData;
+        }
 
         res.data?.countryPayroll.forEach((e: any) => {
           let country = e.countryName;
@@ -220,6 +230,7 @@ export default function InvoiceDetails() {
         setTotal(tempTotal);
         setDocuments(res.data.invoice.invoiceDocuments);
         setApiData(res);
+        setTransactionType(res.data.invoice.transactionType);
       })
       .catch((e: any) => {
         console.log("error e", e);
@@ -422,13 +433,29 @@ export default function InvoiceDetails() {
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
-          <p onClick={() => navigate("/pay")} className="navtext">
-            Invoices
-          </p>
-          <Icon className="icon" icon="chevronRight" size="medium" />
-          <p className="text">
-            Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}
-          </p>
+          <BreadCrumb
+            hideHeaderTitle={true}
+            hideHeaderTabs={true}
+            steps={[
+              {
+                isActive: true,
+                key: "Invoices",
+                label: "Invoices",
+                onClickLabel: () => {
+                  navigate("/pay");
+                },
+              },
+              {
+                key: "profile",
+                label:
+                  transactionType == 7
+                    ? "Contractor Invoice No. " +
+                      apiData?.data?.invoice?.invoiceNo
+                    : "Payroll Invoice No. " +
+                      apiData?.data?.invoice?.invoiceNo,
+              },
+            ]}
+          />
         </div>
         <div className="buttons">
           <div
@@ -455,6 +482,7 @@ export default function InvoiceDetails() {
           <div>
             {isClient == "true" && status === "Pending Approval" && (
               <Button
+                disabled={transactionType == 7}
                 handleOnClick={() => {
                   handleApproveInvoice();
                 }}
@@ -473,17 +501,24 @@ export default function InvoiceDetails() {
 
       <div className="payrollInvoiceInfo">
         <div className="topBar">
-          <p className="status">{status}</p>
-
+          <div className="invoic-status">
+            <p className="status">{status}</p>
+          </div>
           <div className="topBarrow">
             <div className="invoiceNo">
               <Icon
                 color="#FFFFFF"
                 icon="orderSummary"
-                size="medium"
+                size="large"
                 title="Order Summary"
               />
-              <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
+              {transactionType != 7 ? (
+                <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
+              ) : (
+                <p>
+                  Contractor Invoice No. {apiData?.data?.invoice?.invoiceNo}
+                </p>
+              )}
             </div>
             <div className="amount">
               <p>
@@ -572,31 +607,36 @@ export default function InvoiceDetails() {
         </div>
       </div>
 
-      <div className="tab">
-        <p
-          onClick={() => setActiveTab("payroll")}
-          className={
-            activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
-          }
-        >
-          Payroll Journal
-        </p>
-        <p
-          onClick={() => setActiveTab("master")}
-          className={
-            activeTab === "master" ? "tabTextActive" : "tabTextPassive"
-          }
-        >
-          Master Invoice
-        </p>
-        <p
-          onClick={() => setActiveTab("files")}
-          className={activeTab === "files" ? "tabTextActive" : "tabTextPassive"}
-        >
-          Files & Notes
-        </p>
-      </div>
-      {activeTab === "master" && (
+      {transactionType != 7 && (
+        <div className="tab">
+          <p
+            onClick={() => setActiveTab("payroll")}
+            className={
+              activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Payroll Journal
+          </p>
+          <p
+            onClick={() => setActiveTab("master")}
+            className={
+              activeTab === "master" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Master Invoice
+          </p>
+          <p
+            onClick={() => setActiveTab("files")}
+            className={
+              activeTab === "files" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Files & Notes
+          </p>
+        </div>
+      )}
+
+      {activeTab === "master" && transactionType != 7 && (
         <div>
           <h3 className="tableHeader">Country Summary</h3>
           <Table options={countrySummaryData} colSort />
@@ -623,7 +663,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "payroll" && (
+      {activeTab === "payroll" && transactionType != 7 && (
         <div>
           {payrollTables.map((item: any) => {
             console.log("item", item);
@@ -757,13 +797,13 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "files" && (
+      {activeTab === "files" && transactionType != 7 && (
         <div className="filesNotes">
           <div className="box">
-            <Scrollbars style={{ width: "98%", height: " 45.75rem" }}>
-              <h3>Notes</h3>
-              {/* <p>Write a Note relevant for this Invoice.</p> */}
+            <h3>Notes</h3>
+            {/* <p>Write a Note relevant for this Invoice.</p> */}
 
+            <Scrollbars style={{ width: "110%", height: "26.75rem" }}>
               <div className="notesContainer">
                 {!notes.length ? (
                   <div>
@@ -856,65 +896,87 @@ export default function InvoiceDetails() {
                   })
                 )}
               </div>
-              <div className="inpContinaer">
-                <input
-                  value={noteText}
-                  onChange={(e: any) => setNoteText(e.target.value)}
-                  placeholder="Add a note here..."
-                />
-                <span>Characters left: {400 - noteText.length}</span>
-              </div>
-              <div className="btnContainer">
-                <div className="btnContainercheckbox">
-                  <input type="checkbox" /> <label>Visible to Customer</label>
-                  <input type="checkbox" /> <label>Export to Quickbooks</label>
-                  <input type="checkbox" />{" "}
-                  <label>Visible on PDF Invoice</label>
-                </div>
-                <Button
-                  handleOnClick={() => {
-                    const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
-                    let currDate = new Date();
-
-                    axios({
-                      method: "POST",
-                      url: url,
-                      headers: {
-                        authorization: `Bearer ${tempToken}`,
-                        "x-apng-base-region": "EMEA",
-                        "x-apng-customer-id": cid?.toString() || "",
-                        "x-apng-external": "false",
-                        "x-apng-inter-region": "0",
-                        "x-apng-target-region": "EMEA",
-                        customer_id: cid?.toString() || "",
-                        // "Content-Type": "application/json",
-                      },
-                      data: {
-                        invoiceId: id,
-                        noteType: "2",
-                        note: noteText,
-                        isCustomerVisible: false,
-                        exportToQuickbooks: false,
-                        createdDate: currDate,
-                        modifiedBy: "00000000-0000-0000-0000-000000000000",
-                        modifiedByUser: null,
-                        displayInPDF: false,
-                        customerId: cid,
-                      },
-                    })
-                      .then((res: any) => {
-                        setNotes([res.data, ...notes]);
-                        setNoteText("");
-                      })
-                      .catch((e: any) => {
-                        console.log(e);
-                      });
-                  }}
-                  className="primary-blue small"
-                  label="Save"
-                />
-              </div>
             </Scrollbars>
+
+            <div className="inpContinaer">
+              <input
+                value={noteText}
+                onChange={(e: any) => setNoteText(e.target.value)}
+                placeholder="Add a note here..."
+              />
+              <span>Characters left: {400 - noteText.length}</span>
+            </div>
+            <div className="btnContainer">
+              <div className="btnContainercheckbox">
+                <Checkbox
+                  onChange={(e: any) => {
+                    setIsVisibleToCustomer(e.target.checked);
+                  }}
+                  label="Visible to Customer"
+                  checked={isVisibleToCustomer}
+                />
+                <Checkbox
+                  label="Export to Quickbooks"
+                  onChange={(e: any) => {
+                    setIsExportToQb(e.target.checked);
+                  }}
+                  checked={isExportToQb}
+                />
+                <Checkbox
+                  label="Visible on PDF Invoice"
+                  onChange={(e: any) => {
+                    setisVisibleOnPDFInvoice(e.target.checked);
+                  }}
+                  checked={isVisibleOnPDFInvoice}
+                />
+                {/* <input type="checkbox" /> <label>Visible to Customer</label>
+                <input type="checkbox" /> <label>Export to Quickbooks</label>
+                <input type="checkbox" /> <label>Visible on PDF Invoice</label> */}
+              </div>
+              <Button
+                disabled={!noteText.length}
+                handleOnClick={() => {
+                  const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
+                  let currDate = new Date();
+
+                  axios({
+                    method: "POST",
+                    url: url,
+                    headers: {
+                      authorization: `Bearer ${tempToken}`,
+                      "x-apng-base-region": "EMEA",
+                      "x-apng-customer-id": cid?.toString() || "",
+                      "x-apng-external": "false",
+                      "x-apng-inter-region": "0",
+                      "x-apng-target-region": "EMEA",
+                      customer_id: cid?.toString() || "",
+                      // "Content-Type": "application/json",
+                    },
+                    data: {
+                      invoiceId: id,
+                      noteType: "2",
+                      note: noteText,
+                      isCustomerVisible: false,
+                      exportToQuickbooks: false,
+                      createdDate: currDate,
+                      modifiedBy: "00000000-0000-0000-0000-000000000000",
+                      modifiedByUser: null,
+                      displayInPDF: false,
+                      customerId: cid,
+                    },
+                  })
+                    .then((res: any) => {
+                      setNotes([res.data, ...notes]);
+                      setNoteText("");
+                    })
+                    .catch((e: any) => {
+                      console.log(e);
+                    });
+                }}
+                className="primary-blue small"
+                label="Save"
+              />
+            </div>
           </div>
 
           <div className="box2">

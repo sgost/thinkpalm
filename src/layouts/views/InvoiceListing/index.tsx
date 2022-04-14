@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
+import { listData } from "../InvoiceDetails/mockData";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -266,7 +267,7 @@ export default function InvoiceListing() {
       const apiTableData: any = [];
 
       // const apiTableData = apiData?.data?.results;
-
+      apiData?.data?.results.push(listData);
       apiData?.data?.results.forEach((item: any) => {
         const cFormat = Intl.NumberFormat("en-US", {
           style: "currency",
@@ -649,6 +650,9 @@ export default function InvoiceListing() {
               isOpen={isTypeOpen}
               handleDropdownClick={(bool: any) => {
                 setIsTypeOpen(bool);
+                if (bool) {
+                  setIsStatusOpen(false);
+                }
               }}
               handleDropOptionClick={(opt: any) => {
                 let index = types.findIndex((e) => e.value === opt.value);
@@ -693,6 +697,9 @@ export default function InvoiceListing() {
               isOpen={isStatusOpen}
               handleDropdownClick={(bool: any) => {
                 setIsStatusOpen(bool);
+                if (bool) {
+                  setIsTypeOpen(false);
+                }
               }}
               handleDropOptionClick={(opt: any) => {
                 let copy = [...status];

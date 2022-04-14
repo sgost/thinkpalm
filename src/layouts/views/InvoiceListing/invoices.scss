@@ -146,6 +146,12 @@
     margin-left: 10px;
   }
 
+  @media (max-width: 1440px) {
+    .table__row__header {
+      font-size: 0.9rem;
+    }
+  }
+
   @media (max-width: 1200px) {
     .dropdowns .inputContainer {
       max-width: 271px;

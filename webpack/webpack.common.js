@@ -7,7 +7,10 @@ const { ModuleFederationPlugin } = webpack.container;
 const deps = require("../package.json").dependencies;
 
 module.exports = {
-  entry: path.resolve(__dirname, "..", "./src/index.ts"),
+  entry: [
+    "regenerator-runtime/runtime.js",
+    path.resolve(__dirname, "..", "./src/index.ts"),
+  ],
   // devtool: "source-map", // to resolve url in prod
   resolve: {
     extensions: [".tsx", ".ts", ".js"],

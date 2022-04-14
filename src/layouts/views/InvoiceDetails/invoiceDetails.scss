@@ -1,11 +1,12 @@
 @import "../../../styles/variables";
 
 .invoiceDetailsContainer {
-  padding-bottom: 40px;
+  padding-bottom: 2.222rem;
 
   .invoiceDetailsHeaderRow {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1.333rem;
 
     .breadcrumbs {
       display: flex;
@@ -13,7 +14,7 @@
 
       .icon {
         margin-top: 4px;
-        margin-left: 20px;
+        margin-left: 1.111rem;
         font-weight: bold;
       }
 
@@ -29,7 +30,7 @@
 
     .buttons {
       display: flex;
-      gap: 20px;
+      gap: 1.111rem;
       position: relative;
 
       .download {
@@ -39,7 +40,8 @@
         border-style: solid;
         border-color: $primary-blue;
         border-radius: 4px;
-        height: 2.1rem;
+        height: 2.3rem;
+        font-size: 1rem;
         border-width: 0.1rem;
         cursor: pointer;
 
@@ -50,7 +52,7 @@
         }
 
         .icon {
-          margin-top: 12px;
+          margin-top: 0.667rem;
         }
       }
 
@@ -59,7 +61,7 @@
         background-color: $white;
         top: 3rem;
         padding: 8px;
-
+        width: 53%;
         p {
           color: $secondary-gray;
           margin: 0px;
@@ -68,6 +70,7 @@
 
           &:hover {
             background-color: $active;
+            font-weight: 600;
           }
         }
       }
@@ -77,47 +80,47 @@
   .payrollInvoiceInfo {
     background-color: $white;
     border-radius: 8px;
-    //   overflow: hidden;
 
     .topBar {
       background-color: $secondary-blue;
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
-      padding: 30px;
-
-      .status {
-        border-radius: 20px;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #cbd4f3;
+      padding: 2rem 5rem;
+      .invoic-status {
+        padding: 0.2rem 1.5rem;
+        border-radius: 1rem;
+        width: fit-content;
+        border: 1px solid #cbd4f3;
         background-color: #e0e5f81a;
         color: #cbd4f3;
-        width: 10rem;
-        text-align: center;
-        padding: 4px 0px;
+        margin-bottom: 0.667rem;
+        p {
+          margin: 0;
+        }
       }
 
       .topBarrow {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
 
         .invoiceNo {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 0.333rem;
 
           p {
             color: $white;
-            font-size: 32px;
+            font-size: 1.778rem;
             font-weight: 400;
+            margin: 0;
           }
         }
 
         .amount {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 0.556rem;
 
           p {
             color: #cbd4f3;
@@ -352,6 +355,7 @@
         height: 24rem;
         // overflow: auto;
         margin-top: 1rem;
+        margin-right: 3rem;
 
         .notesSubContainer {
           // display: flex;
@@ -419,14 +423,26 @@
         }
       }
       .btnContainer {
-        // display: flex;
-        justify-content: space-between;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        // justify-content: space-between;
 
         .btnContainercheckbox {
           display: flex;
           align-items: center;
           justify-content: space-between;
           margin-bottom: 1rem;
+          width: 100%;
+
+          .a-checkbox-wrapper {
+            align-items: flex-start;
+          }
+
+          .a-checkbox-wrapper input[type="checkbox"] {
+            width: 0.7rem;
+            height: 0.7rem;
+          }
 
           label {
             font-size: 0.7rem;
@@ -499,8 +515,16 @@
     width: 13rem;
     overflow: hidden;
   }
-
-  .box::-webkit-scrollbar-thumb {
-    background-color: $light-gray;
+  .a-breadcrumb {
+    margin-bottom: 0.5rem;
+    &__label {
+      font-weight: 400;
+      cursor: pointer;
+    }
+    .steps:last-child {
+      span {
+        font-weight: 700;
+      }
+    }
   }
 }
