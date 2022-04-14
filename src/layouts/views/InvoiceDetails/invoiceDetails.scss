@@ -108,15 +108,17 @@
       background-color: $secondary-blue;
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
-      padding: 2rem 5rem;
-      .invoic-status {
-        padding: 0.2rem 1.5rem;
+      padding: 0rem 5rem;
+      padding-top: 73px;
+      padding-bottom: 44px;
+      .invoic-status{
+        padding: 4px 25px;
         border-radius: 1rem;
         width: fit-content;
         border: 1px solid #cbd4f3;
         background-color: #e0e5f81a;
         color: #cbd4f3;
-        margin-bottom: 0.667rem;
+        margin-bottom: 1rem;
         p {
           margin: 0;
         }
@@ -134,7 +136,7 @@
 
           p {
             color: $white;
-            font-size: 1.778rem;
+            font-size: 32px;
             font-weight: 400;
             margin: 0;
           }
@@ -148,11 +150,11 @@
           p {
             color: #cbd4f3;
             margin: 0px;
-            font-size: 1.25rem;
+            font-size: 20px;
 
             span {
               color: $white;
-              font-size: 1rem;
+              font-size: 20px;
             }
           }
         }
@@ -179,7 +181,7 @@
         border-right-style: solid;
         border-right-width: 1px;
         border-color: #ebebed;
-        padding-left: 20px;
+        padding: 0rem 4rem; 
       }
 
       .heading {
@@ -187,9 +189,11 @@
       }
       .value {
         @include value();
+        color: #3E3E3E;
       }
       .address {
         margin: 2px 0px;
+        color: #3E3E3E;
       }
 
       .smallText {
