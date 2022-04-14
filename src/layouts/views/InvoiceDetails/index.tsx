@@ -517,7 +517,6 @@ export default function InvoiceDetails() {
                 color="#FFFFFF"
                 icon="orderSummary"
                 size="large"
-                title="Order Summary"
               />
               {transactionType != 7 ? (
                 <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
@@ -528,23 +527,25 @@ export default function InvoiceDetails() {
               )}
             </div>
             <div className="amount">
-              <p>
-                Open{" "}
-                <span>
-                  {getBillingCurrency()}{" "}
-                  {
-                    toCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
+              {transactionType != 7 &&
+                <p>
+                  Open{" "}
+                  <span>
+                    {getBillingCurrency()}{" "}
+                    {
+                      toCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
 
-                    // Intl.NumberFormat().format(
-                    //   apiData?.data?.invoice?.invoiceBalance.toLocaleString('en-US')
-                    // )
+                      // Intl.NumberFormat().format(
+                      //   apiData?.data?.invoice?.invoiceBalance.toLocaleString('en-US')
+                      // )
 
-                    // apiData?.data?.invoice?.invoiceBalance
-                    //   .toFixed(2)
-                    //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  }
-                </span>
-              </p>
+                      // apiData?.data?.invoice?.invoiceBalance
+                      //   .toFixed(2)
+                      //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                    }
+                  </span>
+                </p>
+              }
               <p>
                 Total{" "}
                 <span>
@@ -580,8 +581,10 @@ export default function InvoiceDetails() {
             <p className="address">
               {addressData?.data?.billingAddress?.country}
             </p>
-            <p>PO Number</p>
-            <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
+            {transactionType != 7 && <>
+              <p>PO Number</p>
+              <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
+            </>}
           </div>
           <div>
             <p className="heading">Invoice Date</p>
@@ -590,16 +593,18 @@ export default function InvoiceDetails() {
                 "DD MMM YYYY"
               )}
             </p>
-            <p className="heading">Invoice Changes</p>
-            <p className="value">
-              {moment(apiData?.data?.invoice?.createdDate).format(
-                "DD MMM YYYY"
-              )}
-            </p>
-            <p className="heading">Payment Due</p>
-            <p className="value">
-              {moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY")}
-            </p>
+            {transactionType != 7 && <>
+              <p className="heading">Invoice Changes</p>
+              <p className="value">
+                {moment(apiData?.data?.invoice?.createdDate).format(
+                  "DD MMM YYYY"
+                )}
+              </p>
+              <p className="heading">Payment Due</p>
+              <p className="value">
+                {moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY")}
+              </p>
+            </>}
           </div>
           <div className="lastCloumn">
             <p className="heading">Location</p>
