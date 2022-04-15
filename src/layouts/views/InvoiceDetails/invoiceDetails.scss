@@ -111,7 +111,7 @@
       padding: 0rem 5rem;
       padding-top: 73px;
       padding-bottom: 44px;
-      .invoic-status{
+      .invoic-status {
         padding: 4px 25px;
         border-radius: 1rem;
         width: fit-content;
@@ -181,7 +181,7 @@
         border-right-style: solid;
         border-right-width: 1px;
         border-color: #ebebed;
-        padding: 0rem 4rem; 
+        padding: 0rem 4rem;
       }
 
       .heading {
@@ -189,11 +189,11 @@
       }
       .value {
         @include value();
-        color: #3E3E3E;
+        color: #3e3e3e;
       }
       .address {
         margin: 2px 0px;
-        color: #3E3E3E;
+        color: #3e3e3e;
       }
 
       .smallText {
