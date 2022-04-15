@@ -240,7 +240,11 @@ export default function InvoiceDetails() {
     axios
       .get(notesApi, headers)
       .then((res: any) => {
-        setNotes(res.data.reverse());
+        if (isClient == "true") {
+          setNotes(res.data.reverse().filter((e: any) => e.isCustomerVisible));
+        } else {
+          setNotes(res.data.reverse());
+        }
       })
       .catch((e: any) => {
         console.log("error e", e);
@@ -513,11 +517,7 @@ export default function InvoiceDetails() {
           </div>
           <div className="topBarrow">
             <div className="invoiceNo">
-              <Icon
-                color="#FFFFFF"
-                icon="orderSummary"
-                size="large"
-              />
+              <Icon color="#FFFFFF" icon="orderSummary" size="large" />
               {transactionType != 7 ? (
                 <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
               ) : (
@@ -527,7 +527,7 @@ export default function InvoiceDetails() {
               )}
             </div>
             <div className="amount">
-              {transactionType != 7 &&
+              {transactionType != 7 && (
                 <p>
                   Open{" "}
                   <span>
@@ -545,7 +545,7 @@ export default function InvoiceDetails() {
                     }
                   </span>
                 </p>
-              }
+              )}
               <p>
                 Total{" "}
                 <span>
@@ -581,10 +581,12 @@ export default function InvoiceDetails() {
             <p className="address">
               {addressData?.data?.billingAddress?.country}
             </p>
-            {transactionType != 7 && <>
-              <p>PO Number</p>
-              <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
-            </>}
+            {transactionType != 7 && (
+              <>
+                <p>PO Number</p>
+                <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
+              </>
+            )}
           </div>
           <div>
             <p className="heading">Invoice Date</p>
@@ -593,18 +595,22 @@ export default function InvoiceDetails() {
                 "DD MMM YYYY"
               )}
             </p>
-            {transactionType != 7 && <>
-              <p className="heading">Invoice Changes</p>
-              <p className="value">
-                {moment(apiData?.data?.invoice?.createdDate).format(
-                  "DD MMM YYYY"
-                )}
-              </p>
-              <p className="heading">Payment Due</p>
-              <p className="value">
-                {moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY")}
-              </p>
-            </>}
+            {transactionType != 7 && (
+              <>
+                <p className="heading">Invoice Changes</p>
+                <p className="value">
+                  {moment(apiData?.data?.invoice?.createdDate).format(
+                    "DD MMM YYYY"
+                  )}
+                </p>
+                <p className="heading">Payment Due</p>
+                <p className="value">
+                  {moment(apiData?.data?.invoice?.dueDate).format(
+                    "DD MMM YYYY"
+                  )}
+                </p>
+              </>
+            )}
           </div>
           <div className="lastCloumn">
             <p className="heading">Location</p>
@@ -944,34 +950,35 @@ export default function InvoiceDetails() {
               <span>Characters left: {400 - noteText.length}</span>
             </div>
             <div className="btnContainer">
-              <div className="btnContainercheckbox">
-                <Checkbox
-                  onChange={(e: any) => {
-                    setIsVisibleToCustomer(e.target.checked);
-                  }}
-                  label="Visible to Customer"
-                  checked={isVisibleToCustomer}
-                />
-                <Checkbox
-                  label="Export to Quickbooks"
-                  onChange={(e: any) => {
-                    setIsExportToQb(e.target.checked);
-                  }}
-                  checked={isExportToQb}
-                />
-                <Checkbox
-                  label="Visible on PDF Invoice"
-                  onChange={(e: any) => {
-                    setisVisibleOnPDFInvoice(e.target.checked);
-                  }}
-                  checked={isVisibleOnPDFInvoice}
-                />
-                {/* <input type="checkbox" /> <label>Visible to Customer</label>
-                <input type="checkbox" /> <label>Export to Quickbooks</label>
-                <input type="checkbox" /> <label>Visible on PDF Invoice</label> */}
-              </div>
+              {isClient == "false" && (
+                <div className="btnContainercheckbox">
+                  <Checkbox
+                    onChange={(e: any) => {
+                      setIsVisibleToCustomer(e.target.checked);
+                    }}
+                    label="Visible to Customer"
+                    checked={isVisibleToCustomer}
+                  />
+                  <Checkbox
+                    label="Export to Quickbooks"
+                    onChange={(e: any) => {
+                      setIsExportToQb(e.target.checked);
+                    }}
+                    checked={isExportToQb}
+                  />
+                  <Checkbox
+                    label="Visible on PDF Invoice"
+                    onChange={(e: any) => {
+                      setisVisibleOnPDFInvoice(e.target.checked);
+                    }}
+                    checked={isVisibleOnPDFInvoice}
+                  />
+                </div>
+              )}
               <Button
-                disabled={!noteText.length}
+                disabled={
+                  !noteText.length || noteText.length > 400 ? true : false
+                }
                 handleOnClick={() => {
                   const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
                   let currDate = new Date();
@@ -993,12 +1000,12 @@ export default function InvoiceDetails() {
                       invoiceId: id,
                       noteType: "2",
                       note: noteText,
-                      isCustomerVisible: false,
-                      exportToQuickbooks: false,
+                      isCustomerVisible: isVisibleToCustomer,
+                      exportToQuickbooks: isExportToQb,
                       createdDate: currDate,
                       modifiedBy: "00000000-0000-0000-0000-000000000000",
                       modifiedByUser: null,
-                      displayInPDF: false,
+                      displayInPDF: isVisibleOnPDFInvoice,
                       customerId: cid,
                     },
                   })
