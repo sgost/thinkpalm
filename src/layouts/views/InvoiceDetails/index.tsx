@@ -48,7 +48,7 @@ export default function InvoiceDetails() {
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
   const [documents, setDocuments] = useState<any>([]);
-
+  const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
     columns: [
@@ -113,7 +113,10 @@ export default function InvoiceDetails() {
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
 
   const navigate = useNavigate();
-
+  useEffect(() => {
+    !hideTopCheck ? navigate("/pay") : null;
+  }, [hideTopCheck])
+  
   useEffect(() => {
     const headers = {
       headers: {
@@ -270,7 +273,7 @@ export default function InvoiceDetails() {
     console.log("currency", currency);
     console.log("isClient", isClient);
 
-    return currency.code;
+    return currency.currency.code;
   };
 
   const toCurrencyFormat = (amount: number) => {
@@ -439,15 +442,18 @@ export default function InvoiceDetails() {
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
           <BreadCrumb
-            hideHeaderTitle={true}
-            hideHeaderTabs={true}
+            hideHeaderTitle={hideTopCheck}
+            hideHeaderTabs={hideTopCheck}
             steps={[
               {
                 isActive: true,
                 key: "Invoices",
                 label: "Invoices",
                 onClickLabel: () => {
-                  navigate("/pay");
+                  setHideTopCheck(false);
+                  // setTimeout(() => {
+                  //   navigate("/pay");
+                  // },500);
                 },
               },
               {
