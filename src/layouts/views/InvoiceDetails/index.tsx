@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
+import BillsTable from "../BillsTable";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
@@ -47,7 +48,7 @@ export default function InvoiceDetails() {
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
   const [documents, setDocuments] = useState<any>([]);
-
+  const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
     columns: [
@@ -112,7 +113,12 @@ export default function InvoiceDetails() {
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
 
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if(!hideTopCheck){
+      navigate("/pay") 
+    }
+  }, [hideTopCheck])
+  
   useEffect(() => {
     const headers = {
       headers: {
@@ -269,7 +275,7 @@ export default function InvoiceDetails() {
     console.log("currency", currency);
     console.log("isClient", isClient);
 
-    return currency.code;
+    return currency.currency.code;
   };
 
   const toCurrencyFormat = (amount: number) => {
@@ -469,15 +475,18 @@ export default function InvoiceDetails() {
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
           <BreadCrumb
-            hideHeaderTitle={true}
-            hideHeaderTabs={true}
+            hideHeaderTitle={hideTopCheck}
+            hideHeaderTabs={hideTopCheck}
             steps={[
               {
                 isActive: true,
                 key: "Invoices",
                 label: "Invoices",
                 onClickLabel: () => {
-                  navigate("/pay");
+                  setHideTopCheck(false);
+                  // setTimeout(() => {
+                  //   navigate("/pay");
+                  // },500);
                 },
               },
               {
@@ -715,7 +724,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div>
           {payrollTables.map((item: any) => {
-            console.log("item", item);
+            console.log("itemsssssss", item);
             return (
               <div>
                 <div className="countryHeader">
@@ -1265,6 +1274,9 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
+      {transactionType == 7 && 
+        <BillsTable currency={getBillingCurrency()}></BillsTable>
+      }
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
     </div>
