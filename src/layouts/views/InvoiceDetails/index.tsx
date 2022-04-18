@@ -394,6 +394,37 @@ export default function InvoiceDetails() {
     //   });
   };
 
+  const handleApproveAR = () => {
+    const approveARApi =
+      "https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/Reviewed";
+
+    axios({
+      method: "PUT",
+      url: approveARApi,
+      headers: {
+        authorization: `Bearer ${tempToken}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": cid?.toString() || "",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: cid?.toString() || "",
+      },
+      data: [
+        {
+          InvoiceNo: apiData?.data?.invoice?.invoiceNo,
+          TransactionType: 1,
+        },
+      ],
+    })
+      .then((res: any) => {
+        console.log(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
   const downloadExcelFunction = () => {
     const headers = {
       headers: {
@@ -921,7 +952,7 @@ export default function InvoiceDetails() {
                           </div>
                         </div>
                         <div className="note">
-                          <span>{item.note}</span>
+                          <p>{item.note}</p>
                         </div>
                         {/* <div>
                       <p className="noteDate">
@@ -942,7 +973,8 @@ export default function InvoiceDetails() {
             </Scrollbars>
 
             <div className="inpContinaer">
-              <input
+              <textarea
+                maxLength={400}
                 value={noteText}
                 onChange={(e: any) => setNoteText(e.target.value)}
                 placeholder="Add a note here..."

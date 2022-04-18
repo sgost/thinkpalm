@@ -8,6 +8,7 @@ import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
 import { listData } from "../InvoiceDetails/mockData";
+import dots from "./dots.svg";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -131,7 +132,7 @@ export default function InvoiceListing() {
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       {
-        header: "Invoice Number",
+        header: "Invoice No",
         isDefault: true,
         key: "invoiceNo",
       },
@@ -735,8 +736,8 @@ export default function InvoiceListing() {
               }}
               options={status}
             />
-
-            <FaEllipsisH className="icon" />
+            <img src={dots} />
+            {/* <FaEllipsisH className="icon" /> */}
           </div>
         </div>
 

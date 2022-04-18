@@ -156,10 +156,10 @@ body {
   }
 }
 
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #526fd6 0%, #526fd6 100%);
-  border-radius: 10px;
-}
+// ::-webkit-scrollbar-thumb {
+//   background: gray;
+//   border-radius: 10px;
+// }
 ::selection {
   background: #526fd6;
   color: #fff;
