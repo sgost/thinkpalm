@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
+import BillsTable from "../BillsTable";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
@@ -684,7 +685,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div>
           {payrollTables.map((item: any) => {
-            console.log("item", item);
+            console.log("itemsssssss", item);
             return (
               <div>
                 <div className="countryHeader">
@@ -1233,6 +1234,9 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
+      {transactionType == 7 && 
+        <BillsTable></BillsTable>
+      }
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
     </div>

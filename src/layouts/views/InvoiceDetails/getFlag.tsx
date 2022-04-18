@@ -525,3 +525,8 @@ export default function GetFlag(props: any) {
   const Flag = flags[props.code.toLowerCase()];
   return <img src={Flag} />;
 }
+export const getFlagPath = (code: any) =>{
+  let Flag = flags[code.toLowerCase()];
+  debugger
+  return Flag;
+}
