@@ -1,0 +1,90 @@
+@import "../../../styles/variables";
+
+.invoice_bill_table {
+    margin-top: 3rem;
+
+    .table {
+        border-bottom: 1px solid #767676;
+    }
+
+    .feeSummaryCalc {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        background-color: $white;
+        padding: 20px;
+
+        .spacerclass{
+            width: 70%;
+        }
+        .rowFee {
+            display: flex;
+            border-bottom-style: solid;
+            // border-bottom-width: 1;
+            border-color: $light-gray;
+            border-width: 2px;
+            width: 30%;
+            padding-right: 3.6rem;
+            justify-content: space-between;
+
+            .title {
+                font-weight: 400;
+                font-size: 1rem;
+                color: $secondary-gray;
+            }
+
+            .amount {
+                font-weight: 400;
+                font-size: 1rem;
+                color: #17224e;
+            }
+        }
+
+        .row2 {
+            display: flex;
+            width: 30%;
+            justify-content: space-between;
+            padding-right: 3.6rem;
+
+            .title {
+                font-weight: 400;
+                font-size: 1rem;
+                color: $secondary-gray;
+            }
+
+            .amount {
+                font-weight: 400;
+                font-size: 1rem;
+                color: #17224e;
+            }
+        }
+        .totalRow {
+            display: flex;
+            align-items: center;
+            width: 30%;
+            justify-content: space-between;
+            p {
+                color: $primary-blue;
+            }
+
+            .total {
+                color: $primary-blue;
+                background-color: $active;
+                padding: 18px 32px;
+                border-radius: 10px;
+                font-weight: 400;
+                font-size: 24px;
+            }
+        }
+
+        
+    }
+    .lastRow{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        background-color: $white;
+        padding: 20px;
+        
+    }
+}

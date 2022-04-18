@@ -18,6 +18,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
+import BillsTable from "../BillsTable";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
@@ -47,7 +48,7 @@ export default function InvoiceDetails() {
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
   const [documents, setDocuments] = useState<any>([]);
-
+  const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState([]);
   const payrollOptions: any = {
     columns: [
@@ -112,7 +113,12 @@ export default function InvoiceDetails() {
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
 
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if(!hideTopCheck){
+      navigate("/pay") 
+    }
+  }, [hideTopCheck])
+  
   useEffect(() => {
     const headers = {
       headers: {
@@ -269,7 +275,7 @@ export default function InvoiceDetails() {
     console.log("currency", currency);
     console.log("isClient", isClient);
 
-    return currency.code;
+    return currency.currency.code;
   };
 
   const toCurrencyFormat = (amount: number) => {
@@ -394,6 +400,37 @@ export default function InvoiceDetails() {
     //   });
   };
 
+  const handleApproveAR = () => {
+    const approveARApi =
+      "https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/Reviewed";
+
+    axios({
+      method: "PUT",
+      url: approveARApi,
+      headers: {
+        authorization: `Bearer ${tempToken}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": cid?.toString() || "",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: cid?.toString() || "",
+      },
+      data: [
+        {
+          InvoiceNo: apiData?.data?.invoice?.invoiceNo,
+          TransactionType: 1,
+        },
+      ],
+    })
+      .then((res: any) => {
+        console.log(res);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
   const downloadExcelFunction = () => {
     const headers = {
       headers: {
@@ -438,15 +475,18 @@ export default function InvoiceDetails() {
       <div className="invoiceDetailsHeaderRow">
         <div className="breadcrumbs">
           <BreadCrumb
-            hideHeaderTitle={true}
-            hideHeaderTabs={true}
+            hideHeaderTitle={hideTopCheck}
+            hideHeaderTabs={hideTopCheck}
             steps={[
               {
                 isActive: true,
                 key: "Invoices",
                 label: "Invoices",
                 onClickLabel: () => {
-                  navigate("/pay");
+                  setHideTopCheck(false);
+                  // setTimeout(() => {
+                  //   navigate("/pay");
+                  // },500);
                 },
               },
               {
@@ -684,7 +724,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div>
           {payrollTables.map((item: any) => {
-            console.log("item", item);
+            console.log("itemsssssss", item);
             return (
               <div>
                 <div className="countryHeader">
@@ -921,7 +961,7 @@ export default function InvoiceDetails() {
                           </div>
                         </div>
                         <div className="note">
-                          <span>{item.note}</span>
+                          <p>{item.note}</p>
                         </div>
                         {/* <div>
                       <p className="noteDate">
@@ -942,7 +982,8 @@ export default function InvoiceDetails() {
             </Scrollbars>
 
             <div className="inpContinaer">
-              <input
+              <textarea
+                maxLength={400}
                 value={noteText}
                 onChange={(e: any) => setNoteText(e.target.value)}
                 placeholder="Add a note here..."
@@ -1233,6 +1274,9 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
+      {transactionType == 7 && 
+        <BillsTable currency={getBillingCurrency()}></BillsTable>
+      }
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
     </div>
