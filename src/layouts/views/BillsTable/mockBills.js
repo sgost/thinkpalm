@@ -16,7 +16,7 @@ export const BillsByInvoiceId = [
     {
         billReferenceNo : 779852,
         contractorName: "Mo Salah",
-        contractorProfilePicSrc: avatar,
+        contractorProfilePicSrc: "https://egsatldevusdmssrvc.blob.core.windows.net/contractorpaydevteam/download.jpg",
         contractorId: 791233,
         countryCode: "gb",
         countryName: "England",

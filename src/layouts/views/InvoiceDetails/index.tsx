@@ -1235,7 +1235,7 @@ export default function InvoiceDetails() {
         </div>
       )}
       {transactionType == 7 && 
-        <BillsTable></BillsTable>
+        <BillsTable currency={getBillingCurrency()}></BillsTable>
       }
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}

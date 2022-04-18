@@ -4,7 +4,7 @@ import { getFlagPath } from '../InvoiceDetails/getFlag';
 import "./billTable.scss"
 import { BillsByInvoiceId } from './mockBills';
 
-export default function BillsTable() {
+export default function BillsTable(props: any) {
     
 
     const TableColumns ={
@@ -43,9 +43,9 @@ export default function BillsTable() {
                 },
                 payAmount : item.billingCurrencyCode + ' ' + toCurrencyFormat(item.payAmmount),
                 exchangeRate: item.exchangeRate.toFixed(2),
-                payConverted: item.adminCurrecyCode + ' ' + toCurrencyFormat(item.payAmmount * item.exchangeRate),
-                adminFee: item.adminCurrecyCode + ' ' + toCurrencyFormat(item.adminFee),
-                total: item.adminCurrecyCode + ' ' + toCurrencyFormat((item.payAmmount * item.exchangeRate) + item.adminFee)
+                payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmmount * item.exchangeRate),
+                adminFee: props.currency + ' ' + toCurrencyFormat(item.adminFee),
+                total: props.currency + ' ' + toCurrencyFormat((item.payAmmount * item.exchangeRate) + item.adminFee)
             })
             paysConverted += item.payAmmount * item.exchangeRate;
             adminFees += item.adminFee;
@@ -75,15 +75,15 @@ export default function BillsTable() {
                 <div className="feeSummaryCalc">
                     <div className="rowFee">
                     <p className="title">Pay Converted Total</p>
-                    <p className="amount">USD {toCurrencyFormat(totalPayConverted)}</p>
+                    <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
                     </div>
                     <div className="row2">
                     <p className="title">Admin Fee Total</p>
-                    <p className="amount">USD {toCurrencyFormat(totalAdminFee)}</p>
+                    <p className="amount">{props.currency} {toCurrencyFormat(totalAdminFee)}</p>
                     </div>
                     <div className="totalRow">
                         <p>Total Due</p>
-                        <p className='total'>USD {toCurrencyFormat( (totalAdminFee + totalPayConverted) )}</p>
+                        <p className='total'>{props.currency} {toCurrencyFormat( (totalAdminFee + totalPayConverted) )}</p>
                     </div>
                 </div>
         </div>

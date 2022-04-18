@@ -527,6 +527,5 @@ export default function GetFlag(props: any) {
 }
 export const getFlagPath = (code: any) =>{
   let Flag = flags[code.toLowerCase()];
-  debugger
   return Flag;
 }
