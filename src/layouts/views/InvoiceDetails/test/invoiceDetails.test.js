@@ -12,6 +12,7 @@ import MockAdapter from "axios-mock-adapter";
 import { mockapidata } from "./mockdata";
 import axios from "axios";
 import { act } from "react-dom/test-utils";
+import { apiInvoiceMockData } from "../mockData";
 
 // describe("Invoice detail", () => {
 //   let mock;
@@ -278,4 +279,98 @@ describe("Invoice details", () => {
     );
     fireEvent.click(download);
   });
+  test("Navigate with breadcrumbs", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails></InvoiceDetails>
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getAllByText(/Loading/));
+    const breadcrumbs = await waitFor(() => screen.getAllByText(/Invoices/));
+    fireEvent.click(breadcrumbs[0]);
+
+  })
 });
+describe("Api returns transaction type = 7",()=>{
+  beforeAll(()=>{
+    const mock = new MockAdapter(axios);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id
+      )
+      .reply(200, apiInvoiceMockData);
+      mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+      )
+      .reply(200, mockapidata.resAddressData);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+      )
+      .reply(200, mockapidata.resCountriesData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+      .reply(200, mockapidata.resFeeData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+      .reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
+      )
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+      )
+      .reply(201);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
+      )
+      .reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+  });
+  test("Render Invoice Details", ()=>{
+    render(
+      <HashRouter>
+        <InvoiceDetails></InvoiceDetails>
+      </HashRouter>
+    );
+  })
+})

@@ -114,7 +114,9 @@ export default function InvoiceDetails() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    !hideTopCheck ? navigate("/pay") : null;
+    if(!hideTopCheck){
+      navigate("/pay") 
+    }
   }, [hideTopCheck])
   
   useEffect(() => {
