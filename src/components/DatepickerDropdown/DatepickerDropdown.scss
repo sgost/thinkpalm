@@ -1,5 +1,10 @@
 @import "../../styles/variables";
 
+.dateRangePickerdropdownActive {
+  border: 0.167rem solid #526fd6 !important;
+  border-radius: 0.222rem 0.222rem 0 0;
+}
+
 .dropdownContainer {
   // min-width: 180px;
   // cursor: pointer;

@@ -114,11 +114,11 @@ export default function InvoiceDetails() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if(!hideTopCheck){
-      navigate("/pay") 
+    if (!hideTopCheck) {
+      navigate("/pay");
     }
-  }, [hideTopCheck])
-  
+  }, [hideTopCheck]);
+
   useEffect(() => {
     const headers = {
       headers: {
@@ -531,6 +531,16 @@ export default function InvoiceDetails() {
           )}
 
           <div>
+            <Button
+              disabled={true}
+              className="primary-blue small"
+              icon={{
+                color: "#fff",
+                icon: "checkMark",
+                size: "medium",
+              }}
+              label="Submit to Customer"
+            />
             {isClient == "true" && status === "Pending Approval" && (
               <Button
                 disabled={transactionType == 7}
@@ -1274,9 +1284,9 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {transactionType == 7 && 
+      {transactionType == 7 && (
         <BillsTable currency={getBillingCurrency()}></BillsTable>
-      }
+      )}
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
     </div>
