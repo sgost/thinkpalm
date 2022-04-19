@@ -69,7 +69,13 @@ export default function DatepickerDropdown({
   HandleOutSideClick(wrapperRef);
 
   return (
-    <div ref={wrapperRef} data-testid="datedd" className="dropdownContainer">
+    <div
+      ref={wrapperRef}
+      data-testid="datedd"
+      className={`dropdownContainer ${
+        isOpen && "dateRangePickerdropdownActive"
+      }`}
+    >
       <span className="title">{title}</span>
       <div onClick={() => handleDropdownClick()} className="dropdown">
         <span className="text"> {displayDate()}</span>
