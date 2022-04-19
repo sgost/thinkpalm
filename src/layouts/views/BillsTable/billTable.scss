@@ -1,12 +1,14 @@
 @import "../../../styles/variables";
 
 .invoice_bill_table {
-    margin-top: 3rem;
+    margin-top: 2.667rem;
 
     .table {
         border-bottom: 1px solid #767676;
     }
-
+    .table__header{
+        border-radius: 10px 10px 0 0;
+    }
     .feeSummaryCalc {
         display: flex;
         flex-direction: column;
@@ -34,7 +36,7 @@
             }
 
             .amount {
-                font-weight: 400;
+                font-weight: 600;
                 font-size: 1rem;
                 color: #17224e;
             }
@@ -53,7 +55,7 @@
             }
 
             .amount {
-                font-weight: 400;
+                font-weight: 600;
                 font-size: 1rem;
                 color: #17224e;
             }
@@ -72,7 +74,7 @@
                 background-color: $active;
                 padding: 18px 32px;
                 border-radius: 10px;
-                font-weight: 400;
+                font-weight: 600;
                 font-size: 24px;
             }
         }
