@@ -296,8 +296,6 @@ export default function InvoiceDetails() {
         setIsErr(true);
       });
 
-      let tempData: any = [];
-      let paysConverted = 0;
       let URL = baseBillApi + 'INV0001' //apiData?.data?.invoice?.invoiceNo;
       axios.get(URL, {headers: {"accept": 'text/plain'}})
       .then((res: any) => {
