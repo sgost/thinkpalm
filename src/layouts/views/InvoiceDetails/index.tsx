@@ -10,10 +10,10 @@ import {
   Checkbox,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
-import { apiInvoiceMockData, countrySummaryData, feeSummary } from "./mockData";
+import { apiInvoiceMockData } from "./mockData";
 
 import moment from "moment";
-import GetFlag from "./getFlag";
+import GetFlag, { getFlagPath } from "./getFlag";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
@@ -111,6 +111,12 @@ export default function InvoiceDetails() {
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
+  const [countrySummary, setCountrySummary] = useState<any>([]);
+  const [totalCountrySummaryDue, settotalCountrySummaryDue] = useState(0);
+  const [feeSummary, setFeeSummary] = useState<any>([]);
+  const [contractTerminationFee, setContractTerminationFee] = useState(0);
+  const [incomingWirePayment, setIncomingWirePayment] = useState(0);
+  const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -171,12 +177,18 @@ export default function InvoiceDetails() {
     axios
       .get(api, headers)
       .then((res: any) => {
-        let data: any = [];
-        let tempTotal = 0;
         if (res.status !== 200) {
           throw new Error("Something went wrong");
         }
+
+        let data: any = [];
+        let countrySummaryTemp: any = [];
+        let tempTotal = 0;
+        let countrySumTotalArrTemp: any = [];
+        let feeSummaryTemp: any = [];
+
         console.log("invoice details", res);
+
         //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
         if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
           res.data = apiInvoiceMockData;
@@ -231,12 +243,100 @@ export default function InvoiceDetails() {
             feeSummary: e.feeSummary,
             data: arr,
           });
+
+          //For Country Summary
+
+          let totalGrossWages = e.payrollItems.reduce(
+            (a: any, b: any) => a + (b.totalWage || 0),
+            0
+          );
+          let totalAllowances = e.payrollItems.reduce(
+            (a: any, b: any) => a + (b.allowance || 0),
+            0
+          );
+          let totalExpenseReimb = e.payrollItems.reduce(
+            (a: any, b: any) => a + (b.expenseRe || 0),
+            0
+          );
+          let totalEmployerLiability = e.payrollItems.reduce(
+            (a: any, b: any) => a + (b.liability || 0),
+            0
+          );
+          let totalCountryVAT = e.payrollItems.reduce(
+            (a: any, b: any) => a + (b.countryVat || 0),
+            0
+          );
+
+          function precisionRound(number: number, precision: number) {
+            if (precision < 0) {
+              const factor = Math.pow(10, precision);
+              return Math.round(number * factor) / factor;
+            } else {
+              return +(
+                Math.round(Number(number + "e+" + precision)) +
+                "e-" +
+                precision
+              );
+            }
+          }
+
+          let countrySumTotalTemp =
+            precisionRound(
+              (totalGrossWages + totalAllowances) * e.exchangeRate,
+              2
+            ) +
+            precisionRound(totalExpenseReimb * e.exchangeRate, 2) +
+            precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
+            precisionRound(totalCountryVAT * e.exchangeRate, 2);
+
+          countrySumTotalArrTemp.push(countrySumTotalTemp);
+
+          countrySummaryTemp.push({
+            country: {
+              value: e.countryName,
+              img: { src: getFlagPath(e.countryCode) },
+            },
+            currency: e.currencyCode,
+            employees: e.payrollItems.length,
+            grossWages: toCurrencyFormat(totalGrossWages),
+            allowances: toCurrencyFormat(totalAllowances),
+            expenseReimb: toCurrencyFormat(totalExpenseReimb),
+            employerLiability: toCurrencyFormat(totalEmployerLiability),
+            countryVAT: toCurrencyFormat(totalCountryVAT),
+            exchangeRate: e.exchangeRate,
+            total: toCurrencyFormat(countrySumTotalTemp),
+          });
+
+          //Fee Summary Calculation
+          feeSummaryTemp.push({
+            country: {
+              value: e.countryName,
+              img: { src: getFlagPath(e.countryCode) },
+            },
+            currency: e.currencyCode,
+            adminFees: toCurrencyFormat(e.feeSummary.adminFee),
+            OnOffboardings: e.feeSummary.boardingFee,
+            fxRate: e.feeSummary.fxRate,
+            fxBill: e.feeSummary.fxBill,
+            benefits: toCurrencyFormat(e.feeSummary.healthCare),
+            employeeContribution: e.employeeContributionCreditTotal,
+            total: toCurrencyFormat(e.feeSummary.total),
+          });
         });
+
+        //Set states here
         setPayrollTables(data);
         setTotal(tempTotal);
         setDocuments(res.data.invoice.invoiceDocuments);
         setApiData(res);
         setTransactionType(res.data.invoice.transactionType);
+        setCountrySummary(countrySummaryTemp);
+        let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
+          (a: any, b: any) => a + (b || 0),
+          0
+        );
+        settotalCountrySummaryDue(totalCountrySummaryDueTemp);
+        setFeeSummary(feeSummaryTemp);
       })
       .catch((e: any) => {
         console.log("error e", e);
@@ -268,14 +368,154 @@ export default function InvoiceDetails() {
     }
   }, [lookupData, apiData]);
 
-  const getBillingCurrency = () => {
-    let currency = countriesData.data.find(
-      (e: any) => e.currencyId === apiData.data.invoice.currencyId
-    );
-    console.log("currency", currency);
-    console.log("isClient", isClient);
+  useEffect(() => {
+    if (apiData?.data && feeData?.data) {
+      const additionalFee = feeData.data.find((x: any) => x.type === 5);
 
-    return currency.currency.code;
+      const terminationFeeTemp = apiData.data.payrollFees.find(
+        (x: any) => x.feeId === additionalFee.id
+      );
+
+      setContractTerminationFee(terminationFeeTemp.amount);
+
+      const incomingFee = feeData.data.find((x: any) => x.type === 1);
+
+      const incomingWirePaymentTemp = apiData.data.payrollFees.find(
+        (x: any) => x.feeId === incomingFee.id
+      );
+      setIncomingWirePayment(incomingWirePaymentTemp.amount);
+
+      const totalFeeSummaryTemp =
+        apiData.data.countryPayroll.reduce(
+          (a: any, b: any) => a + (b.feeSummary.total || 0),
+          0
+        ) +
+        (terminationFeeTemp ? terminationFeeTemp.amount : 0) +
+        (incomingWirePaymentTemp ? incomingWirePaymentTemp.amount : 0);
+
+      setFeeSummaryTotalDue(totalFeeSummaryTemp);
+    }
+  }, [apiData, feeData]);
+
+  const getBillingCurrency = () => {
+    if (countriesData?.data && apiData?.data) {
+      let currency = countriesData.data.find(
+        (e: any) => e.currencyId === apiData.data.invoice.currencyId
+      );
+
+      // console.log("currency", currency);
+
+      return currency.currency.code;
+    } else {
+      return "";
+    }
+  };
+
+  const countrySummaryOptions: any = {
+    columns: [
+      {
+        header: "Country",
+        isDefault: true,
+        key: "country",
+      },
+      {
+        header: "Currency",
+        isDefault: true,
+        key: "currency",
+      },
+      {
+        header: "Employees",
+        isDefault: true,
+        key: "employees",
+      },
+      {
+        header: "Gross Wages",
+        isDefault: true,
+        key: "grossWages",
+      },
+      {
+        header: "Allowances",
+        isDefault: true,
+        key: "allowances",
+      },
+      {
+        header: "Expense Reimb.",
+        isDefault: true,
+        key: "expenseReimb",
+      },
+      {
+        header: "Employer Liability",
+        isDefault: true,
+        key: "employerLiability",
+      },
+      {
+        header: "Country VAT",
+        isDefault: true,
+        key: "countryVAT",
+      },
+      {
+        header: "Exchange Rate",
+        isDefault: true,
+        key: "exchangeRate",
+      },
+      {
+        header: "Total in " + getBillingCurrency(),
+        isDefault: true,
+        key: "total",
+      },
+    ],
+    showDefaultColumn: true,
+  };
+
+  const feeSummaryOptions: any = {
+    columns: [
+      {
+        header: "Country",
+        isDefault: true,
+        key: "country",
+      },
+      {
+        header: "Currency",
+        isDefault: true,
+        key: "currency",
+      },
+      {
+        header: "Admin Fees",
+        isDefault: true,
+        key: "adminFees",
+      },
+      {
+        header: "On/Offboardings",
+        isDefault: true,
+        key: "OnOffboardings",
+      },
+      {
+        header: "FX Rate in %",
+        isDefault: true,
+        key: "fxRate",
+      },
+      {
+        header: "FX Bill",
+        isDefault: true,
+        key: "fxBill",
+      },
+      {
+        header: "Benefits",
+        isDefault: true,
+        key: "benefits",
+      },
+      {
+        header: "Employee Contribution",
+        isDefault: true,
+        key: "employeeContribution",
+      },
+      {
+        header: "Total in " + getBillingCurrency(),
+        isDefault: true,
+        key: "total",
+      },
+    ],
+    showDefaultColumn: true,
   };
 
   const toCurrencyFormat = (amount: number) => {
@@ -705,34 +945,49 @@ export default function InvoiceDetails() {
       )}
 
       {activeTab === "master" && transactionType != 7 && (
-        <div>
+        <div className="master">
           <h3 className="tableHeader">Country Summary</h3>
-          <Table options={countrySummaryData} colSort />
+          <Table
+            options={{ ...countrySummaryOptions, ...{ data: countrySummary } }}
+            colSort
+          />
           <div className="countrySummaryCalc">
             <p>Total Due</p>
-            <h3>USD 300,523.15</h3>
+            <h3>
+              {getBillingCurrency()} {toCurrencyFormat(totalCountrySummaryDue)}
+            </h3>
           </div>
 
           <h3 className="tableHeader">Fee Summary</h3>
-          <Table options={feeSummary} colSort />
+          <Table
+            options={{ ...feeSummaryOptions, ...{ data: feeSummary } }}
+            colSort
+          />
           <div className="feeSummaryCalc">
             <div className="rowFee">
               <p className="title">Incoming Wire Payment</p>
-              <p className="amount">USD 35.00</p>
+              <p className="amount">
+                {getBillingCurrency()} {toCurrencyFormat(incomingWirePayment)}
+              </p>
             </div>
             <div className="row2">
               <p className="title">Contract Termination Fee</p>
-              <p className="amount">USD 35.00</p>
+              <p className="amount">
+                {getBillingCurrency()}{" "}
+                {toCurrencyFormat(contractTerminationFee)}
+              </p>
             </div>
             <div className="totalRow">
               <p>Total Due</p>
-              <h3>USD 300,523.15</h3>
+              <h3>
+                {getBillingCurrency()} {toCurrencyFormat(feeSummaryTotalDue)}
+              </h3>
             </div>
           </div>
         </div>
       )}
       {activeTab === "payroll" && transactionType != 7 && (
-        <div>
+        <div className="payroll">
           {payrollTables.map((item: any) => {
             console.log("itemsssssss", item);
             return (

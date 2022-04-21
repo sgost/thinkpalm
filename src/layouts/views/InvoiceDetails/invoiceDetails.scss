@@ -245,12 +245,23 @@
     margin-left: 16px;
   }
 
-  .table__row__data img,
-  .table__row__header img {
-    margin-right: 0.5rem;
-    border-radius: 2rem;
-    width: 1.5rem;
-    height: 1.5rem;
+  .payroll {
+    .table__row__data img,
+    .table__row__header img {
+      margin-right: 0.5rem;
+      border-radius: 2rem;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+
+  .master {
+    .table__row__data img,
+    .table__row__header img {
+      margin-right: 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
 
   .countrySummaryCalc {
