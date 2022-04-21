@@ -51,7 +51,7 @@ export default function BillsTable(props: any) {
                 referenceNo: item.billReferenceNo,
                 contractorName: {
                     value: item.contractorName,
-                    img: { src: item.contractorProfilePicSrc }
+                    img: { src: item.contractorProfilePicSrc, shape: 'round' }
                 },
                 contractor_id: item.contractorId,
                 country: {
