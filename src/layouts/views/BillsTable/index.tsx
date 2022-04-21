@@ -5,6 +5,11 @@ import { getFlagPath } from '../InvoiceDetails/getFlag';
 import "./billTable.scss"
 import { BillsByInvoiceId } from './mockBills';
 
+/* istanbul ignore next */
+export const getFlagURL = (code: string, size?: string) => {
+    return `https://flagcdn.com/${size ? size : '20x15'
+        }/${code.toLocaleLowerCase()}.png`;
+};
 
 export default function BillsTable(props: any) {
 
@@ -56,7 +61,7 @@ export default function BillsTable(props: any) {
                 contractor_id: item.contractorId,
                 country: {
                     value: item.countryName,
-                    img: { src: getFlagPath(item.countryCode) }
+                    img: { src: getFlagURL(item.countryCode) }
                 },
                 payAmount: item.billingCurrencyCode + ' ' + toCurrencyFormat(item.payAmmount),
                 exchangeRate: item.exchangeRate.toFixed(2),
