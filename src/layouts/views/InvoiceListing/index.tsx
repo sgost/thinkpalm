@@ -272,7 +272,7 @@ export default function InvoiceListing() {
           currency: "USD",
         });
         apiTableData.push({
-          // ...item,
+          ...item,
           invoiceNo: item.invoiceNo || "",
           customerName: item.customerName || "",
           statusLabel:
