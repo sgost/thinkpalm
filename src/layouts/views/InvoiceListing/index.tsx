@@ -86,7 +86,7 @@ export default function InvoiceListing() {
     },
     {
       isSelected: false,
-      label: "In Review",
+      label: "AR Review",
       value: "2",
     },
     {
@@ -274,6 +274,8 @@ export default function InvoiceListing() {
         });
         apiTableData.push({
           ...item,
+          statusLabel:
+            item.statusLabel === "In Review" ? "AR Review" : item.statusLabel,
           totalAmount: `USD ${cFormat.format(item.totalAmount).slice(1)}`,
           invoiceBalance: `USD ${cFormat.format(item.invoiceBalance).slice(1)}`,
           createdDate: format(new Date(item.createdDate), "d MMM yyyy"),

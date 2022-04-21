@@ -797,7 +797,9 @@ export default function InvoiceDetails() {
       <div className="payrollInvoiceInfo">
         <div className="topBar">
           <div className="invoic-status">
-            <p className="status">{status}</p>
+            <p className="status">
+              {status === "In Review" ? "AR Review" : status}
+            </p>
           </div>
           <div className="topBarrow">
             <div className="invoiceNo">
