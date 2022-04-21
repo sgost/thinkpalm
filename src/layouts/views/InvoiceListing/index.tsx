@@ -264,7 +264,6 @@ export default function InvoiceListing() {
   useEffect(() => {
     if (apiData?.data?.results) {
       const apiTableData: any = [];
-
       // const apiTableData = apiData?.data?.results;
       apiData?.data?.results.push(listData);
       apiData?.data?.results.forEach((item: any) => {
@@ -273,13 +272,19 @@ export default function InvoiceListing() {
           currency: "USD",
         });
         apiTableData.push({
-          ...item,
+          // ...item,
+          invoiceNo: item.invoiceNo || "",
+          customerName: item.customerName || "",
           statusLabel:
-            item.statusLabel === "In Review" ? "AR Review" : item.statusLabel,
-          totalAmount: `USD ${cFormat.format(item.totalAmount).slice(1)}`,
-          invoiceBalance: `USD ${cFormat.format(item.invoiceBalance).slice(1)}`,
-          createdDate: format(new Date(item.createdDate), "d MMM yyyy"),
-          dueDate: format(new Date(item.dueDate), "d MMM yyyy"),
+            item.statusLabel === "In Review"
+              ? "AR Review"
+              : item.statusLabel || "",
+          transactionTypeLabel: item.transactionTypeLabel || "",
+          createdDate: format(new Date(item.createdDate), "d MMM yyyy") || "",
+          dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
+          totalAmount: `USD ${cFormat.format(item.totalAmount).slice(1)}` || "",
+          invoiceBalance:
+            `USD ${cFormat.format(item.invoiceBalance).slice(1)}` || "",
           exportToQB: {
             value: "Not Exported",
             color: "#767676",
