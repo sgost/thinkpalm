@@ -1,57 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="314"/>
+    <testCase name="Bills Table Render" duration="262"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="69"/>
+    <testCase name="renders learn react link" duration="57"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1049"/>
-    <testCase name="Invoice details download clickable " duration="435"/>
-    <testCase name="Invoice details approve invoice clickable " duration="224"/>
-    <testCase name="Invoice details publish notes" duration="280"/>
-    <testCase name="Invoice details download file" duration="250"/>
-    <testCase name="Invoice details delete file" duration="246"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="208"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="112"/>
+    <testCase name="Invoice details tabs are working" duration="915"/>
+    <testCase name="Invoice details download clickable " duration="261"/>
+    <testCase name="Invoice details approve invoice clickable " duration="190"/>
+    <testCase name="Invoice details publish notes" duration="180"/>
+    <testCase name="Invoice details download file" duration="237"/>
+    <testCase name="Invoice details delete file" duration="171"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="150"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="87"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="653"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="265"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="229"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="191"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="202"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="170"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="135"/>
-    <testCase name="client view Datepicker dropdowns date range clickable" duration="5790">
-      <failure message="Error: thrown: &quot;Exceeded timeout of 5000 ms for a test."><![CDATA[Error: thrown: "Exceeded timeout of 5000 ms for a test.
-Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
-    at C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js:305:3
-    at _dispatchDescribe (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:98:26)
-    at describe (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:60:5)
-    at Object.<anonymous> (C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js:195:1)
-    at Runtime._execModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
-    at Runtime._loadModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
-    at Runtime.requireModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
-    at jestAdapter (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:13)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at runTestInternal (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
-    at runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
-    at Object.worker (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
-    </testCase>
-    <testCase name="client view table row clickable" duration="95"/>
-    <testCase name="client view Status clickable" duration="71"/>
-    <testCase name="client view Type clickable" duration="50"/>
-    <testCase name="client view Clear filters clickable" duration="125"/>
-    <testCase name="client view search" duration="56"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="161"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="96"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="101"/>
-    <testCase name="Client View search intenal" duration="71"/>
-    <testCase name="renders without crashing" duration="3"/>
-    <testCase name="Client View" duration="36"/>
-    <testCase name="Internal View" duration="39"/>
-    <testCase name="Enter token client" duration="37"/>
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="498"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="179"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="154"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="131"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="276"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="281"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="162"/>
+    <testCase name="client view Datepicker dropdowns date range clickable" duration="4407"/>
+    <testCase name="client view table row clickable" duration="143"/>
+    <testCase name="client view Status clickable" duration="115"/>
+    <testCase name="client view Type clickable" duration="221"/>
+    <testCase name="client view Clear filters clickable" duration="154"/>
+    <testCase name="client view search" duration="110"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="255"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="271"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="158"/>
+    <testCase name="Client View search intenal" duration="108"/>
+    <testCase name="renders without crashing" duration="2"/>
+    <testCase name="Client View" duration="19"/>
+    <testCase name="Internal View" duration="23"/>
+    <testCase name="Enter token client" duration="45"/>
   </file>
 </testExecutions>

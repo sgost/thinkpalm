@@ -2,5 +2,5 @@ projectKey=Atlas-Payment
 serverUrl=http://localhost:9000
 serverVersion=9.3.0.51899
 dashboardUrl=http://localhost:9000/dashboard?id=Atlas-Payment
-ceTaskId=AYBKzVyk5kRMVnfuU5W3
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AYBKzVyk5kRMVnfuU5W3
+ceTaskId=AYBLiI845kRMVnfuU5W5
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYBLiI845kRMVnfuU5W5
