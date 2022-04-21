@@ -18,13 +18,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
-import BillsTable from "../BillsTable";
+import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
+  const baseBillApi = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
   const api =
     "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id;
   const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
@@ -43,6 +44,7 @@ export default function InvoiceDetails() {
   const tempToken = localStorage.getItem("temptoken");
 
   const [apiData, setApiData] = useState<any>(null);
+  const [billTableData, setBillTableData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
   const [feeData, setFeeData] = useState<any>(null);
@@ -292,6 +294,20 @@ export default function InvoiceDetails() {
       .catch((e: any) => {
         console.log("error e", e);
         setIsErr(true);
+      });
+
+      let URL = baseBillApi + 'INV0001' //apiData?.data?.invoice?.invoiceNo;
+      axios.get(URL, {headers: {"accept": 'text/plain'}})
+      .then((res: any) => {
+          console.log(res);
+          if(res.status == 200){
+            setBillTableData(res);
+          }else{
+              console.log("Bill API failing on contractor service");
+          }
+      })
+      .catch((e: any) => {
+          console.log("error", e);
       });
 
     axios
@@ -1536,7 +1552,7 @@ export default function InvoiceDetails() {
         </div>
       )}
       {transactionType == 7 && (
-        <BillsTable currency={getBillingCurrency()}></BillsTable>
+        <BillsTable currency={getBillingCurrency()} tableData={billTableData?.data}></BillsTable>
       )}
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
