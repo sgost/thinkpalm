@@ -13,6 +13,7 @@ export const getFlagURL = (code: string, size?: string) => {
 
 export default function BillsTable(props: any) {
 
+    /* istanbul ignore next */
     const BillTableApi = (invoiceNo: any) => {
         const URL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/"
         axios({
