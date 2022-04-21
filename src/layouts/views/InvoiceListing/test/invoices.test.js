@@ -9,6 +9,7 @@ import {
   waitFor,
   queryByAttribute,
   waitForElementToBeRemoved,
+  cleanup,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HashRouter } from "react-router-dom";
@@ -218,6 +219,10 @@ describe("client view", () => {
     const clientView = screen.getByText(/Client View/);
     fireEvent.click(clientView);
   });
+
+  // afterEach(() => {
+  //   cleanup();
+  // });
 
   test("Datepicker dropdowns clickoutside clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));

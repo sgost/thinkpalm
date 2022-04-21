@@ -50,56 +50,7 @@ export default function InvoiceDetails() {
   const [documents, setDocuments] = useState<any>([]);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState([]);
-  const payrollOptions: any = {
-    columns: [
-      {
-        header: "Employee ID",
-        isDefault: true,
-        key: "employeeID",
-      },
-      {
-        header: "Name",
-        isDefault: true,
-        key: "name",
-      },
-      {
-        header: "Gross Wages",
-        isDefault: true,
-        key: "grossWages",
-      },
-      {
-        header: "Allowances",
-        isDefault: true,
-        key: "allowances",
-      },
-      {
-        header: "Expense Reimb.",
-        isDefault: true,
-        key: "expenseReimb",
-      },
-      {
-        header: "Employer Liability",
-        isDefault: true,
-        key: "employerLiability",
-      },
-      {
-        header: "Country VAT",
-        isDefault: true,
-        key: "countryVAT",
-      },
-      {
-        header: "Admin Fees",
-        isDefault: true,
-        key: "adminFees",
-      },
-      {
-        header: "Healthcare Benefits",
-        isDefault: true,
-        key: "healthcareBenefits",
-      },
-    ],
-    showDefaultColumn: true,
-  };
+
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [isErr, setIsErr] = useState(false);
@@ -411,6 +362,84 @@ export default function InvoiceDetails() {
     }
   };
 
+  const sharedColumns = {
+    grossWages: {
+      header: "Gross Wages",
+      isDefault: true,
+      key: "grossWages",
+    },
+    allowances: {
+      header: "Allowances",
+      isDefault: true,
+      key: "allowances",
+    },
+    expenseReimb: {
+      header: "Expense Reimb.",
+      isDefault: true,
+      key: "expenseReimb",
+    },
+    employerLiability: {
+      header: "Employer Liability",
+      isDefault: true,
+      key: "employerLiability",
+    },
+
+    countryVAT: {
+      header: "Country VAT",
+      isDefault: true,
+      key: "countryVAT",
+    },
+
+    adminFees: {
+      header: "Admin Fees",
+      isDefault: true,
+      key: "adminFees",
+    },
+
+    country: {
+      header: "Country",
+      isDefault: true,
+      key: "country",
+    },
+    currency: {
+      header: "Currency",
+      isDefault: true,
+      key: "currency",
+    },
+    total: {
+      header: "Total in " + getBillingCurrency(),
+      isDefault: true,
+      key: "total",
+    },
+  };
+
+  const payrollOptions: any = {
+    columns: [
+      {
+        header: "Employee ID",
+        isDefault: true,
+        key: "employeeID",
+      },
+      {
+        header: "Name",
+        isDefault: true,
+        key: "name",
+      },
+      sharedColumns.grossWages,
+      sharedColumns.allowances,
+      sharedColumns.expenseReimb,
+      sharedColumns.employerLiability,
+      sharedColumns.countryVAT,
+      sharedColumns.adminFees,
+      {
+        header: "Healthcare Benefits",
+        isDefault: true,
+        key: "healthcareBenefits",
+      },
+    ],
+    showDefaultColumn: true,
+  };
+
   const countrySummaryOptions: any = {
     columns: [
       {
@@ -428,62 +457,26 @@ export default function InvoiceDetails() {
         isDefault: true,
         key: "employees",
       },
-      {
-        header: "Gross Wages",
-        isDefault: true,
-        key: "grossWages",
-      },
-      {
-        header: "Allowances",
-        isDefault: true,
-        key: "allowances",
-      },
-      {
-        header: "Expense Reimb.",
-        isDefault: true,
-        key: "expenseReimb",
-      },
-      {
-        header: "Employer Liability",
-        isDefault: true,
-        key: "employerLiability",
-      },
-      {
-        header: "Country VAT",
-        isDefault: true,
-        key: "countryVAT",
-      },
+      sharedColumns.grossWages,
+      sharedColumns.allowances,
+      sharedColumns.expenseReimb,
+      sharedColumns.employerLiability,
+      sharedColumns.countryVAT,
       {
         header: "Exchange Rate",
         isDefault: true,
         key: "exchangeRate",
       },
-      {
-        header: "Total in " + getBillingCurrency(),
-        isDefault: true,
-        key: "total",
-      },
+      sharedColumns.total,
     ],
     showDefaultColumn: true,
   };
 
   const feeSummaryOptions: any = {
     columns: [
-      {
-        header: "Country",
-        isDefault: true,
-        key: "country",
-      },
-      {
-        header: "Currency",
-        isDefault: true,
-        key: "currency",
-      },
-      {
-        header: "Admin Fees",
-        isDefault: true,
-        key: "adminFees",
-      },
+      sharedColumns.country,
+      sharedColumns.currency,
+      sharedColumns.adminFees,
       {
         header: "On/Offboardings",
         isDefault: true,
@@ -509,11 +502,7 @@ export default function InvoiceDetails() {
         isDefault: true,
         key: "employeeContribution",
       },
-      {
-        header: "Total in " + getBillingCurrency(),
-        isDefault: true,
-        key: "total",
-      },
+      sharedColumns.total,
     ],
     showDefaultColumn: true,
   };
@@ -659,12 +648,13 @@ export default function InvoiceDetails() {
       data: [
         {
           InvoiceNo: apiData?.data?.invoice?.invoiceNo,
-          TransactionType: 1,
+          TransactionType: apiData?.data?.invoice?.transactionType,
         },
       ],
     })
       .then((res: any) => {
         console.log(res);
+        setStatus("Pending Approval");
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -771,16 +761,20 @@ export default function InvoiceDetails() {
           )}
 
           <div>
-            <Button
-              disabled={true}
-              className="primary-blue small"
-              icon={{
-                color: "#fff",
-                icon: "checkMark",
-                size: "medium",
-              }}
-              label="Submit to Customer"
-            />
+            {isClient == "false" && status === "In Review" && (
+              <Button
+                className="primary-blue small"
+                icon={{
+                  color: "#fff",
+                  icon: "checkMark",
+                  size: "medium",
+                }}
+                label="Submit to Customer"
+                handleOnClick={() => {
+                  handleApproveAR();
+                }}
+              />
+            )}
             {isClient == "true" && status === "Pending Approval" && (
               <Button
                 disabled={transactionType == 7}
