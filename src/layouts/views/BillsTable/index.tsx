@@ -1,6 +1,6 @@
 import { Table } from 'atlasuikit';
 import { useEffect, useState } from 'react';
-import { profileImageEmpty } from 'src/assets/icons';
+import { profileImageEmpty } from '../../../assets/icons/index';
 import "./billTable.scss";
 
 /* istanbul ignore next */

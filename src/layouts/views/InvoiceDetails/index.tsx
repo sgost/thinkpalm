@@ -731,9 +731,6 @@ export default function InvoiceDetails() {
                 label: "Invoices",
                 onClickLabel: () => {
                   setHideTopCheck(false);
-                  // setTimeout(() => {
-                  //   navigate("/pay");
-                  // },500);
                 },
               },
               {
