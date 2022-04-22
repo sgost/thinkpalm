@@ -13,6 +13,7 @@ import { mockapidata } from "./mockdata";
 import axios from "axios";
 import { act } from "react-dom/test-utils";
 import { apiInvoiceMockData } from "../mockData";
+import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 
 // describe("Invoice detail", () => {
 //   let mock;
@@ -99,10 +100,12 @@ jest.mock("react-router-dom", () => ({
     isClient: "true",
   }),
   useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest.fn().mockReturnValue({state: {InvoiceId: '1001002'}})
 }));
 
 const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
+const invoiceId = '1001002'
 localStorage.setItem("temptoken", "1234");
 
 describe("Invoice details", () => {
@@ -114,6 +117,11 @@ describe("Invoice details", () => {
         "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id
       )
       .reply(200, mockapidata.resData);
+    mock
+    .onGet(
+      "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+    )
+      .reply(200, BillsByInvoiceId);
     mock
       .onGet(
         `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
@@ -296,6 +304,11 @@ describe("Api returns transaction type = 7",()=>{
   beforeAll(()=>{
     const mock = new MockAdapter(axios);
 
+    mock
+    .onGet(
+      "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+    )
+      .reply(200, BillsByInvoiceId);
     mock
       .onGet(
         "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id

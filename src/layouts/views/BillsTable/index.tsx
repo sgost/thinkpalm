@@ -1,9 +1,7 @@
 import { Table } from 'atlasuikit';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { getFlagPath } from '../InvoiceDetails/getFlag';
-import "./billTable.scss"
-import { BillsByInvoiceId } from './mockBills';
+import { profileImageEmpty } from '../../../assets/icons/index';
+import "./billTable.scss";
 
 /* istanbul ignore next */
 export const getFlagURL = (code: string, size?: string) => {
@@ -14,23 +12,7 @@ export const getFlagURL = (code: string, size?: string) => {
 export default function BillsTable(props: any) {
 
     /* istanbul ignore next */
-    const BillTableApi = (invoiceNo: any) => {
-        const URL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/"
-        axios({
-            method: "GET",
-            url: URL + invoiceNo,
-            headers: {
-                "accept": 'text/plain'
-            },
-        })
-            .then((res: any) => {
-                console.log(res);
-                return res;
-            })
-            .catch((e: any) => {
-                console.log("error", e);
-            });
-    }
+    const base = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/"
     const TableColumns = {
         columns: [
             { header: "Bill Reference No.", isDefault: true, key: "referenceNo" },
@@ -46,34 +28,29 @@ export default function BillsTable(props: any) {
     }
     const [tableData, setTableData] = useState<any>([]);
     const [totalPayConverted, setTotalPayConverted] = useState<number>(0);
-    const [totalAdminFee, setTotalAdminFee] = useState<number>(0);
 
     useEffect(() => {
         let data: any = [];
         let paysConverted = 0;
-        let adminFees = 0
-        BillsByInvoiceId.forEach((item) => {
+        props.tableData.data.forEach((item: any) => {
             data.push({
                 referenceNo: item.billReferenceNo,
                 contractorName: {
                     value: item.contractorName,
-                    img: { src: item.contractorProfilePicSrc, shape: 'round' }
+                    img: { src: item.imageUrl || profileImageEmpty, shape: 'round' }
                 },
                 contractor_id: item.contractorId,
                 country: {
                     value: item.countryName,
                     img: { src: getFlagURL(item.countryCode) }
                 },
-                payAmount: item.billingCurrencyCode + ' ' + toCurrencyFormat(item.payAmmount),
+                payAmount: item.billingCurrencyCode + ' ' + toCurrencyFormat(item.payAmount),
                 exchangeRate: item.exchangeRate.toFixed(2),
-                payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmmount * item.exchangeRate),
-                adminFee: props.currency + ' ' + toCurrencyFormat(item.adminFee),
-                total: props.currency + ' ' + toCurrencyFormat((item.payAmmount * item.exchangeRate) + item.adminFee)
+                payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate.toFixed(2)),
+                total: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate.toFixed(2))
             })
-            paysConverted += item.payAmmount * item.exchangeRate;
-            adminFees += item.adminFee;
+            paysConverted = paysConverted + (item.payAmount * item.exchangeRate.toFixed(2));
         })
-        setTotalAdminFee(adminFees);
         setTotalPayConverted(paysConverted);
         setTableData(data); 
     }, [])
@@ -94,19 +71,16 @@ export default function BillsTable(props: any) {
                     ...{ data: tableData }
                 }}
                 colSort
-                pagination={false} />
+                pagination
+                pagingOptions={[15, 30, 45, 60]} />
             <div className="feeSummaryCalc">
                 <div className="rowFee">
                     <p className="title">Pay Converted Total</p>
                     <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
                 </div>
-                <div className="row2">
-                    <p className="title">Admin Fee Total</p>
-                    <p className="amount">{props.currency} {toCurrencyFormat(totalAdminFee)}</p>
-                </div>
                 <div className="totalRow">
                     <p>Total Due</p>
-                    <p className='total'>{props.currency} {toCurrencyFormat((totalAdminFee + totalPayConverted))}</p>
+                    <p className='total'>{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
                 </div>
             </div>
         </div>
