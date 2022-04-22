@@ -246,6 +246,12 @@
   }
 
   .payroll {
+    // .table__row__header {
+    //   @media (max-width: 2085px) {
+    //     font-size: 0.8rem;
+    //   }
+    // }
+
     .table__row__data img,
     .table__row__header img {
       margin-right: 0.5rem;
@@ -254,6 +260,7 @@
       height: 1.5rem;
     }
   }
+
   .invoice_bill_table {
     .table__row__data img,
     .table__row__header img {
@@ -264,6 +271,12 @@
   }
 
   .master {
+    // .table__row__header {
+    //   @media (max-width: 2085px) {
+    //     font-size: 0.8rem;
+    //   }
+    // }
+
     .table__row__data img,
     .table__row__header img {
       margin-right: 0.5rem;
