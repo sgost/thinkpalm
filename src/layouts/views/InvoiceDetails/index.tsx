@@ -14,13 +14,14 @@ import { apiInvoiceMockData } from "./mockData";
 
 import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
+  const {state}:any = useLocation();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const { id, cid, isClient } = useParams();
@@ -296,19 +297,19 @@ export default function InvoiceDetails() {
         setIsErr(true);
       });
 
-      let URL = baseBillApi + 'INV0001' //apiData?.data?.invoice?.invoiceNo;
-      axios.get(URL, {headers: {"accept": 'text/plain'}})
-      .then((res: any) => {
-          console.log(res);
-          if(res.status == 200){
-            setBillTableData(res);
-          }else{
-              console.log("Bill API failing on contractor service");
-          }
-      })
-      .catch((e: any) => {
-          console.log("error", e);
-      });
+      let URL = baseBillApi + state.InvoiceId;
+        axios.get(URL, {headers: {"accept": 'text/plain'}})
+        .then((response: any) => {
+            console.log(response);
+            if(response.status == 200){
+              setBillTableData(response);
+            }else{
+                console.log("Bill API failing on contractor service");
+            }
+        })
+        .catch((e: any) => {
+            console.log("error", e);
+        });
 
     axios
       .get(notesApi, headers)
@@ -730,9 +731,6 @@ export default function InvoiceDetails() {
                 label: "Invoices",
                 onClickLabel: () => {
                   setHideTopCheck(false);
-                  // setTimeout(() => {
-                  //   navigate("/pay");
-                  // },500);
                 },
               },
               {

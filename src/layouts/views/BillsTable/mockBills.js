@@ -1,5 +1,6 @@
 import avatar from '../InvoiceDetails/avatar.png'
-export const BillsByInvoiceId = [
+/* istanbul ignore next */
+export const BillsByInvoiceId ={data: [
     {
         billReferenceNo : 791233,
         contractorName: "Camila Lopez",
@@ -39,4 +40,4 @@ export const BillsByInvoiceId = [
         adminFee: 50.00,
         adminCurrecyCode: "USD",
     },
-]
+]}

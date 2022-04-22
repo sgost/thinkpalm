@@ -857,7 +857,8 @@ export default function InvoiceListing() {
                   "/" +
                   row.customerId +
                   "/" +
-                  isClientStr
+                  isClientStr,
+                  {state: {InvoiceId: row.invoiceNo}}
               );
             }}
           />
