@@ -34,17 +34,17 @@ export default function BillsTable(props: any) {
         let paysConverted = 0;
         props.tableData.data.forEach((item: any) => {
             data.push({
-                referenceNo: item.billReferenceNo,
+                referenceNo: item.billReferenceNo || '-',
                 contractorName: {
-                    value: item.contractorName,
+                    value: item.contractorName || '-',
                     img: { src: item.imageUrl || profileImageEmpty, shape: 'round' }
                 },
-                contractor_id: item.contractorId,
+                contractor_id: item.contractorId || '-',
                 country: {
-                    value: item.countryName,
-                    img: { src: getFlagURL(item.countryCode) }
+                    value: item.countryName || '-',
+                    img: { src: item.countryCode ? getFlagURL(item.countryCode) : null }
                 },
-                payAmount: item.billingCurrencyCode + ' ' + toCurrencyFormat(item.payAmount),
+                payAmount: (item.billingCurrencyCode || '-') + ' ' + toCurrencyFormat(item.payAmount),
                 exchangeRate: item.exchangeRate.toFixed(2),
                 payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate.toFixed(2)),
                 total: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate.toFixed(2))
