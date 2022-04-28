@@ -1614,7 +1614,7 @@ export default function InvoiceDetails() {
       <div className="decline-modal">
         <Modal
           isOpen={isOpen}
-          handleClose={() => {setIsOpen(false), setInputValue('')}}
+          handleClose={() => {setIsOpen(false); setInputValue('')}}
         >
           <div>
             <h3>Add  A Reason</h3>
