@@ -68,6 +68,7 @@ export default function InvoiceDetails() {
   const [isFileError, setIsFileError] = useState<any>(null);
   const [transactionType, setTransactionType] = useState();
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
+  const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const [countrySummary, setCountrySummary] = useState<any>([]);
@@ -789,7 +790,7 @@ export default function InvoiceDetails() {
                 : function noRefCheck() {}
             }
             className={`${
-              transactionType == 7 ? "download_disable" : "download"
+              transactionType == 7 || deleteDisableButtons === true ? "download_disable" : "download"
               }`}
           // className="download"
           >
@@ -813,6 +814,7 @@ export default function InvoiceDetails() {
           <div className="decline-invoice">
             {isClient == "true" && status === "Pending Approval" && (
               <Button
+              disabled={deleteDisableButtons === true}
                 label="Decline Invoice"
                 className="secondary-btn small"
                 icon={{
@@ -842,7 +844,7 @@ export default function InvoiceDetails() {
             )}
             {isClient == "true" && status === "Pending Approval" && (
               <Button
-                disabled={transactionType == 7}
+                disabled={transactionType == 7 || deleteDisableButtons === true}
                 handleOnClick={() => {
                   handleApproveInvoice();
                 }}
@@ -1649,10 +1651,40 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-                  // Textarea value
-                  // console.log('inputValue:::::::::::::', inputValue)
-                  setInputValue("")
-                  setIsOpen(false)
+                  const url = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`;
+                  let currDate = new Date();
+
+                  axios({
+                    method: "POST",
+                    url: url,
+                    headers: {
+                      authorization: `Bearer ${tempToken}`,
+                      "x-apng-base-region": "EMEA",
+                      "x-apng-customer-id": cid?.toString() || "",
+                      "x-apng-external": "false",
+                      "x-apng-inter-region": "0",
+                      "x-apng-target-region": "EMEA",
+                      customer_id: cid?.toString() || "",
+                      // "Content-Type": "application/json",
+                    },
+                    data: {
+                      invoiceId: id,
+                      noteType: "1",
+                      note: inputValue,
+                      createdDate: currDate,
+                      customerId: cid,
+                    },
+                  })
+                    .then((res: any) => {
+                      setInputValue("")
+                      setIsOpen(false)
+                      setDeleteDisableButtons(true)
+                    })
+                    .catch((e: any) => {
+                      console.log(e);
+                      setInputValue("")
+                      setIsOpen(false)
+                    });      
                 }}
               />
             </div>
