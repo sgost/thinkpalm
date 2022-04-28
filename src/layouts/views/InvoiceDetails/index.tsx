@@ -789,8 +789,7 @@ export default function InvoiceDetails() {
                 ? setIsDownloadOpen(!isDownloadOpen)
                 : function noRefCheck() {}
             }
-            className={`${
-              transactionType == 7 || deleteDisableButtons === true ? "download_disable" : "download"
+            className={`${transactionType == 7 || deleteDisableButtons === true ? "download_disable" : "download"
               }`}
           // className="download"
           >
@@ -814,7 +813,8 @@ export default function InvoiceDetails() {
           <div className="decline-invoice">
             {isClient == "true" && status === "Pending Approval" && (
               <Button
-              disabled={deleteDisableButtons === true}
+                data-testid="decline-button"
+                disabled={deleteDisableButtons === true}
                 label="Decline Invoice"
                 className="secondary-btn small"
                 icon={{
@@ -1638,6 +1638,7 @@ export default function InvoiceDetails() {
             </div>
             <div className="decline-modal-button">
               <Button
+                data-testid="decline-cancel-button"
                 label="Cancel"
                 className="secondary-btn medium cancel-button"
                 handleOnClick={() => {
@@ -1647,6 +1648,7 @@ export default function InvoiceDetails() {
               />
 
               <Button
+                data-testid='decline-button-submit'
                 disabled={!inputValue}
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
@@ -1684,7 +1686,7 @@ export default function InvoiceDetails() {
                       console.log(e);
                       setInputValue("")
                       setIsOpen(false)
-                    });      
+                    });
                 }}
               />
             </div>
