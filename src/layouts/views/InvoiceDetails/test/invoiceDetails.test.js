@@ -100,7 +100,7 @@ jest.mock("react-router-dom", () => ({
     isClient: "true",
   }),
   useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
-  useLocation: jest.fn().mockReturnValue({state: {InvoiceId: '1001002'}})
+  useLocation: jest.fn().mockReturnValue({ state: { InvoiceId: '1001002' } })
 }));
 
 const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
@@ -118,9 +118,9 @@ describe("Invoice details", () => {
       )
       .reply(200, mockapidata.resData);
     mock
-    .onGet(
-      "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
-    )
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+      )
       .reply(200, BillsByInvoiceId);
     mock
       .onGet(
@@ -186,6 +186,11 @@ describe("Invoice details", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
+      mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
+      )
+      .reply(200, mockapidata.declineInvoicePost);
   });
 
   test("tabs are working", async () => {
@@ -299,22 +304,58 @@ describe("Invoice details", () => {
     fireEvent.click(breadcrumbs[0]);
 
   })
+  test("Decline invoice click on cancel button", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails></InvoiceDetails>
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const decline = screen.getByTestId("decline-button");
+    fireEvent.click(decline);
+
+    const cancelButton = await waitFor(() => screen.getByTestId('decline-cancel-button'));
+    expect(cancelButton).toBeInTheDocument();
+    fireEvent.click(cancelButton)
+  })
+
+  test("Decline invoice onchange textarea and click on decline button", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails></InvoiceDetails>
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const decline = screen.getByTestId("decline-button");
+    fireEvent.click(decline);
+
+    const textarea = await waitFor(() => screen.getByPlaceholderText('Please Enter a Reason'));
+    expect(textarea).toBeInTheDocument();
+    fireEvent.change(textarea, {target: {value: 'test'}})
+
+    const declineSubmit = screen.getByTestId("decline-button-submit");
+    fireEvent.click(declineSubmit);
+  })
 });
-describe("Api returns transaction type = 7",()=>{
-  beforeAll(()=>{
+describe("Api returns transaction type = 7", () => {
+  beforeAll(() => {
     const mock = new MockAdapter(axios);
 
     mock
-    .onGet(
-      "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
-    )
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+      )
       .reply(200, BillsByInvoiceId);
     mock
       .onGet(
         "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id
       )
       .reply(200, apiInvoiceMockData);
-      mock
+    mock
       .onGet(
         `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
       )
@@ -379,7 +420,7 @@ describe("Api returns transaction type = 7",()=>{
         name: "sample.pdf",
       });
   });
-  test("Render Invoice Details", ()=>{
+  test("Render Invoice Details", () => {
     render(
       <HashRouter>
         <InvoiceDetails></InvoiceDetails>
@@ -387,3 +428,108 @@ describe("Api returns transaction type = 7",()=>{
     );
   })
 })
+describe("Invoice details decline api fail case handling", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id
+      )
+      .reply(200, mockapidata.resData);
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+      )
+      .reply(200, BillsByInvoiceId);
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+      )
+      .reply(200, mockapidata.resAddressData);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+      )
+      .reply(200, mockapidata.resCountriesData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+      .reply(200, mockapidata.resFeeData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+      .reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
+      )
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+      )
+      .reply(201);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
+      )
+      .reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+      mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
+      )
+      .reply(400, mockapidata.declineInvoicePost);
+  });
+
+  test("Decline invoice onchange textarea click on decline button failed api", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails></InvoiceDetails>
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const decline = screen.getByTestId("decline-button");
+    fireEvent.click(decline);
+
+    const textarea = await waitFor(() => screen.getByPlaceholderText('Please Enter a Reason'));
+    expect(textarea).toBeInTheDocument();
+    fireEvent.change(textarea, {target: {value: 'test'}})
+
+    const declineSubmit = screen.getByTestId("decline-button-submit");
+    fireEvent.click(declineSubmit);
+  })
+});
