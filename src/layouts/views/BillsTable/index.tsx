@@ -170,7 +170,7 @@ export default function BillsTable(props: any) {
                             <div className='bill-details__section'>
                                 <div className='bill-details__info'>
                                     <label>To</label>
-                                    <div className='title'><span>{clickedApiData.customer?.name} || {"Global Enterprise Solutions"}</span></div>
+                                    <div className='title'><span>{clickedApiData.customer?.name ? clickedApiData.customer?.name : "Global Enterprise Solutions"}</span></div>
                                     <div className='sub-title'><span>1101 15th Street NW 90001, Los Angeles, CA United States of America</span></div>
                                 </div>
                             </div>
