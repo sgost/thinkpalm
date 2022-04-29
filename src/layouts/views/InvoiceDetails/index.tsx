@@ -21,8 +21,8 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  // const { state }: any = useLocation();
-  const state = "";
+  const { state }: any = useLocation();
+  // const state = "";
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const { id, cid, isClient } = useParams();
