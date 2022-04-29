@@ -1638,10 +1638,11 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {transactionType == 7 && (
+      {transactionType == 7 && billTableData != null &&(
         <BillsTable
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
+          customerId={cid}
         ></BillsTable>
       )}
 
