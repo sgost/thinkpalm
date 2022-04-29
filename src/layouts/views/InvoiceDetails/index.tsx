@@ -8,7 +8,7 @@ import {
   NoDataCard,
   BreadCrumb,
   Checkbox,
-  Modal
+  Modal,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -23,11 +23,7 @@ import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-<<<<<<< HEAD
-  // const state = "";
-=======
   // const state = '';
->>>>>>> 4c4ad6fb7642e98ad24e51c6006582c7fce8dde8
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -780,9 +776,9 @@ export default function InvoiceDetails() {
                 label:
                   transactionType == 7
                     ? "Contractor Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo
+                      apiData?.data?.invoice?.invoiceNo
                     : "Payroll Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo,
+                      apiData?.data?.invoice?.invoiceNo,
               },
             ]}
           />
@@ -794,9 +790,12 @@ export default function InvoiceDetails() {
                 ? setIsDownloadOpen(!isDownloadOpen)
                 : function noRefCheck() {}
             }
-            className={`${transactionType == 7 || deleteDisableButtons === true ? "download_disable" : "download"
-              }`}
-          // className="download"
+            className={`${
+              transactionType == 7 || deleteDisableButtons === true
+                ? "download_disable"
+                : "download"
+            }`}
+            // className="download"
           >
             <p className="text">Download</p>
             <Icon
@@ -823,9 +822,9 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="secondary-btn small"
                 icon={{
-                  icon: 'remove',
-                  size: 'medium',
-                  color: '#526FD6'
+                  icon: "remove",
+                  size: "medium",
+                  color: "#526FD6",
                 }}
                 handleOnClick={() => setIsOpen(true)}
               />
@@ -1111,8 +1110,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           item.currencyCode +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.subTotalDue)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.subTotalDue)
 
                           // item.feeSummary.subTotalDue
                           //   .toFixed(2)
@@ -1134,10 +1133,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(
-                            item.feeSummary.subTotalDue * item.exchangeRate
-                          )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.subTotalDue * item.exchangeRate
+                            )
                           // (item.feeSummary.subTotalDue * item.exchangeRate)
                           //   .toFixed(2)
                           //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1149,8 +1148,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(getInCountryProcessingFee())
+                            " " +
+                            toCurrencyFormat(getInCountryProcessingFee())
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1163,8 +1162,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.fxBill)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.fxBill)
 
                           // item.feeSummary.fxBill
                           //   .toFixed(2)
@@ -1177,8 +1176,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.totalCountryVat)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                           // item.feeSummary.totalCountryVat
                           //   .toFixed(2)
@@ -1191,8 +1190,8 @@ export default function InvoiceDetails() {
                       <h3>
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.total)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.total)
 
                           // item.feeSummary.total
                           //   .toFixed(2)
@@ -1649,24 +1648,23 @@ export default function InvoiceDetails() {
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
 
       <div className="decline-modal">
-        <Modal
-          isOpen={isOpen}
-          handleClose={() => setIsOpen(false)}
-        >
+        <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
           <div>
-            <h3>Add  A Reason</h3>
+            <h3>Add A Reason</h3>
             <div className="text-line">
-              <p>Please add  a comment  to indicate your reasons to decline</p>
+              <p>Please add a comment to indicate your reasons to decline</p>
             </div>
             <div className="text-invoive-no">
               <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
             </div>
-            <h6>Comment<span className="comment">*</span></h6>
+            <h6>
+              Comment<span className="comment">*</span>
+            </h6>
 
             <div>
               <textarea
                 value={inputValue}
-                className='textarea-box'
+                className="textarea-box"
                 placeholder="Please Enter a Reason"
                 rows={2}
                 cols={50}
@@ -1679,13 +1677,13 @@ export default function InvoiceDetails() {
                 label="Cancel"
                 className="secondary-btn medium cancel-button"
                 handleOnClick={() => {
-                  setIsOpen(false)
-                  setInputValue("")
+                  setIsOpen(false);
+                  setInputValue("");
                 }}
               />
 
               <Button
-                data-testid='decline-button-submit'
+                data-testid="decline-button-submit"
                 disabled={!inputValue}
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
@@ -1715,14 +1713,14 @@ export default function InvoiceDetails() {
                     },
                   })
                     .then((res: any) => {
-                      setInputValue("")
-                      setIsOpen(false)
-                      setDeleteDisableButtons(true)
+                      setInputValue("");
+                      setIsOpen(false);
+                      setDeleteDisableButtons(true);
                     })
                     .catch((e: any) => {
                       console.log(e);
-                      setInputValue("")
-                      setIsOpen(false)
+                      setInputValue("");
+                      setIsOpen(false);
                     });
                 }}
               />
