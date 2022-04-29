@@ -89,4 +89,237 @@
         padding: 20px;
         
     }
+    .view-bills {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin:0;
+        padding: 2rem 5rem;
+        padding-top:4.5rem;
+        border-radius: 0.5rem 0.5rem 0 0;
+        width: -webkit-fill-available;
+
+        // & > div:first-child {
+        //     width: 80%;
+        // }
+
+        .mt-4 {
+            margin-top: 1.5rem;
+        }
+
+        .bill-status {
+            padding: 0.2rem 1.5rem;
+            border-radius: 1rem;
+            background: inherit !important;
+            border: 1px solid #17224E !important;
+            color: #17224E !important;
+            width: fit-content;
+        }
+
+        .reference-description {
+            font-size: 32px;
+            color: #17224E;
+            position: relative;
+            top: 4px;
+        }
+
+        .rejected-bill {
+            background: rgba(227, 44, 21, 0.1);
+            border: 1px solid #E32C15;
+            color: #E32C15;
+        }
+
+        .section-2 {
+            font-size: 1.25rem;
+            line-height: 1.875rem;
+            text-align: right;
+            color: #17224E;
+            width: 20%;
+            font-weight: 400;
+            font-family: 'Circular-Book', Arial, serif;
+            span {
+                font-family: 'Circular-Medium', Arial, serif;
+            }
+        }
+    }
+}
+.zero-padding{
+    padding:0px
+}
+.modal-wrapper{
+    .a-modal__body{
+        align-items: center;
+        background: #fff!important;
+        border-radius: 0.556rem;
+        display: flex;
+        justify-content: flex-start;
+        padding: 0rem;
+        position: relative;
+        flex-direction: column;
+        max-height: 90%;
+        
+    }
+}
+.a-cards {
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    &__title {
+        margin-bottom: 2.5rem;
+        font-size: 28px;
+        color: #041e42;
+        font-weight: 400;
+        line-height: 35px;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1.125rem;
+    }
+}
+.bill-details {
+    border-radius: 0 0 0.5rem 0.5rem;
+    margin: 0;
+    display: flex;
+    padding: 1rem 0 2rem;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    font-family: 'CircularXX', Arial, serif;
+
+    &__section {
+        display: flex;
+        justify-content: center;
+        border-right: 1px solid #EBEBED;
+        height: 12rem;
+        flex-grow: 1;
+        padding: 2rem 4rem;
+        width: 100%;
+        
+        &:first-child {
+            justify-content: flex-start;  
+            padding-left: 5rem;                  
+        }
+        &:last-child {
+            border: none;
+            justify-content: flex-end;
+            padding-right: 5rem;
+        }
+        label {
+            display: block;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.5rem;
+            color: #526FD6;
+            font-family: 'CircularXX', Arial, serif;
+        }
+        .title {
+            font-weight: 500;
+            color: #3E3E3E;
+            margin: 0.5rem 0 0.813rem;
+            font-family: 'Circular-Medium', Arial, serif;
+            font-size: 1.25rem;
+            line-height: 1.875rem;
+        }
+        .sub-title {
+            font-weight: normal;
+            line-height: 1.5rem;
+            color: #3E3E3E;
+        }
+    }
+    
+}
+.sup-label {
+    font-size: 0.813rem;
+    color: #767676;
+    font-weight: 400;
+}
+.bill-identity .info {
+    color: #3E3E3E;
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 400;
+    margin-top: 0.3rem;
+    font-family: 'CircularXX', Arial, Helvetica, sans-serif;
+}
+.description-number {
+    display: flex;
+    gap: 20px;
+}
+.bill-total {
+    font-family: 'Circular-Medium', Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-size: 1rem;
+    color: #526FD6;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    .total-value {
+        background: #E0E5F8;
+        border-radius: 10px;
+        padding: 1.125rem 2rem;
+        font-size: 1.5rem;
+        margin-left: 3rem;
+    }
+    
+}
+.justification{
+    justify-content: center;
+    
+}
+.line-between{
+    width: -webkit-fill-available;
+    border-top: 1px solid #EBEBED;
+}
+
+.file-row{
+    width: -webkit-fill-available;
+    padding-left: 4.5rem;
+    margin-top: 4rem;
+    margin-right: 4.5rem;
+}
+.bills-file-handler{
+    width: 100% !important;
+}
+.file-handler-column{
+    flex: 0 0 auto;
+    width: 66.66666667%;
+}
+.mt-5 {
+    margin-top: 3rem;
+}
+.action-btns{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 4rem;
+    margin-bottom: 2.5rem;
+    width: -webkit-fill-available;
+    padding-top: 2.5rem;
+    box-shadow: 0px -2px 4px rgba(112, 128, 144, 0.05);
+    font-family: "Circular" !important;
+    button.a-button.medium {
+        font-size: 1.125rem !important;
+        line-height: 1.625rem !important;
+        font-weight: 400;
+    }
+}
+.margin-right{
+    margin-right: 4.5rem;
+}
+
+.secondary-button{
+    width: 7.9rem !important;
+    height: 3.125rem !important;
+}
+.primary{
+    width: 14.125rem !important;
+    height: 3.125rem !important;
+    margin-left: 2rem;
+}
+.modal-content{
+    overflow-y: auto;
+    overflow-x: hidden;
 }
