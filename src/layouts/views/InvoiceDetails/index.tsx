@@ -21,7 +21,8 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  const { state }: any = useLocation();
+  // const { state }: any = useLocation();
+  const state = "";
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const { id, cid, isClient } = useParams();
@@ -72,6 +73,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
+  const [isAutoApprove, setIsAutoApprove] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -821,7 +823,7 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-            {isClient == "true" && status === "Pending Approval" && (
+            {status === "Pending Approval" && (
               <Button
                 disabled={transactionType == 7}
                 handleOnClick={() => {
@@ -929,13 +931,45 @@ export default function InvoiceDetails() {
             </p>
             {transactionType != 7 && (
               <>
-                <p className="heading">Invoice Changes</p>
+                <p className="heading">Invoice Approval</p>
                 <p className="value">
                   {moment(apiData?.data?.invoice?.createdDate).format(
                     "DD MMM YYYY"
                   )}
                 </p>
+                {isClient == "false" && (
+                  <div className="autoapproveContainer">
+                    <Checkbox
+                      onChange={(e: any) => {
+                        setIsAutoApprove(e.target.checked);
+
+                        const headers = {
+                          authorization: `Bearer ${tempToken}`,
+                          "x-apng-base-region": "EMEA",
+                          "x-apng-customer-id":
+                            "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                          "x-apng-external": "false",
+                          "x-apng-inter-region": "0",
+                          "x-apng-target-region": "EMEA",
+                          customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        };
+
+                        axios({
+                          url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
+                          method: "POST",
+                          headers,
+                        }).catch((err: any) => {
+                          setIsAutoApprove(!e.target.checked);
+                          console.log(err);
+                        });
+                      }}
+                      label="Auto-Approval after 24h"
+                      checked={isAutoApprove}
+                    />
+                  </div>
+                )}
                 <p className="heading">Payment Due</p>
+
                 <p className="value">
                   {moment(apiData?.data?.invoice?.dueDate).format(
                     "DD MMM YYYY"
@@ -1308,7 +1342,7 @@ export default function InvoiceDetails() {
                     checked={isVisibleToCustomer}
                   />
                   <Checkbox
-                    label="Export to Quickbooks"
+                    label="Export Note to Quickbooks"
                     onChange={(e: any) => {
                       setIsExportToQb(e.target.checked);
                     }}
