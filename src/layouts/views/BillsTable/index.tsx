@@ -1,7 +1,7 @@
 import { Table, Modal, Cards, Icon, FileHandler, Button } from 'atlasuikit';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { amountWithCommas, customDate, formatFileSize, formatTimePeriod } from 'src/components/Comman/Utils/utils';
+import { amountWithCommas, customDate, formatFileSize, formatTimePeriod } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
 import "./billTable.scss";
 
