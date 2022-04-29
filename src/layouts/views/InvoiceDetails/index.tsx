@@ -77,7 +77,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
-  const [isAutoApprove, setIsAutoApprove] = useState(false);
+  const [isAutoApprove, setIsAutoApprove] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
