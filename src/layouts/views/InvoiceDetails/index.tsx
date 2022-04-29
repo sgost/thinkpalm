@@ -8,6 +8,7 @@ import {
   NoDataCard,
   BreadCrumb,
   Checkbox,
+  Modal,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -22,8 +23,10 @@ import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
+  // const state = '';
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
   const baseBillApi =
@@ -58,12 +61,14 @@ export default function InvoiceDetails() {
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [isErr, setIsErr] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [approvalMsg, setApprovalMsg] = useState("");
   const [noteText, setNoteText] = useState("");
   const [notes, setNotes] = useState<any>([]);
   const [isFileError, setIsFileError] = useState<any>(null);
   const [transactionType, setTransactionType] = useState();
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
+  const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const [countrySummary, setCountrySummary] = useState<any>([]);
@@ -72,6 +77,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
+  const [isAutoApprove, setIsAutoApprove] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -785,7 +791,9 @@ export default function InvoiceDetails() {
                 : function noRefCheck() {}
             }
             className={`${
-              transactionType == 7 ? "download_disable" : "download"
+              transactionType == 7 || deleteDisableButtons === true
+                ? "download_disable"
+                : "download"
             }`}
             // className="download"
           >
@@ -806,6 +814,23 @@ export default function InvoiceDetails() {
             </div>
           )}
 
+          <div className="decline-invoice">
+            {isClient == "true" && status === "Pending Approval" && (
+              <Button
+                data-testid="decline-button"
+                disabled={deleteDisableButtons === true}
+                label="Decline Invoice"
+                className="secondary-btn small"
+                icon={{
+                  icon: "remove",
+                  size: "medium",
+                  color: "#526FD6",
+                }}
+                handleOnClick={() => setIsOpen(true)}
+              />
+            )}
+          </div>
+
           <div>
             {isClient == "false" && status === "In Review" && (
               <Button
@@ -821,9 +846,9 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-            {isClient == "true" && status === "Pending Approval" && (
+            {status === "Pending Approval" && (
               <Button
-                disabled={transactionType == 7}
+                disabled={transactionType == 7 || deleteDisableButtons === true}
                 handleOnClick={() => {
                   handleApproveInvoice();
                 }}
@@ -929,13 +954,45 @@ export default function InvoiceDetails() {
             </p>
             {transactionType != 7 && (
               <>
-                <p className="heading">Invoice Changes</p>
+                <p className="heading">Invoice Approval</p>
                 <p className="value">
                   {moment(apiData?.data?.invoice?.createdDate).format(
                     "DD MMM YYYY"
                   )}
                 </p>
+                {isClient == "false" && (
+                  <div className="autoapproveContainer">
+                    <Checkbox
+                      onChange={(e: any) => {
+                        setIsAutoApprove(e.target.checked);
+
+                        const headers = {
+                          authorization: `Bearer ${tempToken}`,
+                          "x-apng-base-region": "EMEA",
+                          "x-apng-customer-id":
+                            "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                          "x-apng-external": "false",
+                          "x-apng-inter-region": "0",
+                          "x-apng-target-region": "EMEA",
+                          customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        };
+
+                        axios({
+                          url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
+                          method: "POST",
+                          headers,
+                        }).catch((err: any) => {
+                          setIsAutoApprove(!e.target.checked);
+                          console.log(err);
+                        });
+                      }}
+                      label="Auto-Approval after 24h"
+                      checked={isAutoApprove}
+                    />
+                  </div>
+                )}
                 <p className="heading">Payment Due</p>
+
                 <p className="value">
                   {moment(apiData?.data?.invoice?.dueDate).format(
                     "DD MMM YYYY"
@@ -1308,7 +1365,7 @@ export default function InvoiceDetails() {
                     checked={isVisibleToCustomer}
                   />
                   <Checkbox
-                    label="Export to Quickbooks"
+                    label="Export Note to Quickbooks"
                     onChange={(e: any) => {
                       setIsExportToQb(e.target.checked);
                     }}
@@ -1590,6 +1647,88 @@ export default function InvoiceDetails() {
       )}
 
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
+
+      <div className="decline-modal">
+        <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+          <div>
+            <h3>Add A Reason</h3>
+            <div className="text-line">
+              <p>Please add a comment to indicate your reasons to decline</p>
+            </div>
+            <div className="text-invoive-no">
+              <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
+            </div>
+            <h6>
+              Comment<span className="comment">*</span>
+            </h6>
+
+            <div>
+              <textarea
+                value={inputValue}
+                className="textarea-box"
+                placeholder="Please Enter a Reason"
+                rows={2}
+                cols={50}
+                onChange={(e) => setInputValue(e.target.value)}
+              />
+            </div>
+            <div className="decline-modal-button">
+              <Button
+                data-testid="decline-cancel-button"
+                label="Cancel"
+                className="secondary-btn medium cancel-button"
+                handleOnClick={() => {
+                  setIsOpen(false);
+                  setInputValue("");
+                }}
+              />
+
+              <Button
+                data-testid="decline-button-submit"
+                disabled={!inputValue}
+                label="Decline Invoice"
+                className="primary-blue medium decline-button"
+                handleOnClick={() => {
+                  const url = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`;
+                  let currDate = new Date();
+
+                  axios({
+                    method: "POST",
+                    url: url,
+                    headers: {
+                      authorization: `Bearer ${tempToken}`,
+                      "x-apng-base-region": "EMEA",
+                      "x-apng-customer-id": cid?.toString() || "",
+                      "x-apng-external": "false",
+                      "x-apng-inter-region": "0",
+                      "x-apng-target-region": "EMEA",
+                      customer_id: cid?.toString() || "",
+                      // "Content-Type": "application/json",
+                    },
+                    data: {
+                      invoiceId: id,
+                      noteType: "1",
+                      note: inputValue,
+                      createdDate: currDate,
+                      customerId: cid,
+                    },
+                  })
+                    .then((res: any) => {
+                      setInputValue("");
+                      setIsOpen(false);
+                      setDeleteDisableButtons(true);
+                    })
+                    .catch((e: any) => {
+                      console.log(e);
+                      setInputValue("");
+                      setIsOpen(false);
+                    });
+                }}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
     </div>
   );
 }

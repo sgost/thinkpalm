@@ -10060,4 +10060,5 @@ export const mockapidata = {
     displayInPDF: false,
     customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
   },
+  declineInvoicePost: {}
 };
