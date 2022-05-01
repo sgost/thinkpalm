@@ -1,4 +1,4 @@
-import { Table, Modal, Cards, Icon, FileHandler, Button } from 'atlasuikit';
+import { Table, Modal, Cards, Icon, FileHandler, Button, Banner } from 'atlasuikit';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { amountWithCommas, customDate, formatFileSize, formatTimePeriod } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
@@ -13,6 +13,7 @@ export const getFlagURL = (code: string, size?: string) => {
 
 export default function BillsTable(props: any) {
     const customerId = props.customerId;
+    const invoiceId = props.invoiceId
     const basecontractorURL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/";
     const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID=" 
     const endpoint = "customer/bills?"
@@ -33,6 +34,8 @@ export default function BillsTable(props: any) {
     const [totalPayConverted, setTotalPayConverted] = useState<number>(0);
     const [openModal, setOpenModal] = useState(false);
     const [clickedApiData, setClickedApiData] = useState<any>(null);
+    const [rejectBanner, setRejectBanner] = useState(false);
+    const [openRejectReason, setOpenRejectReason] = useState(false);
 
     useEffect(() => {
         console.log(customerId);
@@ -134,7 +137,7 @@ export default function BillsTable(props: any) {
             <div className='modal-wrapper'>
                 <Modal
                     className="zero-padding"
-                    handleClose={setOpenModal}
+                    handleClose={() => {setOpenModal(false); setRejectBanner(false)}}
                     width="79.625rem"
                     height="auto"
                     isOpen={openModal}
@@ -254,21 +257,99 @@ export default function BillsTable(props: any) {
                             </div>
                             
                         </div>
+                        <div className='margin-top'>
+                        {rejectBanner && <Banner type="warning">
+                            <div
+                            style={{
+                                display: 'flex',
+                                width: '100%',
+                                alignItems:'center'
+                            }}
+                            >
+                            <Icon
+                                className="reject-banner-icon"
+                                color="orange"
+                                icon="info"
+                                viewBox="3 0 24 24"
+                            />
+                            <span className='info-banner'>
+                                <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. Are you sure you want to reject it and remove it from this invoice?
+                            </span>
+                            </div>
+                        </Banner>}
+                        </div>
                         <div className='action-btns'>
+                        
                             <div className='justification margin-right'>
-                                <Button
+                                {!rejectBanner && <><Button
                                     label="Reject Bill"
-                                    className="secondary-btn medium secondary-button"
+                                    className="secondary-btn medium secondary-button reject-button"
+                                    handleOnClick={()=>{setRejectBanner(true)}}
+
                                 />
                                 <Button
-                                    className="primary-blue medium primary"
+                                    className="primary-blue medium primary next-invoice-button"
                                     label="Move To Next Invoice"
+                                /></>}
+                                {rejectBanner && <><Button
+                                    label="Cancel"
+                                    className="secondary-btn medium secondary-button cancel-button"
+                                    handleOnClick={()=>{setRejectBanner(false)}}
+
                                 />
+                                <Button
+                                    className="primary-blue medium primary approve-reject-button"
+                                    label="Yes, Reject Bill"
+                                    handleOnClick={()=>{setOpenRejectReason(true)}}
+                                /></>}
                             </div>
                         </div>
+                        <Modal
+                            className="zero-padding"
+                            handleClose={setOpenRejectReason}
+                            width="32.5rem"
+                            height="auto"
+                            isOpen={openRejectReason}
+                        >
+                            <div className='reject-reason-wrapper'>
+                                <div className='reason-heading'>
+                                    Add A Rejection Reason
+                                </div>
+                                <div className='reject-text'>
+                                    Please add a comment for <strong>{clickedApiData.contractor.name}</strong> about why you rejected this bill. 
+                                </div>
+                                <div className="form-group">
+                                    <label>
+                                        Bill Rejection Reason<span className="required">*</span>
+                                    </label>
+                                    <textarea
+                                        name="reason"
+                                        className="a-input"
+                                        placeholder="Please Enter a Reason"
+                                        maxLength={400}
+                                        // onChange={}
+                                        // value={}
+                                        rows={4}
+                                        data-testid="reject-reason-text"
+                                    />
+                                </div>
+                                <div className='reject-action'>
+                                    <Button
+                                        label="Cancel"
+                                        className="secondary-btn medium secondary-button cancel-button"
+                                        handleOnClick={()=>{setRejectBanner(false); setOpenRejectReason(false)}}
+                                    />
+                                    <Button
+                                        className="primary-blue medium primary cancel-button"
+                                        label="Reject"
+                                        handleOnClick={()=>{}}
+                                    />
+                                </div>
+                            </div>
+                        </Modal>
                     </div>}
                     {!clickedApiData &&<div>
-                        Something Went Wrong
+                        Loading...
                         </div>}
                 </Modal>
             </div>
