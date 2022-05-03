@@ -62,6 +62,7 @@ export default function InvoiceDetails() {
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
+  const [voidFileData, setVoidFileData] = useState<any>({});
   const [isErr, setIsErr] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputVoidValue, setInputVoidValue] = useState("");
@@ -1730,7 +1731,24 @@ export default function InvoiceDetails() {
             </div>
 
             <div className="attachment">
-              <h4>Add Attachment</h4>
+              <input
+                type="file"
+                id="attachmentId"
+                style={{ display: "none" }}
+                onChange={(e: any) =>  setVoidFileData(e.target.files["0"])} 
+                />
+              <label htmlFor="attachmentId">
+                <Icon
+                  icon="attachment"
+                  size="large"
+                  width="40"
+                  height="40"
+                  color="#3E3E3E"
+                />
+                <h4>Add Attachment</h4>
+
+                <p>{voidFileData?.name}</p>
+              </label>
             </div>
 
             <div className="void-button">
@@ -1743,59 +1761,6 @@ export default function InvoiceDetails() {
                 }}
               />
             </div>
-            {/* <div className="decline-modal-button">
-              <Button
-                data-testid="decline-cancel-button"
-                label="Cancel"
-                className="secondary-btn medium cancel-button"
-                handleOnClick={() => {
-                  setIsOpen(false)
-                  setInputVoidValue("")
-                }}
-              />
-
-              <Button
-                data-testid='decline-button-submit'
-                disabled={!inputValue}
-                label="Decline Invoice"
-                className="primary-blue medium decline-button"
-                handleOnClick={() => {
-                  const url = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`;
-                  let currDate = new Date();
-
-                  axios({
-                    method: "POST",
-                    url: url,
-                    headers: {
-                      authorization: `Bearer ${tempToken}`,
-                      "x-apng-base-region": "EMEA",
-                      "x-apng-customer-id": cid?.toString() || "",
-                      "x-apng-external": "false",
-                      "x-apng-inter-region": "0",
-                      "x-apng-target-region": "EMEA",
-                      customer_id: cid?.toString() || "",
-                    },
-                    data: {
-                      invoiceId: id,
-                      noteType: "1",
-                      note: inputValue,
-                      createdDate: currDate,
-                      customerId: cid,
-                    },
-                  })
-                    .then((res: any) => {
-                      setInputValue("")
-                      setIsOpen(false)
-                      setDeleteDisableButtons(true)
-                    })
-                    .catch((e: any) => {
-                      console.log(e);
-                      setInputValue("")
-                      setIsOpen(false)
-                    });
-                }}
-              />
-            </div> */}
           </div>
         </Modal>
       </div>
