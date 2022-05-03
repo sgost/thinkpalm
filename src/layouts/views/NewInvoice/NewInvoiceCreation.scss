@@ -76,8 +76,8 @@
     display: flex;
     justify-content: end;
     position: absolute;
-    bottom: 5%;
-    // bottom: 18%;
+    // bottom: 5%;
+    bottom: 18%;
     margin-left: 53.5%;
     button.a-button.medium {
         font-size: 1rem;
@@ -98,5 +98,6 @@ button.a-button.primary-blue.medium.button {
     justify-content: center;
     align-items: center;
     flex-direction: row-reverse;
-    height: 3.4rem;
+    // height: 3.4rem;
+    height: 3.2rem;
 }
