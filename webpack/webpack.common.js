@@ -32,7 +32,7 @@ module.exports = {
         use: [
           "style-loader",
           "css-loader",
-          // "resolve-url-loader", // add this before sass-loader
+          "resolve-url-loader", // add this before sass-loader
           "sass-loader",
         ],
       },
