@@ -220,7 +220,7 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
   }
 
   const getCountryDropdwonOptions = () => {
-    let api = `https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f`;
+    let api = `https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=${stepperOneData.customerId}`;
     const headers = {
       headers: {
         authorization: `Bearer ${token}`
@@ -431,9 +431,6 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
               </div>
             </div>
           </div>
-
-          {/* {console.log('stepperOneData::::::::::', stepperOneData)} */}
-
         </div>
 
       </div>
@@ -465,10 +462,7 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
           handleOnClick={() => {
             handleSteps(2)
           }}
-
         />
-{/* {console.log("ssssssssssssssssss",stepperOneData?.customer !== "" && stepperOneData?.type !== "")} */}
-        {console.log('stepperOneData', stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "" ? "false" : "true")  }
       </div>
 
     </>
