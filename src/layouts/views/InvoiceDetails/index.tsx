@@ -1649,7 +1649,10 @@ export default function InvoiceDetails() {
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
 
       <div className="decline-modal">
-        <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+        <Modal
+          isOpen={isOpen}
+          handleClose={() => {setIsOpen(false); setInputValue('')}}
+        >
           <div>
             <h3>Add A Reason</h3>
             <div className="text-line">

@@ -502,6 +502,20 @@ export default function InvoiceListing() {
   return (
     <>
       <div className="container">
+        <div className="new-invoice-button">
+        {!isClient && (
+              <Button
+                label="New Invoice"
+                className="primary-blue medium"
+                icon={{
+                  icon: 'add',
+                  size: 'medium',
+                  color: '#fff'
+                }}
+                handleOnClick={() => navigate('/pay/newinvoice')}
+              />
+             )} 
+        </div>
         <div className="dropdowns">
           <div className="inputContainer">
             <Icon icon="search" size="small" />
