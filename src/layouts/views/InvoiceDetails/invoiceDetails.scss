@@ -631,14 +631,8 @@
 
   .decline-modal {
     .a-modal__body {
-      align-items: center;
-      background: #fff !important;
-      border-radius: 0.556rem;
-      display: flex;
       height: 40vh;
       padding-top: 30px;
-      justify-content: center;
-      position: relative;
       width: 100%;
       max-width: 491px !important;
     }
@@ -694,10 +688,65 @@
     }
   }
 
+  .void-modal {
+    display: flex;
+    .a-modal__body {
+      height: 37vh;
+      padding: 2rem 2.5rem;
+      width: 25%;
+    }
+    h3 {
+      margin-top: -45px;
+      font-size: 28px;
+      line-height: 35px;
+      color: #041e42;
+    }
+    h6 {
+      font-size: 13px;
+      line-height: 16px;
+      color: #3e3e3e;
+    }
+    textarea.textarea-box {
+      margin-top: -20px;
+      padding: 16px;
+      border-radius: 4px;
+    }
+    .attachment {
+      h4 {
+        color: #526fd6;
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 24px;
+      }
+    }
+    .void-button {
+      display: flex;
+      justify-content: end;
+      button.a-button.small {
+        font-size: 18px;
+        height: 2.99rem;
+        width: 5.31rem;
+      }
+    }
+  }
+
   .void-confirm-modal {
     background-color: #fff;
     svg {
       display: none !important;
-  }
+    }
+    .a-modal__body {
+      height: 30vh;
+      width: 24%;
+    }
+    .void-confirm-button svg {
+      display: inline-block !important;
+    }
+
+    h4 {
+      font-size: 28px;
+      line-height: 35px;
+      margin-top: -60px;
+    }
   }
 }

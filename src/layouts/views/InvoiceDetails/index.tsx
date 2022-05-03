@@ -1709,7 +1709,7 @@ export default function InvoiceDetails() {
         </Modal>
       </div>
 
-      <div className="decline-modal">
+      <div className="void-modal">
         <Modal
           isOpen={isVoidOpen}
           handleClose={() => { setIsVoidOpen(false); setInputVoidValue('') }}
@@ -1729,7 +1729,11 @@ export default function InvoiceDetails() {
               />
             </div>
 
-            <div>
+            <div className="attachment">
+              <h4>Add Attachment</h4>
+            </div>
+
+            <div className="void-button">
               <Button
                 className="primary-blue small"
                 label="Void"
@@ -1804,22 +1808,20 @@ export default function InvoiceDetails() {
           <div>
             <h4>Are you sure you want to void this invoice?</h4>
 
-            <div className="decline-modal-button">
+            <div className="void-confirm-button">
               <Button
-                data-testid="decline-cancel-button"
                 label="Cancel"
-                className="secondary-btn medium cancel-button"
+                className="secondary-btn medium"
                 icon={{
                   icon: 'add',
                   size: 'medium',
                   color: '#526FD6'
                 }}
                 handleOnClick={() => {
-                  setIsOpen(false)
-                  setInputValue("")
+                  setIsVoidConfirmOptionOpen(false)
+                  setInputVoidValue("")
                 }}
               />
-
               <Button
                 data-testid='decline-button-submit'
                 // disabled={!inputValue}
