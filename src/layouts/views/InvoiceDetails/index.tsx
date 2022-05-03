@@ -1796,13 +1796,11 @@ export default function InvoiceDetails() {
         </Modal>
       </div>
 
-      {
-        isVoidConfirmOptionOpen === true &&
-        <div className="void-confirm-modal">
-        {/* <Modal
+      <div className="void-confirm-modal">
+        <Modal
           isOpen={isVoidConfirmOptionOpen}
-          handleClose={() => { setIsVoidConfirmOptionOpen(false)}}
-        > */}
+          handleClose={() => { setIsVoidConfirmOptionOpen(false) }}
+        >
           <div>
             <h4>Are you sure you want to void this invoice?</h4>
 
@@ -1815,7 +1813,7 @@ export default function InvoiceDetails() {
                   icon: 'add',
                   size: 'medium',
                   color: '#526FD6'
-              }}
+                }}
                 handleOnClick={() => {
                   setIsOpen(false)
                   setInputValue("")
@@ -1827,13 +1825,12 @@ export default function InvoiceDetails() {
                 // disabled={!inputValue}
                 label="Void"
                 className="primary-blue medium decline-button"
-                // handleOnClick={() => {}}
+              // handleOnClick={() => {}}
               />
             </div>
           </div>
-        {/* </Modal> */}
+        </Modal>
       </div>
-      }
     </div>
   );
 }

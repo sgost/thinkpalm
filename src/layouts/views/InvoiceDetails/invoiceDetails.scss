@@ -696,5 +696,8 @@
 
   .void-confirm-modal {
     background-color: #fff;
+    svg {
+      display: none !important;
+  }
   }
 }
