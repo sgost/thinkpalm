@@ -33,6 +33,18 @@
       gap: 1.111rem;
       position: relative;
 
+      .void-button {
+        cursor: pointer;
+        button.a-button.secondary-btn {
+          border: none !important;
+          color: red !important;
+          margin-right: -38px;
+        }
+        button.a-button.small {
+          font-size: 1rem;
+          font-weight: 600;
+        }
+      }
       .download {
         display: flex;
         align-items: center;
@@ -696,7 +708,7 @@
       width: 25%;
     }
     h3 {
-      margin-top: -45px;
+      margin-top: 13px;
       font-size: 28px;
       line-height: 35px;
       color: #041e42;
@@ -705,6 +717,7 @@
       font-size: 13px;
       line-height: 16px;
       color: #3e3e3e;
+      margin-top: 40px;
     }
     textarea.textarea-box {
       margin-top: -20px;
@@ -712,16 +725,30 @@
       border-radius: 4px;
     }
     .attachment {
+      display: flex;
+      flex-direction: row;
+      margin-top: 12px;
+      cursor: pointer;
+      svg {
+        margin-top: 24px;
+      }
       h4 {
         color: #526fd6;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 20px;
         line-height: 24px;
+        margin-left: 5px;
+      }
+      p {
+        background-color: #041e42;
+        margin-top: -10px;
+        margin-left: 4px;
       }
     }
     .void-button {
       display: flex;
       justify-content: end;
+      margin-top: 15px;
       button.a-button.small {
         font-size: 18px;
         height: 2.99rem;
@@ -736,17 +763,33 @@
       display: none !important;
     }
     .a-modal__body {
-      height: 30vh;
-      width: 24%;
+      height: 25vh;
+      width: 21%;
+      padding: 2rem;
     }
-    .void-confirm-button svg {
-      display: inline-block !important;
+    .void-confirm-button {
+      svg {
+        display: inline-block !important;
+      }
+      button.a-button.medium {
+        font-size: 1.16rem;
+        width: 9.13rem;
+      }
     }
-
     h4 {
       font-size: 28px;
       line-height: 35px;
-      margin-top: -60px;
+      margin-top: -5px;
+      margin-left: 15px;
+    }
+  }
+
+  .void-confirm-button {
+    margin-top: 86px;
+    display: flex;
+    justify-content: end;
+    .decline-button {
+      margin-left: 30px;
     }
   }
 }

@@ -22,8 +22,8 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  // const { state }: any = useLocation();
-  const state = '';
+  const { state }: any = useLocation();
+  // const state = '';
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -787,9 +787,8 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          <div style={{ color: 'red', cursor: 'pointer' }}>
+          <div className="void-button">
             {isClient == "false" && status === "Approved" && (
-              // <h4>Void Invoice</h4>
               <Button
                 className="secondary-btn small"
                 label="Void Invoice"
@@ -1730,25 +1729,22 @@ export default function InvoiceDetails() {
               />
             </div>
 
-            <div className="attachment">
+            <div className="attachment-container">
               <input
                 type="file"
                 id="attachmentId"
                 style={{ display: "none" }}
                 onChange={(e: any) =>  setVoidFileData(e.target.files["0"])} 
                 />
-              <label htmlFor="attachmentId">
+              <label htmlFor="attachmentId" className="attachment">
                 <Icon
                   icon="attachment"
                   size="large"
-                  width="40"
-                  height="40"
-                  color="#3E3E3E"
+                  color="#526fd6"
                 />
                 <h4>Add Attachment</h4>
-
-                <p>{voidFileData?.name}</p>
               </label>
+              <p>{voidFileData?.name}</p>
             </div>
 
             <div className="void-button">
