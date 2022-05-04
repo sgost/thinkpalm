@@ -74,6 +74,11 @@ export default function InvoiceListing() {
       label: "Payment ",
       value: 6,
     },
+    {
+      isSelected: false,
+      label: "Contractor Pay",
+      value: 7,
+    },
   ];
   const [types, setTypes] = useState(typeOptions);
 
@@ -124,6 +129,11 @@ export default function InvoiceListing() {
       isSelected: false,
       label: "Closed",
       value: 8,
+    },
+    {
+      isSelected: false,
+      label: "Invoiced",
+      value: 10,
     },
   ];
   const [status, setStatus] = useState(statusOptions);
@@ -503,18 +513,18 @@ export default function InvoiceListing() {
     <>
       <div className="container">
         <div className="new-invoice-button">
-        {!isClient && (
-              <Button
-                label="New Invoice"
-                className="primary-blue medium"
-                icon={{
-                  icon: 'add',
-                  size: 'medium',
-                  color: '#fff'
-                }}
-                handleOnClick={() => navigate('/pay/newinvoice')}
-              />
-             )} 
+          {!isClient && (
+            <Button
+              label="New Invoice"
+              className="primary-blue medium"
+              icon={{
+                icon: 'add',
+                size: 'medium',
+                color: '#fff'
+              }}
+              handleOnClick={() => navigate('/pay/newinvoice')}
+            />
+          )}
         </div>
         <div className="dropdowns">
           <div className="inputContainer">
@@ -840,19 +850,19 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                    ...searchedTableData,
-                    // showDefaultColumn: true,
-                    enableMultiSelect: true,
-                    onRowCheckboxChange: onRowCheckboxChange,
-                  }
+                  ...searchedTableData,
+                  // showDefaultColumn: true,
+                  enableMultiSelect: true,
+                  onRowCheckboxChange: onRowCheckboxChange,
+                }
                 : isClient
-                ? {
+                  ? {
                     ...clientTableData,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                : {
+                  : {
                     ...internalTabledata,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
@@ -867,12 +877,12 @@ export default function InvoiceListing() {
               let isClientStr = isClient ? "true" : "false";
               navigate(
                 "/pay/invoicedetails" +
-                  row.id +
-                  "/" +
-                  row.customerId +
-                  "/" +
-                  isClientStr,
-                  {state: {InvoiceId: row.invoiceNo}}
+                row.id +
+                "/" +
+                row.customerId +
+                "/" +
+                isClientStr,
+                { state: { InvoiceId: row.invoiceNo } }
               );
             }}
           />
