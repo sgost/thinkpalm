@@ -10060,5 +10060,28 @@ export const mockapidata = {
     displayInPDF: false,
     customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
   },
-  declineInvoicePost: {}
+  declineInvoicePost: {},
+  voidApiPost : {},
+  createDocument:{
+    "invoiceId": "9a3d7481-2078-4038-9d89-9d2be51efc47",
+    "documentId": "0915de1f-ca0f-46bd-a18f-2f3b46388d88",
+    "isCustomerVisible": false,
+    "customerId": null,
+    "document": {
+        "url": "https://apnguatemeaservices.blob.core.windows.net/data/58dfe3fc-dc54-452d-83e3-77d0fa85e3b3.pdf?sv=2019-07-07&sr=b&sig=o%2FVQy0p2hioj8K2MmKckqFaO2OmVMT%2BD%2FeNUa%2BiKIBw%3D&se=2022-05-04T14%3A46%3A47Z&sp=rl",
+        "documentType": 0,
+        "documentName": "hello.pdf",
+        "uploadDate": "0001-01-01T00:00:00",
+        "modifiedBy": "00000000-0000-0000-0000-000000000000",
+        "customerId": null,
+        "customerDocuments": [],
+        "serviceContacts": [],
+        "id": "0915de1f-ca0f-46bd-a18f-2f3b46388d88"
+    }
+},
+  uploadFile: {
+    "fileName": "hello.pdf",
+    "url": "https://apnguatemeaservices.blob.core.windows.net/data/58dfe3fc-dc54-452d-83e3-77d0fa85e3b3.pdf?sv=2019-07-07&sr=b&sig=o%2FVQy0p2hioj8K2MmKckqFaO2OmVMT%2BD%2FeNUa%2BiKIBw%3D&se=2022-05-04T14%3A46%3A47Z&sp=rl"
+}
+
 };

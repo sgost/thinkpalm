@@ -22,8 +22,8 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  // const { state }: any = useLocation();
-  const state = '';
+  const { state }: any = useLocation();
+  // const state = '';
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +63,7 @@ export default function InvoiceDetails() {
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [voidFileData, setVoidFileData] = useState<any>({});
-   const [isErr, setIsErr] = useState(false);
+  const [isErr, setIsErr] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputVoidValue, setInputVoidValue] = useState("");
   const [approvalMsg, setApprovalMsg] = useState("");
@@ -346,7 +346,6 @@ export default function InvoiceDetails() {
 
   useEffect(() => {
     if (lookupData?.data && apiData?.data) {
-      console.log("lookupData", lookupData.data.invoiceStatuses);
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
           setStatus(e.text);
@@ -643,7 +642,7 @@ export default function InvoiceDetails() {
       },
     })
       .then((res: any) => {
-       if (res.status === 201) {
+        if (res.status === 201) {
           setStatus("Approved");
           setApprovalMsg("Invoice approve successfully");
           setTimeout(() => {
@@ -708,7 +707,7 @@ export default function InvoiceDetails() {
       ],
     })
       .then((res: any) => {
-       setStatus("Pending Approval");
+        setStatus("Pending Approval");
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -760,37 +759,37 @@ export default function InvoiceDetails() {
       "x-apng-target-region": "EMEA",
       customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
     };
-  
-      var formData = new FormData();
-      formData.append("asset",voidFileData );
-   await    axios
-        .post(
-          "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
-          formData,
-          {
-            headers: headers,
-          }
-        )
-        .then( async (res: any) => {
-       
-      await     axios
-            .post(
-              "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
-              {
-                invoiceId: id,
 
-                document: {
-                  url: res.data.url,
+    var formData = new FormData();
+    formData.append("asset", voidFileData);
+    await axios
+      .post(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+        formData,
+        {
+          headers: headers,
+        }
+      )
+      .then(async (res: any) => {
 
-                  documentName: res.data.fileName,
-                },
+        await axios
+          .post(
+            "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+            {
+              invoiceId: id,
+
+              document: {
+                url: res.data.url,
+
+                documentName: res.data.fileName,
               },
-              {
-                headers: headers,
-              }
-            )
-            .then((response: any) => {
-           //  setDocuments([
+            },
+            {
+              headers: headers,
+            }
+          )
+          .then((response: any) => {
+            //  setDocuments([
             //     ...documents,
             //     {
             //       documentId: response.data.documentId,
@@ -800,41 +799,41 @@ export default function InvoiceDetails() {
             //       },
             //     },
             //   ]);
-            })
-            .catch((e: any) => {
-              console.log(e);
+          })
+          .catch((e: any) => {
+            console.log(e);
           });
-        })
-        .catch((e: any) => {
-          console.log(e);
-          setIsFileError(true);
-        });
-   
-  await    axios
-        .post(
-          `https://apigw-uat-emea.apnextgen.com/api/Invoices/voidInvoice`,
-          {
-            invoiceId: id,
-            note:inputVoidValue
-          },
-          {
-            headers: headers,
-          }
-        )
-        .then((response: any) => {
-          console.log("responseresponse",response)
-          setVoidFileData({})
-          setIsVoidConfirmOptionOpen(false)
-          setInputVoidValue("")
-          
-     
-        })
-        .catch((e: any) => {
-          console.log(e);
-          setVoidFileData({})
-          setIsVoidConfirmOptionOpen(false)
-          setInputVoidValue("")
-        });     
+      })
+      .catch((e: any) => {
+        console.log(e);
+        setIsFileError(true);
+      });
+
+    await axios
+      .post(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`,
+        {
+          invoiceId: id,
+          note: inputVoidValue
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response: any) => {
+        console.log("responseresponse", response)
+        setVoidFileData({})
+        setIsVoidConfirmOptionOpen(false)
+        setInputVoidValue("")
+
+
+      })
+      .catch((e: any) => {
+        console.log(e);
+        setVoidFileData({})
+        setIsVoidConfirmOptionOpen(false)
+        setInputVoidValue("")
+      });
 
   }
 
@@ -1154,7 +1153,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
-           return (
+            return (
               <div>
                 <div className="countryHeader">
                   {/* <img src={spainFlag} alt="flag" /> */}
@@ -1499,7 +1498,7 @@ export default function InvoiceDetails() {
             <div className="boxsubcontainer">
               <div className="fileHandlerContainer">
                 {documents.map((item: any, index: any) => {
-                 return (
+                  return (
                     <FileHandler
                       icons={{
                         prefix: {
@@ -1551,7 +1550,7 @@ export default function InvoiceDetails() {
                             icon: "remove",
                             width: "30",
                             handleOnClick: () => {
-                             const headers = {
+                              const headers = {
                                 authorization: `Bearer ${tempToken}`,
                                 "x-apng-base-region": "EMEA",
                                 "x-apng-customer-id":
@@ -1573,7 +1572,7 @@ export default function InvoiceDetails() {
                                 headers: headers,
                               })
                                 .then((res: any) => {
-                                let cpy = [...documents];
+                                  let cpy = [...documents];
                                   cpy.splice(index, 1);
                                   setDocuments(cpy);
                                 })
@@ -1632,7 +1631,7 @@ export default function InvoiceDetails() {
                         customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
                       };
                       setTimeout(() => {
-                       var formData = new FormData();
+                        var formData = new FormData();
                         formData.append("asset", file[0]);
                         axios
                           .post(
@@ -1643,7 +1642,7 @@ export default function InvoiceDetails() {
                             }
                           )
                           .then((res: any) => {
-                         
+
                             axios
                               .post(
                                 " https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
@@ -1661,7 +1660,7 @@ export default function InvoiceDetails() {
                                 }
                               )
                               .then((response: any) => {
-                               setDocuments([
+                                setDocuments([
                                   ...documents,
                                   {
                                     documentId: response.data.documentId,
@@ -1811,11 +1810,12 @@ export default function InvoiceDetails() {
 
             <div className="attachment-container">
               <input
+                data-testid="attachmenttestId"
                 type="file"
                 id="attachmentId"
                 style={{ display: "none" }}
-                onChange={(e: any) =>  setVoidFileData(e.target.files["0"])} 
-                />
+                onChange={(e: any) => setVoidFileData(e.target.files["0"])}
+              />
               <label htmlFor="attachmentId" className="attachment">
                 <Icon
                   icon="attachment"
@@ -1829,6 +1829,7 @@ export default function InvoiceDetails() {
 
             <div className="void-button">
               <Button
+                data-testid="void-button-id"
                 className="primary-blue small"
                 label="Void"
                 handleOnClick={() => {
@@ -1851,6 +1852,7 @@ export default function InvoiceDetails() {
 
             <div className="void-confirm-button">
               <Button
+                data-testid='Void-button-Cancel'
                 label="Cancel"
                 className="secondary-btn medium"
                 icon={{
@@ -1864,11 +1866,11 @@ export default function InvoiceDetails() {
                 }}
               />
               <Button
-                data-testid='decline-button-submit'
+                data-testid='Void-button-submit'
                 // disabled={!inputValue}
                 label="Void"
                 className="primary-blue medium decline-button"
-              handleOnClick={() => handleVoid()}
+                handleOnClick={() => handleVoid()}
               />
             </div>
           </div>
