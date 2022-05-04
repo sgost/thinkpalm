@@ -809,12 +809,15 @@ export default function InvoiceDetails() {
         setIsFileError(true);
       });
 
+    let currDate = new Date();
+
     await axios
       .post(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`,
         {
           invoiceId: id,
-          note: inputVoidValue
+          note: inputVoidValue,
+          createdDate: currDate,
         },
         {
           headers: headers,

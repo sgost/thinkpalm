@@ -705,7 +705,8 @@
     .a-modal__body {
       height: 37vh;
       padding: 2rem 2.5rem;
-      width: 25%;
+      width: 100%;
+      max-width: 450px !important;
     }
     h3 {
       margin-top: 13px;

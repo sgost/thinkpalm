@@ -5,7 +5,7 @@ import {
   waitForElementToBeRemoved,
   waitFor,
 } from "@testing-library/react";
-import { HashRouter, Route, Routes, useParams , MemoryRouter } from "react-router-dom";
+import { HashRouter, Route, Routes, useParams, MemoryRouter } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -93,8 +93,8 @@ import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
-  useParams: 
-  jest.fn(),
+  useParams:
+    jest.fn(),
   // () => ({
   //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
   //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
@@ -192,7 +192,7 @@ describe("Invoice details", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
@@ -341,7 +341,7 @@ describe("Invoice details", () => {
 
     const textarea = await waitFor(() => screen.getByPlaceholderText('Please Enter a Reason'));
     expect(textarea).toBeInTheDocument();
-    fireEvent.change(textarea, {target: {value: 'test'}})
+    fireEvent.change(textarea, { target: { value: 'test' } })
 
     const declineSubmit = screen.getByTestId("decline-button-submit");
     fireEvent.click(declineSubmit);
@@ -522,7 +522,7 @@ describe("Invoice details decline api fail case handling", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
@@ -543,15 +543,12 @@ describe("Invoice details decline api fail case handling", () => {
 
     const textarea = await waitFor(() => screen.getByPlaceholderText('Please Enter a Reason'));
     expect(textarea).toBeInTheDocument();
-    fireEvent.change(textarea, {target: {value: 'test'}})
+    fireEvent.change(textarea, { target: { value: 'test' } })
 
     const declineSubmit = screen.getByTestId("decline-button-submit");
     fireEvent.click(declineSubmit);
   })
 });
-
-
-
 describe("void test cases on Apprroved", () => {
   beforeAll(() => {
     useParams.mockImplementation(() => ({
@@ -560,7 +557,7 @@ describe("void test cases on Apprroved", () => {
       isClient: "false",
     }));
     const mock = new MockAdapter(axios);
-  
+
     mockapidata.resData.invoice.status = 4;
     mock
       .onGet(
@@ -636,83 +633,78 @@ describe("void test cases on Apprroved", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
       .reply(200, mockapidata.declineInvoicePost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
       )
       .reply(200, mockapidata.voidApiPost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
       )
       .reply(200, mockapidata.uploadFile);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
       )
       .reply(200, mockapidata.createDocument);
-      
+
   });
 
   test("tabs are working", async () => {
-const file = new File(['hello'],'hello.pdf' , { type:'application/pdf'});
-    
- render(
-      <HashRouter> 
-      <InvoiceDetails />
+    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
       </HashRouter>
-     );
-    
+    );
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const buttonVoidInvoice = await  screen.findByText(/Void Invoice/);
+    const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
-   
+
     expect(buttonVoidInvoice).toBeInTheDocument();
-    const placeHolderText = await  screen.findByPlaceholderText(/Enter note here/);
+    const placeHolderText = await screen.findByPlaceholderText(/Enter note here/);
     expect(placeHolderText).toBeInTheDocument();
     fireEvent.click(placeHolderText);
     fireEvent.change(placeHolderText, { target: { value: "Notes Testing" } });
 
 
-    const attachmenttestId = await  screen.findByTestId("attachmenttestId");
+    const attachmenttestId = await screen.findByTestId("attachmenttestId");
     expect(attachmenttestId).toBeInTheDocument();
     await waitFor(() =>
-    fireEvent.change(attachmenttestId, {
-      target: { files: [file] },
-    })
-  );
- 
-  const pdfFile = await screen.findAllByText(/hello.pdf/);
-  expect(pdfFile[0]).toBeInTheDocument();
+      fireEvent.change(attachmenttestId, {
+        target: { files: [file] },
+      })
+    );
 
-  const voidButtonId = await  screen.findByTestId("void-button-id");
-  expect(voidButtonId).toBeInTheDocument();
-  fireEvent.click(voidButtonId)
+    const pdfFile = await screen.findAllByText(/hello.pdf/);
+    expect(pdfFile[0]).toBeInTheDocument();
 
-    
-  const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
-  expect(confirmText[0]).toBeInTheDocument();
+    const voidButtonId = await screen.findByTestId("void-button-id");
+    expect(voidButtonId).toBeInTheDocument();
+    fireEvent.click(voidButtonId)
 
-  const voidConfirm = await  screen.findByTestId("Void-button-submit");
-  expect(voidConfirm).toBeInTheDocument();
-  fireEvent.click(voidConfirm)
 
-  
+    const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const voidConfirm = await screen.findByTestId("Void-button-submit");
+    expect(voidConfirm).toBeInTheDocument();
+    fireEvent.click(voidConfirm)
+
   });
-
-  
 });
-
-
 describe("void test cases on Apprroved Upload Api Failed", () => {
   beforeAll(() => {
 
@@ -722,7 +714,7 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
       isClient: "false",
     }));
     const mock = new MockAdapter(axios);
-  
+
     mockapidata.resData.invoice.status = 4;
     mock
       .onGet(
@@ -798,82 +790,79 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
       .reply(200, mockapidata.declineInvoicePost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
       )
       .reply(200, mockapidata.voidApiPost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
       )
       .reply(400, mockapidata.uploadFile);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
       )
       .reply(200, mockapidata.createDocument);
-      
+
   });
 
   test("tabs are working", async () => {
-const file = new File(['hello'],'hello.pdf' , { type:'application/pdf'});
-    
- render(
-      <HashRouter> 
-      <InvoiceDetails />
+    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
       </HashRouter>
-     );
-    
+    );
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const buttonVoidInvoice = await  screen.findByText(/Void Invoice/);
+    const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
-   
+
     expect(buttonVoidInvoice).toBeInTheDocument();
-    const placeHolderText = await  screen.findByPlaceholderText(/Enter note here/);
+    const placeHolderText = await screen.findByPlaceholderText(/Enter note here/);
     expect(placeHolderText).toBeInTheDocument();
     fireEvent.click(placeHolderText);
     fireEvent.change(placeHolderText, { target: { value: "Notes Testing" } });
 
 
-    const attachmenttestId = await  screen.findByTestId("attachmenttestId");
+    const attachmenttestId = await screen.findByTestId("attachmenttestId");
     expect(attachmenttestId).toBeInTheDocument();
     await waitFor(() =>
-    fireEvent.change(attachmenttestId, {
-      target: { files: [file] },
-    })
-  );
- 
-  const pdfFile = await screen.findAllByText(/hello.pdf/);
-  expect(pdfFile[0]).toBeInTheDocument();
+      fireEvent.change(attachmenttestId, {
+        target: { files: [file] },
+      })
+    );
 
-  const voidButtonId = await  screen.findByTestId("void-button-id");
-  expect(voidButtonId).toBeInTheDocument();
-  fireEvent.click(voidButtonId)
+    const pdfFile = await screen.findAllByText(/hello.pdf/);
+    expect(pdfFile[0]).toBeInTheDocument();
 
-    
-  const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
-  expect(confirmText[0]).toBeInTheDocument();
+    const voidButtonId = await screen.findByTestId("void-button-id");
+    expect(voidButtonId).toBeInTheDocument();
+    fireEvent.click(voidButtonId)
 
-  const voidConfirm = await  screen.findByTestId("Void-button-submit");
-  expect(voidConfirm).toBeInTheDocument();
-  fireEvent.click(voidConfirm)
 
-  
+    const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const voidConfirm = await screen.findByTestId("Void-button-submit");
+    expect(voidConfirm).toBeInTheDocument();
+    fireEvent.click(voidConfirm)
+
   });
 
-  
 });
-
 describe("void test cases on Apprroved Create Api Failed", () => {
   beforeAll(() => {
 
@@ -883,7 +872,7 @@ describe("void test cases on Apprroved Create Api Failed", () => {
       isClient: "false",
     }));
     const mock = new MockAdapter(axios);
-  
+
     mockapidata.resData.invoice.status = 4;
     mock
       .onGet(
@@ -959,82 +948,79 @@ describe("void test cases on Apprroved Create Api Failed", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
       .reply(200, mockapidata.declineInvoicePost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
       )
       .reply(200, mockapidata.voidApiPost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
       )
       .reply(200, mockapidata.uploadFile);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
       )
       .reply(400, mockapidata.createDocument);
-      
+
   });
 
   test("tabs are working", async () => {
-const file = new File(['hello'],'hello.pdf' , { type:'application/pdf'});
-    
- render(
-      <HashRouter> 
-      <InvoiceDetails />
+    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
       </HashRouter>
-     );
-    
+    );
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const buttonVoidInvoice = await  screen.findByText(/Void Invoice/);
+    const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
-   
+
     expect(buttonVoidInvoice).toBeInTheDocument();
-    const placeHolderText = await  screen.findByPlaceholderText(/Enter note here/);
+    const placeHolderText = await screen.findByPlaceholderText(/Enter note here/);
     expect(placeHolderText).toBeInTheDocument();
     fireEvent.click(placeHolderText);
     fireEvent.change(placeHolderText, { target: { value: "Notes Testing" } });
 
 
-    const attachmenttestId = await  screen.findByTestId("attachmenttestId");
+    const attachmenttestId = await screen.findByTestId("attachmenttestId");
     expect(attachmenttestId).toBeInTheDocument();
     await waitFor(() =>
-    fireEvent.change(attachmenttestId, {
-      target: { files: [file] },
-    })
-  );
- 
-  const pdfFile = await screen.findAllByText(/hello.pdf/);
-  expect(pdfFile[0]).toBeInTheDocument();
+      fireEvent.change(attachmenttestId, {
+        target: { files: [file] },
+      })
+    );
 
-  const voidButtonId = await  screen.findByTestId("void-button-id");
-  expect(voidButtonId).toBeInTheDocument();
-  fireEvent.click(voidButtonId)
+    const pdfFile = await screen.findAllByText(/hello.pdf/);
+    expect(pdfFile[0]).toBeInTheDocument();
 
-    
-  const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
-  expect(confirmText[0]).toBeInTheDocument();
+    const voidButtonId = await screen.findByTestId("void-button-id");
+    expect(voidButtonId).toBeInTheDocument();
+    fireEvent.click(voidButtonId)
 
-  const voidConfirm = await  screen.findByTestId("Void-button-submit");
-  expect(voidConfirm).toBeInTheDocument();
-  fireEvent.click(voidConfirm)
 
-  
+    const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const voidConfirm = await screen.findByTestId("Void-button-submit");
+    expect(voidConfirm).toBeInTheDocument();
+    fireEvent.click(voidConfirm)
+
   });
 
-  
 });
-
 describe("void test cases on Apprroved Void Api Failed", () => {
   beforeAll(() => {
 
@@ -1044,7 +1030,7 @@ describe("void test cases on Apprroved Void Api Failed", () => {
       isClient: "false",
     }));
     const mock = new MockAdapter(axios);
-  
+
     mockapidata.resData.invoice.status = 4;
     mock
       .onGet(
@@ -1120,83 +1106,79 @@ describe("void test cases on Apprroved Void Api Failed", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
       .reply(200, mockapidata.declineInvoicePost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
       )
       .reply(400, mockapidata.voidApiPost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
       )
       .reply(200, mockapidata.uploadFile);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
       )
       .reply(200, mockapidata.createDocument);
-      
+
   });
 
   test("tabs are working", async () => {
-const file = new File(['hello'],'hello.pdf' , { type:'application/pdf'});
-    
- render(
-      <HashRouter> 
-      <InvoiceDetails />
+    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
       </HashRouter>
-     );
-    
+    );
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const buttonVoidInvoice = await  screen.findByText(/Void Invoice/);
+    const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
-   
+
     expect(buttonVoidInvoice).toBeInTheDocument();
-    const placeHolderText = await  screen.findByPlaceholderText(/Enter note here/);
+    const placeHolderText = await screen.findByPlaceholderText(/Enter note here/);
     expect(placeHolderText).toBeInTheDocument();
     fireEvent.click(placeHolderText);
     fireEvent.change(placeHolderText, { target: { value: "Notes Testing" } });
 
 
-    const attachmenttestId = await  screen.findByTestId("attachmenttestId");
+    const attachmenttestId = await screen.findByTestId("attachmenttestId");
     expect(attachmenttestId).toBeInTheDocument();
     await waitFor(() =>
-    fireEvent.change(attachmenttestId, {
-      target: { files: [file] },
-    })
-  );
- 
-  const pdfFile = await screen.findAllByText(/hello.pdf/);
-  expect(pdfFile[0]).toBeInTheDocument();
+      fireEvent.change(attachmenttestId, {
+        target: { files: [file] },
+      })
+    );
 
-  const voidButtonId = await  screen.findByTestId("void-button-id");
-  expect(voidButtonId).toBeInTheDocument();
-  fireEvent.click(voidButtonId)
+    const pdfFile = await screen.findAllByText(/hello.pdf/);
+    expect(pdfFile[0]).toBeInTheDocument();
 
-    
-  const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
-  expect(confirmText[0]).toBeInTheDocument();
+    const voidButtonId = await screen.findByTestId("void-button-id");
+    expect(voidButtonId).toBeInTheDocument();
+    fireEvent.click(voidButtonId)
 
-  const voidConfirm = await  screen.findByTestId("Void-button-submit");
-  expect(voidConfirm).toBeInTheDocument();
-  fireEvent.click(voidConfirm)
 
-  
+    const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const voidConfirm = await screen.findByTestId("Void-button-submit");
+    expect(voidConfirm).toBeInTheDocument();
+    fireEvent.click(voidConfirm)
+
   });
 
-  
 });
-
-
 describe("void test cases on Apprroved and click on cancel", () => {
   beforeAll(() => {
 
@@ -1206,7 +1188,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
       isClient: "false",
     }));
     const mock = new MockAdapter(axios);
-  
+
     mockapidata.resData.invoice.status = 4;
     mock
       .onGet(
@@ -1282,83 +1264,79 @@ describe("void test cases on Apprroved and click on cancel", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
       .reply(200, mockapidata.declineInvoicePost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
       )
       .reply(200, mockapidata.voidApiPost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
       )
       .reply(200, mockapidata.uploadFile);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
       )
       .reply(200, mockapidata.createDocument);
-      
+
   });
 
   test("tabs are working", async () => {
-const file = new File(['hello'],'hello.pdf' , { type:'application/pdf'});
-    
- render(
-      <HashRouter> 
-      <InvoiceDetails />
+    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
       </HashRouter>
-     );
-    
+    );
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const buttonVoidInvoice = await  screen.findByText(/Void Invoice/);
+    const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
-   
+
     expect(buttonVoidInvoice).toBeInTheDocument();
-    const placeHolderText = await  screen.findByPlaceholderText(/Enter note here/);
+    const placeHolderText = await screen.findByPlaceholderText(/Enter note here/);
     expect(placeHolderText).toBeInTheDocument();
     fireEvent.click(placeHolderText);
     fireEvent.change(placeHolderText, { target: { value: "Notes Testing" } });
 
 
-    const attachmenttestId = await  screen.findByTestId("attachmenttestId");
+    const attachmenttestId = await screen.findByTestId("attachmenttestId");
     expect(attachmenttestId).toBeInTheDocument();
     await waitFor(() =>
-    fireEvent.change(attachmenttestId, {
-      target: { files: [file] },
-    })
-  );
- 
-  const pdfFile = await screen.findAllByText(/hello.pdf/);
-  expect(pdfFile[0]).toBeInTheDocument();
+      fireEvent.change(attachmenttestId, {
+        target: { files: [file] },
+      })
+    );
 
-  const voidButtonId = await  screen.findByTestId("void-button-id");
-  expect(voidButtonId).toBeInTheDocument();
-  fireEvent.click(voidButtonId)
+    const pdfFile = await screen.findAllByText(/hello.pdf/);
+    expect(pdfFile[0]).toBeInTheDocument();
 
-    
-  const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
-  expect(confirmText[0]).toBeInTheDocument();
+    const voidButtonId = await screen.findByTestId("void-button-id");
+    expect(voidButtonId).toBeInTheDocument();
+    fireEvent.click(voidButtonId)
 
-  const cancelId = await  screen.findByTestId("Void-button-Cancel");
-  expect(cancelId).toBeInTheDocument();
-  fireEvent.click(cancelId)
 
-  
+    const confirmText = await screen.findAllByText(/Are you sure you want to void this invoice?/);
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const cancelId = await screen.findByTestId("Void-button-Cancel");
+    expect(cancelId).toBeInTheDocument();
+    fireEvent.click(cancelId)
+
   });
 
-  
 });
-
-
 describe("void test cases for Checkobox", () => {
   beforeAll(() => {
 
@@ -1368,7 +1346,7 @@ describe("void test cases for Checkobox", () => {
       isClient: "false",
     }));
     const mock = new MockAdapter(axios);
-  
+
     mockapidata.resData.invoice.status = 4;
     mock
       .onGet(
@@ -1444,55 +1422,52 @@ describe("void test cases for Checkobox", () => {
         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
         name: "sample.pdf",
       });
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
       )
       .reply(200, mockapidata.declineInvoicePost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
       )
       .reply(200, mockapidata.voidApiPost);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
       )
       .reply(200, mockapidata.uploadFile);
 
-      mock
+    mock
       .onPost(
         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
       )
       .reply(200, mockapidata.createDocument);
-      
+
   });
 
   test("tabs are working", async () => {
-    
- render(
-      <HashRouter> 
-      <InvoiceDetails />
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
       </HashRouter>
-     );
-    
+    );
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     fireEvent.click(filesTab);
 
 
-    const customerCheckbox = await  screen.findByText(/Visible to Customer/);
+    const customerCheckbox = await screen.findByText(/Visible to Customer/);
     fireEvent.click(customerCheckbox);
 
-    const checkBox2 = await  screen.findByText(/Export to Quickbooks/);
+    const checkBox2 = await screen.findByText(/Export to Quickbooks/);
     fireEvent.click(checkBox2);
-  
-   
-  
+
   });
 
-  
 });
