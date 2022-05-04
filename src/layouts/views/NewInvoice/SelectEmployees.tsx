@@ -1,69 +1,134 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Checkbox, Button, ProfileHeader, Table, Icon } from 'atlasuikit'
 import './SelectEmployees.scss'
 
-const tableOptions: any = []
-
+const tableOptions: any = {
+  columns: [
+    {
+      header: "Pay Item",
+      isDefault: true,
+      key: "payItem",
+    },
+    {
+      header: "Amount",
+      isDefault: true,
+      key: "amount",
+    },
+    {
+      header: "Currency",
+      isDefault: true,
+      key: "currency",
+    },
+    {
+      header: "Effective Date",
+      isDefault: true,
+      key: "effectiveDate",
+    },
+    {
+      header: "End Date",
+      isDefault: true,
+      key: "endDate",
+    },
+    {
+      header: "Scope",
+      isDefault: true,
+      key: "scope",
+    },
+    {
+      header: "Frequency",
+      isDefault: true,
+      key: "frequency",
+    },
+  ],
+  data: [
+    {
+      payItem: "Allowance",
+      amount: "1300.00",
+      currency: "USD",
+      effectiveDate: "1 Sept 2022",
+      endDate: "1 Sept 2022",
+      scope: "AR, Payout",
+      frequency: "Single"
+    },
+    {
+      payItem: "Monthly Allowance",
+      amount: "1300.00",
+      currency: "USD",
+      effectiveDate: "1 Aug 2022",
+      endDate: "1 Aug 2023",
+      scope: "AP",
+      frequency: "Recurring"
+    },
+    {
+      payItem: "Allowance",
+      amount: "1300.00",
+      currency: "USD",
+      effectiveDate: "1 Apr 2022",
+      endDate: "30 Apr 2022",
+      scope: "AR, AP",
+      frequency: "Single"
+    }
+  ],
+}
 
 const SelectEmployees = ({ handleSteps }: any) => {
+
+  const [showTable, setShowTable] = useState(false)
+  
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: 'space-around' }}>
+    <div className='select-employee-container'>
+      <div className='employee-header'>
         <div>
-          <h3>SelectEmployees</h3>
+          <h3>Select Employees</h3>
         </div>
-        <div>
+        <div className='employee-checkbox'>
           <Checkbox
-            checked
+            // checked
             onChange={function noRefCheck() { }}
             label="Show Billed Payroll Items"
           />
         </div>
       </div>
-      <div style={{backgroundColor: 'blue', display: 'flex'}}>
-        <div 
-        // style={{backgroundColor: 'red'}}
+      <div className='user-detail'>
+        <div
+          className='table-header'
         >
           <ProfileHeader
             user={
               {
                 name: "Chioma Yakubu",
-                data: "USA",
+                data: "",
                 img: null,
                 initials: "CY"
               }
             }
           />
         </div>
-        <div style={{ display: "flex", justifyContent: 'space-between', backgroundColor: 'red', }}>
-        <Icon
-              className="icon"
-              color="#000"
-              icon="location"
-              size="medium"
-            />
-            <h5>Nigeria</h5>
-            <Icon
-              className="icon"
-              color="#000"
-              icon="chevronUp"
-              size="medium"
-            />
+        <div className='table-location'>
+          <Icon
+            className="icon location"
+            color="#767676"
+            icon="location"
+            size="medium"
+          />
+          <h5>Nigeria</h5>
+          <Icon
+            className="icon up"
+            color="#526FD6"
+            icon="chevronUp"
+            size="medium"
+          />
         </div>
       </div>
-      <div>
-      <Table
-        options={{
+      <div className='table-container'>
+        <Table
+          options={{
             ...tableOptions,
             enableMultiSelect: true,
-            onRowCheckboxChange: (selectedRows: any) => {
-                console.log(selectedRows);
-            },
-            disableRowCheckbox: { key: 'contractor_id', value: 'C451515321' },
             isMultiSelectDisabled: true
-        }}
-        colSort
-    />
+          }}
+          colSort
+        />
 
       </div>
       <Button

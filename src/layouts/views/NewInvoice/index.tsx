@@ -77,7 +77,7 @@ const NewInvoice = () => {
 
                                 <NewInvoiceCreation handleSteps={handleSteps} />
                                 :
-                                stepsCount == 2 ? <SelectEmployees handleSteps={handleSteps} />
+                                stepsCount == 2 ? <SelectEmployees handleSteps={handleSteps} style={{}} />
                                     :
                                     stepsCount == 3 ? <InvoicePreview handleSteps={handleSteps} />
                                         : <></>
