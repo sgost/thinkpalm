@@ -73,8 +73,10 @@ const tableOptions: any = {
 
 const SelectEmployees = ({ handleSteps }: any) => {
 
+  const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [showTable, setShowTable] = useState(false)
-  
+
+
   return (
     <div className='select-employee-container'>
       <div className='employee-header'>
@@ -83,53 +85,69 @@ const SelectEmployees = ({ handleSteps }: any) => {
         </div>
         <div className='employee-checkbox'>
           <Checkbox
-            // checked
-            onChange={function noRefCheck() { }}
+            checked={isAutoApprove}
+            onChange={(e: any) => {
+              setIsAutoApprove(e.target.checked);
+            }}
             label="Show Billed Payroll Items"
           />
         </div>
       </div>
-      <div className='user-detail'>
-        <div
-          className='table-header'
-        >
-          <ProfileHeader
-            user={
-              {
-                name: "Chioma Yakubu",
-                data: "",
-                img: null,
-                initials: "CY"
+      <div className='full-table-container'>
+        <div className='user-detail'>
+          <div
+            className='table-header'
+          >
+            <ProfileHeader
+              user={
+                {
+                  name: "Chioma Yakubu",
+                  data: "",
+                  img: null,
+                  initials: "CY"
+                }
               }
-            }
-          />
+            />
+          </div>
+          <div className='table-location'>
+            <Icon
+              className="icon location"
+              color="#767676"
+              icon="location"
+              size="medium"
+            />
+            <h5>Nigeria</h5>
+            <div
+              onClick={() => setShowTable(!showTable)}
+            >
+              <Icon
+                className="icon up"
+                color="#526FD6"
+                icon={
+                  showTable === true ?
+                  "chevronUp"
+                  : 
+                  "chevronDown"
+                }
+                size="medium"
+              />
+            </div>
+          </div>
         </div>
-        <div className='table-location'>
-          <Icon
-            className="icon location"
-            color="#767676"
-            icon="location"
-            size="medium"
-          />
-          <h5>Nigeria</h5>
-          <Icon
-            className="icon up"
-            color="#526FD6"
-            icon="chevronUp"
-            size="medium"
-          />
-        </div>
-      </div>
-      <div className='table-container'>
-        <Table
-          options={{
-            ...tableOptions,
-            enableMultiSelect: true,
-            isMultiSelectDisabled: true
-          }}
-          colSort
-        />
+        {
+          showTable &&
+          <div className='table-container'>
+            <Table
+              options={{
+                ...tableOptions,
+                enableMultiSelect: true,
+                isMultiSelectDisabled: true
+              }}
+              colSort
+            />
 
+          </div>
+        }
       </div>
       <Button
         type="button"
