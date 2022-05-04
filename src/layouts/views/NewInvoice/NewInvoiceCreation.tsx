@@ -300,12 +300,7 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
               }}
               isOpen={isCustomerOpen}
               options={CustomerOptions}
-              title={
-                <>
-                  Customer
-                  <span style={{ color: 'red' }}>*</span>
-                </>
-              }
+              title={`Customer`}
             />
           </div>
 
@@ -326,12 +321,7 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
               }}
               isOpen={istypeOpen}
               options={typeOptions}
-              title={
-                <>
-                  Type
-                  <span style={{ color: 'red' }}>*</span>
-                </>
-              }
+              title={`Type`}
             />
           </div>
 
@@ -352,12 +342,7 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
               }}
               isOpen={isCountryOpen}
               options={CountryOptions}
-              title={
-                <>
-                  Country
-                  <span style={{ color: 'red' }}>*</span>
-                </>
-              }
+              title={`Country`}
             />
           </div>
 
@@ -450,8 +435,8 @@ const NewInvoiceCreation = ({ handleSteps }: any) => {
         />
 
         <Button
-          disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "") }
-     
+          disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
+          data-testid="next-button"
           icon={{
             icon: 'chevronRight',
             size: 'medium',
