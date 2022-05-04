@@ -5,6 +5,7 @@ const SelectEmployees = ({handleSteps} :any) => {
     <>
     <div>SelectEmployees</div>
     <Button
+    data-testid="back-button-steptwo"
         type="button"
         handleOnClick={() => {
  
@@ -15,6 +16,7 @@ const SelectEmployees = ({handleSteps} :any) => {
         label="back"
       />
     <Button
+       data-testid="next-button-steptwo"
         type="button"
         handleOnClick={() => {
  
