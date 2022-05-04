@@ -3,7 +3,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from './NewInvoiceCreation';
 import SelectEmployees from './SelectEmployees';
-import InvoicePreview from './InvoicePreview';
 import './index.scss'
 
 const NewInvoice = () => {
@@ -79,8 +78,7 @@ const NewInvoice = () => {
                                 :
                                 stepsCount == 2 ? <SelectEmployees handleSteps={handleSteps} />
                                     :
-                                    stepsCount == 3 ? <InvoicePreview handleSteps={handleSteps} />
-                                        : <></>
+                                    <></>
                             }
                         </>
                     }

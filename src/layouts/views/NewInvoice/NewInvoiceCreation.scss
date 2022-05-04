@@ -16,9 +16,17 @@
     .dropdown {
         margin-top: 3rem;
         margin-bottom: 3rem;
+        span.a-dropdown__title:after {
+            content: "*";
+            color: red;
+        }
     }
     .dropdowns {
         margin-bottom: 3rem;
+        span.a-dropdown__title:after {
+            content: "*";
+            color: red;
+        }
         .a-dropdown__option__container {
             height: 2.889rem;
             // overflow-y: auto;
@@ -26,6 +34,10 @@
     }
     .dropdownC {
         margin-bottom: 3rem;
+        span.a-dropdown__title:after {
+            content: "*";
+            color: red;
+        }
     }
     .dropdown-margin {
         margin-right: 40px;
