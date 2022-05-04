@@ -22,8 +22,8 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  const { state }: any = useLocation();
-  // const state = '';
+  // const { state }: any = useLocation();
+  const state = '';
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -63,7 +63,7 @@ export default function InvoiceDetails() {
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [voidFileData, setVoidFileData] = useState<any>({});
-  const [isErr, setIsErr] = useState(false);
+   const [isErr, setIsErr] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [inputVoidValue, setInputVoidValue] = useState("");
   const [approvalMsg, setApprovalMsg] = useState("");
@@ -132,7 +132,6 @@ export default function InvoiceDetails() {
             let countrySumTotalArrTemp: any = [];
             let feeSummaryTemp: any = [];
 
-            console.log("invoice details", res);
 
             //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
             if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
@@ -321,7 +320,6 @@ export default function InvoiceDetails() {
     axios
       .get(URL, { headers: { accept: "text/plain" } })
       .then((response: any) => {
-        console.log(response);
         if (response.status == 200) {
           setBillTableData(response);
         } else {
@@ -645,8 +643,7 @@ export default function InvoiceDetails() {
       },
     })
       .then((res: any) => {
-        console.log(res);
-        if (res.status === 201) {
+       if (res.status === 201) {
           setStatus("Approved");
           setApprovalMsg("Invoice approve successfully");
           setTimeout(() => {
@@ -711,8 +708,7 @@ export default function InvoiceDetails() {
       ],
     })
       .then((res: any) => {
-        console.log(res);
-        setStatus("Pending Approval");
+       setStatus("Pending Approval");
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -750,6 +746,97 @@ export default function InvoiceDetails() {
       });
     setIsDownloadOpen(false);
   };
+
+
+  const handleVoid = async () => {
+
+    const headers = {
+      authorization: `Bearer ${tempToken}`,
+      "x-apng-base-region": "EMEA",
+      "x-apng-customer-id":
+        "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      "x-apng-external": "false",
+      "x-apng-inter-region": "0",
+      "x-apng-target-region": "EMEA",
+      customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    };
+  
+      var formData = new FormData();
+      formData.append("asset",voidFileData );
+   await    axios
+        .post(
+          "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+          formData,
+          {
+            headers: headers,
+          }
+        )
+        .then( async (res: any) => {
+       
+      await     axios
+            .post(
+              "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+              {
+                invoiceId: id,
+
+                document: {
+                  url: res.data.url,
+
+                  documentName: res.data.fileName,
+                },
+              },
+              {
+                headers: headers,
+              }
+            )
+            .then((response: any) => {
+           //  setDocuments([
+            //     ...documents,
+            //     {
+            //       documentId: response.data.documentId,
+            //       document: {
+            //         documentName: res.data.fileName,
+            //         url: res.data.url,
+            //       },
+            //     },
+            //   ]);
+            })
+            .catch((e: any) => {
+              console.log(e);
+          });
+        })
+        .catch((e: any) => {
+          console.log(e);
+          setIsFileError(true);
+        });
+   
+  await    axios
+        .post(
+          `https://apigw-uat-emea.apnextgen.com/api/Invoices/voidInvoice`,
+          {
+            invoiceId: id,
+            note:inputVoidValue
+          },
+          {
+            headers: headers,
+          }
+        )
+        .then((response: any) => {
+          console.log("responseresponse",response)
+          setVoidFileData({})
+          setIsVoidConfirmOptionOpen(false)
+          setInputVoidValue("")
+          
+     
+        })
+        .catch((e: any) => {
+          console.log(e);
+          setVoidFileData({})
+          setIsVoidConfirmOptionOpen(false)
+          setInputVoidValue("")
+        });     
+
+  }
 
   if (!apiData?.data && !isErr) {
     return <p>Loading...</p>;
@@ -1067,8 +1154,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
-            console.log("itemsssssss", item);
-            return (
+           return (
               <div>
                 <div className="countryHeader">
                   {/* <img src={spainFlag} alt="flag" /> */}
@@ -1413,8 +1499,7 @@ export default function InvoiceDetails() {
             <div className="boxsubcontainer">
               <div className="fileHandlerContainer">
                 {documents.map((item: any, index: any) => {
-                  console.log(item);
-                  return (
+                 return (
                     <FileHandler
                       icons={{
                         prefix: {
@@ -1466,8 +1551,7 @@ export default function InvoiceDetails() {
                             icon: "remove",
                             width: "30",
                             handleOnClick: () => {
-                              console.log("docs", documents[index]);
-                              const headers = {
+                             const headers = {
                                 authorization: `Bearer ${tempToken}`,
                                 "x-apng-base-region": "EMEA",
                                 "x-apng-customer-id":
@@ -1489,8 +1573,7 @@ export default function InvoiceDetails() {
                                 headers: headers,
                               })
                                 .then((res: any) => {
-                                  console.log("del rs", res);
-                                  let cpy = [...documents];
+                                let cpy = [...documents];
                                   cpy.splice(index, 1);
                                   setDocuments(cpy);
                                 })
@@ -1549,8 +1632,7 @@ export default function InvoiceDetails() {
                         customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
                       };
                       setTimeout(() => {
-                        console.log(file);
-                        var formData = new FormData();
+                       var formData = new FormData();
                         formData.append("asset", file[0]);
                         axios
                           .post(
@@ -1561,8 +1643,7 @@ export default function InvoiceDetails() {
                             }
                           )
                           .then((res: any) => {
-                            console.log("file res", res);
-
+                         
                             axios
                               .post(
                                 " https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
@@ -1580,8 +1661,7 @@ export default function InvoiceDetails() {
                                 }
                               )
                               .then((response: any) => {
-                                console.log("create res", response);
-                                setDocuments([
+                               setDocuments([
                                   ...documents,
                                   {
                                     documentId: response.data.documentId,
@@ -1720,7 +1800,7 @@ export default function InvoiceDetails() {
 
             <div>
               <textarea
-                value={inputValue}
+                value={inputVoidValue}
                 className='textarea-box'
                 placeholder="Enter note here"
                 rows={2}
@@ -1788,7 +1868,7 @@ export default function InvoiceDetails() {
                 // disabled={!inputValue}
                 label="Void"
                 className="primary-blue medium decline-button"
-              // handleOnClick={() => {}}
+              handleOnClick={() => handleVoid()}
               />
             </div>
           </div>

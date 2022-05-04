@@ -66,13 +66,18 @@ export default function InvoiceListing() {
     },
     {
       isSelected: false,
-      label: "LateFee ",
+      label: "LateFee",
       value: 5,
     },
     {
       isSelected: false,
-      label: "Payment ",
+      label: "Payment",
       value: 6,
+    },
+    {
+      isSelected: false,
+      label: "Contractor Pay",
+      value: 7,
     },
   ];
   const [types, setTypes] = useState(typeOptions);
@@ -114,7 +119,6 @@ export default function InvoiceListing() {
     //   label: "Partial",
     //   value: 7,
     // },
-
     {
       isSelected: false,
       label: "Voided",
@@ -124,6 +128,11 @@ export default function InvoiceListing() {
       isSelected: false,
       label: "Closed",
       value: 8,
+    },
+    {
+      isSelected: false,
+      label: "Invoiced",
+      value: 10,
     },
   ];
   const [status, setStatus] = useState(statusOptions);
