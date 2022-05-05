@@ -91,11 +91,12 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
         customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       },
     };
-    const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems/?customerId=${allStepsData?.stepOneData?.customerId}&countryId=${allStepsData?.stepOneData?.countryId}`
+    const apiUrl = 'https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7'
+    // const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=${allStepsData?.stepOneData?.customerId}&countryId=${allStepsData?.stepOneData?.countryId}`
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
-        console.log('ress', res)
+        // console.log('ress', res)
         // setFeeData(res);
       })
       .catch((e: any) => {
