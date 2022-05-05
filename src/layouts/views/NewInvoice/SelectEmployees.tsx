@@ -3,79 +3,66 @@ import { Checkbox, Button, ProfileHeader, Table, Icon } from 'atlasuikit'
 import axios from "axios"
 import './SelectEmployees.scss'
 
-const tableOptions: any = {
-  columns: [
-    {
-      header: "Pay Item",
-      isDefault: true,
-      key: "payItem",
-    },
-    {
-      header: "Amount",
-      isDefault: true,
-      key: "amount",
-    },
-    {
-      header: "Currency",
-      isDefault: true,
-      key: "currency",
-    },
-    {
-      header: "Effective Date",
-      isDefault: true,
-      key: "effectiveDate",
-    },
-    {
-      header: "End Date",
-      isDefault: true,
-      key: "endDate",
-    },
-    {
-      header: "Scope",
-      isDefault: true,
-      key: "scope",
-    },
-    {
-      header: "Frequency",
-      isDefault: true,
-      key: "frequency",
-    },
-  ],
-  data: [
-    {
-      payItem: "Allowance",
-      amount: "1300.00",
-      currency: "USD",
-      effectiveDate: "1 Sept 2022",
-      endDate: "1 Sept 2022",
-      scope: "AR, Payout",
-      frequency: "Single"
-    },
-    {
-      payItem: "Monthly Allowance",
-      amount: "1300.00",
-      currency: "USD",
-      effectiveDate: "1 Aug 2022",
-      endDate: "1 Aug 2023",
-      scope: "AP",
-      frequency: "Recurring"
-    },
-    {
-      payItem: "Allowance",
-      amount: "1300.00",
-      currency: "USD",
-      effectiveDate: "1 Apr 2022",
-      endDate: "30 Apr 2022",
-      scope: "AR, AP",
-      frequency: "Single"
-    }
-  ],
-}
+
 
 const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: any) => {
 
   const tempToken = localStorage.getItem("temptoken");
-
+  const [tableOptions] = useState(
+    {
+      columns: [
+        {
+          
+          isDefault: true,
+          key: "payItem",
+          header: "Pay Item",
+        },
+        {
+          key: "amount",
+          header: "Amount",
+          isDefault: true,
+         
+        },
+        {
+          header: "Currency",
+          isDefault: true,
+          key: "currency",
+        },
+        {
+          header: "Effective Date",
+          isDefault: true,
+          key: "effectiveDate",
+        },
+        {
+          header: "End Date",
+          isDefault: true,
+          key: "endDate",
+        },
+        {
+          header: "Scope",
+          isDefault: true,
+          key: "scope",
+        },
+        {
+          header: "Frequency",
+          isDefault: true,
+          key: "frequency",
+        },
+      ],
+      data: [
+        {
+          payItem: "Allowance",
+          amount: "1300.00",
+          currency: "USD",
+          effectiveDate: "1 Sept 2022",
+          endDate: "1 Sept 2022",
+          scope: "AR, Payout",
+          frequency: "Single"
+        },
+       
+      ],
+    }
+  );
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [showTable, setShowTable] = useState(false)
 
