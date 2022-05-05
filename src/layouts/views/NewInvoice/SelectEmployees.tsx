@@ -186,6 +186,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
 
       <div className='step2-buttons'>
         <Button
+          data-testid="back-button-steptwo"
           icon={{
             icon: 'chevronLeft',
             size: 'medium',
@@ -211,7 +212,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
 
           <Button
             // disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
-            data-testid="next-button"
+            data-testid="next-button-steptwo"
             icon={{
               icon: 'chevronRight',
               size: 'medium',
@@ -221,7 +222,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
             className="primary-blue medium button next-button"
             handleOnClick={() => {
               handleSteps(3)
-              // handleAllSteppersData(stepperOneData ,2)
+              handleAllSteppersData({} ,3)
             }}
           />
         </div>
