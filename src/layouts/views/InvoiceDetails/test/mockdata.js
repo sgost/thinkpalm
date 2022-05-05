@@ -10061,7 +10061,42 @@ export const mockapidata = {
     customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
   },
   declineInvoicePost: {},
-  voidApiPost : {},
+  voidApiPost : {
+    "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    "customerName": "DSM Nutritional Products AG",
+    "customerLocation": "Switzerland",
+    "currencyId": 840,
+    "qbInvoiceNo": 0,
+    "invoiceNo": "1001004",
+    "status": 9,
+    "statusLabel": null,
+    "transactionType": 1,
+    "transactionTypeLabel": null,
+    "createdDate": "2022-04-08T00:00:00",
+    "paymentDate": null,
+    "approvalDate": null,
+    "submissionDate": null,
+    "dueDate": "2022-04-08T00:00:00",
+    "exchangeRate": 1,
+    "totalAmount": 800,
+    "invoiceBalance": 0,
+    "isClientVisible": false,
+    "depositTo": null,
+    "createdBy": "eed924b3-97b1-4133-b6a0-10e00df7014e",
+    "modifiedBy": "75c62ab6-b1c2-4951-bf6c-4207dd0fa06a",
+    "poNumber": "4702304768",
+    "ageingNotPaid": 26,
+    "ageingPaid": null,
+    "invoiceDocuments": [],
+    "invoiceItems": [],
+    "invoiceNotes": [],
+    "invoiceRelatedInvoices": [],
+    "invoiceRelatedRelatedInvoices": [],
+    "payrolls": [],
+    "customer": null,
+    "currency": null,
+    "id": "9a3d7481-2078-4038-9d89-9d2be51efc47"
+},
   createDocument:{
     "invoiceId": "9a3d7481-2078-4038-9d89-9d2be51efc47",
     "documentId": "0915de1f-ca0f-46bd-a18f-2f3b46388d88",
@@ -10083,5 +10118,9 @@ export const mockapidata = {
     "fileName": "hello.pdf",
     "url": "https://apnguatemeaservices.blob.core.windows.net/data/58dfe3fc-dc54-452d-83e3-77d0fa85e3b3.pdf?sv=2019-07-07&sr=b&sig=o%2FVQy0p2hioj8K2MmKckqFaO2OmVMT%2BD%2FeNUa%2BiKIBw%3D&se=2022-05-04T14%3A46%3A47Z&sp=rl"
 }
-
+,
+resAddressDataFailedApi : {
+  "error": 1,
+  "message": "something went wrong"
+}
 };

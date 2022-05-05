@@ -824,12 +824,17 @@ export default function InvoiceDetails() {
         }
       )
       .then((response: any) => {
-        console.log("responseresponse", response)
-        setVoidFileData({})
-        setIsVoidConfirmOptionOpen(false)
-        setInputVoidValue("")
-
-
+        if(response.status == 200) {
+          lookupData.data.invoiceStatuses.forEach((e: any) => {
+            if (e.value === response.data.status) {
+              setStatus(e.text);
+            }
+          }
+          );
+          setVoidFileData({})
+          setIsVoidConfirmOptionOpen(false)
+          setInputVoidValue("")
+        }
       })
       .catch((e: any) => {
         console.log(e);
