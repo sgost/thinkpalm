@@ -9,7 +9,7 @@ const NewInvoice = () => {
 
     const navigate = useNavigate();
 
-    const [stepsCount, setStepsCount] = useState(1)
+    const [stepsCount, setStepsCount] = useState(2)
     const [hideTopCheck, setHideTopCheck] = useState(true);
     const [allStepsData, setAllStepsData] = useState({
         stepOneData: {
@@ -50,7 +50,7 @@ const NewInvoice = () => {
             setAllStepsData({ ...allStepsData, stepOneData: stepsData })
         } else if (count === 3) {
             setAllStepsData({ ...allStepsData, stepTwoData: stepsData })
-        } 
+        }
         // else if (count === 4) {
         //     setAllStepsData({ ...allStepsData, stepThreeData: stepsData })
         // }
@@ -86,6 +86,16 @@ const NewInvoice = () => {
             </div>
             <div className='detail-container'>
                 <Layouts
+
+                    config={{
+                        leftPanelConfig: {
+                            className: "",
+                            style: {}
+                        },
+                        rightPanelConfig: {
+                            className: stepsCount === 1 ? "" : stepsCount === 2 ? "step2-right-panel" : "",
+                        }
+                    }}
                     leftPanel={
                         <Progress currentStep={stepsCount}
                             steps={stepsName}
@@ -95,9 +105,7 @@ const NewInvoice = () => {
                     type="sidebar-inner-container"
                     rightPanel={
                         <>
-
                             {stepsCount == 1 ?
-
                                 <NewInvoiceCreation
                                     handleAllSteppersData={handleAllSteppersData}
                                     handleSteps={handleSteps} allStepsData={allStepsData} />
@@ -111,6 +119,7 @@ const NewInvoice = () => {
                             }
                         </>
                     }
+
                 />
             </div>
 

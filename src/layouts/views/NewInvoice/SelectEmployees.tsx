@@ -1,4 +1,4 @@
-import React, { useState  , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Checkbox, Button, ProfileHeader, Table, Icon } from 'atlasuikit'
 import axios from "axios"
 import './SelectEmployees.scss'
@@ -91,7 +91,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
         customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       },
     };
-const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems/?customerId=${allStepsData?.stepOneData?.customerId}&countryId=${allStepsData?.stepOneData?.countryId}`
+    const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems/?customerId=${allStepsData?.stepOneData?.customerId}&countryId=${allStepsData?.stepOneData?.countryId}`
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
@@ -102,13 +102,13 @@ const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/P
         console.log("error", e);
       });
 
-  } 
+  }
 
 
   useEffect(() => {
     getEmployyeApiData()
   }, [])
-  
+
 
 
   return (
@@ -159,9 +159,9 @@ const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/P
                 color="#526FD6"
                 icon={
                   showTable === true ?
-                  "chevronUp"
-                  : 
-                  "chevronDown"
+                    "chevronUp"
+                    :
+                    "chevronDown"
                 }
                 size="medium"
               />
@@ -183,26 +183,49 @@ const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/P
           </div>
         }
       </div>
-      <Button
-        type="button"
-        handleOnClick={() => {
 
-          handleSteps(1)
-        }}
-        className="secondary-btn medium"
+      <div className='step2-buttons'>
+        <Button
+          icon={{
+            icon: 'chevronLeft',
+            size: 'medium',
+            color: '#fff'
+          }}
+          handleOnClick={() => {
+            handleSteps(1)
+          }}
+          className="primary-blue medium"
+          label="Previous"
+        />
+        <div>
+          <Button
+            label="Save"
+            className="secondary-btn medium button"
+            icon={{
+              icon: 'add',
+              size: 'medium',
+              color: '#526FD6'
+            }}
+            handleOnClick={() => { }}
+          />
 
-        label="back"
-      />
-      <Button
-        type="button"
-        handleOnClick={() => {
-
-          handleSteps(3)
-        }}
-        className="secondary-btn medium"
-
-        label="next"
-      />
+          <Button
+            // disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
+            data-testid="next-button"
+            icon={{
+              icon: 'chevronRight',
+              size: 'medium',
+              color: '#fff'
+            }}
+            label="Next"
+            className="primary-blue medium button next-button"
+            handleOnClick={() => {
+              handleSteps(3)
+              // handleAllSteppersData(stepperOneData ,2)
+            }}
+          />
+        </div>
+      </div>
     </div>
 
   )
