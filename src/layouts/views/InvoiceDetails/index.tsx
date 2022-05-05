@@ -22,8 +22,8 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  const { state }: any = useLocation();
-  // const state = '';
+  // const { state }: any = useLocation();
+  const state = '';
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -1807,7 +1807,7 @@ export default function InvoiceDetails() {
       <div className="void-modal">
         <Modal
           isOpen={isVoidOpen}
-          handleClose={() => { setIsVoidOpen(false); setInputVoidValue('') }}
+          handleClose={() => { setIsVoidOpen(false); setInputVoidValue(''); setVoidFileData({}) }}
         >
           <div>
             <h3>Void Invoice</h3>
@@ -1848,6 +1848,7 @@ export default function InvoiceDetails() {
                 data-testid="void-button-id"
                 className="primary-blue small"
                 label="Void"
+                disabled={!inputVoidValue}
                 handleOnClick={() => {
                   setIsVoidConfirmOptionOpen(true)
                   setIsVoidOpen(false)
@@ -1871,19 +1872,14 @@ export default function InvoiceDetails() {
                 data-testid='Void-button-Cancel'
                 label="Cancel"
                 className="secondary-btn medium"
-                icon={{
-                  icon: 'add',
-                  size: 'medium',
-                  color: '#526FD6'
-                }}
                 handleOnClick={() => {
                   setIsVoidConfirmOptionOpen(false)
+                  setVoidFileData({})
                   setInputVoidValue("")
                 }}
               />
               <Button
                 data-testid='Void-button-submit'
-                // disabled={!inputValue}
                 label="Void"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => handleVoid()}
