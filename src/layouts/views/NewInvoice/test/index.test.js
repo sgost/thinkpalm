@@ -222,8 +222,8 @@ describe("Stepper 2", () => {
     fireEvent.click(nextButton);
 
 
-    const SelectEmployeeText = await screen.findByText(/SelectEmployees/);
-    expect(SelectEmployeeText).toBeInTheDocument();
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
 
 
     const stepTwoNextButton = await screen.findByTestId("next-button-steptwo");
@@ -281,8 +281,8 @@ describe("Stepper 2", () => {
     fireEvent.click(nextButton);
 
 
-    const SelectEmployeeText = await screen.findByText(/SelectEmployees/);
-    expect(SelectEmployeeText).toBeInTheDocument();
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
 
 
     const stepTwoBackButton = await screen.findByTestId("back-button-steptwo");

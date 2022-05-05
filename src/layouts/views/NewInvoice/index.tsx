@@ -50,9 +50,10 @@ const NewInvoice = () => {
             setAllStepsData({ ...allStepsData, stepOneData: stepsData })
         } else if (count === 3) {
             setAllStepsData({ ...allStepsData, stepTwoData: stepsData })
-        } else if (count === 4) {
-            setAllStepsData({ ...allStepsData, stepThreeData: stepsData })
-        }
+        } 
+        // else if (count === 4) {
+        //     setAllStepsData({ ...allStepsData, stepThreeData: stepsData })
+        // }
     }
 
     useEffect(() => {
