@@ -66,12 +66,12 @@ export default function InvoiceListing() {
     },
     {
       isSelected: false,
-      label: "LateFee ",
+      label: "LateFee",
       value: 5,
     },
     {
       isSelected: false,
-      label: "Payment ",
+      label: "Payment",
       value: 6,
     },
     {
@@ -119,7 +119,6 @@ export default function InvoiceListing() {
     //   label: "Partial",
     //   value: 7,
     // },
-
     {
       isSelected: false,
       label: "Voided",
