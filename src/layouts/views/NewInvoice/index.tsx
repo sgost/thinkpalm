@@ -9,8 +9,20 @@ const NewInvoice = () => {
 
     const navigate = useNavigate();
 
-    const [stepsCount, setStepsCount] = useState(2)
+    const [stepsCount, setStepsCount] = useState(1)
     const [hideTopCheck, setHideTopCheck] = useState(true);
+    const [allStepsData, setAllStepsData] = useState({
+        stepOneData: {
+            customer: "",
+            type: "",
+            country: "",
+            month: "",
+            year: "",
+            customerId: ""
+        },
+        stepTwoData: {},
+        stepThreeData: {}
+    })
 
     const stepsName = [{
         key: 'new-invoice',
@@ -30,6 +42,17 @@ const NewInvoice = () => {
 
     const handleSteps = (count: any) => {
         setStepsCount(count)
+    }
+
+
+    const handleAllSteppersData = (stepsData: any, count: any) => {
+        if (count === 2) {
+            setAllStepsData({ ...allStepsData, stepOneData: stepsData })
+        } else if (count === 3) {
+            setAllStepsData({ ...allStepsData, stepTwoData: stepsData })
+        } else if (count === 4) {
+            setAllStepsData({ ...allStepsData, stepThreeData: stepsData })
+        }
     }
 
     useEffect(() => {
@@ -74,9 +97,14 @@ const NewInvoice = () => {
 
                             {stepsCount == 1 ?
 
-                                <NewInvoiceCreation handleSteps={handleSteps} />
+                                <NewInvoiceCreation
+                                    handleAllSteppersData={handleAllSteppersData}
+                                    handleSteps={handleSteps} allStepsData={allStepsData} />
                                 :
-                                stepsCount == 2 ? <SelectEmployees handleSteps={handleSteps} style={{}} />
+                                stepsCount == 2 ? <SelectEmployees
+                                    handleAllSteppersData={handleAllSteppersData}
+                                    allStepsData={allStepsData}
+                                    handleSteps={handleSteps} />
                                     :
                                     <></>
                             }
