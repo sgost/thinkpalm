@@ -9,7 +9,7 @@ const NewInvoice = () => {
 
     const navigate = useNavigate();
 
-    const [stepsCount, setStepsCount] = useState(2)
+    const [stepsCount, setStepsCount] = useState(1)
     const [hideTopCheck, setHideTopCheck] = useState(true);
     const [allStepsData, setAllStepsData] = useState({
         stepOneData: {

@@ -194,10 +194,10 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           handleOnClick={() => {
             handleSteps(1)
           }}
-          className="primary-blue medium"
+          className="primary-blue medium previous-button"
           label="Previous"
         />
-        <div>
+        <div className='step2-inside-button'>
           <Button
             label="Save"
             className="secondary-btn medium button"
