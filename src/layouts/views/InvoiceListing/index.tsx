@@ -881,7 +881,7 @@ export default function InvoiceListing() {
                 row.customerId +
                 "/" +
                 isClientStr,
-                { state: { InvoiceId: row.invoiceNo } }
+                { state: { InvoiceId: row.invoiceNo, transactionType: row.transactionType  } }
               );
             }}
           />
