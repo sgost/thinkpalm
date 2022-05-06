@@ -15,6 +15,7 @@ export default function BillsTable(props: any) {
     const customerId = props.customerId;
     const invoiceId = props.invoiceId
     const basecontractorURL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/";
+    const rejectEndPoint = "bill/reject"
     const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID=" 
     const endpoint = "customer/bills?"
     const TableColumns = {
@@ -36,6 +37,7 @@ export default function BillsTable(props: any) {
     const [clickedApiData, setClickedApiData] = useState<any>(null);
     const [rejectBanner, setRejectBanner] = useState(false);
     const [openRejectReason, setOpenRejectReason] = useState(false);
+    const [rejectReason, setRejectReason] = useState('');
 
     useEffect(() => {
         console.log(customerId);
@@ -90,6 +92,30 @@ export default function BillsTable(props: any) {
         });
 
     }
+    /* istanbul ignore next */
+    const rejectBillCall = () => {
+        let payload:any = [{
+            id: clickedApiData?.id,
+            reason: rejectReason
+        }];
+        axios
+        .post(basecontractorURL+rejectEndPoint, payload, { headers: { accept: "text/plain" } })
+        .then((response: any) => {
+            setRejectBanner(false); 
+            setOpenRejectReason(false); 
+            setRejectReason('');
+            setOpenModal(false);
+            if (response.status == 100 || response.status == 200) {
+            console.log(response.data);
+            } else {
+            console.log("Bill reject API failing on contractor service");
+            }
+        })
+        .catch((e: any) => {
+            console.log("error", e);
+        });
+    }
+    /* istanbul ignore next */
     const getBillingPeriodText = () => {
         const format = "DD MMM YYYY";
         const startDate = customDate(clickedApiData.startDate, format);
@@ -226,9 +252,7 @@ export default function BillsTable(props: any) {
                                             ]
                                         }}
                                         label={{
-                                            // footer: "2MB",
                                             footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].size),
-                                            // header: "Faizan"
                                             header: clickedApiData.documents[0] && clickedApiData.documents[0].fileName
                                         }}
                                     />
@@ -238,7 +262,6 @@ export default function BillsTable(props: any) {
                                 <span className="sup-label">Billing Period</span>
                                 <div className="bill-identity">
                                     <span className="info">{getBillingPeriodText()}</span>
-                                    {/* <span className="info">{"1-21 Jan 2022"}</span> */}
                                 </div>
                             </div>
                             <div className="mt-5 d-flex description-number">
@@ -253,7 +276,6 @@ export default function BillsTable(props: any) {
                                 <div className='justification'>
                                     <span>Bill Total</span><span className='total-value'>{clickedApiData?.contractor?.currencyCode} {amountWithCommas(clickedApiData.total)}</span>
                                 </div>
-                                {/* Bill Total<span>{currentBillDetails?.contractor?.currencyCode} {amountWithCommas(billTotal)}</span> */}
                             </div>
                             
                         </div>
@@ -327,8 +349,11 @@ export default function BillsTable(props: any) {
                                         className="a-input"
                                         placeholder="Please Enter a Reason"
                                         maxLength={400}
-                                        // onChange={}
-                                        // value={}
+                                        onChange={(e) => {
+                                            setRejectReason(e.target.value);
+                                            console.log(e.target.value);
+                                        }}
+                                        value={rejectReason}
                                         rows={4}
                                         data-testid="reject-reason-text"
                                     />
@@ -337,12 +362,12 @@ export default function BillsTable(props: any) {
                                     <Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
-                                        handleOnClick={()=>{setRejectBanner(false); setOpenRejectReason(false)}}
+                                        handleOnClick={()=>{setRejectBanner(false); setOpenRejectReason(false); setRejectReason('')}}
                                     />
                                     <Button
                                         className="primary-blue medium primary cancel-button"
                                         label="Reject"
-                                        handleOnClick={()=>{}}
+                                        handleOnClick={()=>{rejectBillCall()}}
                                     />
                                 </div>
                             </div>
