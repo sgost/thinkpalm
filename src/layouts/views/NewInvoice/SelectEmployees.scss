@@ -1,0 +1,104 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.select-employee-container {
+    .employee-header {
+        display: flex;
+        justify-content: space-between;
+        // width: 80% !important;
+        // background-color: #17224e;
+        h3 {
+            color: #17224e;
+            font-size: 24px;
+            line-height: 35px;
+        }
+        .employee-checkbox {
+            display: flex;
+            align-items: center;
+            width: 13rem;
+        }
+    }
+    .full-table-container {
+        // background-color: #17224e;
+        // width: 80% !important;
+        .user-detail {
+            display: flex;
+            border: 2px solid #ebebed;
+            height: 5rem;
+            justify-content: space-between;
+            .table-header {
+                .a-cards {
+                    background-color: transparent !important;
+                    padding: 2rem;
+                    margin-top: -12px !important;
+                    margin-left: 0px !important;
+                }
+                .a-iupload {
+                    height: 2.375rem;
+                    width: 2.375rem;
+                }
+                .a-iupload__initials {
+                    font-size: 1rem;
+                }
+                .a-pheader__details .uname {
+                    font-size: 1.1rem;
+                    margin-left: -6px;
+                    color: #3e3e3e;
+                }
+            }
+            .table-location {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 11rem;
+                svg.icon.location {
+                    width: 30px !important;
+                    height: 30px !important;
+                    margin-top: 27px !important;
+                }
+                h5 {
+                    color: #767676;
+                    font-size: 18px;
+                    line-height: 140%;
+                    margin-right: 35px;
+                }
+                svg.icon.up {
+                    width: 40px !important;
+                    height: 40px !important;
+                    margin-top: 34px !important;
+                    cursor: pointer;
+                }
+            }
+        }
+        .table-container {
+            .table__header {
+                border-top-left-radius: 0px !important;
+                border-top-right-radius: 0px !important;
+            }
+        }
+    }
+    .step2-buttons {
+        position: absolute;
+        display: flex;
+        // background-color: #17224e;
+        flex-direction: row;
+        margin-top: 500px;
+        width: 86%;
+        justify-content: space-between;
+        margin-left: -20%;
+        button.a-button.medium {
+            width: 9.13rem;
+        }
+        .step2-inside-button {
+            display: flex;
+            flex-direction: row;
+            justify-content: end;
+            button.a-button.medium {
+                width: 7.13rem;
+            }
+            .button {
+                margin-right: 20px;
+            }
+        }
+    }
+}

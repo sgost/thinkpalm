@@ -1,0 +1,53 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.newinvoice-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.a-progress {
+    background-color: #fff!important;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 25rem;
+    justify-content: space-around;
+    padding: 3.556rem 1.333rem;
+    width: fit-content;
+}
+
+.a-layouts .sidebar-inner-container {
+    display: flex;
+    padding: 1rem;
+    height: 37rem;
+    margin-left: -19px;
+}
+
+.a-progress .splitter {
+    border-left: 0.056rem dashed #767676!important;
+    display: block;
+    height: 3.5rem;
+    margin: 1rem;
+}
+
+.step2-right-panel {
+    // .newinvoice-container .a-layouts .sidebar-inner-container .panel.right-panel {
+    //     flex-grow: 2;
+    //     padding: 40px 80px;
+        width: 68%;
+    // }
+}
+
+.newinvoice-container .dropdowns {
+    z-index: 1;
+}
+.a-dropdown__option.open, .a-dropdown__option__container {
+    z-index: 9999999 !important;
+}
+.newinvoice-container .dropdownC {
+    z-index: 2 !important;
+}
+.newinvoice-container .dropdowns {
+    z-index: 3;
+}
