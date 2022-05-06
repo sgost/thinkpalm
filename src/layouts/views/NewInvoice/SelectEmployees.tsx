@@ -166,6 +166,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
 
 
   return (
+    <>
     <div className='select-employee-container'>
       <div className='employee-header'>
         <div>
@@ -201,16 +202,17 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
                   />
                 </div>
                 <div className='table-location'>
-                  <Icon
-                    className="icon location"
-                    color="#767676"
-                    icon="location"
-                    size="medium"
-                  />
+                  <div className='table-icon-location d-flax'>
+                    <Icon
+                      className="icon location"
+                      color="#767676"
+                      icon="location"
+                      size="medium"
+                    />
 
-                  <h5>{item?.employeeDetail?.personalDetails?.homeAddress?.country}</h5>
-
-                  <div
+                    <h5>{item?.employeeDetail?.personalDetails?.homeAddress?.country}</h5>
+                  </div>
+                  <div className="table-up-down"
                     onClick={
                       () => {
                         setShowTable(!showTable);
@@ -311,6 +313,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
         </div>
       </div>
     </div>
+    </>
 
   )
 }

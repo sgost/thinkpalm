@@ -20,14 +20,13 @@
 .a-layouts .sidebar-inner-container {
     display: flex;
     padding: 1rem;
-    height: 37rem;
     margin-left: -19px;
 }
 
 .a-progress .splitter {
     border-left: 0.056rem dashed #767676!important;
     display: block;
-    height: 3.5rem;
+    height: 3.5rem !important;
     margin: 1rem;
 }
 
