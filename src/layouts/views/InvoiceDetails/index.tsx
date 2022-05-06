@@ -20,10 +20,11 @@ import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
+import deleteSvg from '../../../assets/icons/deletesvg.svg'
 
 export default function InvoiceDetails() {
-  // const { state }: any = useLocation();
-  const state = "";
+  const { state }: any = useLocation();
+  // const state = "";
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -839,6 +840,36 @@ export default function InvoiceDetails() {
       });
   };
 
+  const handleDeleteInvoice = () => {
+    const headers = {
+      headers: {
+        authorization: `Bearer ${tempToken}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      },
+    };
+    const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`
+
+    axios
+      .delete(deleteApi, headers)
+      .then((res: any) => {
+        console.log('ress', res)
+        if (res.data === true) {
+          navigate("/")
+        }
+        if (res.data === false) {
+          console.log("Invoice not deleted")
+        }
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  }
+
   if (!apiData?.data && !isErr) {
     return <p>Loading...</p>;
   }
@@ -867,14 +898,25 @@ export default function InvoiceDetails() {
                 label:
                   transactionType == 7
                     ? "Contractor Invoice No. " +
-                      apiData?.data?.invoice?.invoiceNo
+                    apiData?.data?.invoice?.invoiceNo
                     : "Payroll Invoice No. " +
-                      apiData?.data?.invoice?.invoiceNo,
+                    apiData?.data?.invoice?.invoiceNo,
               },
             ]}
           />
         </div>
         <div className="buttons">
+          <div className="delete-button">
+            {console.log("statusstatusstatus", status)}
+            {isClient == "false" && status === "In Review" && (
+              <div className="delete-invoice"
+                onClick={() => handleDeleteInvoice()}
+              >
+                <img src={deleteSvg} />
+                <h5>Delete Invoice</h5>
+              </div>
+            )}
+          </div>
           <div className="void-button">
             {isClient == "false" && status === "Approved" && (
               <Button
@@ -890,14 +932,13 @@ export default function InvoiceDetails() {
             onClick={() =>
               transactionType != 7
                 ? setIsDownloadOpen(!isDownloadOpen)
-                : function noRefCheck() {}
+                : function noRefCheck() { }
             }
-            className={`${
-              transactionType == 7 || deleteDisableButtons === true
-                ? "download_disable"
-                : "download"
-            }`}
-            // className="download"
+            className={`${transactionType == 7 || deleteDisableButtons === true
+              ? "download_disable"
+              : "download"
+              }`}
+          // className="download"
           >
             <p className="text">Download</p>
             <Icon
@@ -1179,8 +1220,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           item.currencyCode +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.subTotalDue)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.subTotalDue)
 
                           // item.feeSummary.subTotalDue
                           //   .toFixed(2)
@@ -1202,10 +1243,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.subTotalDue * item.exchangeRate
-                            )
+                          " " +
+                          toCurrencyFormat(
+                            item.feeSummary.subTotalDue * item.exchangeRate
+                          )
                           // (item.feeSummary.subTotalDue * item.exchangeRate)
                           //   .toFixed(2)
                           //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1217,8 +1258,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(getInCountryProcessingFee())
+                          " " +
+                          toCurrencyFormat(getInCountryProcessingFee())
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1231,8 +1272,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.fxBill)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.fxBill)
 
                           // item.feeSummary.fxBill
                           //   .toFixed(2)
@@ -1245,8 +1286,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.totalCountryVat)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                           // item.feeSummary.totalCountryVat
                           //   .toFixed(2)
@@ -1259,8 +1300,8 @@ export default function InvoiceDetails() {
                       <h3>
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.total)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.total)
 
                           // item.feeSummary.total
                           //   .toFixed(2)
