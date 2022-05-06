@@ -353,9 +353,18 @@
 .reject-reason-wrapper{
     margin: 2.5rem;
     width: -webkit-fill-available;
+    .form-group{
+        display: flex;
+        flex-direction: column;
+        margin-top: 2.5rem;
+        label{
+            font-size: 0.813rem;
+            margin-bottom: 0.6rem;
+        }
+    }
 }
 .reason-heading{
-    font-family: 'circularmed';
+    font-family: 'circularmed', sans-serif;
     font-weight: 500;
     font-size: 1.75rem;
     color: #041e42 !important;
@@ -377,15 +386,7 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-.form-group{
-    display: flex;
-    flex-direction: column;
-    margin-top: 2.5rem;
-    label{
-        font-size: 0.813rem;
-        margin-bottom: 0.6rem;
-    }
-}
+
 .required{
     color: red;
 }
