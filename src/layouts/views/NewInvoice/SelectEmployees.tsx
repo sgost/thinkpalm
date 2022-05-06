@@ -108,7 +108,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
   const [showTable, setShowTable] = useState(false)
   const [employeeApiData, setEmployeeApiData] = useState([])
   const [employeeRowData, setEmployeeRowData] = useState<any>({})
-  
+
   const getEmployyeApiData = () => {
     const headers = {
       headers: {
@@ -128,21 +128,21 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
       .then((res: any) => {
         // console.log('ress', res.data)
         if (res.status === 200) {
-         
+
           let employeeTableData: any = [];
           res?.data?.forEach((item: any) => {
-            item?.employeeDetail?.compensation?.payItems?.forEach((CompensationItems:any) => {
+            item?.employeeDetail?.compensation?.payItems?.forEach((CompensationItems: any) => {
               employeeTableData.push({
                 payItemId: CompensationItems?.payItemId,
-                    amount: CompensationItems?.amount,
-                    currency: CompensationItems?.currency,
-                    effectiveDate: CompensationItems?.effectiveDate,
-                    //getting null in one object 
-                    // endDate: CompensationItems?.endDate,
-                    finItemType:CompensationItems?.finItemType,
-                    payItemFrequencyId: CompensationItems?.payItemFrequencyId
+                amount: CompensationItems?.amount,
+                currency: CompensationItems?.currency,
+                effectiveDate: CompensationItems?.effectiveDate,
+                //getting null in one object 
+                // endDate: CompensationItems?.endDate,
+                finItemType: CompensationItems?.finItemType,
+                payItemFrequencyId: CompensationItems?.payItemFrequencyId
               })
-            })        
+            })
           })
           setEmployeeApiData(res.data)
           setTableOptions({ ...tableOptions, data: employeeTableData })
@@ -160,9 +160,9 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
 
 
 
-const onRowCheckboxChange = (selectedRows: any) => {
-  // alert(selectedRows)
-}
+  const onRowCheckboxChange = (selectedRows: any) => {
+    // alert(selectedRows)
+  }
 
 
   return (
@@ -218,39 +218,44 @@ const onRowCheckboxChange = (selectedRows: any) => {
                       }
                     }
                   >
-                    <Icon
-                      className="icon up"
-                      color="#526FD6"
-                      icon={
-                        showTable === true && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID ?
-                          "chevronUp"
-                          :
-                          "chevronDown"
-                      }
-                      size="medium"
-                    />
+                    {
+                      item?.employeeDetail?.compensation?.payItems?.length ?
+                        <Icon
+                          className="icon up"
+                          color="#526FD6"
+                          icon={
+                            showTable === true && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID ?
+                              "chevronUp"
+                              :
+                              "chevronDown"
+                          }
+                          size="medium"
+                        />
+                        : ""
+                    }
+
                   </div>
                 </div>
               </div>
               {
                 showTable && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID &&
                 <div className='table-container'>
-                 <Table
+                  <Table
                     options={
-                      employeeRowData?.employeeDetail?.compensation?.payItems?.length ?  
-                      {
-                      ...tableOptions,
-                      enableMultiSelect: true,
-                      isMultiSelectDisabled: true,
-                      onRowCheckboxChange: onRowCheckboxChange,
-                    } :  {
-                      ...tableOptionsForNoData,
-                      enableMultiSelect: true,
-                      isMultiSelectDisabled: true
-                    } 
-                  }
+                      employeeRowData?.employeeDetail?.compensation?.payItems?.length ?
+                        {
+                          ...tableOptions,
+                          enableMultiSelect: true,
+                          isMultiSelectDisabled: true,
+                          onRowCheckboxChange: onRowCheckboxChange,
+                        } : {
+                          ...tableOptionsForNoData,
+                          enableMultiSelect: true,
+                          isMultiSelectDisabled: true
+                        }
+                    }
                     colSort
-                 />
+                  />
 
                 </div>
               }
