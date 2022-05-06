@@ -724,7 +724,7 @@
       margin-top: -20px;
       padding: 16px;
       border-radius: 4px;
-      font-family: 'Courier New', Courier, monospace;
+      font-family: "Courier New", Courier, monospace;
     }
     .attachment {
       display: flex;
@@ -792,6 +792,25 @@
     justify-content: end;
     .decline-button {
       margin-left: 30px;
+    }
+  }
+
+  .delete-invoice {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 140px;
+    cursor: pointer;
+
+    img {
+      height: 20px;
+      width: 20px;
+      margin-top: 12px;
+    }
+    h5 {
+      font-size: 17px;
+      margin-top: 13px;
+      color: red;
     }
   }
 }
