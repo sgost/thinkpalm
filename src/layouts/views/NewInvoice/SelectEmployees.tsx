@@ -8,7 +8,7 @@ import './SelectEmployees.scss'
 const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: any) => {
 
   const tempToken = localStorage.getItem("temptoken");
-
+const [buttonHide, setButtonHide] = useState(false)
   const [tableOptions, setTableOptions] = useState(
     {
       columns: [
@@ -146,6 +146,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           })
           setEmployeeApiData(res.data)
           setTableOptions({ ...tableOptions, data: employeeTableData })
+          setButtonHide(true);
         }
       })
       .catch((e: any) => {
@@ -268,50 +269,53 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           <></>
       }
 
+{ buttonHide ? 
+  <div className='step2-buttons'>
+  <Button
+    data-testid="back-button-steptwo"
+    icon={{
+      icon: 'chevronLeft',
+      size: 'medium',
+      color: '#fff'
+    }}
+    handleOnClick={() => {
+      handleSteps(1)
+    }}
+    className="primary-blue medium previous-button"
+    label="Previous"
+  />
+  <div className='step2-inside-button'>
+    <Button
+      label="Save"
+      className="secondary-btn medium button"
+      icon={{
+        icon: 'add',
+        size: 'medium',
+        color: '#526FD6'
+      }}
+      handleOnClick={() => { }}
+    />
 
-      <div className='step2-buttons'>
-        <Button
-          data-testid="back-button-steptwo"
-          icon={{
-            icon: 'chevronLeft',
-            size: 'medium',
-            color: '#fff'
-          }}
-          handleOnClick={() => {
-            handleSteps(1)
-          }}
-          className="primary-blue medium previous-button"
-          label="Previous"
-        />
-        <div className='step2-inside-button'>
-          <Button
-            label="Save"
-            className="secondary-btn medium button"
-            icon={{
-              icon: 'add',
-              size: 'medium',
-              color: '#526FD6'
-            }}
-            handleOnClick={() => { }}
-          />
+    <Button
+      // disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
+      data-testid="next-button-steptwo"
+      icon={{
+        icon: 'chevronRight',
+        size: 'medium',
+        color: '#fff'
+      }}
+      label="Next"
+      className="primary-blue medium button next-button"
+      handleOnClick={() => {
+        handleSteps(3)
+        handleAllSteppersData({}, 3)
+      }}
+    />
+  </div>
+</div> : <></>
 
-          <Button
-            // disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
-            data-testid="next-button-steptwo"
-            icon={{
-              icon: 'chevronRight',
-              size: 'medium',
-              color: '#fff'
-            }}
-            label="Next"
-            className="primary-blue medium button next-button"
-            handleOnClick={() => {
-              handleSteps(3)
-              handleAllSteppersData({}, 3)
-            }}
-          />
-        </div>
-      </div>
+}
+    
     </div>
     </>
 
