@@ -34,7 +34,7 @@
                 font-weight: 400;
                 font-size: 1rem;
                 color: $secondary-gray;
-                font-family: 'CircularXX';
+                font-family: 'CircularXX', sans-serif;
 
             }
 
@@ -299,7 +299,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    font-family: 'CircularXX'!important;
+    font-family: 'CircularXX', sans-serif!important;
     margin-bottom: 2.5rem;
     width: -webkit-fill-available;
     padding-top: 2.5rem;
@@ -314,7 +314,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    font-family: 'CircularXX'!important;
+    font-family: 'CircularXX', sans-serif!important;
     width: -webkit-fill-available;
     padding-top: 2.5rem;
     button.a-button.medium {
@@ -354,9 +354,18 @@
 .reject-reason-wrapper{
     margin: 2.5rem;
     width: -webkit-fill-available;
+    .form-group{
+        display: flex;
+        flex-direction: column;
+        margin-top: 2.5rem;
+        label{
+            font-size: 0.813rem;
+            margin-bottom: 0.6rem;
+        }
+    }
 }
 .reason-heading{
-    font-family: 'circularmed';
+    font-family: 'circularmed', sans-serif;
     font-weight: 500;
     font-size: 1.75rem;
     color: #041e42 !important;
@@ -378,15 +387,7 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
-.form-group{
-    display: flex;
-    flex-direction: column;
-    margin-top: 2.5rem;
-    label{
-        font-size: 0.813rem;
-        margin-bottom: 0.6rem;
-    }
-}
+
 .required{
     color: red;
 }
