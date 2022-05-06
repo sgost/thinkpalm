@@ -117,7 +117,8 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        axios
+        if(state.transactionType != 7){
+          axios
           .get(api, headers)
           .then((res: any) => {
             if (res.status !== 200) {
@@ -293,6 +294,17 @@ export default function InvoiceDetails() {
             console.log("error e", e);
             setIsErr(true);
           });
+        }else{
+          let res : any = {
+            data: apiInvoiceMockData
+          };
+          setTimeout(()=>{
+            setApiData(res);
+            setTransactionType(res.data.invoice.transactionType);
+          }, 8000);
+          
+
+        }
       })
       .catch((e: any) => {
         console.log("error", e);
