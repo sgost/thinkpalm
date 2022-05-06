@@ -146,10 +146,11 @@
         }
     }
 }
-.zero-padding{
-    padding:0px
-}
+
 .modal-wrapper{
+    .zero-padding{
+        padding:0px
+    }
     .a-modal__body{
         align-items: center;
         background: #fff!important;

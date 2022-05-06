@@ -38,12 +38,13 @@ export default function BillsTable(props: any) {
     const [rejectBanner, setRejectBanner] = useState(false);
     const [openRejectReason, setOpenRejectReason] = useState(false);
     const [rejectReason, setRejectReason] = useState('');
+    // const [updateData, setUpdateData] = useState(false);
+    const [rawData, setRawData] = useState<any>(props.tableData.data);
 
     useEffect(() => {
-        console.log(customerId);
         let data: any = [];
         let paysConverted = 0;
-        props.tableData.data.forEach((item: any) => {
+        rawData.forEach((item: any) => {
             data.push({
                 referenceNo: item.billReferenceNo || '-',
                 contractorName: {
@@ -64,7 +65,7 @@ export default function BillsTable(props: any) {
         })
         setTotalPayConverted(paysConverted);
         setTableData(data); 
-    }, [])
+    }, [rawData])
 
     const toCurrencyFormat = (amount: any) => {
         const cFormat = new Intl.NumberFormat("en-US", {
@@ -101,15 +102,19 @@ export default function BillsTable(props: any) {
         axios
         .post(basecontractorURL+rejectEndPoint, payload, { headers: { accept: "text/plain" } })
         .then((response: any) => {
+            
+            if (response.status == 200 && response.data.responseCode == 200) {
+                console.log(response.data);
+
+            } else {
+                console.log("Bill reject API failing on contractor service");
+            }
             setRejectBanner(false); 
             setOpenRejectReason(false); 
             setRejectReason('');
             setOpenModal(false);
-            if (response.status == 100 || response.status == 200) {
-            console.log(response.data);
-            } else {
-            console.log("Bill reject API failing on contractor service");
-            }
+            // setUpdateData(!updateData);
+            setRawData(rawData.filter( (x:any) => x.billReferenceNo != clickedApiData.referenceNumber ));
         })
         .catch((e: any) => {
             console.log("error", e);
