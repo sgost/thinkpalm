@@ -34,6 +34,7 @@ export default function InvoiceDetails() {
   const baseBillApi =
     "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
   const api =
+    // " https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id;
     "https://apigw-uat-emea.apnextgen.com/payrollservice/api/Payroll/" + id;
   const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
 

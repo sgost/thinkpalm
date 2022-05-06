@@ -8,20 +8,22 @@ import './SelectEmployees.scss'
 const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: any) => {
 
   const tempToken = localStorage.getItem("temptoken");
-  const [tableOptions] = useState(
+
+  const [tableOptions, setTableOptions] = useState(
     {
       columns: [
         {
-          
+          header: "Pay Item ID",
           isDefault: true,
-          key: "payItem",
-          header: "Pay Item",
+          key: "payItemId",
+          // key: "payItem",
+
         },
         {
-          key: "amount",
           header: "Amount",
           isDefault: true,
-         
+          key: "amount",
+
         },
         {
           header: "Currency",
@@ -33,39 +35,80 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           isDefault: true,
           key: "effectiveDate",
         },
+        // {
+        //   header: "End Date",
+        //   isDefault: true,
+        //   key: "endDate",
+        // },
         {
-          header: "End Date",
+          header: "finItemType",
           isDefault: true,
-          key: "endDate",
+          // key: "scope",
+          key: "finItemType",
         },
         {
-          header: "Scope",
+          header: "Frequency ID",
           isDefault: true,
-          key: "scope",
-        },
-        {
-          header: "Frequency",
-          isDefault: true,
-          key: "frequency",
+          key: "payItemFrequencyId",
+          // key: "frequency",
         },
       ],
-      data: [
-        {
-          payItem: "Allowance",
-          amount: "1300.00",
-          currency: "USD",
-          effectiveDate: "1 Sept 2022",
-          endDate: "1 Sept 2022",
-          scope: "AR, Payout",
-          frequency: "Single"
-        },
-       
-      ],
+      data: [],
     }
   );
+  const [tableOptionsForNoData] = useState(
+    {
+      columns: [
+        {
+          header: "Pay Item ID",
+          isDefault: true,
+          key: "payItemId",
+          // key: "payItem",
+
+        },
+        {
+          header: "Amount",
+          isDefault: true,
+          key: "amount",
+
+        },
+        {
+          header: "Currency",
+          isDefault: true,
+          key: "currency",
+        },
+        {
+          header: "Effective Date",
+          isDefault: true,
+          key: "effectiveDate",
+        },
+        // {
+        //   header: "End Date",
+        //   isDefault: true,
+        //   key: "endDate",
+        // },
+        {
+          header: "finItemType",
+          isDefault: true,
+          // key: "scope",
+          key: "finItemType",
+        },
+        {
+          header: "Frequency ID",
+          isDefault: true,
+          key: "payItemFrequencyId",
+          // key: "frequency",
+        },
+      ],
+      data: [],
+    }
+  );
+
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [showTable, setShowTable] = useState(false)
-
+  const [employeeApiData, setEmployeeApiData] = useState([])
+  const [employeeRowData, setEmployeeRowData] = useState<any>({})
+  
   const getEmployyeApiData = () => {
     const headers = {
       headers: {
@@ -83,13 +126,31 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
-        // console.log('ress', res)
-        // setFeeData(res);
+        // console.log('ress', res.data)
+        if (res.status === 200) {
+         
+          let employeeTableData: any = [];
+          res?.data?.forEach((item: any) => {
+            item?.employeeDetail?.compensation?.payItems?.forEach((CompensationItems:any) => {
+              employeeTableData.push({
+                payItemId: CompensationItems?.payItemId,
+                    amount: CompensationItems?.amount,
+                    currency: CompensationItems?.currency,
+                    effectiveDate: CompensationItems?.effectiveDate,
+                    //getting null in one object 
+                    // endDate: CompensationItems?.endDate,
+                    finItemType:CompensationItems?.finItemType,
+                    payItemFrequencyId: CompensationItems?.payItemFrequencyId
+              })
+            })        
+          })
+          setEmployeeApiData(res.data)
+          setTableOptions({ ...tableOptions, data: employeeTableData })
+        }
       })
       .catch((e: any) => {
         console.log("error", e);
       });
-
   }
 
 
@@ -97,6 +158,11 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
     getEmployyeApiData()
   }, [])
 
+
+
+const onRowCheckboxChange = (selectedRows: any) => {
+  // alert(selectedRows)
+}
 
 
   return (
@@ -115,62 +181,86 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           />
         </div>
       </div>
-      <div className='full-table-container'>
-        <div className='user-detail'>
-          <div
-            className='table-header'
-          >
-            <ProfileHeader
-              user={
-                {
-                  name: "Chioma Yakubu",
-                  data: "",
-                  img: null,
-                  initials: "CY"
-                }
-              }
-            />
-          </div>
-          <div className='table-location'>
-            <Icon
-              className="icon location"
-              color="#767676"
-              icon="location"
-              size="medium"
-            />
-            <h5>Nigeria</h5>
-            <div
-              onClick={() => setShowTable(!showTable)}
-            >
-              <Icon
-                className="icon up"
-                color="#526FD6"
-                icon={
-                  showTable === true ?
-                    "chevronUp"
-                    :
-                    "chevronDown"
-                }
-                size="medium"
-              />
-            </div>
-          </div>
-        </div>
-        {
-          showTable &&
-          <div className='table-container'>
-            <Table
-              options={{
-                ...tableOptions,
-                enableMultiSelect: true,
-                isMultiSelectDisabled: true
-              }}
-              colSort
-            />
+      {
+        employeeApiData && employeeApiData.length ? employeeApiData.map((item: any, key: any) => {
+          return (
+            <div className='full-table-container'>
+              <div className='user-detail'>
+                <div
+                  className='table-header'
+                >
+                  <ProfileHeader
+                    user={
+                      {
+                        name: `${item?.employeeDetail?.personalDetails?.firstName} ${item?.employeeDetail?.personalDetails?.lastName}`,
+                        data: "",
+                        img: item?.employeeDetail?.personalDetails?.photoUrl,
+                        // initials: "CY"
+                      }
+                    }
+                  />
+                </div>
+                <div className='table-location'>
+                  <Icon
+                    className="icon location"
+                    color="#767676"
+                    icon="location"
+                    size="medium"
+                  />
 
-          </div>
-        }
-      </div>
+                  <h5>{item?.employeeDetail?.personalDetails?.homeAddress?.country}</h5>
+
+                  <div
+                    onClick={
+                      () => {
+                        setShowTable(!showTable);
+                        setEmployeeRowData(item)
+                      }
+                    }
+                  >
+                    <Icon
+                      className="icon up"
+                      color="#526FD6"
+                      icon={
+                        showTable === true && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID ?
+                          "chevronUp"
+                          :
+                          "chevronDown"
+                      }
+                      size="medium"
+                    />
+                  </div>
+                </div>
+              </div>
+              {
+                showTable && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID &&
+                <div className='table-container'>
+                 <Table
+                    options={
+                      employeeRowData?.employeeDetail?.compensation?.payItems?.length ?  
+                      {
+                      ...tableOptions,
+                      enableMultiSelect: true,
+                      isMultiSelectDisabled: true,
+                      onRowCheckboxChange: onRowCheckboxChange,
+                    } :  {
+                      ...tableOptionsForNoData,
+                      enableMultiSelect: true,
+                      isMultiSelectDisabled: true
+                    } 
+                  }
+                    colSort
+                 />
+
+                </div>
+              }
+            </div>
+          )
+        })
+          :
+          <></>
+      }
+
 
       <div className='step2-buttons'>
         <Button
@@ -210,7 +300,7 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
             className="primary-blue medium button next-button"
             handleOnClick={() => {
               handleSteps(3)
-              handleAllSteppersData({} ,3)
+              handleAllSteppersData({}, 3)
             }}
           />
         </div>
