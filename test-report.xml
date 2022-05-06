@@ -1,42 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="262"/>
+    <testCase name="Bills Table Render" duration="440"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="54"/>
+    <testCase name="renders learn react link" duration="106"/>
+  </file>
+  <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
+    <testCase name="New Invoice breadcumbs are working" duration="329"/>
+    <testCase name="New Invoice dropDown Value change stepper 1" duration="726"/>
+    <testCase name="step one getCustomer api fail  dropDown Value change" duration="144"/>
+    <testCase name="step one getCOuntry api fail dropDown Value change" duration="201"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="336"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="388"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="684"/>
-    <testCase name="Invoice details download clickable " duration="217"/>
-    <testCase name="Invoice details approve invoice clickable " duration="131"/>
-    <testCase name="Invoice details publish notes" duration="157"/>
-    <testCase name="Invoice details download file" duration="131"/>
-    <testCase name="Invoice details delete file" duration="159"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="109"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="53"/>
+    <testCase name="Invoice details tabs are working" duration="950"/>
+    <testCase name="Invoice details download clickable " duration="407"/>
+    <testCase name="Invoice details approve invoice clickable " duration="253"/>
+    <testCase name="Invoice details publish notes" duration="275"/>
+    <testCase name="Invoice details download file" duration="291"/>
+    <testCase name="Invoice details delete file" duration="215"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="201"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="207"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="251"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="151"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="219"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="294"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="283"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="250"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="246"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="212"/>
+    <testCase name="void test cases for Checkobox tabs are working" duration="203"/>
+    <testCase name="api fail tabs are working" duration="33"/>
   </file>
   <file path="C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="509"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="209"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="157"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="125"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="131"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="117"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="136"/>
-    <testCase name="client view Datepicker dropdowns date range clickable" duration="4203"/>
-    <testCase name="client view table row clickable" duration="62"/>
-    <testCase name="client view Status clickable" duration="73"/>
-    <testCase name="client view Type clickable" duration="83"/>
-    <testCase name="client view Clear filters clickable" duration="91"/>
-    <testCase name="client view search" duration="73"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="193"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="126"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="107"/>
-    <testCase name="Client View search intenal" duration="81"/>
-    <testCase name="renders without crashing" duration="1"/>
-    <testCase name="Client View" duration="17"/>
-    <testCase name="Internal View" duration="24"/>
-    <testCase name="Enter token client" duration="24"/>
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="969"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="441"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="427"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="222"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="213"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="200"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="166"/>
+    <testCase name="client view Datepicker dropdowns date range clickable" duration="6272">
+      <failure message="Error: thrown: &quot;Exceeded timeout of 5000 ms for a test."><![CDATA[Error: thrown: "Exceeded timeout of 5000 ms for a test.
+Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
+    at C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js:305:3
+    at _dispatchDescribe (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:98:26)
+    at describe (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:60:5)
+    at Object.<anonymous> (C:\Projects\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js:195:1)
+    at Runtime._execModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at jestAdapter (C:\Projects\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:13)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at runTestInternal (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (C:\Projects\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="client view table row clickable" duration="121"/>
+    <testCase name="client view Status clickable" duration="70"/>
+    <testCase name="client view Type clickable" duration="75"/>
+    <testCase name="client view Clear filters clickable" duration="137"/>
+    <testCase name="client view search" duration="52"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="197"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="116"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="105"/>
+    <testCase name="Client View search intenal" duration="96"/>
+    <testCase name="renders without crashing" duration="3"/>
+    <testCase name="Client View" duration="37"/>
+    <testCase name="Internal View" duration="34"/>
+    <testCase name="Enter token client" duration="48"/>
   </file>
 </testExecutions>

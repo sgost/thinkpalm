@@ -1745,6 +1745,7 @@ export default function InvoiceDetails() {
         <BillsTable
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
+          customerId = {cid}
         ></BillsTable>
       )}
 
