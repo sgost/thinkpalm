@@ -8,7 +8,7 @@ import {
   NoDataCard,
   BreadCrumb,
   Checkbox,
-  Modal,
+  Modal
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -22,11 +22,13 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 
 export default function InvoiceDetails() {
-  const { state }: any = useLocation();
-  // const state = '';
+  // const { state }: any = useLocation();
+  const state = '';
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isVoidOpen, setIsVoidOpen] = useState(false);
+  const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
   const baseBillApi =
@@ -60,8 +62,10 @@ export default function InvoiceDetails() {
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
+  const [voidFileData, setVoidFileData] = useState<any>({});
   const [isErr, setIsErr] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [inputVoidValue, setInputVoidValue] = useState("");
   const [approvalMsg, setApprovalMsg] = useState("");
   const [noteText, setNoteText] = useState("");
   const [notes, setNotes] = useState<any>([]);
@@ -77,7 +81,6 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
-  const [isAutoApprove, setIsAutoApprove] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -129,7 +132,6 @@ export default function InvoiceDetails() {
             let countrySumTotalArrTemp: any = [];
             let feeSummaryTemp: any = [];
 
-            console.log("invoice details", res);
 
             //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
             if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
@@ -318,7 +320,6 @@ export default function InvoiceDetails() {
     axios
       .get(URL, { headers: { accept: "text/plain" } })
       .then((response: any) => {
-        console.log(response);
         if (response.status == 200) {
           setBillTableData(response);
         } else {
@@ -345,7 +346,6 @@ export default function InvoiceDetails() {
 
   useEffect(() => {
     if (lookupData?.data && apiData?.data) {
-      console.log("lookupData", lookupData.data.invoiceStatuses);
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
           setStatus(e.text);
@@ -642,7 +642,6 @@ export default function InvoiceDetails() {
       },
     })
       .then((res: any) => {
-        console.log(res);
         if (res.status === 201) {
           setStatus("Approved");
           setApprovalMsg("Invoice approve successfully");
@@ -708,7 +707,6 @@ export default function InvoiceDetails() {
       ],
     })
       .then((res: any) => {
-        console.log(res);
         setStatus("Pending Approval");
       })
       .catch((e: any) => {
@@ -748,6 +746,105 @@ export default function InvoiceDetails() {
     setIsDownloadOpen(false);
   };
 
+
+  const handleVoid = async () => {
+
+    const headers = {
+      authorization: `Bearer ${tempToken}`,
+      "x-apng-base-region": "EMEA",
+      "x-apng-customer-id":
+        "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      "x-apng-external": "false",
+      "x-apng-inter-region": "0",
+      "x-apng-target-region": "EMEA",
+      customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    };
+
+    var formData = new FormData();
+    formData.append("asset", voidFileData);
+    await axios
+      .post(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+        formData,
+        {
+          headers: headers,
+        }
+      )
+      .then(async (res: any) => {
+
+        await axios
+          .post(
+            "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+            {
+              invoiceId: id,
+
+              document: {
+                url: res.data.url,
+
+                documentName: res.data.fileName,
+              },
+            },
+            {
+              headers: headers,
+            }
+          )
+          .then((response: any) => {
+            //  setDocuments([
+            //     ...documents,
+            //     {
+            //       documentId: response.data.documentId,
+            //       document: {
+            //         documentName: res.data.fileName,
+            //         url: res.data.url,
+            //       },
+            //     },
+            //   ]);
+          })
+          .catch((e: any) => {
+            console.log(e);
+          });
+      })
+      .catch((e: any) => {
+        console.log(e);
+        setIsFileError(true);
+      });
+
+    let currDate = new Date();
+
+    await axios
+      .post(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`,
+        {
+          invoiceId: id,
+          note: inputVoidValue,
+          createdDate: currDate,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response: any) => {
+        if (response.status == 200) {
+          lookupData.data.invoiceStatuses.forEach((e: any) => {
+            if (e.value === response.data.status) {
+              setStatus(e.text);
+            }
+          }
+          );
+          setVoidFileData({})
+          setIsVoidConfirmOptionOpen(false)
+          setInputVoidValue("")
+        }
+      })
+      .catch((e: any) => {
+        console.log(e);
+        setVoidFileData({})
+        setIsVoidConfirmOptionOpen(false)
+        setInputVoidValue("")
+      });
+
+  }
+
   if (!apiData?.data && !isErr) {
     return <p>Loading...</p>;
   }
@@ -776,26 +873,34 @@ export default function InvoiceDetails() {
                 label:
                   transactionType == 7
                     ? "Contractor Invoice No. " +
-                      apiData?.data?.invoice?.invoiceNo
+                    apiData?.data?.invoice?.invoiceNo
                     : "Payroll Invoice No. " +
-                      apiData?.data?.invoice?.invoiceNo,
+                    apiData?.data?.invoice?.invoiceNo,
               },
             ]}
           />
         </div>
         <div className="buttons">
+          <div className="void-button">
+            {isClient == "false" && status === "Approved" && (
+              <Button
+                className="secondary-btn small"
+                label="Void Invoice"
+                handleOnClick={() => {
+                  setIsVoidOpen(true)
+                }}
+              />
+            )}
+          </div>
           <div
             onClick={() =>
               transactionType != 7
                 ? setIsDownloadOpen(!isDownloadOpen)
-                : function noRefCheck() {}
+                : function noRefCheck() { }
             }
-            className={`${
-              transactionType == 7 || deleteDisableButtons === true
-                ? "download_disable"
-                : "download"
-            }`}
-            // className="download"
+            className={`${transactionType == 7 || deleteDisableButtons === true ? "download_disable" : "download"
+              }`}
+          // className="download"
           >
             <p className="text">Download</p>
             <Icon
@@ -822,9 +927,9 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="secondary-btn small"
                 icon={{
-                  icon: "remove",
-                  size: "medium",
-                  color: "#526FD6",
+                  icon: 'remove',
+                  size: 'medium',
+                  color: '#526FD6'
                 }}
                 handleOnClick={() => setIsOpen(true)}
               />
@@ -846,7 +951,7 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-            {status === "Pending Approval" && (
+            {isClient == "true" && status === "Pending Approval" && (
               <Button
                 disabled={transactionType == 7 || deleteDisableButtons === true}
                 handleOnClick={() => {
@@ -954,45 +1059,13 @@ export default function InvoiceDetails() {
             </p>
             {transactionType != 7 && (
               <>
-                <p className="heading">Invoice Approval</p>
+                <p className="heading">Invoice Changes</p>
                 <p className="value">
                   {moment(apiData?.data?.invoice?.createdDate).format(
                     "DD MMM YYYY"
                   )}
                 </p>
-                {isClient == "false" && (
-                  <div className="autoapproveContainer">
-                    <Checkbox
-                      onChange={(e: any) => {
-                        setIsAutoApprove(e.target.checked);
-
-                        const headers = {
-                          authorization: `Bearer ${tempToken}`,
-                          "x-apng-base-region": "EMEA",
-                          "x-apng-customer-id":
-                            "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-                          "x-apng-external": "false",
-                          "x-apng-inter-region": "0",
-                          "x-apng-target-region": "EMEA",
-                          customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-                        };
-
-                        axios({
-                          url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
-                          method: "POST",
-                          headers,
-                        }).catch((err: any) => {
-                          setIsAutoApprove(!e.target.checked);
-                          console.log(err);
-                        });
-                      }}
-                      label="Auto-Approval after 24h"
-                      checked={isAutoApprove}
-                    />
-                  </div>
-                )}
                 <p className="heading">Payment Due</p>
-
                 <p className="value">
                   {moment(apiData?.data?.invoice?.dueDate).format(
                     "DD MMM YYYY"
@@ -1088,7 +1161,6 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
-            console.log("itemsssssss", item);
             return (
               <div>
                 <div className="countryHeader">
@@ -1110,8 +1182,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           item.currencyCode +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.subTotalDue)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.subTotalDue)
 
                           // item.feeSummary.subTotalDue
                           //   .toFixed(2)
@@ -1133,10 +1205,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.subTotalDue * item.exchangeRate
-                            )
+                          " " +
+                          toCurrencyFormat(
+                            item.feeSummary.subTotalDue * item.exchangeRate
+                          )
                           // (item.feeSummary.subTotalDue * item.exchangeRate)
                           //   .toFixed(2)
                           //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1148,8 +1220,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(getInCountryProcessingFee())
+                          " " +
+                          toCurrencyFormat(getInCountryProcessingFee())
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1162,8 +1234,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.fxBill)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.fxBill)
 
                           // item.feeSummary.fxBill
                           //   .toFixed(2)
@@ -1176,8 +1248,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.totalCountryVat)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                           // item.feeSummary.totalCountryVat
                           //   .toFixed(2)
@@ -1190,8 +1262,8 @@ export default function InvoiceDetails() {
                       <h3>
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.total)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.total)
 
                           // item.feeSummary.total
                           //   .toFixed(2)
@@ -1365,7 +1437,7 @@ export default function InvoiceDetails() {
                     checked={isVisibleToCustomer}
                   />
                   <Checkbox
-                    label="Export Note to Quickbooks"
+                    label="Export to Quickbooks"
                     onChange={(e: any) => {
                       setIsExportToQb(e.target.checked);
                     }}
@@ -1434,7 +1506,6 @@ export default function InvoiceDetails() {
             <div className="boxsubcontainer">
               <div className="fileHandlerContainer">
                 {documents.map((item: any, index: any) => {
-                  console.log(item);
                   return (
                     <FileHandler
                       icons={{
@@ -1487,7 +1558,6 @@ export default function InvoiceDetails() {
                             icon: "remove",
                             width: "30",
                             handleOnClick: () => {
-                              console.log("docs", documents[index]);
                               const headers = {
                                 authorization: `Bearer ${tempToken}`,
                                 "x-apng-base-region": "EMEA",
@@ -1510,7 +1580,6 @@ export default function InvoiceDetails() {
                                 headers: headers,
                               })
                                 .then((res: any) => {
-                                  console.log("del rs", res);
                                   let cpy = [...documents];
                                   cpy.splice(index, 1);
                                   setDocuments(cpy);
@@ -1570,7 +1639,6 @@ export default function InvoiceDetails() {
                         customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
                       };
                       setTimeout(() => {
-                        console.log(file);
                         var formData = new FormData();
                         formData.append("asset", file[0]);
                         axios
@@ -1582,7 +1650,6 @@ export default function InvoiceDetails() {
                             }
                           )
                           .then((res: any) => {
-                            console.log("file res", res);
 
                             axios
                               .post(
@@ -1601,7 +1668,6 @@ export default function InvoiceDetails() {
                                 }
                               )
                               .then((response: any) => {
-                                console.log("create res", response);
                                 setDocuments([
                                   ...documents,
                                   {
@@ -1638,7 +1704,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {transactionType == 7 && billTableData != null &&(
+      {transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
@@ -1650,23 +1716,24 @@ export default function InvoiceDetails() {
       {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
 
       <div className="decline-modal">
-        <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+        <Modal
+          isOpen={isOpen}
+          handleClose={() => { setIsOpen(false); setInputValue('') }}
+        >
           <div>
-            <h3>Add A Reason</h3>
+            <h3>Add  A Reason</h3>
             <div className="text-line">
-              <p>Please add a comment to indicate your reasons to decline</p>
+              <p>Please add  a comment  to indicate your reasons to decline</p>
             </div>
             <div className="text-invoive-no">
               <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
             </div>
-            <h6>
-              Comment<span className="comment">*</span>
-            </h6>
+            <h6>Comment<span className="comment">*</span></h6>
 
             <div>
               <textarea
                 value={inputValue}
-                className="textarea-box"
+                className='textarea-box'
                 placeholder="Please Enter a Reason"
                 rows={2}
                 cols={50}
@@ -1679,13 +1746,13 @@ export default function InvoiceDetails() {
                 label="Cancel"
                 className="secondary-btn medium cancel-button"
                 handleOnClick={() => {
-                  setIsOpen(false);
-                  setInputValue("");
+                  setIsOpen(false)
+                  setInputValue("")
                 }}
               />
 
               <Button
-                data-testid="decline-button-submit"
+                data-testid='decline-button-submit'
                 disabled={!inputValue}
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
@@ -1715,16 +1782,109 @@ export default function InvoiceDetails() {
                     },
                   })
                     .then((res: any) => {
-                      setInputValue("");
-                      setIsOpen(false);
-                      setDeleteDisableButtons(true);
+                      if (res.status == 200) {
+                        lookupData.data.invoiceStatuses.forEach((e: any) => {
+                          if (e.value === res.data.status) {
+                            setStatus(e.text);
+                          }
+                        }
+                        );
+                        setInputValue("")
+                        setIsOpen(false)
+                        setDeleteDisableButtons(true)
+                      }
                     })
                     .catch((e: any) => {
                       console.log(e);
-                      setInputValue("");
-                      setIsOpen(false);
+                      setInputValue("")
+                      setIsOpen(false)
                     });
                 }}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      <div className="void-modal">
+        <Modal
+          isOpen={isVoidOpen}
+          handleClose={() => { setIsVoidOpen(false); setInputVoidValue(''); setVoidFileData({}) }}
+        >
+          <div>
+            <h3>Void Invoice</h3>
+            <h6>Enter Note</h6>
+
+            <div>
+              <textarea
+                value={inputVoidValue}
+                className='textarea-box'
+                placeholder="Enter note here"
+                rows={2}
+                cols={50}
+                onChange={(e) => setInputVoidValue(e.target.value)}
+              />
+            </div>
+
+            <div className="attachment-container">
+              <input
+                data-testid="attachmenttestId"
+                type="file"
+                id="attachmentId"
+                style={{ display: "none" }}
+                onChange={(e: any) => setVoidFileData(e.target.files["0"])}
+              />
+              <label htmlFor="attachmentId" className="attachment">
+                <Icon
+                  icon="attachment"
+                  size="large"
+                  color="#526fd6"
+                />
+                <h4>Add Attachment</h4>
+              </label>
+              <p>{voidFileData?.name}</p>
+            </div>
+
+            <div className="void-button">
+              <Button
+                data-testid="void-button-id"
+                className="primary-blue small"
+                label="Void"
+                disabled={!inputVoidValue}
+                handleOnClick={() => {
+                  setIsVoidConfirmOptionOpen(true)
+                  setIsVoidOpen(false)
+                }}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      <div className="void-confirm-modal">
+        <Modal
+          isOpen={isVoidConfirmOptionOpen}
+          handleClose={() => { setIsVoidConfirmOptionOpen(false) }}
+        >
+          <div>
+            <h4>Are you sure you want to void this invoice?</h4>
+
+            <div className="void-confirm-button">
+              <Button
+                data-testid='Void-button-Cancel'
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setIsVoidConfirmOptionOpen(false)
+                  setVoidFileData({})
+                  setInputVoidValue("")
+                }}
+              />
+              <Button
+                data-testid='Void-button-submit'
+                label="Void"
+                className="primary-blue medium decline-button"
+                handleOnClick={() => handleVoid()}
               />
             </div>
           </div>

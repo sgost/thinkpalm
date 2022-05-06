@@ -1,0 +1,115 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.newinvoice-container {
+    .a-layouts .sidebar-inner-container .panel.right-panel {
+        flex-grow: 2;
+        padding: 40px 80px;
+    }
+    h3 {
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 35px;
+        color: #17224e;
+    }
+
+    .dropdown {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        span.a-dropdown__title:after {
+            content: "*";
+            color: red;
+        }
+    }
+    .dropdowns {
+        margin-bottom: 3rem;
+        span.a-dropdown__title:after {
+            content: "*";
+            color: red;
+        }
+        .a-dropdown__option__container {
+            height: 2.889rem;
+            // overflow-y: auto;
+        }
+    }
+    .dropdownC {
+        margin-bottom: 3rem;
+        span.a-dropdown__title:after {
+            content: "*";
+            color: red;
+        }
+    }
+    .dropdown-margin {
+        margin-right: 40px;
+        position: relative;
+        cursor: pointer;
+    }
+    .year-dropdown {
+        position: relative;
+        cursor: pointer;
+    }
+}
+
+.dropdown-margin svg.icon-down {
+    display: none !important;
+}
+
+.dropdown-margin svg.icon-up {
+    display: none !important;
+}
+
+.year-dropdown svg.icon-down {
+    display: none !important;
+}
+
+.year-dropdown svg.icon-up {
+    display: none !important;
+}
+
+.newinvoice-container .year-dropdown .calendar {
+    display: flex;
+    justify-content: end;
+    z-index: 99999;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.newinvoice-container .dropdown-margin .calendar {
+    display: flex;
+    justify-content: end;
+    z-index: 99999;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    bottom: 5%;
+    // bottom: 18%;
+    margin-left: 53.5%;
+    button.a-button.medium {
+        font-size: 1rem;
+        height: 3.13rem;
+        width: 7.13rem;
+    }
+}
+
+button.a-button.next-button svg {
+    padding-right: 0.5rem;
+    margin-top: 5px;
+    margin-right: -8px;
+    margin-left: 16px;
+}
+
+button.a-button.primary-blue.medium.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+    // height: 3.4rem;
+    height: 3.34rem;
+}
