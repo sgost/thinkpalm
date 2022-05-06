@@ -299,7 +299,6 @@
     flex-direction: row;
     justify-content: flex-end;
     font-family: 'CircularXX'!important;
-    margin-top: 4rem;
     margin-bottom: 2.5rem;
     width: -webkit-fill-available;
     padding-top: 2.5rem;
@@ -310,20 +309,83 @@
         font-weight: 400;
     }
 }
+.reject-action{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    font-family: 'CircularXX'!important;
+    width: -webkit-fill-available;
+    padding-top: 2.5rem;
+    button.a-button.medium {
+        font-size: 1.125rem !important;
+        line-height: 1.625rem !important;
+        font-weight: 400;
+    }
+}
+.info-banner{
+    font-family: 'Circular', Arial, Helvetica, sans-serif !important;
+    font-weight: 500;
+    font-size: 1.37rem;
+}
+.cancel-button{
+    width: 6.5rem !important;
+}
+.approve-reject-button{
+    width: 10.4rem !important;
+}
+.reject-button{
+    width: 7.9rem !important;
+}
+.next-invoice-button{
+    width: 14.125rem !important;
+}
+.reject-banner-icon{
+    height: 50px !important;
+    width: 50px !important;
+    padding-right:21px;
+}
+.margin-top{
+    margin-top: 4rem;
+}
 .margin-right{
     margin-right: 4.5rem;
 }
+.reject-reason-wrapper{
+    margin: 2.5rem;
+    width: -webkit-fill-available;
+}
+.reason-heading{
+    font-family: 'circularmed';
+    font-weight: 500;
+    font-size: 1.75rem;
+    color: #041e42 !important;
+}
+.reject-text{
+    margin-top:1rem;
+    font-size: 1rem;
+    font-weight: 500;
 
+}
 .secondary-button{
-    width: 7.9rem !important;
     height: 2.9rem !important;
 }
 .primary{
-    width: 14.125rem !important;
     height: 3.125rem !important;
     margin-left: 2rem;
 }
 .modal-content{
     overflow-y: auto;
     overflow-x: hidden;
+}
+.form-group{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.5rem;
+    label{
+        font-size: 0.813rem;
+        margin-bottom: 0.6rem;
+    }
+}
+.required{
+    color: red;
 }
