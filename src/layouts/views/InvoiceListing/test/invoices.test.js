@@ -302,22 +302,22 @@ describe("client view", () => {
     fireEvent.click(today);
   });
 
-  test("Datepicker dropdowns date range clickable", async () => {
-    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
-    fireEvent.click(dd[0]);
+  // test("Datepicker dropdowns date range clickable", async () => {
+  //   const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+  //   fireEvent.click(dd[0]);
 
-    let dr = await waitFor(() =>
-      screen.getAllByPlaceholderText(/Please Select/)
-    );
-    // screen.debug(x);
-    fireEvent.click(dr[0]);
-    let date = await waitFor(() => screen.getAllByText(/15/));
-    // screen.debug(date);
-    fireEvent.click(date[2]);
-    fireEvent.click(dr[1]);
-    let date2 = await waitFor(() => screen.getAllByText(/15/));
-    fireEvent.click(date2[2]);
-  });
+  //   let dr = await waitFor(() =>
+  //     screen.getAllByPlaceholderText(/Please Select/)
+  //   );
+  //   // screen.debug(x);
+  //   fireEvent.click(dr[0]);
+  //   let date = await waitFor(() => screen.getAllByText(/15/));
+  //   // screen.debug(date);
+  //   fireEvent.click(date[2]);
+  //   fireEvent.click(dr[1]);
+  //   let date2 = await waitFor(() => screen.getAllByText(/15/));
+  //   fireEvent.click(date2[2]);
+  // });
 
   test("table row clickable", async () => {
     const row = await waitFor(() => screen.getByText("1000992"));
