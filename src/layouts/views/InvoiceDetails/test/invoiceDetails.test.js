@@ -1743,7 +1743,6 @@ describe("delete test cases on AR Reveiew on true", () => {
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
-    screen.debug(buttonDeleteInvoice)
     fireEvent.click(buttonDeleteInvoice);
 
   });
@@ -1876,7 +1875,6 @@ describe("delete test cases on AR Reveiew on false", () => {
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
-    screen.debug(buttonDeleteInvoice)
     fireEvent.click(buttonDeleteInvoice);
 
   });
@@ -2009,7 +2007,6 @@ describe("delete test cases on AR Reveiew on api fail", () => {
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
-    screen.debug(buttonDeleteInvoice)
     fireEvent.click(buttonDeleteInvoice);
 
   });

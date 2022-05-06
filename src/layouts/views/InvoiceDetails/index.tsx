@@ -907,7 +907,6 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           <div className="delete-button">
-            {console.log("statusstatusstatus", status)}
             {isClient == "false" && status === "In Review" && (
               <div className="delete-invoice"
                 onClick={() => handleDeleteInvoice()}
