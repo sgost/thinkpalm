@@ -767,6 +767,7 @@ export default function InvoiceListing() {
           <div className="toast">
             {showSuccessToast.message}
             <span
+              data-testid="remove-button-toast"
               className="toast-action"
               onClick={() => {
                 setShowSuccessToast({ ...showSuccessToast, type: false });

@@ -11,6 +11,7 @@ import {
   waitForElementToBeRemoved,
   cleanup,
   findAllByRole,
+  findAllByLabelText,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HashRouter } from "react-router-dom";
@@ -193,6 +194,12 @@ let resDataClient = {
   regionItemCode: "emea",
 };
 
+let resDownloadSinlgeApiData = {
+  "id": "70961bfc-8d6e-44fc-88ad-61f9c86db9a3",
+  "url": "https://apnguatemeaservices.blob.core.windows.net/data/b07446a2-b99f-4e4e-b5c4-8b9cda5fd6e5.pdf?sv=2019-02-02&sr=b&sig=ufGKBaB%2F%2Beb61FEA%2BXwy3BeyXaLqxcR3RWniAH9cuq8%3D&se=2023-05-07T10%3A25%3A14Z&sp=rl",
+  "name": "Payroll-EMEA-70961bfc-8d6e-44fc-88ad-61f9c86db9a3.pdf",
+  "regionItemCode": "emea"
+}
 localStorage.setItem("accessToken", "1234");
 
 
@@ -486,6 +493,151 @@ describe("checkbox and download", () => {
 });
 
 
+describe("Internal View Download click and checkbox Click", () => {
 
+
+  test("table row clickable", async () => {
+    localStorage.setItem("current-org-role", "Internal");
+
+    const mock = new MockAdapter(axios);
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+      )
+      .reply(200, resDataInternal);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
+      )
+      .reply(200, resDownloadSinlgeApiData);
+
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
+      )
+      .reply(200, {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "url": "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+        "name": "Invoices.zip",
+        "regionItemCode": "emea"
+      });
+
+    const { container } = render(
+      <HashRouter>
+        <InvoiceListing />
+      </HashRouter>
+    );
+
+    const row = await screen.findByText("100329");
+    expect(row).toBeInTheDocument();
+    const labelText = await screen.findAllByLabelText("")
+    screen.debug(labelText);
+    fireEvent.click(labelText[0]);
+
+
+
+    const download = await waitFor(() => container.querySelector(".download"));
+    screen.debug(download);
+    fireEvent.click(download);
+
+    const toast = await screen.findByText("Downloaded...")
+    expect(toast).toBeInTheDocument()
+
+
+    const toastRemoveButton = await screen.findByTestId("remove-button-toast")
+    expect(toastRemoveButton).toBeInTheDocument()
+
+
+    fireEvent.click(toastRemoveButton);
+
+
+    fireEvent.click(labelText[0]);
+
+    fireEvent.click(labelText[1]);
+
+  const downloadsingle = await waitFor(() => container.querySelector(".download"));
+    screen.debug(downloadsingle);
+    fireEvent.click(downloadsingle);
+
+  });
+
+
+});
+
+
+describe("Internal View Download click for single invoice  api fail Click", () => {
+
+
+  test("table row clickable", async () => {
+    localStorage.setItem("current-org-role", "Internal");
+
+    const mock = new MockAdapter(axios);
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+      )
+      .reply(200, resDataInternal);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
+      )
+      .reply(400, resDownloadSinlgeApiData);
+
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
+      )
+      .reply(200, {
+        "id": "00000000-0000-0000-0000-000000000000",
+        "url": "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+        "name": "Invoices.zip",
+        "regionItemCode": "emea"
+      });
+
+    const { container } = render(
+      <HashRouter>
+        <InvoiceListing />
+      </HashRouter>
+    );
+
+    const row = await screen.findByText("100329");
+    expect(row).toBeInTheDocument();
+    const labelText = await screen.findAllByLabelText("")
+    screen.debug(labelText);
+    fireEvent.click(labelText[0]);
+
+
+
+    const download = await waitFor(() => container.querySelector(".download"));
+    screen.debug(download);
+    fireEvent.click(download);
+
+    const toast = await screen.findByText("Downloaded...")
+    expect(toast).toBeInTheDocument()
+
+
+    const toastRemoveButton = await screen.findByTestId("remove-button-toast")
+    expect(toastRemoveButton).toBeInTheDocument()
+
+
+    fireEvent.click(toastRemoveButton);
+
+
+    fireEvent.click(labelText[0]);
+
+    fireEvent.click(labelText[1]);
+
+  const downloadsingle = await waitFor(() => container.querySelector(".download"));
+    screen.debug(downloadsingle);
+    fireEvent.click(downloadsingle);
+
+  });
+
+
+});
 
 
