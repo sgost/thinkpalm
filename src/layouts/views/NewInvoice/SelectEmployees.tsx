@@ -58,48 +58,7 @@ const [buttonHide, setButtonHide] = useState(false)
   );
   const [tableOptionsForNoData] = useState(
     {
-      columns: [
-        {
-          header: "Pay Item ID",
-          isDefault: true,
-          key: "payItemId",
-          // key: "payItem",
-
-        },
-        {
-          header: "Amount",
-          isDefault: true,
-          key: "amount",
-
-        },
-        {
-          header: "Currency",
-          isDefault: true,
-          key: "currency",
-        },
-        {
-          header: "Effective Date",
-          isDefault: true,
-          key: "effectiveDate",
-        },
-        // {
-        //   header: "End Date",
-        //   isDefault: true,
-        //   key: "endDate",
-        // },
-        {
-          header: "finItemType",
-          isDefault: true,
-          // key: "scope",
-          key: "finItemType",
-        },
-        {
-          header: "Frequency ID",
-          isDefault: true,
-          key: "payItemFrequencyId",
-          // key: "frequency",
-        },
-      ],
+      columns: [ ],
       data: [],
     }
   );
@@ -214,6 +173,7 @@ const [buttonHide, setButtonHide] = useState(false)
                     <h5>{item?.employeeDetail?.personalDetails?.homeAddress?.country}</h5>
                   </div>
                   <div className="table-up-down"
+                  data-testid="showHide-button"
                     onClick={
                       () => {
                         setShowTable(!showTable);
