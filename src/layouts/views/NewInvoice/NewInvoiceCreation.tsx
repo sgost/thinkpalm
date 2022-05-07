@@ -6,7 +6,7 @@ import './NewInvoiceCreation.scss'
 
 const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }: any) => {
 
-  const token = localStorage.getItem("temptoken");
+  const token = localStorage.getItem("accessToken");
 
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);

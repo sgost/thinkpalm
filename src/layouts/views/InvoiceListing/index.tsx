@@ -12,6 +12,12 @@ import dots from "./dots.svg";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
+  const accessToken = localStorage.getItem("accessToken")
+  // internal token
+  // const accessToken = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NTE5OTU0ODIsImlhdCI6MTY1MTgzNjc0NSwiYXV0aF90aW1lIjoxNjUxODIyNjgyLCJqdGkiOiJmNTE3MjM4NS00MzVkLTQzMjQtODA3My1lZmU4YWJlMTY4ZGYiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI3NWM2MmFiNi1iMWMyLTQ5NTEtYmY2Yy00MjA3ZGQwZmEwNmEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjBjMmYxNWY3LTg4YTItNDJjMS1hMDg0LWQ1ZDcxMWJkNjg1ZiIsInNlc3Npb25fc3RhdGUiOiIxNWU2MDRhMy01NDRhLTQ2YzYtYjYxOC1iZmU3MGZlZWIxYTQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoiSmFzbWluZSBLYXVyIiwiaWQiOiI3NWM2MmFiNi1iMWMyLTQ5NTEtYmY2Yy00MjA3ZGQwZmEwNmEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqYXNtaW5la0BlbGVtZW50c2dzLmNvbSIsImdpdmVuX25hbWUiOiJKYXNtaW5lIiwiZmFtaWx5X25hbWUiOiJLYXVyIiwiZW1haWwiOiJqYXNtaW5la0BlbGVtZW50c2dzLmNvbSJ9.Bz3I8XKE6cpPV_KdObEVBj1f3mAcQzXOnwKZzGblhJqf9HMB-QmNXilwL3rNkTioW-Oh2kbHwqj-V91OlFKaeL8JTW8KxEA2pxTxQtyXLYsaQzqRVZunVigTzJ4id2qRL4j8dpZhHFGgnmTXEX6com4alL-RCrBhHDACtOc-OVyi9Qr0zgU0E6q7vTyg1LAFhjUFcarp9YcVoquCCOSGEyflsbHiJVZ-PRoNtkz3psu6aGWYmsxfcoIo958pKSINjkmJjUiU-1C6_FgELQjStw88bj_trHAq-t2m6oGDOeaLopCsVpQLJatuGG6gMrmcbvmOCjtYgiDx51buFxppsA"
+  const currentRole = localStorage.getItem("current-org-role")
+  // const currentRole = "Internal"
+
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
@@ -35,7 +41,7 @@ export default function InvoiceListing() {
   });
   const [singleInvoiceId, setSingleInvoiceId] = useState("");
   const [multiInvoiceId, setMultiInvoiveId] = useState([]);
-  const [token, setToken] = useState("");
+  // const [token, setToken] = useState("");
 
   // Contractor, payroll, credit memos, proformas, miscellaneous
   const typeOptions = [
@@ -249,7 +255,7 @@ export default function InvoiceListing() {
     }
   };
 
-  const apiData: any = getRequest(apiFunc(), token);
+  const apiData: any = getRequest(apiFunc(), accessToken);
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -270,6 +276,14 @@ export default function InvoiceListing() {
     setTypes(typeOptions);
   };
 
+  useEffect(() => {
+    if(currentRole === 'Customer') {
+      setIsClient(true)
+    } else {
+      setIsClient(false)
+    }
+  }, [])
+  
   useEffect(() => {
     if (apiData?.data?.results) {
       const apiTableData: any = [];
@@ -388,7 +402,7 @@ export default function InvoiceListing() {
     setShowSuccessToast({ ...showSuccessToast, type: true });
     const headers = {
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${accessToken}`,
         "x-apng-base-region": "EMEA",
         "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
         "x-apng-external": "false",
@@ -471,42 +485,6 @@ export default function InvoiceListing() {
       setMultiInvoiveId(multiId);
     }
   };
-
-  if (isClient === null) {
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "20px",
-        }}
-      >
-        <p>Enter token</p>
-        <input
-          data-testid="custom-element"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-        />
-        <Button
-          handleOnClick={() => {
-            localStorage.setItem("temptoken", token);
-            setIsClient(true);
-          }}
-          className="primary-blue small"
-          label="Client View"
-        />
-        <Button
-          handleOnClick={() => {
-            localStorage.setItem("temptoken", token);
-            setIsClient(false);
-          }}
-          className="secondary-btn small"
-          label="Internal View"
-        />
-      </div>
-    );
-  }
 
   return (
     <>

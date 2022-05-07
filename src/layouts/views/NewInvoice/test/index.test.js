@@ -10,7 +10,7 @@ import axios from "axios";
 import NewInvoice from "..";
 
 
-localStorage.setItem("temptoken", "1234");
+localStorage.setItem("accessToken", "1234");
 
 describe("New Invoice", () => {
   beforeAll(() => {

@@ -7,7 +7,7 @@ import './SelectEmployees.scss'
 
 const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: any) => {
 
-  const tempToken = localStorage.getItem("temptoken");
+  const tempToken = localStorage.getItem("accessToken");
 const [buttonHide, setButtonHide] = useState(false)
   const [tableOptions, setTableOptions] = useState(
     {

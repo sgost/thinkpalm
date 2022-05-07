@@ -10,6 +10,7 @@ import {
   queryByAttribute,
   waitForElementToBeRemoved,
   cleanup,
+  findAllByRole,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HashRouter } from "react-router-dom";
@@ -192,7 +193,11 @@ let resDataClient = {
   regionItemCode: "emea",
 };
 
+localStorage.setItem("accessToken", "1234");
+
+
 describe("client view", () => {
+  localStorage.setItem("current-org-role", "Customer");
   beforeEach(() => {
     const mock = new MockAdapter(axios);
     mock
@@ -209,20 +214,7 @@ describe("client view", () => {
       );
     });
 
-    const input = screen.getByTestId("custom-element");
-    fireEvent.change(input, {
-      target: {
-        value:
-          "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
-      },
-    });
-    const clientView = screen.getByText(/Client View/);
-    fireEvent.click(clientView);
   });
-
-  // afterEach(() => {
-  //   cleanup();
-  // });
 
   test("Datepicker dropdowns clickoutside clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
@@ -353,6 +345,8 @@ describe("client view", () => {
     fireEvent.change(search, { target: { value: "" } });
   });
 
+  
+
   // test("tbl checkbox clickable", async () => {
   //   // const row = await waitFor(() => screen.getByText("1000992"));
   //   // const chkbox = await waitFor(() => screen.getByRole("checkbox"), {
@@ -372,8 +366,9 @@ describe("client view", () => {
   //   // screen.logTestingPlaygroundURL();
   // });
 });
-
 describe("checkbox and download", () => {
+  localStorage.setItem("current-org-role", "Customer");
+
   test("checkbox and download are clickable in client view", async () => {
     const mock = new MockAdapter(axios);
     mock
@@ -389,15 +384,6 @@ describe("checkbox and download", () => {
       </HashRouter>
     );
 
-    const input = screen.getByTestId("custom-element");
-    fireEvent.change(input, {
-      target: {
-        value:
-          "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
-      },
-    });
-    const clientView = screen.getByText(/Client View/);
-    fireEvent.click(clientView);
 
     await waitFor(() => screen.getByText(/Status/));
 
@@ -437,15 +423,6 @@ describe("checkbox and download", () => {
       </HashRouter>
     );
 
-    const input = screen.getByTestId("custom-element");
-    fireEvent.change(input, {
-      target: {
-        value:
-          "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
-      },
-    });
-    const clientView = screen.getByText(/Internal View/);
-    fireEvent.click(clientView);
 
     await waitFor(() => screen.getByText(/Status/));
 
@@ -482,15 +459,6 @@ describe("checkbox and download", () => {
       </HashRouter>
     );
 
-    const input = screen.getByTestId("custom-element");
-    fireEvent.change(input, {
-      target: {
-        value:
-          "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
-      },
-    });
-    const clientView = screen.getByText(/Client View/);
-    fireEvent.click(clientView);
 
     await waitFor(() => screen.getByText(/Status/));
 
@@ -517,97 +485,7 @@ describe("checkbox and download", () => {
   });
 });
 
-describe("Client View", () => {
-  beforeEach(async () => {
-    const mock = new MockAdapter(axios);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
-      )
-      .reply(200, resDataInternal);
-    // const getById = queryByAttribute.bind(null, "id");
 
-    const { container } = render(
-      <HashRouter>
-        <Invoices />
-      </HashRouter>
-    );
 
-    const input = screen.getByTestId("custom-element");
-    fireEvent.change(input, {
-      target: {
-        value:
-          "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
-      },
-    });
-    const clientView = screen.getByText(/Internal View/);
-    fireEvent.click(clientView);
 
-    await waitFor(() => screen.getByText(/Status/));
-  });
 
-  test("search intenal", async () => {
-    const search = await waitFor(() => screen.getByPlaceholderText(/Search/));
-    fireEvent.change(search, { target: { value: "10" } });
-    fireEvent.change(search, { target: { value: "dsm" } });
-
-    fireEvent.change(search, { target: { value: "" } });
-  });
-});
-
-//
-
-it("renders without crashing", () => {
-  const div = document.createElement("div");
-  ReactDom.render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>,
-    div
-  );
-});
-
-test("Client View", () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
-
-  const clientView = screen.getByText(/Client View/);
-  fireEvent.click(clientView);
-});
-
-test("Internal View", () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
-
-  const clientView = screen.getByText(/Internal View/);
-  fireEvent.click(clientView);
-});
-
-test("Enter token client", async () => {
-  render(
-    <HashRouter>
-      <Invoices />
-    </HashRouter>
-  );
-  const input = await screen.getByTestId("custom-element");
-  fireEvent.change(input, {
-    target: {
-      value:
-        "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg",
-    },
-  });
-  await expect(input.value).toBe(
-    "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJXTTFNMldSbzJvOFV1ZGhzV0toZko1M2hsY3lad2dlb2RucVVqTHJxdnZVIn0.eyJleHAiOjE2NDg3MDI1NDAsImlhdCI6MTY0ODUyOTc0MSwiYXV0aF90aW1lIjoxNjQ4NTI5NzQwLCJqdGkiOiJmMjU5YTA3ZC1jOWQzLTQyMjYtOTRkMy02OTU1NWRiMzkxNzIiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2RzbW51dHJpdGlvbmFscHJvZHVjdHNhZyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjIyZTcwZmFlLWI0NmYtNDc2MC04MmZjLTViZWMxMGUzNmJiNSIsInNlc3Npb25fc3RhdGUiOiJiN2ExMWY3Yi00NzIyLTRlZjctYjdhNi02YThkNGE0MGMzMzYiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnLXVhdC5hcG5leHRnZW4uY29tIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJkZWZhdWx0LXJvbGVzLWRzbW51dHJpdGlvbmFscHJvZHVjdHNhZy11YXQiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJ1c2VyIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJpc0V4dGVybmFsIjp0cnVlLCJuYW1lIjoiU2ltb24gTGFzdG5hbWV1Nml1bGUiLCJjdXN0b21lcklkIjoiYTliYmVlNmQtNzk3YS00NzI0LWE4NmEtNWIxYTJlMjg3NjNmIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZHNtbnV0cml0aW9uYWxwcm9kdWN0c2FnQHByb3Rvbm1haWwuY29tIiwiaWQiOiJlZWQ5MjRiMy05N2IxLTQxMzMtYjZhMC0xMGUwMGRmNzAxNGUiLCJnaXZlbl9uYW1lIjoiU2ltb24iLCJmYW1pbHlfbmFtZSI6Ikxhc3RuYW1ldTZpdWxlIiwiY3VzdG9tZXJOYW1lIjoiRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzIEFHIiwiZW1haWwiOiJkc21udXRyaXRpb25hbHByb2R1Y3RzYWdAcHJvdG9ubWFpbC5jb20ifQ.dzJYbfHtsW2iT2dTPdSoP9ChqAzGvy4WFCar_wZ9kapLnbAfUAhx7R0em-kZIbYw8bUId8xNzA69sdKU_S1W1rhHDpyJXRHrY-0aEt5Gc5rmApVcQO548YOaAJ2J9SAMHiEU7QtEpA9Pj-hvJrkGNTAQPS2JXasMFzPDLAss5BslcR36-bJZuN63qpQ6xce8FwlHgDnoa3sQHyO6wANkwxE3mPCkZne7VrFLQC45t0G8TWCxqUY-_5v742x63Um2gyXSOYbX_Xq7vTI-guaKLL8trEyhlEJLSddbCGkNImfGmDyfVANHB_lItFPeiaHw4r0Arb44hBdMEp-bEdB4Mg"
-  );
-  const clientView = screen.getByText(/Client View/);
-  await fireEvent.click(clientView);
-
-  const Date = await screen.getByText(/Date/);
-  expect(Date).toBeInTheDocument();
-});

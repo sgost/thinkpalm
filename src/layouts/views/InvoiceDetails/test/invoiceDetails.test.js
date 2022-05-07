@@ -112,7 +112,7 @@ jest.mock("react-router-dom", () => ({
 const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
 const invoiceId = "1001002";
-localStorage.setItem("temptoken", "1234");
+localStorage.setItem("accessToken", "1234");
 
 describe("Invoice details", () => {
   beforeAll(() => {
