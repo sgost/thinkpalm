@@ -8,20 +8,22 @@ import './SelectEmployees.scss'
 const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: any) => {
 
   const tempToken = localStorage.getItem("temptoken");
-  const [tableOptions] = useState(
+const [buttonHide, setButtonHide] = useState(false)
+  const [tableOptions, setTableOptions] = useState(
     {
       columns: [
         {
-          
+          header: "Pay Item ID",
           isDefault: true,
-          key: "payItem",
-          header: "Pay Item",
+          key: "payItemId",
+          // key: "payItem",
+
         },
         {
-          key: "amount",
           header: "Amount",
           isDefault: true,
-         
+          key: "amount",
+
         },
         {
           header: "Currency",
@@ -33,38 +35,79 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           isDefault: true,
           key: "effectiveDate",
         },
+        // {
+        //   header: "End Date",
+        //   isDefault: true,
+        //   key: "endDate",
+        // },
         {
-          header: "End Date",
+          header: "finItemType",
           isDefault: true,
-          key: "endDate",
+          // key: "scope",
+          key: "finItemType",
         },
         {
-          header: "Scope",
+          header: "Frequency ID",
           isDefault: true,
-          key: "scope",
-        },
-        {
-          header: "Frequency",
-          isDefault: true,
-          key: "frequency",
+          key: "payItemFrequencyId",
+          // key: "frequency",
         },
       ],
-      data: [
-        {
-          payItem: "Allowance",
-          amount: "1300.00",
-          currency: "USD",
-          effectiveDate: "1 Sept 2022",
-          endDate: "1 Sept 2022",
-          scope: "AR, Payout",
-          frequency: "Single"
-        },
-       
-      ],
+      data: [],
     }
   );
+  const [tableOptionsForNoData] = useState(
+    {
+      columns: [
+        {
+          header: "Pay Item ID",
+          isDefault: true,
+          key: "payItemId",
+          // key: "payItem",
+
+        },
+        {
+          header: "Amount",
+          isDefault: true,
+          key: "amount",
+
+        },
+        {
+          header: "Currency",
+          isDefault: true,
+          key: "currency",
+        },
+        {
+          header: "Effective Date",
+          isDefault: true,
+          key: "effectiveDate",
+        },
+        // {
+        //   header: "End Date",
+        //   isDefault: true,
+        //   key: "endDate",
+        // },
+        {
+          header: "finItemType",
+          isDefault: true,
+          // key: "scope",
+          key: "finItemType",
+        },
+        {
+          header: "Frequency ID",
+          isDefault: true,
+          key: "payItemFrequencyId",
+          // key: "frequency",
+        },
+      ],
+      data: [],
+    }
+  );
+
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [showTable, setShowTable] = useState(false)
+  const [employeeApiData, setEmployeeApiData] = useState([])
+  const [employeeRowData, setEmployeeRowData] = useState<any>({})
 
   const getEmployyeApiData = () => {
     const headers = {
@@ -83,13 +126,32 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
-        // console.log('ress', res)
-        // setFeeData(res);
+        // console.log('ress', res.data)
+        if (res.status === 200) {
+
+          let employeeTableData: any = [];
+          res?.data?.forEach((item: any) => {
+            item?.employeeDetail?.compensation?.payItems?.forEach((CompensationItems: any) => {
+              employeeTableData.push({
+                payItemId: CompensationItems?.payItemId,
+                amount: CompensationItems?.amount,
+                currency: CompensationItems?.currency,
+                effectiveDate: CompensationItems?.effectiveDate,
+                //getting null in one object 
+                // endDate: CompensationItems?.endDate,
+                finItemType: CompensationItems?.finItemType,
+                payItemFrequencyId: CompensationItems?.payItemFrequencyId
+              })
+            })
+          })
+          setEmployeeApiData(res.data)
+          setTableOptions({ ...tableOptions, data: employeeTableData })
+          setButtonHide(true);
+        }
       })
       .catch((e: any) => {
         console.log("error", e);
       });
-
   }
 
 
@@ -99,7 +161,13 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
 
 
 
+  const onRowCheckboxChange = (selectedRows: any) => {
+    // alert(selectedRows)
+  }
+
+
   return (
+    <>
     <div className='select-employee-container'>
       <div className='employee-header'>
         <div>
@@ -115,107 +183,141 @@ const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: a
           />
         </div>
       </div>
-      <div className='full-table-container'>
-        <div className='user-detail'>
-          <div
-            className='table-header'
-          >
-            <ProfileHeader
-              user={
-                {
-                  name: "Chioma Yakubu",
-                  data: "",
-                  img: null,
-                  initials: "CY"
-                }
+      {
+        employeeApiData && employeeApiData.length ? employeeApiData.map((item: any, key: any) => {
+          return (
+            <div className='full-table-container'>
+              <div className='user-detail'>
+                <div
+                  className='table-header'
+                >
+                  <ProfileHeader
+                    user={
+                      {
+                        name: `${item?.employeeDetail?.personalDetails?.firstName} ${item?.employeeDetail?.personalDetails?.lastName}`,
+                        data: "",
+                        img: item?.employeeDetail?.personalDetails?.photoUrl,
+                        // initials: "CY"
+                      }
+                    }
+                  />
+                </div>
+                <div className='table-location'>
+                  <div className='table-icon-location d-flax'>
+                    <Icon
+                      className="icon location"
+                      color="#767676"
+                      icon="location"
+                      size="medium"
+                    />
+
+                    <h5>{item?.employeeDetail?.personalDetails?.homeAddress?.country}</h5>
+                  </div>
+                  <div className="table-up-down"
+                    onClick={
+                      () => {
+                        setShowTable(!showTable);
+                        setEmployeeRowData(item)
+                      }
+                    }
+                  >
+                    {
+                      item?.employeeDetail?.compensation?.payItems?.length ?
+                        <Icon
+                          className="icon up"
+                          color="#526FD6"
+                          icon={
+                            showTable === true && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID ?
+                              "chevronUp"
+                              :
+                              "chevronDown"
+                          }
+                          size="medium"
+                        />
+                        : ""
+                    }
+
+                  </div>
+                </div>
+              </div>
+              {
+                showTable && employeeRowData?.employeeDetail?.employeeID === item?.employeeDetail?.employeeID &&
+                <div className='table-container'>
+                  <Table
+                    options={
+                      employeeRowData?.employeeDetail?.compensation?.payItems?.length ?
+                        {
+                          ...tableOptions,
+                          enableMultiSelect: true,
+                          isMultiSelectDisabled: true,
+                          onRowCheckboxChange: onRowCheckboxChange,
+                        } : {
+                          ...tableOptionsForNoData,
+                          enableMultiSelect: true,
+                          isMultiSelectDisabled: true
+                        }
+                    }
+                    colSort
+                  />
+
+                </div>
               }
-            />
-          </div>
-          <div className='table-location'>
-            <Icon
-              className="icon location"
-              color="#767676"
-              icon="location"
-              size="medium"
-            />
-            <h5>Nigeria</h5>
-            <div
-              onClick={() => setShowTable(!showTable)}
-            >
-              <Icon
-                className="icon up"
-                color="#526FD6"
-                icon={
-                  showTable === true ?
-                    "chevronUp"
-                    :
-                    "chevronDown"
-                }
-                size="medium"
-              />
             </div>
-          </div>
-        </div>
-        {
-          showTable &&
-          <div className='table-container'>
-            <Table
-              options={{
-                ...tableOptions,
-                enableMultiSelect: true,
-                isMultiSelectDisabled: true
-              }}
-              colSort
-            />
+          )
+        })
+          :
+          <></>
+      }
 
-          </div>
-        }
-      </div>
+{ buttonHide ? 
+  <div className='step2-buttons'>
+  <Button
+    data-testid="back-button-steptwo"
+    icon={{
+      icon: 'chevronLeft',
+      size: 'medium',
+      color: '#fff'
+    }}
+    handleOnClick={() => {
+      handleSteps(1)
+    }}
+    className="primary-blue medium previous-button"
+    label="Previous"
+  />
+  <div className='step2-inside-button'>
+    <Button
+      label="Save"
+      className="secondary-btn medium button"
+      icon={{
+        icon: 'add',
+        size: 'medium',
+        color: '#526FD6'
+      }}
+      handleOnClick={() => { }}
+    />
 
-      <div className='step2-buttons'>
-        <Button
-          data-testid="back-button-steptwo"
-          icon={{
-            icon: 'chevronLeft',
-            size: 'medium',
-            color: '#fff'
-          }}
-          handleOnClick={() => {
-            handleSteps(1)
-          }}
-          className="primary-blue medium previous-button"
-          label="Previous"
-        />
-        <div className='step2-inside-button'>
-          <Button
-            label="Save"
-            className="secondary-btn medium button"
-            icon={{
-              icon: 'add',
-              size: 'medium',
-              color: '#526FD6'
-            }}
-            handleOnClick={() => { }}
-          />
+    <Button
+      // disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
+      data-testid="next-button-steptwo"
+      icon={{
+        icon: 'chevronRight',
+        size: 'medium',
+        color: '#fff'
+      }}
+      label="Next"
+      className="primary-blue medium button next-button"
+      handleOnClick={() => {
+        handleSteps(3)
+        handleAllSteppersData({}, 3)
+      }}
+    />
+  </div>
+</div> : <></>
 
-          <Button
-            // disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
-            data-testid="next-button-steptwo"
-            icon={{
-              icon: 'chevronRight',
-              size: 'medium',
-              color: '#fff'
-            }}
-            label="Next"
-            className="primary-blue medium button next-button"
-            handleOnClick={() => {
-              handleSteps(3)
-              handleAllSteppersData({} ,3)
-            }}
-          />
-        </div>
-      </div>
+}
+    
     </div>
+    </>
 
   )
 }

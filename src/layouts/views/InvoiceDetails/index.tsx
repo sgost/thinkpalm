@@ -871,7 +871,7 @@ export default function InvoiceDetails() {
       .then((res: any) => {
         console.log('ress', res)
         if (res.data === true) {
-          navigate("/")
+          navigate("/pay")
         }
         if (res.data === false) {
           console.log("Invoice not deleted")

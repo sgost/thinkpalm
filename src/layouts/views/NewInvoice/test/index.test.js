@@ -173,6 +173,11 @@ describe("Stepper 2", () => {
         "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
       )
       .reply(200, mockapidata.resGetAllCountry);
+      mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+      )
+      .reply(200, mockapidata.resForStepperTwo);
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -285,9 +290,9 @@ describe("Stepper 2", () => {
     expect(SelectEmployeeText[0]).toBeInTheDocument();
 
 
-    const stepTwoBackButton = await screen.findByTestId("back-button-steptwo");
-    expect(stepTwoBackButton).toBeInTheDocument();
-    fireEvent.click(stepTwoBackButton);
+    // const stepTwoBackButton = await screen.findByTestId("back-button-steptwo");
+    // expect(stepTwoBackButton).toBeInTheDocument();
+    // fireEvent.click(stepTwoBackButton);
 
   });
 
