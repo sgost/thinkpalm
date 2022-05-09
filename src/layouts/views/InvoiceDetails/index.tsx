@@ -638,7 +638,8 @@ export default function InvoiceDetails() {
     //   },
     // };
 
-    const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
+    // const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
+    const approveApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`;
 
     axios({
       method: "PUT",
