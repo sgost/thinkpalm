@@ -175,7 +175,7 @@ describe("Stepper 2", () => {
       .reply(200, mockapidata.resGetAllCountry);
       mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=e291c9f0-2476-4237-85cb-7afecdd085d3&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
       )
       .reply(200, mockapidata.resForStepperTwo);
   });
@@ -316,7 +316,7 @@ describe("Stepper 2 show table click", () => {
       .reply(200, mockapidata.resGetAllCountry);
       mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=e291c9f0-2476-4237-85cb-7afecdd085d3&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
       )
       .reply(200, mockapidata.resForStepperTwo);
   });

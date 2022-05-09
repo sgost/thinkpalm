@@ -20,7 +20,7 @@ import axios from "axios";
 import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
-import deleteSvg from '../../../assets/icons/deletesvg.svg'
+import deleteSvg from "../../../assets/icons/deletesvg.svg";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -83,6 +83,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
+  const [isAutoApprove, setIsAutoApprove] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -118,193 +119,191 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        if(state.transactionType != 7){
+        if (state.transactionType != 7) {
           axios
-          .get(api, headers)
-          .then((res: any) => {
-            if (res.status !== 200) {
-              throw new Error("Something went wrong");
-            }
+            .get(api, headers)
+            .then((res: any) => {
+              if (res.status !== 200) {
+                throw new Error("Something went wrong");
+              }
 
-            let billingCurrency = countryRes.data.find(
-              (e: any) => e.currencyId === res.data.invoice.currencyId
-            );
-            let data: any = [];
-            let countrySummaryTemp: any = [];
-            let tempTotal = 0;
-            let countrySumTotalArrTemp: any = [];
-            let feeSummaryTemp: any = [];
+              let billingCurrency = countryRes.data.find(
+                (e: any) => e.currencyId === res.data.invoice.currencyId
+              );
+              let data: any = [];
+              let countrySummaryTemp: any = [];
+              let tempTotal = 0;
+              let countrySumTotalArrTemp: any = [];
+              let feeSummaryTemp: any = [];
 
-            //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
-            if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
-              res.data = apiInvoiceMockData;
-            }
+              //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+              if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
+                res.data = apiInvoiceMockData;
+              }
 
-            res.data?.countryPayroll.forEach((e: any) => {
-              let country = e.countryName;
-              let countryCode = e.countryCode;
-              let currencyCode = e.currencyCode;
-              let arr: any = [];
+              res.data?.countryPayroll.forEach((e: any) => {
+                let country = e.countryName;
+                let countryCode = e.countryCode;
+                let currencyCode = e.currencyCode;
+                let arr: any = [];
 
-              e.payrollItems.forEach((item: any) => {
-                arr.push({
-                  employeeID: item.employeeId,
-                  name: {
-                    value: item.firstName + " " + item.lastName,
-                    // img: { src: item.employeeProfilePicture },
+                e.payrollItems.forEach((item: any) => {
+                  arr.push({
+                    employeeID: item.employeeId,
+                    name: {
+                      value: item.firstName + " " + item.lastName,
+                      // img: { src: item.employeeProfilePicture },
 
-                    img: { src: avatar },
-                    style: { borderRadius: 12 },
+                      img: { src: avatar },
+                      style: { borderRadius: 12 },
+                    },
+                    grossWages:
+                      currencyCode + " " + toCurrencyFormat(item.totalWage),
+                    // item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                    allowances:
+                      currencyCode + " " + toCurrencyFormat(item.allowance),
+
+                    // item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                    expenseReimb:
+                      currencyCode + " " + toCurrencyFormat(item.expenseRe),
+
+                    // item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                    employerLiability:
+                      currencyCode + " " + toCurrencyFormat(item.liability),
+
+                    // item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                    countryVAT: item.countryVat.toFixed(2),
+                    adminFees:
+                      billingCurrency.currency.code +
+                      " " +
+                      toCurrencyFormat(item.adminFee),
+                    // item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                    healthcareBenefits:
+                      billingCurrency.currency.code +
+                      " " +
+                      toCurrencyFormat(item.healthcare),
+
+                    // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                  });
+                });
+
+                tempTotal += e.feeSummary.total;
+
+                data.push({
+                  country,
+                  countryCode,
+                  exchangeRate: e.exchangeRate,
+                  currencyCode: e.currencyCode,
+                  feeSummary: e.feeSummary,
+                  data: arr,
+                });
+
+                //For Country Summary
+
+                let totalGrossWages = e.payrollItems.reduce(
+                  (a: any, b: any) => a + (b.totalWage || 0),
+                  0
+                );
+                let totalAllowances = e.payrollItems.reduce(
+                  (a: any, b: any) => a + (b.allowance || 0),
+                  0
+                );
+                let totalExpenseReimb = e.payrollItems.reduce(
+                  (a: any, b: any) => a + (b.expenseRe || 0),
+                  0
+                );
+                let totalEmployerLiability = e.payrollItems.reduce(
+                  (a: any, b: any) => a + (b.liability || 0),
+                  0
+                );
+                let totalCountryVAT = e.payrollItems.reduce(
+                  (a: any, b: any) => a + (b.countryVat || 0),
+                  0
+                );
+
+                function precisionRound(number: number, precision: number) {
+                  if (precision < 0) {
+                    const factor = Math.pow(10, precision);
+                    return Math.round(number * factor) / factor;
+                  } else {
+                    return +(
+                      Math.round(Number(number + "e+" + precision)) +
+                      "e-" +
+                      precision
+                    );
+                  }
+                }
+
+                let countrySumTotalTemp =
+                  precisionRound(
+                    (totalGrossWages + totalAllowances) * e.exchangeRate,
+                    2
+                  ) +
+                  precisionRound(totalExpenseReimb * e.exchangeRate, 2) +
+                  precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
+                  precisionRound(totalCountryVAT * e.exchangeRate, 2);
+
+                countrySumTotalArrTemp.push(countrySumTotalTemp);
+
+                countrySummaryTemp.push({
+                  country: {
+                    value: e.countryName,
+                    img: { src: getFlagPath(e.countryCode) },
                   },
-                  grossWages:
-                    currencyCode + " " + toCurrencyFormat(item.totalWage),
-                  // item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  allowances:
-                    currencyCode + " " + toCurrencyFormat(item.allowance),
+                  currency: e.currencyCode,
+                  employees: e.payrollItems.length,
+                  grossWages: toCurrencyFormat(totalGrossWages),
+                  allowances: toCurrencyFormat(totalAllowances),
+                  expenseReimb: toCurrencyFormat(totalExpenseReimb),
+                  employerLiability: toCurrencyFormat(totalEmployerLiability),
+                  countryVAT: toCurrencyFormat(totalCountryVAT),
+                  exchangeRate: e.exchangeRate,
+                  total: toCurrencyFormat(countrySumTotalTemp),
+                });
 
-                  // item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  expenseReimb:
-                    currencyCode + " " + toCurrencyFormat(item.expenseRe),
-
-                  // item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  employerLiability:
-                    currencyCode + " " + toCurrencyFormat(item.liability),
-
-                  // item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  countryVAT: item.countryVat.toFixed(2),
-                  adminFees:
-                    billingCurrency.currency.code +
-                    " " +
-                    toCurrencyFormat(item.adminFee),
-                  // item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  healthcareBenefits:
-                    billingCurrency.currency.code +
-                    " " +
-                    toCurrencyFormat(item.healthcare),
-
-                  // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                //Fee Summary Calculation
+                feeSummaryTemp.push({
+                  country: {
+                    value: e.countryName,
+                    img: { src: getFlagPath(e.countryCode) },
+                  },
+                  currency: e.currencyCode,
+                  adminFees: toCurrencyFormat(e.feeSummary.adminFee),
+                  OnOffboardings: e.feeSummary.boardingFee,
+                  fxRate: e.feeSummary.fxRate,
+                  fxBill: e.feeSummary.fxBill,
+                  benefits: toCurrencyFormat(e.feeSummary.healthCare),
+                  employeeContribution: e.employeeContributionCreditTotal,
+                  total: toCurrencyFormat(e.feeSummary.total),
                 });
               });
 
-              tempTotal += e.feeSummary.total;
-
-              data.push({
-                country,
-                countryCode,
-                exchangeRate: e.exchangeRate,
-                currencyCode: e.currencyCode,
-                feeSummary: e.feeSummary,
-                data: arr,
-              });
-
-              //For Country Summary
-
-              let totalGrossWages = e.payrollItems.reduce(
-                (a: any, b: any) => a + (b.totalWage || 0),
+              //Set states here
+              setPayrollTables(data);
+              setTotal(tempTotal);
+              setDocuments(res.data.invoice.invoiceDocuments);
+              setApiData(res);
+              setTransactionType(res.data.invoice.transactionType);
+              setCountrySummary(countrySummaryTemp);
+              let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
+                (a: any, b: any) => a + (b || 0),
                 0
               );
-              let totalAllowances = e.payrollItems.reduce(
-                (a: any, b: any) => a + (b.allowance || 0),
-                0
-              );
-              let totalExpenseReimb = e.payrollItems.reduce(
-                (a: any, b: any) => a + (b.expenseRe || 0),
-                0
-              );
-              let totalEmployerLiability = e.payrollItems.reduce(
-                (a: any, b: any) => a + (b.liability || 0),
-                0
-              );
-              let totalCountryVAT = e.payrollItems.reduce(
-                (a: any, b: any) => a + (b.countryVat || 0),
-                0
-              );
-
-              function precisionRound(number: number, precision: number) {
-                if (precision < 0) {
-                  const factor = Math.pow(10, precision);
-                  return Math.round(number * factor) / factor;
-                } else {
-                  return +(
-                    Math.round(Number(number + "e+" + precision)) +
-                    "e-" +
-                    precision
-                  );
-                }
-              }
-
-              let countrySumTotalTemp =
-                precisionRound(
-                  (totalGrossWages + totalAllowances) * e.exchangeRate,
-                  2
-                ) +
-                precisionRound(totalExpenseReimb * e.exchangeRate, 2) +
-                precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
-                precisionRound(totalCountryVAT * e.exchangeRate, 2);
-
-              countrySumTotalArrTemp.push(countrySumTotalTemp);
-
-              countrySummaryTemp.push({
-                country: {
-                  value: e.countryName,
-                  img: { src: getFlagPath(e.countryCode) },
-                },
-                currency: e.currencyCode,
-                employees: e.payrollItems.length,
-                grossWages: toCurrencyFormat(totalGrossWages),
-                allowances: toCurrencyFormat(totalAllowances),
-                expenseReimb: toCurrencyFormat(totalExpenseReimb),
-                employerLiability: toCurrencyFormat(totalEmployerLiability),
-                countryVAT: toCurrencyFormat(totalCountryVAT),
-                exchangeRate: e.exchangeRate,
-                total: toCurrencyFormat(countrySumTotalTemp),
-              });
-
-              //Fee Summary Calculation
-              feeSummaryTemp.push({
-                country: {
-                  value: e.countryName,
-                  img: { src: getFlagPath(e.countryCode) },
-                },
-                currency: e.currencyCode,
-                adminFees: toCurrencyFormat(e.feeSummary.adminFee),
-                OnOffboardings: e.feeSummary.boardingFee,
-                fxRate: e.feeSummary.fxRate,
-                fxBill: e.feeSummary.fxBill,
-                benefits: toCurrencyFormat(e.feeSummary.healthCare),
-                employeeContribution: e.employeeContributionCreditTotal,
-                total: toCurrencyFormat(e.feeSummary.total),
-              });
+              settotalCountrySummaryDue(totalCountrySummaryDueTemp);
+              setFeeSummary(feeSummaryTemp);
+            })
+            .catch((e: any) => {
+              console.log("error e", e);
+              setIsErr(true);
             });
-
-            //Set states here
-            setPayrollTables(data);
-            setTotal(tempTotal);
-            setDocuments(res.data.invoice.invoiceDocuments);
-            setApiData(res);
-            setTransactionType(res.data.invoice.transactionType);
-            setCountrySummary(countrySummaryTemp);
-            let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
-              (a: any, b: any) => a + (b || 0),
-              0
-            );
-            settotalCountrySummaryDue(totalCountrySummaryDueTemp);
-            setFeeSummary(feeSummaryTemp);
-          })
-          .catch((e: any) => {
-            console.log("error e", e);
-            setIsErr(true);
-          });
-        }else{
-          let res : any = {
-            data: apiInvoiceMockData
+        } else {
+          let res: any = {
+            data: apiInvoiceMockData,
           };
-          setTimeout(()=>{
+          setTimeout(() => {
             setApiData(res);
             setTransactionType(res.data.invoice.transactionType);
           }, 8000);
-          
-
         }
       })
       .catch((e: any) => {
@@ -763,11 +762,11 @@ export default function InvoiceDetails() {
     const headers = {
       authorization: `Bearer ${tempToken}`,
       "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      "x-apng-customer-id": cid || "",
       "x-apng-external": "false",
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
-      customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      customer_id: cid || "",
     };
 
     var formData = new FormData();
@@ -857,30 +856,30 @@ export default function InvoiceDetails() {
       headers: {
         authorization: `Bearer ${tempToken}`,
         "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-customer-id": cid || "",
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
-        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        customer_id: cid || "",
       },
     };
-    const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`
+    const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`;
 
     axios
       .delete(deleteApi, headers)
       .then((res: any) => {
-        console.log('ress', res)
+        console.log("ress", res);
         if (res.data === true) {
-          navigate("/pay")
+          navigate("/pay");
         }
         if (res.data === false) {
-          console.log("Invoice not deleted")
+          console.log("Invoice not deleted");
         }
       })
       .catch((e: any) => {
         console.log("error", e);
       });
-  }
+  };
 
   if (!apiData?.data && !isErr) {
     return <p>Loading...</p>;
@@ -910,9 +909,9 @@ export default function InvoiceDetails() {
                 label:
                   transactionType == 7
                     ? "Contractor Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo
+                      apiData?.data?.invoice?.invoiceNo
                     : "Payroll Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo,
+                      apiData?.data?.invoice?.invoiceNo,
               },
             ]}
           />
@@ -920,7 +919,8 @@ export default function InvoiceDetails() {
         <div className="buttons">
           <div className="delete-button">
             {isClient == "false" && status === "In Review" && (
-              <div className="delete-invoice"
+              <div
+                className="delete-invoice"
                 onClick={() => handleDeleteInvoice()}
               >
                 <img src={deleteSvg} />
@@ -943,13 +943,14 @@ export default function InvoiceDetails() {
             onClick={() =>
               transactionType != 7
                 ? setIsDownloadOpen(!isDownloadOpen)
-                : function noRefCheck() { }
+                : function noRefCheck() {}
             }
-            className={`${transactionType == 7 || deleteDisableButtons === true
-              ? "download_disable"
-              : "download"
-              }`}
-          // className="download"
+            className={`${
+              transactionType == 7 || deleteDisableButtons === true
+                ? "download_disable"
+                : "download"
+            }`}
+            // className="download"
           >
             <p className="text">Download</p>
             <Icon
@@ -1106,6 +1107,7 @@ export default function InvoiceDetails() {
                 "DD MMM YYYY"
               )}
             </p>
+
             {transactionType != 7 && (
               <>
                 <p className="heading">Invoice Changes</p>
@@ -1114,6 +1116,38 @@ export default function InvoiceDetails() {
                     "DD MMM YYYY"
                   )}
                 </p>
+
+                {isClient == "false" && (
+                  <div className="autoapproveContainer">
+                    <Checkbox
+                      onChange={(e: any) => {
+                        setIsAutoApprove(e.target.checked);
+
+                        const headers = {
+                          authorization: `Bearer ${tempToken}`,
+                          "x-apng-base-region": "EMEA",
+                          "x-apng-customer-id": cid || "",
+                          "x-apng-external": "false",
+                          "x-apng-inter-region": "0",
+                          "x-apng-target-region": "EMEA",
+                          customer_id: cid || "",
+                        };
+
+                        axios({
+                          url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
+                          method: "POST",
+                          headers,
+                        }).catch((err: any) => {
+                          setIsAutoApprove(!e.target.checked);
+                          console.log(err);
+                        });
+                      }}
+                      label="Auto-Approval after 24h"
+                      checked={isAutoApprove}
+                    />
+                  </div>
+                )}
+
                 <p className="heading">Payment Due</p>
                 <p className="value">
                   {moment(apiData?.data?.invoice?.dueDate).format(
@@ -1231,8 +1265,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           item.currencyCode +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.subTotalDue)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.subTotalDue)
 
                           // item.feeSummary.subTotalDue
                           //   .toFixed(2)
@@ -1254,10 +1288,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(
-                            item.feeSummary.subTotalDue * item.exchangeRate
-                          )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.subTotalDue * item.exchangeRate
+                            )
                           // (item.feeSummary.subTotalDue * item.exchangeRate)
                           //   .toFixed(2)
                           //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1269,8 +1303,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(getInCountryProcessingFee())
+                            " " +
+                            toCurrencyFormat(getInCountryProcessingFee())
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1283,8 +1317,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.fxBill)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.fxBill)
 
                           // item.feeSummary.fxBill
                           //   .toFixed(2)
@@ -1297,8 +1331,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.totalCountryVat)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                           // item.feeSummary.totalCountryVat
                           //   .toFixed(2)
@@ -1311,8 +1345,8 @@ export default function InvoiceDetails() {
                       <h3>
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.total)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.total)
 
                           // item.feeSummary.total
                           //   .toFixed(2)
@@ -1610,13 +1644,11 @@ export default function InvoiceDetails() {
                               const headers = {
                                 authorization: `Bearer ${tempToken}`,
                                 "x-apng-base-region": "EMEA",
-                                "x-apng-customer-id":
-                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                                "x-apng-customer-id": cid || "",
                                 "x-apng-external": "false",
                                 "x-apng-inter-region": "0",
                                 "x-apng-target-region": "EMEA",
-                                customer_id:
-                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                                customer_id: cid || "",
                               };
 
                               axios({
@@ -1680,12 +1712,11 @@ export default function InvoiceDetails() {
                       const headers = {
                         authorization: `Bearer ${tempToken}`,
                         "x-apng-base-region": "EMEA",
-                        "x-apng-customer-id":
-                          "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        "x-apng-customer-id": cid || "",
                         "x-apng-external": "false",
                         "x-apng-inter-region": "0",
                         "x-apng-target-region": "EMEA",
-                        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        customer_id: cid || "",
                       };
                       setTimeout(() => {
                         var formData = new FormData();
@@ -1756,7 +1787,7 @@ export default function InvoiceDetails() {
         <BillsTable
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
-          customerId = {cid}
+          customerId={cid}
         ></BillsTable>
       )}
 
