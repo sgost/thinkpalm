@@ -326,6 +326,10 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
               }
               handleDropdownClick={(b: boolean) => {
                 setIsCustomerOpen(b);
+                setIstypeOpen(false)
+                setIsCountryOpen(false)
+                setIsMonthOpen(false)
+                setIsYearOpen(false)
               }}
               isOpen={isCustomerOpen}
               options={CustomerOptions}
@@ -347,6 +351,10 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
               }
               handleDropdownClick={(b: boolean) => {
                 setIstypeOpen(b);
+                setIsCustomerOpen(false)
+                setIsCountryOpen(false)
+                setIsMonthOpen(false)
+                setIsYearOpen(false)
               }}
               isOpen={istypeOpen}
               options={typeOptions}
@@ -368,6 +376,10 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
               }
               handleDropdownClick={(b: boolean) => {
                 setIsCountryOpen(b);
+                setIsCustomerOpen(false)
+                setIstypeOpen(false)
+                setIsMonthOpen(false)
+                setIsYearOpen(false)
               }}
               isOpen={isCountryOpen}
               options={CountryOptions}
@@ -378,7 +390,13 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
           <div style={{ display: 'flex', flexDirection: 'row', zIndex: '1' }}>
             <div
               className='dropdown-margin'
-              onClick={() => setIsMonthOpen(!isMonthOpen)}
+              onClick={() => {
+                setIsMonthOpen(!isMonthOpen);
+                setIsCustomerOpen(false);
+                setIstypeOpen(false);
+                setIsCountryOpen(false);
+                setIsYearOpen(false)
+              }}
             >
               <Dropdown
                 handleDropOptionClick={(item: any) => {
@@ -411,7 +429,13 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
 
             <div
               className='year-dropdown'
-              onClick={() => setIsYearOpen(!isYearOpen)}
+              onClick={() => {
+                setIsYearOpen(!isYearOpen)
+                setIsCustomerOpen(false);
+                setIstypeOpen(false);
+                setIsCountryOpen(false);
+                setIsMonthOpen(false)
+              }}
             >
               <Dropdown
                 handleDropOptionClick={(item: any) => {
@@ -453,11 +477,6 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
         <Button
           label="Save"
           className="secondary-btn medium button"
-          icon={{
-            icon: 'add',
-            size: 'medium',
-            color: '#526FD6'
-          }}
           handleOnClick={() => {
 
           }}
