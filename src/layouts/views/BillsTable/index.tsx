@@ -1,7 +1,7 @@
 import { Table, Modal, Cards, Icon, FileHandler, Button, Banner } from 'atlasuikit';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { amountWithCommas, customDate, formatFileSize, formatTimePeriod } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
+import { amountWithCommas, customDate, formatFileSize, formatTimePeriod, ToastContainer } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
 import "./billTable.scss";
 
@@ -38,8 +38,9 @@ export default function BillsTable(props: any) {
     const [rejectBanner, setRejectBanner] = useState(false);
     const [openRejectReason, setOpenRejectReason] = useState(false);
     const [rejectReason, setRejectReason] = useState('');
-    // const [updateData, setUpdateData] = useState(false);
     const [rawData, setRawData] = useState<any>(props.tableData.data);
+    const [showToast, setShowToast] = useState(false);
+    var rejectMessage = `${clickedApiData?.referenceNumber} has been rejected.`;
 
     useEffect(() => {
         let data: any = [];
@@ -104,17 +105,16 @@ export default function BillsTable(props: any) {
         .then((response: any) => {
             
             if (response.status == 200 && response.data.responseCode == 200) {
-                console.log(response.data);
-
+                setRejectBanner(false); 
+                setOpenRejectReason(false); 
+                setRejectReason('');
+                setOpenModal(false);
+                setRawData(rawData.filter( (x:any) => x.billReferenceNo != clickedApiData.referenceNumber ));
+                setShowToast(true);
             } else {
                 console.log("Bill reject API failing on contractor service");
             }
-            setRejectBanner(false); 
-            setOpenRejectReason(false); 
-            setRejectReason('');
-            setOpenModal(false);
-            // setUpdateData(!updateData);
-            setRawData(rawData.filter( (x:any) => x.billReferenceNo != clickedApiData.referenceNumber ));
+            
         })
         .catch((e: any) => {
             console.log("error", e);
@@ -383,6 +383,7 @@ export default function BillsTable(props: any) {
                         </div>}
                 </Modal>
             </div>
+            <ToastContainer showToast={showToast} setShowToast={setShowToast} message={rejectMessage} />
         </div>
 
     );
