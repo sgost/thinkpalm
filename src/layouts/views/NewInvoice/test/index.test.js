@@ -173,6 +173,11 @@ describe("Stepper 2", () => {
         "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
       )
       .reply(200, mockapidata.resGetAllCountry);
+      mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=e291c9f0-2476-4237-85cb-7afecdd085d3&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+      )
+      .reply(200, mockapidata.resForStepperTwo);
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -288,6 +293,90 @@ describe("Stepper 2", () => {
     const stepTwoBackButton = await screen.findByTestId("back-button-steptwo");
     expect(stepTwoBackButton).toBeInTheDocument();
     fireEvent.click(stepTwoBackButton);
+
+  });
+
+});
+
+
+describe("Stepper 2 show table click", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll"
+      )
+      .reply(200, mockapidata.resGetAllCustomer);
+
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
+      )
+      .reply(200, mockapidata.resGetAllCountry);
+      mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=e291c9f0-2476-4237-85cb-7afecdd085d3&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+      )
+      .reply(200, mockapidata.resForStepperTwo);
+  });
+
+
+
+  test("dropDown Value change stepper 1 then stepper 2 click on  ", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/Cocacola/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[4]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+
+    const showTable = await screen.findByTestId("showHide-button");
+    expect(showTable).toBeInTheDocument();
+    fireEvent.click(showTable);
 
   });
 

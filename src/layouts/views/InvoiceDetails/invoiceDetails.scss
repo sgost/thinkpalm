@@ -704,7 +704,7 @@
     display: flex;
     .a-modal__body {
       height: 37vh;
-      padding: 2rem 2.5rem;
+      padding: 2rem 2.5rem !important;
       width: 100%;
       max-width: 450px !important;
     }
@@ -767,7 +767,7 @@
     .a-modal__body {
       height: 25vh;
       width: 21%;
-      padding: 2rem;
+      padding: 2rem !important;
     }
     .void-confirm-button {
       svg {
@@ -800,6 +800,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 140px;
+    margin-left: -15px;
     cursor: pointer;
 
     img {
