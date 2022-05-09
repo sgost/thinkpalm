@@ -763,11 +763,11 @@ export default function InvoiceDetails() {
     const headers = {
       authorization: `Bearer ${tempToken}`,
       "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      "x-apng-customer-id": cid || "",
       "x-apng-external": "false",
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
-      customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      customer_id: cid || "",
     };
 
     var formData = new FormData();
@@ -857,11 +857,11 @@ export default function InvoiceDetails() {
       headers: {
         authorization: `Bearer ${tempToken}`,
         "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-customer-id": cid || "",
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
-        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        customer_id: cid || "",
       },
     };
     const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`
@@ -1610,13 +1610,11 @@ export default function InvoiceDetails() {
                               const headers = {
                                 authorization: `Bearer ${tempToken}`,
                                 "x-apng-base-region": "EMEA",
-                                "x-apng-customer-id":
-                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                                "x-apng-customer-id": cid || "",
                                 "x-apng-external": "false",
                                 "x-apng-inter-region": "0",
                                 "x-apng-target-region": "EMEA",
-                                customer_id:
-                                  "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                                customer_id: cid || "",
                               };
 
                               axios({
@@ -1680,12 +1678,11 @@ export default function InvoiceDetails() {
                       const headers = {
                         authorization: `Bearer ${tempToken}`,
                         "x-apng-base-region": "EMEA",
-                        "x-apng-customer-id":
-                          "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        "x-apng-customer-id": cid || "",
                         "x-apng-external": "false",
                         "x-apng-inter-region": "0",
                         "x-apng-target-region": "EMEA",
-                        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+                        customer_id: cid || "",
                       };
                       setTimeout(() => {
                         var formData = new FormData();
