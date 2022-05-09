@@ -163,7 +163,7 @@ describe("Invoice details", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -406,7 +406,7 @@ describe("Api returns transaction type = 7", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -500,7 +500,7 @@ describe("Invoice details decline api fail case handling", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -615,7 +615,7 @@ describe("void test cases on Apprroved", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -773,7 +773,7 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -931,7 +931,7 @@ describe("void test cases on Apprroved Create Api Failed", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1089,7 +1089,7 @@ describe("void test cases on Apprroved Void Api Failed", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1247,7 +1247,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1405,7 +1405,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
 
 //     mock
 //       .onPut(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+//         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
 //       )
 //       .reply(201);
 
@@ -1536,7 +1536,7 @@ describe("api fail", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1627,12 +1627,14 @@ describe("delete test cases on AR Reveiew on true", () => {
     mockapidata.resData.invoice.status = 2;
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+          id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+          invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1663,7 +1665,7 @@ describe("delete test cases on AR Reveiew on true", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1723,16 +1725,15 @@ describe("delete test cases on AR Reveiew on true", () => {
       )
       .reply(200, mockapidata.createDocument);
 
-      mock
+    mock
       .onDelete(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
       )
       .reply(200, true);
-
   });
 
   test("tabs are working", async () => {
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
       <HashRouter>
@@ -1744,7 +1745,6 @@ describe("delete test cases on AR Reveiew on true", () => {
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
-
   });
 });
 describe("delete test cases on AR Reveiew on false", () => {
@@ -1759,12 +1759,14 @@ describe("delete test cases on AR Reveiew on false", () => {
     mockapidata.resData.invoice.status = 2;
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+          id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+          invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1795,7 +1797,7 @@ describe("delete test cases on AR Reveiew on false", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1855,16 +1857,15 @@ describe("delete test cases on AR Reveiew on false", () => {
       )
       .reply(200, mockapidata.createDocument);
 
-      mock
+    mock
       .onDelete(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
       )
       .reply(200, false);
-
   });
 
   test("tabs are working", async () => {
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
       <HashRouter>
@@ -1876,7 +1877,6 @@ describe("delete test cases on AR Reveiew on false", () => {
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
-
   });
 });
 
@@ -1892,12 +1892,14 @@ describe("delete test cases on AR Reveiew on api fail", () => {
     mockapidata.resData.invoice.status = 2;
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+          id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+          invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1928,7 +1930,7 @@ describe("delete test cases on AR Reveiew on api fail", () => {
 
     mock
       .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
       )
       .reply(201);
 
@@ -1988,16 +1990,15 @@ describe("delete test cases on AR Reveiew on api fail", () => {
       )
       .reply(200, mockapidata.createDocument);
 
-      mock
+    mock
       .onDelete(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
       )
       .reply(400, true);
-
   });
 
   test("tabs are working", async () => {
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
       <HashRouter>
@@ -2009,6 +2010,5 @@ describe("delete test cases on AR Reveiew on api fail", () => {
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
-
   });
 });
