@@ -160,7 +160,7 @@
 
           p {
             color: $white;
-            font-size: 32px;
+            font-size: 1.778rem;
             font-weight: 400;
             margin: 0;
           }
@@ -174,11 +174,11 @@
           p {
             color: #cbd4f3;
             margin: 0px;
-            font-size: 20px;
+            font-size: 1.111rem;
 
             span {
               color: $white;
-              font-size: 20px;
+              font-size: 1.111rem;
             }
           }
         }
@@ -243,7 +243,7 @@
       }
 
       .smallText {
-        font-size: 0.813;
+        font-size: 0.813rem;
         line-height: 140%;
         margin: 0px;
       }
@@ -610,10 +610,10 @@
 
   .approvalMsg {
     position: fixed;
-    bottom: 40px;
-    right: 40px;
+    bottom: 2.222rem;
+    right: 2.222rem;
     background-color: $medium-gray;
-    padding: 20px;
+    padding: 1.111rem;
     border-radius: 2px;
   }
 
@@ -646,44 +646,44 @@
       height: 40vh;
       padding-top: 30px;
       width: 100%;
-      max-width: 491px !important;
+      max-width: 27.278rem !important;
     }
     h3 {
       margin-top: -12px;
-      font-size: 28px;
+      font-size: 1.556rem;
       line-height: 35px;
     }
     .text-line {
-      font-size: 16px;
-      line-height: 24px;
+      font-size: 0.889rem;
+      line-height: 1.333rem;
       color: #3e3e3e;
       margin-top: -6px;
     }
     .text-invoive-no {
-      font-size: 16px;
-      line-height: 24px;
+      font-size: 0.889rem;
+      line-height: 1.333rem;
       font-weight: 600;
       color: #3e3e3e;
-      margin-top: -13px;
+      margin-top: -0.722rem;
     }
     h6 {
       color: #3e3e3e;
       font-weight: 400;
-      font-size: 13px;
-      line-height: 16px;
-      margin-top: 40px;
+      font-size: 0.722rem;
+      line-height: 0.889rem;
+      margin-top: 2.222rem;
     }
     .textarea-box {
       margin-top: -22px;
       border-radius: 4px;
-      padding: 20px;
+      padding: 1.111rem;
     }
     .comment {
       color: red;
     }
 
     .decline-modal-button {
-      margin-top: 32px;
+      margin-top: 1.778rem;
       display: flex;
       justify-content: end;
 
@@ -695,7 +695,7 @@
       }
       .decline-button {
         max-width: 11rem;
-        margin-left: 29px;
+        margin-left: 1.611rem;
       }
     }
   }
@@ -704,55 +704,55 @@
     display: flex;
     .a-modal__body {
       height: 37vh;
-      padding: 2rem 2.5rem;
+      padding: 2rem 2.5rem !important;
       width: 100%;
-      max-width: 450px !important;
+      max-width: 25rem !important;
     }
     h3 {
-      margin-top: 13px;
-      font-size: 28px;
-      line-height: 35px;
+      margin-top: 0.722rem;
+      font-size: 1.556rem;
+      line-height: 1.944rem;
       color: #041e42;
     }
     h6 {
-      font-size: 13px;
-      line-height: 16px;
+      font-size: 0.722rem;
+      line-height: 0.889rem;
       color: #3e3e3e;
-      margin-top: 40px;
+      margin-top: 2.222rem;
     }
     textarea.textarea-box {
-      margin-top: -20px;
-      padding: 16px;
+      margin-top: -1.111rem;
+      padding: 0.889rem;
       border-radius: 4px;
       font-family: 'Courier New', Courier, monospace;
     }
     .attachment {
       display: flex;
       flex-direction: row;
-      margin-top: 12px;
+      margin-top: 0.667rem;
       cursor: pointer;
       svg {
-        margin-top: 24px;
+        margin-top: 1.333rem;
       }
       h4 {
         color: #526fd6;
         font-weight: 600;
-        font-size: 20px;
-        line-height: 24px;
-        margin-left: 5px;
+        font-size: 1.111rem;
+        line-height: 1.333rem;
+        margin-left: 0.278rem;
       }
       p {
         background-color: #041e42;
-        margin-top: -10px;
-        margin-left: 4px;
+        margin-top: -0.556rem;
+        margin-left: 0.222rem;
       }
     }
     .void-button {
       display: flex;
       justify-content: end;
-      margin-top: 15px;
+      margin-top: 0.833rem;
       button.a-button.small {
-        font-size: 18px;
+        font-size: 1rem;
         height: 2.99rem;
         width: 5.31rem;
       }
@@ -779,19 +779,19 @@
       }
     }
     h4 {
-      font-size: 28px;
-      line-height: 35px;
+      font-size: 1.556rem;
+      line-height: 1.944rem;
       margin-top: -5px;
-      margin-left: 15px;
+      margin-left: 0.833rem;
     }
   }
 
   .void-confirm-button {
-    margin-top: 86px;
+    margin-top: 4.778rem;
     display: flex;
     justify-content: end;
     .decline-button {
-      margin-left: 30px;
+      margin-left: 1.667rem;
     }
   }
 }
