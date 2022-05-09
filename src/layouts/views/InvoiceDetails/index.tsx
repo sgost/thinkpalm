@@ -917,8 +917,8 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          <div className="delete-button">
-            {isClient == "false" && status === "In Review" && (
+          {isClient == "false" && status === "In Review" && (
+            <div className="delete-button">
               <div
                 className="delete-invoice"
                 onClick={() => handleDeleteInvoice()}
@@ -926,10 +926,10 @@ export default function InvoiceDetails() {
                 <img src={deleteSvg} />
                 <h5>Delete Invoice</h5>
               </div>
-            )}
-          </div>
-          <div className="void-button">
-            {isClient == "false" && status === "Approved" && (
+            </div>
+          )}
+          {isClient == "false" && status === "Approved" && (
+            <div className="void-button">
               <Button
                 className="secondary-btn small"
                 label="Void Invoice"
@@ -937,8 +937,8 @@ export default function InvoiceDetails() {
                   setIsVoidOpen(true);
                 }}
               />
-            )}
-          </div>
+            </div>
+          )}
           <div
             onClick={() =>
               transactionType != 7
@@ -1735,7 +1735,7 @@ export default function InvoiceDetails() {
                           .then((res: any) => {
                             axios
                               .post(
-                                " https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+                                "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
                                 {
                                   invoiceId: id,
 
