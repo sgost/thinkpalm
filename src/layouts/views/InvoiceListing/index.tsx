@@ -244,10 +244,10 @@ export default function InvoiceListing() {
 
   const apiFunc = () => {
     if (isClient !== null && isClient === true) {
-      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      api = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
       return api;
     } else if (isClient !== null && isClient === false) {
-      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      api = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
       return api;
     } else {
       api = "";

@@ -209,7 +209,7 @@ describe("client view", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
       )
       .reply(200, resDataClient);
 
@@ -380,7 +380,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
       )
       .reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
@@ -419,7 +419,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
       )
       .reply(200, resDataInternal);
     // const getById = queryByAttribute.bind(null, "id");
@@ -455,7 +455,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
       )
       .reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
@@ -502,7 +502,7 @@ describe("Internal View Download click and checkbox Click", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
       )
       .reply(200, resDataInternal);
 
@@ -576,7 +576,7 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
       )
       .reply(200, resDataInternal);
 
