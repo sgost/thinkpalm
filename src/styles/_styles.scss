@@ -37,45 +37,51 @@
 //   font-display: swap;
 // }
 @font-face {
-  font-family: 'Circular-Medium';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Medium.woff") format('woff');
+  font-family: "Circular-Medium";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Medium.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Circular-Medium';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Medium.woff2") format('woff2');
+  font-family: "Circular-Medium";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Medium.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'CircularXX';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Regular.woff2") format('woff2');
-}
-
-
-
-@font-face {
-  font-family: 'CircularXX';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Regular.woff") format('woff');
+  font-family: "CircularXX";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Regular.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Circular-Bold';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Bold.woff") format('woff');
+  font-family: "CircularXX";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Regular.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Circular-Bold';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Bold.woff2") format('woff2');
+  font-family: "Circular-Bold";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Bold.woff") format("woff");
 }
 
 @font-face {
-  font-family: 'Circular-Book';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Book.woff") format('woff');
+  font-family: "Circular-Bold";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Bold.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: 'Circular-Book';
-  src: local('Circular'), url("../assets/fonts/CircularXXWeb-Book.woff2") format('woff2');
+  font-family: "Circular-Book";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Book.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Circular-Book";
+  src: local("Circular"),
+    url("../assets/fonts/CircularXXWeb-Book.woff2") format("woff2");
 }
 // @font-face {
 //   font-family: circular;
