@@ -17,7 +17,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
-import { getClientListingUrl } from "src/urls/urls";
+import { getClientListingUrl, getInternalListingUrl } from "../../../../urls/urls";
 
 let resDataInternal = {
   page: 1,
@@ -427,7 +427,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        getClientListingUrl("","","", "")
+        getInternalListingUrl("","","", "")
       )
       .reply(200, resDataInternal);
     // const getById = queryByAttribute.bind(null, "id");

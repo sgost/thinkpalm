@@ -20,7 +20,7 @@ import axios from "axios";
 import { act } from "react-dom/test-utils";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
-import { getApproveUrl, getBillingAddressUrl, getDownloadFileUrl, getDownloadUrl, getExcelUrl, getNotesUrl, urls } from "src/urls/urls";
+import { getApproveUrl, getBillingAddressUrl, getDeleteInvoiceUrl, getDownloadFileUrl, getDownloadUrl, getExcelUrl, getNotesUrl, urls } from "../../../../urls/urls";
 // describe("Invoice detail", () => {
 //   let mock;
 //   beforeAll(() => {

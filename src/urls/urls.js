@@ -57,7 +57,7 @@ export const urls = {
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
 
   declineInvoice: baseURL + services + "/Invoices/declineInvoice",
-  billsPerInvoice: baseURL + contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/"
+  billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/"
 };
 
 export const getClientListingUrl = (
