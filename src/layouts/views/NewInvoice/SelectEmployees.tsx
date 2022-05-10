@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Checkbox, Button, ProfileHeader, Table, Icon } from 'atlasuikit'
 import axios from "axios"
 import './SelectEmployees.scss'
+import { getEmployee, getHeaders } from '../../../urls/urls'
 
 
 
 const SelectEmployees = ({ handleSteps, handleAllSteppersData, allStepsData }: any) => {
 
   const tempToken = localStorage.getItem("temptoken");
-const [buttonHide, setButtonHide] = useState(false)
+  const [buttonHide, setButtonHide] = useState(false)
   const [tableOptions, setTableOptions] = useState(
     {
       columns: [
@@ -70,19 +71,10 @@ const [buttonHide, setButtonHide] = useState(false)
 
   const getEmployyeApiData = () => {
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": allStepsData?.stepOneData?.customerId || '',
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: allStepsData?.stepOneData?.customerId || '',
-      },
-    };
+      headers: getHeaders(tempToken,allStepsData?.stepOneData?.customerId,"false"),   };
     
     // const apiUrl = 'https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7'
-    const apiUrl = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=${allStepsData?.stepOneData?.customerId}&countryId=${allStepsData?.stepOneData?.countryId}`
+    const apiUrl = getEmployee(allStepsData?.stepOneData?.customerId,allStepsData?.stepOneData?.countryId)
     axios
       .get(apiUrl, headers)
       .then((res: any) => {

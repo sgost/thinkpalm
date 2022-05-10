@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Dropdown, Icon } from 'atlasuikit'
 import axios from 'axios';
 import './NewInvoiceCreation.scss'
+import { getCountryByCustomer, urls } from '../../../urls/urls';
 
 
 const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }: any) => {
@@ -151,7 +152,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
   }
 
   const getCustomerDropdownOptions = () => {
-    let api = `https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll`;
+    let api = urls.customers;
     const headers = {
       headers: {
         authorization: `Bearer ${token}`
@@ -191,7 +192,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
   }
 
   const getCountryDropdwonOptions = () => {
-    let api = `https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=${stepperOneData.customerId}`;
+    let api = getCountryByCustomer(stepperOneData.customerId);
     const headers = {
       headers: {
         authorization: `Bearer ${token}`
@@ -268,7 +269,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
   }, [])
 
   useEffect(() => {
-    if (stepperOneData.customerId) {
+    if (stepperOneData?.customerId) {
       getCountryDropdwonOptions()
     }
   }, [stepperOneData?.customerId])
