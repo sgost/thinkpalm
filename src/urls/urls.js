@@ -37,8 +37,8 @@ export const urls = {
     baseURL + services.atlasIdgService + "/InvoiceData/GetPayrollForInvoice/",
   countries:
     metaDataUrl +
-    +services.apngMetaDataService +
-    `/lookup/Countries?includeProperties=Currency&orderBy=Name`,
+    services.apngMetaDataService +
+    "/lookup/Countries?includeProperties=Currency&orderBy=Name",
 
   fee: metaDataUrl + services.apngMetaDataService + `/Fees`,
   lookup: metaDataUrl + services.apngMetaDataService + `/Lookup`,
@@ -81,6 +81,31 @@ export const getInternalListingUrl = (
     baseURL +
     services.atlasInvoiceService +
     `/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+  );
+};
+
+export const getGenerateSinglePdfUrl = (singleInvoiceId) => {
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    `/invoices/generatePDF/${singleInvoiceId}`
+  );
+};
+
+export const getGenerateMultiplePdfUrl = (multiDownloadInvoiceId) => {
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    `/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`
+  );
+};
+
+export const getInvoiceDetailsUrl = (id) => {
+  return (
+    baseURL +
+    services.atlasIdgService +
+    "/InvoiceData/GetPayrollForInvoice/" +
+    id
   );
 };
 
