@@ -61,6 +61,7 @@ export default function InvoiceDetails() {
   const [documents, setDocuments] = useState<any>([]);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState<any>([]);
+  const [showAutoApprovedToast, setShowAutoApprovedToast] = useState(false);
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
@@ -395,6 +396,14 @@ export default function InvoiceDetails() {
       setFeeSummaryTotalDue(totalFeeSummaryTemp);
     }
   }, [apiData, feeData]);
+
+  useEffect(() => {
+    if (showAutoApprovedToast) {
+      setTimeout(() => {
+        setShowAutoApprovedToast(false);
+      }, 4000);
+    }
+  }, [showAutoApprovedToast]);
 
   // useEffect(() => {
   //   console.log("pay", payrollTables);
@@ -1139,7 +1148,13 @@ export default function InvoiceDetails() {
                           url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
                           method: "POST",
                           headers,
-                        }).catch((err: any) => {
+                        })
+                        .then((res: any) => {
+                         if(res.status === 200) {
+                          setShowAutoApprovedToast(true)
+                         }
+                        })
+                        .catch((err: any) => {
                           setIsAutoApprove(!e.target.checked);
                           console.log(err);
                         });
@@ -1171,6 +1186,30 @@ export default function InvoiceDetails() {
           </div>
         </div>
       </div>
+
+      {showAutoApprovedToast && (
+          <div className="toast">
+            {
+              isAutoApprove === true ?
+              "Invoice set to Auto-approve successfully" 
+              : 
+              "Auto-approval removed from Invoice successfully"
+            }
+            <span
+              className="toast-action"
+              onClick={() => {
+                setShowAutoApprovedToast(false);
+              }}
+            >
+              <Icon
+                icon="remove"
+                color="#ffff"
+                size="medium"
+                viewBox="-6 -6 20 20"
+              />
+            </span>
+          </div>
+        )}
 
       {transactionType != 7 && (
         <div className="tab">
