@@ -1949,9 +1949,6 @@ export default function InvoiceDetails() {
       <div className="void-confirm-modal">
         <Modal
           isOpen={isVoidConfirmOptionOpen}
-          handleClose={() => {
-            setIsVoidConfirmOptionOpen(false);
-          }}
         >
           <div>
             <h4>Are you sure you want to void this invoice?</h4>
@@ -1981,9 +1978,6 @@ export default function InvoiceDetails() {
       <div className="delete-confirm-modal">
         <Modal
           isOpen={deleteConfirmModalOpen}
-          handleClose={() => {
-            setDeleteConfirmModalOpen(false);
-          }}
         >
           <div>
             <h4>Are you sure you want to Delete this invoice permanently?</h4>
