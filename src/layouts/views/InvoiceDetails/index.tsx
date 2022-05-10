@@ -21,6 +21,7 @@ import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
+import { getDeleteInvoiceUrl, urls, getDownloadUrl, getExcelUrl, getApproveARUrl, getHeaders, getApproveUrl } from "../../../urls/urls";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -607,7 +608,8 @@ export default function InvoiceDetails() {
       },
     };
 
-    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`;
+    const downloadApi = getDownloadUrl(id);
+
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
@@ -626,33 +628,14 @@ export default function InvoiceDetails() {
   };
 
   const handleApproveInvoice = () => {
-    // const headers = {
-    //   headers: {
-    //     authorization: `Bearer ${tempToken}`,
-    //     "x-apng-base-region": "EMEA",
-    //     "x-apng-customer-id": cid?.toString() || "",
-    //     "x-apng-external": "false",
-    //     "x-apng-inter-region": "0",
-    //     "x-apng-target-region": "EMEA",
-    //     customer_id: cid?.toString() || "",
-    //   },
-    // };
+  
 
-    // const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
-    const approveApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`;
+    const approveApi =getApproveUrl(id)
 
     axios({
       method: "PUT",
       url: approveApi,
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-      },
+      headers: getHeaders(tempToken,cid,isClient),
     })
       .then((res: any) => {
         if (res.status === 201) {
@@ -697,21 +680,12 @@ export default function InvoiceDetails() {
   };
 
   const handleApproveAR = () => {
-    const approveARApi =
-      "https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/Reviewed";
+    const approveARApi = getApproveARUrl()
 
     axios({
       method: "PUT",
       url: approveARApi,
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-      },
+      headers: getHeaders(tempToken,cid,isClient) ,
       data: [
         {
           InvoiceNo: apiData?.data?.invoice?.invoiceNo,
@@ -729,19 +703,11 @@ export default function InvoiceDetails() {
 
   const downloadExcelFunction = () => {
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-        // "Content-Type": "application/json",
-      },
+      headers: getHeaders(tempToken,cid,isClient)
+     ,
     };
 
-    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`;
+   const downloadApi = getExcelUrl(id);
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
@@ -760,21 +726,13 @@ export default function InvoiceDetails() {
   };
 
   const handleVoid = async () => {
-    const headers = {
-      authorization: `Bearer ${tempToken}`,
-      "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": cid || "",
-      "x-apng-external": "false",
-      "x-apng-inter-region": "0",
-      "x-apng-target-region": "EMEA",
-      customer_id: cid || "",
-    };
+    const headers = getHeaders(tempToken,cid,isClient);
 
     var formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
       .post(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+        urls.voidUploadFile,
         formData,
         {
           headers: headers,
@@ -783,7 +741,7 @@ export default function InvoiceDetails() {
       .then(async (res: any) => {
         await axios
           .post(
-            "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+            urls.voidCreateDoc,
             {
               invoiceId: id,
 
@@ -822,7 +780,7 @@ export default function InvoiceDetails() {
 
     await axios
       .post(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`,
+        urls.voidInvoice,
         {
           invoiceId: id,
           note: inputVoidValue,
@@ -854,17 +812,10 @@ export default function InvoiceDetails() {
 
   const handleDeleteInvoice = () => {
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid || "",
-      },
+      headers: getHeaders(tempToken,cid,isClient),
+     
     };
-    const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`;
+    const deleteApi = getDeleteInvoiceUrl(apiData?.data?.invoice?.id);
 
     axios
       .delete(deleteApi, headers)
@@ -1841,22 +1792,12 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-                  const url = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`;
+                   const url = urls.declineInvoice;
                   let currDate = new Date();
-
                   axios({
                     method: "POST",
-                    url: url,
-                    headers: {
-                      authorization: `Bearer ${tempToken}`,
-                      "x-apng-base-region": "EMEA",
-                      "x-apng-customer-id": cid?.toString() || "",
-                      "x-apng-external": "false",
-                      "x-apng-inter-region": "0",
-                      "x-apng-target-region": "EMEA",
-                      customer_id: cid?.toString() || "",
-                      // "Content-Type": "application/json",
-                    },
+                    url: urls.declineInvoice,
+                    headers: getHeaders(tempToken,cid,isClient),
                     data: {
                       invoiceId: id,
                       noteType: "1",

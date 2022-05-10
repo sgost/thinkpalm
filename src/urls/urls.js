@@ -45,7 +45,7 @@ export const urls = {
   voidUploadFile:
     metaDataUrl + services.apngMetaDataService + "/Blob/UploadFile",
   voidCreateDoc:
-    metaDataUrl + services.apngMetaDataService + "/InvoiceDocument/Create",
+    metaDataUrl + services.atlasInvoiceService + "/InvoiceDocument/Create",
   voidInvoice: baseURL + services.atlasInvoiceService + "/Invoices/voidInvoice",
   saveNote: baseURL + services.atlasInvoiceService + `/InvoiceNote/Create`,
 
@@ -55,7 +55,7 @@ export const urls = {
   createDocument:
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
 
-  declineInvoice: baseURL + services + "/Invoices/declineInvoice",
+  declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
 };
 
 export const getClientListingUrl = (
