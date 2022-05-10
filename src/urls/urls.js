@@ -30,6 +30,7 @@ const services = {
   atlasIdgService: "/atlas-idg-service/api",
   apngMetaDataService: "/metadataservice/api",
   atlasCustomerService: "/cs/api",
+  contractorPayBillingService: "billingservice/api",
   atlasSubscriptionService:"/atlas-subscriptionservice/api"
 };
 
@@ -55,10 +56,9 @@ export const urls = {
   uploadFile: metaDataUrl + services.apngMetaDataService + "/Blob/UploadFile",
   createDocument:
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
-
   declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
-
+  billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/"
 };
 
 export const getClientListingUrl = (
