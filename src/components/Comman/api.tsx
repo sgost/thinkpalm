@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const getRequest = (url: any, token: any, cid?: any) => {
+const getRequest = (url: any, token: any, cid?: any, isClient: any) => {
   const [data, setData] = useState([]);
 
   // const token =
@@ -14,7 +14,7 @@ const getRequest = (url: any, token: any, cid?: any) => {
       authorization: `Bearer ${token}`,
       "x-apng-base-region": "EMEA",
       "x-apng-customer-id": cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-      "x-apng-external": "false",
+      "x-apng-external": isClient,
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
       customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
@@ -25,15 +25,15 @@ const getRequest = (url: any, token: any, cid?: any) => {
 
   useEffect(() => {
     if (url) {
-    axios
-      .get(url, headers)
-      .then((res: any) => {
-        // console.log(res);
-        setData(res);
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
+      axios
+        .get(url, headers)
+        .then((res: any) => {
+          // console.log(res);
+          setData(res);
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
     }
   }, [url, token]);
 
