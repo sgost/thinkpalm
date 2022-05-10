@@ -126,13 +126,13 @@ describe("Invoice details", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -369,13 +369,13 @@ describe("Api returns transaction type = 7", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, apiInvoiceMockData);
     mock
@@ -463,13 +463,13 @@ describe("Invoice details decline api fail case handling", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -578,13 +578,13 @@ describe("void test cases on Apprroved", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -736,13 +736,13 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -894,13 +894,13 @@ describe("void test cases on Apprroved Create Api Failed", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1052,13 +1052,13 @@ describe("void test cases on Apprroved Void Api Failed", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1210,13 +1210,13 @@ describe("void test cases on Apprroved and click on cancel", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1499,13 +1499,13 @@ describe("api fail", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(500, mockapidata.resAddressDataFailedApi);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1628,13 +1628,13 @@ describe("delete test cases on AR Reveiew on true", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1745,6 +1745,156 @@ describe("delete test cases on AR Reveiew on true", () => {
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
+
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteConfirm = await screen.findByTestId("delete-button-submit");
+    expect(deleteConfirm).toBeInTheDocument();
+    fireEvent.click(deleteConfirm);
+  });
+});
+describe("delete test cases on AR Reveiew click on cancel button", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 2;
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+        id
+      )
+      .reply(200, mockapidata.resData);
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+        invoiceId
+      )
+      .reply(200, BillsByInvoiceId);
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+      )
+      .reply(200, mockapidata.resAddressData);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+      )
+      .reply(200, mockapidata.resCountriesData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+      .reply(200, mockapidata.resFeeData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+      .reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
+      )
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
+      )
+      .reply(201);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
+      )
+      .reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
+      )
+      .reply(200, mockapidata.declineInvoicePost);
+
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
+      )
+      .reply(200, mockapidata.voidApiPost);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
+      )
+      .reply(200, mockapidata.uploadFile);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
+      )
+      .reply(200, mockapidata.createDocument);
+
+    mock
+      .onDelete(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
+      )
+      .reply(200, true);
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
+    fireEvent.click(buttonDeleteInvoice);
+
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteCancel = await screen.findByTestId("delete-button-Cancel");
+    expect(deleteCancel).toBeInTheDocument();
+    fireEvent.click(deleteCancel);
   });
 });
 describe("delete test cases on AR Reveiew on false", () => {
@@ -1760,13 +1910,13 @@ describe("delete test cases on AR Reveiew on false", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -1877,6 +2027,15 @@ describe("delete test cases on AR Reveiew on false", () => {
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
+
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteConfirm = await screen.findByTestId("delete-button-submit");
+    expect(deleteConfirm).toBeInTheDocument();
+    fireEvent.click(deleteConfirm);
   });
 });
 
@@ -1893,13 +2052,13 @@ describe("delete test cases on AR Reveiew on api fail", () => {
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        id
       )
       .reply(200, mockapidata.resData);
     mock
       .onGet(
         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
+        invoiceId
       )
       .reply(200, BillsByInvoiceId);
     mock
@@ -2010,5 +2169,245 @@ describe("delete test cases on AR Reveiew on api fail", () => {
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
+
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteConfirm = await screen.findByTestId("delete-button-submit");
+    expect(deleteConfirm).toBeInTheDocument();
+    fireEvent.click(deleteConfirm);
+  });
+});
+describe("Invoice details auto approve checkbox click", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+        id
+      )
+      .reply(200, mockapidata.resData);
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+        invoiceId
+      )
+      .reply(200, BillsByInvoiceId);
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+      )
+      .reply(200, mockapidata.resAddressData);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+      )
+      .reply(200, mockapidata.resCountriesData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+      .reply(200, mockapidata.resFeeData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+      .reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
+      )
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
+      )
+      .reply(201);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
+      )
+      .reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
+      )
+      .reply(200, mockapidata.declineInvoicePost);
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=ab9d400a-0b11-4a21-8505-7646f6caed8d&settingTypeId=1&IsActive=true`
+      )
+      .reply(200, true);
+  });
+
+  test("approve invoice clickable ", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const approve = await screen.getByText(/Auto-Approval after 24h/);
+    fireEvent.click(approve);
+
+    const approveSuccesfully = await screen.findAllByText(/Invoice set to Auto-approve successfully/);
+    expect(approveSuccesfully[0]).toBeInTheDocument()
+
+    fireEvent.click(approve);
+    const approveUncheckSuccesfully = await screen.getByText(/Auto-approval removed from Invoice successfully/);
+    expect(approveUncheckSuccesfully).toBeInTheDocument()
+
+    const crossButton = await screen.getByTestId("toast-cross-button");
+    fireEvent.click(crossButton);
+
+  });
+});
+describe("Invoice details auto approve checkbox click api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+        id
+      )
+      .reply(200, mockapidata.resData);
+    mock
+      .onGet(
+        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+        invoiceId
+      )
+      .reply(200, BillsByInvoiceId);
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+      )
+      .reply(200, mockapidata.resAddressData);
+
+    mock
+      .onGet(
+        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+      )
+      .reply(200, mockapidata.resCountriesData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+      .reply(200, mockapidata.resFeeData);
+
+    mock
+      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+      .reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
+      )
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`
+      )
+      .reply(201);
+
+    mock
+      .onPost(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
+      )
+      .reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+
+    mock
+      .onGet(
+        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
+      )
+      .reply(200, {
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+        name: "sample.pdf",
+      });
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
+      )
+      .reply(200, mockapidata.declineInvoicePost);
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=ab9d400a-0b11-4a21-8505-7646f6caed8d&settingTypeId=1&IsActive=true`
+      )
+      .reply(400, true);
+  });
+
+  test("approve invoice clickable ", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const approve = await screen.getByText(/Auto-Approval after 24h/);
+    fireEvent.click(approve);
   });
 });

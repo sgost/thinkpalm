@@ -800,7 +800,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: 140px;
-    margin-left: -15px;
+    margin-left: -2rem;
     cursor: pointer;
 
     img {
@@ -813,5 +813,63 @@
       margin-top: 13px;
       color: red;
     }
+  }
+
+  .delete-confirm-modal {
+    background-color: #fff;
+    svg {
+      display: none !important;
+    }
+    .a-modal__body {
+      height: 25vh;
+      width: 22rem;
+      padding: 2rem !important;
+    }
+    .delete-confirm-button {
+      svg {
+        display: inline-block !important;
+      }
+      button.a-button.medium {
+        font-size: 1.16rem;
+        width: 9.13rem;
+      }
+    }
+    h4 {
+      font-size: 1.899rem;
+      margin-top: 0rem;
+    }
+    .delete-confirm-button {
+      margin-top: 86px;
+      display: flex;
+      justify-content: end;
+      .delete-button {
+        margin-left: 30px;
+      }
+    }
+  }
+  .toast {
+      display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    justify-items: center;
+    position: absolute;
+    width: fit-content;
+    background-color: rgba(8, 18, 58, 0.8);
+    color: #ffffff;
+    font-size: 13px;
+    letter-spacing: 2px;
+    box-shadow: 0rem 0.25rem 0.5rem rgba(112, 128, 144, 0.6);
+    border-radius: 0.25rem;
+    z-index: 2;
+    margin-left: 33rem;
+    margin-top: 1rem;
+  }
+
+  .toast-action {
+    margin-top: -3px;
+    margin-left: 10px;
+    cursor: pointer;
   }
 }

@@ -61,6 +61,7 @@ export default function InvoiceDetails() {
   const [documents, setDocuments] = useState<any>([]);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState<any>([]);
+  const [showAutoApprovedToast, setShowAutoApprovedToast] = useState(false);
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
@@ -75,6 +76,7 @@ export default function InvoiceDetails() {
   const [transactionType, setTransactionType] = useState();
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
+  const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const [countrySummary, setCountrySummary] = useState<any>([]);
@@ -394,6 +396,14 @@ export default function InvoiceDetails() {
       setFeeSummaryTotalDue(totalFeeSummaryTemp);
     }
   }, [apiData, feeData]);
+
+  useEffect(() => {
+    if (showAutoApprovedToast) {
+      setTimeout(() => {
+        setShowAutoApprovedToast(false);
+      }, 4000);
+    }
+  }, [showAutoApprovedToast]);
 
   // useEffect(() => {
   //   console.log("pay", payrollTables);
@@ -852,7 +862,7 @@ export default function InvoiceDetails() {
       });
   };
 
-  const handleDeleteInvoice = () => {
+  const handleDeleteInvoice = async () => {
     const headers = {
       headers: {
         authorization: `Bearer ${tempToken}`,
@@ -866,7 +876,7 @@ export default function InvoiceDetails() {
     };
     const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`;
 
-    axios
+   await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
         console.log("ress", res);
@@ -922,7 +932,7 @@ export default function InvoiceDetails() {
             <div className="delete-button">
               <div
                 className="delete-invoice"
-                onClick={() => handleDeleteInvoice()}
+                onClick={() => setDeleteConfirmModalOpen(true)}
               >
                 <img src={deleteSvg} />
                 <h5>Delete Invoice</h5>
@@ -1138,7 +1148,13 @@ export default function InvoiceDetails() {
                           url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
                           method: "POST",
                           headers,
-                        }).catch((err: any) => {
+                        })
+                        .then((res: any) => {
+                         if(res.status === 200) {
+                          setShowAutoApprovedToast(true)
+                         }
+                        })
+                        .catch((err: any) => {
                           setIsAutoApprove(!e.target.checked);
                           console.log(err);
                         });
@@ -1170,6 +1186,31 @@ export default function InvoiceDetails() {
           </div>
         </div>
       </div>
+
+      {showAutoApprovedToast && (
+          <div className="toast">
+            {
+              isAutoApprove === true ?
+              "Invoice set to Auto-approve successfully" 
+              : 
+              "Auto-approval removed from Invoice successfully"
+            }
+            <span
+            data-testid ='toast-cross-button'
+              className="toast-action"
+              onClick={() => {
+                setShowAutoApprovedToast(false);
+              }}
+            >
+              <Icon
+                icon="remove"
+                color="#ffff"
+                size="medium"
+                viewBox="-6 -6 20 20"
+              />
+            </span>
+          </div>
+        )}
 
       {transactionType != 7 && (
         <div className="tab">
@@ -1948,9 +1989,6 @@ export default function InvoiceDetails() {
       <div className="void-confirm-modal">
         <Modal
           isOpen={isVoidConfirmOptionOpen}
-          handleClose={() => {
-            setIsVoidConfirmOptionOpen(false);
-          }}
         >
           <div>
             <h4>Are you sure you want to void this invoice?</h4>
@@ -1976,6 +2014,34 @@ export default function InvoiceDetails() {
           </div>
         </Modal>
       </div>
+
+      <div className="delete-confirm-modal">
+        <Modal
+          isOpen={deleteConfirmModalOpen}
+        >
+          <div>
+            <h4>Are you sure you want to Delete this invoice permanently?</h4>
+
+            <div className="delete-confirm-button">
+              <Button
+                data-testid="delete-button-Cancel"
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setDeleteConfirmModalOpen(false);
+                }}
+              />
+              <Button
+                data-testid="delete-button-submit"
+                label="Delete"
+                className="primary-blue medium delete-button"
+                handleOnClick={() => handleDeleteInvoice()}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
     </div>
   );
 }

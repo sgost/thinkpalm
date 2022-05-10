@@ -74,10 +74,12 @@ const [buttonHide, setButtonHide] = useState(false)
         authorization: `Bearer ${tempToken}`,
         "x-apng-base-region": "EMEA",
         "x-apng-customer-id": allStepsData?.stepOneData?.customerId || '',
+        // "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
         "x-apng-external": "false",
         "x-apng-inter-region": "0",
         "x-apng-target-region": "EMEA",
         customer_id: allStepsData?.stepOneData?.customerId || '',
+        // customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       },
     };
     
