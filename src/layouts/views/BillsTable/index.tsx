@@ -184,7 +184,7 @@ export default function BillsTable(props: any) {
                                         icon="invoices"
                                         width="30"
                                         height="30"
-                                        color="#17224E"
+                                        color="#041e42"
                                         viewBox="-2 0 24 24" />
                                     <span className="reference-description">Bill Reference No. {clickedApiData.referenceNumber}</span>
                                 </div>
