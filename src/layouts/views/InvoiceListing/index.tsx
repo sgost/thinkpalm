@@ -9,6 +9,13 @@ import DatepickerDropdown from "../../../components/DatepickerDropdown/Datepicke
 import getRequest from "../../../components/Comman/api";
 import { listData } from "../InvoiceDetails/mockData";
 import dots from "./dots.svg";
+import {
+  getClientListingUrl,
+  getGenerateMultiplePdfUrl,
+  getGenerateSinglePdfUrl,
+  getHeaders,
+  getInternalListingUrl,
+} from "../../../urls/urls";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -238,10 +245,18 @@ export default function InvoiceListing() {
 
   const apiFunc = () => {
     if (isClient !== null && isClient === true) {
-      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      // api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      api = getClientListingUrl(transactionTypes, statusType, dateFrom, dateTo);
       return api;
     } else if (isClient !== null && isClient === false) {
-      api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      // api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      api = getInternalListingUrl(
+        transactionTypes,
+        statusType,
+        dateFrom,
+        dateTo
+      );
+
       return api;
     } else {
       api = "";
@@ -249,7 +264,12 @@ export default function InvoiceListing() {
     }
   };
 
-  const apiData: any = getRequest(apiFunc(), token);
+  const apiData: any = getRequest(
+    apiFunc(),
+    token,
+    "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    isClient
+  );
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -387,19 +407,11 @@ export default function InvoiceListing() {
     setDownloadDisable(true);
     setShowSuccessToast({ ...showSuccessToast, type: true });
     const headers = {
-      headers: {
-        authorization: `Bearer ${token}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: customerID,
-        "Content-Type": "application/json",
-      },
+      headers: getHeaders(token, customerID, isClient),
     };
     if (singleInvoiceId) {
-      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
+      // const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
+      const api = getGenerateSinglePdfUrl(singleInvoiceId);
       axios
         .get(api, headers)
         .then((res: any) => {
@@ -420,7 +432,8 @@ export default function InvoiceListing() {
     } else if (multiInvoiceId) {
       setShowSuccessToast({ ...showSuccessToast, type: true });
       const multiDownloadInvoiceId = multiInvoiceId.join(",");
-      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
+      // const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
+      const api = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
       axios({
         method: "get",
         url: api,
