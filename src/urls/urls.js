@@ -30,6 +30,7 @@ const services = {
   atlasIdgService: "/atlas-idg-service/api",
   apngMetaDataService: "/metadataservice/api",
   atlasCustomerService: "/cs/api",
+  atlasSubscriptionService:"/atlas-subscriptionservice/api"
 };
 
 export const urls = {
@@ -45,7 +46,7 @@ export const urls = {
   voidUploadFile:
     metaDataUrl + services.apngMetaDataService + "/Blob/UploadFile",
   voidCreateDoc:
-    metaDataUrl + services.apngMetaDataService + "/InvoiceDocument/Create",
+    metaDataUrl + services.atlasInvoiceService + "/InvoiceDocument/Create",
   voidInvoice: baseURL + services.atlasInvoiceService + "/Invoices/voidInvoice",
   saveNote: baseURL + services.atlasInvoiceService + `/InvoiceNote/Create`,
 
@@ -55,7 +56,9 @@ export const urls = {
   createDocument:
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
 
-  declineInvoice: baseURL + services + "/Invoices/declineInvoice",
+  declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
+  customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
+
 };
 
 export const getClientListingUrl = (
@@ -167,4 +170,16 @@ export const getDownloadFileUrl = (docurl) => {
     services.apngMetaDataService +
     `/Blob/getBlobUrlWithSASToken?url=${docurl}`
   );
+};
+
+export const getCountryByCustomer= (id) => {
+  return (
+    baseURL + services.atlasSubscriptionService + "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId="+id
+   );
+};
+
+export const getEmployee= (customerId,countryId) => {
+  return (
+    baseURL + services.atlasIdgService + `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}`
+   );
 };
