@@ -517,11 +517,11 @@ export default function InvoiceListing() {
               label="New Invoice"
               className="primary-blue medium"
               icon={{
-                icon: 'add',
-                size: 'medium',
-                color: '#fff'
+                icon: "add",
+                size: "medium",
+                color: "#fff",
               }}
-              handleOnClick={() => navigate('/pay/newinvoice')}
+              handleOnClick={() => navigate("/pay/newinvoice")}
             />
           )}
         </div>
@@ -849,19 +849,19 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                  ...searchedTableData,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
+                    ...searchedTableData,
+                    // showDefaultColumn: true,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
                 : isClient
-                  ? {
+                ? {
                     ...clientTableData,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                  : {
+                : {
                     ...internalTabledata,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
@@ -876,12 +876,17 @@ export default function InvoiceListing() {
               let isClientStr = isClient ? "true" : "false";
               navigate(
                 "/pay/invoicedetails" +
-                row.id +
-                "/" +
-                row.customerId +
-                "/" +
-                isClientStr,
-                { state: { InvoiceId: row.invoiceNo } }
+                  row.id +
+                  "/" +
+                  row.customerId +
+                  "/" +
+                  isClientStr,
+                {
+                  state: {
+                    InvoiceId: row.invoiceNo,
+                    transactionType: row.transactionType,
+                  },
+                }
               );
             }}
           />

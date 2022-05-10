@@ -4,26 +4,37 @@
 .select-employee-container {
     .employee-header {
         display: flex;
+        margin-bottom: 1rem;
         justify-content: space-between;
         // width: 80% !important;
         // background-color: #17224e;
         h3 {
             color: #17224e;
-            font-size: 24px;
-            line-height: 35px;
+            font-size: 1.333rem;
+            line-height: 1.944rem;
         }
         .employee-checkbox {
             display: flex;
             align-items: center;
             width: 13rem;
+            .a-checkbox-wrapper{
+                margin: 0;
+                label{
+                    top: 0.1rem;
+                }
+            }
+            
         }
     }
+
     .full-table-container {
         // background-color: #17224e;
         // width: 80% !important;
+        box-shadow: 0px 2px 4px rgba(112, 128, 144, 0.05);
+            border: 1px solid #EBEBED;
+            margin-bottom: 0.833rem;
         .user-detail {
             display: flex;
-            border: 2px solid #ebebed;
             height: 5rem;
             justify-content: space-between;
             .table-header {
@@ -36,21 +47,33 @@
                 .a-iupload {
                     height: 2.375rem;
                     width: 2.375rem;
+                    img{
+                        width: 38.53px;
+                        height: 38.53px;
+                        border-radius: 50%;
+                    }
                 }
                 .a-iupload__initials {
                     font-size: 1rem;
                 }
                 .a-pheader__details .uname {
                     font-size: 1.1rem;
-                    margin-left: -6px;
-                    color: #3e3e3e;
+                    color: #3E3E3E;
                 }
             }
             .table-location {
                 display: flex;
                 flex-direction: row;
-                justify-content: space-between;
-                width: 11rem;
+                justify-content: space-around;
+                width: 14rem;
+                gap: 2.944rem;
+                .table-icon-location{
+                    display: flex;
+                    width: 10.444rem;
+                }
+                .table-up-down{
+                    margin-right: 1.056rem;
+                }
                 svg.icon.location {
                     width: 30px !important;
                     height: 30px !important;
@@ -58,9 +81,8 @@
                 }
                 h5 {
                     color: #767676;
-                    font-size: 18px;
-                    line-height: 140%;
-                    margin-right: 35px;
+                    font-size: 1.125rem;
+                    margin-left: 0.417rem;
                 }
                 svg.icon.up {
                     width: 40px !important;
@@ -82,7 +104,6 @@
         display: flex;
         // background-color: #17224e;
         flex-direction: row;
-        margin-top: 500px;
         width: 86%;
         justify-content: space-between;
         margin-left: -20%;
