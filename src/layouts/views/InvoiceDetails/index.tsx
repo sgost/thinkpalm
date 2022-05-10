@@ -1196,6 +1196,7 @@ export default function InvoiceDetails() {
               "Auto-approval removed from Invoice successfully"
             }
             <span
+            data-testid ='toast-cross-button'
               className="toast-action"
               onClick={() => {
                 setShowAutoApprovedToast(false);
