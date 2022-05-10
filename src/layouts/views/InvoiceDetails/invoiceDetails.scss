@@ -814,4 +814,39 @@
       color: red;
     }
   }
+
+  .delete-confirm-modal {
+    background-color: #fff;
+    svg {
+      display: none !important;
+    }
+    .a-modal__body {
+      height: 25vh;
+      width: 22rem;
+      padding: 2rem !important;
+    }
+    .delete-confirm-button {
+      svg {
+        display: inline-block !important;
+      }
+      button.a-button.medium {
+        font-size: 1.16rem;
+        width: 9.13rem;
+      }
+    }
+    h4 {
+      font-size: 1.899rem;
+      line-height: 35px;
+      margin-top: -5px;
+      margin-left: 15px;
+    }
+    .delete-confirm-button {
+      margin-top: 86px;
+      display: flex;
+      justify-content: end;
+      .delete-button {
+        margin-left: 30px;
+      }
+    }
+  }
 }

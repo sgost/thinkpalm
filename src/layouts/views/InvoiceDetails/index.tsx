@@ -75,6 +75,7 @@ export default function InvoiceDetails() {
   const [transactionType, setTransactionType] = useState();
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
+  const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const [countrySummary, setCountrySummary] = useState<any>([]);
@@ -851,7 +852,7 @@ export default function InvoiceDetails() {
       });
   };
 
-  const handleDeleteInvoice = () => {
+  const handleDeleteInvoice = async () => {
     const headers = {
       headers: {
         authorization: `Bearer ${tempToken}`,
@@ -865,7 +866,7 @@ export default function InvoiceDetails() {
     };
     const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`;
 
-    axios
+   await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
         console.log("ress", res);
@@ -921,7 +922,7 @@ export default function InvoiceDetails() {
             {isClient == "false" && status === "In Review" && (
               <div
                 className="delete-invoice"
-                onClick={() => handleDeleteInvoice()}
+                onClick={() => setDeleteConfirmModalOpen(true)}
               >
                 <img src={deleteSvg} />
                 <h5>Delete Invoice</h5>
@@ -1974,6 +1975,37 @@ export default function InvoiceDetails() {
           </div>
         </Modal>
       </div>
+
+      <div className="delete-confirm-modal">
+        <Modal
+          isOpen={deleteConfirmModalOpen}
+          handleClose={() => {
+            setDeleteConfirmModalOpen(false);
+          }}
+        >
+          <div>
+            <h4>Are you sure you want to Delete this invoice permanently?</h4>
+
+            <div className="delete-confirm-button">
+              <Button
+                data-testid="delete-button-Cancel"
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setDeleteConfirmModalOpen(false);
+                }}
+              />
+              <Button
+                data-testid="delete-button-submit"
+                label="Delete"
+                className="primary-blue medium delete-button"
+                handleOnClick={() => handleDeleteInvoice()}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
     </div>
   );
 }
