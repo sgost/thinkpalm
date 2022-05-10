@@ -317,7 +317,7 @@ stages:
     - name: ATLAS_REGION
       value: eu
     - name: ATLAS_ENVIRONMENT
-      value: dev
+      value: qa
     environment:
       name: ATLAS_FRONTEND_QA
     strategy:

@@ -1,4 +1,6 @@
 import moment from "moment";
+import {Icon} from 'atlasuikit'
+import { useEffect } from "react";
 /* istanbul ignore next */
 export const amountWithCommas = (amount: number, decimalDigits: number = 2) => {
     const roundedValue = decimalDigits > 2 ? amount : Math.round(amount * 100) / 100;
@@ -51,3 +53,26 @@ export const formatFileSize = (bytes: number, decimalPoint: number = 0) => {
         i = Math.floor(Math.log(Number(bytes)) / Math.log(k));
     return parseFloat((Number(bytes) / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
+/* istanbul ignore next */
+export const ToastContainer = ({ showToast, setShowToast, message}: { showToast: boolean, setShowToast: (arg: boolean) => any, message: any}) => {
+
+    useEffect(() => {
+        if (showToast) {
+            setTimeout(() => setShowToast(false), 4000);
+        }
+    }, [showToast]);
+
+    return showToast ? (
+        <div className="toast">
+            <span>{message}</span>
+            <span className="toast__action" onClick={() => setShowToast(false)}>
+                <Icon
+                    icon="remove"
+                    color="#ffff"
+                    size="medium"
+                    viewBox="-6 -6 24 24"
+                />
+            </span>
+        </div>
+    ) : null;
+}

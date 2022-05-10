@@ -141,35 +141,34 @@ $mq-retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
 html,
 body {
   height: 100%;
-  // font-size: 6px;
+  font-size: 6px;
+  @media #{$mq-1024} {
+    font-size: 8px;
+  }
 
-  // @media #{$mq-1024} {
-  //   font-size: 8px;
-  // }
+  @media #{$mq-1366} {
+    font-size: 11.5px;
+  }
 
-  // @media #{$mq-1366} {
-  //   font-size: 11.5px;
-  // }
+  @media #{$mq-1440} {
+    font-size: 13px;
+  }
 
-  // @media #{$mq-1440} {
-  //   font-size: 13px;
-  // }
+  @media #{$mq-1536} {
+    font-size: 14px;
+  }
 
-  // @media #{$mq-1536} {
-  //   font-size: 14px;
-  // }
+  @media #{$mq-1600} {
+    font-size: 15.5px;
+  }
 
-  // @media #{$mq-1600} {
-  //   font-size: 15.5px;
-  // }
+  @media #{$mq-1920} {
+    font-size: 18px;
+  }
 
-  // @media #{$mq-1920} {
-  //   font-size: 18px;
-  // }
-
-  // @media #{$mq-2560} {
-  //   font-size: 20px;
-  // }
+  @media #{$mq-2560} {
+    font-size: 20px;
+  }
 }
 .main-page-container {
   min-width: 100%;

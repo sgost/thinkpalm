@@ -639,7 +639,8 @@ export default function InvoiceDetails() {
     //   },
     // };
 
-    const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
+    // const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
+    const approveApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/${id}/4`;
 
     axios({
       method: "PUT",
@@ -918,8 +919,8 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          <div className="delete-button">
-            {isClient == "false" && status === "In Review" && (
+          {isClient == "false" && status === "In Review" && (
+            <div className="delete-button">
               <div
                 className="delete-invoice"
                 onClick={() => setDeleteConfirmModalOpen(true)}
@@ -927,10 +928,10 @@ export default function InvoiceDetails() {
                 <img src={deleteSvg} />
                 <h5>Delete Invoice</h5>
               </div>
-            )}
-          </div>
-          <div className="void-button">
-            {isClient == "false" && status === "Approved" && (
+            </div>
+          )}
+          {isClient == "false" && status === "Approved" && (
+            <div className="void-button">
               <Button
                 className="secondary-btn small"
                 label="Void Invoice"
@@ -938,8 +939,8 @@ export default function InvoiceDetails() {
                   setIsVoidOpen(true);
                 }}
               />
-            )}
-          </div>
+            </div>
+          )}
           <div
             onClick={() =>
               transactionType != 7
@@ -1733,7 +1734,7 @@ export default function InvoiceDetails() {
                           .then((res: any) => {
                             axios
                               .post(
-                                " https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+                                "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
                                 {
                                   invoiceId: id,
 
@@ -1789,6 +1790,7 @@ export default function InvoiceDetails() {
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
           customerId={cid}
+          invoiceId = {state.InvoiceId}
         ></BillsTable>
       )}
 
