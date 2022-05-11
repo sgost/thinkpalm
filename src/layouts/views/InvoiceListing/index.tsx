@@ -16,6 +16,7 @@ import {
   getHeaders,
   getInternalListingUrl,
 } from "../../../urls/urls";
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -51,26 +52,10 @@ export default function InvoiceListing() {
     //   label: "Contractor Invoice",
     //   value: "contractorInvoice",
     // },
-    {
-      isSelected: false,
-      label: "Credit Memo",
-      value: 4,
-    },
-    {
-      isSelected: false,
-      label: "Payroll",
-      value: 1,
-    },
-    {
-      isSelected: false,
-      label: "Miscellaneous",
-      value: 2,
-    },
-    {
-      isSelected: false,
-      label: "Proforma",
-      value: 3,
-    },
+    tableSharedColumns.createMemo,
+    tableSharedColumns.payroll,
+    tableSharedColumns.Miscellaneous,
+    tableSharedColumns.proforma,
     {
       isSelected: false,
       label: "LateFee",

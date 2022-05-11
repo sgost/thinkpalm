@@ -3,6 +3,7 @@ import { Button, Dropdown, Icon } from 'atlasuikit'
 import axios from 'axios';
 import './NewInvoiceCreation.scss'
 import { getCountryByCustomer, urls } from '../../../urls/urls';
+import { tableSharedColumns } from '../../../sharedColumns/sharedColumns';
 
 
 const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }: any) => {
@@ -21,11 +22,10 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
   const [CustomerOptions, setCustomerOption] = useState([]);
 
   const [typeOptions, setTypeOptions] = useState([
-    {
-      isSelected: false,
-      label: "Payroll",
-      value: "1",
-    },
+    tableSharedColumns.payroll,
+    tableSharedColumns.proforma,
+    tableSharedColumns.Miscellaneous,
+    tableSharedColumns.createMemo
   ])
 
   const [CountryOptions, setCountryOptions] = useState([]);
