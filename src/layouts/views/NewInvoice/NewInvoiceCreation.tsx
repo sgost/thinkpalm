@@ -1,22 +1,25 @@
-import { useEffect, useState } from 'react'
-import { Button, Dropdown, Icon } from 'atlasuikit'
-import axios from 'axios';
-import './NewInvoiceCreation.scss'
-import { getCountryByCustomer, urls } from '../../../urls/urls';
-import { tableSharedColumns } from '../../../sharedColumns/sharedColumns';
+import { useEffect, useState } from "react";
+import { Button, Dropdown, Icon } from "atlasuikit";
+import axios from "axios";
+import "./NewInvoiceCreation.scss";
+import { getCountryByCustomer, urls } from "../../../urls/urls";
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
-
-const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }: any) => {
-
+const NewInvoiceCreation = ({
+  handleSteps,
+  allStepsData,
+  handleAllSteppersData,
+}: any) => {
   const token = localStorage.getItem("temptoken");
+  // let currentOrgToken: any = null;
+  let currentOrgToken = JSON.parse(localStorage.getItem("current-org") || "");
 
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
-  const [istypeOpen, setIstypeOpen] = useState(false)
-  const [isCountryOpen, setIsCountryOpen] = useState(false)
-  const [isMonthOpen, setIsMonthOpen] = useState(false)
-  const [isYearOpen, setIsYearOpen] = useState(false)
-
+  const [istypeOpen, setIstypeOpen] = useState(false);
+  const [isCountryOpen, setIsCountryOpen] = useState(false);
+  const [isMonthOpen, setIsMonthOpen] = useState(false);
+  const [isYearOpen, setIsYearOpen] = useState(false);
 
   // DropdownOptions
   const [CustomerOptions, setCustomerOption] = useState([]);
@@ -25,8 +28,8 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
     tableSharedColumns.payroll,
     tableSharedColumns.proforma,
     tableSharedColumns.Miscellaneous,
-    tableSharedColumns.createMemo
-  ])
+    tableSharedColumns.createMemo,
+  ]);
 
   const [CountryOptions, setCountryOptions] = useState([]);
 
@@ -127,88 +130,86 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
   ]);
 
   // Stepper One Data
-  const [stepperOneData, setStepperOneData] = useState(allStepsData.stepOneData)
-
+  const [stepperOneData, setStepperOneData] = useState(
+    allStepsData.stepOneData
+  );
 
   const preparedCustomerData = (data: any) => {
-
     const newData = data?.map((item: any) => {
       if (item.customerId === allStepsData?.stepOneData?.customerId) {
         return {
           isSelected: true,
           label: item.name,
           value: item.customerId,
-        }
+        };
       } else {
         return {
           isSelected: false,
           label: item.name,
           value: item.customerId,
-        }
+        };
       }
-
-    })
-    return newData
-  }
+    });
+    return newData;
+  };
 
   const getCustomerDropdownOptions = () => {
     let api = urls.customers;
     const headers = {
       headers: {
-        authorization: `Bearer ${token}`
+        authorization: `Bearer ${token}`,
       },
     };
 
     axios
       .get(api, headers)
       .then((res: any) => {
-        const preData: any = preparedCustomerData(res.data)
+        console.log("res::::", res.data);
+        const preData: any = preparedCustomerData(res.data);
         setCustomerOption(preData);
       })
       .catch((e: any) => {
         console.log("error", e);
       });
-  }
+  };
 
   const preparedCountryData = (data: any) => {
     const newData = data?.map((item: any) => {
       if (item.id === allStepsData?.stepOneData?.countryId) {
-
         return {
           isSelected: true,
           label: item.name,
-          value: item.id
-        }
+          value: item.id,
+        };
       } else {
         return {
           isSelected: false,
           label: item.name,
-          value: item.id
-        }
+          value: item.id,
+        };
       }
-
-    })
-    return newData
-  }
+    });
+    return newData;
+  };
 
   const getCountryDropdwonOptions = () => {
     let api = getCountryByCustomer(stepperOneData.customerId);
     const headers = {
       headers: {
-        authorization: `Bearer ${token}`
+        authorization: `Bearer ${token}`,
       },
     };
 
     axios
       .get(api, headers)
       .then((res: any) => {
-        const preData: any = preparedCountryData(res.data)
-        setCountryOptions(preData)
+        const preData: any = preparedCountryData(res.data);
+        setCountryOptions(preData);
       })
       .catch((e: any) => {
         console.log("error", e);
       });
-  }
+  };
 
   const handleDropOption = (
     item: any,
@@ -216,7 +217,6 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
     set: any,
     setIsOpen: any
   ) => {
-
     let arr = [...options];
 
     arr.forEach((e, i) => {
@@ -243,7 +243,6 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
     set: any,
     setIsOpen: any
   ) => {
-
     let arr = [...options];
 
     arr.forEach((e, i) => {
@@ -266,54 +265,53 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
 
   useEffect(() => {
     getCustomerDropdownOptions();
-  }, [])
+
+    // currentOrgToken = localStorage.getItem("current-org") || "";
+    // currentOrgToken = JSON.parse(currentOrgToken);
+  }, []);
 
   useEffect(() => {
     if (stepperOneData?.customerId) {
-      getCountryDropdwonOptions()
+      getCountryDropdwonOptions();
     }
-  }, [stepperOneData?.customerId])
-
+  }, [stepperOneData?.customerId]);
 
   useEffect(() => {
-    if (allStepsData?.stepOneData?.yearId &&
+    if (
+      allStepsData?.stepOneData?.yearId &&
       allStepsData?.stepOneData?.monthId &&
-      allStepsData?.stepOneData?.typeId) {
-
+      allStepsData?.stepOneData?.typeId
+    ) {
       handleDropOptionForAlreadyFilled(
         allStepsData?.stepOneData?.typeId,
         typeOptions,
         setTypeOptions,
         setIstypeOpen
-      )
+      );
 
       handleDropOptionForAlreadyFilled(
         allStepsData?.stepOneData?.monthId,
         MonthOptions,
         setMonthOptions,
         setIsMonthOpen
-      )
+      );
 
       handleDropOptionForAlreadyFilled(
         allStepsData?.stepOneData?.yearId,
         YearOptions,
         setYearOptions,
         setIsYearOpen
-      )
+      );
     }
-
-  }, [allStepsData?.stepOneData])
-
-
+  }, [allStepsData?.stepOneData]);
 
   return (
     <>
       <div>
-        <div className='newinvoice-container'>
-
+        <div className="newinvoice-container">
           <h3>New Invoice</h3>
-
-          <div className='dropdown'>
+          {console.log("CustomerOptions", CustomerOptions)}
+          <div className="dropdown">
             <Dropdown
               handleDropOptionClick={(item: any) => {
                 handleDropOption(
@@ -322,15 +320,18 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
                   setCustomerOption,
                   setIsCustomerOpen
                 );
-                setStepperOneData({ ...stepperOneData, customer: item.label, customerId: item.value })
-              }
-              }
+                setStepperOneData({
+                  ...stepperOneData,
+                  customer: item.label,
+                  customerId: item.value,
+                });
+              }}
               handleDropdownClick={(b: boolean) => {
                 setIsCustomerOpen(b);
-                setIstypeOpen(false)
-                setIsCountryOpen(false)
-                setIsMonthOpen(false)
-                setIsYearOpen(false)
+                setIstypeOpen(false);
+                setIsCountryOpen(false);
+                setIsMonthOpen(false);
+                setIsYearOpen(false);
               }}
               isOpen={isCustomerOpen}
               options={CustomerOptions}
@@ -338,7 +339,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
             />
           </div>
 
-          <div className='dropdowns'>
+          <div className="dropdowns">
             <Dropdown
               handleDropOptionClick={(item: any) => {
                 handleDropOption(
@@ -347,15 +348,18 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
                   setTypeOptions,
                   setIstypeOpen
                 );
-                setStepperOneData({ ...stepperOneData, type: item.label, typeId: item.value })
-              }
-              }
+                setStepperOneData({
+                  ...stepperOneData,
+                  type: item.label,
+                  typeId: item.value,
+                });
+              }}
               handleDropdownClick={(b: boolean) => {
                 setIstypeOpen(b);
-                setIsCustomerOpen(false)
-                setIsCountryOpen(false)
-                setIsMonthOpen(false)
-                setIsYearOpen(false)
+                setIsCustomerOpen(false);
+                setIsCountryOpen(false);
+                setIsMonthOpen(false);
+                setIsYearOpen(false);
               }}
               isOpen={istypeOpen}
               options={typeOptions}
@@ -363,40 +367,45 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
             />
           </div>
 
-          <div className='dropdownC'>
-            <Dropdown
-              handleDropOptionClick={(item: any) => {
-                handleDropOption(
-                  item,
-                  CountryOptions,
-                  setCountryOptions,
-                  setIsCountryOpen
-                );
-                setStepperOneData({ ...stepperOneData, country: item.label, countryId: item.value })
-              }
-              }
-              handleDropdownClick={(b: boolean) => {
-                setIsCountryOpen(b);
-                setIsCustomerOpen(false)
-                setIstypeOpen(false)
-                setIsMonthOpen(false)
-                setIsYearOpen(false)
-              }}
-              isOpen={isCountryOpen}
-              options={CountryOptions}
-              title={`Country`}
-            />
-          </div>
+          {currentOrgToken?.Payments?.Role !== "FinanceAR" && (
+            <div className="dropdownC">
+              <Dropdown
+                handleDropOptionClick={(item: any) => {
+                  handleDropOption(
+                    item,
+                    CountryOptions,
+                    setCountryOptions,
+                    setIsCountryOpen
+                  );
+                  setStepperOneData({
+                    ...stepperOneData,
+                    country: item.label,
+                    countryId: item.value,
+                  });
+                }}
+                handleDropdownClick={(b: boolean) => {
+                  setIsCountryOpen(b);
+                  setIsCustomerOpen(false);
+                  setIstypeOpen(false);
+                  setIsMonthOpen(false);
+                  setIsYearOpen(false);
+                }}
+                isOpen={isCountryOpen}
+                options={CountryOptions}
+                title={`Country`}
+              />
+            </div>
+          )}
 
-          <div style={{ display: 'flex', flexDirection: 'row', zIndex: '1' }}>
+          <div style={{ display: "flex", flexDirection: "row", zIndex: "1" }}>
             <div
-              className='dropdown-margin'
+              className="dropdown-margin"
               onClick={() => {
                 setIsMonthOpen(!isMonthOpen);
                 setIsCustomerOpen(false);
                 setIstypeOpen(false);
                 setIsCountryOpen(false);
-                setIsYearOpen(false)
+                setIsYearOpen(false);
               }}
             >
               <Dropdown
@@ -407,9 +416,12 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
                     setMonthOptions,
                     setIsMonthOpen
                   );
-                  setStepperOneData({ ...stepperOneData, month: item.label, monthId: item.value })
-                }
-                }
+                  setStepperOneData({
+                    ...stepperOneData,
+                    month: item.label,
+                    monthId: item.value,
+                  });
+                }}
                 handleDropdownClick={(b: boolean) => {
                   // setIsMonthOpen(b);
                 }}
@@ -417,7 +429,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
                 options={MonthOptions}
                 title="Select Month"
               />
-              <div className='calendar'>
+              <div className="calendar">
                 <Icon
                   icon="calendar"
                   size="small"
@@ -429,13 +441,13 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
             </div>
 
             <div
-              className='year-dropdown'
+              className="year-dropdown"
               onClick={() => {
-                setIsYearOpen(!isYearOpen)
+                setIsYearOpen(!isYearOpen);
                 setIsCustomerOpen(false);
                 setIstypeOpen(false);
                 setIsCountryOpen(false);
-                setIsMonthOpen(false)
+                setIsMonthOpen(false);
               }}
             >
               <Dropdown
@@ -446,9 +458,12 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
                     setYearOptions,
                     setIsYearOpen
                   );
-                  setStepperOneData({ ...stepperOneData, year: item.label, yearId: item.value })
-                }
-                }
+                  setStepperOneData({
+                    ...stepperOneData,
+                    year: item.label,
+                    yearId: item.value,
+                  });
+                }}
                 handleDropdownClick={(b: boolean) => {
                   // setIsYearOpen(!isYearOpen);
                 }}
@@ -457,9 +472,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
                 title="Select Year"
               />
 
-              <div
-                className='calendar'
-              >
+              <div className="calendar">
                 <Icon
                   icon="calendar"
                   size="small"
@@ -471,37 +484,41 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
             </div>
           </div>
         </div>
-
       </div>
 
-      <div className='stepper-one-buttons'>
+      <div className="stepper-one-buttons">
         <Button
           label="Save"
           className="secondary-btn medium button"
-          handleOnClick={() => {
-
-          }}
+          handleOnClick={() => {}}
         />
 
         <Button
-          disabled={!(stepperOneData?.customer !== "" && stepperOneData?.type !== "" && stepperOneData?.country !== "" && stepperOneData?.year !== "" && stepperOneData?.month !== "")}
+          disabled={
+            !(
+              stepperOneData?.customer !== "" &&
+              stepperOneData?.type !== "" &&
+              stepperOneData?.country !== "" &&
+              stepperOneData?.year !== "" &&
+              stepperOneData?.month !== ""
+            )
+          }
           data-testid="next-button"
           icon={{
-            icon: 'chevronRight',
-            size: 'medium',
-            color: '#fff'
+            icon: "chevronRight",
+            size: "medium",
+            color: "#fff",
           }}
           label="Next"
           className="primary-blue medium button next-button"
           handleOnClick={() => {
-            handleSteps(2)
-            handleAllSteppersData(stepperOneData, 2)
+            handleSteps(2);
+            handleAllSteppersData(stepperOneData, 2);
           }}
         />
       </div>
-
     </>
-  )
-}
+  );
+};
 
-export default NewInvoiceCreation
+export default NewInvoiceCreation;
