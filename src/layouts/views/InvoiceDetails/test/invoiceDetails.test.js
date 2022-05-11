@@ -125,7 +125,7 @@ const invoiceId = "1001002";
 const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
-localStorage.setItem("temptoken", "1234");
+localStorage.setItem("accessToken", "1234");
 
 describe("Invoice details", () => {
   beforeAll(() => {
