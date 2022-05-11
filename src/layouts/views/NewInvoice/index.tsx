@@ -3,12 +3,13 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
 import SelectEmployees from "./SelectEmployees";
+import PreviewInvoice from "./PreviewInvoice"
 import "./index.scss";
 
 const NewInvoice = () => {
   const navigate = useNavigate();
 
-  const [stepsCount, setStepsCount] = useState(1);
+  const [stepsCount, setStepsCount] = useState(2);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [allStepsData, setAllStepsData] = useState({
     stepOneData: {
@@ -123,6 +124,12 @@ const NewInvoice = () => {
                   allStepsData={allStepsData}
                   handleSteps={handleSteps}
                 />
+              ) : stepsCount == 3 ? (
+                <PreviewInvoice
+                handleAllSteppersData={handleAllSteppersData}
+                allStepsData={allStepsData}
+                handleSteps={handleSteps}
+              />
               ) : (
                 <></>
               )}

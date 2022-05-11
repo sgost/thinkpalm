@@ -28,7 +28,14 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
     tableSharedColumns.createMemo
   ])
 
-  const [CountryOptions, setCountryOptions] = useState([]);
+  const [CountryOptions, setCountryOptions] = useState([
+    {
+      isSelected: false,
+      label: "sdfgh",
+      value: "swaesrdgtf",
+    }
+
+  ]);
 
   const [MonthOptions, setMonthOptions] = useState([
     {

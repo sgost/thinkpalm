@@ -11,7 +11,7 @@ const SelectEmployees = ({
   allStepsData,
 }: any) => {
   const tempToken = localStorage.getItem("temptoken");
-  const [buttonHide, setButtonHide] = useState(false);
+  const [cssForData, setCssForData] = useState(false);
   const [tableOptions, setTableOptions] = useState({
     columns: [
       {
@@ -64,18 +64,30 @@ const SelectEmployees = ({
 
   const getEmployyeApiData = () => {
     const headers = {
-      headers: getHeaders(
-        tempToken,
-        allStepsData?.stepOneData?.customerId,
-        "false"
-      ),
+      headers: {
+        authorization: `Bearer ${tempToken}`,
+        "x-apng-base-region": "EMEA",
+        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "x-apng-external": "false",
+        "x-apng-inter-region": "0",
+        "x-apng-target-region": "EMEA",
+        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      },
     };
 
-    // const apiUrl = 'https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7'
-    const apiUrl = getEmployee(
-      allStepsData?.stepOneData?.customerId,
-      allStepsData?.stepOneData?.countryId
-    );
+    // const headers = {
+    //   headers: getHeaders(
+    //     tempToken,
+    //     allStepsData?.stepOneData?.customerId,
+    //     "false"
+    //   ),
+    // };
+
+    const apiUrl = 'https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7'
+    // const apiUrl = getEmployee(
+    //   allStepsData?.stepOneData?.customerId,
+    //   allStepsData?.stepOneData?.countryId
+    // );
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
@@ -100,7 +112,7 @@ const SelectEmployees = ({
           });
           setEmployeeApiData(res.data);
           setTableOptions({ ...tableOptions, data: employeeTableData });
-          setButtonHide(true);
+          setCssForData(true);
         }
       })
       .catch((e: any) => {
@@ -133,10 +145,11 @@ const SelectEmployees = ({
             />
           </div>
         </div>
+        <div className={cssForData ? "" : "full-table-container"}>
         {employeeApiData && employeeApiData.length ? (
           employeeApiData.map((item: any, key: any) => {
             return (
-              <div className="full-table-container">
+              <div className={cssForData ? "full-table-container-after-data" : ""}>
                 <div className="user-detail">
                   <div className="table-header">
                     <ProfileHeader
@@ -221,8 +234,8 @@ const SelectEmployees = ({
         ) : (
           <></>
         )}
-
-        {buttonHide ? (
+</div>
+       
           <div className="step2-buttons">
             <Button
               data-testid="back-button-steptwo"
@@ -266,9 +279,7 @@ const SelectEmployees = ({
               />
             </div>
           </div>
-        ) : (
-          <></>
-        )}
+      
       </div>
     </>
   );
