@@ -1,38 +1,32 @@
-import {
-  render,
-  screen,
-  fireEvent,
-} from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata } from "./mockData";
+import { mockapidata, currentOrgTokenMock } from "./mockData";
 import axios from "axios";
 import NewInvoice from "..";
 import { urls, getCountryByCustomer, getEmployee } from "../../../../urls/urls";
 
-
 localStorage.setItem("temptoken", "1234");
+localStorage.setItem("current-org", JSON.stringify(currentOrgTokenMock));
 const id = "e291c9f0-2476-4237-85cb-7afecdd085d3";
 const customerId = "e291c9f0-2476-4237-85cb-7afecdd085d3";
 const countryId = "7defc4f9-906d-437f-a6d9-c822ca2ecfd7";
+
+// JSON.parse = jest.fn().mockReturnValue(JSON.stringify(currentOrgTokenMock));
+// JSON.parse = jest.fn().mockImplementation(() => {
+//   // return your what your code is returning.
+//   return "";
+// });
 
 describe("New Invoice", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock
-      .onGet(
-        urls.customers
-      )
-      .reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
 
     mock
-      .onGet(
-        getCountryByCustomer(id)
-      )
+      .onGet(getCountryByCustomer(id))
       .reply(200, mockapidata.resGetAllCountry);
-
-
   });
 
   test("breadcumbs are working", async () => {
@@ -48,8 +42,6 @@ describe("New Invoice", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-
-
   });
   test("dropDown Value change stepper 1", async () => {
     render(
@@ -68,19 +60,16 @@ describe("New Invoice", () => {
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
 
-
     fireEvent.click(pleaseSelectDropDown[1]);
 
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-
     fireEvent.click(pleaseSelectDropDown[2]);
     const countryDropValue = await screen.findByText(/Kenya/);
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
-
 
     fireEvent.click(pleaseSelectDropDown[3]);
     const monthDropValue = await screen.findByText(/January/);
@@ -92,23 +81,16 @@ describe("New Invoice", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
-
   });
 });
-
 
 describe("step one getCustomer api fail ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
-    mock
-      .onGet(
-        urls.customers
-      )
-      .reply(400, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.customers).reply(400, mockapidata.resGetAllCustomer);
   });
 
   test("dropDown Value change", async () => {
@@ -123,21 +105,14 @@ describe("step one getCustomer api fail ", () => {
   });
 });
 
-
 describe("step one getCOuntry api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock
-      .onGet(
-        urls.customers
-      )
-      .reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
 
     mock
-      .onGet(
-        getCountryByCustomer(id)
-      )
+      .onGet(getCountryByCustomer(id))
       .reply(400, mockapidata.resGetAllCountry);
   });
 
@@ -157,30 +132,22 @@ describe("step one getCOuntry api fail", () => {
     const customerDropValue = await screen.findByText(/Cocacola/);
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
-
   });
 });
-
 
 describe("Stepper 2", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock
-      .onGet(
-        urls.customers
-      )
-      .reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
 
     mock
-      .onGet(
-        getCountryByCustomer(id)
-      )
+      .onGet(getCountryByCustomer(id))
       .reply(200, mockapidata.resGetAllCountry);
-      mock
-      .onGet(
-        // getEmployee(customerId,countryId)
-      )
+    mock
+      .onGet
+      // getEmployee(customerId,countryId)
+      ()
       .reply(200, mockapidata.resForStepperTwo);
   });
 
@@ -201,19 +168,16 @@ describe("Stepper 2", () => {
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
 
-
     fireEvent.click(pleaseSelectDropDown[1]);
 
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-
     fireEvent.click(pleaseSelectDropDown[2]);
     const countryDropValue = await screen.findByText(/Kenya/);
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
-
 
     fireEvent.click(pleaseSelectDropDown[3]);
     const monthDropValue = await screen.findByText(/January/);
@@ -225,22 +189,16 @@ describe("Stepper 2", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-
     const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
     expect(SelectEmployeeText[0]).toBeInTheDocument();
-
 
     const stepTwoNextButton = await screen.findByTestId("next-button-steptwo");
     expect(stepTwoNextButton).toBeInTheDocument();
     fireEvent.click(stepTwoNextButton);
-
-
-
   });
 
   test("dropDown Value change stepper 1 then stepper 2 click on  back button", async () => {
@@ -260,19 +218,16 @@ describe("Stepper 2", () => {
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
 
-
     fireEvent.click(pleaseSelectDropDown[1]);
 
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-
     fireEvent.click(pleaseSelectDropDown[2]);
     const countryDropValue = await screen.findByText(/Kenya/);
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
-
 
     fireEvent.click(pleaseSelectDropDown[3]);
     const monthDropValue = await screen.findByText(/January/);
@@ -284,48 +239,32 @@ describe("Stepper 2", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-
     const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
     expect(SelectEmployeeText[0]).toBeInTheDocument();
-
 
     const stepTwoBackButton = await screen.findByTestId("back-button-steptwo");
     expect(stepTwoBackButton).toBeInTheDocument();
     fireEvent.click(stepTwoBackButton);
-
   });
-
 });
-
 
 describe("Stepper 2 show table click", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock
-      .onGet(
-        urls.customers
-      )
-      .reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
 
     mock
-      .onGet(
-        getCountryByCustomer(id)
-      )
+      .onGet(getCountryByCustomer(id))
       .reply(200, mockapidata.resGetAllCountry);
-      mock
-      .onGet(
-        getEmployee(customerId,countryId)
-      )
+    mock
+      .onGet(getEmployee(customerId, countryId))
       .reply(200, mockapidata.resForStepperTwo);
   });
-
-
 
   test("dropDown Value change stepper 1 then stepper 2 click on  ", async () => {
     render(
@@ -344,19 +283,16 @@ describe("Stepper 2 show table click", () => {
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
 
-
     fireEvent.click(pleaseSelectDropDown[1]);
 
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-
     fireEvent.click(pleaseSelectDropDown[2]);
     const countryDropValue = await screen.findByText(/Kenya/);
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
-
 
     fireEvent.click(pleaseSelectDropDown[3]);
     const monthDropValue = await screen.findByText(/January/);
@@ -368,24 +304,15 @@ describe("Stepper 2 show table click", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-
     const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
     expect(SelectEmployeeText[0]).toBeInTheDocument();
-
 
     const showTable = await screen.findByTestId("showHide-button");
     expect(showTable).toBeInTheDocument();
     fireEvent.click(showTable);
-
   });
-
 });
-
-
-
-
