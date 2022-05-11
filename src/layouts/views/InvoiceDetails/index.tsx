@@ -22,14 +22,18 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
-  getDeleteInvoiceUrl, getDownloadUrl, getExcelUrl, getApproveARUrl, getApproveUrl, getInvoiceDetailsUrl,
+  getDeleteInvoiceUrl,
+  getDownloadUrl,
+  getExcelUrl,
+  getApproveARUrl,
+  getApproveUrl,
+  getInvoiceDetailsUrl,
   getBillingAddressUrl,
   urls,
   getNotesUrl,
   getHeaders,
   getDownloadFileUrl,
 } from "../../../urls/urls";
-
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -105,7 +109,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
-  const [isAutoApprove, setIsAutoApprove] = useState(false);
+  const [isAutoApprove, setIsAutoApprove] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -201,13 +205,15 @@ export default function InvoiceDetails() {
                   });
                 });
 
-                tempTotal += e.feeSummary.total;
+                // tempTotal += e.feeSummary.total;
+                tempTotal += e.countryTotalDue;
 
                 data.push({
                   country,
                   countryCode,
                   exchangeRate: e.exchangeRate,
                   currencyCode: e.currencyCode,
+                  countryTotalDue: e.countryTotalDue,
                   feeSummary: e.feeSummary,
                   data: arr,
                 });
@@ -606,15 +612,15 @@ export default function InvoiceDetails() {
     return cFormat.format(amount).slice(1);
   };
 
-  const getInCountryProcessingFee = () => {
-    feeData.data.forEach((e: any) => {
-      if (e.name === "In Country Processing Fee") {
-        return e.payrollFees || 0;
-      }
-    });
+  // const getInCountryProcessingFee = () => {
+  //   feeData.data.forEach((e: any) => {
+  //     if (e.name === "In Country Processing Fee") {
+  //       return e.payrollFees || 0;
+  //     }
+  //   });
 
-    return 0;
-  };
+  //   return 0;
+  // };
 
   const downloadFunction = () => {
     const headers = {
@@ -650,9 +656,7 @@ export default function InvoiceDetails() {
   };
 
   const handleApproveInvoice = () => {
-
-
-    const approveApi = getApproveUrl(id)
+    const approveApi = getApproveUrl(id);
 
     axios({
       method: "PUT",
@@ -702,7 +706,7 @@ export default function InvoiceDetails() {
   };
 
   const handleApproveAR = () => {
-    const approveARApi = getApproveARUrl()
+    const approveARApi = getApproveARUrl();
 
     axios({
       method: "PUT",
@@ -725,8 +729,7 @@ export default function InvoiceDetails() {
 
   const downloadExcelFunction = () => {
     const headers = {
-      headers: getHeaders(tempToken, cid, isClient)
-      ,
+      headers: getHeaders(tempToken, cid, isClient),
     };
 
     const downloadApi = getExcelUrl(id);
@@ -753,13 +756,9 @@ export default function InvoiceDetails() {
     var formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
-      .post(
-        urls.voidUploadFile,
-        formData,
-        {
-          headers: headers,
-        }
-      )
+      .post(urls.voidUploadFile, formData, {
+        headers: headers,
+      })
       .then(async (res: any) => {
         await axios
           .post(
@@ -835,11 +834,10 @@ export default function InvoiceDetails() {
   const handleDeleteInvoice = async () => {
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
-
     };
     const deleteApi = getDeleteInvoiceUrl(apiData?.data?.invoice?.id);
 
-   await axios
+    await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
         console.log("ress", res);
@@ -883,9 +881,9 @@ export default function InvoiceDetails() {
                 label:
                   transactionType == 7
                     ? "Contractor Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo
+                      apiData?.data?.invoice?.invoiceNo
                     : "Payroll Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo,
+                      apiData?.data?.invoice?.invoiceNo,
               },
             ]}
           />
@@ -917,13 +915,14 @@ export default function InvoiceDetails() {
             onClick={() =>
               transactionType != 7
                 ? setIsDownloadOpen(!isDownloadOpen)
-                : function noRefCheck() { }
+                : function noRefCheck() {}
             }
-            className={`${transactionType == 7 || deleteDisableButtons === true
+            className={`${
+              transactionType == 7 || deleteDisableButtons === true
                 ? "download_disable"
                 : "download"
-              }`}
-          // className="download"
+            }`}
+            // className="download"
           >
             <p className="text">Download</p>
             <Icon
@@ -1111,15 +1110,15 @@ export default function InvoiceDetails() {
                           method: "POST",
                           headers,
                         })
-                        .then((res: any) => {
-                         if(res.status === 200) {
-                          setShowAutoApprovedToast(true)
-                         }
-                        })
-                        .catch((err: any) => {
-                          setIsAutoApprove(!e.target.checked);
-                          console.log(err);
-                        });
+                          .then((res: any) => {
+                            if (res.status === 200) {
+                              setShowAutoApprovedToast(true);
+                            }
+                          })
+                          .catch((err: any) => {
+                            setIsAutoApprove(!e.target.checked);
+                            console.log(err);
+                          });
                       }}
                       label="Auto-Approval after 24h"
                       checked={isAutoApprove}
@@ -1150,29 +1149,26 @@ export default function InvoiceDetails() {
       </div>
 
       {showAutoApprovedToast && (
-          <div className="toast">
-            {
-              isAutoApprove === true ?
-              "Invoice set to Auto-approve successfully" 
-              : 
-              "Auto-approval removed from Invoice successfully"
-            }
-            <span
-            data-testid ='toast-cross-button'
-              className="toast-action"
-              onClick={() => {
-                setShowAutoApprovedToast(false);
-              }}
-            >
-              <Icon
-                icon="remove"
-                color="#ffff"
-                size="medium"
-                viewBox="-6 -6 20 20"
-              />
-            </span>
-          </div>
-        )}
+        <div className="toast">
+          {isAutoApprove === true
+            ? "Invoice set to Auto-approve successfully"
+            : "Auto-approval removed from Invoice successfully"}
+          <span
+            data-testid="toast-cross-button"
+            className="toast-action"
+            onClick={() => {
+              setShowAutoApprovedToast(false);
+            }}
+          >
+            <Icon
+              icon="remove"
+              color="#ffff"
+              size="medium"
+              viewBox="-6 -6 20 20"
+            />
+          </span>
+        </div>
+      )}
 
       {transactionType != 7 && (
         <div className="tab">
@@ -1248,6 +1244,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
+            console.log("p", item);
             return (
               <div>
                 <div className="countryHeader">
@@ -1269,8 +1266,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           item.currencyCode +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.subTotalDue)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.subTotalDue)
 
                           // item.feeSummary.subTotalDue
                           //   .toFixed(2)
@@ -1282,7 +1279,7 @@ export default function InvoiceDetails() {
                       <p className="title">
                         Country EXC Rate{" "}
                         {
-                          toCurrencyFormat(item.exchangeRate)
+                          item.exchangeRate
 
                           // item.exchangeRate
                           //   .toFixed(2)
@@ -1292,10 +1289,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(
-                            item.feeSummary.subTotalDue * item.exchangeRate
-                          )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.subTotalDue * item.exchangeRate
+                            )
                           // (item.feeSummary.subTotalDue * item.exchangeRate)
                           //   .toFixed(2)
                           //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1307,8 +1304,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(getInCountryProcessingFee())
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.inCountryProcessingFee
+                            )
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1321,8 +1320,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.fxBill)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.fxBill)
 
                           // item.feeSummary.fxBill
                           //   .toFixed(2)
@@ -1335,8 +1334,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.totalCountryVat)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                           // item.feeSummary.totalCountryVat
                           //   .toFixed(2)
@@ -1349,8 +1348,8 @@ export default function InvoiceDetails() {
                       <h3>
                         {
                           getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.total)
+                            " " +
+                            toCurrencyFormat(item.countryTotalDue)
 
                           // item.feeSummary.total
                           //   .toFixed(2)
@@ -1768,7 +1767,7 @@ export default function InvoiceDetails() {
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
           customerId={cid}
-          invoiceId = {state.InvoiceId}
+          invoiceId={state.InvoiceId}
         ></BillsTable>
       )}
 
@@ -1915,9 +1914,7 @@ export default function InvoiceDetails() {
       </div>
 
       <div className="void-confirm-modal">
-        <Modal
-          isOpen={isVoidConfirmOptionOpen}
-        >
+        <Modal isOpen={isVoidConfirmOptionOpen}>
           <div>
             <h4>Are you sure you want to void this invoice?</h4>
 
@@ -1944,9 +1941,7 @@ export default function InvoiceDetails() {
       </div>
 
       <div className="delete-confirm-modal">
-        <Modal
-          isOpen={deleteConfirmModalOpen}
-        >
+        <Modal isOpen={deleteConfirmModalOpen}>
           <div>
             <h4>Are you sure you want to Delete this invoice permanently?</h4>
 
@@ -1969,7 +1964,6 @@ export default function InvoiceDetails() {
           </div>
         </Modal>
       </div>
-
     </div>
   );
 }
