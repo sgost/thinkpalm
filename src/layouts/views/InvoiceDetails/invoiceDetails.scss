@@ -794,23 +794,27 @@
     }
   }
 
-  .delete-invoice {
+  .upper-delete-button {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 140px;
-    margin-left: -2rem;
-    cursor: pointer;
-
-    img {
-      height: 20px;
-      width: 20px;
-      margin-top: 12px;
-    }
-    h5 {
-      font-size: 17px;
-      margin-top: 13px;
-      color: red;
+    .delete-invoice {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 140px;
+      margin-left: -2rem;
+      cursor: pointer;
+  
+      img {
+        height: 20px;
+        width: 20px;
+        // margin-top: 12px;
+      }
+      h5 {
+        font-size: 17px;
+        // margin-top: 13px;
+        margin: 0rem;
+        color: red;
+      }
     }
   }
 
@@ -820,7 +824,7 @@
       display: none !important;
     }
     .a-modal__body {
-      height: 25vh;
+      height: 15rem;
       width: 22rem;
       padding: 2rem !important;
     }
