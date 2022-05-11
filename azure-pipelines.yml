@@ -45,7 +45,7 @@ stages:
           sonar.tests=src
           # But we get specific here
           # We don't need to exclude it in sonar.sources because it is automatically taken care of
-          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js,src/layouts/views/NewInvoice/**/mockData.js
           sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
           # Path to report coverage and unit tests
           sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
@@ -239,7 +239,7 @@ stages:
           sonar.tests=src
           # But we get specific here
           # We don't need to exclude it in sonar.sources because it is automatically taken care of
-          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js,src/layouts/views/NewInvoice/**/mockData.js
           sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
           # Path to report coverage and unit tests
           sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
@@ -317,7 +317,7 @@ stages:
     - name: ATLAS_REGION
       value: eu
     - name: ATLAS_ENVIRONMENT
-      value: dev
+      value: qa
     environment:
       name: ATLAS_FRONTEND_QA
     strategy:
@@ -415,7 +415,7 @@ stages:
           sonar.tests=src
           # But we get specific here
           # We don't need to exclude it in sonar.sources because it is automatically taken care of
-          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js,src/layouts/views/NewInvoice/**/mockData.js
           sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
           # Path to report coverage and unit tests
           sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info

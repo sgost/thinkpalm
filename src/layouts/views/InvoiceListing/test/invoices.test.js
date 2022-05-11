@@ -19,6 +19,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
+import { getClientListingUrl, getInternalListingUrl } from "../../../../urls/urls";
 
 let resDataInternal = {
   page: 1,
@@ -209,7 +210,7 @@ describe("client view", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        getClientListingUrl("","","", "")
       )
       .reply(200, resDataClient);
 
@@ -380,7 +381,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        getClientListingUrl("","","", "")
       )
       .reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
@@ -419,7 +420,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        getInternalListingUrl("","","", "")
       )
       .reply(200, resDataInternal);
     // const getById = queryByAttribute.bind(null, "id");
@@ -455,7 +456,7 @@ describe("checkbox and download", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        getClientListingUrl("","","", "")
       )
       .reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
@@ -502,7 +503,7 @@ describe("Internal View Download click and checkbox Click", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
+        getClientListingUrl("","","", "")
       )
       .reply(200, resDataInternal);
 

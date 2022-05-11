@@ -20,6 +20,16 @@ import axios from "axios";
 import { act } from "react-dom/test-utils";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
+import {
+  getApproveUrl,
+  getBillingAddressUrl,
+  getDeleteInvoiceUrl,
+  getDownloadFileUrl,
+  getDownloadUrl,
+  getExcelUrl,
+  getNotesUrl,
+  urls,
+} from "../../../../urls/urls";
 // describe("Invoice detail", () => {
 //   let mock;
 //   beforeAll(() => {
@@ -47,27 +57,27 @@ import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 
 //     mock
 //       .onGet(
-//         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
+//         urls.invoiceDetails + id
 //       )
 //       .replyOnce(200, mockapidata.resData);
 //     mock
 //       .onGet(
-//         `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+//         getBillingAddressUrl(cid)
 //       )
 //       .replyOnce(200, mockapidata.resAddressData);
 
 //     mock
 //       .onGet(
-//         "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+//         urls.countries
 //       )
 //       .replyOnce(200, mockapidata.resCountriesData);
 
 //     mock
-//       .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+//       .onGet(urls.fee)
 //       .replyOnce(200, mockapidata.resFeeData);
 
 //     mock
-//       .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+//       .onGet(urls.lookup)
 //       .reply(200, mockapidata.resLookupData);
 //     act(() => {
 //       render(
@@ -112,7 +122,10 @@ jest.mock("react-router-dom", () => ({
 const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
 const invoiceId = "1001002";
-localStorage.setItem("accessToken", "1234");
+const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
+const blobUrl =
+  "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
+localStorage.setItem("temptoken", "1234");
 
 describe("Invoice details", () => {
   beforeAll(() => {
@@ -123,87 +136,39 @@ describe("Invoice details", () => {
     }));
     const mock = new MockAdapter(axios);
 
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
   });
 
   test("tabs are working", async () => {
@@ -366,82 +331,38 @@ describe("Api returns transaction type = 7", () => {
     }));
     const mock = new MockAdapter(axios);
 
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock.onGet(urls.invoiceDetails + id).reply(200, apiInvoiceMockData);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, apiInvoiceMockData);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
   });
   test("Render Invoice Details", () => {
     render(
@@ -462,85 +383,42 @@ describe("Invoice details decline api fail case handling", () => {
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
+        // urls.invoiceDetails +
+        urls.invoiceDetails + id
       )
       .reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(400, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(400, mockapidata.declineInvoicePost);
   });
 
   test("Decline invoice onchange textarea click on decline button failed api", async () => {
@@ -575,105 +453,45 @@ describe("void test cases on Apprroved", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
   });
 
   test("tabs are working", async () => {
@@ -733,105 +551,45 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(400, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(400, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
   });
 
   test("tabs are working", async () => {
@@ -891,105 +649,45 @@ describe("void test cases on Apprroved Create Api Failed", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(400, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(400, mockapidata.createDocument);
   });
 
   test("tabs are working", async () => {
@@ -1049,105 +747,45 @@ describe("void test cases on Apprroved Void Api Failed", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(400, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(400, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
   });
 
   test("tabs are working", async () => {
@@ -1207,105 +845,45 @@ describe("void test cases on Apprroved and click on cancel", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
   });
 
   test("tabs are working", async () => {
@@ -1367,57 +945,57 @@ describe("void test cases on Apprroved and click on cancel", () => {
 //     mockapidata.resData.invoice.status = 4;
 //     mock
 //       .onGet(
-//         "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+//         urls.invoiceDetails +
 //           id
 //       )
 //       .reply(200, mockapidata.resData);
 //     mock
 //       .onGet(
-//         "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
+//         urls.billsPerInvoice +
 //           invoiceId
 //       )
 //       .reply(200, BillsByInvoiceId);
 //     mock
 //       .onGet(
-//         `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
+//         getBillingAddressUrl(cid)
 //       )
 //       .reply(200, mockapidata.resAddressData);
 
 //     mock
 //       .onGet(
-//         "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
+//         urls.countries
 //       )
 //       .reply(200, mockapidata.resCountriesData);
 
 //     mock
-//       .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
+//       .onGet(urls.fee)
 //       .reply(200, mockapidata.resFeeData);
 
 //     mock
-//       .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
+//       .onGet(urls.lookup)
 //       .reply(200, mockapidata.resLookupData);
 
 //     mock
 //       .onGet(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
+//         getNotesUrl(id)
 //       )
 //       .reply(200, mockapidata.notes);
 
 //     mock
 //       .onPut(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
+//         getApproveUrl(id)
 //       )
 //       .reply(201);
 
 //     mock
 //       .onPost(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
+//         urls.saveNote
 //       )
 //       .reply(200, mockapidata.notesPost);
 
 //     mock
 //       .onGet(
-//         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
+//         getDownloadFileUrl(blobUrl)
 //       )
 //       .reply(200, {
 //         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
@@ -1426,7 +1004,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
 
 //     mock
 //       .onGet(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
+//         getDownloadUrl(id)
 //       )
 //       .reply(200, {
 //         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
@@ -1435,7 +1013,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
 
 //     mock
 //       .onGet(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
+//         getExcelUrl(id)
 //       )
 //       .reply(200, {
 //         url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
@@ -1443,25 +1021,25 @@ describe("void test cases on Apprroved and click on cancel", () => {
 //       });
 //     mock
 //       .onPost(
-//         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
+//         urls.declineInvoice
 //       )
 //       .reply(200, mockapidata.declineInvoicePost);
 
 //     mock
 //       .onPost(
-//         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
+//         urls.voidInvoice
 //       )
 //       .reply(200, mockapidata.voidApiPost);
 
 //     mock
 //       .onPost(
-//         `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
+//         urls.uploadFile
 //       )
 //       .reply(200, mockapidata.uploadFile);
 
 //     mock
 //       .onPost(
-//         `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
+//         urls.createDocument
 //       )
 //       .reply(200, mockapidata.createDocument);
 //   });
@@ -1497,104 +1075,46 @@ describe("api fail", () => {
 
     mockapidata.resData.invoice.status = 4;
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-          id
-      )
+      .onGet(urls.invoiceDetails + id)
       .reply(500, mockapidata.resAddressDataFailedApi);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" +
-          invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(404, mockapidata.resAddressDataFailedApi);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
   });
 
   test("tabs are working", async () => {
@@ -1625,114 +1145,51 @@ describe("delete test cases on AR Reveiew on true", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
-      mock
-      .onDelete(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
-      )
-      .reply(200, true);
-
+    mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(200, true);
   });
 
   test("tabs are working", async () => {
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
       <HashRouter>
@@ -1745,6 +1202,91 @@ describe("delete test cases on AR Reveiew on true", () => {
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
 
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteConfirm = await screen.findByTestId("delete-button-submit");
+    expect(deleteConfirm).toBeInTheDocument();
+    fireEvent.click(deleteConfirm);
+  });
+});
+describe("delete test cases on AR Reveiew click on cancel button", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
+
+    mock.onPost(urls.voidUploadFile).reply(200, mockapidata.uploadFile);
+
+    mock.onPost(urls.voidCreateDoc).reply(200, mockapidata.createDocument);
+
+    mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(200, true);
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
+    fireEvent.click(buttonDeleteInvoice);
+
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteCancel = await screen.findByTestId("delete-button-Cancel");
+    expect(deleteCancel).toBeInTheDocument();
+    fireEvent.click(deleteCancel);
   });
 });
 describe("delete test cases on AR Reveiew on false", () => {
@@ -1757,114 +1299,51 @@ describe("delete test cases on AR Reveiew on false", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
-      mock
-      .onDelete(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
-      )
-      .reply(200, false);
-
+    mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(200, false);
   });
 
   test("tabs are working", async () => {
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
       <HashRouter>
@@ -1877,6 +1356,14 @@ describe("delete test cases on AR Reveiew on false", () => {
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
 
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteConfirm = await screen.findByTestId("delete-button-submit");
+    expect(deleteConfirm).toBeInTheDocument();
+    fireEvent.click(deleteConfirm);
   });
 });
 
@@ -1890,114 +1377,51 @@ describe("delete test cases on AR Reveiew on api fail", () => {
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
     mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" + id
-      )
-      .reply(200, mockapidata.resData);
-    mock
-      .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/" + invoiceId
-      )
-      .reply(200, BillsByInvoiceId);
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`
-      )
+      .onGet(getBillingAddressUrl(cid))
       .reply(200, mockapidata.resAddressData);
 
-    mock
-      .onGet(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name"
-      )
-      .reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees")
-      .reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-    mock
-      .onGet("https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup")
-      .reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`
-      )
-      .reply(200, mockapidata.notes);
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock
-      .onPut(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`
-      )
-      .reply(201);
+    mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`
-      )
-      .reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
 
-    mock
-      .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`
-      )
-      .reply(200, {
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
-        name: "sample.pdf",
-      });
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`
-      )
-      .reply(200, mockapidata.declineInvoicePost);
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
 
-    mock
-      .onPost(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`
-      )
-      .reply(200, mockapidata.voidApiPost);
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile`
-      )
-      .reply(200, mockapidata.uploadFile);
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
 
-    mock
-      .onPost(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create`
-      )
-      .reply(200, mockapidata.createDocument);
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
-      mock
-      .onDelete(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/ab9d400a-0b11-4a21-8505-7646f6caed8d`
-      )
-      .reply(400, true);
-
+    mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(400, true);
   });
 
   test("tabs are working", async () => {
-    const file = new File(['hello'], 'hello.pdf', { type: 'application/pdf' });
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
       <HashRouter>
@@ -2010,5 +1434,154 @@ describe("delete test cases on AR Reveiew on api fail", () => {
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
 
+    const confirmText = await screen.findAllByText(
+      /Are you sure you want to Delete this invoice permanently?/
+    );
+    expect(confirmText[0]).toBeInTheDocument();
+
+    const deleteConfirm = await screen.findByTestId("delete-button-submit");
+    expect(deleteConfirm).toBeInTheDocument();
+    fireEvent.click(deleteConfirm);
+  });
+});
+describe("Invoice details auto approve checkbox click", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=ab9d400a-0b11-4a21-8505-7646f6caed8d&settingTypeId=1&IsActive=true`
+      )
+      .reply(200, true);
+  });
+
+  test("approve invoice clickable ", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const approve = await screen.getByText(/Auto-Approval after 24h/);
+    fireEvent.click(approve);
+
+    // const approveUncheckSuccesfully = screen.getByText(
+    //   /Auto-approval removed from Invoice successfully/
+    // );
+    // expect(approveUncheckSuccesfully).toBeInTheDocument();
+
+    // fireEvent.click(approve);
+
+    // const crossButton = await screen.getByTestId("toast-cross-button");
+    // fireEvent.click(crossButton);
+
+    // const approveSuccesfully = await screen.findAllByText(
+    //   /Invoice set to Auto-approve successfully/
+    // );
+    // expect(approveSuccesfully[0]).toBeInTheDocument();
+
+    // fireEvent.click(approve);
+  });
+});
+describe("Invoice details auto approve checkbox click api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+    mock
+      .onPost(
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=ab9d400a-0b11-4a21-8505-7646f6caed8d&settingTypeId=1&IsActive=true`
+      )
+      .reply(400, true);
+  });
+
+  test("approve invoice clickable ", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const approve = await screen.getByText(/Auto-Approval after 24h/);
+    fireEvent.click(approve);
   });
 });

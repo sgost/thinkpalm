@@ -3,7 +3,27 @@
 
 .invoice_bill_table {
     margin-top: 2.667rem;
+    .toast {
+        position: fixed;
+        bottom: 0;
+        display: flex !important;
+        background: #041e42;
+        right: 3rem;
+        color: #ffffff;
+        width: 21.5rem;
+        height: 4.75rem;
+        align-items: center;
+        justify-content: space-around;
+        z-index: 9999;
+        opacity: 1 !important;
 
+        &__action {
+            background: #526FD6;
+            border-radius: 100%;
+            display: flex;
+            cursor: pointer;
+        }
+    }
     .table {
         border-bottom: 1px solid #767676;
     }
@@ -41,7 +61,7 @@
             .amount {
                 font-weight: 600;
                 font-size: 1rem;
-                color: #17224e;
+                color: #041e42;
             }
         }
 
@@ -60,7 +80,7 @@
             .amount {
                 font-weight: 600;
                 font-size: 1rem;
-                color: #17224e;
+                color: #041e42;
             }
         }
         .totalRow {
@@ -114,14 +134,14 @@
             padding: 0.2rem 1.5rem;
             border-radius: 1rem;
             background: inherit !important;
-            border: 1px solid #17224E !important;
-            color: #17224E !important;
+            border: 1px solid #041e42 !important;
+            color: #041e42 !important;
             width: fit-content;
         }
 
         .reference-description {
             font-size: 32px;
-            color: #17224E;
+            color: #041e42;
             position: relative;
             top: 4px;
         }
@@ -136,7 +156,7 @@
             font-size: 1.25rem;
             line-height: 1.875rem;
             text-align: right;
-            color: #17224E;
+            color: #041e42;
             width: 20%;
             font-weight: 400;
             font-family: 'Circular-Book', Arial, serif;
@@ -146,10 +166,11 @@
         }
     }
 }
-.zero-padding{
-    padding:0px
-}
+
 .modal-wrapper{
+    .zero-padding{
+        padding:0px
+    }
     .a-modal__body{
         align-items: center;
         background: #fff!important;

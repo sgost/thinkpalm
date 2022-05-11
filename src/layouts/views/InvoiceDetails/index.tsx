@@ -21,6 +21,20 @@ import avatar from "./avatar.png";
 import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
+import {
+  getDeleteInvoiceUrl,
+  getDownloadUrl,
+  getExcelUrl,
+  getApproveARUrl,
+  getApproveUrl,
+  getInvoiceDetailsUrl,
+  getBillingAddressUrl,
+  urls,
+  getNotesUrl,
+  getHeaders,
+  getDownloadFileUrl,
+} from "../../../urls/urls";
+import { tableSharedColumns } from '../../../sharedColumns/sharedColumns'
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -34,21 +48,32 @@ export default function InvoiceDetails() {
 
   const baseBillApi =
     "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
-  const api =
-    "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-    id;
-  const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
+  // const api =
+  //   "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
+  //   id;
 
-  const countriesApi =
-    "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name";
+  const api = getInvoiceDetailsUrl(id);
+  // const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
 
-  const feeApi =
-    "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees";
+  const addressApi = getBillingAddressUrl(cid);
 
-  const lookupApi =
-    "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
+  // const countriesApi =
+  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name";
 
-  const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
+  const countriesApi = urls.countries;
+
+  // const feeApi =
+  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees";
+
+  const feeApi = urls.fee;
+
+  // const lookupApi =
+  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
+
+  const lookupApi = urls.lookup;
+
+  // const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
+  const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
 
@@ -61,6 +86,7 @@ export default function InvoiceDetails() {
   const [documents, setDocuments] = useState<any>([]);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [payrollTables, setPayrollTables] = useState<any>([]);
+  const [showAutoApprovedToast, setShowAutoApprovedToast] = useState(false);
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
@@ -75,6 +101,7 @@ export default function InvoiceDetails() {
   const [transactionType, setTransactionType] = useState();
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
+  const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const [countrySummary, setCountrySummary] = useState<any>([]);
@@ -83,7 +110,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
-  const [isAutoApprove, setIsAutoApprove] = useState(false);
+  const [isAutoApprove, setIsAutoApprove] = useState(true);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -94,15 +121,7 @@ export default function InvoiceDetails() {
 
   useEffect(() => {
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid || "",
-      },
+      headers: getHeaders(tempToken, cid, isClient),
     };
 
     axios
@@ -187,13 +206,15 @@ export default function InvoiceDetails() {
                   });
                 });
 
-                tempTotal += e.feeSummary.total;
+                // tempTotal += e.feeSummary.total;
+                tempTotal += e.countryTotalDue;
 
                 data.push({
                   country,
                   countryCode,
                   exchangeRate: e.exchangeRate,
                   currencyCode: e.currencyCode,
+                  countryTotalDue: e.countryTotalDue,
                   feeSummary: e.feeSummary,
                   data: arr,
                 });
@@ -308,6 +329,7 @@ export default function InvoiceDetails() {
       })
       .catch((e: any) => {
         console.log("error", e);
+        setIsErr(true);
       });
 
     axios
@@ -395,6 +417,14 @@ export default function InvoiceDetails() {
     }
   }, [apiData, feeData]);
 
+  useEffect(() => {
+    if (showAutoApprovedToast) {
+      setTimeout(() => {
+        setShowAutoApprovedToast(false);
+      }, 4000);
+    }
+  }, [showAutoApprovedToast]);
+
   // useEffect(() => {
   //   console.log("pay", payrollTables);
 
@@ -462,17 +492,12 @@ export default function InvoiceDetails() {
       isDefault: true,
       key: "adminFees",
     },
-
     country: {
       header: "Country",
       isDefault: true,
       key: "country",
     },
-    currency: {
-      header: "Currency",
-      isDefault: true,
-      key: "currency",
-    },
+    currency :tableSharedColumns.currency,
     total: {
       header: "Total in " + getBillingCurrency(),
       isDefault: true,
@@ -583,15 +608,15 @@ export default function InvoiceDetails() {
     return cFormat.format(amount).slice(1);
   };
 
-  const getInCountryProcessingFee = () => {
-    feeData.data.forEach((e: any) => {
-      if (e.name === "In Country Processing Fee") {
-        return e.payrollFees || 0;
-      }
-    });
+  // const getInCountryProcessingFee = () => {
+  //   feeData.data.forEach((e: any) => {
+  //     if (e.name === "In Country Processing Fee") {
+  //       return e.payrollFees || 0;
+  //     }
+  //   });
 
-    return 0;
-  };
+  //   return 0;
+  // };
 
   const downloadFunction = () => {
     const headers = {
@@ -607,7 +632,8 @@ export default function InvoiceDetails() {
       },
     };
 
-    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${id}`;
+    const downloadApi = getDownloadUrl(id);
+
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
@@ -626,32 +652,12 @@ export default function InvoiceDetails() {
   };
 
   const handleApproveInvoice = () => {
-    // const headers = {
-    //   headers: {
-    //     authorization: `Bearer ${tempToken}`,
-    //     "x-apng-base-region": "EMEA",
-    //     "x-apng-customer-id": cid?.toString() || "",
-    //     "x-apng-external": "false",
-    //     "x-apng-inter-region": "0",
-    //     "x-apng-target-region": "EMEA",
-    //     customer_id: cid?.toString() || "",
-    //   },
-    // };
-
-    const approveApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/${id}/4`;
+    const approveApi = getApproveUrl(id);
 
     axios({
       method: "PUT",
       url: approveApi,
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-      },
+      headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
         if (res.status === 201) {
@@ -696,21 +702,12 @@ export default function InvoiceDetails() {
   };
 
   const handleApproveAR = () => {
-    const approveARApi =
-      "https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/Reviewed";
+    const approveARApi = getApproveARUrl();
 
     axios({
       method: "PUT",
       url: approveARApi,
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-      },
+      headers: getHeaders(tempToken, cid, isClient),
       data: [
         {
           InvoiceNo: apiData?.data?.invoice?.invoiceNo,
@@ -728,19 +725,10 @@ export default function InvoiceDetails() {
 
   const downloadExcelFunction = () => {
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-        // "Content-Type": "application/json",
-      },
+      headers: getHeaders(tempToken, cid, isClient),
     };
 
-    const downloadApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generateExcel/${id}`;
+    const downloadApi = getExcelUrl(id);
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
@@ -759,30 +747,18 @@ export default function InvoiceDetails() {
   };
 
   const handleVoid = async () => {
-    const headers = {
-      authorization: `Bearer ${tempToken}`,
-      "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": cid || "",
-      "x-apng-external": "false",
-      "x-apng-inter-region": "0",
-      "x-apng-target-region": "EMEA",
-      customer_id: cid || "",
-    };
+    const headers = getHeaders(tempToken, cid, isClient);
 
     var formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
-      .post(
-        "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
-        formData,
-        {
-          headers: headers,
-        }
-      )
+      .post(urls.voidUploadFile, formData, {
+        headers: headers,
+      })
       .then(async (res: any) => {
         await axios
           .post(
-            "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+            urls.voidCreateDoc,
             {
               invoiceId: id,
 
@@ -821,7 +797,7 @@ export default function InvoiceDetails() {
 
     await axios
       .post(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/voidInvoice`,
+        urls.voidInvoice,
         {
           invoiceId: id,
           note: inputVoidValue,
@@ -851,21 +827,13 @@ export default function InvoiceDetails() {
       });
   };
 
-  const handleDeleteInvoice = () => {
+  const handleDeleteInvoice = async () => {
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid || "",
-      },
+      headers: getHeaders(tempToken, cid, isClient),
     };
-    const deleteApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/${apiData?.data?.invoice?.id}`;
+    const deleteApi = getDeleteInvoiceUrl(apiData?.data?.invoice?.id);
 
-    axios
+    await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
         console.log("ress", res);
@@ -917,19 +885,19 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          <div className="delete-button">
-            {isClient == "false" && status === "In Review" && (
+          {isClient == "false" && status === "In Review" && (
+            <div className="upper-delete-button">
               <div
                 className="delete-invoice"
-                onClick={() => handleDeleteInvoice()}
+                onClick={() => setDeleteConfirmModalOpen(true)}
               >
                 <img src={deleteSvg} />
                 <h5>Delete Invoice</h5>
               </div>
-            )}
-          </div>
-          <div className="void-button">
-            {isClient == "false" && status === "Approved" && (
+            </div>
+          )}
+          {isClient == "false" && status === "Approved" && (
+            <div className="void-button">
               <Button
                 className="secondary-btn small"
                 label="Void Invoice"
@@ -937,8 +905,8 @@ export default function InvoiceDetails() {
                   setIsVoidOpen(true);
                 }}
               />
-            )}
-          </div>
+            </div>
+          )}
           <div
             onClick={() =>
               transactionType != 7
@@ -1137,10 +1105,16 @@ export default function InvoiceDetails() {
                           url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
                           method: "POST",
                           headers,
-                        }).catch((err: any) => {
-                          setIsAutoApprove(!e.target.checked);
-                          console.log(err);
-                        });
+                        })
+                          .then((res: any) => {
+                            if (res.status === 200) {
+                              setShowAutoApprovedToast(true);
+                            }
+                          })
+                          .catch((err: any) => {
+                            setIsAutoApprove(!e.target.checked);
+                            console.log(err);
+                          });
                       }}
                       label="Auto-Approval after 24h"
                       checked={isAutoApprove}
@@ -1169,6 +1143,28 @@ export default function InvoiceDetails() {
           </div>
         </div>
       </div>
+
+      {showAutoApprovedToast && (
+        <div className="toast">
+          {isAutoApprove === true
+            ? "Invoice set to Auto-approve successfully"
+            : "Auto-approval removed from Invoice successfully"}
+          <span
+            data-testid="toast-cross-button"
+            className="toast-action"
+            onClick={() => {
+              setShowAutoApprovedToast(false);
+            }}
+          >
+            <Icon
+              icon="remove"
+              color="#ffff"
+              size="medium"
+              viewBox="-6 -6 20 20"
+            />
+          </span>
+        </div>
+      )}
 
       {transactionType != 7 && (
         <div className="tab">
@@ -1244,6 +1240,7 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
+            console.log("p", item);
             return (
               <div>
                 <div className="countryHeader">
@@ -1278,7 +1275,7 @@ export default function InvoiceDetails() {
                       <p className="title">
                         Country EXC Rate{" "}
                         {
-                          toCurrencyFormat(item.exchangeRate)
+                          item.exchangeRate
 
                           // item.exchangeRate
                           //   .toFixed(2)
@@ -1304,7 +1301,9 @@ export default function InvoiceDetails() {
                         {
                           getBillingCurrency() +
                             " " +
-                            toCurrencyFormat(getInCountryProcessingFee())
+                            toCurrencyFormat(
+                              item.feeSummary.inCountryProcessingFee
+                            )
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1346,7 +1345,7 @@ export default function InvoiceDetails() {
                         {
                           getBillingCurrency() +
                             " " +
-                            toCurrencyFormat(item.feeSummary.total)
+                            toCurrencyFormat(item.countryTotalDue)
 
                           // item.feeSummary.total
                           //   .toFixed(2)
@@ -1540,22 +1539,14 @@ export default function InvoiceDetails() {
                   !noteText.length || noteText.length > 400 ? true : false
                 }
                 handleOnClick={() => {
-                  const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
+                  // const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
+                  const url = urls.saveNote;
                   let currDate = new Date();
 
                   axios({
                     method: "POST",
                     url: url,
-                    headers: {
-                      authorization: `Bearer ${tempToken}`,
-                      "x-apng-base-region": "EMEA",
-                      "x-apng-customer-id": cid?.toString() || "",
-                      "x-apng-external": "false",
-                      "x-apng-inter-region": "0",
-                      "x-apng-target-region": "EMEA",
-                      customer_id: cid?.toString() || "",
-                      // "Content-Type": "application/json",
-                    },
+                    headers: getHeaders(tempToken, cid, isClient),
                     data: {
                       invoiceId: id,
                       noteType: "2",
@@ -1606,19 +1597,13 @@ export default function InvoiceDetails() {
                             width: "40",
                             handleOnClick: () => {
                               const headers = {
-                                headers: {
-                                  authorization: `Bearer ${tempToken}`,
-                                  "x-apng-base-region": "EMEA",
-                                  "x-apng-customer-id": cid?.toString() || "",
-                                  "x-apng-external": "false",
-                                  "x-apng-inter-region": "0",
-                                  "x-apng-target-region": "EMEA",
-                                  customer_id: cid?.toString() || "",
-                                  // "Content-Type": "application/json",
-                                },
+                                headers: getHeaders(tempToken, cid, isClient),
                               };
 
-                              const downloadApi = `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=${item.document.url}`;
+                              // const downloadApi = `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=${item.document.url}`;
+                              const downloadApi = getDownloadFileUrl(
+                                item.document.url
+                              );
                               axios
                                 .get(downloadApi, headers)
                                 .then((res: any) => {
@@ -1641,19 +1626,16 @@ export default function InvoiceDetails() {
                             icon: "remove",
                             width: "30",
                             handleOnClick: () => {
-                              const headers = {
-                                authorization: `Bearer ${tempToken}`,
-                                "x-apng-base-region": "EMEA",
-                                "x-apng-customer-id": cid || "",
-                                "x-apng-external": "false",
-                                "x-apng-inter-region": "0",
-                                "x-apng-target-region": "EMEA",
-                                customer_id: cid || "",
-                              };
+                              const headers = getHeaders(
+                                tempToken,
+                                cid,
+                                isClient
+                              );
 
                               axios({
                                 method: "DELETE",
-                                url: "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
+                                // url: "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
+                                url: urls.deleteFile,
                                 data: {
                                   invoiceId: id,
                                   documentId: documents[index].documentId,
@@ -1709,21 +1691,14 @@ export default function InvoiceDetails() {
                   handleUpload={
                     /* istanbul ignore next */
                     (file: any) => {
-                      const headers = {
-                        authorization: `Bearer ${tempToken}`,
-                        "x-apng-base-region": "EMEA",
-                        "x-apng-customer-id": cid || "",
-                        "x-apng-external": "false",
-                        "x-apng-inter-region": "0",
-                        "x-apng-target-region": "EMEA",
-                        customer_id: cid || "",
-                      };
+                      const headers = getHeaders(tempToken, cid, isClient);
                       setTimeout(() => {
                         var formData = new FormData();
                         formData.append("asset", file[0]);
                         axios
                           .post(
-                            "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/UploadFile",
+                            urls.uploadFile,
+
                             formData,
                             {
                               headers: headers,
@@ -1732,7 +1707,7 @@ export default function InvoiceDetails() {
                           .then((res: any) => {
                             axios
                               .post(
-                                " https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Create",
+                                urls.createDocument,
                                 {
                                   invoiceId: id,
 
@@ -1788,6 +1763,7 @@ export default function InvoiceDetails() {
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
           customerId={cid}
+          invoiceId={state.InvoiceId}
         ></BillsTable>
       )}
 
@@ -1840,22 +1816,12 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-                  const url = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/declineInvoice`;
+                  const url = urls.declineInvoice;
                   let currDate = new Date();
-
                   axios({
                     method: "POST",
-                    url: url,
-                    headers: {
-                      authorization: `Bearer ${tempToken}`,
-                      "x-apng-base-region": "EMEA",
-                      "x-apng-customer-id": cid?.toString() || "",
-                      "x-apng-external": "false",
-                      "x-apng-inter-region": "0",
-                      "x-apng-target-region": "EMEA",
-                      customer_id: cid?.toString() || "",
-                      // "Content-Type": "application/json",
-                    },
+                    url: urls.declineInvoice,
+                    headers: getHeaders(tempToken, cid, isClient),
                     data: {
                       invoiceId: id,
                       noteType: "1",
@@ -1944,12 +1910,7 @@ export default function InvoiceDetails() {
       </div>
 
       <div className="void-confirm-modal">
-        <Modal
-          isOpen={isVoidConfirmOptionOpen}
-          handleClose={() => {
-            setIsVoidConfirmOptionOpen(false);
-          }}
-        >
+        <Modal isOpen={isVoidConfirmOptionOpen}>
           <div>
             <h4>Are you sure you want to void this invoice?</h4>
 
@@ -1969,6 +1930,31 @@ export default function InvoiceDetails() {
                 label="Void"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => handleVoid()}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      <div className="delete-confirm-modal">
+        <Modal isOpen={deleteConfirmModalOpen}>
+          <div>
+            <h4>Are you sure you want to Delete this invoice permanently?</h4>
+
+            <div className="delete-confirm-button">
+              <Button
+                data-testid="delete-button-Cancel"
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setDeleteConfirmModalOpen(false);
+                }}
+              />
+              <Button
+                data-testid="delete-button-submit"
+                label="Delete"
+                className="primary-blue medium delete-button"
+                handleOnClick={() => handleDeleteInvoice()}
               />
             </div>
           </div>

@@ -9,6 +9,14 @@ import DatepickerDropdown from "../../../components/DatepickerDropdown/Datepicke
 import getRequest from "../../../components/Comman/api";
 import { listData } from "../InvoiceDetails/mockData";
 import dots from "./dots.svg";
+import {
+  getClientListingUrl,
+  getGenerateMultiplePdfUrl,
+  getGenerateSinglePdfUrl,
+  getHeaders,
+  getInternalListingUrl,
+} from "../../../urls/urls";
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -50,26 +58,10 @@ export default function InvoiceListing() {
     //   label: "Contractor Invoice",
     //   value: "contractorInvoice",
     // },
-    {
-      isSelected: false,
-      label: "Credit Memo",
-      value: 4,
-    },
-    {
-      isSelected: false,
-      label: "Payroll",
-      value: 1,
-    },
-    {
-      isSelected: false,
-      label: "Miscellaneous",
-      value: 2,
-    },
-    {
-      isSelected: false,
-      label: "Proforma",
-      value: 3,
-    },
+    tableSharedColumns.createMemo,
+    tableSharedColumns.payroll,
+    tableSharedColumns.Miscellaneous,
+    tableSharedColumns.proforma,
     {
       isSelected: false,
       label: "LateFee",
@@ -244,10 +236,18 @@ export default function InvoiceListing() {
 
   const apiFunc = () => {
     if (isClient !== null && isClient === true) {
-      api = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      // api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      api = getClientListingUrl(transactionTypes, statusType, dateFrom, dateTo);
       return api;
     } else if (isClient !== null && isClient === false) {
-      api = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      // api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      api = getInternalListingUrl(
+        transactionTypes,
+        statusType,
+        dateFrom,
+        dateTo
+      );
+
       return api;
     } else {
       api = "";
@@ -255,7 +255,12 @@ export default function InvoiceListing() {
     }
   };
 
-  const apiData: any = getRequest(apiFunc(), accessToken);
+  const apiData: any = getRequest(
+    apiFunc(),
+    accessToken,
+    "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    isClient
+  );
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -401,19 +406,11 @@ export default function InvoiceListing() {
     setDownloadDisable(true);
     setShowSuccessToast({ ...showSuccessToast, type: true });
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: customerID,
-        "Content-Type": "application/json",
-      },
+      headers: getHeaders(accessToken, customerID, isClient),
     };
     if (singleInvoiceId) {
-      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
+      // const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
+      const api = getGenerateSinglePdfUrl(singleInvoiceId);
       axios
         .get(api, headers)
         .then((res: any) => {
@@ -434,7 +431,8 @@ export default function InvoiceListing() {
     } else if (multiInvoiceId) {
       setShowSuccessToast({ ...showSuccessToast, type: true });
       const multiDownloadInvoiceId = multiInvoiceId.join(",");
-      const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
+      // const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
+      const api = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
       axios({
         method: "get",
         url: api,
@@ -495,11 +493,11 @@ export default function InvoiceListing() {
               label="New Invoice"
               className="primary-blue medium"
               icon={{
-                icon: 'add',
-                size: 'medium',
-                color: '#fff'
+                icon: "add",
+                size: "medium",
+                color: "#fff",
               }}
-              handleOnClick={() => navigate('/pay/newinvoice')}
+              handleOnClick={() => navigate("/pay/newinvoice")}
             />
           )}
         </div>
@@ -828,19 +826,19 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                  ...searchedTableData,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
+                    ...searchedTableData,
+                    // showDefaultColumn: true,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
                 : isClient
-                  ? {
+                ? {
                     ...clientTableData,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                  : {
+                : {
                     ...internalTabledata,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
@@ -855,12 +853,17 @@ export default function InvoiceListing() {
               let isClientStr = isClient ? "true" : "false";
               navigate(
                 "/pay/invoicedetails" +
-                row.id +
-                "/" +
-                row.customerId +
-                "/" +
-                isClientStr,
-                { state: { InvoiceId: row.invoiceNo, transactionType: row.transactionType  } }
+                  row.id +
+                  "/" +
+                  row.customerId +
+                  "/" +
+                  isClientStr,
+                {
+                  state: {
+                    InvoiceId: row.invoiceNo,
+                    transactionType: row.transactionType,
+                  },
+                }
               );
             }}
           />

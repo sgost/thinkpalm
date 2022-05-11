@@ -8,9 +8,13 @@ import MockAdapter from "axios-mock-adapter";
 import { mockapidata } from "./mockData";
 import axios from "axios";
 import NewInvoice from "..";
+import { urls, getCountryByCustomer, getEmployee } from "../../../../urls/urls";
 
 
 localStorage.setItem("accessToken", "1234");
+const id = "e291c9f0-2476-4237-85cb-7afecdd085d3";
+const customerId = "e291c9f0-2476-4237-85cb-7afecdd085d3";
+const countryId = "7defc4f9-906d-437f-a6d9-c822ca2ecfd7";
 
 describe("New Invoice", () => {
   beforeAll(() => {
@@ -18,13 +22,13 @@ describe("New Invoice", () => {
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll"
+        urls.customers
       )
       .reply(200, mockapidata.resGetAllCustomer);
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
+        getCountryByCustomer(id)
       )
       .reply(200, mockapidata.resGetAllCountry);
 
@@ -102,7 +106,7 @@ describe("step one getCustomer api fail ", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll"
+        urls.customers
       )
       .reply(400, mockapidata.resGetAllCustomer);
   });
@@ -126,13 +130,13 @@ describe("step one getCOuntry api fail", () => {
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll"
+        urls.customers
       )
       .reply(200, mockapidata.resGetAllCustomer);
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
+        getCountryByCustomer(id)
       )
       .reply(400, mockapidata.resGetAllCountry);
   });
@@ -164,18 +168,18 @@ describe("Stepper 2", () => {
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll"
+        urls.customers
       )
       .reply(200, mockapidata.resGetAllCustomer);
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
+        getCountryByCustomer(id)
       )
       .reply(200, mockapidata.resGetAllCountry);
       mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=e291c9f0-2476-4237-85cb-7afecdd085d3&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+        // getEmployee(customerId,countryId)
       )
       .reply(200, mockapidata.resForStepperTwo);
   });
@@ -305,18 +309,18 @@ describe("Stepper 2 show table click", () => {
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/cs/api/Customer/GetAll"
+        urls.customers
       )
       .reply(200, mockapidata.resGetAllCustomer);
 
     mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-subscriptionservice/api/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=e291c9f0-2476-4237-85cb-7afecdd085d3"
+        getCountryByCustomer(id)
       )
       .reply(200, mockapidata.resGetAllCountry);
       mock
       .onGet(
-        "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=e291c9f0-2476-4237-85cb-7afecdd085d3&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7"
+        getEmployee(customerId,countryId)
       )
       .reply(200, mockapidata.resForStepperTwo);
   });
