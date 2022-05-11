@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.28% </span>
+                <span class="strong">89.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>175/196</span>
+                <span class='fraction'>178/199</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.14% </span>
+                <span class="strong">77.77% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>27/35</span>
+                <span class='fraction'>28/36</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">89.17% </span>
+                <span class="strong">89.34% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>173/194</span>
+                <span class='fraction'>176/197</span>
             </div>
         
             
@@ -963,17 +963,8 @@
 <a name='L898'></a><a href='#L898'>898</a>
 <a name='L899'></a><a href='#L899'>899</a>
 <a name='L900'></a><a href='#L900'>900</a>
-<a name='L901'></a><a href='#L901'>901</a>
-<a name='L902'></a><a href='#L902'>902</a>
-<a name='L903'></a><a href='#L903'>903</a>
-<a name='L904'></a><a href='#L904'>904</a>
-<a name='L905'></a><a href='#L905'>905</a>
-<a name='L906'></a><a href='#L906'>906</a>
-<a name='L907'></a><a href='#L907'>907</a>
-<a name='L908'></a><a href='#L908'>908</a>
-<a name='L909'></a><a href='#L909'>909</a>
-<a name='L910'></a><a href='#L910'>910</a>
-<a name='L911'></a><a href='#L911'>911</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L901'></a><a href='#L901'>901</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1021,22 +1012,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">160x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1364,6 +1339,11 @@
 <span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">160x</span>
+<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">160x</span>
@@ -1901,6 +1881,7 @@ import {
   getHeaders,
   getInternalListingUrl,
 } from "../../../urls/urls";
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 &nbsp;
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -1936,26 +1917,10 @@ export default function InvoiceListing() {
     //   label: "Contractor Invoice",
     //   value: "contractorInvoice",
     // },
-    {
-      isSelected: false,
-      label: "Credit Memo",
-      value: 4,
-    },
-    {
-      isSelected: false,
-      label: "Payroll",
-      value: 1,
-    },
-    {
-      isSelected: false,
-      label: "Miscellaneous",
-      value: 2,
-    },
-    {
-      isSelected: false,
-      label: "Proforma",
-      value: 3,
-    },
+    tableSharedColumns.createMemo,
+    tableSharedColumns.payroll,
+    tableSharedColumns.Miscellaneous,
+    tableSharedColumns.proforma,
     {
       isSelected: false,
       label: "LateFee",
@@ -2275,6 +2240,11 @@ export default function InvoiceListing() {
       }
     }
   }, [searchText]);
+&nbsp;
+  useEffect(() =&gt; {
+    let tok = localStorage.getItem("current-org");
+    console.log("sakdj;kasjdlksajdkasjkldjaskljdklasj", tok);
+  }, []);
 &nbsp;
   const downloadFunction = () =&gt; {
     const download = <span class="fstat-no" title="function not covered" >(r</span>es: any) =&gt; {
@@ -2800,7 +2770,7 @@ export default function InvoiceListing() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Wed May 11 2022 11:31:43 GMT+0500 (Pakistan Standard Time)
+                at Wed May 11 2022 17:55:51 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
