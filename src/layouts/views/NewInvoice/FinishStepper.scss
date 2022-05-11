@@ -1,17 +1,17 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-.preview-invoice-container {
-    .preview-invoice-inner-container {
+.finish-stepper-container {
+    .finish-invoice-inner-container {
         min-height: 27rem;
-        .preview-para-one {
+        .finish-para-one {
             margin-top: 2rem;
             p {
-                font-size: 1.1rem;
+                font-size: 1.6rem;
                 color: #3e3e3e;
             }
         }
-        .preview-para-two {
+        .finish-para-two {
             width: 28rem;
             margin-top: -0.955rem;
             p {
@@ -20,17 +20,15 @@
                 line-height: 1.555rem;
             }
         }
-
-        .preview-invoice-button {
+        .finish-invoice-button {
             margin-top: 3rem;
             button.a-button.medium {
                 width: 9.13rem;
             }
         }
     }
-    .preview-invoice-button-container {
-        display: flex;
-        justify-content: space-between;
+
+    .finish-previous-button {
         position: absolute;
         margin-top: 5rem;
         width: 96.5rem;

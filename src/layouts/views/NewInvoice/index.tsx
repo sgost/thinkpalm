@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
+import { useNavigate } from "react-router-dom";
+import { BreadCrumb, Layouts, Progress } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
 import SelectEmployees from "./SelectEmployees";
 import PreviewInvoice from "./PreviewInvoice"
 import "./index.scss";
+import FinishSTepper from "./FinishStepper";
 
 const NewInvoice = () => {
   const navigate = useNavigate();
 
-  const [stepsCount, setStepsCount] = useState(2);
+  const [stepsCount, setStepsCount] = useState(3);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [allStepsData, setAllStepsData] = useState({
     stepOneData: {
@@ -98,8 +99,8 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                  ? "step2-right-panel"
-                  : "",
+                    ? "step2-right-panel"
+                    : "",
             },
           }}
           leftPanel={
@@ -126,10 +127,16 @@ const NewInvoice = () => {
                 />
               ) : stepsCount == 3 ? (
                 <PreviewInvoice
-                handleAllSteppersData={handleAllSteppersData}
-                allStepsData={allStepsData}
-                handleSteps={handleSteps}
-              />
+                  handleAllSteppersData={handleAllSteppersData}
+                  allStepsData={allStepsData}
+                  handleSteps={handleSteps}
+                />
+              ) : stepsCount == 4 ? (
+                <FinishSTepper
+                  handleAllSteppersData={handleAllSteppersData}
+                  allStepsData={allStepsData}
+                  handleSteps={handleSteps}
+                />
               ) : (
                 <></>
               )}

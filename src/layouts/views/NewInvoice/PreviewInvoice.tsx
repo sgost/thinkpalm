@@ -1,5 +1,5 @@
-import React from 'react'
-import { Button } from "atlasuikit";
+import React, { useState } from 'react'
+import { Button, Modal } from "atlasuikit";
 import "./PreviewInvoice.scss"
 
 
@@ -8,6 +8,8 @@ const previewInvoice = ({
   handleAllSteppersData,
   allStepsData,
 }: any) => {
+
+  const[isPreviewModal, setIsPreviewModal] = useState(false)
   return (
     <div className='preview-invoice-container'>
       <div className='preview-invoice-inner-container'>
@@ -25,7 +27,9 @@ const previewInvoice = ({
             data-testid=""
             label="Preview Invoice"
             className="primary-blue medium"
-            handleOnClick={() => { }}
+            handleOnClick={() => {
+              setIsPreviewModal(true)
+             }}
           />
         </div>
       </div>
@@ -61,6 +65,14 @@ const previewInvoice = ({
             }}
           />
         </div>
+      </div>
+      <div>
+        <Modal
+        isOpen={isPreviewModal}
+        handleClose={() => {
+          setIsPreviewModal(false)
+         }}
+        ></Modal>
       </div>
     </div>
   )
