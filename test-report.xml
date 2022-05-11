@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="310"/>
+    <testCase name="Bills Table Render" duration="289"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="70"/>
+    <testCase name="renders learn react link" duration="72"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="206"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="389"/>
-    <testCase name="step one getCustomer api fail  dropDown Value change" duration="109"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="86"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="280"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="259"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="223"/>
+    <testCase name="New Invoice breadcumbs are working" duration="234"/>
+    <testCase name="New Invoice dropDown Value change stepper 1" duration="349"/>
+    <testCase name="step one getCustomer api fail  dropDown Value change" duration="106"/>
+    <testCase name="step one getCOuntry api fail dropDown Value change" duration="88"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="276"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="277"/>
+    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="227"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="525"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="226"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="180"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="119"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="207"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="143"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="95"/>
-    <testCase name="client view table row clickable" duration="91"/>
-    <testCase name="client view Status clickable" duration="95"/>
-    <testCase name="client view Type clickable" duration="110"/>
-    <testCase name="client view Clear filters clickable" duration="126"/>
-    <testCase name="client view search" duration="90"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="242"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="158"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="161"/>
-    <testCase name="Client View search intenal" duration="59"/>
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="493"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="237"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="221"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="114"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="191"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="225"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="106"/>
+    <testCase name="client view table row clickable" duration="103"/>
+    <testCase name="client view Status clickable" duration="106"/>
+    <testCase name="client view Type clickable" duration="97"/>
+    <testCase name="client view Clear filters clickable" duration="130"/>
+    <testCase name="client view search" duration="88"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="190"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="146"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="140"/>
+    <testCase name="Client View search intenal" duration="64"/>
     <testCase name="renders without crashing" duration="4"/>
     <testCase name="Client View" duration="39"/>
-    <testCase name="Internal View" duration="23"/>
-    <testCase name="Enter token client" duration="24"/>
+    <testCase name="Internal View" duration="26"/>
+    <testCase name="Enter token client" duration="25"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="720"/>
-    <testCase name="Invoice details download clickable " duration="278"/>
-    <testCase name="Invoice details approve invoice clickable " duration="308"/>
-    <testCase name="Invoice details publish notes" duration="412"/>
-    <testCase name="Invoice details download file" duration="219"/>
-    <testCase name="Invoice details delete file" duration="133"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="97"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="105"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="111"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="60"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="108"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="148"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="155"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="137"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="142"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="111"/>
-    <testCase name="api fail tabs are working" duration="13"/>
-    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="96"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="95"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="85"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="84"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="120"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="74"/>
+    <testCase name="Invoice details tabs are working" duration="673"/>
+    <testCase name="Invoice details download clickable " duration="332"/>
+    <testCase name="Invoice details approve invoice clickable " duration="347"/>
+    <testCase name="Invoice details publish notes" duration="267"/>
+    <testCase name="Invoice details download file" duration="126"/>
+    <testCase name="Invoice details delete file" duration="163"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="105"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="103"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="122"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="62"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="110"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="157"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="162"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="142"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="138"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="116"/>
+    <testCase name="api fail tabs are working" duration="15"/>
+    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="98"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="211"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="166"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="105"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="93"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="82"/>
   </file>
 </testExecutions>
