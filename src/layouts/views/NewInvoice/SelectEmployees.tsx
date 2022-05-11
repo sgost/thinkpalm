@@ -3,6 +3,7 @@ import { Checkbox, Button, ProfileHeader, Table, Icon } from "atlasuikit";
 import axios from "axios";
 import "./SelectEmployees.scss";
 import { getEmployee, getHeaders } from "../../../urls/urls";
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 const SelectEmployees = ({
   handleSteps,
@@ -24,11 +25,8 @@ const SelectEmployees = ({
         isDefault: true,
         key: "amount",
       },
-      {
-        header: "Currency",
-        isDefault: true,
-        key: "currency",
-      },
+      tableSharedColumns.currency
+     ,
       {
         header: "Effective Date",
         isDefault: true,

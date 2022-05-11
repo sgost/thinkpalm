@@ -474,7 +474,7 @@ const NewInvoiceCreation = ({ handleSteps, allStepsData, handleAllSteppersData }
 
       </div>
 
-      <div className='buttons'>
+      <div className='stepper-one-buttons'>
         <Button
           label="Save"
           className="secondary-btn medium button"

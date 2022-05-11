@@ -29,6 +29,7 @@ import {
   getHeaders,
   getDownloadFileUrl,
 } from "../../../urls/urls";
+import { tableSharedColumns } from '../../../sharedColumns/sharedColumns'
 
 
 export default function InvoiceDetails() {
@@ -485,17 +486,12 @@ export default function InvoiceDetails() {
       isDefault: true,
       key: "adminFees",
     },
-
     country: {
       header: "Country",
       isDefault: true,
       key: "country",
     },
-    currency: {
-      header: "Currency",
-      isDefault: true,
-      key: "currency",
-    },
+    currency :tableSharedColumns.currency,
     total: {
       header: "Total in " + getBillingCurrency(),
       isDefault: true,
@@ -892,7 +888,7 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           {isClient == "false" && status === "In Review" && (
-            <div className="delete-button">
+            <div className="upper-delete-button">
               <div
                 className="delete-invoice"
                 onClick={() => setDeleteConfirmModalOpen(true)}
