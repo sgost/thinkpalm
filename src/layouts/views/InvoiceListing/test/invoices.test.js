@@ -503,20 +503,20 @@ describe("Internal View Download click and checkbox Click", () => {
     const mock = new MockAdapter(axios);
     mock
       .onGet(
-        getClientListingUrl("","","", "")
+        getInternalListingUrl("","","", "")
       )
       .reply(200, resDataInternal);
 
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
       )
       .reply(200, resDownloadSinlgeApiData);
 
 
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
       )
       .reply(200, {
         "id": "00000000-0000-0000-0000-000000000000",
@@ -583,14 +583,14 @@ describe("Internal View Download click for single invoice  api fail Click", () =
 
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
       )
       .reply(400, resDownloadSinlgeApiData);
 
 
     mock
       .onGet(
-        `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
+        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
       )
       .reply(200, {
         "id": "00000000-0000-0000-0000-000000000000",
