@@ -412,8 +412,7 @@ export default function InvoiceListing() {
       headers: getHeaders(accessToken, customerID, isClient),
     };
     if (singleInvoiceId) {
-      // const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/generatePDF/${singleInvoiceId}`;
-      const api = getGenerateSinglePdfUrl(singleInvoiceId);
+     const api = getGenerateSinglePdfUrl(singleInvoiceId);
       axios
         .get(api, headers)
         .then((res: any) => {
@@ -434,7 +433,6 @@ export default function InvoiceListing() {
     } else if (multiInvoiceId) {
       setShowSuccessToast({ ...showSuccessToast, type: true });
       const multiDownloadInvoiceId = multiInvoiceId.join(",");
-      // const api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`;
       const api = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
       axios({
         method: "get",

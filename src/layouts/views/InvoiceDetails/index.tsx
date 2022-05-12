@@ -46,33 +46,18 @@ export default function InvoiceDetails() {
   const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
-  const baseBillApi =
-    "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
-  // const api =
-  //   "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-  //   id;
+  const baseBillApi = urls.billsPerInvoice
 
   const api = getInvoiceDetailsUrl(id);
-  // const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
 
   const addressApi = getBillingAddressUrl(cid);
 
-  // const countriesApi =
-  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name";
-
   const countriesApi = urls.countries;
-
-  // const feeApi =
-  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees";
 
   const feeApi = urls.fee;
 
-  // const lookupApi =
-  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
-
   const lookupApi = urls.lookup;
-
-  // const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
+  
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
