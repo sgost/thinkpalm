@@ -46,8 +46,8 @@ export default function InvoiceDetails() {
   const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
-  const baseBillApi =
-    "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
+  const baseBillApi = urls.billsPerInvoice
+    // "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
   // const api =
   //   "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
   //   id;
