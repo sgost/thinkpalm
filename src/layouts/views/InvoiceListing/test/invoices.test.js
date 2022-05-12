@@ -20,6 +20,7 @@ import MockAdapter from "axios-mock-adapter";
 import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
 import { getClientListingUrl, getInternalListingUrl } from "../../../../urls/urls";
+import { currentOrgForListing } from "../../NewInvoice/test/mockData";
 
 let resDataInternal = {
   page: 1,
@@ -201,11 +202,12 @@ let resDownloadSinlgeApiData = {
   "name": "Payroll-EMEA-70961bfc-8d6e-44fc-88ad-61f9c86db9a3.pdf",
   "regionItemCode": "emea"
 }
+
 localStorage.setItem("accessToken", "1234");
 
 
 describe("client view", () => {
-  localStorage.setItem("current-org-role", "Customer");
+  localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   beforeEach(() => {
     const mock = new MockAdapter(axios);
     mock
@@ -375,8 +377,7 @@ describe("client view", () => {
   // });
 });
 describe("checkbox and download", () => {
-  localStorage.setItem("current-org-role", "Customer");
-
+  localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   test("checkbox and download are clickable in client view", async () => {
     const mock = new MockAdapter(axios);
     mock
@@ -498,8 +499,8 @@ describe("Internal View Download click and checkbox Click", () => {
 
 
   test("table row clickable", async () => {
-    localStorage.setItem("current-org-role", "Internal");
-
+    currentOrgForListing.Payments.Role = "Internal"
+    localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
       .onGet(
@@ -572,8 +573,8 @@ describe("Internal View Download click for single invoice  api fail Click", () =
 
 
   test("table row clickable", async () => {
-    localStorage.setItem("current-org-role", "Internal");
-
+    currentOrgForListing.Payments.Role = "Internal"
+    localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
       .onGet(

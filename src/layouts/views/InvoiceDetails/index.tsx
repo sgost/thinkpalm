@@ -836,7 +836,6 @@ export default function InvoiceDetails() {
     await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
-        console.log("ress", res);
         if (res.data === true) {
           navigate("/pay");
         }
@@ -1240,7 +1239,6 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
-            console.log("p", item);
             return (
               <div>
                 <div className="countryHeader">

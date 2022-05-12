@@ -79,7 +79,6 @@ const SelectEmployees = ({
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
-        // console.log('ress', res.data)
         if (res.status === 200) {
           let employeeTableData: any = [];
           res?.data?.forEach((item: any) => {
