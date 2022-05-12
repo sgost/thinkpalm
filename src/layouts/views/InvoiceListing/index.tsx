@@ -390,6 +390,11 @@ export default function InvoiceListing() {
     }
   }, [searchText]);
 
+  useEffect(() => {
+    let tok = localStorage.getItem("current-org");
+    console.log("sakdj;kasjdlksajdkasjkldjaskljdklasj", tok);
+  }, []);
+
   const downloadFunction = () => {
     const download = (res: any) => {
       if (res.status === 200) {
