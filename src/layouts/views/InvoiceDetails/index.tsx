@@ -75,7 +75,7 @@ export default function InvoiceDetails() {
   // const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
   const notesApi = getNotesUrl(id);
 
-  const tempToken = localStorage.getItem("temptoken");
+  const tempToken = localStorage.getItem("accessToken");
 
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
@@ -836,7 +836,6 @@ export default function InvoiceDetails() {
     await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
-        console.log("ress", res);
         if (res.data === true) {
           navigate("/pay");
         }
@@ -1240,7 +1239,6 @@ export default function InvoiceDetails() {
       {activeTab === "payroll" && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
-            console.log("p", item);
             return (
               <div>
                 <div className="countryHeader">

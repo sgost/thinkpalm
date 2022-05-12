@@ -10,8 +10,10 @@ const SelectEmployees = ({
   handleAllSteppersData,
   allStepsData,
 }: any) => {
-  const tempToken = localStorage.getItem("temptoken");
+  
   const [cssForData, setCssForData] = useState(false);
+  const accessToken = localStorage.getItem("accessToken");
+  const [buttonHide, setButtonHide] = useState(false);
   const [tableOptions, setTableOptions] = useState({
     columns: [
       {
@@ -63,35 +65,22 @@ const SelectEmployees = ({
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
 
   const getEmployyeApiData = () => {
+  
     const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-      },
+      headers: getHeaders(
+        accessToken,
+        allStepsData?.stepOneData?.customerId,
+        "false"
+      ),
     };
 
-    // const headers = {
-    //   headers: getHeaders(
-    //     tempToken,
-    //     allStepsData?.stepOneData?.customerId,
-    //     "false"
-    //   ),
-    // };
-
-    const apiUrl = 'https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/PayrollChangeItems?customerId=a9bbee6d-797a-4724-a86a-5b1a2e28763f&countryId=7defc4f9-906d-437f-a6d9-c822ca2ecfd7'
-    // const apiUrl = getEmployee(
-    //   allStepsData?.stepOneData?.customerId,
-    //   allStepsData?.stepOneData?.countryId
-    // );
+    const apiUrl = getEmployee(
+      allStepsData?.stepOneData?.customerId,
+      allStepsData?.stepOneData?.countryId
+    );
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
-        // console.log('ress', res.data)
         if (res.status === 200) {
           let employeeTableData: any = [];
           res?.data?.forEach((item: any) => {

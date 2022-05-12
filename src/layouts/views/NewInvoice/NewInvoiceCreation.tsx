@@ -171,7 +171,6 @@ const NewInvoiceCreation = ({
     axios
       .get(api, headers)
       .then((res: any) => {
-        console.log("res::::", res.data);
         const preData: any = preparedCustomerData(res.data);
         setCustomerOption(preData);
       })
@@ -317,7 +316,6 @@ const NewInvoiceCreation = ({
       <div>
         <div className="newinvoice-container">
           <h3>New Invoice</h3>
-          {console.log("CustomerOptions", CustomerOptions)}
           <div className="dropdown">
             <Dropdown
               handleDropOptionClick={(item: any) => {

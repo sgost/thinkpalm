@@ -629,7 +629,7 @@ const SelectEmployees = ({
   handleAllSteppersData,
   allStepsData,
 }: any) =&gt; {
-  const tempToken = localStorage.getItem("temptoken");
+  const accessToken = localStorage.getItem("accessToken");
   const [buttonHide, setButtonHide] = useState(false);
   const [tableOptions, setTableOptions] = useState({
     columns: [
@@ -684,7 +684,7 @@ const SelectEmployees = ({
   const getEmployyeApiData = () =&gt; {
     const headers = {
       headers: getHeaders(
-        tempToken,
+        accessToken,
         allStepsData?.stepOneData?.customerId,
         "false"
       ),

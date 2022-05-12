@@ -4070,7 +4070,7 @@ export default function InvoiceDetails() {
   // const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
   const notesApi = getNotesUrl(id);
 &nbsp;
-  const tempToken = localStorage.getItem("temptoken");
+  const tempToken = localStorage.getItem("accessToken");
 &nbsp;
   const [apiData, setApiData] = useState&lt;any&gt;(null);
   const [billTableData, setBillTableData] = useState&lt;any&gt;(null);
