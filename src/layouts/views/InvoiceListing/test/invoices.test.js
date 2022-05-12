@@ -19,7 +19,7 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
-import { getClientListingUrl, getInternalListingUrl } from "../../../../urls/urls";
+import { getClientListingUrl, getGenerateMultiplePdfUrl, getGenerateSinglePdfUrl, getInternalListingUrl } from "../../../../urls/urls";
 import { currentOrgForListing } from "../../NewInvoice/test/mockData";
 
 let resDataInternal = {
@@ -510,15 +510,15 @@ describe("Internal View Download click and checkbox Click", () => {
 
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
-      )
+        getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3")
+         )
       .reply(200, resDownloadSinlgeApiData);
 
 
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
-      )
+        getGenerateMultiplePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06")
+     )
       .reply(200, {
         "id": "00000000-0000-0000-0000-000000000000",
         "url": "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
@@ -574,6 +574,7 @@ describe("Internal View Download click for single invoice  api fail Click", () =
 
   test("table row clickable", async () => {
     currentOrgForListing.Payments.Role = "Internal"
+    console.log("currentOrgForListingcurrentOrgForListing",currentOrgForListing)
     localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
