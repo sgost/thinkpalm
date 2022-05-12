@@ -30,7 +30,7 @@ const services = {
   atlasIdgService: "/atlas-idg-service/api",
   apngMetaDataService: "/metadataservice/api",
   atlasCustomerService: "/cs/api",
-  contractorPayBillingService: "billingservice/api",
+  contractorPayBillingService: "/billingservice/api",
   atlasSubscriptionService:"/atlas-subscriptionservice/api"
 };
 

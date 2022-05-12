@@ -336,20 +336,23 @@ export default function InvoiceDetails() {
         console.log("error", e);
       });
 
-    let URL = baseBillApi + state.InvoiceId;
-    axios
-      .get(URL, { headers: { accept: "text/plain" } })
-      .then((response: any) => {
-        if (response.status == 200) {
-          setBillTableData(response);
-        } else {
-          console.log("Bill API failing on contractor service");
-        }
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
+    if(state.transactionType == 7){
+      
+      let URL = baseBillApi + state.InvoiceId;
+      axios
+        .get(URL, { headers: { accept: "text/plain" } })
+        .then((response: any) => {
+          if (response.status == 200) {
+            setBillTableData(response);
+          } else {
+            console.log("Bill API failing on contractor service");
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
 
+      }
     axios
       .get(notesApi, headers)
       .then((res: any) => {
