@@ -40,4 +40,171 @@
             width: 9.13rem;
         }
     }
+    .newPayrollInvoiceModal {
+        // overflow-x: hidden;
+        overflow-y: auto;
+        .a-modal__body {
+            height: fit-content;
+            width: 90rem;
+            .newPayrollInvoiceInfo {
+                .newInvoiceTopBar {
+                    background-color: #cbd4f3;
+                    display: flex;
+                    justify-content: space-around;
+                    min-width: 92rem;
+                    min-height: 11rem;
+                    .newInvoiceNoHeader {
+                        display: flex;
+                    }
+                }
+
+                .newInfoDetails {
+                    display: flex;
+                    padding: 30px;
+
+                    @mixin heading {
+                        color: $primary-blue;
+                        font-size: 0.8rem;
+                    }
+                    @mixin value {
+                        font-weight: bold;
+                        font-size: 1rem;
+                        margin-top: 0px;
+                        margin-bottom: 1.875rem;
+                    }
+
+                    div {
+                        width: 25%;
+                        border-right-style: solid;
+                        border-right-width: 1px;
+                        border-color: #ebebed;
+                        padding: 0rem 4rem;
+                    }
+
+                    .newInvoiceHeading {
+                        @include heading();
+                    }
+
+                    .newInvoiceValue {
+                        @include value();
+                        color: #3e3e3e;
+                    }
+
+                    .newInvoiceAddress {
+                        margin: 2px 0px;
+                        color: #3e3e3e;
+                    }
+
+                    .smallText {
+                        font-size: 0.813rem;
+                        line-height: 140%;
+                        margin: 0px;
+                    }
+
+                    .newInvoiceLastCloumn {
+                        border-style: hidden;
+                    }
+                }
+
+                .newInvoiceEmployeeDetail {
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    .newInvoiceTable {
+                        display: flex;
+                        justify-content: center;
+                    }
+                    .table {
+                        max-width: 87rem;
+                    }
+                    .newInvoiceFeeSummaryCalc {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
+                        background-color: $white;
+                        padding: 20px;
+                        max-width: 87rem;
+                        .newInvoiceRowFee {
+                            display: flex;
+                            border-bottom-style: solid;
+                            border-color: $light-gray;
+                            border-width: 1px;
+                            width: 30%;
+                            justify-content: space-between;
+                            .newInvoiceTitle {
+                                color: $secondary-gray;
+                            }
+                            .newInvoiceAmount {
+                                font-weight: bold;
+                            }
+                        }
+
+                        .newInvoiceRow2 {
+                            display: flex;
+                            width: 30%;
+                            justify-content: space-between;
+                            .newInvoiceTitle {
+                                color: $secondary-gray;
+                            }
+                            .newInvoiceAmount {
+                                font-weight: bold;
+                            }
+                        }
+
+                        .newInvoiceTotalRow {
+                            display: flex;
+                            align-items: center;
+                            gap: 20px;
+                            width: 30%;
+                            justify-content: space-between;
+
+                            p {
+                                color: $primary-blue;
+                            }
+                            h3 {
+                                color: $primary-blue;
+                                background-color: $active;
+                                padding: 16px;
+                                border-radius: 8px;
+                            }
+                        }
+                    }
+                }
+
+                .newInvoiceCountrySummary-Container {
+                    display: flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    .countryTableHeader {
+                        margin-left: 3rem;
+                    }
+                    .newInvoiceCountryTable {
+                        display: flex;
+                        justify-content: center;
+                    }
+                    .table {
+                        max-width: 87rem;
+                    }
+                    .newInvoiceCountrySummaryCalc {
+                        display: flex;
+                        background-color: $white;
+                        align-items: center;
+                        justify-content: flex-end;
+                        padding: 20px;
+                        gap: 20px;
+
+                        p {
+                            color: $primary-blue;
+                        }
+                        h3 {
+                            color: $primary-blue;
+                            background-color: $active;
+                            padding: 16px;
+                            border-radius: 8px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
