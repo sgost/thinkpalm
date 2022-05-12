@@ -37,7 +37,7 @@ export default function CreditMemoSummary(props: any) {
                             handleDropdownClick={setOpenProductService}
                             isOpen={openProductService}
                             name="Flavours1"
-                            isDisabled={true}
+                            isDisabled="true"
                             options={[
                                 {
                                 isSelected: false,
@@ -112,6 +112,18 @@ export default function CreditMemoSummary(props: any) {
                     </div>
                 </div>
                 <div className='line-between'></div>
+                <div className="feeSummaryCalc">
+                    <div className="rowFee">
+                        <p className="title">Pay Converted Total</p>
+                        {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                        <p className="amount">{"USD"} {"1000.00"}</p>
+                    </div>
+                    <div className="totalRow">
+                        <p>Total Due</p>
+                        <p className='total'>{"USD"} {"2000.00"}</p>
+                        {/* <p className='total'>{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                    </div>
+                </div>
             </Cards>
         </div>
     )

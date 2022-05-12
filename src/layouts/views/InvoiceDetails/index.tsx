@@ -132,7 +132,7 @@ export default function InvoiceDetails() {
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
               }
-              if(res.data.invoice.invoiceNo === "10010019"){
+              if(res.data.invoice.invoiceNo === "100678"){
                 res.data.invoice.transactionType = 4
               }
 

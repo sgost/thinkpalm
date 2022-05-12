@@ -1,27 +1,33 @@
-.credit-summary-wrapper{
-    .summary-card{
+@import "../../../styles/variables";
+.credit-summary-wrapper {
+    .summary-card {
         padding: 2.813rem 4rem 5.315rem 4rem;
-        .UI-line-text-box{
+
+        .UI-line-text-box {
             width: 22rem !important;
             margin-right: 4.193rem;
         }
-        .quantity-box{
+
+        .quantity-box {
             width: 5.8rem;
             margin-right: 2.8rem;
         }
-        .amount-box{
-            width:13.5rem;
+
+        .amount-box {
+            width: 13.5rem;
             margin-right: 4.193rem;
         }
-        .UI-align-boxes{
+
+        .UI-align-boxes {
             display: flex;
             flex-direction: row;
             justify-content: left;
             width: -webkit-fill-available;
+
             .a-dropdown {
-                border: 0.056rem solid #ced4da !important;
+                border: 0.056rem solid #ced4da;
                 align-items: center;
-                background: #fff!important;
+                background: #fff;
                 border-radius: .222rem;
                 cursor: pointer;
                 display: flex;
@@ -34,42 +40,131 @@
                 z-index: unset;
                 margin-top: 1.25rem;
             }
-            .a-dropdown__option{
+
+            .a-dropdown__option {
                 z-index: 1000;
             }
+
             .a-dropdown__title {
                 color: #3e3e3e;
             }
-            
+
             .a-dropdown__label {
-                color: #3e3e3e !important;
+                color: #3e3e3e;
                 padding-left: 1rem;
             }
+
+            .a-dropdown.is-disabled {
+                background: #f5f5f6 !important;
+                border: 1px solid #ebebed !important;
+                box-shadow: none;
+                opacity: 1;
+                pointer-events: none;
+            }
         }
-        .margin-top-4{
+
+        .margin-top-4 {
             margin-top: 4rem !important;
         }
-        .line-between{
+
+        .line-between {
             width: -webkit-fill-available;
             border-bottom: 1px solid #3E3E3E !important;
             margin-top: 2.313rem !important;
         }
-    }
+
+        .feeSummaryCalc {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            background-color: $white;
+            padding: 20px;
     
-    .title{
+            .spacerclass{
+                width: 70%;
+            }
+            .rowFee {
+                display: flex;
+                border-bottom-style: solid;
+                // border-bottom-width: 1;
+                border-color: $light-gray;
+                border-width: 2px;
+                width: 30%;
+                padding-right: 3.6rem;
+                justify-content: space-between;
+    
+                .title {
+                    font-weight: 400;
+                    font-size: 1rem;
+                    color: $secondary-gray;
+                    font-family: 'CircularXX', sans-serif;
+    
+                }
+    
+                .amount {
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #041e42;
+                }
+            }
+    
+            .row2 {
+                display: flex;
+                width: 30%;
+                justify-content: space-between;
+                padding-right: 3.6rem;
+    
+                .title {
+                    font-weight: 400;
+                    font-size: 1rem;
+                    color: $secondary-gray;
+                }
+    
+                .amount {
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #041e42;
+                }
+            }
+            .totalRow {
+                display: flex;
+                align-items: center;
+                width: 30%;
+                justify-content: space-between;
+                p {
+                    color: $primary-blue;
+                }
+    
+                .total {
+                    color: $primary-blue;
+                    background-color: $active;
+                    padding: 18px 32px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 24px;
+                }
+            }
+    
+            
+        }
+    }
+
+    .title {
         font-size: 1.5rem;
 
     }
-    .top{
+
+    .top {
         display: flex;
         flex-direction: row;
         width: 100%;
         justify-content: space-between;
-        .edit{
+
+        .edit {
             width: 7.563rem !important;
             height: 3.125rem !important;
         }
     }
-    
-    
+
+
 }
