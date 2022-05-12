@@ -1,5 +1,5 @@
 TN:
-SF:src\App.tsx
+SF:src/App.tsx
 FN:6,App
 FNF:1
 FNH:1
@@ -11,7 +11,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\assets\icons\deletesvg.svg
+SF:src/assets/icons/deletesvg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -21,7 +21,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\assets\icons\index.tsx
+SF:src/assets/icons/index.tsx
 FNF:0
 FNH:0
 LF:0
@@ -30,7 +30,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\assets\icons\user-icon-small.png
+SF:src/assets/icons/user-icon-small.png
 FNF:0
 FNH:0
 DA:1,3
@@ -40,39 +40,39 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\Comman\api.tsx
+SF:src/components/Comman/api.tsx
 FN:4,(anonymous_0)
 FN:26,(anonymous_1)
 FN:30,(anonymous_2)
 FN:34,(anonymous_3)
 FNF:4
 FNH:4
-FNDA:160,(anonymous_0)
-FNDA:76,(anonymous_1)
-FNDA:21,(anonymous_2)
+FNDA:150,(anonymous_0)
+FNDA:55,(anonymous_1)
+FNDA:19,(anonymous_2)
 FNDA:17,(anonymous_3)
 DA:4,2
-DA:5,160
-DA:12,160
-DA:26,160
-DA:27,76
-DA:28,38
-DA:32,21
+DA:5,150
+DA:12,150
+DA:26,150
+DA:27,55
+DA:28,37
+DA:32,19
 DA:35,17
-DA:40,160
+DA:40,150
 LF:9
 LH:9
-BRDA:16,0,0,160
+BRDA:16,0,0,150
 BRDA:16,0,1,0
-BRDA:20,1,0,160
+BRDA:20,1,0,150
 BRDA:20,1,1,0
-BRDA:27,2,0,38
-BRDA:27,2,1,38
+BRDA:27,2,0,37
+BRDA:27,2,1,18
 BRF:6
 BRH:4
 end_of_record
 TN:
-SF:src\components\Comman\Utils\utils.tsx
+SF:src/components/Comman/Utils/utils.tsx
 FNF:0
 FNH:0
 LF:0
@@ -81,7 +81,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\components\DatepickerDropdown\DatepickerDropdown.tsx
+SF:src/components/DatepickerDropdown/DatepickerDropdown.tsx
 FN:13,DatepickerDropdown
 FN:24,(anonymous_1)
 FN:48,(anonymous_2)
@@ -96,43 +96,43 @@ FN:136,(anonymous_10)
 FN:139,(anonymous_11)
 FNF:12
 FNH:10
-FNDA:119,DatepickerDropdown
-FNDA:119,(anonymous_1)
-FNDA:119,(anonymous_2)
-FNDA:714,(anonymous_3)
-FNDA:119,(anonymous_4)
-FNDA:19,(anonymous_5)
+FNDA:150,DatepickerDropdown
+FNDA:150,(anonymous_1)
+FNDA:150,(anonymous_2)
+FNDA:900,(anonymous_3)
+FNDA:150,(anonymous_4)
+FNDA:18,(anonymous_5)
 FNDA:0,handleClickOutside
-FNDA:19,(anonymous_7)
+FNDA:18,(anonymous_7)
 FNDA:7,(anonymous_8)
 FNDA:0,noRefCheck
 FNDA:48,(anonymous_10)
 FNDA:6,(anonymous_11)
-DA:24,119
-DA:25,119
+DA:24,150
+DA:25,150
 DA:26,0
-DA:27,119
+DA:27,150
 DA:28,0
-DA:29,119
+DA:29,150
 DA:30,0
-DA:31,119
+DA:31,150
 DA:32,13
-DA:34,106
-DA:38,119
-DA:47,119
-DA:48,119
-DA:49,119
-DA:50,714
+DA:34,137
+DA:38,150
+DA:47,150
+DA:48,150
+DA:49,150
+DA:50,900
 DA:51,0
-DA:56,119
-DA:57,119
+DA:56,150
+DA:57,150
 DA:59,0
 DA:60,0
-DA:63,19
-DA:64,19
-DA:65,19
-DA:69,119
-DA:71,119
+DA:63,18
+DA:64,18
+DA:65,18
+DA:69,150
+DA:71,150
 DA:80,7
 DA:109,0
 DA:110,0
@@ -150,26 +150,26 @@ DA:141,6
 LF:39
 LH:23
 BRDA:25,0,0,0
-BRDA:25,0,1,119
-BRDA:25,1,0,119
+BRDA:25,0,1,150
+BRDA:25,1,0,150
 BRDA:25,1,1,0
 BRDA:27,2,0,0
-BRDA:27,2,1,119
+BRDA:27,2,1,150
 BRDA:29,3,0,0
-BRDA:29,3,1,119
+BRDA:29,3,1,150
 BRDA:31,4,0,13
-BRDA:31,4,1,106
+BRDA:31,4,1,137
 BRDA:50,5,0,0
-BRDA:50,5,1,714
+BRDA:50,5,1,900
 BRDA:59,6,0,0
 BRDA:59,6,1,0
 BRDA:59,7,0,0
 BRDA:59,7,1,0
-BRDA:76,8,0,119
+BRDA:76,8,0,150
 BRDA:76,8,1,8
 BRDA:83,9,0,8
-BRDA:83,9,1,111
-BRDA:104,10,0,119
+BRDA:83,9,1,142
+BRDA:104,10,0,150
 BRDA:104,10,1,8
 BRDA:109,11,0,0
 BRDA:109,11,1,0
@@ -179,7 +179,7 @@ BRF:26
 BRH:13
 end_of_record
 TN:
-SF:src\layouts\views\BillsTable\index.tsx
+SF:src/layouts/views/BillsTable/index.tsx
 FN:14,BillsTable
 FN:45,(anonymous_1)
 FN:48,(anonymous_2)
@@ -282,7 +282,7 @@ BRF:32
 BRH:11
 end_of_record
 TN:
-SF:src\layouts\views\BillsTable\mockBills.js
+SF:src/layouts/views/BillsTable/mockBills.js
 FNF:0
 FNH:0
 LF:0
@@ -291,7 +291,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\avatar.png
+SF:src/layouts/views/InvoiceDetails/avatar.png
 FNF:0
 FNH:0
 DA:1,3
@@ -301,7 +301,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\getFlag.tsx
+SF:src/layouts/views/InvoiceDetails/getFlag.tsx
 FN:524,GetFlag
 FN:529,(anonymous_1)
 FNF:2
@@ -1054,7 +1054,7 @@ BRF:156
 BRH:127
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\mockData.js
+SF:src/layouts/views/InvoiceDetails/mockData.js
 FNF:0
 FNH:0
 DA:4,3
@@ -1067,7 +1067,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\spainFlag.png
+SF:src/layouts/views/InvoiceDetails/spainFlag.png
 FNF:0
 FNH:0
 DA:1,3
@@ -1077,7 +1077,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\user.png
+SF:src/layouts/views/InvoiceDetails/user.png
 FNF:0
 FNH:0
 DA:1,3
@@ -1087,7 +1087,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ac.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ac.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1097,7 +1097,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ad.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ad.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1107,7 +1107,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ae.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ae.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1117,7 +1117,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\af.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/af.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1127,7 +1127,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ag.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ag.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1137,7 +1137,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\al.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/al.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1147,7 +1147,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\am.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/am.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1157,7 +1157,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ao.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ao.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1167,7 +1167,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\aq.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/aq.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1177,7 +1177,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ar.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ar.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1187,7 +1187,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\as.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/as.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1197,7 +1197,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\at.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/at.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1207,7 +1207,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\au.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/au.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1217,7 +1217,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\aw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/aw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1227,7 +1227,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ax.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ax.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1237,7 +1237,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\az.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/az.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1247,7 +1247,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ba.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ba.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1257,7 +1257,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bb.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bb.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1267,7 +1267,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bd.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bd.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1277,7 +1277,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\be.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/be.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1287,7 +1287,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1297,7 +1297,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1307,7 +1307,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bh.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bh.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1317,7 +1317,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bi.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bi.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1327,7 +1327,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bj.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bj.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1337,7 +1337,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1347,7 +1347,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1357,7 +1357,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1367,7 +1367,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bo.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bo.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1377,7 +1377,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bq.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bq.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1387,7 +1387,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\br.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/br.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1397,7 +1397,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bs.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bs.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1407,7 +1407,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1417,7 +1417,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bv.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bv.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1427,7 +1427,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1437,7 +1437,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\by.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/by.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1447,7 +1447,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\bz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/bz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1457,7 +1457,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ca.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ca.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1467,7 +1467,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cc.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cc.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1477,7 +1477,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cd.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cd.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1487,7 +1487,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1497,7 +1497,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1507,7 +1507,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ch.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ch.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1517,7 +1517,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ci.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ci.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1527,7 +1527,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ck.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ck.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1537,7 +1537,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1547,7 +1547,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1557,7 +1557,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1567,7 +1567,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\co.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/co.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1577,7 +1577,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cp.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cp.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1587,7 +1587,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1597,7 +1597,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1607,7 +1607,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cv.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cv.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1617,7 +1617,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1627,7 +1627,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cx.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cx.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1637,7 +1637,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cy.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cy.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1647,7 +1647,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\cz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/cz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1657,7 +1657,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\de.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/de.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1667,7 +1667,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\dg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/dg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1677,7 +1677,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\dj.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/dj.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1687,7 +1687,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\dk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/dk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1697,7 +1697,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\dm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/dm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1707,7 +1707,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\dz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/dz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1717,7 +1717,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ea.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ea.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1727,7 +1727,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ec.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ec.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1737,7 +1737,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ee.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ee.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1747,7 +1747,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\eg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/eg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1757,7 +1757,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\eh.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/eh.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1767,7 +1767,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\er.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/er.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1777,7 +1777,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\es-ct.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/es-ct.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1787,7 +1787,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\es-ga.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/es-ga.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1797,7 +1797,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\es.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/es.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1807,7 +1807,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\et.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/et.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1817,7 +1817,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\eu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/eu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1827,7 +1827,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\fi.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/fi.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1837,7 +1837,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\fj.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/fj.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1847,7 +1847,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\fk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/fk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1857,7 +1857,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\fm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/fm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1867,7 +1867,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\fo.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/fo.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1877,7 +1877,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\fr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/fr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1887,7 +1887,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ga.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ga.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1897,7 +1897,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gb-eng.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gb-eng.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1907,7 +1907,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gb-nir.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gb-nir.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1917,7 +1917,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gb-sct.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gb-sct.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1927,7 +1927,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gb-wls.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gb-wls.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1937,7 +1937,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gb.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gb.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1947,7 +1947,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gd.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gd.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1957,7 +1957,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ge.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ge.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1967,7 +1967,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1977,7 +1977,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1987,7 +1987,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gh.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gh.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -1997,7 +1997,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gi.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gi.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2007,7 +2007,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2017,7 +2017,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2027,7 +2027,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2037,7 +2037,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gp.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gp.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2047,7 +2047,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gq.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gq.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2057,7 +2057,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2067,7 +2067,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gs.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gs.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2077,7 +2077,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2087,7 +2087,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2097,7 +2097,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2107,7 +2107,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\gy.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/gy.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2117,7 +2117,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\hk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/hk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2127,7 +2127,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\hm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/hm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2137,7 +2137,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\hn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/hn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2147,7 +2147,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\hr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/hr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2157,7 +2157,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ht.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ht.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2167,7 +2167,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\hu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/hu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2177,7 +2177,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ic.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ic.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2187,7 +2187,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\id.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/id.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2197,7 +2197,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ie.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ie.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2207,7 +2207,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\il.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/il.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2217,7 +2217,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\im.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/im.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2227,7 +2227,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\in.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/in.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2237,7 +2237,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\io.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/io.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2247,7 +2247,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\iq.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/iq.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2257,7 +2257,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ir.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ir.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2267,7 +2267,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\is.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/is.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2277,7 +2277,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\it.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/it.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2287,7 +2287,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\je.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/je.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2297,7 +2297,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\jm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/jm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2307,7 +2307,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\jo.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/jo.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2317,7 +2317,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\jp.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/jp.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2327,7 +2327,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ke.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ke.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2337,7 +2337,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2347,7 +2347,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kh.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kh.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2357,7 +2357,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ki.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ki.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2367,7 +2367,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\km.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/km.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2377,7 +2377,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2387,7 +2387,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kp.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kp.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2397,7 +2397,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2407,7 +2407,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2417,7 +2417,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ky.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ky.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2427,7 +2427,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\kz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/kz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2437,7 +2437,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\la.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/la.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2447,7 +2447,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lb.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lb.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2457,7 +2457,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lc.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lc.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2467,7 +2467,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\li.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/li.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2477,7 +2477,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2487,7 +2487,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2497,7 +2497,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ls.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ls.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2507,7 +2507,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2517,7 +2517,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2527,7 +2527,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\lv.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/lv.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2537,7 +2537,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ly.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ly.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2547,7 +2547,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ma.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ma.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2557,7 +2557,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mc.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mc.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2567,7 +2567,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\md.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/md.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2577,7 +2577,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\me.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/me.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2587,7 +2587,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2597,7 +2597,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2607,7 +2607,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mh.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mh.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2617,7 +2617,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2627,7 +2627,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ml.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ml.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2637,7 +2637,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2647,7 +2647,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2657,7 +2657,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mo.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mo.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2667,7 +2667,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mp.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mp.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2677,7 +2677,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mq.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mq.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2687,7 +2687,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2697,7 +2697,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ms.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ms.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2707,7 +2707,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2717,7 +2717,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2727,7 +2727,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mv.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mv.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2737,7 +2737,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2747,7 +2747,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mx.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mx.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2757,7 +2757,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\my.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/my.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2767,7 +2767,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\mz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/mz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2777,7 +2777,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\na.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/na.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2787,7 +2787,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\nf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/nf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2797,7 +2797,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ng.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ng.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2807,7 +2807,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ni.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ni.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2817,7 +2817,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\nl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/nl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2827,7 +2827,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\no.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/no.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2837,7 +2837,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\np.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/np.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2847,7 +2847,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\nr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/nr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2857,7 +2857,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\nu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/nu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2867,7 +2867,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\nz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/nz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2877,7 +2877,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\om.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/om.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2887,7 +2887,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pa.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pa.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2897,7 +2897,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2907,7 +2907,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2917,7 +2917,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ph.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ph.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2927,7 +2927,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2937,7 +2937,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2947,7 +2947,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2957,7 +2957,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2967,7 +2967,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2977,7 +2977,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ps.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ps.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2987,7 +2987,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -2997,7 +2997,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\pw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/pw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3007,7 +3007,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\py.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/py.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3017,7 +3017,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\qa.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/qa.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3027,7 +3027,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\re.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/re.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3037,7 +3037,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ro.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ro.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3047,7 +3047,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\rs.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/rs.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3057,7 +3057,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ru.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ru.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3067,7 +3067,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\rw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/rw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3077,7 +3077,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sa.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sa.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3087,7 +3087,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sb.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sb.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3097,7 +3097,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sc.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sc.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3107,7 +3107,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sd.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sd.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3117,7 +3117,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\se.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/se.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3127,7 +3127,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3137,7 +3137,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sh.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sh.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3147,7 +3147,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\si.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/si.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3157,7 +3157,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sj.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sj.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3167,7 +3167,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3177,7 +3177,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3187,7 +3187,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3197,7 +3197,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3207,7 +3207,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\so.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/so.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3217,7 +3217,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3227,7 +3227,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ss.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ss.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3237,7 +3237,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\st.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/st.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3247,7 +3247,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sv.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sv.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3257,7 +3257,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sx.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sx.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3267,7 +3267,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sy.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sy.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3277,7 +3277,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\sz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/sz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3287,7 +3287,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ta.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ta.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3297,7 +3297,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tc.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tc.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3307,7 +3307,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\td.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/td.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3317,7 +3317,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3327,7 +3327,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3337,7 +3337,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\th.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/th.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3347,7 +3347,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tj.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tj.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3357,7 +3357,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3367,7 +3367,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tl.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tl.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3377,7 +3377,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3387,7 +3387,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3397,7 +3397,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\to.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/to.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3407,7 +3407,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tr.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tr.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3417,7 +3417,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3427,7 +3427,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tv.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tv.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3437,7 +3437,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3447,7 +3447,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\tz.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/tz.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3457,7 +3457,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ua.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ua.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3467,7 +3467,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ug.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ug.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3477,7 +3477,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\um.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/um.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3487,7 +3487,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\un.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/un.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3497,7 +3497,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\us.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/us.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3507,7 +3507,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\uy.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/uy.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3517,7 +3517,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\va.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/va.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3527,7 +3527,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\vc.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/vc.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3537,7 +3537,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ve.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ve.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3547,7 +3547,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\vg.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/vg.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3557,7 +3557,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\vi.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/vi.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3567,7 +3567,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\vn.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/vn.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3577,7 +3577,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\vu.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/vu.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3587,7 +3587,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\wf.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/wf.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3597,7 +3597,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ws.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ws.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3607,7 +3607,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\xk.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/xk.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3617,7 +3617,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\xx.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/xx.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3627,7 +3627,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\ye.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/ye.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3637,7 +3637,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\yt.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/yt.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3647,7 +3647,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\za.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/za.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3657,7 +3657,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\zm.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/zm.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3667,7 +3667,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\flags\4x3\zw.svg
+SF:src/layouts/views/InvoiceDetails/flags/4x3/zw.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -3677,7 +3677,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceDetails\test\mockdata.js
+SF:src/layouts/views/InvoiceDetails/test/mockdata.js
 FNF:0
 FNH:0
 DA:1,1
@@ -3687,7 +3687,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\InvoiceListing\dots.svg
+SF:src/layouts/views/InvoiceListing/dots.svg
 FNF:0
 FNH:0
 DA:1,2
@@ -4078,10 +4078,10 @@ BRDA:860,48,1,15
 BRDA:879,49,0,1
 BRDA:879,49,1,0
 BRF:106
-BRH:82
+BRH:85
 end_of_record
 TN:
-SF:src\layouts\views\Invoices\index.tsx
+SF:src/layouts/views/Invoices/index.tsx
 FN:3,Invoices
 FNF:1
 FNH:1
@@ -4384,7 +4384,7 @@ BRF:19
 BRH:16
 end_of_record
 TN:
-SF:src\layouts\views\NewInvoice\index.tsx
+SF:src/layouts/views/NewInvoice/index.tsx
 FN:8,(anonymous_0)
 FN:45,(anonymous_1)
 FN:49,(anonymous_2)
@@ -4435,7 +4435,7 @@ BRF:14
 BRH:13
 end_of_record
 TN:
-SF:src\layouts\views\NewInvoice\test\mockData.js
+SF:src/layouts/views/NewInvoice/test/mockData.js
 FNF:0
 FNH:0
 DA:1,1
@@ -4446,7 +4446,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src\layouts\views\Router\index.tsx
+SF:src/layouts/views/Router/index.tsx
 FN:7,RouterComponent
 FNF:1
 FNH:1
@@ -4487,15 +4487,15 @@ FN:167,(anonymous_14)
 FN:175,(anonymous_15)
 FN:181,(anonymous_16)
 FNF:17
-FNH:14
-FNDA:118,(anonymous_0)
-FNDA:20,(anonymous_1)
-FNDA:0,(anonymous_2)
-FNDA:4,(anonymous_3)
+FNH:15
+FNDA:121,(anonymous_0)
+FNDA:27,(anonymous_1)
+FNDA:2,(anonymous_2)
+FNDA:6,(anonymous_3)
 FNDA:386,(anonymous_4)
 FNDA:401,(anonymous_5)
 FNDA:401,(anonymous_6)
-FNDA:45,(anonymous_7)
+FNDA:49,(anonymous_7)
 FNDA:16,(anonymous_8)
 FNDA:16,(anonymous_9)
 FNDA:0,(anonymous_10)
@@ -4509,13 +4509,13 @@ DA:26,4
 DA:28,4
 DA:37,4
 DA:64,4
-DA:70,118
+DA:70,121
 DA:77,4
-DA:83,20
+DA:83,27
 DA:90,4
-DA:91,0
+DA:91,2
 DA:98,4
-DA:99,4
+DA:99,6
 DA:106,4
 DA:107,386
 DA:115,4
@@ -4523,7 +4523,7 @@ DA:116,401
 DA:121,4
 DA:122,401
 DA:125,4
-DA:126,45
+DA:126,49
 DA:137,4
 DA:138,16
 DA:141,4
@@ -4543,11 +4543,11 @@ DA:176,10
 DA:181,4
 DA:182,5
 LF:37
-LH:34
-BRDA:129,0,0,45
-BRDA:129,0,1,4
-BRDA:133,1,0,45
-BRDA:133,1,1,4
+LH:35
+BRDA:129,0,0,49
+BRDA:129,0,1,6
+BRDA:133,1,0,49
+BRDA:133,1,1,6
 BRF:4
 BRH:4
 end_of_record

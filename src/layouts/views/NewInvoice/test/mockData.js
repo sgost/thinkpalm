@@ -454,3 +454,48 @@ export const currentOrgTokenMock = {
     ],
   },
 };
+
+export const  currentOrgForListing = {
+  Name: "DSM Nutritional Products",
+  Zone: "EU",
+  Type: "Service_Consumers",
+  Payments: {
+      Role: "Customer",
+      InvoiceDetails: [
+          "Browse",
+          "Reject",
+          "Select",
+          "Download",
+          "View",
+          "Publish",
+          "Approve",
+          "DeleteFile"
+      ],
+      CreditMemoInvoice: [
+          "Browse",
+          "Download",
+          "View",
+          "Publish",
+          "DeleteFile"
+      ],
+      MiscellaneousInvoice: [
+          "Browse",
+          "Download",
+          "View",
+          "Publish",
+          "DeleteFile"
+      ],
+      ProformaInvoice: [
+          "Browse",
+          "Download",
+          "View",
+          "Publish",
+          "DeleteFile"
+      ],
+      InvoiceList: [
+          "Edit",
+          "Download",
+          "View"
+      ]
+  }
+}

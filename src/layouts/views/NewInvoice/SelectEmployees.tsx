@@ -10,7 +10,7 @@ const SelectEmployees = ({
   handleAllSteppersData,
   allStepsData,
 }: any) => {
-  const tempToken = localStorage.getItem("temptoken");
+  const accessToken = localStorage.getItem("accessToken");
   const [buttonHide, setButtonHide] = useState(false);
   const [tableOptions, setTableOptions] = useState({
     columns: [
@@ -65,7 +65,7 @@ const SelectEmployees = ({
   const getEmployyeApiData = () => {
     const headers = {
       headers: getHeaders(
-        tempToken,
+        accessToken,
         allStepsData?.stepOneData?.customerId,
         "false"
       ),
@@ -79,7 +79,6 @@ const SelectEmployees = ({
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
-        // console.log('ress', res.data)
         if (res.status === 200) {
           let employeeTableData: any = [];
           res?.data?.forEach((item: any) => {
