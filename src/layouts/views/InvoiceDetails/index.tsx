@@ -34,7 +34,7 @@ import {
   getHeaders,
   getDownloadFileUrl,
 } from "../../../urls/urls";
-import { tableSharedColumns } from '../../../sharedColumns/sharedColumns'
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -46,7 +46,7 @@ export default function InvoiceDetails() {
   const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
-  const baseBillApi = urls.billsPerInvoice
+  const baseBillApi = urls.billsPerInvoice;
 
   const api = getInvoiceDetailsUrl(id);
 
@@ -57,7 +57,7 @@ export default function InvoiceDetails() {
   const feeApi = urls.fee;
 
   const lookupApi = urls.lookup;
-  
+
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
@@ -95,7 +95,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
-  const [isAutoApprove, setIsAutoApprove] = useState(true);
+  const [isAutoApprove, setIsAutoApprove] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -297,6 +297,7 @@ export default function InvoiceDetails() {
               );
               settotalCountrySummaryDue(totalCountrySummaryDueTemp);
               setFeeSummary(feeSummaryTemp);
+              setIsAutoApprove(res.data.isAutoApprove);
             })
             .catch((e: any) => {
               console.log("error e", e);
@@ -482,7 +483,7 @@ export default function InvoiceDetails() {
       isDefault: true,
       key: "country",
     },
-    currency :tableSharedColumns.currency,
+    currency: tableSharedColumns.currency,
     total: {
       header: "Total in " + getBillingCurrency(),
       isDefault: true,
