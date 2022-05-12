@@ -141,7 +141,71 @@ const previewInvoice = ({
         exchangeRate: "0.75355",
         total: "121,411.97"
       }
-    ],  
+    ],
+    showDefaultColumn: true,
+  }
+
+  const newInvoiceFeeSummaryOptions: any = {
+    columns: [
+      {
+        header: "Country",
+        isDefault: true,
+        key: "country",
+      },
+      {
+        header: "Currency",
+        isDefault: true,
+        key: "currency",
+      },
+      {
+        header: "Admin Fees",
+        isDefault: true,
+        key: "adminFees",
+      },
+      {
+        header: "On/Offboardings",
+        isDefault: true,
+        key: "OnOffboardings",
+      },
+      {
+        header: "FX Rate in %",
+        isDefault: true,
+        key: "fxRate",
+      },
+      {
+        header: "FX Bill",
+        isDefault: true,
+        key: "fxBill",
+      },
+      {
+        header: "Benefits",
+        isDefault: true,
+        key: "benefits",
+      },
+      {
+        header: "Employer Contribution",
+        isDefault: true,
+        key: "employerContribution",
+      },
+      {
+        header: "Total in USD",
+        isDefault: true,
+        key: "total",
+      },
+    ],
+    data: [
+      {
+        country: "Spain",
+        currency: "EUR",
+        adminFees: "3.900.00",
+        OnOffboardings: "0.00",
+        fxRate: "1,5",
+        fxBill: "95,000.00",
+        benefits: "3,780.00",
+        employerContribution: "0.00",
+        total: "121,411.97"
+      }
+    ],
     showDefaultColumn: true,
   }
 
@@ -208,17 +272,23 @@ const previewInvoice = ({
             setIsPreviewModal(false)
           }}
         >
-          <div className='newPayrollInvoiceInfo'>
-            <div className='newInvoiceTopBar'>
-              <div className="newInvoiceNoHeader">
-                <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-                <p>Payroll Invoice No. 791230 </p>
-              </div>
-              <div className='newInvoiceAmount'>
-                <div>USD 300,523.15</div>
-                <div>USD 300,523.15</div>
-              </div>
+          <div className='body-wrapper-style'>
 
+            <div className='newInvoiceTopBar'>
+              <div className='newInvoiceInnerHeader'>
+                <div className="newInvoiceNoHeader">
+                  <div className='orderSummary'>
+                    <Icon color="#000" icon="orderSummary" size="large" />
+                  </div>
+                  <div className='heading'>
+                    <p>Payroll Invoice No. 791230 </p>
+                  </div>
+                </div>
+                <div className='newInvoiceHeaderAmount'>
+                  <div className='newInvoiceHeaderAmount-one'>USD 300,523.15</div>
+                  <div className='newInvoiceHeaderAmount-two'>USD 300,523.15</div>
+                </div>
+              </div>
             </div>
 
             <div className="newInfoDetails">
@@ -314,7 +384,7 @@ const previewInvoice = ({
               </div>
             </div>
 
-            {/* <div className="newInvoiceCountrySummary-Container">
+            <div className="newInvoiceCountrySummary-Container">
               <h3 className="countryTableHeader">Country Summary</h3>
               <div className='newInvoiceCountryTable'>
                 <Table
@@ -327,37 +397,36 @@ const previewInvoice = ({
                 <h3>
                   USD 300,523.15
                 </h3>
-              </div> */}
+              </div>
 
-              {/* <h3 className="countryTableHeader">Fee Summary</h3>
-              <div>
+              <h3 className="countryTableHeader">Fee Summary</h3>
+              <div className='newInvoiceCountryTable'>
                 <Table
-                  options={{ ...feeSummaryOptions, ...{ data: feeSummary } }}
+                  options={{ ...newInvoiceFeeSummaryOptions }}
                   colSort
                 />
               </div>
-              <div className="feeSummaryCalc">
-                <div className="rowFee">
+              <div className="newInvoiceFeeSummaryCalc">
+                <div className="newInvoiceRowFee">
                   <p className="title">Incoming Wire Payment</p>
                   <p className="amount">
                     USD 35.00
                   </p>
                 </div>
-                <div className="row2">
+                <div className="newInvoicerow2">
                   <p className="title">Contract Termination Fee</p>
                   <p className="amount">
                     USD 0.00
                   </p>
                 </div>
-                <div className="totalRow">
+                <div className="newInvoiceTotalRow">
                   <p>Total Due</p>
                   <h3>
                     USD 37,897.93
                   </h3>
                 </div>
-              </div> */}
-            {/* </div> */}
-
+              </div>
+            </div>
           </div>
         </Modal>
       </div>
