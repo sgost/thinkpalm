@@ -29,6 +29,7 @@ import {
   getHeaders,
   getDownloadFileUrl,
 } from "../../../urls/urls";
+import CreditMemoSummary from "../CreditMemoSummary";
 
 
 export default function InvoiceDetails() {
@@ -134,11 +135,15 @@ export default function InvoiceDetails() {
         setCountriesData(countryRes);
 
         if (state.transactionType != 7) {
+          console.log("abccc" + state.transactionType);
           axios
             .get(api, headers)
             .then((res: any) => {
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
+              }
+              if(res.data.invoice.invoiceNo === "10010019"){
+                res.data.invoice.transactionType = 4
               }
 
               let billingCurrency = countryRes.data.find(
@@ -150,10 +155,10 @@ export default function InvoiceDetails() {
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
-              //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
-              if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
-                res.data = apiInvoiceMockData;
-              }
+              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
+              //   res.data = apiInvoiceMockData;
+              // }
 
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
@@ -1173,8 +1178,9 @@ export default function InvoiceDetails() {
             </span>
           </div>
         )}
+      {transactionType == 4 && <CreditMemoSummary></CreditMemoSummary>}
 
-      {transactionType != 7 && (
+      {transactionType != 7 && transactionType != 4 && (
         <div className="tab">
           <p
             onClick={() => setActiveTab("payroll")}
@@ -1203,7 +1209,7 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {activeTab === "master" && transactionType != 7 && (
+      {activeTab === "master" && transactionType != 4 && transactionType != 7 && (
         <div className="master">
           <h3 className="tableHeader">Country Summary</h3>
           <Table
@@ -1245,7 +1251,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "payroll" && transactionType != 7 && (
+      {activeTab === "payroll" && transactionType != 4 && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
             return (
@@ -1378,7 +1384,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "files" && transactionType != 7 && (
+      {activeTab === "files" && transactionType != 4 && transactionType != 7 && (
         <div className="filesNotes">
           <div className="box">
             <h3>Notes</h3>
