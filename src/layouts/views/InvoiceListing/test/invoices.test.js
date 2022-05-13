@@ -21,6 +21,8 @@ import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
 import {
   getClientListingUrl,
+  getGenerateMultiplePdfUrl,
+  getGenerateSinglePdfUrl,
   getInternalListingUrl,
 } from "../../../../urls/urls";
 import { currentOrgForListing } from "../../NewInvoice/test/mockData";
@@ -490,14 +492,14 @@ describe("Internal View Download click and checkbox Click", () => {
       .reply(200, resDataInternal);
 
     mock
-      .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
-      )
+      .onGet(getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3"))
       .reply(200, resDownloadSinlgeApiData);
 
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
+        getGenerateMultiplePdfUrl(
+          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06"
+        )
       )
       .reply(200, {
         id: "00000000-0000-0000-0000-000000000000",
@@ -548,20 +550,18 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
-      .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=&statuses=&dateFrom=&dateTo=`
-      )
+      .onGet(getInternalListingUrl("", "", "", ""))
       .reply(200, resDataInternal);
 
     mock
-      .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/generatePDF/70961bfc-8d6e-44fc-88ad-61f9c86db9a3`
-      )
+      .onGet(getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3"))
       .reply(400, resDownloadSinlgeApiData);
 
     mock
       .onGet(
-        `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
+        getGenerateMultiplePdfUrl(
+          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06"
+        )
       )
       .reply(200, {
         id: "00000000-0000-0000-0000-000000000000",

@@ -34,7 +34,7 @@ import {
   getHeaders,
   getDownloadFileUrl,
 } from "../../../urls/urls";
-import { tableSharedColumns } from '../../../sharedColumns/sharedColumns'
+import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -46,33 +46,18 @@ export default function InvoiceDetails() {
   const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
-  const baseBillApi =
-    "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/bill/GetBillDetailsPerInvoice/";
-  // const api =
-  //   "https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/GetPayrollForInvoice/" +
-  //   id;
+  const baseBillApi = urls.billsPerInvoice;
 
   const api = getInvoiceDetailsUrl(id);
-  // const addressApi = `https://apigw-uat-emea.apnextgen.com/customerservice/api/Customers/${cid}?includes=BillingAddress`;
 
   const addressApi = getBillingAddressUrl(cid);
 
-  // const countriesApi =
-  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/lookup/Countries?includeProperties=Currency&orderBy=Name";
-
   const countriesApi = urls.countries;
-
-  // const feeApi =
-  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Fees";
 
   const feeApi = urls.fee;
 
-  // const lookupApi =
-  //   "https://apigw-uat-emea.apnextgen.com/metadataservice/api/Lookup";
-
   const lookupApi = urls.lookup;
 
-  // const notesApi = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/notes/${id}`;
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
@@ -110,7 +95,7 @@ export default function InvoiceDetails() {
   const [contractTerminationFee, setContractTerminationFee] = useState(0);
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
-  const [isAutoApprove, setIsAutoApprove] = useState(true);
+  const [isAutoApprove, setIsAutoApprove] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -312,6 +297,7 @@ export default function InvoiceDetails() {
               );
               settotalCountrySummaryDue(totalCountrySummaryDueTemp);
               setFeeSummary(feeSummaryTemp);
+              setIsAutoApprove(res.data.isAutoApprove);
             })
             .catch((e: any) => {
               console.log("error e", e);
@@ -350,20 +336,23 @@ export default function InvoiceDetails() {
         console.log("error", e);
       });
 
-    let URL = baseBillApi + state.InvoiceId;
-    axios
-      .get(URL, { headers: { accept: "text/plain" } })
-      .then((response: any) => {
-        if (response.status == 200) {
-          setBillTableData(response);
-        } else {
-          console.log("Bill API failing on contractor service");
-        }
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
+    if(state.transactionType == 7){
+      
+      let URL = baseBillApi + state.InvoiceId;
+      axios
+        .get(URL, { headers: { accept: "text/plain" } })
+        .then((response: any) => {
+          if (response.status == 200) {
+            setBillTableData(response);
+          } else {
+            console.log("Bill API failing on contractor service");
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
 
+      }
     axios
       .get(notesApi, headers)
       .then((res: any) => {
@@ -497,7 +486,7 @@ export default function InvoiceDetails() {
       isDefault: true,
       key: "country",
     },
-    currency :tableSharedColumns.currency,
+    currency: tableSharedColumns.currency,
     total: {
       header: "Total in " + getBillingCurrency(),
       isDefault: true,
