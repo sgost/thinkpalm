@@ -879,7 +879,7 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          {isClient == "false" && status === "In Review" && (
+          {status === "In Review" && permission.InvoiceDetails.includes("Delete") && (
             <div className="upper-delete-button">
               <div
                 className="delete-invoice"
@@ -890,7 +890,7 @@ export default function InvoiceDetails() {
               </div>
             </div>
           )}
-         { status === "Approved" && permission.InvoiceDetails.includes("Void") && (
+          {status === "Approved" && permission.InvoiceDetails.includes("Void") && (
             <div className="void-button">
               <Button
                 className="secondary-btn small"
@@ -909,8 +909,8 @@ export default function InvoiceDetails() {
                   : function noRefCheck() { }
               }
               className={`${transactionType == 7 || deleteDisableButtons === true
-                  ? "download_disable"
-                  : "download"
+                ? "download_disable"
+                : "download"
                 }`}
             // className="download"
             >
@@ -950,7 +950,7 @@ export default function InvoiceDetails() {
           </div>
 
           <div>
-            {isClient == "false" && status === "In Review" && (
+            {status === "In Review" && permission.InvoiceDetails.includes("Send") && (
               <Button
                 className="primary-blue small"
                 icon={{
@@ -1529,43 +1529,46 @@ export default function InvoiceDetails() {
                   />
                 </div>
               )}
-              <Button
-                disabled={
-                  !noteText.length || noteText.length > 400 ? true : false
-                }
-                handleOnClick={() => {
-                  // const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
-                  const url = urls.saveNote;
-                  let currDate = new Date();
 
-                  axios({
-                    method: "POST",
-                    url: url,
-                    headers: getHeaders(tempToken, cid, isClient),
-                    data: {
-                      invoiceId: id,
-                      noteType: "2",
-                      note: noteText,
-                      isCustomerVisible: isVisibleToCustomer,
-                      exportToQuickbooks: isExportToQb,
-                      createdDate: currDate,
-                      modifiedBy: "00000000-0000-0000-0000-000000000000",
-                      modifiedByUser: null,
-                      displayInPDF: isVisibleOnPDFInvoice,
-                      customerId: cid,
-                    },
-                  })
-                    .then((res: any) => {
-                      setNotes([res.data, ...notes]);
-                      setNoteText("");
+              {permission.InvoiceDetails.includes("Publish") && (
+                <Button
+                  disabled={
+                    !noteText.length || noteText.length > 400 ? true : false
+                  }
+                  handleOnClick={() => {
+                    // const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
+                    const url = urls.saveNote;
+                    let currDate = new Date();
+
+                    axios({
+                      method: "POST",
+                      url: url,
+                      headers: getHeaders(tempToken, cid, isClient),
+                      data: {
+                        invoiceId: id,
+                        noteType: "2",
+                        note: noteText,
+                        isCustomerVisible: isVisibleToCustomer,
+                        exportToQuickbooks: isExportToQb,
+                        createdDate: currDate,
+                        modifiedBy: "00000000-0000-0000-0000-000000000000",
+                        modifiedByUser: null,
+                        displayInPDF: isVisibleOnPDFInvoice,
+                        customerId: cid,
+                      },
                     })
-                    .catch((e: any) => {
-                      console.log(e);
-                    });
-                }}
-                className="primary-blue small"
-                label="Save"
-              />
+                      .then((res: any) => {
+                        setNotes([res.data, ...notes]);
+                        setNoteText("");
+                      })
+                      .catch((e: any) => {
+                        console.log(e);
+                      });
+                  }}
+                  className="primary-blue small"
+                  label="Save"
+                />
+              )}
             </div>
           </div>
 
@@ -1615,6 +1618,7 @@ export default function InvoiceDetails() {
                                 });
                             },
                           },
+                          permission.InvoiceDetails.includes("DeleteFile") ?
                           {
                             color: "#526FD6",
                             height: "30",
@@ -1667,7 +1671,9 @@ export default function InvoiceDetails() {
                               //     console.log(e);
                               //   });
                             },
-                          },
+                          }
+                          :
+                          {},
                         ],
                       }}
                       label={{
@@ -1679,76 +1685,79 @@ export default function InvoiceDetails() {
                 })}
               </div>
 
-              <div className="uploadConatiner">
-                <FileUpload
-                  fileList={[]}
-                  formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
-                  handleUpload={
-                    /* istanbul ignore next */
-                    (file: any) => {
-                      const headers = getHeaders(tempToken, cid, isClient);
-                      setTimeout(() => {
-                        var formData = new FormData();
-                        formData.append("asset", file[0]);
-                        axios
-                          .post(
-                            urls.uploadFile,
+              {permission.InvoiceDetails.includes("Browse") && (
+                <div className="uploadConatiner">
+                  <FileUpload
+                    fileList={[]}
+                    formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
+                    handleUpload={
+                      /* istanbul ignore next */
+                      (file: any) => {
+                        const headers = getHeaders(tempToken, cid, isClient);
+                        setTimeout(() => {
+                          var formData = new FormData();
+                          formData.append("asset", file[0]);
+                          axios
+                            .post(
+                              urls.uploadFile,
 
-                            formData,
-                            {
-                              headers: headers,
-                            }
-                          )
-                          .then((res: any) => {
-                            axios
-                              .post(
-                                urls.createDocument,
-                                {
-                                  invoiceId: id,
-
-                                  document: {
-                                    url: res.data.url,
-
-                                    documentName: res.data.fileName,
-                                  },
-                                },
-                                {
-                                  headers: headers,
-                                }
-                              )
-                              .then((response: any) => {
-                                setDocuments([
-                                  ...documents,
+                              formData,
+                              {
+                                headers: headers,
+                              }
+                            )
+                            .then((res: any) => {
+                              axios
+                                .post(
+                                  urls.createDocument,
                                   {
-                                    documentId: response.data.documentId,
+                                    invoiceId: id,
+
                                     document: {
-                                      documentName: res.data.fileName,
                                       url: res.data.url,
+
+                                      documentName: res.data.fileName,
                                     },
                                   },
-                                ]);
-                                setIsFileError(false);
-                              })
-                              .catch((e: any) => {
-                                console.log(e);
-                                setIsFileError(true);
-                              });
-                          })
-                          .catch((e: any) => {
-                            console.log(e);
-                            setIsFileError(true);
-                          });
-                      });
+                                  {
+                                    headers: headers,
+                                  }
+                                )
+                                .then((response: any) => {
+                                  setDocuments([
+                                    ...documents,
+                                    {
+                                      documentId: response.data.documentId,
+                                      document: {
+                                        documentName: res.data.fileName,
+                                        url: res.data.url,
+                                      },
+                                    },
+                                  ]);
+                                  setIsFileError(false);
+                                })
+                                .catch((e: any) => {
+                                  console.log(e);
+                                  setIsFileError(true);
+                                });
+                            })
+                            .catch((e: any) => {
+                              console.log(e);
+                              setIsFileError(true);
+                            });
+                        });
+                      }
                     }
-                  }
-                  isError={isFileError}
-                  maxSize={25}
-                  resetFiles={function noRefCheck() {
-                    setIsFileError(null);
-                  }}
-                  title="Upload"
-                />
-              </div>
+                    isError={isFileError}
+                    maxSize={25}
+                    resetFiles={function noRefCheck() {
+                      setIsFileError(null);
+                    }}
+                    title="Upload"
+                  />
+                </div>
+              )}
+
             </div>
           </div>
         </div>
