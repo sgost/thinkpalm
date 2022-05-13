@@ -7,13 +7,13 @@ export const getDecodedToken = () => {
   const decoded: any = jwt_decode(accessToken);
   //   console.log("token", currentOrgId, accessToken, decoded);
 
-  console.log(
-    " per",
-    decoded.Permissions[currentOrgId].Payments,
-    decoded.Permissions[currentOrgId].Payments.InvoiceList.find(
-      (str: any) => str === "Add"
-    )
-  );
+  // console.log(
+  //   "per",
+  //   decoded.Permissions[currentOrgId].Payments,
+  //   decoded.Permissions[currentOrgId].Payments.InvoiceList.find(
+  //     (str: any) => str === "Add"
+  //   )
+  // );
 
   return decoded.Permissions[currentOrgId].Payments;
 

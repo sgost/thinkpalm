@@ -1,65 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="531"/>
+    <testCase name="Bills Table Render" duration="352"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="205"/>
+    <testCase name="renders learn react link" duration="257">
+      <failure message="InvalidTokenError: "><![CDATA[InvalidTokenError: 
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jwt-decode\lib\index.cjs.js:5:9)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at Runtime.requireModuleOrMock (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1210:21)
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\components\getDecodedToken.ts:1:1)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at Runtime.requireModuleOrMock (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1210:21)
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\index.tsx:20:1)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at Runtime.requireModuleOrMock (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1210:21)
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\Router\index.tsx:4:1)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at Runtime.requireModuleOrMock (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1210:21)
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\Invoices\index.tsx:1:1)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at Runtime.requireModuleOrMock (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1210:21)
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\App.tsx:3:1)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at Runtime.requireModuleOrMock (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1210:21)
+    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx:3:1)
+    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
+    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
+    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
+    at jestAdapter (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:13)
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at runTestInternal (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="460"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="524"/>
-    <testCase name="step one getCustomer api fail  dropDown Value change" duration="150"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="139"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="392"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="330"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="342"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="762"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="405"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="331"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="255"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="295"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="245"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="247"/>
-    <testCase name="client view table row clickable" duration="198"/>
-    <testCase name="client view Status clickable" duration="242"/>
-    <testCase name="client view Type clickable" duration="221"/>
-    <testCase name="client view Clear filters clickable" duration="292"/>
-    <testCase name="client view search" duration="172"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="373"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="309"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="408"/>
-    <testCase name="Client View search intenal" duration="187"/>
-    <testCase name="renders without crashing" duration="8"/>
-    <testCase name="Client View" duration="125"/>
-    <testCase name="Internal View" duration="128"/>
-    <testCase name="Enter token client" duration="90"/>
+    <testCase name="New Invoice breadcumbs are working" duration="264"/>
+    <testCase name="New Invoice dropDown Value change stepper 1" duration="428"/>
+    <testCase name="step one getCustomer api fail  dropDown Value change" duration="128"/>
+    <testCase name="step one getCOuntry api fail dropDown Value change" duration="117"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="348"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="276"/>
+    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="271"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1522"/>
-    <testCase name="Invoice details download clickable " duration="607"/>
-    <testCase name="Invoice details approve invoice clickable " duration="351"/>
-    <testCase name="Invoice details publish notes" duration="435"/>
-    <testCase name="Invoice details download file" duration="349"/>
-    <testCase name="Invoice details delete file" duration="287"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="241"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="256"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="371"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="237"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="389"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="495"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="620"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="404"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="253"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="201"/>
-    <testCase name="api fail tabs are working" duration="17"/>
-    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="159"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="161"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="141"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="142"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="136"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="103"/>
+    <testCase name="Invoice details tabs are working" duration="1158"/>
+    <testCase name="Invoice details download clickable " duration="306"/>
+    <testCase name="Invoice details approve invoice clickable " duration="156"/>
+    <testCase name="Invoice details publish notes" duration="156"/>
+    <testCase name="Invoice details download file" duration="140"/>
+    <testCase name="Invoice details delete file" duration="151"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="112"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="121"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="133"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="68"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="129"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="215"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="197"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="162"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="175"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="161"/>
+    <testCase name="api fail tabs are working" duration="12"/>
+    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="113"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="106"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="100"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="103"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="95"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="83"/>
+  </file>
+  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="388"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="160"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="151"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="100"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="129"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="97"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="125"/>
+    <testCase name="client view table row clickable" duration="81"/>
+    <testCase name="client view Status clickable" duration="139"/>
+    <testCase name="client view Type clickable" duration="110"/>
+    <testCase name="client view Clear filters clickable" duration="135"/>
+    <testCase name="client view search" duration="100"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="215"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="77"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="164"/>
+    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="432"/>
+    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="416"/>
   </file>
 </testExecutions>

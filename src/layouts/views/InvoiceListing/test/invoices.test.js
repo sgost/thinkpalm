@@ -19,7 +19,10 @@ import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
-import { getClientListingUrl, getInternalListingUrl } from "../../../../urls/urls";
+import {
+  getClientListingUrl,
+  getInternalListingUrl,
+} from "../../../../urls/urls";
 import { currentOrgForListing } from "../../NewInvoice/test/mockData";
 
 let resDataInternal = {
@@ -197,24 +200,23 @@ let resDataClient = {
 };
 
 let resDownloadSinlgeApiData = {
-  "id": "70961bfc-8d6e-44fc-88ad-61f9c86db9a3",
-  "url": "https://apnguatemeaservices.blob.core.windows.net/data/b07446a2-b99f-4e4e-b5c4-8b9cda5fd6e5.pdf?sv=2019-02-02&sr=b&sig=ufGKBaB%2F%2Beb61FEA%2BXwy3BeyXaLqxcR3RWniAH9cuq8%3D&se=2023-05-07T10%3A25%3A14Z&sp=rl",
-  "name": "Payroll-EMEA-70961bfc-8d6e-44fc-88ad-61f9c86db9a3.pdf",
-  "regionItemCode": "emea"
-}
+  id: "70961bfc-8d6e-44fc-88ad-61f9c86db9a3",
+  url: "https://apnguatemeaservices.blob.core.windows.net/data/b07446a2-b99f-4e4e-b5c4-8b9cda5fd6e5.pdf?sv=2019-02-02&sr=b&sig=ufGKBaB%2F%2Beb61FEA%2BXwy3BeyXaLqxcR3RWniAH9cuq8%3D&se=2023-05-07T10%3A25%3A14Z&sp=rl",
+  name: "Payroll-EMEA-70961bfc-8d6e-44fc-88ad-61f9c86db9a3.pdf",
+  regionItemCode: "emea",
+};
 
-localStorage.setItem("accessToken", "1234");
-
+localStorage.setItem(
+  "accessToken",
+  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTIzMzg2ODcsImlhdCI6MTY1MjMzNjg4NywiYXV0aF90aW1lIjowLCJqdGkiOiIyZDU5YzIxNi1hNWRiLTQyNmItYTAwYi03MGU3MDY3ZjEwMjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYTcwMDkxNjYtMDE0Yy00ZGE3LThjMTEtOTFjYmYxN2JiMmU5IiwiYXRfaGFzaCI6IkE2Wk5pN0RINEhTVTZNaUFzMWowTVEiLCJhY3IiOiIxIiwic2lkIjoiYTcwMDkxNjYtMDE0Yy00ZGE3LThjMTEtOTFjYmYxN2JiMmU5IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.kQwAyl4f2lOXpiCysnYmZNLs3qUE7zkJ2xozWExr55W_pdBCcXV2nDVf0TsAh022NJ0xr4Mx7hxOkFhJKatg42IvxljZoxunHv88QqKYpGMK_r-B1YqSR6Vz1hUwOSaF_zLFlseR292icQWmxuNXRvtoUfN4shurHNIob63Dua5sNLfBEJL0BF4xDNtgQrn6H5SImOm8274a8J1BK4StteS0GOAbtZyrAn1h1N5xLb0q-RykXru4PSlHOuS_vCjnX5ZIX0zW4gEuuNqzfcSjjrB5hZRRprxjrbVJXGn-XvxIUULXSj0jPcO7w8j3iIGkTjnqzNAtd5iu5_2UUgU2bw"
+);
+localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
 
 describe("client view", () => {
   localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   beforeEach(() => {
     const mock = new MockAdapter(axios);
-    mock
-      .onGet(
-        getClientListingUrl("","","", "")
-      )
-      .reply(200, resDataClient);
+    mock.onGet(getClientListingUrl("", "", "", "")).reply(200, resDataClient);
 
     act(() => {
       render(
@@ -223,7 +225,6 @@ describe("client view", () => {
         </HashRouter>
       );
     });
-
   });
 
   test("Datepicker dropdowns clickoutside clickable", async () => {
@@ -355,8 +356,6 @@ describe("client view", () => {
     fireEvent.change(search, { target: { value: "" } });
   });
 
-  
-
   // test("tbl checkbox clickable", async () => {
   //   // const row = await waitFor(() => screen.getByText("1000992"));
   //   // const chkbox = await waitFor(() => screen.getByRole("checkbox"), {
@@ -380,11 +379,7 @@ describe("checkbox and download", () => {
   localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   test("checkbox and download are clickable in client view", async () => {
     const mock = new MockAdapter(axios);
-    mock
-      .onGet(
-        getClientListingUrl("","","", "")
-      )
-      .reply(200, resDataClient);
+    mock.onGet(getClientListingUrl("", "", "", "")).reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
 
     const { container } = render(
@@ -392,7 +387,6 @@ describe("checkbox and download", () => {
         <Invoices />
       </HashRouter>
     );
-
 
     await waitFor(() => screen.getByText(/Status/));
 
@@ -420,9 +414,7 @@ describe("checkbox and download", () => {
   test("checkbox and download are clickable in internal view", async () => {
     const mock = new MockAdapter(axios);
     mock
-      .onGet(
-        getInternalListingUrl("","","", "")
-      )
+      .onGet(getInternalListingUrl("", "", "", ""))
       .reply(200, resDataInternal);
     // const getById = queryByAttribute.bind(null, "id");
 
@@ -431,7 +423,6 @@ describe("checkbox and download", () => {
         <Invoices />
       </HashRouter>
     );
-
 
     await waitFor(() => screen.getByText(/Status/));
 
@@ -455,11 +446,7 @@ describe("checkbox and download", () => {
   });
   test("checkbox and download are clickable in client view and searched view", async () => {
     const mock = new MockAdapter(axios);
-    mock
-      .onGet(
-        getClientListingUrl("","","", "")
-      )
-      .reply(200, resDataClient);
+    mock.onGet(getClientListingUrl("", "", "", "")).reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
 
     const { container } = render(
@@ -467,7 +454,6 @@ describe("checkbox and download", () => {
         <Invoices />
       </HashRouter>
     );
-
 
     await waitFor(() => screen.getByText(/Status/));
 
@@ -494,18 +480,13 @@ describe("checkbox and download", () => {
   });
 });
 
-
 describe("Internal View Download click and checkbox Click", () => {
-
-
   test("table row clickable", async () => {
-    currentOrgForListing.Payments.Role = "Internal"
+    currentOrgForListing.Payments.Role = "Internal";
     localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
-      .onGet(
-        getInternalListingUrl("","","", "")
-      )
+      .onGet(getInternalListingUrl("", "", "", ""))
       .reply(200, resDataInternal);
 
     mock
@@ -514,16 +495,15 @@ describe("Internal View Download click and checkbox Click", () => {
       )
       .reply(200, resDownloadSinlgeApiData);
 
-
     mock
       .onGet(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
       )
       .reply(200, {
-        "id": "00000000-0000-0000-0000-000000000000",
-        "url": "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
-        "name": "Invoices.zip",
-        "regionItemCode": "emea"
+        id: "00000000-0000-0000-0000-000000000000",
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+        name: "Invoices.zip",
+        regionItemCode: "emea",
       });
 
     const { container } = render(
@@ -534,46 +514,37 @@ describe("Internal View Download click and checkbox Click", () => {
 
     const row = await screen.findByText("100329");
     expect(row).toBeInTheDocument();
-    const labelText = await screen.findAllByLabelText("")
+    const labelText = await screen.findAllByLabelText("");
     screen.debug(labelText);
     fireEvent.click(labelText[0]);
-
-
 
     const download = await waitFor(() => container.querySelector(".download"));
     screen.debug(download);
     fireEvent.click(download);
 
-    const toast = await screen.findByText("Downloaded...")
-    expect(toast).toBeInTheDocument()
+    const toast = await screen.findByText("Downloaded...");
+    expect(toast).toBeInTheDocument();
 
-
-    const toastRemoveButton = await screen.findByTestId("remove-button-toast")
-    expect(toastRemoveButton).toBeInTheDocument()
-
+    const toastRemoveButton = await screen.findByTestId("remove-button-toast");
+    expect(toastRemoveButton).toBeInTheDocument();
 
     fireEvent.click(toastRemoveButton);
-
 
     fireEvent.click(labelText[0]);
 
     fireEvent.click(labelText[1]);
 
-  const downloadsingle = await waitFor(() => container.querySelector(".download"));
+    const downloadsingle = await waitFor(() =>
+      container.querySelector(".download")
+    );
     screen.debug(downloadsingle);
     fireEvent.click(downloadsingle);
-
   });
-
-
 });
 
-
 describe("Internal View Download click for single invoice  api fail Click", () => {
-
-
   test("table row clickable", async () => {
-    currentOrgForListing.Payments.Role = "Internal"
+    currentOrgForListing.Payments.Role = "Internal";
     localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
@@ -588,16 +559,15 @@ describe("Internal View Download click for single invoice  api fail Click", () =
       )
       .reply(400, resDownloadSinlgeApiData);
 
-
     mock
       .onGet(
         `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/GeneratePDFMultiple/70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06`
       )
       .reply(200, {
-        "id": "00000000-0000-0000-0000-000000000000",
-        "url": "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
-        "name": "Invoices.zip",
-        "regionItemCode": "emea"
+        id: "00000000-0000-0000-0000-000000000000",
+        url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+        name: "Invoices.zip",
+        regionItemCode: "emea",
       });
 
     const { container } = render(
@@ -608,38 +578,30 @@ describe("Internal View Download click for single invoice  api fail Click", () =
 
     const row = await screen.findByText("100329");
     expect(row).toBeInTheDocument();
-    const labelText = await screen.findAllByLabelText("")
+    const labelText = await screen.findAllByLabelText("");
     screen.debug(labelText);
     fireEvent.click(labelText[0]);
-
-
 
     const download = await waitFor(() => container.querySelector(".download"));
     screen.debug(download);
     fireEvent.click(download);
 
-    const toast = await screen.findByText("Downloaded...")
-    expect(toast).toBeInTheDocument()
+    const toast = await screen.findByText("Downloaded...");
+    expect(toast).toBeInTheDocument();
 
-
-    const toastRemoveButton = await screen.findByTestId("remove-button-toast")
-    expect(toastRemoveButton).toBeInTheDocument()
-
+    const toastRemoveButton = await screen.findByTestId("remove-button-toast");
+    expect(toastRemoveButton).toBeInTheDocument();
 
     fireEvent.click(toastRemoveButton);
-
 
     fireEvent.click(labelText[0]);
 
     fireEvent.click(labelText[1]);
 
-  const downloadsingle = await waitFor(() => container.querySelector(".download"));
+    const downloadsingle = await waitFor(() =>
+      container.querySelector(".download")
+    );
     screen.debug(downloadsingle);
     fireEvent.click(downloadsingle);
-
   });
-
-
 });
-
-

@@ -488,11 +488,16 @@ export default function InvoiceListing() {
     }
   };
 
+  if (permission.InvoiceList.find((str: any) => str === "View") !== "View") {
+    return <p>You do not have permission to view this page.</p>;
+  }
+
   return (
     <>
       <div className="container">
         <div className="new-invoice-button">
-          {!isClient && (
+          {permission.InvoiceList.find((str: any) => str === "Add") ===
+            "Add" && (
             <Button
               label="New Invoice"
               className="primary-blue medium"
@@ -517,18 +522,21 @@ export default function InvoiceListing() {
             />
           </div>
           <div className="pickers">
-            <div
-              onClick={downloadFunction}
-              data-testid="download"
-              className={downloadDisable ? "downloadpointer" : "download"}
-            >
-              <Icon
-                className="download"
-                color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                icon="download"
-                size="large"
-              />
-            </div>
+            {permission.InvoiceList.find((str: any) => str === "Download") ===
+              "Download" && (
+              <div
+                onClick={downloadFunction}
+                data-testid="download"
+                className={downloadDisable ? "downloadpointer" : "download"}
+              >
+                <Icon
+                  className="download"
+                  color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                  icon="download"
+                  size="large"
+                />
+              </div>
+            )}
 
             <DatepickerDropdown
               title="Date"
@@ -744,7 +752,8 @@ export default function InvoiceListing() {
               }}
               options={status}
             />
-            <img src={dots} />
+            {permission.InvoiceList.find((str: any) => str === "Edit") ===
+              "Edit" && <img src={dots} />}
             {/* <FaEllipsisH className="icon" /> */}
           </div>
         </div>
