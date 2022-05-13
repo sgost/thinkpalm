@@ -25,6 +25,7 @@
             margin-top: 3rem;
             button.a-button.medium {
                 width: 9.13rem;
+                font-size: 1rem;
             }
         }
     }
@@ -42,7 +43,7 @@
     }
     .newPayrollInvoiceModal {
         .a-modal__body {
-            height: 90vh;
+            height: 95vh;
             width: 90rem;
             padding: 0rem;
         }
@@ -202,6 +203,12 @@
                 display: flex;
                 justify-content: center;
                 flex-direction: column;
+                .table__row__data img,
+                .table__row__header img {
+                    margin-right: 0.5rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
                 .countryTableHeader {
                     margin-left: 3rem;
                 }

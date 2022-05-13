@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Modal, Icon, Table } from "atlasuikit";
+import { getFlagPath } from "../InvoiceDetails/getFlag";
 import "./PreviewInvoice.scss"
 
 
@@ -130,7 +131,10 @@ const previewInvoice = ({
     ],
     data: [
       {
-        country: "Spain",
+        country: {
+          value:"Spain",
+          img: { src: getFlagPath("ES") },
+        },
         currency: "EUR",
         employees: "14",
         grossWages: "95,000",
@@ -195,7 +199,10 @@ const previewInvoice = ({
     ],
     data: [
       {
-        country: "Spain",
+        country:  {
+          value:"Spain",
+          img: { src: getFlagPath("ES") },
+        },
         currency: "EUR",
         adminFees: "3.900.00",
         OnOffboardings: "0.00",

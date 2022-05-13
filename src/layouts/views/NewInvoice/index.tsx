@@ -10,7 +10,7 @@ import FinishSTepper from "./FinishStepper";
 const NewInvoice = () => {
   const navigate = useNavigate();
 
-  const [stepsCount, setStepsCount] = useState(3);
+  const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [allStepsData, setAllStepsData] = useState({
     stepOneData: {
