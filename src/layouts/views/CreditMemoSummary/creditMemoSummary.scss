@@ -60,6 +60,9 @@
                 box-shadow: none;
                 opacity: 1;
                 pointer-events: none;
+                span{
+                    color: #767676;
+                }
             }
         }
 
@@ -77,12 +80,14 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            background-color: $white;
-            padding: 20px;
+            padding: 0;
+            margin-top: 2.063rem;
+            width:  -webkit-fill-available;
     
             .spacerclass{
                 width: 70%;
             }
+            
             .rowFee {
                 display: flex;
                 border-bottom-style: solid;
@@ -90,7 +95,10 @@
                 border-color: $light-gray;
                 border-width: 2px;
                 width: 30%;
-                padding-right: 3.6rem;
+                padding-right: 2.156rem;
+                padding-left: 2.156rem;
+                padding-bottom: 0.4rem;
+                padding-top: 0.4rem;
                 justify-content: space-between;
     
                 .title {
@@ -131,8 +139,11 @@
                 align-items: center;
                 width: 30%;
                 justify-content: space-between;
+                margin-top: 1.5rem;
                 p {
                     color: $primary-blue;
+                    font-weight: 600;
+                    font-size: 1rem;
                 }
     
                 .total {
@@ -148,7 +159,15 @@
             
         }
     }
-
+    .no-border{
+        border: none !important;
+    }
+    .add-item{
+        padding-left: 5.6rem;
+    }
+    .UI-change-log{
+        padding: 4.25rem 4rem 6.188rem 4rem;
+    }
     .title {
         font-size: 1.5rem;
 

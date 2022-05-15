@@ -1,10 +1,14 @@
-import { Cards, Button, Dropdown } from 'atlasuikit';
+import { Cards, Button, Dropdown, Logs } from 'atlasuikit';
 import { useState } from 'react';
 import Input from 'src/components/Input/input';
 import "./creditMemoSummary.scss";
+
 export default function CreditMemoSummary(props: any) {
+
     const [serviceDate, setServiceDate] = useState('');
     const [openProductService, setOpenProductService] = useState(false);
+    const [openLogs, setOpenLogs] = useState(false);
+
     return (
         <div className="credit-summary-wrapper">
             <Cards className="summary-card">
@@ -114,16 +118,78 @@ export default function CreditMemoSummary(props: any) {
                 <div className='line-between'></div>
                 <div className="feeSummaryCalc">
                     <div className="rowFee">
-                        <p className="title">Pay Converted Total</p>
+                        <p className="title">Subtotal Due</p>
+                        {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                        <p className="amount">{"USD"} {"1000.00"}</p>
+                    </div>
+                    <div className="rowFee no-border">
+                        <p className="title">VAT Amount</p>
                         {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
                         <p className="amount">{"USD"} {"1000.00"}</p>
                     </div>
                     <div className="totalRow">
-                        <p>Total Due</p>
+                        <p>Total Balance</p>
                         <p className='total'>{"USD"} {"2000.00"}</p>
                         {/* <p className='total'>{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
                     </div>
                 </div>
+            </Cards>
+            <Cards className="add-item">
+            <Button
+                label="Secondary Button"
+                className="secondary-btn large no-border"
+                icon={{
+                    icon: 'circularAdd',
+                    size: 'large',
+                    color: '#526FD6'
+                }}
+            />
+            </Cards>
+            <Cards className='UI-change-log'>
+            <Logs
+                data={[
+                    {
+                    customerEmail: 'danielal@email.com',
+                    date: 'Sat May 14 2022',
+                    fieldName: 'pay type',
+                    newValue: 'NGN 70',
+                    oldValue: 'NGN 65'
+                    },
+                    {
+                    customerEmail: 'danielal@email.com',
+                    date: '2',
+                    fieldName: 'pay type',
+                    newValue: 'NGN 70',
+                    oldValue: 'NGN 65'
+                    },
+                    {
+                    customerEmail: 'danielal@email.com',
+                    date: '3',
+                    fieldName: 'pay type',
+                    newValue: 'NGN 70',
+                    oldValue: 'NGN 65'
+                    },
+                    {
+                    customerEmail: 'danielal@email.com',
+                    date: '4',
+                    fieldName: 'pay type',
+                    newValue: 'NGN 70',
+                    oldValue: 'NGN 65'
+                    },
+                    {
+                    customerEmail: 'danielal@email.com',
+                    date: '5',
+                    fieldName: 'pay type',
+                    newValue: 'NGN 70',
+                    oldValue: 'NGN 65'
+                    }
+                ]}
+                isOpen={openLogs}
+                handleUpDown={()=>{setOpenLogs(!openLogs)}}
+                handleViewMore={function noRefCheck(){}}
+                name="View-change-log"
+                title="View Change Log"
+                />
             </Cards>
         </div>
     )
