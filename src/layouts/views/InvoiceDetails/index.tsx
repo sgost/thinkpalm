@@ -36,6 +36,8 @@ import {
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
+import NotesWidget from "src/components/Notes";
+import FileUploadWidget from "src/components/FileUpload";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -1158,7 +1160,15 @@ export default function InvoiceDetails() {
             </span>
           </div>
         )}
-      {transactionType == 4 && <CreditMemoSummary></CreditMemoSummary>}
+      {transactionType == 4 && <CreditMemoSummary
+        notes={notes}
+        setNotes={setNotes}
+        documents={documents}
+        setDocuments={setDocuments}
+        isClient={isClient}
+        cid={cid}
+        id={id}
+      ></CreditMemoSummary>}
 
       {transactionType != 7 && transactionType != 4 && (
         <div className="tab">
@@ -1368,9 +1378,9 @@ export default function InvoiceDetails() {
       )}
       {activeTab === "files" && transactionType != 4 && transactionType != 7 && (
         <div className="filesNotes">
-          <div className="box">
+          {/* <div className="box">
             <h3>Notes</h3>
-            {/* <p>Write a Note relevant for this Invoice.</p> */}
+            // <p>Write a Note relevant for this Invoice.</p> 
 
             <Scrollbars
               renderView={(props: any) => (
@@ -1429,7 +1439,7 @@ export default function InvoiceDetails() {
                           </div>
                           <div className="noteBtn">
                             <Icon color="#526FD6" icon="edit" size="small" />
-                            {/* <Icon icon="trash" color="#FBAF00" size="small" /> */}
+                            // <Icon icon="trash" color="#FBAF00" size="small" /> 
 
                             <svg
                               width="18"
@@ -1474,17 +1484,17 @@ export default function InvoiceDetails() {
                         <div className="note">
                           <p>{item.note}</p>
                         </div>
-                        {/* <div>
-                      <p className="noteDate">
-                        {moment(item.createdDate).format("DD/MM/YYYY, HH:mm")}
-                      </p>
-                    </div>
+                        // <div>
+                    //  <p className="noteDate">
+                    //    {moment(item.createdDate).format("DD/MM/YYYY, HH:mm")}
+                    //  </p>
+                    //</div>
 
-                    <div>
-                      <p className="notes">
-                        <span>test@email.com</span> {item.note}{" "}
-                      </p>
-                    </div> */}
+                    //<div>
+                    //  <p className="notes">
+                    //    <span>test@email.com</span> {item.note}{" "}
+                    //  </p>
+                    //</div> 
                       </div>
                     );
                   })
@@ -1565,9 +1575,16 @@ export default function InvoiceDetails() {
                 label="Save"
               />
             </div>
-          </div>
+          </div> */}
+          <NotesWidget 
+            notes={notes}
+            setNotes={setNotes}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+          ></NotesWidget>
 
-          <div className="box2">
+          {/* <div className="box2">
             <h3>Files</h3>
             <p>Upload files relevant for this Invoice.</p>
             <div className="boxsubcontainer">
@@ -1682,7 +1699,7 @@ export default function InvoiceDetails() {
                   fileList={[]}
                   formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
                   handleUpload={
-                    /* istanbul ignore next */
+                    /* istanbul ignore next 
                     (file: any) => {
                       const headers = getHeaders(tempToken, cid, isClient);
                       setTimeout(() => {
@@ -1748,7 +1765,14 @@ export default function InvoiceDetails() {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
+          <FileUploadWidget
+            documents={documents}
+            setDocuments={setDocuments}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+          ></FileUploadWidget>
         </div>
       )}
       {transactionType == 7 && (

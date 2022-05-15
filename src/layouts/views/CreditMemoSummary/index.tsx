@@ -1,10 +1,13 @@
 import { Cards, Button, Dropdown, Logs } from 'atlasuikit';
 import { useState } from 'react';
+import FileUploadWidget from 'src/components/FileUpload';
 import Input from 'src/components/Input/input';
+import NotesWidget from 'src/components/Notes';
 import "./creditMemoSummary.scss";
 
 export default function CreditMemoSummary(props: any) {
 
+    const { notes, setNotes, documents, setDocuments, isClient, cid, id } = props
     const [serviceDate, setServiceDate] = useState('');
     const [openProductService, setOpenProductService] = useState(false);
     const [openLogs, setOpenLogs] = useState(false);
@@ -37,26 +40,26 @@ export default function CreditMemoSummary(props: any) {
                     </div>
                     <div className='UI-line-text-box'>
                         <Dropdown
-                            handleDropOptionClick={function noRefCheck(){}}
+                            handleDropOptionClick={function noRefCheck() { }}
                             handleDropdownClick={setOpenProductService}
                             isOpen={openProductService}
                             name="Flavours1"
                             isDisabled="true"
                             options={[
                                 {
-                                isSelected: false,
-                                label: 'Chocolate',
-                                value: 'chocolate'
+                                    isSelected: false,
+                                    label: 'Chocolate',
+                                    value: 'chocolate'
                                 },
                                 {
-                                isSelected: false,
-                                label: 'Strawberry',
-                                value: 'strawberry'
+                                    isSelected: false,
+                                    label: 'Strawberry',
+                                    value: 'strawberry'
                                 },
                                 {
-                                isSelected: false,
-                                label: 'Vanilla',
-                                value: 'vanilla'
+                                    isSelected: false,
+                                    label: 'Vanilla',
+                                    value: 'vanilla'
                                 }
                             ]}
                             title="Product Service"
@@ -135,60 +138,76 @@ export default function CreditMemoSummary(props: any) {
                 </div>
             </Cards>
             <Cards className="add-item">
-            <Button
-                label="Secondary Button"
-                className="secondary-btn large no-border"
-                icon={{
-                    icon: 'circularAdd',
-                    size: 'large',
-                    color: '#526FD6'
-                }}
-            />
+                <Button
+                    label="Secondary Button"
+                    className="secondary-btn large no-border"
+                    icon={{
+                        icon: 'circularAdd',
+                        size: 'large',
+                        color: '#526FD6'
+                    }}
+                />
             </Cards>
+            <div className='filesNotes'>
+                <NotesWidget 
+                    notes={notes}
+                    setNotes={setNotes}
+                    isClient={isClient}
+                    cid={cid}
+                    id={id}
+                ></NotesWidget>
+                <FileUploadWidget
+                    documents={documents}
+                    setDocuments={setDocuments}
+                    isClient={isClient}
+                    cid={cid}
+                    id={id}
+                ></FileUploadWidget>
+            </div>
             <Cards className='UI-change-log'>
-            <Logs
-                data={[
-                    {
-                    customerEmail: 'danielal@email.com',
-                    date: 'Sat May 14 2022',
-                    fieldName: 'pay type',
-                    newValue: 'NGN 70',
-                    oldValue: 'NGN 65'
-                    },
-                    {
-                    customerEmail: 'danielal@email.com',
-                    date: '2',
-                    fieldName: 'pay type',
-                    newValue: 'NGN 70',
-                    oldValue: 'NGN 65'
-                    },
-                    {
-                    customerEmail: 'danielal@email.com',
-                    date: '3',
-                    fieldName: 'pay type',
-                    newValue: 'NGN 70',
-                    oldValue: 'NGN 65'
-                    },
-                    {
-                    customerEmail: 'danielal@email.com',
-                    date: '4',
-                    fieldName: 'pay type',
-                    newValue: 'NGN 70',
-                    oldValue: 'NGN 65'
-                    },
-                    {
-                    customerEmail: 'danielal@email.com',
-                    date: '5',
-                    fieldName: 'pay type',
-                    newValue: 'NGN 70',
-                    oldValue: 'NGN 65'
-                    }
-                ]}
-                isOpen={openLogs}
-                handleUpDown={()=>{setOpenLogs(!openLogs)}}
-                handleViewMore={function noRefCheck(){}}
-                name="View-change-log"
-                title="View Change Log"
+                <Logs
+                    data={[
+                        {
+                            customerEmail: 'danielal@email.com',
+                            date: 'Sat May 14 2022',
+                            fieldName: 'pay type',
+                            newValue: 'NGN 70',
+                            oldValue: 'NGN 65'
+                        },
+                        {
+                            customerEmail: 'danielal@email.com',
+                            date: '2',
+                            fieldName: 'pay type',
+                            newValue: 'NGN 70',
+                            oldValue: 'NGN 65'
+                        },
+                        {
+                            customerEmail: 'danielal@email.com',
+                            date: '3',
+                            fieldName: 'pay type',
+                            newValue: 'NGN 70',
+                            oldValue: 'NGN 65'
+                        },
+                        {
+                            customerEmail: 'danielal@email.com',
+                            date: '4',
+                            fieldName: 'pay type',
+                            newValue: 'NGN 70',
+                            oldValue: 'NGN 65'
+                        },
+                        {
+                            customerEmail: 'danielal@email.com',
+                            date: '5',
+                            fieldName: 'pay type',
+                            newValue: 'NGN 70',
+                            oldValue: 'NGN 65'
+                        }
+                    ]}
+                    isOpen={openLogs}
+                    handleUpDown={() => { setOpenLogs(!openLogs) }}
+                    handleViewMore={function noRefCheck() { }}
+                    name="View-change-log"
+                    title="View Change Log"
                 />
             </Cards>
         </div>
