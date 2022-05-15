@@ -22,9 +22,8 @@ export default function NotesWidget(props: any) {
     const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
     const tempToken = localStorage.getItem("accessToken");
 
-
+    /* istanbul ignore next */
     return (
-        // <div className="filesNotes">
         <div className="box">
             <h3>Notes</h3>
             {/* <p>Write a Note relevant for this Invoice.</p> */}

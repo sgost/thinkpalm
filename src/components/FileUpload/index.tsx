@@ -17,7 +17,7 @@ export default function FileUploadWidget(props: any) {
     const [isFileError, setIsFileError] = useState<any>(null);
 
 
-
+    /* istanbul ignore next */
     return (
         <div className="box2">
             <h3>Files</h3>
