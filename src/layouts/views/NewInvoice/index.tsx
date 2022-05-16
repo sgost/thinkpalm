@@ -6,7 +6,7 @@ import SelectEmployees from "./SelectEmployees";
 import PreviewInvoice from "./PreviewInvoice"
 import "./index.scss";
 import FinishSTepper from "./FinishStepper";
-import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
+import { tableSharedColumns, monthNameOptions } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
@@ -57,66 +57,18 @@ const NewInvoice = () => {
   ]);
 
   const [MonthOptions, setMonthOptions] = useState([
-    {
-      isSelected: false,
-      label: "January",
-      value: "0",
-    },
-    {
-      isSelected: false,
-      label: "Feburary",
-      value: "1",
-    },
-    {
-      isSelected: false,
-      label: "March",
-      value: "2",
-    },
-    {
-      isSelected: false,
-      label: "April",
-      value: "3",
-    },
-    {
-      isSelected: false,
-      label: "May",
-      value: "4",
-    },
-    {
-      isSelected: false,
-      label: "June",
-      value: "5",
-    },
-    {
-      isSelected: false,
-      label: "July",
-      value: "6",
-    },
-    {
-      isSelected: false,
-      label: "August",
-      value: "7",
-    },
-    {
-      isSelected: false,
-      label: "September",
-      value: "8",
-    },
-    {
-      isSelected: false,
-      label: "October",
-      value: "9",
-    },
-    {
-      isSelected: false,
-      label: "November",
-      value: "10",
-    },
-    {
-      isSelected: false,
-      label: "December",
-      value: "11",
-    },
+    monthNameOptions.january,
+    monthNameOptions.feburary,
+    monthNameOptions.march,
+    monthNameOptions.april,
+    monthNameOptions.may,
+    monthNameOptions.june,
+    monthNameOptions.july,
+    monthNameOptions.august,
+    monthNameOptions.september,
+    monthNameOptions.october,
+    monthNameOptions.november,
+    monthNameOptions.december
   ]);
 
   const [YearOptions, setYearOptions] = useState([

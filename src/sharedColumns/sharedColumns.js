@@ -115,3 +115,66 @@ export const tableSharedColumns = {
         key: "employeeContribution",
     },
 }
+
+export const monthNameOptions = {
+    january: {
+        isSelected: false,
+        label: "January",
+        value: "0",
+    },
+    feburary: {
+        isSelected: false,
+        label: "Feburary",
+        value: "1",
+    },
+    march: {
+        isSelected: false,
+        label: "March",
+        value: "2",
+    },
+    april: {
+        isSelected: false,
+        label: "April",
+        value: "3",
+    },
+    may: {
+        isSelected: false,
+        label: "May",
+        value: "4",
+    },
+    june: {
+        isSelected: false,
+        label: "June",
+        value: "5",
+    },
+    july: {
+        isSelected: false,
+        label: "July",
+        value: "6",
+    },
+    august: {
+        isSelected: false,
+        label: "August",
+        value: "7",
+    },
+    september: {
+        isSelected: false,
+        label: "September",
+        value: "8",
+    },
+    october: {
+        isSelected: false,
+        label: "October",
+        value: "9",
+    },
+    november: {
+        isSelected: false,
+        label: "November",
+        value: "10",
+    },
+    december: {
+        isSelected: false,
+        label: "December",
+        value: "11",
+    },
+}
