@@ -42,7 +42,7 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  // const state = "";
+  // const state = { transactionType: 4, InvoiceId: "100678"};
   const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -857,6 +857,17 @@ export default function InvoiceDetails() {
     return <p>You don't have permission to view this page.</p>
   }
 
+  const getTransactionLabel = () => {
+    switch (state.transactionType) {
+      case 7:
+        return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+      case 4:
+        return "Credit Memo Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+      default:
+        return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+    }
+  }
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -875,12 +886,7 @@ export default function InvoiceDetails() {
               },
               {
                 key: "profile",
-                label:
-                  transactionType == 7
-                    ? "Contractor Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo
-                    : "Payroll Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo,
+                label: getTransactionLabel()
               },
             ]}
           />
@@ -1001,13 +1007,7 @@ export default function InvoiceDetails() {
           <div className="topBarrow">
             <div className="invoiceNo">
               <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-              {transactionType != 7 ? (
-                <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
-              ) : (
-                <p>
-                  Contractor Invoice No. {apiData?.data?.invoice?.invoiceNo}
-                </p>
-              )}
+                <p>{getTransactionLabel()}</p>
             </div>
             <div className="amount">
               {transactionType != 7 && (
