@@ -26,14 +26,14 @@ const FinishSTepper = () => {
                         data-testid="Go_Invoice"
                         label="Go to Invoice"
                         className="primary-blue medium"
-                        handleOnClick={() => { 
+                        handleOnClick={() => {
                             navigate("/pay");
                         }}
                     />
                 </div>
             </div>
 
-           
+
         </div>
     )
 }

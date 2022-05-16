@@ -29,18 +29,7 @@
             }
         }
     }
-    .preview-invoice-button-container {
-        display: flex;
-        justify-content: space-between;
-        position: absolute;
-        margin-top: 5rem;
-        width: 96.5rem;
-        margin-left: -22.5rem;
-
-        button.a-button.medium {
-            width: 9.13rem;
-        }
-    }
+    
     .newPayrollInvoiceModal {
         .a-modal__body {
             height: 95vh;

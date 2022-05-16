@@ -37,8 +37,6 @@ const NewInvoice = () => {
     },
   ];
 
-
-
   // DropdownOptions
   const [CustomerOptions, setCustomerOption] = useState([]);
 
@@ -153,6 +151,7 @@ const NewInvoice = () => {
       value: "5",
     },
   ]);
+
   //stepper two TableOptions
   const [tableOptions, setTableOptions] = useState({
     columns: [
@@ -404,7 +403,6 @@ const NewInvoice = () => {
     showDefaultColumn: true,
   }
 
-
   //stepper one  Data 
   const [stepperOneData, setStepperOneData] = useState(
     {
@@ -421,6 +419,7 @@ const NewInvoice = () => {
 
   //stepper Two Row Data 
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
+
   // steppers one Props 
   const stepperOneProps = {
     accessToken,
@@ -456,18 +455,17 @@ const NewInvoice = () => {
     newInvoiceFeeSummaryOptions
   }
 
-const disableFunForStepOne = () => {
-if (stepsCount == 1){
-return  !(
-  stepperOneData?.customer !== "" &&
-  stepperOneData?.type !== "" &&
-  stepperOneData?.country !== "" &&
-  stepperOneData?.year !== "" &&
-  stepperOneData?.month !== ""
-)
-}
- 
-}
+  const disableFunForStepOne = () => {
+    if (stepsCount == 1) {
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        stepperOneData?.country !== "" &&
+        stepperOneData?.year !== "" &&
+        stepperOneData?.month !== ""
+      )
+    }
+  }
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -547,36 +545,25 @@ return  !(
         />
       </div>
 
-      <div className="stepper-one-buttons">
-        {stepsCount != 1 && <Button
-          data-testid="back-button"
-          icon={{
-            icon: "chevronLeft",
-            size: "medium",
-            color: "#fff",
-          }}
-          handleOnClick={() => {
-            setStepsCount(stepsCount - 1);
-          }}
-          className="primary-blue medium previous-button"
-          label="Previous"
-        />
-        }
-        {stepsCount != 4 && <div>
-          {
-            permission.ManualPayrollInvoiceCreation.includes("Save") && (
-              <Button
-                label="Save"
-                className="secondary-btn medium button"
-                handleOnClick={() => { }}
-              />
-            )
-          }
-
+      <div className={stepsCount === 1 ? "Stepper-buttons" : "stepper-two-buttons"}>
+        {stepsCount != 1 &&
           <Button
-            disabled={ disableFunForStepOne()
-             
-            }
+            data-testid="back-button"
+            icon={{
+              icon: "chevronLeft",
+              size: "medium",
+              color: "#fff",
+            }}
+            handleOnClick={() => {
+              setStepsCount(stepsCount - 1);
+            }}
+            className="primary-blue medium previous-button"
+            label="Previous"
+          />
+        }
+        {stepsCount != 4 &&
+          <Button
+            disabled={disableFunForStepOne()}
             data-testid="next-button"
             icon={{
               icon: "chevronRight",
@@ -590,7 +577,7 @@ return  !(
 
             }}
           />
-        </div>}
+        }
       </div>
     </div>
   );

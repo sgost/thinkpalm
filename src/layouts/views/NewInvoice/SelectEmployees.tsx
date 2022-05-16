@@ -16,13 +16,7 @@ const SelectEmployees = ({
   employeeRowData
 }: any) => {
 
-
-
   const [cssForData, setCssForData] = useState(false);
-
-  
-
-
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [showTable, setShowTable] = useState(false);
   const [employeeApiData, setEmployeeApiData] = useState([]);
@@ -188,8 +182,6 @@ const SelectEmployees = ({
             <></>
           )}
         </div>
-
-        
       </div>
     </>
   );

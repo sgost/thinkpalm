@@ -135,36 +135,8 @@ const NewInvoiceCreation = ({
     setIsOpen(false);
   };
 
-  const handleDropOptionForAlreadyFilled = (
-    item: any,
-    options: any,
-    set: any,
-    setIsOpen: any
-  ) => {
-    let arr = [...options];
-
-    arr.forEach((e, i) => {
-      if (e.value === item) {
-        arr[i] = {
-          ...arr[i],
-          isSelected: !arr[i].isSelected,
-        };
-      } else {
-        arr[i] = {
-          ...arr[i],
-          isSelected: false,
-        };
-      }
-    });
-
-    set(arr);
-    setIsOpen(false);
-  };
-
   useEffect(() => {
-    getCustomerDropdownOptions();
-
-  
+    getCustomerDropdownOptions();  
   }, []);
 
   useEffect(() => {
@@ -172,35 +144,6 @@ const NewInvoiceCreation = ({
       getCountryDropdwonOptions();
     }
   }, [stepperOneData?.customerId]);
-
-  // useEffect(() => {
-  //   if (
-  //     allStepsData?.stepOneData?.yearId &&
-  //     allStepsData?.stepOneData?.monthId &&
-  //     allStepsData?.stepOneData?.typeId
-  //   ) {
-  //     handleDropOptionForAlreadyFilled(
-  //       allStepsData?.stepOneData?.typeId,
-  //       typeOptions,
-  //       setTypeOptions,
-  //       setIstypeOpen
-  //     );
-
-  //     handleDropOptionForAlreadyFilled(
-  //       allStepsData?.stepOneData?.monthId,
-  //       MonthOptions,
-  //       setMonthOptions,
-  //       setIsMonthOpen
-  //     );
-
-  //     handleDropOptionForAlreadyFilled(
-  //       allStepsData?.stepOneData?.yearId,
-  //       YearOptions,
-  //       setYearOptions,
-  //       setIsYearOpen
-  //     );
-  //   }
-  // }, [allStepsData?.stepOneData]);
 
   return (
     <>
@@ -268,14 +211,11 @@ const NewInvoiceCreation = ({
               title={`Type`}
             />
           </div>
-{console.log("stepperOneData?.type",stepperOneData?.type)}
 
           { stepperOneData?.type === 'Payroll' && (
             <div className="dropdownC">
-              {console.log("CountryOptionsCountryOptions",CountryOptions)}
               <Dropdown
                 handleDropOptionClick={(item: any) => {
-                  console.log("hiiiiiiiiiiiiiiiiiiii")
                   handleDropOption(
                     item,
                     CountryOptions,

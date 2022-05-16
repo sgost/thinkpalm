@@ -173,28 +173,4 @@
             }
         }
     }
-    .step2-buttons {
-        position: absolute;
-        display: flex;
-        flex-direction: row;
-        width: 97rem;
-        justify-content: space-between;
-        margin-left: -22.5rem;
-        margin-top: 6rem;
-        button.a-button.medium {
-            width: 9.13rem;
-            font-size: 1.1rem;
-        }
-        .step2-inside-button {
-            display: flex;
-            flex-direction: row;
-            justify-content: end;
-            button.a-button.medium {
-                width: 7.13rem;
-            }
-            .button {
-                margin-right: 20px;
-            }
-        }
-    }
 }

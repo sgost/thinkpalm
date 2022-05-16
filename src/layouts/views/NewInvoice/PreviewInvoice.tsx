@@ -36,7 +36,7 @@ const previewInvoice = ({
           />
         </div>
       </div>
-    
+
       <div className='newPayrollInvoiceModal'>
         <Modal
           isOpen={isPreviewModal}
