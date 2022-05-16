@@ -142,7 +142,7 @@ export default function CreditMemoSummary(props: any) {
             </Cards>
             <Cards className="add-item">
                 <Button
-                    label="Secondary Button"
+                    label="Add New Item"
                     className="secondary-btn large no-border"
                     icon={{
                         icon: 'circularAdd',
