@@ -16,7 +16,6 @@ export default function CreditMemoSummary(props: any) {
     return (
         <div className="credit-summary-wrapper">
             <Cards className="summary-card">
-                <div>
                     <div className='top'>
                         <span className='title'>Summary</span>
                         <Button
@@ -89,27 +88,29 @@ export default function CreditMemoSummary(props: any) {
                         </div>
                     </div>
                     <div className='UI-align-boxes margin-top-4'>
-                        <div className='quantity-box'>
-                            <Input
-                                defaultValue=""
-                                label="Quantity"
-                                type="number"
-                                name="service-date-input"
-                                placeholder="Please enter"
-                                disable={true}
-                            ></Input>
+                        <div className='line-sec-width UI-flex'>
+                            <div className='quantity-box'>
+                                <Input
+                                    defaultValue=""
+                                    label="Quantity"
+                                    type="number"
+                                    name="service-date-input"
+                                    placeholder="Please enter"
+                                    disable={true}
+                                ></Input>
+                            </div>
+                            <div className='amount-box'>
+                                <Input
+                                    defaultValue=""
+                                    label="Amount"
+                                    type="number"
+                                    name="service-date-input"
+                                    placeholder="Please enter"
+                                    disable={true}
+                                ></Input>
+                            </div>
                         </div>
-                        <div className='amount-box'>
-                            <Input
-                                defaultValue=""
-                                label="Amount"
-                                type="number"
-                                name="service-date-input"
-                                placeholder="Please enter"
-                                disable={true}
-                            ></Input>
-                        </div>
-                        <div className='UI-line-text-box'>
+                        <div className='line-sec-width'>
                             <Input
                                 defaultValue=""
                                 label="Total Amount"
@@ -138,7 +139,6 @@ export default function CreditMemoSummary(props: any) {
                             {/* <p className='total'>{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
                         </div>
                     </div>
-                </div>
             </Cards>
             <Cards className="add-item">
                 <Button

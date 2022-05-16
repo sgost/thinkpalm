@@ -4,8 +4,8 @@
         padding: 2.813rem 4rem 5.315rem 4rem;
 
         .UI-line-text-box {
-            width: 22rem !important;
-            margin-right: 4.193rem;
+            width: 22% !important;
+            // margin-right: 4.193rem;
         }
 
         .quantity-box {
@@ -14,14 +14,17 @@
         }
 
         .amount-box {
-            width: 13.5rem;
-            margin-right: 4.193rem;
+            width: 80%;
+            // margin-right: 4.193rem;
+        }
+        .UI-flex{
+            display:flex;
         }
 
         .UI-align-boxes {
             display: flex;
             flex-direction: row;
-            justify-content: left;
+            justify-content: space-between;
             width: -webkit-fill-available;
 
             .a-dropdown {
@@ -65,9 +68,13 @@
                 }
             }
         }
+        .line-sec-width{
+            width: 46% !important;
+        }
 
         .margin-top-4 {
             margin-top: 4rem !important;
+            width: 48% !important;
         }
 
         .line-between {
