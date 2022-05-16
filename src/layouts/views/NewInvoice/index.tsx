@@ -201,51 +201,15 @@ const NewInvoice = () => {
   //stepper Three TableOptions 
   const newInvoiceEmployeeDetailTable: any = {
     columns: [
-      {
-        header: "Employee ID",
-        isDefault: true,
-        key: "employeeID",
-      },
-      {
-        header: "Name",
-        isDefault: true,
-        key: "name",
-      },
-      {
-        header: "Gross Wages",
-        isDefault: true,
-        key: "grossWages",
-      },
-      {
-        header: "Allowances",
-        isDefault: true,
-        key: "allowances",
-      },
-      {
-        header: "Expense Reimb.",
-        isDefault: true,
-        key: "expenseReimb",
-      },
-      {
-        header: "Employer Liability",
-        isDefault: true,
-        key: "employerLiability",
-      },
-      {
-        header: "Country VAT",
-        isDefault: true,
-        key: "countryVAT",
-      },
-      {
-        header: "Admin Fees",
-        isDefault: true,
-        key: "adminFees",
-      },
-      {
-        header: "Healthcare Benefits",
-        isDefault: true,
-        key: "healthcareBenefits",
-      },
+      tableSharedColumns.employeeID,
+      tableSharedColumns.name,
+      tableSharedColumns.grossWages,
+      tableSharedColumns.allowances,
+      tableSharedColumns.expenseReimb,
+      tableSharedColumns.employerLiability,
+      tableSharedColumns.countryVAT,
+      tableSharedColumns.adminFees,
+      tableSharedColumns.healthcareBenefits
     ],
     data: [
       {
@@ -265,56 +229,16 @@ const NewInvoice = () => {
 
   const newInvoiceCountrySummaryTable: any = {
     columns: [
-      {
-        header: "Country",
-        isDefault: true,
-        key: "country",
-      },
-      {
-        header: "Currency",
-        isDefault: true,
-        key: "currency",
-      },
-      {
-        header: "Employees",
-        isDefault: true,
-        key: "employees",
-      },
-      {
-        header: "Gross Wages",
-        isDefault: true,
-        key: "grossWages",
-      },
-      {
-        header: "Allowances",
-        isDefault: true,
-        key: "allowances",
-      },
-      {
-        header: "Expense Reimb.",
-        isDefault: true,
-        key: "expenseReimb",
-      },
-      {
-        header: "Employer Liability",
-        isDefault: true,
-        key: "employerLiability",
-      },
-      {
-        header: "Country VAT",
-        isDefault: true,
-        key: "countryVAT",
-      },
-      {
-        header: "Exchange Rate",
-        isDefault: true,
-        key: "exchangeRate",
-      },
-      {
-        header: "Total in USD",
-        isDefault: true,
-        key: "total",
-      },
+      tableSharedColumns.country,
+      tableSharedColumns.currency,
+      tableSharedColumns.employees,
+      tableSharedColumns.grossWages,
+      tableSharedColumns.allowances,
+      tableSharedColumns.expenseReimb,
+      tableSharedColumns.employerLiability,
+      tableSharedColumns.countryVAT,
+      tableSharedColumns.exchangeRate,
+      tableSharedColumns.total
     ],
     data: [
       {
@@ -338,51 +262,15 @@ const NewInvoice = () => {
 
   const newInvoiceFeeSummaryOptions: any = {
     columns: [
-      {
-        header: "Country",
-        isDefault: true,
-        key: "country",
-      },
-      {
-        header: "Currency",
-        isDefault: true,
-        key: "currency",
-      },
-      {
-        header: "Admin Fees",
-        isDefault: true,
-        key: "adminFees",
-      },
-      {
-        header: "On/Offboardings",
-        isDefault: true,
-        key: "OnOffboardings",
-      },
-      {
-        header: "FX Rate in %",
-        isDefault: true,
-        key: "fxRate",
-      },
-      {
-        header: "FX Bill",
-        isDefault: true,
-        key: "fxBill",
-      },
-      {
-        header: "Benefits",
-        isDefault: true,
-        key: "benefits",
-      },
-      {
-        header: "Employer Contribution",
-        isDefault: true,
-        key: "employerContribution",
-      },
-      {
-        header: "Total in USD",
-        isDefault: true,
-        key: "total",
-      },
+      tableSharedColumns.country,
+      tableSharedColumns.currency,
+      tableSharedColumns.adminFees,
+      tableSharedColumns.OnOffboardings,
+      tableSharedColumns.fxRate,
+      tableSharedColumns.fxBill,
+      tableSharedColumns.benefits,
+      tableSharedColumns.employeeContribution,
+      tableSharedColumns.total
     ],
     data: [
       {
@@ -396,7 +284,7 @@ const NewInvoice = () => {
         fxRate: "1,5",
         fxBill: "95,000.00",
         benefits: "3,780.00",
-        employerContribution: "0.00",
+        employeeContribution: "0.00",
         total: "121,411.97"
       }
     ],
