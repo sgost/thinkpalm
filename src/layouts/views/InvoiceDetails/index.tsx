@@ -38,10 +38,12 @@ import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
+import { getDecodedToken } from "../../../components/getDecodedToken";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
   // const state = "";
+  const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -343,20 +345,23 @@ export default function InvoiceDetails() {
         console.log("error", e);
       });
 
-    let URL = baseBillApi + state.InvoiceId;
-    axios
-      .get(URL, { headers: { accept: "text/plain" } })
-      .then((response: any) => {
-        if (response.status == 200) {
-          setBillTableData(response);
-        } else {
-          console.log("Bill API failing on contractor service");
-        }
-      })
-      .catch((e: any) => {
-        console.log("error", e);
-      });
+    if (state.transactionType == 7) {
 
+      let URL = baseBillApi + state.InvoiceId;
+      axios
+        .get(URL, { headers: { accept: "text/plain" } })
+        .then((response: any) => {
+          if (response.status == 200) {
+            setBillTableData(response);
+          } else {
+            console.log("Bill API failing on contractor service");
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
+
+    }
     axios
       .get(notesApi, headers)
       .then((res: any) => {
@@ -848,6 +853,10 @@ export default function InvoiceDetails() {
     return <p>Something went wrong!</p>;
   }
 
+  if (!permission.InvoiceDetails.includes("View")) {
+    return <p>You don't have permission to view this page.</p>
+  }
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -869,15 +878,15 @@ export default function InvoiceDetails() {
                 label:
                   transactionType == 7
                     ? "Contractor Invoice No. " +
-                      apiData?.data?.invoice?.invoiceNo
+                    apiData?.data?.invoice?.invoiceNo
                     : "Payroll Invoice No. " +
-                      apiData?.data?.invoice?.invoiceNo,
+                    apiData?.data?.invoice?.invoiceNo,
               },
             ]}
           />
         </div>
         <div className="buttons">
-          {isClient == "false" && status === "In Review" && (
+          {status === "In Review" && permission.InvoiceDetails.includes("Delete") && (
             <div className="upper-delete-button">
               <div
                 className="delete-invoice"
@@ -888,7 +897,7 @@ export default function InvoiceDetails() {
               </div>
             </div>
           )}
-          {isClient == "false" && status === "Approved" && (
+          {status === "Approved" && permission.InvoiceDetails.includes("Void") && (
             <div className="void-button">
               <Button
                 className="secondary-btn small"
@@ -899,27 +908,28 @@ export default function InvoiceDetails() {
               />
             </div>
           )}
-          <div
-            onClick={() =>
-              transactionType != 7
-                ? setIsDownloadOpen(!isDownloadOpen)
-                : function noRefCheck() {}
-            }
-            className={`${
-              transactionType == 7 || deleteDisableButtons === true
+          {permission.InvoiceDetails.includes("Download") && (
+            <div
+              onClick={() =>
+                transactionType != 7
+                  ? setIsDownloadOpen(!isDownloadOpen)
+                  : function noRefCheck() { }
+              }
+              className={`${transactionType == 7 || deleteDisableButtons === true
                 ? "download_disable"
                 : "download"
-            }`}
+                }`}
             // className="download"
-          >
-            <p className="text">Download</p>
-            <Icon
-              className="icon"
-              color="#526fd6"
-              icon="chevronDown"
-              size="medium"
-            />
-          </div>
+            >
+              <p className="text">Download</p>
+              <Icon
+                className="icon"
+                color="#526fd6"
+                icon="chevronDown"
+                size="medium"
+              />
+            </div>
+          )}
 
           {isDownloadOpen && (
             <div className="openDownloadDropdown">
@@ -930,7 +940,7 @@ export default function InvoiceDetails() {
           )}
 
           <div className="decline-invoice">
-            {isClient == "true" && status === "Pending Approval" && (
+            {status === "Pending Approval" && permission.InvoiceDetails.includes("Approve") && (
               <Button
                 data-testid="decline-button"
                 disabled={deleteDisableButtons === true}
@@ -947,7 +957,7 @@ export default function InvoiceDetails() {
           </div>
 
           <div>
-            {isClient == "false" && status === "In Review" && (
+            {status === "In Review" && permission.InvoiceDetails.includes("Send") && (
               <Button
                 className="primary-blue small"
                 icon={{
@@ -961,21 +971,22 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-            {isClient == "true" && status === "Pending Approval" && (
-              <Button
-                disabled={transactionType == 7 || deleteDisableButtons === true}
-                handleOnClick={() => {
-                  handleApproveInvoice();
-                }}
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Approve Invoice"
-              />
-            )}
+            {status === "Pending Approval" && permission.InvoiceDetails.includes("Approve")
+              && (
+                <Button
+                  disabled={transactionType == 7 || deleteDisableButtons === true}
+                  handleOnClick={() => {
+                    handleApproveInvoice();
+                  }}
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Approve Invoice"
+                />
+              )}
           </div>
         </div>
       </div>
@@ -1265,8 +1276,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           item.currencyCode +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.subTotalDue)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.subTotalDue)
 
                           // item.feeSummary.subTotalDue
                           //   .toFixed(2)
@@ -1288,10 +1299,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.subTotalDue * item.exchangeRate
-                            )
+                          " " +
+                          toCurrencyFormat(
+                            item.feeSummary.subTotalDue * item.exchangeRate
+                          )
                           // (item.feeSummary.subTotalDue * item.exchangeRate)
                           //   .toFixed(2)
                           //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1303,10 +1314,10 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.inCountryProcessingFee
-                            )
+                          " " +
+                          toCurrencyFormat(
+                            item.feeSummary.inCountryProcessingFee
+                          )
 
                           // getInCountryProcessingFee()
                           //   .toFixed(2)
@@ -1319,8 +1330,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.fxBill)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.fxBill)
 
                           // item.feeSummary.fxBill
                           //   .toFixed(2)
@@ -1333,8 +1344,8 @@ export default function InvoiceDetails() {
                       <p className="amount">
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.totalCountryVat)
+                          " " +
+                          toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                           // item.feeSummary.totalCountryVat
                           //   .toFixed(2)
@@ -1347,8 +1358,8 @@ export default function InvoiceDetails() {
                       <h3>
                         {
                           getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.countryTotalDue)
+                          " " +
+                          toCurrencyFormat(item.countryTotalDue)
 
                           // item.feeSummary.total
                           //   .toFixed(2)

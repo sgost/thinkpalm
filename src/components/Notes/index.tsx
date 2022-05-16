@@ -13,6 +13,7 @@ import {
 } from "../../urls/urls";
 import axios from "axios";
 import '../../layouts/views/InvoiceDetails/invoiceDetails.scss'
+import { getDecodedToken } from "../getDecodedToken";
 
 export default function NotesWidget(props: any) {
     const { notes, isClient, cid, id, setNotes } = props;
@@ -21,6 +22,7 @@ export default function NotesWidget(props: any) {
     const [isExportToQb, setIsExportToQb] = useState(false);
     const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
     const tempToken = localStorage.getItem("accessToken");
+    const permission: any = getDecodedToken();
 
     /* istanbul ignore next */
     return (
@@ -183,6 +185,7 @@ export default function NotesWidget(props: any) {
                         />
                     </div>
                 )}
+                {permission.InvoiceDetails.includes("Publish") && (
                 <Button
                     disabled={
                         !noteText.length || noteText.length > 400 ? true : false
@@ -220,6 +223,7 @@ export default function NotesWidget(props: any) {
                     className="primary-blue small"
                     label="Save"
                 />
+                )}
             </div>
         </div>
         // </div>

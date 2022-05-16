@@ -10,13 +10,13 @@ import {
 import axios from "axios";
 import '../../layouts/views/InvoiceDetails/invoiceDetails.scss'
 import { useState } from "react";
+import { getDecodedToken } from "../getDecodedToken";
 
 export default function FileUploadWidget(props: any) {
     const { documents, setDocuments, isClient, cid, id } = props;
     const tempToken = localStorage.getItem("accessToken");
     const [isFileError, setIsFileError] = useState<any>(null);
-
-
+    const permission: any = getDecodedToken();
     /* istanbul ignore next */
     return (
         <div className="box2">
@@ -65,6 +65,7 @@ export default function FileUploadWidget(props: any) {
                                                     });
                                             },
                                         },
+                                        permission.InvoiceDetails.includes("DeleteFile") ?
                                         {
                                             color: "#526FD6",
                                             height: "30",
@@ -117,7 +118,9 @@ export default function FileUploadWidget(props: any) {
                                                 //     console.log(e);
                                                 //   });
                                             },
-                                        },
+                                        }
+                                        :
+                                        {},
                                     ],
                                 }}
                                 label={{
@@ -129,6 +132,7 @@ export default function FileUploadWidget(props: any) {
                     })}
                 </div>
 
+                {permission.InvoiceDetails.includes("Browse") && (
                 <div className="uploadConatiner">
                     <FileUpload
                         fileList={[]}
@@ -199,6 +203,7 @@ export default function FileUploadWidget(props: any) {
                         title="Upload"
                     />
                 </div>
+                )}
             </div>
         </div>
     )
