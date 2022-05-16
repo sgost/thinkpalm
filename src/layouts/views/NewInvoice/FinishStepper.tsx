@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "atlasuikit";
 import "./FinishStepper.scss"
 
-const FinishSTepper = ({
-    handleSteps,
-    handleAllSteppersData,
-    allStepsData,
-}: any) => {
+const FinishSTepper = () => {
 
     const navigate = useNavigate();
 
@@ -37,21 +33,7 @@ const FinishSTepper = ({
                 </div>
             </div>
 
-            <div className='finish-previous-button'>
-                <Button
-                    data-testid=""
-                    icon={{
-                        icon: "chevronLeft",
-                        size: "medium",
-                        color: "#fff",
-                    }}
-                    className="primary-blue medium previous-button"
-                    label="Previous"
-                    handleOnClick={() => {
-                        handleSteps(3);
-                    }}
-                />
-            </div>
+           
         </div>
     )
 }
