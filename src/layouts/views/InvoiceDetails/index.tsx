@@ -34,12 +34,15 @@ import {
   getHeaders,
   getDownloadFileUrl,
 } from "../../../urls/urls";
+import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
+import NotesWidget from "../../../components/Notes";
+import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  // const state = "";
+  // const state = { transactionType: 4, InvoiceId: "100678"};
   const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -126,11 +129,15 @@ export default function InvoiceDetails() {
         setCountriesData(countryRes);
 
         if (state.transactionType != 7) {
+          console.log("abccc" + state.transactionType);
           axios
             .get(api, headers)
             .then((res: any) => {
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
+              }
+              if(res.data.invoice.invoiceNo === "100678"){
+                res.data.invoice.transactionType = 4
               }
 
               let billingCurrency = countryRes.data.find(
@@ -142,10 +149,10 @@ export default function InvoiceDetails() {
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
-              //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
-              if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
-                res.data = apiInvoiceMockData;
-              }
+              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
+              //   res.data = apiInvoiceMockData;
+              // }
 
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
@@ -850,6 +857,17 @@ export default function InvoiceDetails() {
     return <p>You don't have permission to view this page.</p>
   }
 
+  const getTransactionLabel = () => {
+    switch (state.transactionType) {
+      case 7:
+        return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+      case 4:
+        return "Credit Memo Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+      default:
+        return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+    }
+  }
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -868,18 +886,13 @@ export default function InvoiceDetails() {
               },
               {
                 key: "profile",
-                label:
-                  transactionType == 7
-                    ? "Contractor Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo
-                    : "Payroll Invoice No. " +
-                    apiData?.data?.invoice?.invoiceNo,
+                label: getTransactionLabel()
               },
             ]}
           />
         </div>
         <div className="buttons">
-          {isClient == "false" && status === "In Review" && (
+          {status === "In Review" && permission.InvoiceDetails.includes("Delete") && (
             <div className="upper-delete-button">
               <div
                 className="delete-invoice"
@@ -890,7 +903,7 @@ export default function InvoiceDetails() {
               </div>
             </div>
           )}
-         { status === "Approved" && permission.InvoiceDetails.includes("Void") && (
+          {status === "Approved" && permission.InvoiceDetails.includes("Void") && (
             <div className="void-button">
               <Button
                 className="secondary-btn small"
@@ -909,8 +922,8 @@ export default function InvoiceDetails() {
                   : function noRefCheck() { }
               }
               className={`${transactionType == 7 || deleteDisableButtons === true
-                  ? "download_disable"
-                  : "download"
+                ? "download_disable"
+                : "download"
                 }`}
             // className="download"
             >
@@ -950,7 +963,7 @@ export default function InvoiceDetails() {
           </div>
 
           <div>
-            {isClient == "false" && status === "In Review" && (
+            {status === "In Review" && permission.InvoiceDetails.includes("Send") && (
               <Button
                 className="primary-blue small"
                 icon={{
@@ -994,13 +1007,7 @@ export default function InvoiceDetails() {
           <div className="topBarrow">
             <div className="invoiceNo">
               <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-              {transactionType != 7 ? (
-                <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}</p>
-              ) : (
-                <p>
-                  Contractor Invoice No. {apiData?.data?.invoice?.invoiceNo}
-                </p>
-              )}
+                <p>{getTransactionLabel()}</p>
             </div>
             <div className="amount">
               {transactionType != 7 && (
@@ -1141,28 +1148,40 @@ export default function InvoiceDetails() {
       </div>
 
       {showAutoApprovedToast && (
-        <div className="toast">
-          {isAutoApprove === true
-            ? "Invoice set to Auto-approve successfully"
-            : "Auto-approval removed from Invoice successfully"}
-          <span
-            data-testid="toast-cross-button"
-            className="toast-action"
-            onClick={() => {
-              setShowAutoApprovedToast(false);
-            }}
-          >
-            <Icon
-              icon="remove"
-              color="#ffff"
-              size="medium"
-              viewBox="-6 -6 20 20"
-            />
-          </span>
-        </div>
-      )}
+          <div className="toast">
+            {
+              isAutoApprove === true ?
+              "Invoice set to Auto-approve successfully" 
+              : 
+              "Auto-approval removed from Invoice successfully"
+            }
+            <span
+            data-testid ='toast-cross-button'
+              className="toast-action"
+              onClick={() => {
+                setShowAutoApprovedToast(false);
+              }}
+            >
+              <Icon
+                icon="remove"
+                color="#ffff"
+                size="medium"
+                viewBox="-6 -6 20 20"
+              />
+            </span>
+          </div>
+        )}
+      {transactionType == 4 && <CreditMemoSummary
+        notes={notes}
+        setNotes={setNotes}
+        documents={documents}
+        setDocuments={setDocuments}
+        isClient={isClient}
+        cid={cid}
+        id={id}
+      ></CreditMemoSummary>}
 
-      {transactionType != 7 && (
+      {transactionType != 7 && transactionType != 4 && (
         <div className="tab">
           <p
             onClick={() => setActiveTab("payroll")}
@@ -1191,7 +1210,7 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {activeTab === "master" && transactionType != 7 && (
+      {activeTab === "master" && transactionType != 4 && transactionType != 7 && (
         <div className="master">
           <h3 className="tableHeader">Country Summary</h3>
           <Table
@@ -1233,7 +1252,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "payroll" && transactionType != 7 && (
+      {activeTab === "payroll" && transactionType != 4 && transactionType != 7 && (
         <div className="payroll">
           {payrollTables.map((item: any) => {
             return (
@@ -1368,389 +1387,23 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "files" && transactionType != 7 && (
+      {activeTab === "files" && transactionType != 4 && transactionType != 7 && (
         <div className="filesNotes">
-          <div className="box">
-            <h3>Notes</h3>
-            {/* <p>Write a Note relevant for this Invoice.</p> */}
-
-            <Scrollbars
-              renderView={(props: any) => (
-                <div
-                  {...props}
-                  style={{
-                    overflowX: "hidden",
-                  }}
-                  className="filesscroll"
-                />
-              )}
-              renderTrackVertical={(props: any) => (
-                <div
-                  style={{ backgroundColor: "black" }}
-                  {...props}
-                  className="track-vertical"
-                />
-              )}
-              renderThumbVertical={(props: any) => (
-                <div
-                  style={{ backgroundColor: "gray" }}
-                  {...props}
-                  className="thumb-vertical"
-                />
-              )}
-              style={{ width: "110%", height: "26.75rem" }}
-            >
-              <div className="notesContainer">
-                {!notes.length ? (
-                  <div>
-                    <NoDataCard
-                      title=""
-                      bodyContents={[
-                        "No notes have been added yet.",
-                        "Add one below!",
-                      ]}
-                      style={{
-                        height: "19rem",
-                        width: "auto",
-                      }}
-                    />
-                  </div>
-                ) : (
-                  notes.map((item: any) => {
-                    return (
-                      <div className="notesSubContainer">
-                        <div className="noteInfoBtn">
-                          <div className="noteInfo">
-                            <span>
-                              test@email.com (You){" "}
-                              {moment(item.createdDate).format(
-                                "hh:mm A DD MMM, YYYY "
-                              )}
-                            </span>
-                            <Icon color="#b4b3bb" icon="info" size="small" />
-                          </div>
-                          <div className="noteBtn">
-                            <Icon color="#526FD6" icon="edit" size="small" />
-                            {/* <Icon icon="trash" color="#FBAF00" size="small" /> */}
-
-                            <svg
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 26"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                clip-rule="evenodd"
-                                d="M4.38086 3.85719H19.619V22.1429C19.619 22.9512 19.2979 23.7264 18.7263 24.2979C18.1548 24.8694 17.3796 25.1905 16.5713 25.1905H7.42848C6.6202 25.1905 5.84503 24.8694 5.27349 24.2979C4.70195 23.7264 4.38086 22.9512 4.38086 22.1429V3.85719ZM11.9999 0.80957C12.7688 0.809327 13.5093 1.09971 14.0731 1.62252C14.6369 2.14532 14.9822 2.86191 15.0399 3.62862L15.0475 3.85719H8.95229C8.95229 3.04891 9.27338 2.27374 9.84492 1.7022C10.4165 1.13066 11.1916 0.80957 11.9999 0.80957V0.80957Z"
-                                stroke="#E32C15"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M1.33398 3.85742H22.6673"
-                                stroke="#E32C15"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M8.95312 8.42871V20.6192"
-                                stroke="#E32C15"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                              <path
-                                d="M15.0488 8.42871V20.6192"
-                                stroke="#E32C15"
-                                stroke-width="1.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                        <div className="note">
-                          <p>{item.note}</p>
-                        </div>
-                        {/* <div>
-                      <p className="noteDate">
-                        {moment(item.createdDate).format("DD/MM/YYYY, HH:mm")}
-                      </p>
-                    </div>
-
-                    <div>
-                      <p className="notes">
-                        <span>test@email.com</span> {item.note}{" "}
-                      </p>
-                    </div> */}
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            </Scrollbars>
-
-            <div className="inpContinaer">
-              <textarea
-                maxLength={400}
-                value={noteText}
-                onChange={(e: any) => setNoteText(e.target.value)}
-                placeholder="Add a note here..."
-              />
-              <span>Characters left: {400 - noteText.length}</span>
-            </div>
-            <div className="btnContainer">
-              {isClient == "false" && (
-                <div className="btnContainercheckbox">
-                  <Checkbox
-                    onChange={(e: any) => {
-                      setIsVisibleToCustomer(e.target.checked);
-                    }}
-                    label="Visible to Customer"
-                    checked={isVisibleToCustomer}
-                  />
-                  <Checkbox
-                    label="Export to Quickbooks"
-                    onChange={(e: any) => {
-                      setIsExportToQb(e.target.checked);
-                    }}
-                    checked={isExportToQb}
-                  />
-                  <Checkbox
-                    label="Visible on PDF Invoice"
-                    onChange={(e: any) => {
-                      setisVisibleOnPDFInvoice(e.target.checked);
-                    }}
-                    checked={isVisibleOnPDFInvoice}
-                  />
-                </div>
-              )}
-              <Button
-                disabled={
-                  !noteText.length || noteText.length > 400 ? true : false
-                }
-                handleOnClick={() => {
-                  // const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
-                  const url = urls.saveNote;
-                  let currDate = new Date();
-
-                  axios({
-                    method: "POST",
-                    url: url,
-                    headers: getHeaders(tempToken, cid, isClient),
-                    data: {
-                      invoiceId: id,
-                      noteType: "2",
-                      note: noteText,
-                      isCustomerVisible: isVisibleToCustomer,
-                      exportToQuickbooks: isExportToQb,
-                      createdDate: currDate,
-                      modifiedBy: "00000000-0000-0000-0000-000000000000",
-                      modifiedByUser: null,
-                      displayInPDF: isVisibleOnPDFInvoice,
-                      customerId: cid,
-                    },
-                  })
-                    .then((res: any) => {
-                      setNotes([res.data, ...notes]);
-                      setNoteText("");
-                    })
-                    .catch((e: any) => {
-                      console.log(e);
-                    });
-                }}
-                className="primary-blue small"
-                label="Save"
-              />
-            </div>
-          </div>
-
-          <div className="box2">
-            <h3>Files</h3>
-            <p>Upload files relevant for this Invoice.</p>
-            <div className="boxsubcontainer">
-              <div className="fileHandlerContainer">
-                {documents.map((item: any, index: any) => {
-                  return (
-                    <FileHandler
-                      icons={{
-                        prefix: {
-                          color: "#526FD6",
-                          height: "40",
-                          icon: "docUpload",
-                          width: "40",
-                        },
-                        suffix: [
-                          {
-                            color: "#526FD6",
-                            height: "40",
-                            icon: "download",
-                            width: "40",
-                            handleOnClick: () => {
-                              const headers = {
-                                headers: getHeaders(tempToken, cid, isClient),
-                              };
-
-                              // const downloadApi = `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=${item.document.url}`;
-                              const downloadApi = getDownloadFileUrl(
-                                item.document.url
-                              );
-                              axios
-                                .get(downloadApi, headers)
-                                .then((res: any) => {
-                                  if (res.status === 200) {
-                                    // let url = res.data.url;
-                                    let a = document.createElement("a");
-                                    a.href = res.data.url;
-                                    a.download = `${res.data.name}`;
-                                    a.click();
-                                  }
-                                })
-                                .catch((e: any) => {
-                                  console.log("error", e);
-                                });
-                            },
-                          },
-                          {
-                            color: "#526FD6",
-                            height: "30",
-                            icon: "remove",
-                            width: "30",
-                            handleOnClick: () => {
-                              const headers = getHeaders(
-                                tempToken,
-                                cid,
-                                isClient
-                              );
-
-                              axios({
-                                method: "DELETE",
-                                // url: "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
-                                url: urls.deleteFile,
-                                data: {
-                                  invoiceId: id,
-                                  documentId: documents[index].documentId,
-                                },
-                                headers: headers,
-                              })
-                                .then((res: any) => {
-                                  let cpy = [...documents];
-                                  cpy.splice(index, 1);
-                                  setDocuments(cpy);
-                                })
-                                .catch((e: any) => {
-                                  console.log(e);
-                                });
-
-                              // axios
-                              //   .post(
-                              //     "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
-                              //     {
-                              //       invoiceId: id,
-                              //       documentId: documents[index].documentId,
-                              //     },
-                              //     {
-                              //       headers: headers,
-                              //     }
-                              //   )
-                              //   .then((res: any) => {
-                              //     console.log("del rs", res);
-                              //     let cpy = [...documents];
-                              //     cpy.splice(index, 1);
-                              //     setDocuments(cpy);
-                              //   })
-                              //   .catch((e: any) => {
-                              //     console.log(e);
-                              //   });
-                            },
-                          },
-                        ],
-                      }}
-                      label={{
-                        footer: "235 MB",
-                        header: item.document.documentName,
-                      }}
-                    />
-                  );
-                })}
-              </div>
-
-              <div className="uploadConatiner">
-                <FileUpload
-                  fileList={[]}
-                  formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
-                  handleUpload={
-                    /* istanbul ignore next */
-                    (file: any) => {
-                      const headers = getHeaders(tempToken, cid, isClient);
-                      setTimeout(() => {
-                        var formData = new FormData();
-                        formData.append("asset", file[0]);
-                        axios
-                          .post(
-                            urls.uploadFile,
-
-                            formData,
-                            {
-                              headers: headers,
-                            }
-                          )
-                          .then((res: any) => {
-                            axios
-                              .post(
-                                urls.createDocument,
-                                {
-                                  invoiceId: id,
-
-                                  document: {
-                                    url: res.data.url,
-
-                                    documentName: res.data.fileName,
-                                  },
-                                },
-                                {
-                                  headers: headers,
-                                }
-                              )
-                              .then((response: any) => {
-                                setDocuments([
-                                  ...documents,
-                                  {
-                                    documentId: response.data.documentId,
-                                    document: {
-                                      documentName: res.data.fileName,
-                                      url: res.data.url,
-                                    },
-                                  },
-                                ]);
-                                setIsFileError(false);
-                              })
-                              .catch((e: any) => {
-                                console.log(e);
-                                setIsFileError(true);
-                              });
-                          })
-                          .catch((e: any) => {
-                            console.log(e);
-                            setIsFileError(true);
-                          });
-                      });
-                    }
-                  }
-                  isError={isFileError}
-                  maxSize={25}
-                  resetFiles={function noRefCheck() {
-                    setIsFileError(null);
-                  }}
-                  title="Upload"
-                />
-              </div>
-            </div>
-          </div>
+          <NotesWidget 
+            notes={notes}
+            setNotes={setNotes}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+          ></NotesWidget>
+          
+          <FileUploadWidget
+            documents={documents}
+            setDocuments={setDocuments}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+          ></FileUploadWidget>
         </div>
       )}
       {transactionType == 7 && (
