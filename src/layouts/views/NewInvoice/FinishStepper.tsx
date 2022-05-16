@@ -23,7 +23,7 @@ const FinishSTepper = () => {
                 </div>
                 <div className='finish-invoice-button'>
                     <Button
-                        data-testid=""
+                        data-testid="Go_Invoice"
                         label="Go to Invoice"
                         className="primary-blue medium"
                         handleOnClick={() => { 

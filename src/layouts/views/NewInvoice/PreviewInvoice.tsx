@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, Modal, Icon, Table } from "atlasuikit";
-import { getFlagPath } from "../InvoiceDetails/getFlag";
 import "./PreviewInvoice.scss"
 
 
@@ -28,7 +27,7 @@ const previewInvoice = ({
         </div>
         <div className='preview-invoice-button'>
           <Button
-            data-testid=""
+            data-testid="preview-modal"
             label="Preview Invoice"
             className="primary-blue medium"
             handleOnClick={() => {

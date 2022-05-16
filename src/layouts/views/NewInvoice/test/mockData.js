@@ -1,61 +1,43 @@
 export const mockapidata = {
   resGetAllCustomer: [
     {
-      legalEntityId: null,
-      custId: 0,
-      customerId: "e291c9f0-2476-4237-85cb-7afecdd085d3",
-      name: "Cocacola",
-      website: "www.cocacola.ca",
-      entityInfo: null,
-      contactDetails: null,
-      countries: [],
-      customers: [],
-      purchaseOrders: [],
-      renewalEffectiveDate: "2022-03-29T23:14:57.218Z",
-      paymentInfo: {
-        country: "Canada",
-        currency: "cad",
-        bankName: "RBC",
-        swift: "1234",
-        branchName: "Toronto",
-        nationalClearingCode: "34343",
-        accountNumber: "65766787",
-        routingNumber: "456",
-        iban: "we3",
-        benefeciaryName: "coke",
-        benefeciaryAddress: {
-          street1: "16 whitby",
-          street2: "string",
-          city: "Toronto",
-          state: "Ontario",
-          postalCode: "L5V1G8",
-          country: "Canada",
-        },
-        remittance: "string",
+      "legalEntityId": "0",
+      "custId": 1585,
+      "customerId": "A9BBEE6D-797A-4724-A86A-5B1A2E28763F",
+      "name": "\"DSM Nutritional Products AG\"",
+      "website": "http://www.dsm.com",
+      "billingAddressCountryName": null,
+      "entityInfo": null,
+      "contactDetails": {
+          "officeLandline": {
+              "countryCode": null,
+              "number": "NULL",
+              "extension": null
+          },
+          "additionalLandline": {
+              "countryCode": null,
+              "number": "NULL",
+              "extension": null
+          },
+          "officeMobile": {
+              "countryCode": null,
+              "number": "NULL"
+          },
+          "additionalMobile": null,
+          "fax": {
+              "countryCode": null,
+              "number": "NULL",
+              "extension": null
+          },
+          "email": "email_1585@skbskbs.com"
       },
-      accountReceivable: {
-        country: "Canada",
-        currency: "cad",
-        bankName: "RBC",
-        swift: "1234",
-        branchName: "Toronto",
-        nationalClearingCode: "34343",
-        accountNumber: "65766787",
-        routingNumber: "456",
-        iban: "we3",
-        benefeciaryName: "coke",
-        benefeciaryAddress: {
-          street1: "16 whitby",
-          street2: "string",
-          city: "Toronto",
-          state: "Ontario",
-          postalCode: "L5V1G8",
-          country: "Canada",
-        },
-        remittance: "string",
-      },
-      subscriptions: [],
-    },
+      "customers": [],
+      "purchaseOrders": [],
+      "renewalEffectiveDate": "0001-01-01T00:00:00Z",
+      "paymentInfo": null,
+      "accountReceivable": null,
+      "subscriptions": []
+  },
   ],
   resGetAllCountry: [
     {

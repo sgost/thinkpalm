@@ -268,11 +268,14 @@ const NewInvoiceCreation = ({
               title={`Type`}
             />
           </div>
+{console.log("stepperOneData?.type",stepperOneData?.type)}
 
           { stepperOneData?.type === 'Payroll' && (
             <div className="dropdownC">
+              {console.log("CountryOptionsCountryOptions",CountryOptions)}
               <Dropdown
                 handleDropOptionClick={(item: any) => {
+                  console.log("hiiiiiiiiiiiiiiiiiiii")
                   handleDropOption(
                     item,
                     CountryOptions,

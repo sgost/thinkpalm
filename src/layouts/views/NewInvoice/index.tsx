@@ -8,7 +8,7 @@ import "./index.scss";
 import FinishSTepper from "./FinishStepper";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../../components/getDecodedToken";
-import { getFlagPath } from "../InvoiceDetails/getFlag";
+// import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
   const navigate = useNavigate();
 
@@ -321,7 +321,7 @@ const NewInvoice = () => {
       {
         country: {
           value: "Spain",
-          img: { src: getFlagPath("ES") },
+          // img: { src: getFlagPath("ES") },
         },
         currency: "EUR",
         employees: "14",
@@ -389,7 +389,7 @@ const NewInvoice = () => {
       {
         country: {
           value: "Spain",
-          img: { src: getFlagPath("ES") },
+          // img: { src: getFlagPath("ES") },
         },
         currency: "EUR",
         adminFees: "3.900.00",
@@ -549,7 +549,7 @@ return  !(
 
       <div className="stepper-one-buttons">
         {stepsCount != 1 && <Button
-          data-testid="back-button-steptwo"
+          data-testid="back-button"
           icon={{
             icon: "chevronLeft",
             size: "medium",
