@@ -3,16 +3,24 @@ import { Button, Dropdown, Icon } from "atlasuikit";
 import axios from "axios";
 import "./NewInvoiceCreation.scss";
 import { getCountryByCustomer, urls } from "../../../urls/urls";
-import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 const NewInvoiceCreation = ({
-  handleSteps,
-  allStepsData,
-  handleAllSteppersData,
+  accessToken,
+  stepperOneData,
+  setStepperOneData,
+  YearOptions,
+  setYearOptions,
+  MonthOptions,
+  setMonthOptions,
+  CountryOptions,
+  setCountryOptions,
+  CustomerOptions,
+  setCustomerOption,
+  typeOptions, 
+  setTypeOptions
+
 }: any) => {
-  const token = localStorage.getItem("temptoken");
-  // let currentOrgToken: any = null;
-  let currentOrgToken = JSON.parse(localStorage.getItem("current-org") || "");
+
 
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
@@ -21,122 +29,10 @@ const NewInvoiceCreation = ({
   const [isMonthOpen, setIsMonthOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
 
-  // DropdownOptions
-  const [CustomerOptions, setCustomerOption] = useState([]);
-
-  const [typeOptions, setTypeOptions] = useState([
-    tableSharedColumns.payroll,
-    tableSharedColumns.proforma,
-    tableSharedColumns.Miscellaneous,
-    tableSharedColumns.createMemo,
-  ]);
-
-  const [CountryOptions, setCountryOptions] = useState([]);
-
-  const [MonthOptions, setMonthOptions] = useState([
-    {
-      isSelected: false,
-      label: "January",
-      value: "0",
-    },
-    {
-      isSelected: false,
-      label: "Feburary",
-      value: "1",
-    },
-    {
-      isSelected: false,
-      label: "March",
-      value: "2",
-    },
-    {
-      isSelected: false,
-      label: "April",
-      value: "3",
-    },
-    {
-      isSelected: false,
-      label: "May",
-      value: "4",
-    },
-    {
-      isSelected: false,
-      label: "June",
-      value: "5",
-    },
-    {
-      isSelected: false,
-      label: "July",
-      value: "6",
-    },
-    {
-      isSelected: false,
-      label: "August",
-      value: "7",
-    },
-    {
-      isSelected: false,
-      label: "September",
-      value: "8",
-    },
-    {
-      isSelected: false,
-      label: "October",
-      value: "9",
-    },
-    {
-      isSelected: false,
-      label: "November",
-      value: "10",
-    },
-    {
-      isSelected: false,
-      label: "December",
-      value: "11",
-    },
-  ]);
-
-  const [YearOptions, setYearOptions] = useState([
-    {
-      isSelected: false,
-      label: "2019",
-      value: "0",
-    },
-    {
-      isSelected: false,
-      label: "2020",
-      value: "1",
-    },
-    {
-      isSelected: false,
-      label: "2021",
-      value: "2",
-    },
-    {
-      isSelected: false,
-      label: "2022",
-      value: "3",
-    },
-    {
-      isSelected: false,
-      label: "2023",
-      value: "4",
-    },
-    {
-      isSelected: false,
-      label: "2024",
-      value: "5",
-    },
-  ]);
-
-  // Stepper One Data
-  const [stepperOneData, setStepperOneData] = useState(
-    allStepsData.stepOneData
-  );
 
   const preparedCustomerData = (data: any) => {
     const newData = data?.map((item: any) => {
-      if (item.customerId === allStepsData?.stepOneData?.customerId) {
+      if (item.customerId === stepperOneData?.customerId) {
         return {
           isSelected: true,
           label: item.name,
@@ -157,7 +53,7 @@ const NewInvoiceCreation = ({
     let api = urls.customers;
     const headers = {
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${accessToken}`,
       },
     };
 
@@ -174,7 +70,7 @@ const NewInvoiceCreation = ({
 
   const preparedCountryData = (data: any) => {
     const newData = data?.map((item: any) => {
-      if (item.id === allStepsData?.stepOneData?.countryId) {
+      if (item.id === stepperOneData?.countryId) {
         return {
           isSelected: true,
           label: item.name,
@@ -192,18 +88,21 @@ const NewInvoiceCreation = ({
   };
 
   const getCountryDropdwonOptions = () => {
-    let api = getCountryByCustomer(stepperOneData.customerId);
+    let api = getCountryByCustomer(stepperOneData?.customerId);
     const headers = {
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${accessToken}`,
       },
     };
 
     axios
       .get(api, headers)
       .then((res: any) => {
-        const preData: any = preparedCountryData(res.data);
-        setCountryOptions(preData);
+        if(res.data){
+          const preData: any = preparedCountryData(res.data);
+          setCountryOptions(preData);
+        }
+       
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -236,37 +135,8 @@ const NewInvoiceCreation = ({
     setIsOpen(false);
   };
 
-  const handleDropOptionForAlreadyFilled = (
-    item: any,
-    options: any,
-    set: any,
-    setIsOpen: any
-  ) => {
-    let arr = [...options];
-
-    arr.forEach((e, i) => {
-      if (e.value === item) {
-        arr[i] = {
-          ...arr[i],
-          isSelected: !arr[i].isSelected,
-        };
-      } else {
-        arr[i] = {
-          ...arr[i],
-          isSelected: false,
-        };
-      }
-    });
-
-    set(arr);
-    setIsOpen(false);
-  };
-
   useEffect(() => {
-    getCustomerDropdownOptions();
-
-    // currentOrgToken = localStorage.getItem("current-org") || "";
-    // currentOrgToken = JSON.parse(currentOrgToken);
+    getCustomerDropdownOptions();  
   }, []);
 
   useEffect(() => {
@@ -274,35 +144,6 @@ const NewInvoiceCreation = ({
       getCountryDropdwonOptions();
     }
   }, [stepperOneData?.customerId]);
-
-  useEffect(() => {
-    if (
-      allStepsData?.stepOneData?.yearId &&
-      allStepsData?.stepOneData?.monthId &&
-      allStepsData?.stepOneData?.typeId
-    ) {
-      handleDropOptionForAlreadyFilled(
-        allStepsData?.stepOneData?.typeId,
-        typeOptions,
-        setTypeOptions,
-        setIstypeOpen
-      );
-
-      handleDropOptionForAlreadyFilled(
-        allStepsData?.stepOneData?.monthId,
-        MonthOptions,
-        setMonthOptions,
-        setIsMonthOpen
-      );
-
-      handleDropOptionForAlreadyFilled(
-        allStepsData?.stepOneData?.yearId,
-        YearOptions,
-        setYearOptions,
-        setIsYearOpen
-      );
-    }
-  }, [allStepsData?.stepOneData]);
 
   return (
     <>
@@ -318,10 +159,15 @@ const NewInvoiceCreation = ({
                   setCustomerOption,
                   setIsCustomerOpen
                 );
+                setCountryOptions([])
+
                 setStepperOneData({
                   ...stepperOneData,
                   customer: item.label,
                   customerId: item.value,
+                  countryId:"",
+                  country:""
+
                 });
               }}
               handleDropdownClick={(b: boolean) => {
@@ -334,6 +180,7 @@ const NewInvoiceCreation = ({
               isOpen={isCustomerOpen}
               options={CustomerOptions}
               title={`Customer`}
+              search
             />
           </div>
 
@@ -365,7 +212,7 @@ const NewInvoiceCreation = ({
             />
           </div>
 
-          {currentOrgToken?.Payments?.Role !== "FinanceAR" && (
+          { stepperOneData?.type === 'Payroll' && (
             <div className="dropdownC">
               <Dropdown
                 handleDropOptionClick={(item: any) => {
@@ -484,37 +331,7 @@ const NewInvoiceCreation = ({
         </div>
       </div>
 
-      <div className="stepper-one-buttons">
-        <Button
-          label="Save"
-          className="secondary-btn medium button"
-          handleOnClick={() => {}}
-        />
-
-        <Button
-          disabled={
-            !(
-              stepperOneData?.customer !== "" &&
-              stepperOneData?.type !== "" &&
-              stepperOneData?.country !== "" &&
-              stepperOneData?.year !== "" &&
-              stepperOneData?.month !== ""
-            )
-          }
-          data-testid="next-button"
-          icon={{
-            icon: "chevronRight",
-            size: "medium",
-            color: "#fff",
-          }}
-          label="Next"
-          className="primary-blue medium button next-button"
-          handleOnClick={() => {
-            handleSteps(2);
-            handleAllSteppersData(stepperOneData, 2);
-          }}
-        />
-      </div>
+    
     </>
   );
 };

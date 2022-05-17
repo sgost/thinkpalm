@@ -1,0 +1,30 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.finish-stepper-container {
+    .finish-invoice-inner-container {
+        min-height: 27rem;
+        .finish-para-one {
+            margin-top: 2rem;
+            p {
+                font-size: 1.6rem;
+                color: #3e3e3e;
+            }
+        }
+        .finish-para-two {
+            width: 28rem;
+            margin-top: -0.955rem;
+            p {
+                font-size: 1.1rem;
+                color: #3e3e3e;
+                line-height: 1.555rem;
+            }
+        }
+        .finish-invoice-button {
+            margin-top: 3rem;
+            button.a-button.medium {
+                width: 9.13rem;
+            }
+        }
+    }
+}
