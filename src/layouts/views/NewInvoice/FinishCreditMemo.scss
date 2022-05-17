@@ -1,0 +1,21 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.finishCreditMemoContainer {
+  .finish {
+    font-size: 1.2rem;
+  }
+  .done {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .msg {
+    font-size: 1rem;
+  }
+
+  button.a-button.small {
+    margin-top: 2rem;
+    width: 7rem;
+  }
+}

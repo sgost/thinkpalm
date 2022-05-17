@@ -4,6 +4,7 @@ import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
 import SelectEmployees from "./SelectEmployees";
 import "./index.scss";
+import FinishCreditMemo from "./FinishCreditMemo";
 
 const NewInvoice = () => {
   const navigate = useNavigate();
@@ -126,6 +127,7 @@ const NewInvoice = () => {
               ) : (
                 <></>
               )}
+              {stepsCount === 4 && <FinishCreditMemo />}
             </>
           }
         />
