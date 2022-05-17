@@ -8,7 +8,7 @@ import {
   NoDataCard,
   BreadCrumb,
   Checkbox,
-  Modal,
+  Modal
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -314,12 +314,22 @@ export default function InvoiceDetails() {
             });
         } else {
           let res: any = {
-            data: apiInvoiceMockData,
+            data: {
+              ...apiInvoiceMockData,
+              invoice: {
+                ...apiInvoiceMockData.invoice,
+                ...state.rowDetails,
+                customerName: state.rowDetails?.customerName,
+                createdDate: state.rowDetails?.createdDate,
+                invoiceBalance: parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                totalAmount: parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0
+              }
+            },
           };
           setTimeout(() => {
             setApiData(res);
             setTransactionType(res.data.invoice.transactionType);
-          }, 8000);
+          });
         }
       })
       .catch((e: any) => {
@@ -853,7 +863,7 @@ export default function InvoiceDetails() {
     return <p>Something went wrong!</p>;
   }
 
-  if (!permission.InvoiceDetails.includes("View")) {
+  if (!permission?.InvoiceDetails.includes("View")) {
     return <p>You don't have permission to view this page.</p>
   }
 
@@ -892,7 +902,7 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          {status === "In Review" && permission.InvoiceDetails.includes("Delete") && (
+          {status === "In Review" && permission?.InvoiceDetails.includes("Delete") && (
             <div className="upper-delete-button">
               <div
                 className="delete-invoice"
@@ -903,7 +913,7 @@ export default function InvoiceDetails() {
               </div>
             </div>
           )}
-          {status === "Approved" && permission.InvoiceDetails.includes("Void") && (
+          {status === "Approved" && permission?.InvoiceDetails.includes("Void") && (
             <div className="void-button">
               <Button
                 className="secondary-btn small"
@@ -914,7 +924,7 @@ export default function InvoiceDetails() {
               />
             </div>
           )}
-          {permission.InvoiceDetails.includes("Download") && (
+          {permission?.InvoiceDetails.includes("Download") && (
             <div
               onClick={() =>
                 transactionType != 7
@@ -946,7 +956,7 @@ export default function InvoiceDetails() {
           )}
 
           <div className="decline-invoice">
-            {status === "Pending Approval" && permission.InvoiceDetails.includes("Approve") && (
+            {status === "Pending Approval" && permission?.InvoiceDetails.includes("Approve") && (
               <Button
                 data-testid="decline-button"
                 disabled={deleteDisableButtons === true}
@@ -963,7 +973,7 @@ export default function InvoiceDetails() {
           </div>
 
           <div>
-            {status === "In Review" && permission.InvoiceDetails.includes("Send") && (
+            {status === "In Review" && permission?.InvoiceDetails.includes("Send") && (
               <Button
                 className="primary-blue small"
                 icon={{
@@ -977,7 +987,7 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-            {status === "Pending Approval" && permission.InvoiceDetails.includes("Approve")
+            {status === "Pending Approval" && permission?.InvoiceDetails.includes("Approve")
               && (
                 <Button
                   disabled={transactionType == 7 || deleteDisableButtons === true}
@@ -1387,7 +1397,7 @@ export default function InvoiceDetails() {
           </div>
         </div>
       )}
-      {activeTab === "files" && transactionType != 4 && transactionType != 7 && (
+      {activeTab === "files" && transactionType != 4 && transactionType != 7 && <>
         <div className="filesNotes">
           <NotesWidget 
             notes={notes}
@@ -1405,7 +1415,7 @@ export default function InvoiceDetails() {
             id={id}
           ></FileUploadWidget>
         </div>
-      )}
+      </>}
       {transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}
