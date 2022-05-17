@@ -17,22 +17,22 @@
             display: flex;
             align-items: center;
             width: 13rem;
-            .a-checkbox-wrapper{
+            .a-checkbox-wrapper {
                 margin: 0;
-                label{
+                label {
                     top: 0.1rem;
                 }
             }
-            
         }
     }
 
-    .full-table-container {
+    .full-table-container-after-data {
         // background-color: #041e42;
         // width: 80% !important;
         box-shadow: 0px 2px 4px rgba(112, 128, 144, 0.05);
-            border: 1px solid #EBEBED;
-            margin-bottom: 0.833rem;
+        border: 1px solid #ebebed;
+        margin-bottom: 0.833rem;
+
         .user-detail {
             display: flex;
             height: 5rem;
@@ -47,7 +47,7 @@
                 .a-iupload {
                     height: 2.375rem;
                     width: 2.375rem;
-                    img{
+                    img {
                         width: 38.53px;
                         height: 38.53px;
                         border-radius: 50%;
@@ -58,7 +58,7 @@
                 }
                 .a-pheader__details .uname {
                     font-size: 1.1rem;
-                    color: #3E3E3E;
+                    color: #3e3e3e;
                 }
             }
             .table-location {
@@ -67,11 +67,11 @@
                 justify-content: space-around;
                 width: 14rem;
                 gap: 2.944rem;
-                .table-icon-location{
+                .table-icon-location {
                     display: flex;
                     width: 10.444rem;
                 }
-                .table-up-down{
+                .table-up-down {
                     margin-right: 1.056rem;
                 }
                 svg.icon.location {
@@ -99,26 +99,77 @@
             }
         }
     }
-    .step2-buttons {
-        position: absolute;
-        display: flex;
+
+    .full-table-container {
         // background-color: #041e42;
-        flex-direction: row;
-        width: 86%;
-        justify-content: space-between;
-        margin-left: -20%;
-        button.a-button.medium {
-            width: 9.13rem;
-        }
-        .step2-inside-button {
+        // width: 80% !important;
+        box-shadow: 0px 2px 4px rgba(112, 128, 144, 0.05);
+        border: 1px solid #ebebed;
+        margin-bottom: 0.833rem;
+        min-height: 22rem;
+        .user-detail {
             display: flex;
-            flex-direction: row;
-            justify-content: end;
-            button.a-button.medium {
-                width: 7.13rem;
+            height: 5rem;
+            justify-content: space-between;
+            .table-header {
+                .a-cards {
+                    background-color: transparent !important;
+                    padding: 2rem;
+                    margin-top: -12px !important;
+                    margin-left: 0px !important;
+                }
+                .a-iupload {
+                    height: 2.375rem;
+                    width: 2.375rem;
+                    img {
+                        width: 38.53px;
+                        height: 38.53px;
+                        border-radius: 50%;
+                    }
+                }
+                .a-iupload__initials {
+                    font-size: 1rem;
+                }
+                .a-pheader__details .uname {
+                    font-size: 1.1rem;
+                    color: #3e3e3e;
+                }
             }
-            .button {
-                margin-right: 20px;
+            .table-location {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                width: 14rem;
+                gap: 2.944rem;
+                .table-icon-location {
+                    display: flex;
+                    width: 10.444rem;
+                }
+                .table-up-down {
+                    margin-right: 1.056rem;
+                }
+                svg.icon.location {
+                    width: 30px !important;
+                    height: 30px !important;
+                    margin-top: 27px !important;
+                }
+                h5 {
+                    color: #767676;
+                    font-size: 1.125rem;
+                    margin-left: 0.417rem;
+                }
+                svg.icon.up {
+                    width: 40px !important;
+                    height: 40px !important;
+                    margin-top: 34px !important;
+                    cursor: pointer;
+                }
+            }
+        }
+        .table-container {
+            .table__header {
+                border-top-left-radius: 0px !important;
+                border-top-right-radius: 0px !important;
             }
         }
     }
