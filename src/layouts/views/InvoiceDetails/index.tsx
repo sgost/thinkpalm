@@ -66,6 +66,7 @@ export default function InvoiceDetails() {
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
+  const currentOrgToken = JSON.parse(localStorage.getItem("current-org") || "");
 
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
@@ -1076,24 +1077,24 @@ export default function InvoiceDetails() {
               "Invoice set to Auto-approve successfully"
               :
               "Auto-approval removed from Invoice successfully"
-          }
-          <span
-            data-testid='toast-cross-button'
-            className="toast-action"
-            onClick={() => {
-              setShowAutoApprovedToast(false);
-            }}
-          >
-            <Icon
-              icon="remove"
-              color="#ffff"
-              size="medium"
-              viewBox="-6 -6 20 20"
-            />
-          </span>
-        </div>
-      )}
-      {transactionType == 4 && <CreditMemoSummary
+            }
+            <span
+            data-testid ='toast-cross-button'
+              className="toast-action"
+              onClick={() => {
+                setShowAutoApprovedToast(false);
+              }}
+            >
+              <Icon
+                icon="remove"
+                color="#ffff"
+                size="medium"
+                viewBox="-6 -6 20 20"
+              />
+            </span>
+          </div>
+        )}
+      {transactionType == 4 && currentOrgToken?.Payments?.Role == "FinanceAR" && <CreditMemoSummary
         notes={notes}
         setNotes={setNotes}
         documents={documents}
@@ -1101,6 +1102,7 @@ export default function InvoiceDetails() {
         isClient={isClient}
         cid={cid}
         id={id}
+        invoiceStatusId={apiData.data.invoice.status}
       ></CreditMemoSummary>}
 
       {transactionType != 7 && transactionType != 4 && (
