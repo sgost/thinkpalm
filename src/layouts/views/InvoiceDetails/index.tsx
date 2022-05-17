@@ -456,43 +456,13 @@ export default function InvoiceDetails() {
   };
 
   const sharedColumns = {
-    grossWages: {
-      header: "Gross Wages",
-      isDefault: true,
-      key: "grossWages",
-    },
-    allowances: {
-      header: "Allowances",
-      isDefault: true,
-      key: "allowances",
-    },
-    expenseReimb: {
-      header: "Expense Reimb.",
-      isDefault: true,
-      key: "expenseReimb",
-    },
-    employerLiability: {
-      header: "Employer Liability",
-      isDefault: true,
-      key: "employerLiability",
-    },
-
-    countryVAT: {
-      header: "Country VAT",
-      isDefault: true,
-      key: "countryVAT",
-    },
-
-    adminFees: {
-      header: "Admin Fees",
-      isDefault: true,
-      key: "adminFees",
-    },
-    country: {
-      header: "Country",
-      isDefault: true,
-      key: "country",
-    },
+    grossWages: tableSharedColumns.grossWages,
+    allowances: tableSharedColumns.allowances,
+    expenseReimb: tableSharedColumns.expenseReimb,
+    employerLiability: tableSharedColumns.employerLiability,
+    countryVAT: tableSharedColumns.countryVAT,
+    adminFees: tableSharedColumns.adminFees,
+    country: tableSharedColumns.country,
     currency: tableSharedColumns.currency,
     total: {
       header: "Total in " + getBillingCurrency(),
@@ -503,58 +473,30 @@ export default function InvoiceDetails() {
 
   const payrollOptions: any = {
     columns: [
-      {
-        header: "Employee ID",
-        isDefault: true,
-        key: "employeeID",
-      },
-      {
-        header: "Name",
-        isDefault: true,
-        key: "name",
-      },
+      tableSharedColumns.employeeID,
+      tableSharedColumns.name,
       sharedColumns.grossWages,
       sharedColumns.allowances,
       sharedColumns.expenseReimb,
       sharedColumns.employerLiability,
       sharedColumns.countryVAT,
       sharedColumns.adminFees,
-      {
-        header: "Healthcare Benefits",
-        isDefault: true,
-        key: "healthcareBenefits",
-      },
+      tableSharedColumns.healthcareBenefits,
     ],
     showDefaultColumn: true,
   };
 
   const countrySummaryOptions: any = {
     columns: [
-      {
-        header: "Country",
-        isDefault: true,
-        key: "country",
-      },
-      {
-        header: "Currency",
-        isDefault: true,
-        key: "currency",
-      },
-      {
-        header: "Employees",
-        isDefault: true,
-        key: "employees",
-      },
+      sharedColumns.country,
+      sharedColumns.currency,
+      tableSharedColumns.employees,
       sharedColumns.grossWages,
       sharedColumns.allowances,
       sharedColumns.expenseReimb,
       sharedColumns.employerLiability,
       sharedColumns.countryVAT,
-      {
-        header: "Exchange Rate",
-        isDefault: true,
-        key: "exchangeRate",
-      },
+      tableSharedColumns.exchangeRate,
       sharedColumns.total,
     ],
     showDefaultColumn: true,
@@ -565,31 +507,11 @@ export default function InvoiceDetails() {
       sharedColumns.country,
       sharedColumns.currency,
       sharedColumns.adminFees,
-      {
-        header: "On/Offboardings",
-        isDefault: true,
-        key: "OnOffboardings",
-      },
-      {
-        header: "FX Rate in %",
-        isDefault: true,
-        key: "fxRate",
-      },
-      {
-        header: "FX Bill",
-        isDefault: true,
-        key: "fxBill",
-      },
-      {
-        header: "Benefits",
-        isDefault: true,
-        key: "benefits",
-      },
-      {
-        header: "Employee Contribution",
-        isDefault: true,
-        key: "employeeContribution",
-      },
+      tableSharedColumns.OnOffboardings,
+      tableSharedColumns.fxRate,
+      tableSharedColumns.fxBill,
+      tableSharedColumns.benefits,
+      tableSharedColumns.employeeContribution,
       sharedColumns.total,
     ],
     showDefaultColumn: true,

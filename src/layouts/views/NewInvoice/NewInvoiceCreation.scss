@@ -21,6 +21,9 @@
             content: "*";
             color: red;
         }
+        .a-dropdown__search {
+            width: 15rem;
+        }
     }
     .dropdowns {
         margin-bottom: 3rem;
@@ -93,7 +96,7 @@
     // bottom: 18%;
    
     button.a-button.medium {
-        font-size: 1rem;
+        font-size: 1.2rem;
         height: 3.13rem;
         width: 7.13rem;
         margin-right: 25px

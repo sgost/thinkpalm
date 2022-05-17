@@ -1,4 +1,5 @@
 @import "../../../styles/variables";
+@import "../../../styles/styles";
 
 .invoiceDetailsContainer {
   padding-bottom: 2.222rem;
@@ -510,13 +511,8 @@
         margin-bottom: 1rem;
 
         textarea {
-          // width: 100%;
-          // padding: 1rem;
           margin-bottom: 1rem;
-          // border-color: $medium-gray;
-          // border-radius: 0.125rem;
           font-family: "Circular", sans-serif;
-          // height: 6.25rem;
           padding: 0.8rem;
           padding-bottom: 3rem;
           resize: none;
@@ -706,11 +702,11 @@
       height: 37vh;
       padding: 2rem 2.5rem !important;
       width: 100%;
-      max-width: 25rem !important;
+      max-width: 410px !important;
     }
     h3 {
-      margin-top: 0.722rem;
-      font-size: 1.556rem;
+      margin-top: 0px;
+      font-size: 25px;
       line-height: 1.944rem;
       color: #041e42;
     }
@@ -724,6 +720,7 @@
       margin-top: -1.111rem;
       padding: 0.889rem;
       border-radius: 4px;
+      font-family: "Circular", sans-serif;
     }
     .attachment {
       display: flex;
@@ -802,6 +799,7 @@
       justify-content: space-between;
       width: 140px;
       margin-left: -2rem;
+      align-items: center;
       cursor: pointer;
   
       img {
