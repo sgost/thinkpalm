@@ -1077,7 +1077,6 @@ export default function InvoiceDetails() {
               "Invoice set to Auto-approve successfully"
               :
               "Auto-approval removed from Invoice successfully"
-<<<<<<< HEAD
             }
             <span
             data-testid ='toast-cross-button'
@@ -1096,26 +1095,6 @@ export default function InvoiceDetails() {
           </div>
         )}
       {transactionType == 4 && currentOrgToken?.Payments?.Role == "FinanceAR" && <CreditMemoSummary
-=======
-          }
-          <span
-            data-testid='toast-cross-button'
-            className="toast-action"
-            onClick={() => {
-              setShowAutoApprovedToast(false);
-            }}
-          >
-            <Icon
-              icon="remove"
-              color="#ffff"
-              size="medium"
-              viewBox="-6 -6 20 20"
-            />
-          </span>
-        </div>
-      )}
-      {transactionType == 4 && <CreditMemoSummary
->>>>>>> main
         notes={notes}
         setNotes={setNotes}
         documents={documents}
