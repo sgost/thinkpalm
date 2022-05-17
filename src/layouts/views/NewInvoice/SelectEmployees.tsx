@@ -13,13 +13,16 @@ const SelectEmployees = ({
   tableOptionsForNoData,
   stepperOneData,
   setEmployeeRowData,
-  employeeRowData
+  employeeRowData,
+  employeeApiData,
+  setEmployeeApiData,
+  setSelectedRowPostData
 }: any) => {
 
   const [cssForData, setCssForData] = useState(false);
-  const [isAutoApprove, setIsAutoApprove] = useState(false);
+  const [isPayrollItemsChecked, setIsPayrollItemsChecked] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [employeeApiData, setEmployeeApiData] = useState([]);
+
 
 
   const getEmployyeApiData = () => {
@@ -40,25 +43,7 @@ const SelectEmployees = ({
       .get(apiUrl, headers)
       .then((res: any) => {
         if (res.status === 200) {
-          let employeeTableData: any = [];
-          res?.data?.forEach((item: any) => {
-            item?.employeeDetail?.compensation?.payItems?.forEach(
-              (CompensationItems: any) => {
-                employeeTableData.push({
-                  payItemId: CompensationItems?.payItemId,
-                  amount: CompensationItems?.amount,
-                  currency: CompensationItems?.currency,
-                  effectiveDate: CompensationItems?.effectiveDate,
-                  //getting null in one object
-                  // endDate: CompensationItems?.endDate,
-                  finItemType: CompensationItems?.finItemType,
-                  payItemFrequencyId: CompensationItems?.payItemFrequencyId,
-                });
-              }
-            );
-          });
           setEmployeeApiData(res.data);
-          setTableOptions({ ...tableOptions, data: employeeTableData });
           setCssForData(true);
         }
       })
@@ -72,8 +57,65 @@ const SelectEmployees = ({
   }, []);
 
   const onRowCheckboxChange = (selectedRows: any) => {
-    // alert(selectedRows)
+    const PrepareData = employeeRowData
+    PrepareData.employeeDetail.compensation.payItems = selectedRows
+    setSelectedRowPostData(PrepareData);
   };
+
+  const preparedTableData = (item: any, check: any) => {
+    let employeeTableData: any = [];
+    item?.employeeDetail?.compensation?.payItems?.forEach(
+      (CompensationItems: any) => {
+        if (check == true) {
+          if (CompensationItems.isInvoiced != true) {
+            employeeTableData.push({
+              ...CompensationItems,
+              employeePayItemId: CompensationItems?.employeePayItemId,
+              id: CompensationItems?.payItemId,
+              payItemId: CompensationItems?.payItemId,
+              amount: CompensationItems?.amount,
+              currency: CompensationItems?.currency,
+              effectiveDate: CompensationItems?.effectiveDate,
+              //getting null in one object
+              // endDate: CompensationItems?.endDate,
+              finItemType: CompensationItems?.finItemType,
+              payItemFrequencyId: CompensationItems?.payItemFrequencyId,
+            });
+          }
+          setTableOptions({ ...tableOptions, data: employeeTableData });
+        }
+        if (check == false) {
+          employeeTableData.push({
+            ...CompensationItems,
+            employeePayItemId: CompensationItems?.employeePayItemId,
+            id: CompensationItems?.payItemId,
+            payItemId: CompensationItems?.payItemId,
+            amount: CompensationItems?.amount,
+            currency: CompensationItems?.currency,
+            effectiveDate: CompensationItems?.effectiveDate,
+            //getting null in one object
+            // endDate: CompensationItems?.endDate,
+            finItemType: CompensationItems?.finItemType,
+            payItemFrequencyId: CompensationItems?.payItemFrequencyId,
+          });
+
+          setTableOptions({ ...tableOptions, data: employeeTableData });
+        }
+
+      }
+    );
+  }
+
+  const onRowIconClick = (item: any) => {
+    setShowTable(!showTable);
+    setEmployeeRowData(item);
+    if (!isPayrollItemsChecked) {
+      preparedTableData(item, true);
+    }
+    if (isPayrollItemsChecked) {
+      preparedTableData(item, false);
+    }
+  }
 
   return (
     <>
@@ -84,9 +126,15 @@ const SelectEmployees = ({
           </div>
           <div className="employee-checkbox">
             <Checkbox
-              checked={isAutoApprove}
+              checked={isPayrollItemsChecked}
               onChange={(e: any) => {
-                setIsAutoApprove(e.target.checked);
+                setIsPayrollItemsChecked(e.target.checked);
+                if (e.target.checked === true) {
+                  preparedTableData(employeeRowData, false);
+                }
+                if (e.target.checked === false) {
+                  preparedTableData(employeeRowData, true)
+                }
               }}
               label="Show Billed Payroll Items"
             />
@@ -128,8 +176,7 @@ const SelectEmployees = ({
                         className="table-up-down"
                         data-testid="showHide-button"
                         onClick={() => {
-                          setShowTable(!showTable);
-                          setEmployeeRowData(item);
+                          onRowIconClick(item)
                         }}
                       >
                         {item?.employeeDetail?.compensation?.payItems?.length ? (
@@ -146,7 +193,7 @@ const SelectEmployees = ({
                             size="medium"
                           />
                         ) : (
-                          ""
+                          <></>
                         )}
                       </div>
                     </div>

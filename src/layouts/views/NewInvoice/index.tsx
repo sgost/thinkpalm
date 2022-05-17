@@ -8,6 +8,9 @@ import "./index.scss";
 import FinishSTepper from "./FinishStepper";
 import { tableSharedColumns, monthNameOptions } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../../components/getDecodedToken";
+import axios from "axios";
+import { createManualInvoice, getHeaders } from "../../../urls/urls";
+import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
   const navigate = useNavigate();
@@ -17,27 +20,22 @@ const NewInvoice = () => {
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
-
+  //steps for payroll
   const stepsName = [
-    {
-      key: "new-invoice",
-      label: "New Invoice",
-    },
-    {
-      key: "select-employees",
-      label: "Select Employees",
-    },
-    {
-      key: "invoice-preview",
-      label: "Invoice Preview",
-    },
-    {
-      key: "finish",
-      label: "FINISH!",
-    },
+    sharedSteps.newInvoice,
+    sharedSteps.selectEmployees,
+    sharedSteps.invoicePreview,
+    sharedSteps.finish
+  ];
+  // initial steps 
+  const stepsInitial = [
+    sharedSteps.newInvoice,
+    sharedSteps.initial2,
+    sharedSteps.initial2,
+    sharedSteps.initial2,
   ];
 
-  // DropdownOptions
+  // payroll DropdownOptions
   const [CustomerOptions, setCustomerOption] = useState([]);
 
   const [typeOptions, setTypeOptions] = useState([
@@ -104,53 +102,49 @@ const NewInvoice = () => {
     },
   ]);
 
-  //stepper two TableOptions
+  //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
     columns: [
       {
-        header: "Pay Item ID",
+        header: 'effectiveDate',
         isDefault: true,
-        key: "payItemId",
-        // key: "payItem",
+        key: 'effectiveDate'
       },
       {
-        header: "Amount",
+        header: 'employeePayItemId ID',
         isDefault: true,
-        key: "amount",
-      },
-      tableSharedColumns.currency
-      ,
-      {
-        header: "Effective Date",
-        isDefault: true,
-        key: "effectiveDate",
-      },
-      // {
-      //   header: "End Date",
-      //   isDefault: true,
-      //   key: "endDate",
-      // },
-      {
-        header: "finItemType",
-        isDefault: true,
-        // key: "scope",
-        key: "finItemType",
+        key: 'employeePayItemId'
       },
       {
-        header: "Frequency ID",
+        header: 'payItemId',
         isDefault: true,
-        key: "payItemFrequencyId",
-        // key: "frequency",
+        key: 'payItemId'
       },
+      {
+        header: 'amount',
+        isDefault: true,
+        key: 'amount'
+      },
+      tableSharedColumns.currency,
+      {
+        header: 'finItemType',
+        isDefault: true,
+        key: 'finItemType'
+      },
+      {
+        header: 'payItemFrequencyId',
+        isDefault: true,
+        key: 'payItemFrequencyId'
+      }
     ],
-    data: [],
+    data: []
   });
   const [tableOptionsForNoData] = useState({
     columns: [],
     data: [],
   });
 
-  //stepper Three TableOptions 
+  //stepper Three payroll TableOptions 
   const newInvoiceEmployeeDetailTable: any = {
     columns: [
       tableSharedColumns.employeeID,
@@ -254,12 +248,15 @@ const NewInvoice = () => {
       customerId: "",
       countryId: "",
       typeId: "",
+      yearId: "",
+      monthId: ""
     }
   );
 
-  //stepper Two Row Data 
+  //stepper Two payroll Row Data 
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
-
+  const [employeeApiData, setEmployeeApiData] = useState([]);
+  const [selectedRowPostData, setSelectedRowPostData] = useState<any>({})
   // steppers one Props 
   const stepperOneProps = {
     accessToken,
@@ -276,7 +273,7 @@ const NewInvoice = () => {
     typeOptions,
     setTypeOptions
   }
-  //stepper two props 
+  //stepper two payroll props 
   const stepperTwoProps = {
 
     accessToken,
@@ -285,7 +282,10 @@ const NewInvoice = () => {
     tableOptionsForNoData,
     stepperOneData,
     setEmployeeRowData,
-    employeeRowData
+    employeeRowData,
+    employeeApiData,
+    setEmployeeApiData,
+    setSelectedRowPostData
   }
 
   const stepperThreeProps = {
@@ -304,6 +304,39 @@ const NewInvoice = () => {
         stepperOneData?.year !== "" &&
         stepperOneData?.month !== ""
       )
+    }
+  }
+
+  const handleNextButtonClick = () => {
+    setStepsCount(stepsCount + 1);
+    if (stepsCount == 2 && stepperOneData.type == "Payroll") {
+
+      const data = {
+        "customerId": stepperOneData?.customerId,
+        "userId": stepperOneData?.customerId,
+        "transactionType": 1,
+        "calendarTypeId": 0,
+        "countryId": stepperOneData?.countryId,
+        "month": stepperOneData?.monthId,
+        "year": stepperOneData?.yearId,
+        "employeeDetail": {
+          "employees": [
+            selectedRowPostData.employeeDetail
+          ]
+        }
+      }
+      axios({
+        method: "POST",
+        url: createManualInvoice(),
+        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+        data: data,
+      })
+        .then((res: any) => {
+          console.log("resss", res)
+        })
+        .catch((e: any) => {
+          console.log(e);
+        });
     }
   }
 
@@ -354,7 +387,13 @@ const NewInvoice = () => {
           leftPanel={
             <Progress
               currentStep={stepsCount}
-              steps={stepsName}
+              steps={
+                stepperOneData?.type === "Payroll"
+                  ?
+                  stepsName
+                  :
+                  stepsInitial
+              }
               type="step-progress"
             />
           }
@@ -364,7 +403,6 @@ const NewInvoice = () => {
               {stepsCount == 1 ? (
                 <NewInvoiceCreation
                   {...stepperOneProps}
-
                 />
               ) : stepsCount == 2 ? (
                 <SelectEmployees
@@ -413,8 +451,7 @@ const NewInvoice = () => {
             label="Next"
             className="primary-blue medium button next-button"
             handleOnClick={() => {
-              setStepsCount(stepsCount + 1);
-
+              handleNextButtonClick()
             }}
           />
         }
