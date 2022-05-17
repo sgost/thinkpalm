@@ -66,6 +66,7 @@ export default function InvoiceDetails() {
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
+  const currentOrgToken = JSON.parse(localStorage.getItem("current-org") || "");
 
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
@@ -1171,7 +1172,7 @@ export default function InvoiceDetails() {
             </span>
           </div>
         )}
-      {transactionType == 4 && <CreditMemoSummary
+      {transactionType == 4 && currentOrgToken?.Payments?.Role == "FinanceAR" && <CreditMemoSummary
         notes={notes}
         setNotes={setNotes}
         documents={documents}
@@ -1179,6 +1180,7 @@ export default function InvoiceDetails() {
         isClient={isClient}
         cid={cid}
         id={id}
+        invoiceStatusId={apiData.data.invoice.status}
       ></CreditMemoSummary>}
 
       {transactionType != 7 && transactionType != 4 && (
