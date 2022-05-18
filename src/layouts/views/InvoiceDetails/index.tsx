@@ -66,6 +66,7 @@ export default function InvoiceDetails() {
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
+  const currentOrgToken = JSON.parse(localStorage.getItem("current-org") || "");
 
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
@@ -314,12 +315,24 @@ export default function InvoiceDetails() {
             });
         } else {
           let res: any = {
-            data: apiInvoiceMockData,
+            data: {
+              ...apiInvoiceMockData,
+              invoice: {
+                ...apiInvoiceMockData.invoice,
+                ...state.rowDetails,
+                customerName: state.rowDetails?.customerName,
+                createdDate: state.rowDetails?.createdDate,
+                invoiceBalance:
+                  parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                totalAmount:
+                  parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+              },
+            },
           };
           setTimeout(() => {
             setApiData(res);
             setTransactionType(res.data.invoice.transactionType);
-          }, 8000);
+          });
         }
       })
       .catch((e: any) => {
@@ -773,7 +786,7 @@ export default function InvoiceDetails() {
     return <p>Something went wrong!</p>;
   }
 
-  if (!permission.InvoiceDetails.includes("View")) {
+  if (!permission?.InvoiceDetails.includes("View")) {
     return <p>You don't have permission to view this page.</p>;
   }
 
@@ -813,7 +826,7 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           {status === "In Review" &&
-            permission.InvoiceDetails.includes("Delete") && (
+            permission?.InvoiceDetails.includes("Delete") && (
               <div className="upper-delete-button">
                 <div
                   className="delete-invoice"
@@ -824,18 +837,19 @@ export default function InvoiceDetails() {
                 </div>
               </div>
             )}
-          {status === "Approved" && permission.InvoiceDetails.includes("Void") && (
-            <div className="void-button">
-              <Button
-                className="secondary-btn small"
-                label="Void Invoice"
-                handleOnClick={() => {
-                  setIsVoidOpen(true);
-                }}
-              />
-            </div>
-          )}
-          {permission.InvoiceDetails.includes("Download") && (
+          {status === "Approved" &&
+            permission?.InvoiceDetails.includes("Void") && (
+              <div className="void-button">
+                <Button
+                  className="secondary-btn small"
+                  label="Void Invoice"
+                  handleOnClick={() => {
+                    setIsVoidOpen(true);
+                  }}
+                />
+              </div>
+            )}
+          {permission?.InvoiceDetails.includes("Download") && (
             <div
               onClick={() =>
                 state.transactionType != 7
@@ -869,7 +883,7 @@ export default function InvoiceDetails() {
 
           <div className="decline-invoice">
             {status === "Pending Approval" &&
-              permission.InvoiceDetails.includes("Approve") && (
+              permission?.InvoiceDetails.includes("Approve") && (
                 <Button
                   data-testid="decline-button"
                   disabled={deleteDisableButtons === true}
@@ -887,7 +901,22 @@ export default function InvoiceDetails() {
 
           <div>
             {status === "In Review" &&
-              permission.InvoiceDetails.includes("Send") && (
+              permission?.InvoiceDetails.includes("Send") && (
+                <Button
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              )}
+            {status === "Pending Approval" &&
+              permission?.InvoiceDetails.includes("Approve") && (
                 <Button
                   className="primary-blue small"
                   icon={{
@@ -1094,17 +1123,19 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {state.transactionType == 4 && (
-        <CreditMemoSummary
-          notes={notes}
-          setNotes={setNotes}
-          documents={documents}
-          setDocuments={setDocuments}
-          isClient={isClient}
-          cid={cid}
-          id={id}
-        ></CreditMemoSummary>
-      )}
+      {transactionType == 4 &&
+        currentOrgToken?.Payments?.Role == "FinanceAR" && (
+          <CreditMemoSummary
+            notes={notes}
+            setNotes={setNotes}
+            documents={documents}
+            setDocuments={setDocuments}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+            invoiceStatusId={apiData.data.invoice.status}
+          ></CreditMemoSummary>
+        )}
 
       {state.transactionType != 7 && state.transactionType != 4 && (
         <div className="tab">

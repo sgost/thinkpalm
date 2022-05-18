@@ -639,10 +639,10 @@
 
   .decline-modal {
     .a-modal__body {
-      height: 40vh;
+      height: 21rem;
       padding-top: 30px;
       width: 100%;
-      max-width: 27.278rem !important;
+      max-width: 29.278rem !important;
     }
     h3 {
       margin-top: -12px;
@@ -673,6 +673,8 @@
       margin-top: -22px;
       border-radius: 4px;
       padding: 1.111rem;
+      max-width: 25rem;
+      font-family: "Circular", sans-serif;
     }
     .comment {
       color: red;
@@ -699,14 +701,14 @@
   .void-modal {
     display: flex;
     .a-modal__body {
-      height: 37vh;
+      height: 20rem;
       padding: 2rem 2.5rem !important;
       width: 100%;
-      max-width: 410px !important;
+      max-width: 25rem !important;
     }
     h3 {
       margin-top: 0px;
-      font-size: 25px;
+      font-size: 1.5rem;
       line-height: 1.944rem;
       color: #041e42;
     }
@@ -721,6 +723,7 @@
       padding: 0.889rem;
       border-radius: 4px;
       font-family: "Circular", sans-serif;
+      max-width: 23rem;
     }
     .attachment {
       display: flex;
@@ -729,12 +732,13 @@
       cursor: pointer;
       svg {
         margin-top: 1.333rem;
+        width: 1.9rem;
+        height: 1.9rem;
       }
       h4 {
         color: #526fd6;
         font-weight: 600;
-        font-size: 1.111rem;
-        line-height: 1.333rem;
+        font-size: 1.19rem;
         margin-left: 0.278rem;
       }
       p {
@@ -801,7 +805,6 @@
       margin-left: -2rem;
       align-items: center;
       cursor: pointer;
-  
       img {
         height: 20px;
         width: 20px;
@@ -849,7 +852,7 @@
     }
   }
   .toast {
-      display: flex;
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;

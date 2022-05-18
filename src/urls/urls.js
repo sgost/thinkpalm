@@ -31,7 +31,7 @@ const services = {
   apngMetaDataService: "/metadataservice/api",
   atlasCustomerService: "/cs/api",
   contractorPayBillingService: "/billingservice/api",
-  atlasSubscriptionService:"/atlas-subscriptionservice/api"
+  atlasSubscriptionService: "/atlas-subscriptionservice/api"
 };
 
 export const urls = {
@@ -172,14 +172,20 @@ export const getDownloadFileUrl = (docurl) => {
   );
 };
 
-export const getCountryByCustomer= (id) => {
+export const getCountryByCustomer = (id) => {
   return (
-    baseURL + services.atlasSubscriptionService + "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId="+id
-   );
+    baseURL + services.atlasSubscriptionService + "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=" + id
+  );
 };
 
-export const getEmployee= (customerId,countryId) => {
+export const getEmployee = (customerId, countryId) => {
   return (
     baseURL + services.atlasIdgService + `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}`
-   );
+  );
+};
+
+export const createManualInvoice = () => {
+  return (
+    baseURL + services.atlasIdgService + `/InvoiceData/CreateManualInvoice`
+  );
 };

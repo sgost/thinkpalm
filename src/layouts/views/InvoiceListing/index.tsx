@@ -68,11 +68,11 @@ export default function InvoiceListing() {
       label: "LateFee",
       value: 5,
     },
-    {
-      isSelected: false,
-      label: "Payment",
-      value: 6,
-    },
+    // {
+    //   isSelected: false,
+    //   label: "Payment",
+    //   value: 6,
+    // },
     {
       isSelected: false,
       label: "Contractor Pay",
