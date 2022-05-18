@@ -109,35 +109,35 @@ const NewInvoice = () => {
   const [tableOptions, setTableOptions] = useState({
     columns: [
       {
-        header: "effectiveDate",
+        header: 'Pay Item',
+        isDefault: true,
+        key: 'payItemName'
+      },
+      {
+        header: 'Amount',
+        isDefault: true,
+        key: 'amount'
+      },
+      tableSharedColumns.currency,
+      {
+        header: "Effective Date",
         isDefault: true,
         key: "effectiveDate",
       },
       {
-        header: "employeePayItemId ID",
+        header: "End Date",
         isDefault: true,
-        key: "employeePayItemId",
+        key: "endDate",
       },
       {
-        header: "payItemId",
+        header: "Scope",
         isDefault: true,
-        key: "payItemId",
+        key: "scopesName",
       },
       {
-        header: "amount",
+        header: "Frequency",
         isDefault: true,
-        key: "amount",
-      },
-      tableSharedColumns.currency,
-      {
-        header: "finItemType",
-        isDefault: true,
-        key: "finItemType",
-      },
-      {
-        header: "payItemFrequencyId",
-        isDefault: true,
-        key: "payItemFrequencyId",
+        key: "payItemFrequencyName",
       },
     ],
     data: [],
@@ -258,6 +258,7 @@ const NewInvoice = () => {
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
   const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
+
   // steppers one Props
   const stepperOneProps = {
     accessToken,
@@ -295,7 +296,7 @@ const NewInvoice = () => {
     newInvoiceFeeSummaryOptions,
   };
 
-  const disableFunForStepOne = () => {
+  const disableFunForStepOnePayroll = () => {
     if (stepsCount == 1) {
       return !(
         stepperOneData?.customer !== "" &&
@@ -305,11 +306,20 @@ const NewInvoice = () => {
         stepperOneData?.month !== ""
       );
     }
+    if (stepsCount == 2 && stepperOneData.type === "Payroll") {
+        return  selectedRowPostData?.length > 0 ? false : true;
+    }
   };
+
+
+
 
   const handleNextButtonClick = () => {
     setStepsCount(stepsCount + 1);
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
+
+       const PrepareData = employeeRowData
+      PrepareData.employeeDetail.compensation.payItems = selectedRowPostData
       const data = {
         customerId: stepperOneData?.customerId,
         userId: stepperOneData?.customerId,
@@ -319,7 +329,7 @@ const NewInvoice = () => {
         month: stepperOneData?.monthId,
         year: stepperOneData?.yearId,
         employeeDetail: {
-          employees: [selectedRowPostData.employeeDetail],
+          employees: [PrepareData.employeeDetail],
         },
       };
       axios({
@@ -430,7 +440,7 @@ const NewInvoice = () => {
         )}
         {stepsCount != 4 && (
           <Button
-            disabled={disableFunForStepOne()}
+            disabled={stepperOneData?.type === "Payroll" ? disableFunForStepOnePayroll() : true}
             data-testid="next-button"
             icon={{
               icon: "chevronRight",
