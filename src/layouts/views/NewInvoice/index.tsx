@@ -129,7 +129,7 @@ const NewInvoice = () => {
         isDefault: true,
         key: "amount",
       },
-      tableSharedColumns.currency,
+      tableSharedColumns.currencyCode,
       {
         header: "Effective Date",
         isDefault: true,
