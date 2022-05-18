@@ -40,7 +40,7 @@
     height: 25rem;
     justify-content: space-around;
     padding: 3.556rem 1.333rem;
-    width: fit-content;
+    width: 11rem !important;
 }
 
 .a-layouts .sidebar-inner-container {
@@ -57,11 +57,7 @@
 }
 
 .step2-right-panel {
-    // .newinvoice-container .a-layouts .sidebar-inner-container .panel.right-panel {
-    //     flex-grow: 2;
-    //     padding: 40px 80px;
     width: 68%;
-    // }
 }
 
 .newinvoice-container .dropdowns {
