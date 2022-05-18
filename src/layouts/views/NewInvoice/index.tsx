@@ -3,10 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
 import SelectEmployees from "./SelectEmployees";
-import PreviewInvoice from "./PreviewInvoice"
+import PreviewInvoice from "./PreviewInvoice";
 import "./index.scss";
+import FinishCreditMemo from "./FinishCreditMemo";
 import FinishSTepper from "./FinishStepper";
-import { tableSharedColumns, monthNameOptions } from "../../../sharedColumns/sharedColumns";
+import {
+  tableSharedColumns,
+  monthNameOptions,
+} from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import { createManualInvoice, getHeaders } from "../../../urls/urls";
@@ -25,9 +29,9 @@ const NewInvoice = () => {
     sharedSteps.newInvoice,
     sharedSteps.selectEmployees,
     sharedSteps.invoicePreview,
-    sharedSteps.finish
+    sharedSteps.finish,
   ];
-  // initial steps 
+  // initial steps
   const stepsInitial = [
     sharedSteps.newInvoice,
     sharedSteps.initial2,
@@ -51,7 +55,6 @@ const NewInvoice = () => {
     //   label: "sdfgh",
     //   value: "swaesrdgtf",
     // }
-
   ]);
 
   const [MonthOptions, setMonthOptions] = useState([
@@ -66,7 +69,7 @@ const NewInvoice = () => {
     monthNameOptions.september,
     monthNameOptions.october,
     monthNameOptions.november,
-    monthNameOptions.december
+    monthNameOptions.december,
   ]);
 
   const [YearOptions, setYearOptions] = useState([
@@ -106,45 +109,45 @@ const NewInvoice = () => {
   const [tableOptions, setTableOptions] = useState({
     columns: [
       {
-        header: 'effectiveDate',
+        header: "effectiveDate",
         isDefault: true,
-        key: 'effectiveDate'
+        key: "effectiveDate",
       },
       {
-        header: 'employeePayItemId ID',
+        header: "employeePayItemId ID",
         isDefault: true,
-        key: 'employeePayItemId'
+        key: "employeePayItemId",
       },
       {
-        header: 'payItemId',
+        header: "payItemId",
         isDefault: true,
-        key: 'payItemId'
+        key: "payItemId",
       },
       {
-        header: 'amount',
+        header: "amount",
         isDefault: true,
-        key: 'amount'
+        key: "amount",
       },
       tableSharedColumns.currency,
       {
-        header: 'finItemType',
+        header: "finItemType",
         isDefault: true,
-        key: 'finItemType'
+        key: "finItemType",
       },
       {
-        header: 'payItemFrequencyId',
+        header: "payItemFrequencyId",
         isDefault: true,
-        key: 'payItemFrequencyId'
-      }
+        key: "payItemFrequencyId",
+      },
     ],
-    data: []
+    data: [],
   });
   const [tableOptionsForNoData] = useState({
     columns: [],
     data: [],
   });
 
-  //stepper Three payroll TableOptions 
+  //stepper Three payroll TableOptions
   const newInvoiceEmployeeDetailTable: any = {
     columns: [
       tableSharedColumns.employeeID,
@@ -155,7 +158,7 @@ const NewInvoice = () => {
       tableSharedColumns.employerLiability,
       tableSharedColumns.countryVAT,
       tableSharedColumns.adminFees,
-      tableSharedColumns.healthcareBenefits
+      tableSharedColumns.healthcareBenefits,
     ],
     data: [
       {
@@ -167,8 +170,8 @@ const NewInvoice = () => {
         employerLiability: "USD 7,210.00",
         countryVAT: "0.63",
         adminFees: "USD 650.00",
-        healthcareBenefits: "USD 0.00"
-      }
+        healthcareBenefits: "USD 0.00",
+      },
     ],
     showDefaultColumn: true,
   };
@@ -184,7 +187,7 @@ const NewInvoice = () => {
       tableSharedColumns.employerLiability,
       tableSharedColumns.countryVAT,
       tableSharedColumns.exchangeRate,
-      tableSharedColumns.total
+      tableSharedColumns.total,
     ],
     data: [
       {
@@ -200,11 +203,11 @@ const NewInvoice = () => {
         employerLiability: "2,000.00",
         countryVAT: "0.00",
         exchangeRate: "0.75355",
-        total: "121,411.97"
-      }
+        total: "121,411.97",
+      },
     ],
     showDefaultColumn: true,
-  }
+  };
 
   const newInvoiceFeeSummaryOptions: any = {
     columns: [
@@ -216,7 +219,7 @@ const NewInvoice = () => {
       tableSharedColumns.fxBill,
       tableSharedColumns.benefits,
       tableSharedColumns.employeeContribution,
-      tableSharedColumns.total
+      tableSharedColumns.total,
     ],
     data: [
       {
@@ -231,33 +234,31 @@ const NewInvoice = () => {
         fxBill: "95,000.00",
         benefits: "3,780.00",
         employeeContribution: "0.00",
-        total: "121,411.97"
-      }
+        total: "121,411.97",
+      },
     ],
     showDefaultColumn: true,
-  }
+  };
 
-  //stepper one  Data 
-  const [stepperOneData, setStepperOneData] = useState(
-    {
-      customer: "",
-      type: "",
-      country: "",
-      month: "",
-      year: "",
-      customerId: "",
-      countryId: "",
-      typeId: "",
-      yearId: "",
-      monthId: ""
-    }
-  );
+  //stepper one  Data
+  const [stepperOneData, setStepperOneData] = useState({
+    customer: "",
+    type: "",
+    country: "",
+    month: "",
+    year: "",
+    customerId: "",
+    countryId: "",
+    typeId: "",
+    yearId: "",
+    monthId: "",
+  });
 
-  //stepper Two payroll Row Data 
+  //stepper Two payroll Row Data
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
-  const [selectedRowPostData, setSelectedRowPostData] = useState<any>({})
-  // steppers one Props 
+  const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
+  // steppers one Props
   const stepperOneProps = {
     accessToken,
     stepperOneData,
@@ -271,11 +272,10 @@ const NewInvoice = () => {
     CustomerOptions,
     setCustomerOption,
     typeOptions,
-    setTypeOptions
-  }
-  //stepper two payroll props 
+    setTypeOptions,
+  };
+  //stepper two payroll props
   const stepperTwoProps = {
-
     accessToken,
     setTableOptions,
     tableOptions,
@@ -285,15 +285,15 @@ const NewInvoice = () => {
     employeeRowData,
     employeeApiData,
     setEmployeeApiData,
-    setSelectedRowPostData
-  }
+    setSelectedRowPostData,
+  };
 
   const stepperThreeProps = {
     accessToken,
     newInvoiceEmployeeDetailTable,
     newInvoiceCountrySummaryTable,
-    newInvoiceFeeSummaryOptions
-  }
+    newInvoiceFeeSummaryOptions,
+  };
 
   const disableFunForStepOne = () => {
     if (stepsCount == 1) {
@@ -303,28 +303,25 @@ const NewInvoice = () => {
         stepperOneData?.country !== "" &&
         stepperOneData?.year !== "" &&
         stepperOneData?.month !== ""
-      )
+      );
     }
-  }
+  };
 
   const handleNextButtonClick = () => {
     setStepsCount(stepsCount + 1);
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
-
       const data = {
-        "customerId": stepperOneData?.customerId,
-        "userId": stepperOneData?.customerId,
-        "transactionType": 1,
-        "calendarTypeId": 0,
-        "countryId": stepperOneData?.countryId,
-        "month": stepperOneData?.monthId,
-        "year": stepperOneData?.yearId,
-        "employeeDetail": {
-          "employees": [
-            selectedRowPostData.employeeDetail
-          ]
-        }
-      }
+        customerId: stepperOneData?.customerId,
+        userId: stepperOneData?.customerId,
+        transactionType: 1,
+        calendarTypeId: 0,
+        countryId: stepperOneData?.countryId,
+        month: stepperOneData?.monthId,
+        year: stepperOneData?.yearId,
+        employeeDetail: {
+          employees: [selectedRowPostData.employeeDetail],
+        },
+      };
       axios({
         method: "POST",
         url: createManualInvoice(),
@@ -332,13 +329,13 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
-          console.log("resss", res)
+          console.log("resss", res);
         })
         .catch((e: any) => {
           console.log(e);
         });
     }
-  }
+  };
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -380,19 +377,15 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                    ? "step2-right-panel"
-                    : "",
+                  ? "step2-right-panel"
+                  : "",
             },
           }}
           leftPanel={
             <Progress
               currentStep={stepsCount}
               steps={
-                stepperOneData?.type === "Payroll"
-                  ?
-                  stepsName
-                  :
-                  stepsInitial
+                stepperOneData?.type === "Payroll" ? stepsName : stepsInitial
               }
               type="step-progress"
             />
@@ -401,30 +394,26 @@ const NewInvoice = () => {
           rightPanel={
             <>
               {stepsCount == 1 ? (
-                <NewInvoiceCreation
-                  {...stepperOneProps}
-                />
+                <NewInvoiceCreation {...stepperOneProps} />
               ) : stepsCount == 2 ? (
-                <SelectEmployees
-                  {...stepperTwoProps}
-                />
+                <SelectEmployees {...stepperTwoProps} />
               ) : stepsCount == 3 ? (
-                <PreviewInvoice
-                  {...stepperThreeProps}
-                />
+                <PreviewInvoice {...stepperThreeProps} />
               ) : stepsCount == 4 ? (
-                <FinishSTepper
-                />
+                <FinishSTepper />
               ) : (
                 <></>
               )}
+              {stepsCount === 4 && <FinishCreditMemo />}
             </>
           }
         />
       </div>
 
-      <div className={stepsCount === 1 ? "Stepper-buttons" : "stepper-two-buttons"}>
-        {stepsCount != 1 &&
+      <div
+        className={stepsCount === 1 ? "Stepper-buttons" : "stepper-two-buttons"}
+      >
+        {stepsCount != 1 && (
           <Button
             data-testid="back-button"
             icon={{
@@ -438,8 +427,8 @@ const NewInvoice = () => {
             className="primary-blue medium previous-button"
             label="Previous"
           />
-        }
-        {stepsCount != 4 &&
+        )}
+        {stepsCount != 4 && (
           <Button
             disabled={disableFunForStepOne()}
             data-testid="next-button"
@@ -451,10 +440,10 @@ const NewInvoice = () => {
             label="Next"
             className="primary-blue medium button next-button"
             handleOnClick={() => {
-              handleNextButtonClick()
+              handleNextButtonClick();
             }}
           />
-        }
+        )}
       </div>
     </div>
   );

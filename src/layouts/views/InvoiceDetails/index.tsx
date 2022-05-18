@@ -8,7 +8,7 @@ import {
   NoDataCard,
   BreadCrumb,
   Checkbox,
-  Modal
+  Modal,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -138,7 +138,7 @@ export default function InvoiceDetails() {
                 throw new Error("Something went wrong");
               }
               if (res.data.invoice.invoiceNo === "100678") {
-                res.data.invoice.transactionType = 4
+                res.data.invoice.transactionType = 4;
               }
 
               let billingCurrency = countryRes.data.find(
@@ -322,9 +322,11 @@ export default function InvoiceDetails() {
                 ...state.rowDetails,
                 customerName: state.rowDetails?.customerName,
                 createdDate: state.rowDetails?.createdDate,
-                invoiceBalance: parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
-                totalAmount: parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0
-              }
+                invoiceBalance:
+                  parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                totalAmount:
+                  parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+              },
             },
           };
           setTimeout(() => {
@@ -357,7 +359,6 @@ export default function InvoiceDetails() {
       });
 
     if (state.transactionType == 7) {
-
       let URL = baseBillApi + state.InvoiceId;
       axios
         .get(URL, { headers: { accept: "text/plain" } })
@@ -371,7 +372,6 @@ export default function InvoiceDetails() {
         .catch((e: any) => {
           console.log("error", e);
         });
-
     }
     axios
       .get(notesApi, headers)
@@ -494,7 +494,7 @@ export default function InvoiceDetails() {
       sharedColumns.employerLiability,
       sharedColumns.countryVAT,
       sharedColumns.adminFees,
-      tableSharedColumns.healthcareBenefits
+      tableSharedColumns.healthcareBenefits,
     ],
     showDefaultColumn: true,
   };
@@ -519,7 +519,7 @@ export default function InvoiceDetails() {
     columns: [
       sharedColumns.country,
       sharedColumns.currency,
-      sharedColumns.adminFees,  
+      sharedColumns.adminFees,
       tableSharedColumns.OnOffboardings,
       tableSharedColumns.fxRate,
       tableSharedColumns.fxBill,
@@ -787,7 +787,7 @@ export default function InvoiceDetails() {
   }
 
   if (!permission?.InvoiceDetails.includes("View")) {
-    return <p>You don't have permission to view this page.</p>
+    return <p>You don't have permission to view this page.</p>;
   }
 
   const getTransactionLabel = () => {
@@ -799,7 +799,7 @@ export default function InvoiceDetails() {
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
-  }
+  };
 
   return (
     <div className="invoiceDetailsContainer">
@@ -819,46 +819,49 @@ export default function InvoiceDetails() {
               },
               {
                 key: "profile",
-                label: getTransactionLabel()
+                label: getTransactionLabel(),
               },
             ]}
           />
         </div>
         <div className="buttons">
-          {status === "In Review" && permission?.InvoiceDetails.includes("Delete") && (
-            <div className="upper-delete-button">
-              <div
-                className="delete-invoice"
-                onClick={() => setDeleteConfirmModalOpen(true)}
-              >
-                <img src={deleteSvg} />
-                <h5>Delete Invoice</h5>
+          {status === "In Review" &&
+            permission?.InvoiceDetails.includes("Delete") && (
+              <div className="upper-delete-button">
+                <div
+                  className="delete-invoice"
+                  onClick={() => setDeleteConfirmModalOpen(true)}
+                >
+                  <img src={deleteSvg} />
+                  <h5>Delete Invoice</h5>
+                </div>
               </div>
-            </div>
-          )}
-          {status === "Approved" && permission?.InvoiceDetails.includes("Void") && (
-            <div className="void-button">
-              <Button
-                className="secondary-btn small"
-                label="Void Invoice"
-                handleOnClick={() => {
-                  setIsVoidOpen(true);
-                }}
-              />
-            </div>
-          )}
+            )}
+          {status === "Approved" &&
+            permission?.InvoiceDetails.includes("Void") && (
+              <div className="void-button">
+                <Button
+                  className="secondary-btn small"
+                  label="Void Invoice"
+                  handleOnClick={() => {
+                    setIsVoidOpen(true);
+                  }}
+                />
+              </div>
+            )}
           {permission?.InvoiceDetails.includes("Download") && (
             <div
               onClick={() =>
-                transactionType != 7
+                state.transactionType != 7
                   ? setIsDownloadOpen(!isDownloadOpen)
-                  : function noRefCheck() { }
+                  : function noRefCheck() {}
               }
-              className={`${transactionType == 7 || deleteDisableButtons === true
-                ? "download_disable"
-                : "download"
-                }`}
-            // className="download"
+              className={`${
+                state.transactionType == 7 || deleteDisableButtons === true
+                  ? "download_disable"
+                  : "download"
+              }`}
+              // className="download"
             >
               <p className="text">Download</p>
               <Icon
@@ -879,41 +882,60 @@ export default function InvoiceDetails() {
           )}
 
           <div className="decline-invoice">
-            {status === "Pending Approval" && permission?.InvoiceDetails.includes("Approve") && (
-              <Button
-                data-testid="decline-button"
-                disabled={deleteDisableButtons === true}
-                label="Decline Invoice"
-                className="secondary-btn small"
-                icon={{
-                  icon: "remove",
-                  size: "medium",
-                  color: "#526FD6",
-                }}
-                handleOnClick={() => setIsOpen(true)}
-              />
-            )}
+            {status === "Pending Approval" &&
+              permission?.InvoiceDetails.includes("Approve") && (
+                <Button
+                  data-testid="decline-button"
+                  disabled={deleteDisableButtons === true}
+                  label="Decline Invoice"
+                  className="secondary-btn small"
+                  icon={{
+                    icon: "remove",
+                    size: "medium",
+                    color: "#526FD6",
+                  }}
+                  handleOnClick={() => setIsOpen(true)}
+                />
+              )}
           </div>
 
           <div>
-            {status === "In Review" && permission?.InvoiceDetails.includes("Send") && (
-              <Button
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Submit to Customer"
-                handleOnClick={() => {
-                  handleApproveAR();
-                }}
-              />
-            )}
-            {status === "Pending Approval" && permission?.InvoiceDetails.includes("Approve")
-              && (
+            {status === "In Review" &&
+              permission?.InvoiceDetails.includes("Send") && (
                 <Button
-                  disabled={transactionType == 7 || deleteDisableButtons === true}
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              )}
+            {status === "Pending Approval" &&
+              permission?.InvoiceDetails.includes("Approve") && (
+                <Button
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              )}
+            {status === "Pending Approval" &&
+              permission.InvoiceDetails.includes("Approve") && (
+                <Button
+                  disabled={
+                    state.transactionType == 7 || deleteDisableButtons === true
+                  }
                   handleOnClick={() => {
                     handleApproveInvoice();
                   }}
@@ -943,7 +965,7 @@ export default function InvoiceDetails() {
               <p>{getTransactionLabel()}</p>
             </div>
             <div className="amount">
-              {transactionType != 7 && (
+              {state.transactionType != 7 && (
                 <p>
                   Open{" "}
                   <span>
@@ -997,7 +1019,7 @@ export default function InvoiceDetails() {
             <p className="address">
               {addressData?.data?.billingAddress?.country}
             </p>
-            {transactionType != 7 && (
+            {state.transactionType != 7 && (
               <>
                 <p>PO Number</p>
                 <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
@@ -1012,7 +1034,7 @@ export default function InvoiceDetails() {
               )}
             </p>
 
-            {transactionType != 7 && (
+            {state.transactionType != 7 && (
               <>
                 <p className="heading">Invoice Changes</p>
                 <p className="value">
@@ -1082,40 +1104,40 @@ export default function InvoiceDetails() {
 
       {showAutoApprovedToast && (
         <div className="toast">
-          {
-            isAutoApprove === true ?
-              "Invoice set to Auto-approve successfully"
-              :
-              "Auto-approval removed from Invoice successfully"
-            }
-            <span
-            data-testid ='toast-cross-button'
-              className="toast-action"
-              onClick={() => {
-                setShowAutoApprovedToast(false);
-              }}
-            >
-              <Icon
-                icon="remove"
-                color="#ffff"
-                size="medium"
-                viewBox="-6 -6 20 20"
-              />
-            </span>
-          </div>
+          {isAutoApprove === true
+            ? "Invoice set to Auto-approve successfully"
+            : "Auto-approval removed from Invoice successfully"}
+          <span
+            data-testid="toast-cross-button"
+            className="toast-action"
+            onClick={() => {
+              setShowAutoApprovedToast(false);
+            }}
+          >
+            <Icon
+              icon="remove"
+              color="#ffff"
+              size="medium"
+              viewBox="-6 -6 20 20"
+            />
+          </span>
+        </div>
+      )}
+      {transactionType == 4 &&
+        currentOrgToken?.Payments?.Role == "FinanceAR" && (
+          <CreditMemoSummary
+            notes={notes}
+            setNotes={setNotes}
+            documents={documents}
+            setDocuments={setDocuments}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+            invoiceStatusId={apiData.data.invoice.status}
+          ></CreditMemoSummary>
         )}
-      {transactionType == 4 && currentOrgToken?.Payments?.Role == "FinanceAR" && <CreditMemoSummary
-        notes={notes}
-        setNotes={setNotes}
-        documents={documents}
-        setDocuments={setDocuments}
-        isClient={isClient}
-        cid={cid}
-        id={id}
-        invoiceStatusId={apiData.data.invoice.status}
-      ></CreditMemoSummary>}
 
-      {transactionType != 7 && transactionType != 4 && (
+      {state.transactionType != 7 && state.transactionType != 4 && (
         <div className="tab">
           <p
             onClick={() => setActiveTab("payroll")}
@@ -1144,203 +1166,213 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {activeTab === "master" && transactionType != 4 && transactionType != 7 && (
-        <div className="master">
-          <h3 className="tableHeader">Country Summary</h3>
-          <Table
-            options={{ ...countrySummaryOptions, ...{ data: countrySummary } }}
-            colSort
-          />
-          <div className="countrySummaryCalc">
-            <p>Total Due</p>
-            <h3>
-              {getBillingCurrency()} {toCurrencyFormat(totalCountrySummaryDue)}
-            </h3>
-          </div>
-
-          <h3 className="tableHeader">Fee Summary</h3>
-          <Table
-            options={{ ...feeSummaryOptions, ...{ data: feeSummary } }}
-            colSort
-          />
-          <div className="feeSummaryCalc">
-            <div className="rowFee">
-              <p className="title">Incoming Wire Payment</p>
-              <p className="amount">
-                {getBillingCurrency()} {toCurrencyFormat(incomingWirePayment)}
-              </p>
-            </div>
-            <div className="row2">
-              <p className="title">Contract Termination Fee</p>
-              <p className="amount">
-                {getBillingCurrency()}{" "}
-                {toCurrencyFormat(contractTerminationFee)}
-              </p>
-            </div>
-            <div className="totalRow">
+      {activeTab === "master" &&
+        state.transactionType != 4 &&
+        state.transactionType != 7 && (
+          <div className="master">
+            <h3 className="tableHeader">Country Summary</h3>
+            <Table
+              options={{
+                ...countrySummaryOptions,
+                ...{ data: countrySummary },
+              }}
+              colSort
+            />
+            <div className="countrySummaryCalc">
               <p>Total Due</p>
               <h3>
-                {getBillingCurrency()} {toCurrencyFormat(feeSummaryTotalDue)}
+                {getBillingCurrency()}{" "}
+                {toCurrencyFormat(totalCountrySummaryDue)}
               </h3>
             </div>
+
+            <h3 className="tableHeader">Fee Summary</h3>
+            <Table
+              options={{ ...feeSummaryOptions, ...{ data: feeSummary } }}
+              colSort
+            />
+            <div className="feeSummaryCalc">
+              <div className="rowFee">
+                <p className="title">Incoming Wire Payment</p>
+                <p className="amount">
+                  {getBillingCurrency()} {toCurrencyFormat(incomingWirePayment)}
+                </p>
+              </div>
+              <div className="row2">
+                <p className="title">Contract Termination Fee</p>
+                <p className="amount">
+                  {getBillingCurrency()}{" "}
+                  {toCurrencyFormat(contractTerminationFee)}
+                </p>
+              </div>
+              <div className="totalRow">
+                <p>Total Due</p>
+                <h3>
+                  {getBillingCurrency()} {toCurrencyFormat(feeSummaryTotalDue)}
+                </h3>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-      {activeTab === "payroll" && transactionType != 4 && transactionType != 7 && (
-        <div className="payroll">
-          {payrollTables.map((item: any) => {
-            return (
-              <div>
-                <div className="countryHeader">
-                  {/* <img src={spainFlag} alt="flag" /> */}
-                  <GetFlag code={item.countryCode} />
-                  <h3>{item.country}</h3>
-                </div>
+        )}
+      {activeTab === "payroll" &&
+        state.transactionType != 4 &&
+        state.transactionType != 7 && (
+          <div className="payroll">
+            {payrollTables.map((item: any) => {
+              return (
                 <div>
-                  <Table
-                    options={{
-                      ...payrollOptions,
-                      ...{ data: item.data },
-                    }}
-                    colSort
-                  />
-                  <div className="feeSummaryCalc">
-                    <div className="rowFee">
-                      <p className="title">Country Subtotal Due</p>
-                      <p className="amount">
-                        {
-                          item.currencyCode +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.subTotalDue)
+                  <div className="countryHeader">
+                    {/* <img src={spainFlag} alt="flag" /> */}
+                    <GetFlag code={item.countryCode} />
+                    <h3>{item.country}</h3>
+                  </div>
+                  <div>
+                    <Table
+                      options={{
+                        ...payrollOptions,
+                        ...{ data: item.data },
+                      }}
+                      colSort
+                    />
+                    <div className="feeSummaryCalc">
+                      <div className="rowFee">
+                        <p className="title">Country Subtotal Due</p>
+                        <p className="amount">
+                          {
+                            item.currencyCode +
+                              " " +
+                              toCurrencyFormat(item.feeSummary.subTotalDue)
 
-                          // item.feeSummary.subTotalDue
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </p>
-                    </div>
-                    <div className="rowFee">
-                      <p className="title">
-                        Country EXC Rate{" "}
-                        {
-                          item.exchangeRate
+                            // item.feeSummary.subTotalDue
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </p>
+                      </div>
+                      <div className="rowFee">
+                        <p className="title">
+                          Country EXC Rate{" "}
+                          {
+                            item.exchangeRate
 
-                          // item.exchangeRate
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </p>
-                      <p className="amount">
-                        {
-                          getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(
-                            item.feeSummary.subTotalDue * item.exchangeRate
-                          )
-                          // (item.feeSummary.subTotalDue * item.exchangeRate)
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </p>
-                    </div>
-                    <div className="rowFee">
-                      <p className="title">In Country Processing Fee</p>
-                      <p className="amount">
-                        {
-                          getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(
-                            item.feeSummary.inCountryProcessingFee
-                          )
+                            // item.exchangeRate
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </p>
+                        <p className="amount">
+                          {
+                            getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(
+                                item.feeSummary.subTotalDue * item.exchangeRate
+                              )
+                            // (item.feeSummary.subTotalDue * item.exchangeRate)
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </p>
+                      </div>
+                      <div className="rowFee">
+                        <p className="title">In Country Processing Fee</p>
+                        <p className="amount">
+                          {
+                            getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(
+                                item.feeSummary.inCountryProcessingFee
+                              )
 
-                          // getInCountryProcessingFee()
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </p>
-                    </div>
-                    <div className="rowFee">
-                      <p className="title">FX Bill</p>
-                      <p className="amount">
-                        {
-                          getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.fxBill)
+                            // getInCountryProcessingFee()
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </p>
+                      </div>
+                      <div className="rowFee">
+                        <p className="title">FX Bill</p>
+                        <p className="amount">
+                          {
+                            getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(item.feeSummary.fxBill)
 
-                          // item.feeSummary.fxBill
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </p>
-                    </div>
-                    <div className="row2">
-                      <p className="title">Total Country VAT</p>
-                      <p className="amount">
-                        {
-                          getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.feeSummary.totalCountryVat)
+                            // item.feeSummary.fxBill
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </p>
+                      </div>
+                      <div className="row2">
+                        <p className="title">Total Country VAT</p>
+                        <p className="amount">
+                          {
+                            getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(item.feeSummary.totalCountryVat)
 
-                          // item.feeSummary.totalCountryVat
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </p>
-                    </div>
-                    <div className="totalRow">
-                      <p>Country Total Due</p>
-                      <h3>
-                        {
-                          getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(item.countryTotalDue)
+                            // item.feeSummary.totalCountryVat
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </p>
+                      </div>
+                      <div className="totalRow">
+                        <p>Country Total Due</p>
+                        <h3>
+                          {
+                            getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(item.countryTotalDue)
 
-                          // item.feeSummary.total
-                          //   .toFixed(2)
-                          //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                        }
-                      </h3>
+                            // item.feeSummary.total
+                            //   .toFixed(2)
+                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                          }
+                        </h3>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
 
-          <div className="totalContainer">
-            <div>
-              <p>Total</p>
-              <h3>
-                {getBillingCurrency()}{" "}
-                {
-                  toCurrencyFormat(total)
-                  // total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                }
-              </h3>
+            <div className="totalContainer">
+              <div>
+                <p>Total</p>
+                <h3>
+                  {getBillingCurrency()}{" "}
+                  {
+                    toCurrencyFormat(total)
+                    // total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                  }
+                </h3>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-      {activeTab === "files" && transactionType != 4 && transactionType != 7 && <>
-        <div className="filesNotes">
-          <NotesWidget
-            notes={notes}
-            setNotes={setNotes}
-            isClient={isClient}
-            cid={cid}
-            id={id}
-          ></NotesWidget>
+        )}
+      {activeTab === "files" &&
+        state.transactionType != 4 &&
+        state.transactionType != 7 && (
+          <div className="filesNotes">
+            <NotesWidget
+              notes={notes}
+              setNotes={setNotes}
+              isClient={isClient}
+              cid={cid}
+              id={id}
+            ></NotesWidget>
 
-          <FileUploadWidget
-            documents={documents}
-            setDocuments={setDocuments}
-            isClient={isClient}
-            cid={cid}
-            id={id}
-          ></FileUploadWidget>
-        </div>
-      </>}
-      {transactionType == 7 && (
+            <FileUploadWidget
+              documents={documents}
+              setDocuments={setDocuments}
+              isClient={isClient}
+              cid={cid}
+              id={id}
+            ></FileUploadWidget>
+          </div>
+        )}
+      {state.transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
