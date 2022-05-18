@@ -31,6 +31,17 @@ const NewInvoice = () => {
     sharedSteps.invoicePreview,
     sharedSteps.finish,
   ];
+
+  //credit memo steps
+  const creditMemoSteps = [
+    sharedSteps.newInvoice,
+    {
+      key: "productService",
+      label: "Product Service",
+    },
+    sharedSteps.invoicePreview,
+    sharedSteps.finish,
+  ];
   // initial steps
   const stepsInitial = [
     sharedSteps.newInvoice,
@@ -109,14 +120,14 @@ const NewInvoice = () => {
   const [tableOptions, setTableOptions] = useState({
     columns: [
       {
-        header: 'Pay Item',
+        header: "Pay Item",
         isDefault: true,
-        key: 'payItemName'
+        key: "payItemName",
       },
       {
-        header: 'Amount',
+        header: "Amount",
         isDefault: true,
-        key: 'amount'
+        key: "amount",
       },
       tableSharedColumns.currency,
       {
@@ -307,19 +318,30 @@ const NewInvoice = () => {
       );
     }
     if (stepsCount == 2 && stepperOneData.type === "Payroll") {
-        return  selectedRowPostData?.length > 0 ? false : true;
+      return selectedRowPostData?.length > 0 ? false : true;
     }
   };
 
-
-
+  const disableFunForStepOneCreditMemo = () => {
+    if (stepsCount == 1) {
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        // stepperOneData?.country !== "" &&
+        stepperOneData?.year !== "" &&
+        stepperOneData?.month !== ""
+      );
+    }
+    if (stepsCount == 2 && stepperOneData.type === "Payroll") {
+      return selectedRowPostData?.length > 0 ? false : true;
+    }
+  };
 
   const handleNextButtonClick = () => {
     setStepsCount(stepsCount + 1);
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
-
-       const PrepareData = employeeRowData
-      PrepareData.employeeDetail.compensation.payItems = selectedRowPostData
+      const PrepareData = employeeRowData;
+      PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
       const data = {
         customerId: stepperOneData?.customerId,
         userId: stepperOneData?.customerId,
@@ -395,7 +417,11 @@ const NewInvoice = () => {
             <Progress
               currentStep={stepsCount}
               steps={
-                stepperOneData?.type === "Payroll" ? stepsName : stepsInitial
+                stepperOneData?.type === "Payroll"
+                  ? stepsName
+                  : stepperOneData?.type === "Credit Memo"
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />
@@ -409,12 +435,14 @@ const NewInvoice = () => {
                 <SelectEmployees {...stepperTwoProps} />
               ) : stepsCount == 3 ? (
                 <PreviewInvoice {...stepperThreeProps} />
-              ) : stepsCount == 4 ? (
+              ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
                 <FinishSTepper />
               ) : (
                 <></>
               )}
-              {stepsCount === 4 && <FinishCreditMemo />}
+              {stepsCount === 4 && stepperOneData?.type === "Credit Memo" && (
+                <FinishCreditMemo />
+              )}
             </>
           }
         />
@@ -440,7 +468,13 @@ const NewInvoice = () => {
         )}
         {stepsCount != 4 && (
           <Button
-            disabled={stepperOneData?.type === "Payroll" ? disableFunForStepOnePayroll() : true}
+            disabled={
+              stepperOneData?.type === "Payroll"
+                ? disableFunForStepOnePayroll()
+                : stepperOneData?.type === "Credit Memo"
+                ? disableFunForStepOneCreditMemo()
+                : true
+            }
             data-testid="next-button"
             icon={{
               icon: "chevronRight",

@@ -1123,7 +1123,7 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {transactionType == 4 &&
+      {state.transactionType == 4 &&
         currentOrgToken?.Payments?.Role == "FinanceAR" && (
           <CreditMemoSummary
             notes={notes}
