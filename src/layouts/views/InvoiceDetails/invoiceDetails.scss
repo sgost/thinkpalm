@@ -639,10 +639,9 @@
 
   .decline-modal {
     .a-modal__body {
-      height: 21rem;
-      padding-top: 30px;
-      width: 100%;
-      max-width: 29.278rem !important;
+      height: auto;
+      padding: 2.5rem;
+      width: auto;
     }
     h3 {
       margin-top: -12px;
@@ -701,10 +700,9 @@
   .void-modal {
     display: flex;
     .a-modal__body {
-      height: 20rem;
+      height: auto;
       padding: 2rem 2.5rem !important;
-      width: 100%;
-      max-width: 25rem !important;
+      width: auto;
     }
     h3 {
       margin-top: 0px;
@@ -765,9 +763,9 @@
       display: none !important;
     }
     .a-modal__body {
-      height: 25vh;
-      width: 21%;
-      padding: 2rem !important;
+      height: auto;
+      width: auto;
+      padding: 2.5rem !important;
     }
     .void-confirm-button {
       svg {
@@ -825,9 +823,9 @@
       display: none !important;
     }
     .a-modal__body {
-      height: 15rem;
-      width: 22rem;
-      padding: 2rem !important;
+      height: auto;
+      width: auto;
+      padding: 2.5rem !important;
     }
     .delete-confirm-button {
       svg {
