@@ -31,6 +31,17 @@ const NewInvoice = () => {
     sharedSteps.invoicePreview,
     sharedSteps.finish,
   ];
+
+  //credit memo steps
+  const creditMemoSteps = [
+    sharedSteps.newInvoice,
+    {
+      key: "productService",
+      label: "Product Service",
+    },
+    sharedSteps.invoicePreview,
+    sharedSteps.finish,
+  ];
   // initial steps
   const stepsInitial = [
     sharedSteps.newInvoice,
@@ -385,7 +396,11 @@ const NewInvoice = () => {
             <Progress
               currentStep={stepsCount}
               steps={
-                stepperOneData?.type === "Payroll" ? stepsName : stepsInitial
+                stepperOneData?.type === "Payroll"
+                  ? stepsName
+                  : stepperOneData?.type === "Credit Memo"
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />
