@@ -7,6 +7,7 @@
         padding: 40px 80px;
         position: relative;
     }
+
     h3 {
         font-weight: 400;
         font-size: 24px;
@@ -17,36 +18,45 @@
     .dropdown {
         margin-top: 3rem;
         margin-bottom: 3rem;
+
         span.a-dropdown__title:after {
             content: "*";
             color: red;
         }
+
         .a-dropdown__search {
             width: 15rem;
         }
     }
+
     .dropdowns {
         margin-bottom: 3rem;
+
         span.a-dropdown__title:after {
             content: "*";
             color: red;
         }
     }
+
     .dropdownC {
         margin-bottom: 3rem;
+
         span.a-dropdown__title:after {
             content: "*";
             color: red;
         }
+
         .a-dropdown__option__container {
             height: 2.889rem;
         }
     }
+
     .dropdown-margin {
         margin-right: 40px;
         position: relative;
         cursor: pointer;
     }
+
     .year-dropdown {
         position: relative;
         cursor: pointer;
@@ -94,7 +104,7 @@
     bottom: -5rem;
     right: -1.5rem;
     // bottom: 18%;
-   
+
     button.a-button.medium {
         font-size: 1.2rem;
         height: 3.13rem;

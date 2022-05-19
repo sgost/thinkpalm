@@ -16,7 +16,7 @@ const NewInvoiceCreation = ({
   setCountryOptions,
   CustomerOptions,
   setCustomerOption,
-  typeOptions, 
+  typeOptions,
   setTypeOptions
 
 }: any) => {
@@ -98,11 +98,11 @@ const NewInvoiceCreation = ({
     axios
       .get(api, headers)
       .then((res: any) => {
-        if(res.data){
+        if (res.data) {
           const preData: any = preparedCountryData(res.data);
           setCountryOptions(preData);
         }
-       
+
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -136,7 +136,7 @@ const NewInvoiceCreation = ({
   };
 
   useEffect(() => {
-    getCustomerDropdownOptions();  
+    getCustomerDropdownOptions();
   }, []);
 
   useEffect(() => {
@@ -147,7 +147,7 @@ const NewInvoiceCreation = ({
 
   return (
     <>
-      <div>
+      <div style={{ background: `white`, padding: `40px 80px`, borderRadius: `0.5rem` }}>
         <div className="newinvoice-container">
           <h3>New Invoice</h3>
           <div className="dropdown">
@@ -165,8 +165,8 @@ const NewInvoiceCreation = ({
                   ...stepperOneData,
                   customer: item.label,
                   customerId: item.value,
-                  countryId:"",
-                  country:""
+                  countryId: "",
+                  country: ""
 
                 });
               }}
@@ -212,7 +212,7 @@ const NewInvoiceCreation = ({
             />
           </div>
 
-          { stepperOneData?.type === 'Payroll' && (
+          {stepperOneData?.type === 'Payroll' && (
             <div className="dropdownC">
               <Dropdown
                 handleDropOptionClick={(item: any) => {
@@ -331,7 +331,7 @@ const NewInvoiceCreation = ({
         </div>
       </div>
 
-    
+
     </>
   );
 };

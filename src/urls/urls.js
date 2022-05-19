@@ -212,3 +212,16 @@ export const getCreditMemoStep4Url = (invoiceId) => {
     `/invoices/relatedData/${invoiceId}`
   );
 };
+
+
+export const productInvoice = () => {
+  return (
+    metaDataUrl + services.apngMetaDataService + `/Products`
+  );
+};
+
+export const CountryApi = () => {
+  return (
+    metaDataUrl + services.apngMetaDataService + `/Country`
+  );
+};

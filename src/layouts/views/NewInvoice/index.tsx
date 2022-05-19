@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
+import ProductInvoiceCreation from "./ProductInvoiceCreation"
 import SelectEmployees from "./SelectEmployees";
 import PreviewInvoice from "./PreviewInvoice";
 import "./index.scss";
@@ -409,8 +410,8 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                  ? "step2-right-panel"
-                  : "",
+                    ? "step2-right-panel"
+                    : "",
             },
           }}
           leftPanel={
@@ -420,8 +421,8 @@ const NewInvoice = () => {
                 stepperOneData?.type === "Payroll"
                   ? stepsName
                   : stepperOneData?.type === "Credit Memo"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
@@ -432,7 +433,7 @@ const NewInvoice = () => {
               {stepsCount == 1 ? (
                 <NewInvoiceCreation {...stepperOneProps} />
               ) : stepsCount == 2 ? (
-                <SelectEmployees {...stepperTwoProps} />
+                stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation />
               ) : stepsCount == 3 ? (
                 <PreviewInvoice {...stepperThreeProps} />
               ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
@@ -472,8 +473,8 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                ? disableFunForStepOneCreditMemo()
-                : true
+                  ? disableFunForStepOneCreditMemo()
+                  : true
             }
             data-testid="next-button"
             icon={{
