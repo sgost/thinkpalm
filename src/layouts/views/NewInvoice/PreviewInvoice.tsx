@@ -7,7 +7,6 @@ import {
   urls,
   getInvoiceDetailsUrl,
   getBillingAddressUrl,
-  getNotesUrl,
   getHeaders
 } from '../../../urls/urls';
 import axios from 'axios';
@@ -195,16 +194,16 @@ const PreviewInvoice = ({
               );
 
               function precisionRound(number: number, precision: number) {
-                if (precision < 0) {
-                  const factor = Math.pow(10, precision);
-                  return Math.round(number * factor) / factor;
-                } else {
+                // if (precision < 0) {
+                //   const factor = Math.pow(10, precision);
+                //   return Math.round(number * factor) / factor;
+                // } else {
                   return +(
                     Math.round(Number(number + "e+" + precision)) +
                     "e-" +
                     precision
                   );
-                }
+                // }
               }
 
               let countrySumTotalTemp =

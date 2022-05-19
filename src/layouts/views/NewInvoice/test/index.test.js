@@ -758,3 +758,230 @@ describe("Stepper 3", () => {
   });
 
 });
+
+describe("Stepper 3 invoice detail api fail", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+
+    mock
+      .onGet(getCountryByCustomer(id))
+      .reply(200, mockapidata.resGetAllCountry);
+    mock
+      .onGet
+      (getEmployee(customerId, countryId))
+      .reply(200, mockapidata.resForStepperTwo);
+    mock
+      .onPost
+      (createManualInvoice())
+      .reply(200, mockapidata.resForCreateManualInvoice);
+
+    mock
+      .onGet
+      (urls.fee)
+      .reply(200, mockapidata.resFeeData)
+
+    mock
+      .onGet
+      (urls.countries)
+      .reply(200, mockapidata.resCountriesData);
+
+    mock
+      .onGet(getBillingAddressUrl(customerId))
+      .reply(200, mockapidata.resAddressData);
+
+      mock
+      .onGet(getInvoiceDetailsUrl("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
+      .reply(500, mockapidata.resForInvoiceDetail);
+  });
+
+  test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+
+    const countryDropDown = await screen.findByText("Country")
+    fireEvent.click(countryDropDown);
+
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+    const stepTwoNextButton = await screen.findByTestId("next-button");
+    expect(stepTwoNextButton).toBeInTheDocument();
+    fireEvent.click(stepTwoNextButton);
+  });
+
+
+  test("dropDown Value change stepper 1 then stepper 2 click on  back button", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    const countryDropDown = await screen.findByText("Country")
+    fireEvent.click(countryDropDown);
+
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+    const stepTwoBackButton = await screen.findByTestId("back-button");
+    expect(stepTwoBackButton).toBeInTheDocument();
+    fireEvent.click(stepTwoBackButton);
+  });
+  test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish ", async () => {
+    const { container } = render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+
+    const countryDropDown = await screen.findByText("Country")
+    fireEvent.click(countryDropDown);
+
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+    const billedPayrollItem = await screen.findAllByText(/Show Billed Payroll Items/)
+    fireEvent.click(billedPayrollItem[0]);
+
+    //again click for false the checkbox
+    fireEvent.click(billedPayrollItem[0]);
+
+    const SelectEmployeeName = await screen.findAllByText(/Thomas George/);
+    expect(SelectEmployeeName[0]).toBeInTheDocument();
+
+    //again click for true the checkbox
+    fireEvent.click(billedPayrollItem[0]);
+
+    const showHideButton = await screen.findByTestId("showHide-button");
+    expect(showHideButton).toBeInTheDocument();
+    fireEvent.click(showHideButton);
+
+    const amount = await screen.findAllByText(/71000/);
+    expect(amount[0]).toBeInTheDocument();
+
+    const labelText = await screen.findAllByLabelText("");
+    fireEvent.click(labelText[1]);
+
+    const stepTwoNextButton = await screen.findByTestId("next-button");
+    expect(stepTwoNextButton).toBeInTheDocument();
+    fireEvent.click(stepTwoNextButton);
+
+    const previewText = await screen.findAllByText(/Please preview the new payroll invoice has been created./);
+    expect(previewText[0]).toBeInTheDocument();
+
+    const previewModal = await screen.findByTestId("preview-modal");
+    expect(previewModal).toBeInTheDocument();
+    fireEvent.click(previewModal);
+
+  });
+
+});
