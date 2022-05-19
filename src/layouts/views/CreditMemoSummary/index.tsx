@@ -1,6 +1,6 @@
-import { Cards, Button, Dropdown, Logs } from 'atlasuikit';
+import { Cards, Button, Dropdown, Logs, DatePicker } from 'atlasuikit';
 import { te } from 'date-fns/locale';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FileUploadWidget from '../../../components/FileUpload';
 import Input from '../../../components/Input/input';
 import NotesWidget from '../../../components/Notes';
@@ -8,16 +8,28 @@ import "./creditMemoSummary.scss";
 
 export default function CreditMemoSummary(props: any) {
 
-    const { notes, setNotes, documents, setDocuments, isClient, cid, id, invoiceStatusId } = props
+    const { notes, setNotes, documents, setDocuments, isClient, cid, id, invoiceStatusId, invoiceItems } = props
     const [serviceDate, setServiceDate] = useState('');
     const [openProductService, setOpenProductService] = useState(false);
     const [openLogs, setOpenLogs] = useState(false);
     const [addSectionCheck, setAddSectionCheck] = useState(false);
     const [editCheck, setEditCheck] = useState(true);
-    const tempFieldValues = [{}];
+    const [fieldValues, setFieldValues] = useState(invoiceItems);
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
+    useEffect(() => {
+      
+    
+    }, [])
+    
+    const toCurrencyFormat = (amount: number) => {
+        const cFormat = new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+        });
+        return cFormat.format(amount).slice(1);
+    };
 
     /* istanbul ignore next */
     return (
@@ -34,7 +46,7 @@ export default function CreditMemoSummary(props: any) {
                                 size: 'medium'
                             }}
                             label="Save"
-                            handleOnClick={ () => {setAddSectionCheck(false)}}
+                            handleOnClick={() => { setAddSectionCheck(false) }}
                         />}
                         {editCheck && (invoiceStatusId == 1 || invoiceStatusId == 2) && <Button
                             className="primary-blue medium edit"
@@ -44,35 +56,32 @@ export default function CreditMemoSummary(props: any) {
                                 size: 'medium'
                             }}
                             label="Edit"
-                            handleOnClick={()=>{setEditCheck(false)}}
+                            handleOnClick={() => { setEditCheck(false) }}
                         />}
-                        {!editCheck &&<>
+                        {!editCheck && <>
                             <Button
                                 className="secondary-btn no-border medium save"
                                 label="Cancel Edit"
-                                handleOnClick={()=>{setEditCheck(true)}}
+                                handleOnClick={() => { setEditCheck(true) }}
                             />
                             <Button
                                 className="primary-blue medium save-changes"
                                 label="Save Changes"
-                                handleOnClick={()=>{setEditCheck(true)}}
+                                handleOnClick={() => { setEditCheck(true) }}
                             />
                         </>}
                     </div>
                 </div>
-                {tempFieldValues.map((item: any) => {
+                {fieldValues.map((item: any) => {
                     return (
                         <>
                             <div className='UI-align-boxes margin-top'>
                                 <div className='UI-line-text-box'>
-                                    <Input
-                                        defaultValue=""
+                                    <DatePicker
                                         label="Service Date"
-                                        type="text"
-                                        disable={editCheck}
-                                        name="service-date-input"
-                                        placeholder="Please enter"
-                                    ></Input>
+                                        disabled={editCheck}
+                                        handleDateChange={(date: any) => { console.log(date) }}
+                                    />
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Dropdown
@@ -103,7 +112,7 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Input
-                                        defaultValue=""
+                                        defaultValue={item.description}
                                         label="Description"
                                         type="text"
                                         name="service-date-input"
@@ -112,21 +121,38 @@ export default function CreditMemoSummary(props: any) {
                                     ></Input>
                                 </div>
                                 <div className='UI-line-text-box'>
-                                    <Input
-                                        defaultValue=""
-                                        label="Service Country"
-                                        type="text"
-                                        name="service-date-input"
-                                        placeholder="Please enter"
-                                        disable={editCheck}
-                                    ></Input>
+                                    <Dropdown
+                                        handleDropOptionClick={function noRefCheck() { }}
+                                        handleDropdownClick={setOpenProductService}
+                                        isOpen={openProductService}
+                                        name="Flavours1"
+                                        isDisabled={editCheck}
+                                        options={[
+                                            {
+                                                isSelected: false,
+                                                label: 'Chocolate',
+                                                value: 'chocolate'
+                                            },
+                                            {
+                                                isSelected: false,
+                                                label: 'Strawberry',
+                                                value: 'strawberry'
+                                            },
+                                            {
+                                                isSelected: false,
+                                                label: 'Vanilla',
+                                                value: 'vanilla'
+                                            }
+                                        ]}
+                                        title="Service Country"
+                                    />
                                 </div>
                             </div>
                             <div className='UI-align-boxes margin-top-4'>
                                 <div className='line-sec-width UI-flex'>
                                     <div className='quantity-box'>
                                         <Input
-                                            defaultValue=""
+                                            defaultValue={item.quantity}
                                             label="Quantity"
                                             type="number"
                                             name="service-date-input"
@@ -136,9 +162,9 @@ export default function CreditMemoSummary(props: any) {
                                     </div>
                                     <div className='amount-box'>
                                         <Input
-                                            defaultValue=""
+                                            defaultValue={toCurrencyFormat(item.amount)}
                                             label="Amount"
-                                            type="number"
+                                            type="text"
                                             name="service-date-input"
                                             placeholder="Please enter"
                                             disable={editCheck}
@@ -147,9 +173,9 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='line-sec-width'>
                                     <Input
-                                        defaultValue=""
+                                        defaultValue={toCurrencyFormat(item.totalAmount)}
                                         label="Total Amount"
-                                        type="number"
+                                        type="text"
                                         name="service-date-input"
                                         placeholder="Please enter"
                                         disable={editCheck}
@@ -160,17 +186,14 @@ export default function CreditMemoSummary(props: any) {
                         </>
                     )
                 })}
-                {addSectionCheck &&<>
+                {addSectionCheck && <>
                     <div className='UI-align-boxes margin-top'>
                         <div className='UI-line-text-box'>
-                            <Input
-                                defaultValue=""
+                            <DatePicker
                                 label="Service Date"
-                                type="text"
-                                disable={false}
-                                name="service-date-input"
-                                placeholder="Please enter"
-                            ></Input>
+                                disabled={false}
+                                handleDateChange={(date: any) => { console.log(date) }}
+                            />
                         </div>
                         <div className='UI-line-text-box'>
                             <Dropdown
@@ -210,14 +233,31 @@ export default function CreditMemoSummary(props: any) {
                             ></Input>
                         </div>
                         <div className='UI-line-text-box'>
-                            <Input
-                                defaultValue=""
-                                label="Service Country"
-                                type="text"
-                                name="service-date-input"
-                                placeholder="Please enter"
-                                disable={false}
-                            ></Input>
+                            <Dropdown
+                                handleDropOptionClick={function noRefCheck() { }}
+                                handleDropdownClick={setOpenProductService}
+                                isOpen={openProductService}
+                                name="Flavours1"
+                                isDisabled={editCheck}
+                                options={[
+                                    {
+                                        isSelected: false,
+                                        label: 'Chocolate',
+                                        value: 'chocolate'
+                                    },
+                                    {
+                                        isSelected: false,
+                                        label: 'Strawberry',
+                                        value: 'strawberry'
+                                    },
+                                    {
+                                        isSelected: false,
+                                        label: 'Vanilla',
+                                        value: 'vanilla'
+                                    }
+                                ]}
+                                title="Service Country"
+                            />
                         </div>
                     </div>
                     <div className='UI-align-boxes margin-top-4'>
