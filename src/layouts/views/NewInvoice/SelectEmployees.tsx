@@ -3,8 +3,7 @@ import { Checkbox, Button, ProfileHeader, Table, Icon } from "atlasuikit";
 import axios from "axios";
 import "./SelectEmployees.scss";
 import { getEmployee, getHeaders } from "../../../urls/urls";
-import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
-import { getDecodedToken } from "../../../components/getDecodedToken";
+import { format } from "date-fns";
 
 const SelectEmployees = ({
   accessToken,
@@ -57,9 +56,7 @@ const SelectEmployees = ({
   }, []);
 
   const onRowCheckboxChange = (selectedRows: any) => {
-    const PrepareData = employeeRowData
-    PrepareData.employeeDetail.compensation.payItems = selectedRows
-    setSelectedRowPostData(PrepareData);
+    setSelectedRowPostData(selectedRows); 
   };
 
   const preparedTableData = (item: any, check: any) => {
@@ -70,16 +67,14 @@ const SelectEmployees = ({
           if (CompensationItems.isInvoiced != true) {
             employeeTableData.push({
               ...CompensationItems,
-              employeePayItemId: CompensationItems?.employeePayItemId,
+              payItemName: CompensationItems.payItemName || '',
+              amount: CompensationItems?.amount || '',
+              currencyCode: CompensationItems?.currencyCode || '',
+              effectiveDate:CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "" ,
+              endDate: CompensationItems?.endDate ? format(new Date(CompensationItems?.endDate), "d MMM yyyy") : "",
+              scopesName: CompensationItems?.scopesName || '',
+              payItemFrequencyName: CompensationItems?.payItemFrequencyName || '',
               id: CompensationItems?.payItemId,
-              payItemId: CompensationItems?.payItemId,
-              amount: CompensationItems?.amount,
-              currency: CompensationItems?.currency,
-              effectiveDate: CompensationItems?.effectiveDate,
-              //getting null in one object
-              // endDate: CompensationItems?.endDate,
-              finItemType: CompensationItems?.finItemType,
-              payItemFrequencyId: CompensationItems?.payItemFrequencyId,
             });
           }
           setTableOptions({ ...tableOptions, data: employeeTableData });
@@ -87,16 +82,14 @@ const SelectEmployees = ({
         if (check == false) {
           employeeTableData.push({
             ...CompensationItems,
-            employeePayItemId: CompensationItems?.employeePayItemId,
+            payItemName: CompensationItems.payItemName || '',
+            amount: CompensationItems?.amount || '',
+            currencyCode: CompensationItems?.currencyCode || '',
+            effectiveDate:CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "" ,
+            endDate: CompensationItems?.endDate ? format(new Date(CompensationItems?.endDate), "d MMM yyyy") : "",
+            scopesName: CompensationItems?.scopesName || '',
+            payItemFrequencyName: CompensationItems?.payItemFrequencyName || '',
             id: CompensationItems?.payItemId,
-            payItemId: CompensationItems?.payItemId,
-            amount: CompensationItems?.amount,
-            currency: CompensationItems?.currency,
-            effectiveDate: CompensationItems?.effectiveDate,
-            //getting null in one object
-            // endDate: CompensationItems?.endDate,
-            finItemType: CompensationItems?.finItemType,
-            payItemFrequencyId: CompensationItems?.payItemFrequencyId,
           });
 
           setTableOptions({ ...tableOptions, data: employeeTableData });

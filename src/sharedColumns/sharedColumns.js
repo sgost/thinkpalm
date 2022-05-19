@@ -4,6 +4,11 @@ export const tableSharedColumns = {
         isDefault: true,
         key: "currency",
     },
+    currencyCode: {
+        header: "Currency",
+        isDefault: true,
+        key: "currencyCode",
+    },
     createMemo: {
         isSelected: false,
         label: "Credit Memo",
