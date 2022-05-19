@@ -172,23 +172,23 @@ const PreviewInvoice = ({
 
               //For Country Summary
 
-              let totalGrossWages = e.payrollItems.reduce(
+              let totalGrossWagesPayroll = e.payrollItems.reduce(
                 (a: any, b: any) => a + (b.totalWage || 0),
                 0
               );
-              let totalAllowances = e.payrollItems.reduce(
+              let totalAllowancesPayroll = e.payrollItems.reduce(
                 (a: any, b: any) => a + (b.allowance || 0),
                 0
               );
-              let totalExpenseReimb = e.payrollItems.reduce(
+              let totalExpenseReimbPayroll = e.payrollItems.reduce(
                 (a: any, b: any) => a + (b.expenseRe || 0),
                 0
               );
-              let totalEmployerLiability = e.payrollItems.reduce(
+              let totalEmployerLiabilityPayroll = e.payrollItems.reduce(
                 (a: any, b: any) => a + (b.liability || 0),
                 0
               );
-              let totalCountryVAT = e.payrollItems.reduce(
+              let totalCountryVATPayroll = e.payrollItems.reduce(
                 (a: any, b: any) => a + (b.countryVat || 0),
                 0
               );
@@ -206,16 +206,16 @@ const PreviewInvoice = ({
                 // }
               }
 
-              let countrySumTotalTemp =
+              let countrySumTotalTempPayroll =
                 precisionRound(
-                  (totalGrossWages + totalAllowances) * e.exchangeRate,
+                  (totalGrossWagesPayroll + totalAllowancesPayroll) * e.exchangeRate,
                   2
                 ) +
-                precisionRound(totalExpenseReimb * e.exchangeRate, 2) +
-                precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
-                precisionRound(totalCountryVAT * e.exchangeRate, 2);
+                precisionRound(totalExpenseReimbPayroll * e.exchangeRate, 2) +
+                precisionRound(totalEmployerLiabilityPayroll * e.exchangeRate, 2) +
+                precisionRound(totalCountryVATPayroll * e.exchangeRate, 2);
 
-                countrySumTotalArrPayroll.push(countrySumTotalTemp);
+                countrySumTotalArrPayroll.push(countrySumTotalTempPayroll);
 
               countrySummaryPayroll.push({
                 country: {
@@ -224,13 +224,13 @@ const PreviewInvoice = ({
                 },
                 currency: e.currencyCode,
                 employees: e.payrollItems.length,
-                grossWages: payrollToCurrencyFormat(totalGrossWages),
-                allowances: payrollToCurrencyFormat(totalAllowances),
-                expenseReimb: payrollToCurrencyFormat(totalExpenseReimb),
-                employerLiability: payrollToCurrencyFormat(totalEmployerLiability),
-                countryVAT: payrollToCurrencyFormat(totalCountryVAT),
+                grossWages: payrollToCurrencyFormat(totalGrossWagesPayroll),
+                allowances: payrollToCurrencyFormat(totalAllowancesPayroll),
+                expenseReimb: payrollToCurrencyFormat(totalExpenseReimbPayroll),
+                employerLiability: payrollToCurrencyFormat(totalEmployerLiabilityPayroll),
+                countryVAT: payrollToCurrencyFormat(totalCountryVATPayroll),
                 exchangeRate: e.exchangeRate,
-                total: payrollToCurrencyFormat(countrySumTotalTemp),
+                total: payrollToCurrencyFormat(countrySumTotalTempPayroll),
               });
 
               //Fee Summary Calculation
@@ -288,30 +288,30 @@ const PreviewInvoice = ({
 
   useEffect(() => {
     if (apiData?.data && feeData?.data) {
-      const additionalFee = feeData.data.find((x: any) => x.type === 5);
+      const additionalFeePayroll = feeData.data.find((x: any) => x.type === 5);
 
-      const terminationFeeTemp = apiData.data.payrollFees.find(
-        (x: any) => x.feeId === additionalFee.id
+      const terminationFeeTempPayroll = apiData.data.payrollFees.find(
+        (x: any) => x.feeId === additionalFeePayroll.id
       );
 
-      setContractTerminationFee(terminationFeeTemp?.amount);
+      setContractTerminationFee(terminationFeeTempPayroll?.amount);
 
-      const incomingFee = feeData.data.find((x: any) => x.type === 1);
+      const incomingFeepayroll = feeData.data.find((x: any) => x.type === 1);
 
-      const incomingWirePaymentTemp = apiData.data.payrollFees.find(
-        (x: any) => x.feeId === incomingFee.id
+      const incomingWirePaymentTempPayroll = apiData.data.payrollFees.find(
+        (x: any) => x.feeId === incomingFeepayroll.id
       );
-      setIncomingWirePayment(incomingWirePaymentTemp?.amount);
+      setIncomingWirePayment(incomingWirePaymentTempPayroll?.amount);
 
-      const totalFeeSummaryTemp =
+      const totalFeeSummaryTempPayroll =
         apiData.data.countryPayroll.reduce(
           (a: any, b: any) => a + (b.feeSummary.total || 0),
           0
         ) +
-        (terminationFeeTemp ? terminationFeeTemp.amount : 0) +
-        (incomingWirePaymentTemp ? incomingWirePaymentTemp.amount : 0);
+        (terminationFeeTempPayroll ? terminationFeeTempPayroll.amount : 0) +
+        (incomingWirePaymentTempPayroll ? incomingWirePaymentTempPayroll.amount : 0);
 
-      setFeeSummaryTotalDue(totalFeeSummaryTemp);
+      setFeeSummaryTotalDue(totalFeeSummaryTempPayroll);
     }
   }, [apiData, feeData]);
 
