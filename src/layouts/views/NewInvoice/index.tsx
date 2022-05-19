@@ -87,32 +87,32 @@ const NewInvoice = () => {
     {
       isSelected: false,
       label: "2019",
-      value: "0",
+      value: 2019,
     },
     {
       isSelected: false,
       label: "2020",
-      value: "1",
+      value: 2020,
     },
     {
       isSelected: false,
       label: "2021",
-      value: "2",
+      value: 2021,
     },
     {
       isSelected: false,
       label: "2022",
-      value: "3",
+      value: 2022,
     },
     {
       isSelected: false,
       label: "2023",
-      value: "4",
+      value: 2023,
     },
     {
       isSelected: false,
       label: "2024",
-      value: "5",
+      value: 2024,
     },
   ]);
 

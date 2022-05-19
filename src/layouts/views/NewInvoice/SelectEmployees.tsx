@@ -218,8 +218,7 @@ const SelectEmployees = ({
                               ? {
                                 ...tableOptions,
                                 enableMultiSelect:true,
-                                // disableRowCheckbox:false,
-                                // enableMultiSelect: disableInvoicedTrueCheckbox(),
+                                disableRowCheckbox:{key:"isInvoiced", value: true},                             
                                 isMultiSelectDisabled: true,
                                 onRowCheckboxChange: onRowCheckboxChange,
                               }

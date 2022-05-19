@@ -125,61 +125,61 @@ export const monthNameOptions = {
     january: {
         isSelected: false,
         label: "January",
-        value: "0",
+        value: 1,
     },
     feburary: {
         isSelected: false,
         label: "Feburary",
-        value: "1",
+        value: 2,
     },
     march: {
         isSelected: false,
         label: "March",
-        value: "2",
+        value: 3,
     },
     april: {
         isSelected: false,
         label: "April",
-        value: "3",
+        value: 4,
     },
     may: {
         isSelected: false,
         label: "May",
-        value: "4",
+        value: 5,
     },
     june: {
         isSelected: false,
         label: "June",
-        value: "5",
+        value: 6,
     },
     july: {
         isSelected: false,
         label: "July",
-        value: "6",
+        value: 7,
     },
     august: {
         isSelected: false,
         label: "August",
-        value: "7",
+        value: 8,
     },
     september: {
         isSelected: false,
         label: "September",
-        value: "8",
+        value: 9,
     },
     october: {
         isSelected: false,
         label: "October",
-        value: "9",
+        value: 10,
     },
     november: {
         isSelected: false,
         label: "November",
-        value: "10",
+        value: 11,
     },
     december: {
         isSelected: false,
         label: "December",
-        value: "11",
+        value: 12,
     },
 }
