@@ -171,19 +171,6 @@ const NewInvoice = () => {
       tableSharedColumns.adminFees,
       tableSharedColumns.healthcareBenefits,
     ],
-    data: [
-      {
-        employeeID: "73917",
-        name: "Camila Lopez",
-        grossWages: "USD 20,000.00",
-        allowances: "USD 200.00",
-        expenseReimb: "USD 400.00",
-        employerLiability: "USD 7,210.00",
-        countryVAT: "0.63",
-        adminFees: "USD 650.00",
-        healthcareBenefits: "USD 0.00",
-      },
-    ],
     showDefaultColumn: true,
   };
 
@@ -200,23 +187,6 @@ const NewInvoice = () => {
       tableSharedColumns.exchangeRate,
       tableSharedColumns.total,
     ],
-    data: [
-      {
-        country: {
-          value: "Spain",
-          // img: { src: getFlagPath("ES") },
-        },
-        currency: "EUR",
-        employees: "14",
-        grossWages: "95,000",
-        allowances: "13,690",
-        expenseReimb: "950.00",
-        employerLiability: "2,000.00",
-        countryVAT: "0.00",
-        exchangeRate: "0.75355",
-        total: "121,411.97",
-      },
-    ],
     showDefaultColumn: true,
   };
 
@@ -231,22 +201,6 @@ const NewInvoice = () => {
       tableSharedColumns.benefits,
       tableSharedColumns.employeeContribution,
       tableSharedColumns.total,
-    ],
-    data: [
-      {
-        country: {
-          value: "Spain",
-          // img: { src: getFlagPath("ES") },
-        },
-        currency: "EUR",
-        adminFees: "3.900.00",
-        OnOffboardings: "0.00",
-        fxRate: "1,5",
-        fxBill: "95,000.00",
-        benefits: "3,780.00",
-        employeeContribution: "0.00",
-        total: "121,411.97",
-      },
     ],
     showDefaultColumn: true,
   };
@@ -270,6 +224,9 @@ const NewInvoice = () => {
   const [employeeApiData, setEmployeeApiData] = useState([]);
   const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
   const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState({})
+
+  // stepper three data
+  const [transactionType, setTransactionType] = useState();
 
   // steppers one Props
   const stepperOneProps = {
@@ -301,12 +258,22 @@ const NewInvoice = () => {
     setSelectedRowPostData,
   };
 
+   //stepper three payroll props
   const stepperThreeProps = {
     accessToken,
     newInvoiceEmployeeDetailTable,
     newInvoiceCountrySummaryTable,
     newInvoiceFeeSummaryOptions,
-    CreateManualPayrollRes
+    CreateManualPayrollRes,
+    stepperOneData,
+    setTransactionType
+  };
+
+   //stepper four payroll props
+  const stepperFourProps = {
+    CreateManualPayrollRes,
+    stepperOneData,
+    transactionType
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -443,7 +410,7 @@ const NewInvoice = () => {
               ) : stepsCount == 3 ? (
                 <PreviewInvoice {...stepperThreeProps} />
               ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
-                <FinishSTepper />
+                <FinishSTepper {...stepperFourProps} />
               ) : (
                 <></>
               )}
