@@ -9,6 +9,8 @@ import {
   BreadCrumb,
   Checkbox,
   Modal,
+  Cards,
+  Logs,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -102,6 +104,23 @@ export default function InvoiceDetails() {
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
   const [isAutoApprove, setIsAutoApprove] = useState(false);
+  const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
+  const viewLimit = 10;
+  const [isLogsOpen, setIsLogsOpen] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(true);
+  const [changeLogs, setChangeLogs] = useState<any>([]);
+
+  useEffect(() => {
+    if(logsData.length === 0) return;
+    const splicedData:any = [...logsData].splice(0, viewLimit);
+    setChangeLogs([...splicedData])
+  }, [logsData])
+
+  useEffect(() => {
+    if (changeLogs.length === logsData.length) {
+      setDataAvailable(false);
+    }
+  }, [changeLogs]);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -130,6 +149,19 @@ export default function InvoiceDetails() {
         setCountriesData(countryRes);
 
         if (state.transactionType != 7) {
+          axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails:any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"), 
+              customerEmail: log?.email, 
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
           console.log("abccc" + state.transactionType);
           axios
             .get(api, headers)
@@ -1353,7 +1385,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "files" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && (
+        state.transactionType != 7 && <>
           <div className="filesNotes">
             <NotesWidget
               notes={notes}
@@ -1371,7 +1403,60 @@ export default function InvoiceDetails() {
               id={id}
             ></FileUploadWidget>
           </div>
-        )}
+          <Cards className="invoice-logs">
+          <Logs
+            custom
+            isOpen={isLogsOpen}
+            data={changeLogs}
+            title={<><Icon icon="edit" size="small" color="#526FD6" viewBox="-2 -1 24 24" style={{
+              marginTop: "0",
+              padding: "0"
+            }} /> View Change Log</>}
+            name="View-change-log"
+            handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
+            actions={{
+              primary: {
+                label: "View More",
+                icon: {
+                  icon: "edit",
+                  size: "small",
+                  color: "#526FD6",
+                  viewBox: "-2 -1 24 24"
+                },
+                handleOnClick: () => {
+                  if (dataAvailable) {
+                    const spliced = [...logsData].splice(changeLogs.length, viewLimit);
+                    setChangeLogs([...changeLogs, ...spliced]);
+                  }
+                },
+                disabled: !dataAvailable
+              },
+              secondary: {
+                label: "View Less",
+                icon: {
+                  icon: "edit",
+                  size: "small",
+                  color: "#526FD6",
+                  viewBox: "-2 -1 24 24"
+                },
+                handleOnClick: () => {
+                  const logs = [...changeLogs.reverse()];
+                  const limit = changeLogs?.length-1 === viewLimit ? 1 : viewLimit;
+                  if(changeLogs.length === limit) {
+                    return;
+                  }
+                  logs.splice(0, limit);
+                  setChangeLogs([...logs.reverse()]);
+                  if (logs.length > viewLimit) {
+                    setDataAvailable(true);
+                  }
+                },
+                disabled: changeLogs.length <= viewLimit
+              }
+            }}
+          />
+        </Cards>
+        </>}
       {state.transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}

@@ -58,7 +58,8 @@ export const urls = {
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
   declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
-  billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/"
+  billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/",
+  invoiceLogs: baseURL + services.atlasInvoiceService + "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2"
 };
 
 export const getClientListingUrl = (

@@ -876,4 +876,13 @@
     margin-left: 10px;
     cursor: pointer;
   }
+
+  .invoice-logs {
+    padding: 4rem;
+    justify-content: flex-start;
+
+    .timeline-item-min .email {
+      font-weight: bold;
+    }
+  }
 }
