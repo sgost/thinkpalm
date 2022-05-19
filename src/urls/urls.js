@@ -156,6 +156,10 @@ export const getDeleteInvoiceUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}`;
 };
 
+export const getCMInvoiceUrl = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}`;
+};
+
 export const getAutoApproveCheckUrl = (id, isChecked) => {
   return (
     baseURL +
