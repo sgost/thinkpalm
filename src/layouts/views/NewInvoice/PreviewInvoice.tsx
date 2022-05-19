@@ -7,10 +7,13 @@ const previewInvoice = ({
   accessToken,
   newInvoiceEmployeeDetailTable,
   newInvoiceCountrySummaryTable,
-  newInvoiceFeeSummaryOptions
+  newInvoiceFeeSummaryOptions,
+  CreateManualPayrollRes
 }: any) => {
 
   const [isPreviewModal, setIsPreviewModal] = useState(false)
+
+  console.log("CreateManualPayrollRes", CreateManualPayrollRes)
 
 
   return (

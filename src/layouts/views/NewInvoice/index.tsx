@@ -269,6 +269,7 @@ const NewInvoice = () => {
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
   const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
+  const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState({})
 
   // steppers one Props
   const stepperOneProps = {
@@ -305,6 +306,7 @@ const NewInvoice = () => {
     newInvoiceEmployeeDetailTable,
     newInvoiceCountrySummaryTable,
     newInvoiceFeeSummaryOptions,
+    CreateManualPayrollRes
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -338,7 +340,9 @@ const NewInvoice = () => {
   };
 
   const handleNextButtonClick = () => {
-    setStepsCount(stepsCount + 1);
+    if (stepsCount != 2) {
+      setStepsCount(stepsCount + 1);
+    }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
       const PrepareData = employeeRowData;
       PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
@@ -361,7 +365,10 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
-          console.log("resss", res);
+          if (res.data) {
+            setCreateManualPayrollRes(res.data)
+            setStepsCount(stepsCount + 1);
+          }
         })
         .catch((e: any) => {
           console.log(e);
@@ -409,8 +416,8 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                  ? "step2-right-panel"
-                  : "",
+                    ? "step2-right-panel"
+                    : "",
             },
           }}
           leftPanel={
@@ -420,8 +427,8 @@ const NewInvoice = () => {
                 stepperOneData?.type === "Payroll"
                   ? stepsName
                   : stepperOneData?.type === "Credit Memo"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
@@ -472,8 +479,8 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                ? disableFunForStepOneCreditMemo()
-                : true
+                  ? disableFunForStepOneCreditMemo()
+                  : true
             }
             data-testid="next-button"
             icon={{
