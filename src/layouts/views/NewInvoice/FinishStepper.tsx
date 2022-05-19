@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "atlasuikit";
 import "./FinishStepper.scss"
 
-const FinishSTepper = () => {
+const FinishSTepper = ({
+    CreateManualPayrollRes,
+    stepperOneData,
+    transactionType
+}: any) => {
 
     const navigate = useNavigate();
 
@@ -27,7 +31,20 @@ const FinishSTepper = () => {
                         label="Go to Invoice"
                         className="primary-blue medium"
                         handleOnClick={() => {
-                            navigate("/pay");
+                            navigate(
+                                "/pay/invoicedetails" +
+                                CreateManualPayrollRes?.invoiceId +
+                                "/" +
+                                stepperOneData?.customerId +
+                                "/" +
+                                "false",
+                                {
+                                    state: {
+                                        InvoiceId: CreateManualPayrollRes?.invoiceNo,
+                                        transactionType: transactionType,
+                                    },
+                                }
+                            );
                         }}
                     />
                 </div>
