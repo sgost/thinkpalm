@@ -57,7 +57,7 @@ const PreviewInvoice = ({
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
 
-  const toCurrencyFormat = (amount: number) => {
+  const payrollToCurrencyFormat = (amount: number) => {
     const cFormat = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
@@ -67,7 +67,7 @@ const PreviewInvoice = ({
   };
 
 
-  const getBillingCurrency = () => {
+  const getPayrollBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
@@ -106,19 +106,19 @@ const PreviewInvoice = ({
               throw new Error("Something went wrong");
             }
 
-            let billingCurrency = countryRes.data.find(
+            let billingCurrencyPayroll = countryRes.data.find(
               (e: any) => e.currencyId === res.data.invoice.currencyId
             );
             let data: any = [];
-            let countrySummaryTemp: any = [];
-            let tempTotal = 0;
-            let countrySumTotalArrTemp: any = [];
-            let feeSummaryTemp: any = [];
+            let countrySummaryPayroll: any = [];
+            let tempTotalPayroll = 0;
+            let countrySumTotalArrPayroll: any = [];
+            let feeSummaryPayroll: any = [];
 
             res.data?.countryPayroll.forEach((e: any) => {
-              let country = e.countryName;
-              let countryCode = e.countryCode;
-              let currencyCode = e.currencyCode;
+              let countryPayroll = e.countryName;
+              let countryCodePayroll = e.countryCode;
+              let currencyCodePayroll = e.currencyCode;
               let arr: any = [];
 
               e.payrollItems.forEach((item: any) => {
@@ -131,38 +131,38 @@ const PreviewInvoice = ({
                     style: { borderRadius: 12 },
                   },
                   grossWages:
-                    currencyCode + " " + toCurrencyFormat(item.totalWage),
+                  currencyCodePayroll + " " + payrollToCurrencyFormat(item.totalWage),
 
                   allowances:
-                    currencyCode + " " + toCurrencyFormat(item.allowance),
+                  currencyCodePayroll + " " + payrollToCurrencyFormat(item.allowance),
 
                   expenseReimb:
-                    currencyCode + " " + toCurrencyFormat(item.expenseRe),
+                  currencyCodePayroll + " " + payrollToCurrencyFormat(item.expenseRe),
 
                   employerLiability:
-                    currencyCode + " " + toCurrencyFormat(item.liability),
+                  currencyCodePayroll + " " + payrollToCurrencyFormat(item.liability),
 
                   countryVAT: item.countryVat.toFixed(2),
 
                   adminFees:
-                    billingCurrency.currency.code +
+                  billingCurrencyPayroll.currency.code +
                     " " +
-                    toCurrencyFormat(item.adminFee),
+                    payrollToCurrencyFormat(item.adminFee),
 
                   healthcareBenefits:
-                    billingCurrency.currency.code +
+                  billingCurrencyPayroll.currency.code +
                     " " +
-                    toCurrencyFormat(item.healthcare),
+                    payrollToCurrencyFormat(item.healthcare),
 
                 });
               });
 
               // tempTotal += e.feeSummary.total;
-              tempTotal += e.countryTotalDue;
+              tempTotalPayroll += e.countryTotalDue;
 
               data.push({
-                country,
-                countryCode,
+                countryPayroll,
+                countryCodePayroll,
                 exchangeRate: e.exchangeRate,
                 currencyCode: e.currencyCode,
                 countryTotalDue: e.countryTotalDue,
@@ -215,38 +215,38 @@ const PreviewInvoice = ({
                 precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
                 precisionRound(totalCountryVAT * e.exchangeRate, 2);
 
-              countrySumTotalArrTemp.push(countrySumTotalTemp);
+                countrySumTotalArrPayroll.push(countrySumTotalTemp);
 
-              countrySummaryTemp.push({
+              countrySummaryPayroll.push({
                 country: {
                   value: e.countryName,
                   img: { src: getFlagPath(e.countryCode) },
                 },
                 currency: e.currencyCode,
                 employees: e.payrollItems.length,
-                grossWages: toCurrencyFormat(totalGrossWages),
-                allowances: toCurrencyFormat(totalAllowances),
-                expenseReimb: toCurrencyFormat(totalExpenseReimb),
-                employerLiability: toCurrencyFormat(totalEmployerLiability),
-                countryVAT: toCurrencyFormat(totalCountryVAT),
+                grossWages: payrollToCurrencyFormat(totalGrossWages),
+                allowances: payrollToCurrencyFormat(totalAllowances),
+                expenseReimb: payrollToCurrencyFormat(totalExpenseReimb),
+                employerLiability: payrollToCurrencyFormat(totalEmployerLiability),
+                countryVAT: payrollToCurrencyFormat(totalCountryVAT),
                 exchangeRate: e.exchangeRate,
-                total: toCurrencyFormat(countrySumTotalTemp),
+                total: payrollToCurrencyFormat(countrySumTotalTemp),
               });
 
               //Fee Summary Calculation
-              feeSummaryTemp.push({
+              feeSummaryPayroll.push({
                 country: {
                   value: e.countryName,
                   img: { src: getFlagPath(e.countryCode) },
                 },
                 currency: e.currencyCode,
-                adminFees: toCurrencyFormat(e.feeSummary.adminFee),
+                adminFees: payrollToCurrencyFormat(e.feeSummary.adminFee),
                 OnOffboardings: e.feeSummary.boardingFee,
                 fxRate: e.feeSummary.fxRate,
                 fxBill: e.feeSummary.fxBill,
-                benefits: toCurrencyFormat(e.feeSummary.healthCare),
+                benefits: payrollToCurrencyFormat(e.feeSummary.healthCare),
                 employeeContribution: e.employeeContributionCreditTotal,
-                total: toCurrencyFormat(e.feeSummary.total),
+                total: payrollToCurrencyFormat(e.feeSummary.total),
               });
             });
 
@@ -256,13 +256,13 @@ const PreviewInvoice = ({
             // setDocuments(res.data.invoice.invoiceDocuments);
             setApiData(res);
             setTransactionType(res.data.invoice.transactionType);
-            setCountrySummary(countrySummaryTemp);
-            let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
+            setCountrySummary(countrySummaryPayroll);
+            let totalCountrySummaryDueTemp = countrySumTotalArrPayroll.reduce(
               (a: any, b: any) => a + (b || 0),
               0
             );
             settotalCountrySummaryDue(totalCountrySummaryDueTemp);
-            setFeeSummary(feeSummaryTemp);
+            setFeeSummary(feeSummaryPayroll);
             // setIsAutoApprove(res.data.isAutoApprove);
           })
           .catch((e: any) => {
@@ -361,17 +361,17 @@ const PreviewInvoice = ({
                 </div>
                 <div className='newInvoiceHeaderAmount'>
                   <div className='newInvoiceHeaderAmount-one'>
-                    {getBillingCurrency()}{" "}
+                    {getPayrollBillingCurrency()}{" "}
                     {
-                      toCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
+                      payrollToCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
 
                     }
 
                   </div>
                   <div className='newInvoiceHeaderAmount-two'>
-                    {getBillingCurrency()}{" "}
+                    {getPayrollBillingCurrency()}{" "}
                     {
-                      toCurrencyFormat(apiData?.data?.invoice?.totalAmount)
+                      payrollToCurrencyFormat(apiData?.data?.invoice?.totalAmount)
 
                     }
                   </div>
@@ -437,7 +437,7 @@ const PreviewInvoice = ({
                 </p>
                 <p className="newInvoiceHeading">Billing Currency</p>
                 <p className="newInvoiceValue">
-                  {getBillingCurrency()}
+                  {getPayrollBillingCurrency()}
                 </p>
               </div>
             </div>
@@ -462,7 +462,7 @@ const PreviewInvoice = ({
                         {
                           item.currencyCode +
                           " " +
-                          toCurrencyFormat(item.feeSummary.subTotalDue)
+                          payrollToCurrencyFormat(item.feeSummary.subTotalDue)
                         }
                       </p>
                     </div>
@@ -475,9 +475,9 @@ const PreviewInvoice = ({
                       </p>
                       <p className="newInvoiceAmount">
                         {
-                          getBillingCurrency() +
+                          getPayrollBillingCurrency() +
                           " " +
-                          toCurrencyFormat(
+                          payrollToCurrencyFormat(
                             item.feeSummary.subTotalDue * item.exchangeRate
                           )
                         }
@@ -487,9 +487,9 @@ const PreviewInvoice = ({
                       <p className="newInvoiceTitle">In Country Processing Fee</p>
                       <p className="newInvoiceAmount">
                         {
-                          getBillingCurrency() +
+                          getPayrollBillingCurrency() +
                           " " +
-                          toCurrencyFormat(
+                          payrollToCurrencyFormat(
                             item.feeSummary.inCountryProcessingFee
                           )
                         }
@@ -499,9 +499,9 @@ const PreviewInvoice = ({
                       <p className="newInvoiceTitle">FX Bill</p>
                       <p className="newInvoiceAmount">
                         {
-                          getBillingCurrency() +
+                          getPayrollBillingCurrency() +
                           " " +
-                          toCurrencyFormat(item.feeSummary.fxBill)
+                          payrollToCurrencyFormat(item.feeSummary.fxBill)
                         }
                       </p>
                     </div>
@@ -509,9 +509,9 @@ const PreviewInvoice = ({
                       <p className="newInvoiceTitle">Total Country VAT</p>
                       <p className="newInvoiceAmount">
                         {
-                          getBillingCurrency() +
+                          getPayrollBillingCurrency() +
                           " " +
-                          toCurrencyFormat(item.feeSummary.totalCountryVat)
+                          payrollToCurrencyFormat(item.feeSummary.totalCountryVat)
                         }
                       </p>
                     </div>
@@ -519,9 +519,9 @@ const PreviewInvoice = ({
                       <p>Country Total Due</p>
                       <h3>
                         {
-                          getBillingCurrency() +
+                          getPayrollBillingCurrency() +
                           " " +
-                          toCurrencyFormat(item.countryTotalDue)
+                          payrollToCurrencyFormat(item.countryTotalDue)
                         }
                       </h3>
                     </div>
@@ -545,8 +545,8 @@ const PreviewInvoice = ({
               <div className="newInvoiceCountrySummaryCalc">
                 <p>Total Due</p>
                 <h3>
-                  {getBillingCurrency()}{" "}
-                  {toCurrencyFormat(totalCountrySummaryDue)}
+                  {getPayrollBillingCurrency()}{" "}
+                  {payrollToCurrencyFormat(totalCountrySummaryDue)}
                 </h3>
               </div>
 
@@ -564,20 +564,20 @@ const PreviewInvoice = ({
                 <div className="newInvoiceRowFee">
                   <p className="title">Incoming Wire Payment</p>
                   <p className="amount">
-                    {getBillingCurrency()} {toCurrencyFormat(incomingWirePayment)}
+                    {getPayrollBillingCurrency()} {payrollToCurrencyFormat(incomingWirePayment)}
                   </p>
                 </div>
                 <div className="newInvoicerow2">
                   <p className="title">Contract Termination Fee</p>
                   <p className="amount">
-                    {getBillingCurrency()}{" "}
-                    {toCurrencyFormat(contractTerminationFee)}
+                    {getPayrollBillingCurrency()}{" "}
+                    {payrollToCurrencyFormat(contractTerminationFee)}
                   </p>
                 </div>
                 <div className="newInvoiceTotalRow">
                   <p>Total Due</p>
                   <h3>
-                    {getBillingCurrency()} {toCurrencyFormat(feeSummaryTotalDue)}
+                    {getPayrollBillingCurrency()} {payrollToCurrencyFormat(feeSummaryTotalDue)}
                   </h3>
                 </div>
               </div>
