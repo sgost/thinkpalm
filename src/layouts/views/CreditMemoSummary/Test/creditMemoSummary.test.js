@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import CreditMemoSummary from "..";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata } from "../../InvoiceDetails/test/mockdata";
+import { mockapidata, mockCreditMemoData } from "../../InvoiceDetails/test/mockdata";
 import axios from "axios";
 import { urls } from '../../../../urls/urls'
 import { BillsTable } from '../../BillsTable/index'
@@ -18,11 +18,6 @@ describe("Credit Memo Summary",() => {
         mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
         mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
     })
-    // test("Render", ()=>{
-    //     render(
-    //         <BillsTable currency={"USD"} tableData={BillsByInvoiceId}></BillsTable>
-    //     );
-    // })
     test("Render CM", ()=>{
         render(
             <HashRouter>
@@ -34,6 +29,7 @@ describe("Credit Memo Summary",() => {
                     isClient={"true"}
                     setNotes={()=>{}}
                     setDocuments={()=>{}}
+                    invoiceItems={mockCreditMemoData.invoiceItems}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -56,6 +52,7 @@ describe("Notes fail",() => {
                     isClient={"false"}
                     setNotes={()=>{}}
                     setDocuments={()=>{}}
+                    invoiceItems={mockCreditMemoData.invoiceItems}
                 ></CreditMemoSummary>
             </HashRouter>
         );
