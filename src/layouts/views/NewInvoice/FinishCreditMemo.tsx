@@ -6,15 +6,6 @@ import { getCreditMemoStep4Data } from "../../../apis/apis";
 
 export default function FinishCreditMemo() {
   const navigate = useNavigate();
-  const [customerID, setCustomerID] = useState(null);
-
-  useEffect(() => {
-    getCreditMemoStep4Data("3b70a1d7-19fd-44e6-9995-18d0966eb790").then(
-      (res: any) => {
-        console.log(res);
-      }
-    );
-  }, []);
 
   return (
     <div className="finishCreditMemoContainer">
