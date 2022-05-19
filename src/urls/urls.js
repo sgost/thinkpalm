@@ -31,7 +31,7 @@ const services = {
   apngMetaDataService: "/metadataservice/api",
   atlasCustomerService: "/cs/api",
   contractorPayBillingService: "/billingservice/api",
-  atlasSubscriptionService: "/atlas-subscriptionservice/api"
+  atlasSubscriptionService: "/atlas-subscriptionservice/api",
 };
 
 export const urls = {
@@ -56,9 +56,13 @@ export const urls = {
   uploadFile: metaDataUrl + services.apngMetaDataService + "/Blob/UploadFile",
   createDocument:
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
-  declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
+  declineInvoice:
+    baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
-  billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/"
+  billsPerInvoice:
+    baseURL +
+    services.contractorPayBillingService +
+    "/billing/bill/GetBillDetailsPerInvoice/",
 };
 
 export const getClientListingUrl = (
@@ -174,18 +178,33 @@ export const getDownloadFileUrl = (docurl) => {
 
 export const getCountryByCustomer = (id) => {
   return (
-    baseURL + services.atlasSubscriptionService + "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=" + id
+    baseURL +
+    services.atlasSubscriptionService +
+    "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=" +
+    id
   );
 };
 
 export const getEmployee = (customerId, countryId) => {
   return (
-    baseURL + services.atlasIdgService + `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}`
+    baseURL +
+    services.atlasIdgService +
+    `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}`
   );
 };
 
 export const createManualInvoice = () => {
   return (
     baseURL + services.atlasIdgService + `/InvoiceData/CreateManualInvoice`
+  );
+};
+
+export const getCreditMemoStep4Url = (invoiceId) => {
+  // https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/relatedData/{invoiceId}
+
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    `/invoices/relatedData/${invoiceId}`
   );
 };
