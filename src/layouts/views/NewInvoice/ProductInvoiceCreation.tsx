@@ -36,7 +36,7 @@ const ProductInvoiceCreation = ({
     const [todos, setTodos] = useState([])
     const submitHandler = (e) => {
         e.preventDefault();
-        const newTodos = [...todos, { id: Math.random(), date: dateFrom, product: productService, country: countryService, quantity: quantity, amount: amount, balance: quantity * amount }];
+        const newTodos = [...todos, { id: Math.random(), date: dateFrom, product: productService, description: description, country: countryService, quantity: quantity, amount: amount, balance: quantity * amount }];
         setTodos(newTodos);
     }
 
@@ -270,15 +270,15 @@ const ProductInvoiceCreation = ({
                         </div>
                         <div id="top_row">
                             <div id="roe_detatil_card">
-                                <span id="detail_card_title">Invoice Data</span>
+                                <span id="detail_card_title">Invoice Date</span>
                                 <p>{item.date}</p>
                             </div>
                             <div id="roe_detatil_card">
-                                <span id="detail_card_title">Invoice Data</span>
+                                <span id="detail_card_title">Product Service</span>
                                 <p>{item.product}</p>
                             </div>
                             <div id="roe_detatil_card">
-                                <span id="detail_card_title">Invoice Data</span>
+                                <span id="detail_card_title">Description</span>
                                 <p>{item.description}</p>
                             </div>
                             <div id="roe_detatil_card">
