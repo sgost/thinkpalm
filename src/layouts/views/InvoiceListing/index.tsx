@@ -877,6 +877,7 @@ export default function InvoiceListing() {
                     state: {
                       InvoiceId: row.invoiceNo,
                       transactionType: row.transactionType,
+                      rowDetails: row
                     },
                   }
                 );
