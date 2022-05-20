@@ -9,6 +9,8 @@ import {
   BreadCrumb,
   Checkbox,
   Modal,
+  Cards,
+  Logs,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -33,7 +35,6 @@ import {
   getNotesUrl,
   getHeaders,
   getDownloadFileUrl,
-  getCMInvoiceUrl,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -43,20 +44,7 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  const topPanelObj = {
-    from : '',
-    to: '',
-    toAddress: '',
-    poNumber:'',
-    invoiceDate:'',
-    invoiceApproval:'',
-    paymentDue: '',
-    location: '',
-    region: '',
-    billingCurrency: '',
-    total: '',
-    open: ''
-  }
+  // const state = { transactionType: 4, InvoiceId: "100678"};
   const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -116,8 +104,24 @@ export default function InvoiceDetails() {
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
   const [isAutoApprove, setIsAutoApprove] = useState(false);
-  const [creditMemoData, setCreditMemoData] = useState<any>(null)
-  const [topPanel, setTopPanel] = useState<any>(topPanelObj);
+  const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
+  const viewLimit = 10;
+  const [isLogsOpen, setIsLogsOpen] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(true);
+  const [changeLogs, setChangeLogs] = useState<any>([]);
+
+  useEffect(() => {
+    if(logsData.length === 0) return;
+    const splicedData:any = [...logsData].splice(0, viewLimit);
+    setChangeLogs([...splicedData])
+  }, [logsData])
+
+  useEffect(() => {
+    if (changeLogs.length === logsData.length) {
+      setDataAvailable(false);
+    }
+  }, [changeLogs]);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!hideTopCheck) {
@@ -144,12 +148,29 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        if (state.transactionType != 7 && state.transactionType != 4) {
+        if (state.transactionType != 7) {
+          axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails:any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"), 
+              customerEmail: log?.email, 
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
+          console.log("abccc" + state.transactionType);
           axios
             .get(api, headers)
             .then((res: any) => {
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
+              }
+              if (res.data.invoice.invoiceNo === "100678") {
+                res.data.invoice.transactionType = 4;
               }
 
               let billingCurrency = countryRes.data.find(
@@ -161,6 +182,10 @@ export default function InvoiceDetails() {
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
+              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
+              //   res.data = apiInvoiceMockData;
+              // }
 
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
@@ -320,7 +345,7 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else if(state.transactionType == 7) {
+        } else {
           let res: any = {
             data: {
               ...apiInvoiceMockData,
@@ -340,16 +365,6 @@ export default function InvoiceDetails() {
             setApiData(res);
             setTransactionType(res.data.invoice.transactionType);
           });
-        }else if(state.transactionType == 4){
-          axios.get(getCMInvoiceUrl(id), headers).then((response)=>{
-            if(response.status == 200){
-              console.log(response);
-              setCreditMemoData(response.data[0]);
-              setNotes(response.data[0].invoiceNotes)
-            }
-          }).catch((res)=>{
-            console.log(res);
-          })
         }
       })
       .catch((e: any) => {
@@ -390,8 +405,7 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    if(state.transactionType != 4){
-      axios
+    axios
       .get(notesApi, headers)
       .then((res: any) => {
         if (isClient == "true") {
@@ -403,7 +417,6 @@ export default function InvoiceDetails() {
       .catch((e: any) => {
         console.log("error e", e);
       });
-    }
   }, []);
 
   useEffect(() => {
@@ -415,15 +428,6 @@ export default function InvoiceDetails() {
       });
     }
   }, [lookupData, apiData]);
-  useEffect(() => {
-    if (lookupData?.data && creditMemoData) {
-      lookupData.data.invoiceStatuses.forEach((e: any) => {
-        if (e.value === creditMemoData.status) {
-          setStatus(e.text);
-        }
-      });
-    }
-  }, [lookupData, creditMemoData]);
 
   useEffect(() => {
     if (apiData?.data && feeData?.data) {
@@ -453,40 +457,6 @@ export default function InvoiceDetails() {
       setFeeSummaryTotalDue(totalFeeSummaryTemp);
     }
   }, [apiData, feeData]);
-  useEffect(()=>{
-    if(apiData?.data && addressData?.data){
-      let model: any = topPanelObj;
-      model.from = apiData?.data?.invoiceFrom?.companyName;
-      model.to = apiData?.data?.invoice?.customerName;
-      model.toAddress = addressData?.data?.billingAddress?.street;
-      model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(apiData?.data?.invoice?.createdDate).format("DD MMM YYYY");
-      model.invoiceApproval = moment(apiData?.data?.invoice?.createdDate).format("DD MMM YYYY");
-      model.paymentDue = moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY");
-      model.location = apiData?.data?.invoice?.customerLocation;
-      model.region = apiData?.data?.regionItemCode?.toUpperCase();
-      model.total = apiData?.data?.invoice?.totalAmount;
-      model.open = apiData?.data?.invoice?.invoiceBalance;
-      setTopPanel(model);
-    }
-  },[apiData, addressData])
-
-  useEffect(()=>{
-    if(creditMemoData && addressData?.data){
-      let model: any = topPanelObj;
-      model.from = "Elements GS";
-      model.to = creditMemoData?.customerName;
-      model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
-      model.invoiceApproval = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
-      model.paymentDue = moment(creditMemoData?.dueDate).format("DD MMM YYYY");
-      model.location = creditMemoData?.customerLocation;
-      model.region = "EMEA"
-      model.total = creditMemoData?.totalAmount;
-      model.open = creditMemoData?.invoiceBalance;
-      setTopPanel(model);
-    }
-  },[creditMemoData, addressData])
 
   useEffect(() => {
     if (showAutoApprovedToast) {
@@ -521,14 +491,11 @@ export default function InvoiceDetails() {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
+
+      // console.log("currency", currency);
+
       return currency.currency.code;
-    }else if (creditMemoData && countriesData?.data) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === creditMemoData.currencyId
-      );
-      return currency.currency.code;
-    }
-    else {
+    } else {
       return "";
     }
   };
@@ -844,7 +811,7 @@ export default function InvoiceDetails() {
       });
   };
 
-  if ((!apiData?.data && !isErr) && (!creditMemoData && !isErr)) {
+  if (!apiData?.data && !isErr) {
     return <p>Loading...</p>;
   }
   if (isErr) {
@@ -860,7 +827,7 @@ export default function InvoiceDetails() {
       case 7:
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
-        return "Credit Memo Invoice No. " + creditMemoData?.invoiceNo;
+        return "Credit Memo Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
@@ -1036,7 +1003,7 @@ export default function InvoiceDetails() {
                   <span>
                     {getBillingCurrency()}{" "}
                     {
-                      toCurrencyFormat(topPanel.open)
+                      toCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
 
                       // Intl.NumberFormat().format(
                       //   apiData?.data?.invoice?.invoiceBalance.toLocaleString('en-US')
@@ -1054,7 +1021,7 @@ export default function InvoiceDetails() {
                 <span>
                   {getBillingCurrency()}{" "}
                   {
-                    toCurrencyFormat(topPanel.total)
+                    toCurrencyFormat(apiData?.data?.invoice?.totalAmount)
 
                     // apiData?.data?.invoice?.totalAmount
                     //   .toFixed(2)
@@ -1069,11 +1036,11 @@ export default function InvoiceDetails() {
         <div className="infoDetails">
           <div className="column1">
             <p className="heading">From</p>
-            <p className="value">{topPanel.from}</p>
+            <p className="value">{apiData?.data?.invoiceFrom?.companyName}</p>
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">{topPanel.to}</p>
+            <p className="value">{apiData?.data?.invoice?.customerName}</p>
             <p className="address">
               {addressData?.data?.billingAddress?.street}
             </p>
@@ -1087,21 +1054,25 @@ export default function InvoiceDetails() {
             {state.transactionType != 7 && (
               <>
                 <p>PO Number</p>
-                <p className="poNo">{topPanel.poNumber}</p>
+                <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
               </>
             )}
           </div>
           <div>
             <p className="heading">Invoice Date</p>
             <p className="value">
-              {topPanel.invoiceDate}
+              {moment(apiData?.data?.invoice?.createdDate).format(
+                "DD MMM YYYY"
+              )}
             </p>
 
             {state.transactionType != 7 && (
               <>
                 <p className="heading">Invoice Changes</p>
                 <p className="value">
-                  {topPanel.invoiceApproval}
+                  {moment(apiData?.data?.invoice?.createdDate).format(
+                    "DD MMM YYYY"
+                  )}
                 </p>
 
                 {isClient == "false" && (
@@ -1143,17 +1114,19 @@ export default function InvoiceDetails() {
 
                 <p className="heading">Payment Due</p>
                 <p className="value">
-                  {topPanel.paymentDue}
+                  {moment(apiData?.data?.invoice?.dueDate).format(
+                    "DD MMM YYYY"
+                  )}
                 </p>
               </>
             )}
           </div>
           <div className="lastCloumn">
             <p className="heading">Location</p>
-            <p className="value">{topPanel.location}</p>
+            <p className="value">{apiData?.data?.invoice?.customerLocation}</p>
             <p className="heading">Region</p>
             <p className="value">
-              {topPanel.region}
+              {apiData?.data?.regionItemCode?.toUpperCase()}
             </p>
             <p className="heading">Billing Currency</p>
             <p className="value">{getBillingCurrency()}</p>
@@ -1182,7 +1155,7 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {state.transactionType == 4 &&
+      {transactionType == 4 &&
         currentOrgToken?.Payments?.Role == "FinanceAR" && (
           <CreditMemoSummary
             notes={notes}
@@ -1192,8 +1165,7 @@ export default function InvoiceDetails() {
             isClient={isClient}
             cid={cid}
             id={id}
-            invoiceStatusId={creditMemoData?.status}
-            invoiceItems={creditMemoData?.invoiceItems}
+            invoiceStatusId={apiData.data.invoice.status}
           ></CreditMemoSummary>
         )}
 
@@ -1413,7 +1385,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "files" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && (
+        state.transactionType != 7 && <>
           <div className="filesNotes">
             <NotesWidget
               notes={notes}
@@ -1431,7 +1403,60 @@ export default function InvoiceDetails() {
               id={id}
             ></FileUploadWidget>
           </div>
-        )}
+          <Cards className="invoice-logs">
+          <Logs
+            custom
+            isOpen={isLogsOpen}
+            data={changeLogs}
+            title={<><Icon icon="edit" size="small" color="#526FD6" viewBox="-2 -1 24 24" style={{
+              marginTop: "0",
+              padding: "0"
+            }} /> View Change Log</>}
+            name="View-change-log"
+            handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
+            actions={{
+              primary: {
+                label: "View More",
+                icon: {
+                  icon: "edit",
+                  size: "small",
+                  color: "#526FD6",
+                  viewBox: "-2 -1 24 24"
+                },
+                handleOnClick: () => {
+                  if (dataAvailable) {
+                    const spliced = [...logsData].splice(changeLogs.length, viewLimit);
+                    setChangeLogs([...changeLogs, ...spliced]);
+                  }
+                },
+                disabled: !dataAvailable
+              },
+              secondary: {
+                label: "View Less",
+                icon: {
+                  icon: "edit",
+                  size: "small",
+                  color: "#526FD6",
+                  viewBox: "-2 -1 24 24"
+                },
+                handleOnClick: () => {
+                  const logs = [...changeLogs.reverse()];
+                  const limit = changeLogs?.length-1 === viewLimit ? 1 : viewLimit;
+                  if(changeLogs.length === limit) {
+                    return;
+                  }
+                  logs.splice(0, limit);
+                  setChangeLogs([...logs.reverse()]);
+                  if (logs.length > viewLimit) {
+                    setDataAvailable(true);
+                  }
+                },
+                disabled: changeLogs.length <= viewLimit
+              }
+            }}
+          />
+        </Cards>
+        </>}
       {state.transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}

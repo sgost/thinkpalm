@@ -56,8 +56,24 @@ const SelectEmployees = ({
   }, []);
 
   const onRowCheckboxChange = (selectedRows: any) => {
-    setSelectedRowPostData(selectedRows); 
+    setSelectedRowPostData(selectedRows);
   };
+
+
+  // const disableInvoicedTrueCheckbox = () => {
+  //   let check  = false ;
+  //   console.log("employeeRowData?.employeeDetail?.compensation?.payItems", employeeRowData?.employeeDetail?.compensation?.payItems)
+  //    employeeRowData?.employeeDetail?.compensation?.payItems?.forEach((item: any) => {
+  //     console.log("itemmmmmmmmmmmmmm",item)
+  //     if (item.isInvoiced === true) {
+  //       check =  true
+  //     } 
+  //     // else {
+  //     //   check=  true
+  //     // }
+  //   })
+  //   return check;
+  // }
 
   const preparedTableData = (item: any, check: any) => {
     let employeeTableData: any = [];
@@ -70,7 +86,7 @@ const SelectEmployees = ({
               payItemName: CompensationItems.payItemName || '',
               amount: CompensationItems?.amount || '',
               currencyCode: CompensationItems?.currencyCode || '',
-              effectiveDate:CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "" ,
+              effectiveDate: CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "",
               endDate: CompensationItems?.endDate ? format(new Date(CompensationItems?.endDate), "d MMM yyyy") : "",
               scopesName: CompensationItems?.scopesName || '',
               payItemFrequencyName: CompensationItems?.payItemFrequencyName || '',
@@ -85,7 +101,7 @@ const SelectEmployees = ({
             payItemName: CompensationItems.payItemName || '',
             amount: CompensationItems?.amount || '',
             currencyCode: CompensationItems?.currencyCode || '',
-            effectiveDate:CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "" ,
+            effectiveDate: CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "",
             endDate: CompensationItems?.endDate ? format(new Date(CompensationItems?.endDate), "d MMM yyyy") : "",
             scopesName: CompensationItems?.scopesName || '',
             payItemFrequencyName: CompensationItems?.payItemFrequencyName || '',
@@ -201,7 +217,8 @@ const SelectEmployees = ({
                               ?.payItems?.length
                               ? {
                                 ...tableOptions,
-                                enableMultiSelect: true,
+                                enableMultiSelect:true,
+                                disableRowCheckbox:{key:"isInvoiced", value: true},                             
                                 isMultiSelectDisabled: true,
                                 onRowCheckboxChange: onRowCheckboxChange,
                               }

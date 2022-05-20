@@ -486,7 +486,7 @@ export default function InvoiceListing() {
     }
   };
 
-  if (permission.InvoiceList.find((str: any) => str === "View") !== "View") {
+  if (permission?.InvoiceList?.find((str: any) => str === "View") !== "View") {
     return <p>You do not have permission to view this page.</p>;
   }
 
@@ -494,7 +494,7 @@ export default function InvoiceListing() {
     <>
       <div className="container">
         <div className="new-invoice-button">
-          {permission.InvoiceList.find((str: any) => str === "Add") ===
+          {permission?.InvoiceList?.find((str: any) => str === "Add") ===
             "Add" && (
               <Button
                 label="New Invoice"
@@ -520,7 +520,7 @@ export default function InvoiceListing() {
             />
           </div>
           <div className="pickers">
-            {permission.InvoiceList.find((str: any) => str === "Download") ===
+            {permission?.InvoiceList?.find((str: any) => str === "Download") ===
               "Download" && (
                 <div
                   onClick={downloadFunction}
@@ -750,7 +750,7 @@ export default function InvoiceListing() {
               }}
               options={status}
             />
-            {permission.InvoiceList.find((str: any) => str === "Edit") ===
+            {permission?.InvoiceList?.find((str: any) => str === "Edit") ===
               "Edit" && <img src={dots} />}
             {/* <FaEllipsisH className="icon" /> */}
           </div>
