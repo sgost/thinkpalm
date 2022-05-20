@@ -13,7 +13,7 @@ import {
 } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
-import { createManualInvoice, getHeaders } from "../../../urls/urls";
+import { createManualInvoice, getHeaders, updateInvoiceStatus } from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
@@ -24,6 +24,7 @@ const NewInvoice = () => {
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
+  const [loading, setLoading] = useState(false)
   //steps for payroll
   const stepsName = [
     sharedSteps.newInvoice,
@@ -223,7 +224,7 @@ const NewInvoice = () => {
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
   const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
-  const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState({})
+  const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState<any>({})
 
   // stepper three data
   const [transactionType, setTransactionType] = useState();
@@ -243,6 +244,8 @@ const NewInvoice = () => {
     setCustomerOption,
     typeOptions,
     setTypeOptions,
+    loading,
+    setLoading
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -256,9 +259,11 @@ const NewInvoice = () => {
     employeeApiData,
     setEmployeeApiData,
     setSelectedRowPostData,
+    loading,
+    setLoading
   };
 
-   //stepper three payroll props
+  //stepper three payroll props
   const stepperThreeProps = {
     accessToken,
     newInvoiceEmployeeDetailTable,
@@ -266,10 +271,12 @@ const NewInvoice = () => {
     newInvoiceFeeSummaryOptions,
     CreateManualPayrollRes,
     stepperOneData,
-    setTransactionType
+    setTransactionType,
+    loading,
+    setLoading
   };
 
-   //stepper four payroll props
+  //stepper four payroll props
   const stepperFourProps = {
     CreateManualPayrollRes,
     stepperOneData,
@@ -311,6 +318,7 @@ const NewInvoice = () => {
       setStepsCount(stepsCount + 1);
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
+      setLoading(true)
       const PrepareData = employeeRowData;
       PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
       const data = {
@@ -335,10 +343,29 @@ const NewInvoice = () => {
           if (res.data) {
             setCreateManualPayrollRes(res.data)
             setStepsCount(stepsCount + 1);
+            setLoading(false)
           }
         })
         .catch((e: any) => {
           console.log(e);
+        });
+    }
+    if (stepsCount == 3 && stepperOneData.type == "Payroll") {
+      setLoading(true)
+      axios({
+        method: "PUT",
+        url: updateInvoiceStatus(CreateManualPayrollRes?.invoiceId),
+        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+      })
+        .then((res: any) => {
+          if (res.status === 201) {
+            console.log("resssss", res)
+            setLoading(false)
+            setStepsCount(stepsCount + 1);
+          }
+        })
+        .catch((e: any) => {
+          console.log("error", e);
         });
     }
   };
