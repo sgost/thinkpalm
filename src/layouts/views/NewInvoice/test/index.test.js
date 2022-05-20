@@ -13,7 +13,7 @@ const id = "A9BBEE6D-797A-4724-A86A-5B1A2E28763F";
 const customerId = "A9BBEE6D-797A-4724-A86A-5B1A2E28763F";
 const countryId = "7defc4f9-906d-437f-a6d9-c822ca2ecfd7";
 const monthId = 1;
-const yearId = 2022
+const yearId = 2022;
 
 
 describe("New Invoice", () => {
