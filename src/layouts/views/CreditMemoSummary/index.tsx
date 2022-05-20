@@ -29,6 +29,8 @@ export default function CreditMemoSummary(props: any) {
     const [productOptions, setProductOptions] = useState([]);
     const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
     const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
+    const [isProductOpen , setIsProductOpen] = useState()
+    const [isCountryOpen , setIsCountryOpen] = useState()
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
@@ -49,7 +51,7 @@ export default function CreditMemoSummary(props: any) {
                 for(let i of creditMemoData.invoiceItems){
                     arr.push(resp.data.map((x: any) => {
                                 return {
-                                    isSelected: false,
+                                    isSelected: x.id == i.productId,
                                     label: x.glDescription,
                                     value: x.id
                                 }
@@ -81,16 +83,16 @@ export default function CreditMemoSummary(props: any) {
             })
         )
         let countryArr:any = [];
-        // creditMemoData.invoiceItems.foreach((item: any) => {
-        //     countryArr.push(serviceCountries.map((x: any) => {
-        //         return {
-        //             isSelected: false,
-        //             label: x.text,
-        //             value: x.value
-        //         }
-        //     }))
-        // })
-        // setMultipleCountryArr(countryArr);
+        creditMemoData.invoiceItems.forEach((item: any) => {
+            countryArr.push(serviceCountries.map((x: any) => {
+                return {
+                    isSelected: x.value == item.serviceCountry,
+                    label: x.text,
+                    value: x.value
+                }
+            }))
+        })
+        setMultipleCountryArr(countryArr);
         setVatAmount(creditMemoData.totalAmount * (vatValue / 100));
 
     }, [])
@@ -155,7 +157,6 @@ export default function CreditMemoSummary(props: any) {
         obj.serviceCountry = country.value;
         obj.amount = newAmount;
         obj.invoiceId = creditMemoData.id;
-        console.log(obj);
         var payload = creditMemoData;
         payload.invoiceItems.push(obj);
         cleanNewObject();
@@ -193,6 +194,40 @@ export default function CreditMemoSummary(props: any) {
         setNewAmount('');
         setNewTotalAmount('');
     }
+    const handleArrOptionClick = (
+        selOption: any,
+        options: any,
+        set: any,
+        setIsOpen: any,
+        index: number
+      ) => {
+        let arr = [...options];
+  
+        arr[index].forEach((e: any, i: number) => {
+          if (e.value === selOption.value) {
+            arr[index][i] = {
+              ...e,
+              label: e.label,
+              value: e.value,
+              isSelected: !e.isSelected,
+            };
+          } else {
+            arr[index][i] = {
+              ...arr[index][i],
+              isSelected: false,
+            };
+          }
+        });
+  
+        // let countryTableTemp = [...countryTable];
+        // setCountryTable([]);
+        set(arr);
+        setIsOpen(null);
+  
+        // setTimeout(() => {
+        //   setCountryTable(countryTableTemp);
+        // }, 1);
+      };
 
     /* istanbul ignore next */
     return (
@@ -235,7 +270,8 @@ export default function CreditMemoSummary(props: any) {
                         </>}
                     </div>
                 </div>
-                {fieldValues.map((item: any, index: any) => {
+                {fieldValues.map((item: any, index: number) => {
+                    // console.log(fieldValues)
                     return (
                         <>
                             <div className='UI-align-boxes margin-top'>
@@ -249,11 +285,20 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Dropdown
-                                        handleDropOptionClick={function noRefCheck() { }}
-                                        handleDropdownClick={() => { console.log(multipleProductArr)}}
-                                        // isOpen={true}
+                                        // handleDropOptionClick={function noRefCheck() { }}
+                                        handleDropOptionClick={(option: any) =>
+                                            handleArrOptionClick(
+                                              option,
+                                              multipleProductArr,
+                                              setMultipleProductArr,
+                                              setIsProductOpen,
+                                              index
+                                            )
+                                          }
+                                        handleDropdownClick={() => { console.log(productOptions)}}
+                                        isOpen={false}
                                         isDisabled={editCheck}
-                                        options={multipleProductArr}//error
+                                        options={multipleProductArr[index] || []}//error
                                         title="Product Service"
                                     />
                                 </div>
@@ -269,11 +314,20 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Dropdown
-                                        handleDropOptionClick={function noRefCheck() { }}
+                                        // handleDropOptionClick={function noRefCheck() { }}
+                                        handleDropOptionClick={(option: any) =>
+                                            handleArrOptionClick(
+                                              option,
+                                              multipleCountryArr,
+                                              setMultipleCountryArr,
+                                              setIsCountryOpen,
+                                              index
+                                            )
+                                          }
                                         handleDropdownClick={() => { }}
                                         isOpen={false}
                                         isDisabled={editCheck}
-                                        options={multipleCountryArr}
+                                        options={multipleCountryArr[index] || []}
                                         title="Service Country"
                                     />
                                 </div>

@@ -29,7 +29,11 @@ describe("Credit Memo Summary",() => {
                     isClient={"true"}
                     setNotes={()=>{}}
                     setDocuments={()=>{}}
-                    invoiceItems={mockCreditMemoData.invoiceItems}
+                    // invoiceItems={mockCreditMemoData.invoiceItems}
+                    creditMemoData={mockCreditMemoData}
+                    serviceCountries = {[]}
+                    currency = {"USD"}
+                    vatValue = {10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -45,14 +49,18 @@ describe("Notes fail",() => {
         render(
             <HashRouter>
                 <CreditMemoSummary 
-                    notes={[]}
+                    notes={mockapidata.notes}
                     documents= {mockapidata.resData.invoice.invoiceDocuments} 
                     id={id}
                     cid={cid}
-                    isClient={"false"}
+                    isClient={"true"}
                     setNotes={()=>{}}
                     setDocuments={()=>{}}
-                    invoiceItems={mockCreditMemoData.invoiceItems}
+                    // invoiceItems={mockCreditMemoData.invoiceItems}
+                    creditMemoData={mockCreditMemoData}
+                    serviceCountries = {[]}
+                    currency = {"USD"}
+                    vatValue = {10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
