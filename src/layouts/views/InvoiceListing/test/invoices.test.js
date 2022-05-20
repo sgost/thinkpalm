@@ -166,9 +166,9 @@ let resDataClient = {
       currencyId: 978,
       qbInvoiceNo: 21238,
       invoiceNo: "1000989",
-      status: 3,
+      status: 9,
       statusLabel: "Pending Approval",
-      transactionType: 1,
+      transactionType: 7,
       transactionTypeLabel: "Payroll",
       createdDate: "2022-02-01T00:00:00",
       paymentDate: null,
@@ -451,7 +451,7 @@ describe("checkbox and download", () => {
     mock.onGet(getClientListingUrl("", "", "", "")).reply(200, resDataClient);
     // const getById = queryByAttribute.bind(null, "id");
 
-    const { container } = render(
+    const { container, getByTestId } = render(
       <HashRouter>
         <Invoices />
       </HashRouter>
@@ -471,6 +471,8 @@ describe("checkbox and download", () => {
     const download = await waitFor(() => container.querySelector(".download"));
     screen.debug(download);
     fireEvent.click(download);
+    fireEvent.click(getByTestId("invoice-list-cell-1"));
+    fireEvent.click(getByTestId("confirm-modal-button"));
 
     fireEvent.click(chkbx);
 

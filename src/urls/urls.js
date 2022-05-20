@@ -189,9 +189,9 @@ export const getCountryByCustomer = (id) => {
   );
 };
 
-export const getEmployee = (customerId, countryId) => {
+export const getEmployee = (customerId, countryId, monthId, yearId) => {
   return (
-    baseURL + services.atlasIdgService + `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}`
+    baseURL + services.atlasIdgService + `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}&month=${monthId}&year=${yearId}`
   );
 };
 
@@ -208,5 +208,10 @@ export const getCreditMemoStep4Url = (invoiceId) => {
     baseURL +
     services.atlasInvoiceService +
     `/invoices/relatedData/${invoiceId}`
+  )
+}
+export const updateInvoiceStatus = (invoiceId) => {
+  return (
+    baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`
   );
 };

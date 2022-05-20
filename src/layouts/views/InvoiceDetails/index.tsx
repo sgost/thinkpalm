@@ -479,14 +479,14 @@ export default function InvoiceDetails() {
         (x: any) => x.feeId === additionalFee.id
       );
 
-      setContractTerminationFee(terminationFeeTemp?.amount);
+      setContractTerminationFee(terminationFeeTemp?.amount || 0);
 
       const incomingFee = feeData.data.find((x: any) => x.type === 1);
 
       const incomingWirePaymentTemp = apiData.data.payrollFees.find(
         (x: any) => x.feeId === incomingFee.id
       );
-      setIncomingWirePayment(incomingWirePaymentTemp?.amount);
+      setIncomingWirePayment(incomingWirePaymentTemp?.amount || 0);
 
       const totalFeeSummaryTemp =
         apiData.data.countryPayroll.reduce(
@@ -1538,6 +1538,7 @@ export default function InvoiceDetails() {
           tableData={billTableData?.data}
           customerId={cid}
           invoiceId={state.InvoiceId}
+          navigate={navigate}
         ></BillsTable>
       )}
 

@@ -19,6 +19,8 @@ import {
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../..//components/getDecodedToken";
 
+import { WeAreSorryModal } from "./weAreSorryModal";
+
 export default function InvoiceListing() {
   let navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
@@ -35,6 +37,8 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
+  const [weAreSorryModalAction, setWeAreSorryModalAction] = useState<boolean>(false);
+
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
     message: "Downloading...",
@@ -492,17 +496,17 @@ export default function InvoiceListing() {
         <div className="new-invoice-button">
           {permission?.InvoiceList?.find((str: any) => str === "Add") ===
             "Add" && (
-            <Button
-              label="New Invoice"
-              className="primary-blue medium"
-              icon={{
-                icon: "add",
-                size: "medium",
-                color: "#fff",
-              }}
-              handleOnClick={() => navigate("/pay/newinvoice")}
-            />
-          )}
+              <Button
+                label="New Invoice"
+                className="primary-blue medium"
+                icon={{
+                  icon: "add",
+                  size: "medium",
+                  color: "#fff",
+                }}
+                handleOnClick={() => navigate("/pay/newinvoice")}
+              />
+            )}
         </div>
         <div className="dropdowns">
           <div className="inputContainer">
@@ -518,19 +522,19 @@ export default function InvoiceListing() {
           <div className="pickers">
             {permission?.InvoiceList?.find((str: any) => str === "Download") ===
               "Download" && (
-              <div
-                onClick={downloadFunction}
-                data-testid="download"
-                className={downloadDisable ? "downloadpointer" : "download"}
-              >
-                <Icon
-                  className="download"
-                  color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                  icon="download"
-                  size="large"
-                />
-              </div>
-            )}
+                <div
+                  onClick={downloadFunction}
+                  data-testid="download"
+                  className={downloadDisable ? "downloadpointer" : "download"}
+                >
+                  <Icon
+                    className="download"
+                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                    icon="download"
+                    size="large"
+                  />
+                </div>
+              )}
 
             <DatepickerDropdown
               title="Date"
@@ -833,19 +837,19 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                    ...searchedTableData,
-                    // showDefaultColumn: true,
-                    enableMultiSelect: true,
-                    onRowCheckboxChange: onRowCheckboxChange,
-                  }
+                  ...searchedTableData,
+                  // showDefaultColumn: true,
+                  enableMultiSelect: true,
+                  onRowCheckboxChange: onRowCheckboxChange,
+                }
                 : isClient
-                ? {
+                  ? {
                     ...clientTableData,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                : {
+                  : {
                     ...internalTabledata,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
@@ -856,26 +860,35 @@ export default function InvoiceListing() {
             className="table"
             pagination
             pagingOptions={[15, 30, 50, 100]}
+            testRowClick="invoice-list-cell"
             handleRowClick={(row: any) => {
               let isClientStr = isClient ? "true" : "false";
-              navigate(
-                "/pay/invoicedetails" +
+              if (row?.transactionType === 7 && row?.status === 9) {
+                setWeAreSorryModalAction(true);
+              } else {
+                navigate(
+                  "/pay/invoicedetails" +
                   row.id +
                   "/" +
                   row.customerId +
                   "/" +
                   isClientStr,
-                {
-                  state: {
-                    InvoiceId: row.invoiceNo,
-                    transactionType: row.transactionType,
-                  },
-                }
-              );
+                  {
+                    state: {
+                      InvoiceId: row.invoiceNo,
+                      transactionType: row.transactionType,
+                    },
+                  }
+                );
+              }
             }}
           />
         )}
       </div>
+      <WeAreSorryModal
+        isOpen={weAreSorryModalAction}
+        onClose={() => setWeAreSorryModalAction(false)}
+      />
     </>
   );
 }
