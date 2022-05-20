@@ -222,6 +222,6 @@ export const productInvoice = () => {
 
 export const CountryApi = () => {
   return (
-    metaDataUrl + services.apngMetaDataService + `/Country`
+    metaDataUrl + services.apngMetaDataService + `/Lookup`
   );
 };

@@ -7,28 +7,63 @@ import { getCountryByCustomer, urls, productInvoice, CountryApi } from "../../..
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 const InvoicePreviewPop = ({
-    handleSteps,
-    allStepsData,
-    handleAllSteppersData,
+    accessToken,
+    stepperOneData,
+    YearOptions,
+    MonthOptions,
+    CountryOptions,
+    CustomerOptions,
+    typeOptions,
+
+    dateFrom,
+    productService,
+    countryService,
+    description,
+    quantity,
+    amount,
+    newArrPush,
+    Open,
+    newArrPushs,
+    Opens,
 }: any) => {
 
-    const [open, setOpen] = useState(false)
+    console.log('accessToken', accessToken)
+    console.log('stepperOneData', stepperOneData)
+    console.log('YearOptions', YearOptions)
+    console.log('MonthOptions', MonthOptions)
+    console.log('CountryOptions', CountryOptions)
+    console.log('CustomerOptions', CustomerOptions)
+    console.log('typeOptions', typeOptions)
+    console.log('dateFrom', dateFrom)
+    console.log('productService', productService)
+
+    console.log('description', description)
+    console.log('quantity', quantity)
+    console.log('amount', amount)
+    console.log('countryService', countryService)
+    console.log('newArrPush', newArrPush)
+    console.log('Open', Open)
+    console.log('newArrPushs', newArrPushs)
+    console.log('Opens', Opens)
+
+
+    const [opend, setOpend] = useState(false)
 
 
     return (
-        <div id="popover_main">
-            <div id="popover">
-                <div id="body_main">
+        <div id="popover_main" style={{ background: `white`, padding: `40px 80px`, borderRadius: `0.5rem` }}>
+            <div id="popover" >
+                <div id="body_main" >
                     <h1 id="title">Invoice Preview</h1>
                     <p id="description">Please preview the new payroll invoice has been created. You can access it right from here
                         or from the
                         Invoices listing page.</p>
-                    <button id="button" onClick={() => setOpen(true)}>Preview Invoice</button>
-                </div>``
+                    <button id="button" onClick={() => setOpend(true)}>Preview Invoice</button>
+                </div>
 
                 {/* POPUP */}
-                <Modal isOpen={open}>
-                    <div id="invoice_pop" onClick={() => setOpen(false)}>
+                <Modal isOpen={opend}>
+                    <div id="invoice_pop" onClick={() => setOpend(false)}>
                         <span id="close"><Icon
                             color="white"
                             icon="remove"
@@ -44,8 +79,8 @@ const InvoicePreviewPop = ({
                                 /></span>Credit Memo No. 791230</h1>
                             </div>
                             <div id="head_price">
-                                <span>USD 300,523.15</span>
-                                <span>USD 300,523.15</span>
+                                <span>USD {quantity}</span>
+                                <span>USD {amount}</span>
                             </div>
                         </div>
 
@@ -65,15 +100,7 @@ const InvoicePreviewPop = ({
                                 <div id="cards">
                                     <div id="cards_date_container">
                                         <h3>Invoice Date</h3>
-                                        <span id="description">01 Nov 2021</span>
-                                    </div>
-                                    <div id="cards_date_container">
-                                        <h3>Invoice Date</h3>
-                                        <span id="description">01 Nov 2021</span>
-                                    </div>
-                                    <div id="cards_date_container">
-                                        <h3>Invoice Date</h3>
-                                        <span id="description">01 Nov 2021</span>
+                                        <span id="description">{dateFrom}</span>
                                     </div>
                                 </div>
                                 <div id="cards">
@@ -98,38 +125,38 @@ const InvoicePreviewPop = ({
                                     <div id="cards">
                                         <div id="cards_date_container">
                                             <h3>Invoice Date</h3>
-                                            <span id="description">01 Nov 2021</span>
+                                            <span id="description">{dateFrom}</span>
                                         </div>
                                         <div id="cards_date_container">
                                             <h3>Service Country</h3>
-                                            <span id="description">USA- United States of America</span>
+                                            <span id="description">{countryService}</span>
                                         </div>
                                     </div>
                                     <div id="cards">
                                         <div id="cards_date_container">
-                                            <h3>Invoice Date</h3>
-                                            <span id="description">Contract Termination Fee</span>
+                                            <h3>Invoice Type</h3>
+                                            <span id="description">{productService}</span>
                                         </div>
                                         <div id="cards_date_container">
                                             <h3>Quantity</h3>
-                                            <span id="description">50</span>
+                                            <span id="description">{quantity}</span>
                                         </div>
                                     </div>
                                     <div id="cards">
                                         <div id="cards_date_container">
                                             <h3>Description</h3>
-                                            <span id="description">Some option</span>
+                                            <span id="description">{description}</span>
                                         </div>
                                         <div id="cards_date_container">
                                             <h3>Amount</h3>
-                                            <span id="description">1,000.00</span>
+                                            <span id="description">{amount}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div id="invoice_bottom">
                                 <span id="bal_text">Total Balance</span>
-                                <span id="button">USD 130,913.15</span>
+                                <span id="button">USD {quantity * amount}</span>
                             </div>
                         </div>
                     </div>

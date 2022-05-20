@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
+import InvoicePreviewPop from "./InvoicePreviewPop"
 import ProductInvoiceCreation from "./ProductInvoiceCreation"
 import SelectEmployees from "./SelectEmployees";
 import PreviewInvoice from "./PreviewInvoice";
@@ -18,6 +19,51 @@ import { createManualInvoice, getHeaders } from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
+
+
+  //ProductIncoice Data
+  const [dateFrom, setDateFrom] = useState("");
+  //Set Product Service
+  const [productService, setProductService] = useState("")
+  //set Country
+  const [countryService, setCountryService] = useState("")
+  //Description
+  const [description, setDescription] = useState("")
+  //Quantity, Amount
+  const [quantity, setQuantity] = useState("")
+  const [amount, setAmount] = useState("")
+  const [newArrPush, setNewArrPush] = useState([])
+  const [Open, setOpen] = useState(false)
+  const [newArrPushs, setNewArrPushs] = useState([])
+  const [Opens, setOpens] = useState(false)
+
+  //Product Stepper2 Data
+  const product_stepper = {
+    dateFrom,
+    setDateFrom,
+    countryService,
+    setCountryService,
+    productService,
+    setProductService,
+    description,
+    setDescription,
+    quantity,
+    setQuantity,
+    amount,
+    setAmount,
+    newArrPush,
+    setNewArrPush,
+    Open,
+    setOpen,
+    newArrPushs,
+    setNewArrPushs,
+    Opens,
+    setOpens
+  }
+
+  console.log(dateFrom)
+  console.log('product_stepper', product_stepper)
+  ///////////////////////////
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
@@ -431,11 +477,14 @@ const NewInvoice = () => {
           rightPanel={
             <>
               {stepsCount == 1 ? (
-                <NewInvoiceCreation {...stepperOneProps} />
+                <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 2 ? (
-                stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation />
+                stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 3 ? (
-                <PreviewInvoice {...stepperThreeProps} />
+                stepperOneData?.type === "Payroll" ?
+                  <PreviewInvoice {...stepperThreeProps} />
+                  :
+                  <InvoicePreviewPop {...stepperOneProps} {...product_stepper} />
               ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
                 <FinishSTepper />
               ) : (

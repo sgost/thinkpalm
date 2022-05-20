@@ -319,3 +319,70 @@ button.a-button.primary-blue.medium.button {
     // height: 3.4rem;
     height: 3.34rem;
 }
+
+
+
+// Detail Cards
+#detail_card_main {
+    padding: 50px;
+    border-radius: 0.5rem;
+    background-color: white;
+    margin-top: 1.5rem;
+}
+
+#detail_card_main #detail_cards #card_head_detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#detail_card_main #detail_cards #card_head_detail #detail_title {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+#detail_card_main #detail_cards #card_head_detail #card_detail_btns #delete {
+    font-size: 15px;
+    color: #526FD6;
+    cursor: pointer;
+}
+
+#detail_card_main #detail_cards #top_row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 40px 0 0 0;
+    gap: 30px;
+}
+
+#detail_card_main #detail_cards #top_row #roe_detatil_card #detail_card_title {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#detail_card_main #detail_cards #top_row #roe_detatil_card p {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+#detail_card_main #detail_cards #balance_row {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    margin: 35px 0 0 auto;
+}
+
+#detail_card_main #detail_cards #balance_row #detail_balance_text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #526FD6;
+}
+
+#detail_card_main #detail_cards #balance_row #detail_card_balance {
+    font-size: 20px;
+    font-weight: 600;
+    color: #526FD6;
+    margin: 0 0 0 30px;
+    background-color: #EEF1FB;
+    border-radius: 0.5rem;
+    padding: 10px 41px;
+}

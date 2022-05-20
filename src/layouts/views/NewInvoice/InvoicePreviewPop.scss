@@ -90,7 +90,7 @@
 
     #invoice_pop #invoice_head #head_title h1 {
         font-style: normal;
-        font-weight: 400;
+        font-weight: 600;
         font-size: 32px;
         line-height: 45px;
         color: #17224E;
@@ -108,13 +108,12 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
     }
 
     #invoice_pop #invoice_head #head_price span {
         line-height: 30px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 20px;
         line-height: 30px;
         color: #17224E;
@@ -152,6 +151,10 @@
         margin: 10px 0 0 0;
     }
 
+    #invoice_pop #invoice_body #body_top #cards #cards_date_container #description {
+        font-size: 18px;
+    }
+
     #invoice_pop #invoice_body #body_top #cards h3 {
         font-size: 16px;
         font-weight: 400;
@@ -161,7 +164,7 @@
 
     #invoice_pop #invoice_body #body_top #cards #description {
         font-size: 20px;
-        font-weight: 500;
+        font-weight: 600;
         color: #000000cc;
     }
 
@@ -237,7 +240,7 @@
         background: #EEF1FB;
         border-radius: 10px;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 600;
         font-size: 24px;
         line-height: 34px;
         color: #526FD6;
