@@ -10124,3 +10124,71 @@ resAddressDataFailedApi : {
   "message": "something went wrong"
 }
 };
+export const mockCreditMemoData = {
+  "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
+  "customerName": "Aviat Networks Holland B.V",
+  "customerLocation": "Netherlands",
+  "currencyId": 978,
+  "qbInvoiceNo": 0,
+  "invoiceNo": "100140",
+  "status": 1,
+  "statusLabel": null,
+  "transactionType": 4,
+  "transactionTypeLabel": null,
+  "createdDate": "2022-01-25T04:42:32",
+  "paymentDate": null,
+  "approvalDate": null,
+  "submissionDate": null,
+  "dueDate": "2022-01-25T04:42:34",
+  "exchangeRate": 1.13419,
+  "totalAmount": 50.00,
+  "invoiceBalance": 50.00,
+  "isClientVisible": true,
+  "depositTo": null,
+  "createdBy": "48a69262-1054-4d96-830e-8514c78b0eb1",
+  "modifiedBy": "48a69262-1054-4d96-830e-8514c78b0eb1",
+  "eorSubscriptionId": null,
+  "invoicerId": null,
+  "bankingDetailId": null,
+  "poNumber": null,
+  "ageingNotPaid": 113,
+  "ageingPaid": null,
+  "invoiceDocuments": [],
+  invoiceItems: [
+      {
+          "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
+          "serviceDate": "2022-01-24T18:30:00",
+          "productId": "3adac939-a4d1-4432-8301-e1eda5ba989b",
+          "description": "cc",
+          "amount": 25.00,
+          "quantity": 2,
+          "totalAmount": 50.00,
+          "serviceCountry": 4,
+          "modifiedBy": "00000000-0000-0000-0000-000000000000",
+          "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
+          "product": null,
+          "id": "1fb476fb-f346-44d6-bf8f-e691dbd8369c"
+      }
+  ],
+  invoiceNotes: [
+      {
+          "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
+          "noteType": 2,
+          "note": "CREATED",
+          "isCustomerVisible": true,
+          "exportToQuickbooks": false,
+          "createdDate": "2022-01-25T04:42:50Z",
+          "modifiedBy": "48a69262-1054-4d96-830e-8514c78b0eb1",
+          "modifiedByUser": null,
+          "displayInPDF": false,
+          "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
+          "id": 23180
+      }
+  ],
+  "invoiceRelatedInvoices": [],
+  "invoiceRelatedRelatedInvoices": [],
+  "payrolls": [],
+  "customer": null,
+  "currency": null,
+  "id": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3"
+}

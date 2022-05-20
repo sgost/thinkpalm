@@ -1,7 +1,8 @@
 @import "../../../styles/variables";
 .credit-summary-wrapper {
     .a-cards{
-        align-items: flex-start !important;
+        display: block;
+        // align-items: flex-start !important;
     }
     .summary-card {
         padding: 2.813rem 4rem 5.315rem 4rem;
@@ -9,6 +10,9 @@
         .UI-line-text-box {
             width: 22% !important;
             // margin-right: 4.193rem;
+            .a-dpicker{
+                margin-top: 1.25rem;
+            }
         }
 
         .quantity-box {
