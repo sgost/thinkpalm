@@ -48,19 +48,19 @@ export default function InvoiceDetails() {
   const { state }: any = useLocation();
   // const state = { transactionType: 4, InvoiceId: "100678"};
   const topPanelObj = {
-    from: '',
-    to: '',
-    toAddress: '',
-    poNumber: '',
-    invoiceDate:'',
-    invoiceApproval:'',
-    paymentDue: '',
-    location: '',
-    region: '',
-    billingCurrency:'',
-    total:'',
-    open:''
-  }
+    from: "",
+    to: "",
+    toAddress: "",
+    poNumber: "",
+    invoiceDate: "",
+    invoiceApproval: "",
+    paymentDue: "",
+    location: "",
+    region: "",
+    billingCurrency: "",
+    total: "",
+    open: "",
+  };
   const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -120,7 +120,7 @@ export default function InvoiceDetails() {
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
   const [isAutoApprove, setIsAutoApprove] = useState(false);
-  const [creditMemoData, setCreditMemoData] = useState<any>(null)
+  const [creditMemoData, setCreditMemoData] = useState<any>(null);
   const [topPanel, setTopPanel] = useState<any>(topPanelObj);
   const [vatValue, setVatValue] = useState();
   const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
@@ -130,10 +130,10 @@ export default function InvoiceDetails() {
   const [changeLogs, setChangeLogs] = useState<any>([]);
 
   useEffect(() => {
-    if(logsData.length === 0) return;
-    const splicedData:any = [...logsData].splice(0, viewLimit);
-    setChangeLogs([...splicedData])
-  }, [logsData])
+    if (logsData.length === 0) return;
+    const splicedData: any = [...logsData].splice(0, viewLimit);
+    setChangeLogs([...splicedData]);
+  }, [logsData]);
 
   useEffect(() => {
     if (changeLogs.length === logsData.length) {
@@ -169,18 +169,18 @@ export default function InvoiceDetails() {
 
         if (state.transactionType != 7 && state.transactionType != 4) {
           axios
-          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
-          .then((res: any) => {
-            const logsDetails:any = res?.data?.map((log: any) => ({
-              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"), 
-              customerEmail: log?.email, 
-              description: log?.note,
-            }));
-            setLogsData([...logsDetails]);
-          })
-          .catch((e: any) => {
-            console.log("error", e);
-          });
+            .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+            .then((res: any) => {
+              const logsDetails: any = res?.data?.map((log: any) => ({
+                date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+                customerEmail: log?.email,
+                description: log?.note,
+              }));
+              setLogsData([...logsDetails]);
+            })
+            .catch((e: any) => {
+              console.log("error", e);
+            });
           axios
             .get(api, headers)
             .then((res: any) => {
@@ -359,24 +359,30 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else if(state.transactionType == 4){
-          axios.get(getCMInvoiceUrl(id), headers).then((response)=>{
-            if(response.status == 200){
-              setCreditMemoData(response.data);
-              setNotes(response.data.invoiceNotes);
-              setDocuments(response.data.invoiceDocuments);
-            }
-          }).catch((res)=>{
-            console.log(res);
-          });
-          axios.get(getVatValue(cid)).then((resp)=>{
-            if(resp.status == 200){
-              setVatValue(resp?.data?.feeConfiguration?.percentage);
-            }
-          }).catch((resp)=>{
-            console.log(resp);
-          })
-        }else {
+        } else if (state.transactionType == 4) {
+          axios
+            .get(getCMInvoiceUrl(id), headers)
+            .then((response) => {
+              if (response.status == 200) {
+                setCreditMemoData(response.data);
+                setNotes(response.data.invoiceNotes);
+                setDocuments(response.data.invoiceDocuments);
+              }
+            })
+            .catch((res) => {
+              console.log(res);
+            });
+          axios
+            .get(getVatValue(cid))
+            .then((resp) => {
+              if (resp.status == 200) {
+                setVatValue(resp?.data?.feeConfiguration?.percentage);
+              }
+            })
+            .catch((resp) => {
+              console.log(resp);
+            });
+        } else {
           let res: any = {
             data: {
               ...apiInvoiceMockData,
@@ -436,12 +442,14 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    if(state.transactionType != 4){
+    if (state.transactionType != 4) {
       axios
         .get(notesApi, headers)
         .then((res: any) => {
           if (isClient == "true") {
-            setNotes(res.data.reverse().filter((e: any) => e.isCustomerVisible));
+            setNotes(
+              res.data.reverse().filter((e: any) => e.isCustomerVisible)
+            );
           } else {
             setNotes(res.data.reverse());
           }
@@ -461,15 +469,15 @@ export default function InvoiceDetails() {
       });
     }
   }, [lookupData, apiData]);
-  useEffect(()=>{
-    if(lookupData?.data && creditMemoData){
-      lookupData.data.invoiceStatuses.forEach((e: any)=>{
-        if(e.value === creditMemoData.status){
+  useEffect(() => {
+    if (lookupData?.data && creditMemoData) {
+      lookupData.data.invoiceStatuses.forEach((e: any) => {
+        if (e.value === creditMemoData.status) {
           setStatus(e.text);
         }
       });
     }
-  }, [lookupData, creditMemoData])
+  }, [lookupData, creditMemoData]);
 
   useEffect(() => {
     if (apiData?.data && feeData?.data) {
@@ -499,40 +507,50 @@ export default function InvoiceDetails() {
       setFeeSummaryTotalDue(totalFeeSummaryTemp);
     }
   }, [apiData, feeData]);
-  useEffect(()=>{
-    if(apiData?.data && addressData?.data){
+  useEffect(() => {
+    if (apiData?.data && addressData?.data) {
       let model: any = topPanelObj;
       model.from = apiData?.data?.invoiceFrom?.companyName;
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(apiData?.data?.invoice?.createdDate).format("DD MMM YYYY");
-      model.invoiceApproval = moment(apiData?.data?.invoice?.createdDate).format("DD MMM YYYY");
-      model.paymentDue = moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY");
+      model.invoiceDate = moment(apiData?.data?.invoice?.createdDate).format(
+        "DD MMM YYYY"
+      );
+      model.invoiceApproval = moment(
+        apiData?.data?.invoice?.createdDate
+      ).format("DD MMM YYYY");
+      model.paymentDue = moment(apiData?.data?.invoice?.dueDate).format(
+        "DD MMM YYYY"
+      );
       model.location = apiData?.data?.invoice?.customerLocation;
       model.region = apiData?.data?.regionItemCode?.toUpperCase();
       model.total = apiData?.data?.invoice?.totalAmount;
       model.open = apiData?.data?.invoice?.invoiceBalance;
       setTopPanel(model);
     }
-  },[apiData, addressData])
+  }, [apiData, addressData]);
 
-  useEffect(()=>{
-    if(creditMemoData && addressData?.data){
+  useEffect(() => {
+    if (creditMemoData && addressData?.data) {
       let model: any = topPanelObj;
       model.from = "Elements Holdings Group Ltd";
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
-      model.invoiceApproval = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
+      model.invoiceDate = moment(creditMemoData?.createdDate).format(
+        "DD MMM YYYY"
+      );
+      model.invoiceApproval = moment(creditMemoData?.createdDate).format(
+        "DD MMM YYYY"
+      );
       model.paymentDue = moment(creditMemoData?.dueDate).format("DD MMM YYYY");
       model.location = creditMemoData?.customerLocation;
-      model.region = "EMEA"
+      model.region = "EMEA";
       model.total = creditMemoData?.totalAmount;
       model.open = creditMemoData?.invoiceBalance;
       setTopPanel(model);
     }
-  },[creditMemoData, addressData])
+  }, [creditMemoData, addressData]);
 
   useEffect(() => {
     if (showAutoApprovedToast) {
@@ -568,7 +586,7 @@ export default function InvoiceDetails() {
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
       return currency.currency.code;
-    }else if(creditMemoData && countriesData?.data){
+    } else if (creditMemoData && countriesData?.data) {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === creditMemoData.currencyId
       );
@@ -889,7 +907,7 @@ export default function InvoiceDetails() {
       });
   };
 
-  if ((!apiData?.data && !isErr) && (!creditMemoData && !isErr)) {
+  if (!apiData?.data && !isErr && !creditMemoData && !isErr) {
     return <p>Loading...</p>;
   }
   if (isErr) {
@@ -1025,7 +1043,7 @@ export default function InvoiceDetails() {
                   }}
                 />
               )}
-            {status === "Pending Approval" &&
+            {/* {status === "Pending Approval" &&
               permission?.InvoiceDetails.includes("Approve") && (
                 <Button
                   className="primary-blue small"
@@ -1039,7 +1057,7 @@ export default function InvoiceDetails() {
                     handleApproveAR();
                   }}
                 />
-              )}
+              )} */}
             {status === "Pending Approval" &&
               permission.InvoiceDetails.includes("Approve") && (
                 <Button
@@ -1138,16 +1156,12 @@ export default function InvoiceDetails() {
           </div>
           <div>
             <p className="heading">Invoice Date</p>
-            <p className="value">
-              {topPanel.invoiceDate}
-            </p>
+            <p className="value">{topPanel.invoiceDate}</p>
 
             {state.transactionType != 7 && (
               <>
                 <p className="heading">Invoice Changes</p>
-                <p className="value">
-                  {topPanel.invoiceApproval}
-                </p>
+                <p className="value">{topPanel.invoiceApproval}</p>
 
                 {isClient == "false" && (
                   <div className="autoapproveContainer">
@@ -1187,9 +1201,7 @@ export default function InvoiceDetails() {
                 )}
 
                 <p className="heading">Payment Due</p>
-                <p className="value">
-                  {topPanel.paymentDue}
-                </p>
+                <p className="value">{topPanel.paymentDue}</p>
               </>
             )}
           </div>
@@ -1197,9 +1209,7 @@ export default function InvoiceDetails() {
             <p className="heading">Location</p>
             <p className="value">{topPanel.location}</p>
             <p className="heading">Region</p>
-            <p className="value">
-              {topPanel.region}
-            </p>
+            <p className="value">{topPanel.region}</p>
             <p className="heading">Billing Currency</p>
             <p className="value">{getBillingCurrency()}</p>
           </div>
@@ -1238,9 +1248,9 @@ export default function InvoiceDetails() {
             cid={cid}
             id={id}
             creditMemoData={creditMemoData}
-            serviceCountries = {lookupData?.data.serviceCountries}
-            currency = {getBillingCurrency()}
-            vatValue = {vatValue}
+            serviceCountries={lookupData?.data.serviceCountries}
+            currency={getBillingCurrency()}
+            vatValue={vatValue}
           ></CreditMemoSummary>
         )}
 
@@ -1460,78 +1470,95 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "files" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && <>
-          <div className="filesNotes">
-            <NotesWidget
-              notes={notes}
-              setNotes={setNotes}
-              isClient={isClient}
-              cid={cid}
-              id={id}
-            ></NotesWidget>
+        state.transactionType != 7 && (
+          <>
+            <div className="filesNotes">
+              <NotesWidget
+                notes={notes}
+                setNotes={setNotes}
+                isClient={isClient}
+                cid={cid}
+                id={id}
+              ></NotesWidget>
 
-            <FileUploadWidget
-              documents={documents}
-              setDocuments={setDocuments}
-              isClient={isClient}
-              cid={cid}
-              id={id}
-            ></FileUploadWidget>
-          </div>
-          <Cards className="invoice-logs">
-          <Logs
-            custom
-            isOpen={isLogsOpen}
-            data={changeLogs}
-            title={<><Icon icon="edit" size="small" color="#526FD6" viewBox="-2 -1 24 24" style={{
-              marginTop: "0",
-              padding: "0"
-            }} /> View Change Log</>}
-            name="View-change-log"
-            handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
-            actions={{
-              primary: {
-                label: "View More",
-                icon: {
-                  icon: "edit",
-                  size: "small",
-                  color: "#526FD6",
-                  viewBox: "-2 -1 24 24"
-                },
-                handleOnClick: () => {
-                  if (dataAvailable) {
-                    const spliced = [...logsData].splice(changeLogs.length, viewLimit);
-                    setChangeLogs([...changeLogs, ...spliced]);
-                  }
-                },
-                disabled: !dataAvailable
-              },
-              secondary: {
-                label: "View Less",
-                icon: {
-                  icon: "edit",
-                  size: "small",
-                  color: "#526FD6",
-                  viewBox: "-2 -1 24 24"
-                },
-                handleOnClick: () => {
-                  const logs = [...changeLogs.reverse()];
-                  const limit = changeLogs?.length-1 === viewLimit ? 1 : viewLimit;
-                  if(changeLogs.length === limit) {
-                    return;
-                  }
-                  logs.splice(0, limit);
-                  setChangeLogs([...logs.reverse()]);
-                  if (logs.length > viewLimit) {
-                    setDataAvailable(true);
-                  }
-                },
-                disabled: changeLogs.length <= viewLimit
-              }
-            }}
-          />
-        </Cards>
-        </>}
+              <FileUploadWidget
+                documents={documents}
+                setDocuments={setDocuments}
+                isClient={isClient}
+                cid={cid}
+                id={id}
+              ></FileUploadWidget>
+            </div>
+            <Cards className="invoice-logs">
+              <Logs
+                custom
+                isOpen={isLogsOpen}
+                data={changeLogs}
+                title={
+                  <>
+                    <Icon
+                      icon="edit"
+                      size="small"
+                      color="#526FD6"
+                      viewBox="-2 -1 24 24"
+                      style={{
+                        marginTop: "0",
+                        padding: "0",
+                      }}
+                    />{" "}
+                    View Change Log
+                  </>
+                }
+                name="View-change-log"
+                handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
+                actions={{
+                  primary: {
+                    label: "View More",
+                    icon: {
+                      icon: "edit",
+                      size: "small",
+                      color: "#526FD6",
+                      viewBox: "-2 -1 24 24",
+                    },
+                    handleOnClick: () => {
+                      if (dataAvailable) {
+                        const spliced = [...logsData].splice(
+                          changeLogs.length,
+                          viewLimit
+                        );
+                        setChangeLogs([...changeLogs, ...spliced]);
+                      }
+                    },
+                    disabled: !dataAvailable,
+                  },
+                  secondary: {
+                    label: "View Less",
+                    icon: {
+                      icon: "edit",
+                      size: "small",
+                      color: "#526FD6",
+                      viewBox: "-2 -1 24 24",
+                    },
+                    handleOnClick: () => {
+                      const logs = [...changeLogs.reverse()];
+                      const limit =
+                        changeLogs?.length - 1 === viewLimit ? 1 : viewLimit;
+                      if (changeLogs.length === limit) {
+                        return;
+                      }
+                      logs.splice(0, limit);
+                      setChangeLogs([...logs.reverse()]);
+                      if (logs.length > viewLimit) {
+                        setDataAvailable(true);
+                      }
+                    },
+                    disabled: changeLogs.length <= viewLimit,
+                  },
+                }}
+              />
+            </Cards>
+          </>
+        )}
       {state.transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}
