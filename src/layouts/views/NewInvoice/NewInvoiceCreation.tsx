@@ -246,7 +246,7 @@ const NewInvoiceCreation = ({
                     }}
                     isOpen={isCountryOpen}
                     options={CountryOptions}
-                    title={`Country`}
+                    title={`Countries`}
                   />
                 </div>
               )}

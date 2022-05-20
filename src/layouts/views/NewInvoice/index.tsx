@@ -22,9 +22,7 @@ const NewInvoice = () => {
   const accessToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
 
-  var currentYear = new Date().getFullYear()
-
-  console.log("currentYear", typeof currentYear)
+  var CurrentYear = new Date().getFullYear()
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
@@ -91,8 +89,8 @@ const NewInvoice = () => {
   const [YearOptions, setYearOptions] = useState([
     {
       isSelected: false,
-      label: currentYear,
-      value: currentYear,
+      label: CurrentYear,
+      value: CurrentYear,
     },
   ]);
 

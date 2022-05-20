@@ -60,7 +60,9 @@ export const urls = {
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
   billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/",
   products: metaDataUrl + services.apngMetaDataService + "/Products",
-  invoiceLogs: baseURL + services.atlasInvoiceService + "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2"
+  invoiceLogs: baseURL + services.atlasInvoiceService + "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2",
+
+  contractorBillingService: baseURL + services.contractorPayBillingService + "/billing/"
 };
 
 export const getClientListingUrl = (
@@ -88,8 +90,8 @@ export const getInternalListingUrl = (
     `/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
   );
 };
-export const getVatValue =(cid)=>{
-  return (baseURL + services.atlasInvoiceService + "/Invoices/vatdetails/" + cid );
+export const getVatValue = (cid) => {
+  return (baseURL + services.atlasInvoiceService + "/Invoices/vatdetails/" + cid);
 }
 export const updateCreditMemoUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;

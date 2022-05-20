@@ -157,14 +157,15 @@ export default function CreditMemoSummary(props: any) {
         cleanNewObject();
         updateDropdowns();
         reCalculateTotal();
-        axios.put(updateCreditMemoUrl(creditMemoData?.id), payload).then((resp) => {
-            if (resp.status == 200) {
-                console.log(resp)
-                setAddSectionCheck(false);
-            }
-        }).catch((err) => {
-            console.log("update call failed");
-        })
+        setAddSectionCheck(false);
+        // axios.put(updateCreditMemoUrl(creditMemoData?.id), payload).then((resp) => {
+        //     if (resp.status == 200) {
+        //         console.log(resp)
+                
+        //     }
+        // }).catch((err) => {
+        //     console.log("update call failed");
+        // })
     }
     /* istanbul ignore next */
     const cleanNewObject = () => {
@@ -268,16 +269,18 @@ export default function CreditMemoSummary(props: any) {
                 <div className='top'>
                     <span className='title'>Summary</span>
                     <div className='top-action'>
-                        {addSectionCheck && <Button
-                            className="primary-blue medium save"
-                            icon={{
-                                color: '#fff',
-                                icon: 'edit',
-                                size: 'medium'
-                            }}
-                            label="Save"
-                            handleOnClick={saveInvoiceItems}
-                        />}
+                        {addSectionCheck && <>
+                            <Button
+                                className="secondary-btn no-border medium save"
+                                label="Cancel Save"
+                                handleOnClick={()=>{setAddSectionCheck(false)}}
+                            />
+                            <Button
+                                className="primary-blue medium save"
+                                label="Save"
+                                handleOnClick={saveInvoiceItems}
+                            />
+                        </>}
                         {editCheck && !addSectionCheck && (creditMemoData.status == 1 || creditMemoData.status == 2) && <Button
                             className="primary-blue medium edit"
                             icon={{

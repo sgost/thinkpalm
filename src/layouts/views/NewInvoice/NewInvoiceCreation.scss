@@ -121,3 +121,51 @@ button.a-button.primary-blue.medium.button {
     // height: 3.4rem;
     height: 3.34rem;
 }
+
+@media screen and (max-width: 1350px) {
+    .newinvoice-container .dropdown-margin .calendar {
+        display: flex;
+        justify-content: end;
+        z-index: 99999;
+        position: absolute;
+        top: -1px;
+        right: 5px;
+        height: 20px;
+        width: 23px;
+    }
+
+    .newinvoice-container .year-dropdown .calendar {
+        display: flex;
+        justify-content: end;
+        z-index: 99999;
+        position: absolute;
+        top: -1px;
+        right: 5px;
+        height: 20px;
+        width: 23px;
+    }
+}
+
+@media screen and (max-width: 1450px) and  (min-width: 1350px) {
+    .newinvoice-container .dropdown-margin .calendar {
+        display: flex;
+        justify-content: end;
+        z-index: 99999;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        height: 20px;
+        width: 23px;
+    }
+
+    .newinvoice-container .year-dropdown .calendar {
+        display: flex;
+        justify-content: end;
+        z-index: 99999;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        height: 20px;
+        width: 23px;
+    }
+}

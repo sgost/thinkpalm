@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { amountWithCommas, customDate, formatFileSize, formatTimePeriod, ToastContainer } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
+import {
+    urls
+} from "../../../urls/urls";
 import "./billTable.scss";
 
 /* istanbul ignore next */
@@ -14,8 +17,9 @@ export const getFlagURL = (code: string, size?: string) => {
 export default function BillsTable(props: any) {
     const customerId = props.customerId;
     const invoiceId = props.invoiceId
-    const basecontractorURL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/";
+    const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
+    const moveToNextEndPoint = "bill/removeinvoice"
     const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID="
     const endpoint = "customer/bills?"
     const TableColumns = {
@@ -112,23 +116,13 @@ export default function BillsTable(props: any) {
             .then((response: any) => {
 
                 if (response.status == 200 && response.data.responseCode == 200) {
-                    if (moveNextBanner) {
-                        setMoveNextBanner(false);
-                        setOpenRejectReason(false);
-                        setRejectReason('');
-                        setOpenModal(false);
-                        setShowToast(true);
-                        setToastMessage(`Bill Reference No. ${clickedApiData?.referenceNumber} has been moved to a new invoice and Invoice No. ${invoiceId} has been Voided.`);
-                        props.navigate("/pay");
-                    } else {
-                        setRejectBanner(false);
-                        setOpenRejectReason(false);
-                        setRejectReason('');
-                        setOpenModal(false);
-                        setRawData(rawData.filter((x: any) => x.billReferenceNo != clickedApiData.referenceNumber));
-                        setShowToast(true);
-                        setToastMessage(`${clickedApiData?.referenceNumber} has been rejected.`);
-                    }
+                    setRejectBanner(false);
+                    setOpenRejectReason(false);
+                    setRejectReason('');
+                    setOpenModal(false);
+                    setRawData(rawData.filter((x: any) => x.billReferenceNo != clickedApiData.referenceNumber));
+                    setShowToast(true);
+                    setToastMessage(`${clickedApiData?.referenceNumber} has been rejected.`);
                 } else {
                     console.log("Bill reject API failing on contractor service");
                 }
@@ -137,6 +131,39 @@ export default function BillsTable(props: any) {
             .catch((e: any) => {
                 console.log("error", e);
             });
+    }
+
+    /* istanbul ignore next */
+    const postMoveToNextBill = () => {
+        let payload: any = {
+            BillId: clickedApiData?.id
+        };
+
+        const APIFails = () => {
+            setMoveNextBanner(false);
+            setOpenModal(false);
+            setShowToast(true);
+            setToastMessage(`Failed to void the Invoice. Please try again!`);
+            props.navigate("/pay");
+        }
+
+        axios
+            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain" } })
+            .then((response: any) => {
+                if (response.status == 200 && response.data.responseCode == 200) {
+                    if (moveNextBanner) {
+                        setMoveNextBanner(false);
+                        setRejectReason('');
+                        setOpenModal(false);
+                        setShowToast(true);
+                        setToastMessage(`Bill Reference No. ${clickedApiData?.referenceNumber} has been moved to a new invoice and Invoice No. ${invoiceId} has been Voided.`);
+                        setTimeout(() => {
+                            props.navigate("/pay");
+                        }, 1000);
+                    }
+                } else { APIFails() }
+            })
+            .catch((e: any) => APIFails());
     }
     /* istanbul ignore next */
     const getBillingPeriodText = () => {
@@ -354,14 +381,16 @@ export default function BillsTable(props: any) {
                                     className="secondary-btn medium secondary-button reject-button"
                                     handleOnClick={() => { setRejectBanner(true) }}
                                 />
-                                    <Button
-                                        className="primary-blue medium primary next-invoice-button"
-                                        label="Move To Next Invoice"
-                                        handleOnClick={() => { setMoveNextBanner(true) }}
-                                    />
+                                    {(clickedApiData?.invoiceStatus === "Pending Approval" || clickedApiData?.invoiceStatus === "Invoiced") && (
+                                        <Button
+                                            className="primary-blue medium primary next-invoice-button"
+                                            label="Move To Next Invoice"
+                                            handleOnClick={() => { setMoveNextBanner(true) }}
+                                        />
+                                    )}
                                 </>}
 
-                                {moveNextBanner ? (<>
+                                {(moveNextBanner) ? (<>
                                     <Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
@@ -370,7 +399,7 @@ export default function BillsTable(props: any) {
                                     <Button
                                         className="primary-blue medium primary move-to-next-button"
                                         label="Yes, Move To Next Invoice"
-                                        handleOnClick={() => { setOpenRejectReason(true) }}
+                                        handleOnClick={postMoveToNextBill}
                                     />
                                 </>) : (<>
                                     {rejectBanner && <><Button

@@ -65,7 +65,7 @@ describe("New Invoice", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -204,7 +204,7 @@ describe("Stepper 2", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -257,7 +257,7 @@ describe("Stepper 2", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -309,7 +309,7 @@ describe("Stepper 2", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -425,7 +425,7 @@ describe("Stepper 2 show table click", () => {
     fireEvent.click(typeDropDownValue);
 
     // fireEvent.click(pleaseSelectDropDown[2]);
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -500,7 +500,7 @@ describe("Stepper 2 api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -614,7 +614,7 @@ describe("Stepper 3", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -667,7 +667,7 @@ describe("Stepper 3", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -719,7 +719,7 @@ describe("Stepper 3", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -845,7 +845,7 @@ describe("Stepper 3 invoice detail api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -898,7 +898,7 @@ describe("Stepper 3 invoice detail api fail", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -950,7 +950,7 @@ describe("Stepper 3 invoice detail api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1066,7 +1066,7 @@ describe("Stepper 3 fee api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1119,7 +1119,7 @@ describe("Stepper 3 fee api fail", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1171,7 +1171,7 @@ describe("Stepper 3 fee api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1287,7 +1287,7 @@ describe("Stepper 3 address api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1340,7 +1340,7 @@ describe("Stepper 3 address api fail", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1392,7 +1392,7 @@ describe("Stepper 3 address api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1508,7 +1508,7 @@ describe("Stepper 3 country api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1561,7 +1561,7 @@ describe("Stepper 3 country api fail", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
@@ -1613,7 +1613,7 @@ describe("Stepper 3 country api fail", () => {
     fireEvent.click(typeDropDownValue);
 
 
-    const countryDropDown = await screen.findByText("Country")
+    const countryDropDown = await screen.findByText("Countries")
     fireEvent.click(countryDropDown);
 
     const countryDropValue = await screen.findByText(/Kenya/);
