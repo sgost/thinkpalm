@@ -35,6 +35,8 @@ import {
   getNotesUrl,
   getHeaders,
   getDownloadFileUrl,
+  getCMInvoiceUrl,
+  getVatValue,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -45,6 +47,20 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
   // const state = { transactionType: 4, InvoiceId: "100678"};
+  const topPanelObj = {
+    from: '',
+    to: '',
+    toAddress: '',
+    poNumber: '',
+    invoiceDate:'',
+    invoiceApproval:'',
+    paymentDue: '',
+    location: '',
+    region: '',
+    billingCurrency:'',
+    total:'',
+    open:''
+  }
   const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -104,6 +120,9 @@ export default function InvoiceDetails() {
   const [incomingWirePayment, setIncomingWirePayment] = useState(0);
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
   const [isAutoApprove, setIsAutoApprove] = useState(false);
+  const [creditMemoData, setCreditMemoData] = useState<any>(null)
+  const [topPanel, setTopPanel] = useState<any>(topPanelObj);
+  const [vatValue, setVatValue] = useState();
   const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
   const viewLimit = 10;
   const [isLogsOpen, setIsLogsOpen] = useState(false);
@@ -148,7 +167,7 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        if (state.transactionType != 7) {
+        if (state.transactionType != 7 && state.transactionType != 4) {
           axios
           .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
           .then((res: any) => {
@@ -162,17 +181,12 @@ export default function InvoiceDetails() {
           .catch((e: any) => {
             console.log("error", e);
           });
-          console.log("abccc" + state.transactionType);
           axios
             .get(api, headers)
             .then((res: any) => {
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
               }
-              if (res.data.invoice.invoiceNo === "100678") {
-                res.data.invoice.transactionType = 4;
-              }
-
               let billingCurrency = countryRes.data.find(
                 (e: any) => e.currencyId === res.data.invoice.currencyId
               );
@@ -331,7 +345,7 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              setTransactionType(res.data.invoice.transactionType);
+              // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
                 (a: any, b: any) => a + (b || 0),
@@ -345,7 +359,24 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else {
+        } else if(state.transactionType == 4){
+          axios.get(getCMInvoiceUrl(id), headers).then((response)=>{
+            if(response.status == 200){
+              setCreditMemoData(response.data);
+              setNotes(response.data.invoiceNotes);
+              setDocuments(response.data.invoiceDocuments);
+            }
+          }).catch((res)=>{
+            console.log(res);
+          });
+          axios.get(getVatValue(cid)).then((resp)=>{
+            if(resp.status == 200){
+              setVatValue(resp?.data?.feeConfiguration?.percentage);
+            }
+          }).catch((resp)=>{
+            console.log(resp);
+          })
+        }else {
           let res: any = {
             data: {
               ...apiInvoiceMockData,
@@ -405,18 +436,20 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    axios
-      .get(notesApi, headers)
-      .then((res: any) => {
-        if (isClient == "true") {
-          setNotes(res.data.reverse().filter((e: any) => e.isCustomerVisible));
-        } else {
-          setNotes(res.data.reverse());
-        }
-      })
-      .catch((e: any) => {
-        console.log("error e", e);
-      });
+    if(state.transactionType != 4){
+      axios
+        .get(notesApi, headers)
+        .then((res: any) => {
+          if (isClient == "true") {
+            setNotes(res.data.reverse().filter((e: any) => e.isCustomerVisible));
+          } else {
+            setNotes(res.data.reverse());
+          }
+        })
+        .catch((e: any) => {
+          console.log("error e", e);
+        });
+    }
   }, []);
 
   useEffect(() => {
@@ -428,6 +461,15 @@ export default function InvoiceDetails() {
       });
     }
   }, [lookupData, apiData]);
+  useEffect(()=>{
+    if(lookupData?.data && creditMemoData){
+      lookupData.data.invoiceStatuses.forEach((e: any)=>{
+        if(e.value === creditMemoData.status){
+          setStatus(e.text);
+        }
+      });
+    }
+  }, [lookupData, creditMemoData])
 
   useEffect(() => {
     if (apiData?.data && feeData?.data) {
@@ -457,6 +499,40 @@ export default function InvoiceDetails() {
       setFeeSummaryTotalDue(totalFeeSummaryTemp);
     }
   }, [apiData, feeData]);
+  useEffect(()=>{
+    if(apiData?.data && addressData?.data){
+      let model: any = topPanelObj;
+      model.from = apiData?.data?.invoiceFrom?.companyName;
+      model.to = apiData?.data?.invoice?.customerName;
+      model.toAddress = addressData?.data?.billingAddress?.street;
+      model.poNumber = apiData?.data?.invoice?.poNumber;
+      model.invoiceDate = moment(apiData?.data?.invoice?.createdDate).format("DD MMM YYYY");
+      model.invoiceApproval = moment(apiData?.data?.invoice?.createdDate).format("DD MMM YYYY");
+      model.paymentDue = moment(apiData?.data?.invoice?.dueDate).format("DD MMM YYYY");
+      model.location = apiData?.data?.invoice?.customerLocation;
+      model.region = apiData?.data?.regionItemCode?.toUpperCase();
+      model.total = apiData?.data?.invoice?.totalAmount;
+      model.open = apiData?.data?.invoice?.invoiceBalance;
+      setTopPanel(model);
+    }
+  },[apiData, addressData])
+
+  useEffect(()=>{
+    if(creditMemoData && addressData?.data){
+      let model: any = topPanelObj;
+      model.from = "Elements Holdings Group Ltd";
+      model.to = creditMemoData?.customerName;
+      model.poNumber = creditMemoData?.poNumber || "";
+      model.invoiceDate = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
+      model.invoiceApproval = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
+      model.paymentDue = moment(creditMemoData?.dueDate).format("DD MMM YYYY");
+      model.location = creditMemoData?.customerLocation;
+      model.region = "EMEA"
+      model.total = creditMemoData?.totalAmount;
+      model.open = creditMemoData?.invoiceBalance;
+      setTopPanel(model);
+    }
+  },[creditMemoData, addressData])
 
   useEffect(() => {
     if (showAutoApprovedToast) {
@@ -491,9 +567,11 @@ export default function InvoiceDetails() {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
-
-      // console.log("currency", currency);
-
+      return currency.currency.code;
+    }else if(creditMemoData && countriesData?.data){
+      let currency = countriesData.data.find(
+        (e: any) => e.currencyId === creditMemoData.currencyId
+      );
       return currency.currency.code;
     } else {
       return "";
@@ -811,7 +889,7 @@ export default function InvoiceDetails() {
       });
   };
 
-  if (!apiData?.data && !isErr) {
+  if ((!apiData?.data && !isErr) && (!creditMemoData && !isErr)) {
     return <p>Loading...</p>;
   }
   if (isErr) {
@@ -827,7 +905,7 @@ export default function InvoiceDetails() {
       case 7:
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
-        return "Credit Memo Invoice No. " + apiData?.data?.invoice?.invoiceNo;
+        return "Credit Memo Invoice No. " + creditMemoData.invoiceNo;
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
@@ -1003,7 +1081,7 @@ export default function InvoiceDetails() {
                   <span>
                     {getBillingCurrency()}{" "}
                     {
-                      toCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
+                      toCurrencyFormat(topPanel.open)
 
                       // Intl.NumberFormat().format(
                       //   apiData?.data?.invoice?.invoiceBalance.toLocaleString('en-US')
@@ -1021,7 +1099,7 @@ export default function InvoiceDetails() {
                 <span>
                   {getBillingCurrency()}{" "}
                   {
-                    toCurrencyFormat(apiData?.data?.invoice?.totalAmount)
+                    toCurrencyFormat(topPanel.total)
 
                     // apiData?.data?.invoice?.totalAmount
                     //   .toFixed(2)
@@ -1036,11 +1114,11 @@ export default function InvoiceDetails() {
         <div className="infoDetails">
           <div className="column1">
             <p className="heading">From</p>
-            <p className="value">{apiData?.data?.invoiceFrom?.companyName}</p>
+            <p className="value">{topPanel.from}</p>
           </div>
           <div>
             <p className="heading">To</p>
-            <p className="value">{apiData?.data?.invoice?.customerName}</p>
+            <p className="value">{topPanel.to}</p>
             <p className="address">
               {addressData?.data?.billingAddress?.street}
             </p>
@@ -1054,25 +1132,21 @@ export default function InvoiceDetails() {
             {state.transactionType != 7 && (
               <>
                 <p>PO Number</p>
-                <p className="poNo">{apiData?.data?.invoice?.poNumber}</p>
+                <p className="poNo">{topPanel.poNumber}</p>
               </>
             )}
           </div>
           <div>
             <p className="heading">Invoice Date</p>
             <p className="value">
-              {moment(apiData?.data?.invoice?.createdDate).format(
-                "DD MMM YYYY"
-              )}
+              {topPanel.invoiceDate}
             </p>
 
             {state.transactionType != 7 && (
               <>
                 <p className="heading">Invoice Changes</p>
                 <p className="value">
-                  {moment(apiData?.data?.invoice?.createdDate).format(
-                    "DD MMM YYYY"
-                  )}
+                  {topPanel.invoiceApproval}
                 </p>
 
                 {isClient == "false" && (
@@ -1114,19 +1188,17 @@ export default function InvoiceDetails() {
 
                 <p className="heading">Payment Due</p>
                 <p className="value">
-                  {moment(apiData?.data?.invoice?.dueDate).format(
-                    "DD MMM YYYY"
-                  )}
+                  {topPanel.paymentDue}
                 </p>
               </>
             )}
           </div>
           <div className="lastCloumn">
             <p className="heading">Location</p>
-            <p className="value">{apiData?.data?.invoice?.customerLocation}</p>
+            <p className="value">{topPanel.location}</p>
             <p className="heading">Region</p>
             <p className="value">
-              {apiData?.data?.regionItemCode?.toUpperCase()}
+              {topPanel.region}
             </p>
             <p className="heading">Billing Currency</p>
             <p className="value">{getBillingCurrency()}</p>
@@ -1155,7 +1227,7 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {transactionType == 4 &&
+      {state.transactionType == 4 &&
         currentOrgToken?.Payments?.Role == "FinanceAR" && (
           <CreditMemoSummary
             notes={notes}
@@ -1165,7 +1237,10 @@ export default function InvoiceDetails() {
             isClient={isClient}
             cid={cid}
             id={id}
-            invoiceStatusId={apiData.data.invoice.status}
+            creditMemoData={creditMemoData}
+            serviceCountries = {lookupData?.data.serviceCountries}
+            currency = {getBillingCurrency()}
+            vatValue = {vatValue}
           ></CreditMemoSummary>
         )}
 

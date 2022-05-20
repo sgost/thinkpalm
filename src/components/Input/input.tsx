@@ -3,8 +3,8 @@ import './input.scss'
 
 export default function Input(props: any){
 
-    const {defaultValue, minLength, maxLength, disable, className, placeholder, type, name, testid, label} = props;
-    const [value, setvalue] = useState(defaultValue);
+    const {value, setValue, minLength, maxLength, disable, className, placeholder, type, name, testid, label} = props;
+    // const [value, setvalue] = useState(defaultValue);
     return(
         <div className='input-component'>
             <span className={'form-label' + (disable?' disable-label': '')}>{label}</span>
@@ -18,7 +18,7 @@ export default function Input(props: any){
                 className={className + (disable ? " disable-input": '') }
                 placeholder ={placeholder}
                 disabled={disable}
-                onChange={(e)=>{setvalue(e.target.value)}}
+                onChange={(e)=>{setValue(e.target.value)}}
 
             />
         </div>

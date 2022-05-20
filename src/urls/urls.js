@@ -59,6 +59,7 @@ export const urls = {
   declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
   billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/",
+  products: metaDataUrl + services.apngMetaDataService + "/Products",
   invoiceLogs: baseURL + services.atlasInvoiceService + "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2"
 };
 
@@ -87,7 +88,12 @@ export const getInternalListingUrl = (
     `/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
   );
 };
-
+export const getVatValue =(cid)=>{
+  return (baseURL + services.atlasInvoiceService + "/Invoices/vatdetails/" + cid );
+}
+export const updateCreditMemoUrl = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;
+}
 export const getGenerateSinglePdfUrl = (singleInvoiceId) => {
   return (
     baseURL +
@@ -157,6 +163,10 @@ export const getDeleteInvoiceUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}`;
 };
 
+export const getCMInvoiceUrl = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + `/invoices/relatedData/${invoiceId}`;
+};
+
 export const getAutoApproveCheckUrl = (id, isChecked) => {
   return (
     baseURL +
@@ -191,6 +201,15 @@ export const createManualInvoice = () => {
   );
 };
 
+export const getCreditMemoStep4Url = (invoiceId) => {
+  // https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/relatedData/{invoiceId}
+
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    `/invoices/relatedData/${invoiceId}`
+  )
+}
 export const updateInvoiceStatus = (invoiceId) => {
   return (
     baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`
