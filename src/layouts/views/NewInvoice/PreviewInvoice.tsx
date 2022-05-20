@@ -98,9 +98,6 @@ const PreviewInvoice = ({
         axios
           .get(api, headers)
           .then((res: any) => {
-            if (res.status !== 200) {
-              throw new Error("Something went wrong");
-            }
 
             let billingCurrencyPayroll = countryRes.data.find(
               (e: any) => e.currencyId === res.data.invoice.currencyId

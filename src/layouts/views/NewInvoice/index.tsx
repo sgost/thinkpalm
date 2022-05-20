@@ -352,17 +352,17 @@ const NewInvoice = () => {
     }
     if (stepsCount == 3 && stepperOneData.type == "Payroll") {
       setLoading(true)
+
       axios({
         method: "PUT",
         url: updateInvoiceStatus(CreateManualPayrollRes?.invoiceId),
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
         .then((res: any) => {
-          if (res.status === 201) {
-            console.log("resssss", res)
+          console.log("resssss", res)
             setLoading(false)
             setStepsCount(stepsCount + 1);
-          }
+          
         })
         .catch((e: any) => {
           console.log("error", e);
