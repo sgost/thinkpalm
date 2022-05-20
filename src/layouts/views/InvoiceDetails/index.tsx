@@ -34,6 +34,7 @@ import {
   getHeaders,
   getDownloadFileUrl,
   getCMInvoiceUrl,
+  getVatValue,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -118,6 +119,7 @@ export default function InvoiceDetails() {
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [creditMemoData, setCreditMemoData] = useState<any>(null)
   const [topPanel, setTopPanel] = useState<any>(topPanelObj);
+  const [vatValue, setVatValue] = useState();
   const navigate = useNavigate();
   useEffect(() => {
     if (!hideTopCheck) {
@@ -343,12 +345,19 @@ export default function InvoiceDetails() {
         }else if(state.transactionType == 4){
           axios.get(getCMInvoiceUrl(id), headers).then((response)=>{
             if(response.status == 200){
-              console.log(response);
-              setCreditMemoData(response.data[0]);
-              setNotes(response.data[0].invoiceNotes)
+              setCreditMemoData(response.data);
+              setNotes(response.data.invoiceNotes);
+              setDocuments(response.data.invoiceDocuments);
             }
           }).catch((res)=>{
             console.log(res);
+          });
+          axios.get(getVatValue(cid)).then((resp)=>{
+            if(resp.status == 200){
+              setVatValue(resp?.data?.feeConfiguration?.percentage);
+            }
+          }).catch((resp)=>{
+            console.log(resp);
           })
         }
       })
@@ -474,7 +483,7 @@ export default function InvoiceDetails() {
   useEffect(()=>{
     if(creditMemoData && addressData?.data){
       let model: any = topPanelObj;
-      model.from = "Elements GS";
+      model.from = "Elements Holdings Group Ltd";
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
       model.invoiceDate = moment(creditMemoData?.createdDate).format("DD MMM YYYY");
@@ -1192,8 +1201,10 @@ export default function InvoiceDetails() {
             isClient={isClient}
             cid={cid}
             id={id}
-            invoiceStatusId={creditMemoData?.status}
-            invoiceItems={creditMemoData?.invoiceItems}
+            creditMemoData={creditMemoData}
+            serviceCountries = {lookupData?.data.serviceCountries}
+            currency = {getBillingCurrency()}
+            vatValue = {vatValue}
           ></CreditMemoSummary>
         )}
 
