@@ -24,6 +24,7 @@ export default function CreditMemoSummary(props: any) {
     const [editCheck, setEditCheck] = useState(true);
     const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
     const [vatAmount, setVatAmount] = useState<any>();
+    const [subTotalAmount, setSubTotalAmount] = useState<any>(creditMemoData.totalAmount);
     const [rawProducts, setRawProducts] = useState<any>();
     const [countryOptions, setCountryOptions] = useState([]);
     const [productOptions, setProductOptions] = useState([]);
@@ -34,6 +35,7 @@ export default function CreditMemoSummary(props: any) {
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
+    /* istanbul ignore next */
     useEffect(() => {
         axios.get(urls.products).then((resp) => {
             if (resp.status == 200) {
@@ -102,6 +104,7 @@ export default function CreditMemoSummary(props: any) {
     //     }
     // },[countryOptions])
 
+    /* istanbul ignore next */
     const toCurrencyFormat = (amount: number) => {
         const cFormat = new Intl.NumberFormat("en-US", {
             style: "currency",
@@ -109,14 +112,6 @@ export default function CreditMemoSummary(props: any) {
         });
         return cFormat.format(amount).slice(1);
     };
-    /* istanbul ignore next */
-    const updateOptions = (dropOptions: any, value: any, updateOption: any) => {
-        let updatedOptions = dropOptions.map((opt: any) => {
-            opt.isSelected = value == opt.value;
-            return opt;
-        });
-        updateOption(updatedOptions);
-    }
     /* istanbul ignore next */
     const handleOptionClick = (args: any) => {
         const { option, dropOptions, updateIsOpen, isDropOpen, updateOptions } = args;
@@ -160,6 +155,8 @@ export default function CreditMemoSummary(props: any) {
         var payload = creditMemoData;
         payload.invoiceItems.push(obj);
         cleanNewObject();
+        updateDropdowns();
+        reCalculateTotal();
         axios.put(updateCreditMemoUrl(creditMemoData?.id), payload).then((resp) => {
             if (resp.status == 200) {
                 console.log(resp)
@@ -194,6 +191,41 @@ export default function CreditMemoSummary(props: any) {
         setNewAmount('');
         setNewTotalAmount('');
     }
+    /* istanbul ignore next */
+    const reCalculateTotal = () => {
+        var subtotal = 0
+        for(let a of creditMemoData.invoiceItems){
+            subtotal = subtotal + parseInt(a.totalAmount)
+        }
+        setSubTotalAmount(subtotal);
+        setVatAmount(subtotal * (vatValue/100))
+    }
+    /* istanbul ignore next */
+    const updateDropdowns = () =>{
+        let countryArr:any = [];
+        creditMemoData.invoiceItems.forEach((item: any) => {
+            countryArr.push(serviceCountries.map((x: any) => {
+                return {
+                    isSelected: x.value == item.serviceCountry,
+                    label: x.text,
+                    value: x.value
+                }
+            }))
+        })
+        setMultipleCountryArr(countryArr);
+        let arr:any = [];
+        for(let i of creditMemoData.invoiceItems){
+            arr.push(rawProducts.map((x: any) => {
+                        return {
+                            isSelected: x.id == i.productId,
+                            label: x.glDescription,
+                            value: x.id
+                        }
+                    }))
+        }
+        setMultipleProductArr(arr);
+    }
+    /* istanbul ignore next */
     const handleArrOptionClick = (
         selOption: any,
         options: any,
@@ -451,7 +483,7 @@ export default function CreditMemoSummary(props: any) {
                     <div className="rowFee">
                         <p className="title">Subtotal Due</p>
                         {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
-                        <p className="amount">{currency} {toCurrencyFormat(creditMemoData.totalAmount)}</p>
+                        <p className="amount">{currency} {toCurrencyFormat(subTotalAmount)}</p>
                     </div>
                     <div className="rowFee no-border">
                         <p className="title">VAT Amount</p>
@@ -460,7 +492,7 @@ export default function CreditMemoSummary(props: any) {
                     </div>
                     <div className="totalRow">
                         <p>Total Balance</p>
-                        <p className='total'>{currency} {toCurrencyFormat(creditMemoData.totalAmount + vatAmount)}</p>
+                        <p className='total'>{currency} {toCurrencyFormat(subTotalAmount + vatAmount)}</p>
                         {/* <p className='total'>{props.currency} {toCurrencyFormat(totalAmount)}</p> */}
                     </div>
                 </div>
