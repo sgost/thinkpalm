@@ -1588,3 +1588,397 @@ describe("Invoice details auto approve checkbox click api fail", () => {
     fireEvent.click(approve);
   });
 });
+
+describe("Invoice details fee api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(500, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+  });
+
+  test("tabs are working", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    // screen.logTestingPlaygroundURL();
+    // fireEvent.click(payrollTab);
+    // const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
+    // fireEvent.click(masterTab);
+    // const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    // if (filesTab) { fireEvent.click(filesTab) }
+
+    // expect(payrollTab).toBeInTheDocument();
+  });
+
+  // test("download clickable ", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails />
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+  //   const download = screen.getByText(/Download/);
+  //   fireEvent.click(download);
+  //   const pdf = await waitFor(() => screen.getByText(/Invoice as PDF/));
+  //   fireEvent.click(pdf);
+  //   fireEvent.click(download);
+  //   const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
+  //   fireEvent.click(excel);
+  // });
+
+  // test("approve invoice clickable ", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails />
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+  //   const approve = screen.getByText(/Approve Invoice/);
+  //   fireEvent.click(approve);
+  // });
+
+  // test("publish notes", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails />
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+  //   if (filesTab) { fireEvent.click(filesTab) }
+  //   const input = await waitFor(() =>
+  //     screen.getByPlaceholderText(/Add a note here.../)
+  //   );
+  //   fireEvent.change(input, { target: { value: "Pending" } });
+  //   const publish = screen.getByText(/Save/);
+  //   fireEvent.click(publish);
+  // });
+
+  // test("download file", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails />
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+  //   if (filesTab) { fireEvent.click(filesTab) }
+  //   const download = await waitFor(() =>
+  //     screen.getByTestId(/file-upload-button-0/)
+  //   );
+  //   fireEvent.click(download);
+  // });
+  // test("delete file", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails />
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+  //   if (filesTab) { fireEvent.click(filesTab) }
+  //   const download = await waitFor(() =>
+  //     screen.getByTestId(/file-upload-button-1/)
+  //   );
+  //   fireEvent.click(download);
+  // });
+  // test("Navigate with breadcrumbs", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails></InvoiceDetails>
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getAllByText(/Loading/));
+  //   const breadcrumbs = await waitFor(() => screen.getAllByText(/Invoices/));
+  //   fireEvent.click(breadcrumbs[0]);
+  // });
+  // test("Decline invoice click on cancel button", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails></InvoiceDetails>
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+  //   const decline = screen.getByTestId("decline-button");
+  //   fireEvent.click(decline);
+
+  //   const cancelButton = await waitFor(() =>
+  //     screen.getByTestId("decline-cancel-button")
+  //   );
+  //   expect(cancelButton).toBeInTheDocument();
+  //   fireEvent.click(cancelButton);
+  // });
+
+  // test("Decline invoice onchange textarea and click on decline button", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <InvoiceDetails></InvoiceDetails>
+  //     </HashRouter>
+  //   );
+
+  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+  //   const decline = screen.getByTestId("decline-button");
+  //   fireEvent.click(decline);
+
+  //   const textarea = await waitFor(() =>
+  //     screen.getByPlaceholderText("Please Enter a Reason")
+  //   );
+  //   expect(textarea).toBeInTheDocument();
+  //   fireEvent.change(textarea, { target: { value: "test" } });
+
+  //   const declineSubmit = screen.getByTestId("decline-button-submit");
+  //   fireEvent.click(declineSubmit);
+  // });
+});
+
+describe("Invoice details invoice detail api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(500, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+  });
+
+  test("tabs are working", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    // screen.logTestingPlaygroundURL();
+    // fireEvent.click(payrollTab);
+    // const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
+    // fireEvent.click(masterTab);
+    // const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    // if (filesTab) { fireEvent.click(filesTab) }
+
+    // expect(payrollTab).toBeInTheDocument();
+  });
+  
+});
+
+describe("Invoice details lookup api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(500, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+  });
+
+  test("tabs are working", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    // screen.logTestingPlaygroundURL();
+    // fireEvent.click(payrollTab);
+    // const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
+    // fireEvent.click(masterTab);
+    // const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    // if (filesTab) { fireEvent.click(filesTab) }
+
+    // expect(payrollTab).toBeInTheDocument();
+  });
+  
+});
+
+describe("Invoice details countries api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(500, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+  });
+
+  test("tabs are working", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    // screen.logTestingPlaygroundURL();
+    // fireEvent.click(payrollTab);
+    // const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
+    // fireEvent.click(masterTab);
+    // const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    // if (filesTab) { fireEvent.click(filesTab) }
+
+    // expect(payrollTab).toBeInTheDocument();
+  });
+  
+});
