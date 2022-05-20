@@ -359,7 +359,6 @@ const NewInvoice = () => {
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
         .then((res: any) => {
-          console.log("resssss", res)
             setLoading(false)
             setStepsCount(stepsCount + 1);
           
