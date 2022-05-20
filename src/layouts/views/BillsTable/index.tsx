@@ -160,6 +160,8 @@ export default function BillsTable(props: any) {
                 console.log("error", e);
             });
     };
+
+    /* istanbul ignore next */
     return (
         <div className="invoice_bill_table">
             <Table

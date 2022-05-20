@@ -15,6 +15,7 @@ export const getDecodedToken = () => {
   //   )
   // );
 
+  /* istanbul ignore next */
   return decoded.Permissions[currentOrgId].Payments || { InvoiceList: [] };
 
   //   const parseToken = JSON.parse(decoded);
