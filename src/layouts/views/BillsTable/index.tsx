@@ -141,6 +141,7 @@ export default function BillsTable(props: any) {
             setOpenModal(false);
             setShowToast(true);
             setToastMessage(`Failed to void the Invoice. Please try again!`);
+            props.navigate("/pay");
         }
 
         axios
@@ -153,7 +154,9 @@ export default function BillsTable(props: any) {
                         setOpenModal(false);
                         setShowToast(true);
                         setToastMessage(`Bill Reference No. ${clickedApiData?.referenceNumber} has been moved to a new invoice and Invoice No. ${invoiceId} has been Voided.`);
-                        props.navigate("/pay");
+                        setTimeout(() => {
+                            props.navigate("/pay");
+                        }, 1000);
                     }
                 } else { APIFails() }
             })
