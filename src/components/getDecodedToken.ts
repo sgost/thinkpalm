@@ -15,7 +15,7 @@ export const getDecodedToken = () => {
   //   )
   // );
 
-  return decoded.Permissions[currentOrgId].Payments;
+  return decoded.Permissions[currentOrgId].Payments || { InvoiceList: [] };
 
   //   const parseToken = JSON.parse(decoded);
 

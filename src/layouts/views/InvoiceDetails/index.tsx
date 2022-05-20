@@ -1438,6 +1438,7 @@ export default function InvoiceDetails() {
           tableData={billTableData?.data}
           customerId={cid}
           invoiceId={state.InvoiceId}
+          navigate={navigate}
         ></BillsTable>
       )}
 

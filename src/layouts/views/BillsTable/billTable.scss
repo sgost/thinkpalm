@@ -355,6 +355,9 @@
 .approve-reject-button{
     width: 10.4rem !important;
 }
+.move-to-next-button{
+    width: 15.4rem !important;
+}
 .reject-button{
     width: 7.9rem !important;
 }
@@ -372,7 +375,41 @@
 .margin-right{
     margin-right: 4.5rem;
 }
-.reject-reason-wrapper{
+
+.popup-modal-wrapper{
+    margin: 2rem;
+    width: -webkit-fill-available;
+
+    .modal-heading {
+        font-family: 'circularmed', sans-serif;
+        font-weight: 500;
+        font-size: 1.75rem;
+        color: #041E42 !important;
+    }
+
+    .modal-body {
+        margin-top: 1.875rem;
+        font-family: 'CircularXX', sans-serif;
+        font-size: 1.125rem;
+        color: #3E3E3E;
+    }
+
+    .modal-footer-action{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        font-family: 'CircularXX', sans-serif!important;
+        width: -webkit-fill-available;
+        padding-top: 2.5rem;
+        button.a-button.medium {
+            font-size: 1.125rem !important;
+            line-height: 1.625rem !important;
+            font-weight: 400;
+        }
+    }
+}
+
+.popup-modal-wrapper{
     margin: 2.5rem;
     width: -webkit-fill-available;
     .form-group{
