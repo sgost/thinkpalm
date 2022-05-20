@@ -265,7 +265,14 @@ const ProductInvoiceCreation = ({
                         <div id="card_head_detail">
                             <h3 id="detail_title">Summary</h3>
                             <div id="card_detail_btns">
-                                <p id="delete">Delete</p>
+                                <p id="delete" onClick={() => remove(item)}>
+                                    <Icon
+                                        icon="trash"
+                                        size="small"
+                                        width="30"
+                                        height="30"
+                                        color="#526FD6"
+                                    />Delete</p>
                             </div>
                         </div>
                         <div id="top_row">
