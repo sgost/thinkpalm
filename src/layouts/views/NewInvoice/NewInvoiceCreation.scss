@@ -50,6 +50,9 @@
     .year-dropdown {
         position: relative;
         cursor: pointer;
+        .a-dropdown__option__container {
+            height: 2.889rem;
+        }
     }
 }
 
@@ -94,12 +97,12 @@
     bottom: -5rem;
     right: -1.5rem;
     // bottom: 18%;
-   
+
     button.a-button.medium {
         font-size: 1.2rem;
         height: 3.13rem;
         width: 7.13rem;
-        margin-right: 25px
+        margin-right: 25px;
     }
 }
 
