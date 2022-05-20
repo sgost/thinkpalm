@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { amountWithCommas, customDate, formatFileSize, formatTimePeriod, ToastContainer } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
+import {
+    urls
+} from "../../../urls/urls";
 import "./billTable.scss";
 
 /* istanbul ignore next */
@@ -14,7 +17,7 @@ export const getFlagURL = (code: string, size?: string) => {
 export default function BillsTable(props: any) {
     const customerId = props.customerId;
     const invoiceId = props.invoiceId
-    const basecontractorURL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/";
+    const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
     const moveToNextEndPoint = "bill/removeinvoice"
     const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID="
