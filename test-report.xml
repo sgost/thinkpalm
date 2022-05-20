@@ -1,68 +1,973 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="377"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
+    <testCase name="Bills Table Render" duration="286"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
-    <testCase name="Credit Memo Summary Render CM" duration="535"/>
-    <testCase name="Notes fail Render CM" duration="149"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
+    <testCase name="Credit Memo Summary Render CM" duration="271"/>
+    <testCase name="Notes fail Render CM" duration="97"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="294"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\App.test.tsx">
+    <testCase name="renders learn react link" duration="183"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="227"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="408"/>
-    <testCase name="step one getCustomer api fail  dropDown Value change" duration="74"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="107"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="316"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="231"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="387"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="221"/>
-    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="258"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="404"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="195"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="132"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="135"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="116"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="138"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="93"/>
+    <testCase name="client view table row clickable" duration="83"/>
+    <testCase name="client view Status clickable" duration="104"/>
+    <testCase name="client view Type clickable" duration="88"/>
+    <testCase name="client view Clear filters clickable" duration="127"/>
+    <testCase name="client view search" duration="113"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="228"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="68"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="142"/>
+    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="204"/>
+    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="194"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="765"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="267"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="224"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="170"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="191"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="151"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="148"/>
-    <testCase name="client view table row clickable" duration="106"/>
-    <testCase name="client view Status clickable" duration="141"/>
-    <testCase name="client view Type clickable" duration="124"/>
-    <testCase name="client view Clear filters clickable" duration="185"/>
-    <testCase name="client view search" duration="147"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="273"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="113"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="274"/>
-    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="336"/>
-    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="215"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
+    <testCase name="Invoice details tabs are working" duration="724"/>
+    <testCase name="Invoice details download clickable " duration="283"/>
+    <testCase name="Invoice details approve invoice clickable " duration="170"/>
+    <testCase name="Invoice details publish notes" duration="229"/>
+    <testCase name="Invoice details download file" duration="211"/>
+    <testCase name="Invoice details delete file" duration="170"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="130"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="141"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="179"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="128"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="128"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="196"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="204"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="192"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="229"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="152"/>
+    <testCase name="api fail tabs are working" duration="17"/>
+    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="149"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="151"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="92"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="96"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="91"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="128"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1071"/>
-    <testCase name="Invoice details download clickable " duration="416"/>
-    <testCase name="Invoice details approve invoice clickable " duration="206"/>
-    <testCase name="Invoice details publish notes" duration="242"/>
-    <testCase name="Invoice details download file" duration="284"/>
-    <testCase name="Invoice details delete file" duration="209"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="169"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="383"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="197"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="150"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="147"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="393"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="445"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="242"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="154"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="127"/>
-    <testCase name="api fail tabs are working" duration="19"/>
-    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="107"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="111"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="94"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="97"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="98"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="91"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
+    <testCase name="New Invoice breadcumbs are working" duration="194"/>
+    <testCase name="New Invoice dropDown Value change stepper 1" duration="268"/>
+    <testCase name="step one getCustomer api fail  dropDown Value change" duration="72"/>
+    <testCase name="step one getCOuntry api fail dropDown Value change" duration="83"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="183"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="185"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="293"/>
+    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="181"/>
+    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="250"/>
+    <testCase name="Test case for ProductInvoice Test to find the title" duration="1037">
+      <failure message="Error: Unable to find an element with the text: /Summary/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."><![CDATA[Error: Unable to find an element with the text: /Summary/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, <script />, <style />
+<body>
+  <div>
+    <div
+      class="newinvoice-container"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        <div
+          class="a-breadcrumb"
+        >
+          <span
+            class="steps"
+          >
+            <span
+              class="a-breadcrumb__label label-active"
+            >
+              Invoices
+            </span>
+          </span>
+          <span
+            class="steps"
+          >
+            <svg
+              class=""
+              height="20px"
+              style="display: inline-block; vertical-align: middle;"
+              viewBox="-2 -4 24 24"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                d="M 0.8574456,11.144166 A 0.57143003,0.57143003 0 0 0 1.2617425,10.976197 L 5.832055,6.4058847 a 0.57148717,0.57148717 0 0 0 0,-0.8085938 L 1.2617425,1.0250248 a 0.57143003,0.57143003 0 0 0 -0.8085937,0 0.57143003,0.57143003 0 0 0 0,0.808594 l 4.1679687,4.167969 -4.1679687,4.1679692 a 0.57143003,0.57143003 0 0 0 0,0.80664 0.57143003,0.57143003 0 0 0 0.4042968,0.167969 z"
+                fill="#17224E"
+              />
+            </svg>
+            <span
+              class="a-breadcrumb__label last-item"
+            >
+              New Invoice
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="detail-container"
+      >
+        <div
+          class="a-layouts"
+        >
+          <div
+            class="sidebar-inner-container"
+          >
+            <div
+              class="panel left-panel"
+            >
+              <div
+                class="a-progress"
+              >
+                <div
+                  class="a-progress__items completed"
+                >
+                  <span
+                    class="count"
+                  >
+                    1
+                  </span>
+                  <span
+                    class="label"
+                  >
+                    New Invoice
+                  </span>
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    2
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    3
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    <svg
+                      class=""
+                      height="24px"
+                      style="display: inline-block; vertical-align: middle;"
+                      viewBox="-2 -3 24 24"
+                      width="24px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <path
+                        d="M1.04892 8.20174C0.943259 8.08271 0.79464 8.01053 0.635759 8.00108C0.476878 7.99163 0.32075 8.04568 0.201721 8.15134C0.0826916 8.257 0.0105119 8.40562 0.00106008 8.5645C-0.00839175 8.72338 0.0456585 8.87951 0.151321 8.99854L4.95132 14.3985C5.0056 14.4598 5.07184 14.5094 5.14598 14.5441C5.22012 14.5789 5.30058 14.598 5.38242 14.6005C5.46425 14.603 5.54573 14.5887 5.62183 14.5585C5.69793 14.5283 5.76704 14.4828 5.82492 14.4249L18.4249 1.82494C18.5376 1.71243 18.6009 1.55978 18.6011 1.40056C18.6012 1.24134 18.538 1.0886 18.4255 0.975939C18.313 0.863275 18.1604 0.799917 18.0011 0.799805C17.8419 0.799692 17.6892 0.862833 17.5765 0.975338L5.42412 13.1253L1.04772 8.20174H1.04892Z"
+                        fill="#526FD6"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+              </div>
+            </div>
+            <div
+              class="panel right-panel"
+            >
+              <div
+                style="background: white; padding: 40px 80px; border-radius: 0.5rem;"
+              >
+                <div
+                  class="newinvoice-container"
+                >
+                  <h3>
+                    New Invoice
+                  </h3>
+                  <div
+                    class="dropdown"
+                  ...
+    at waitForWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\wait-for.js:187:27)
+    at findAllByText (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\query-helpers.js:101:33)
+    at _callee10$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:542:37)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:32:7
+    at new Promise (<anonymous>)
+    at Object.<anonymous> (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:21:12)
+    at Promise.then.completed (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
+    at _callCircusTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
+    at _runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:60:9)
+    at run (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
+    at runAndTransformResultsToJestFormat (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
+    at jestAdapter (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
+    at runTestInternal (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="Test case for ProductInvoice To find text total balance" duration="1037">
+      <failure message="Error: Unable to find an element with the text: Total Balance. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."><![CDATA[Error: Unable to find an element with the text: Total Balance. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, <script />, <style />
+<body>
+  <div>
+    <div
+      class="newinvoice-container"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        <div
+          class="a-breadcrumb"
+        >
+          <span
+            class="steps"
+          >
+            <span
+              class="a-breadcrumb__label label-active"
+            >
+              Invoices
+            </span>
+          </span>
+          <span
+            class="steps"
+          >
+            <svg
+              class=""
+              height="20px"
+              style="display: inline-block; vertical-align: middle;"
+              viewBox="-2 -4 24 24"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                d="M 0.8574456,11.144166 A 0.57143003,0.57143003 0 0 0 1.2617425,10.976197 L 5.832055,6.4058847 a 0.57148717,0.57148717 0 0 0 0,-0.8085938 L 1.2617425,1.0250248 a 0.57143003,0.57143003 0 0 0 -0.8085937,0 0.57143003,0.57143003 0 0 0 0,0.808594 l 4.1679687,4.167969 -4.1679687,4.1679692 a 0.57143003,0.57143003 0 0 0 0,0.80664 0.57143003,0.57143003 0 0 0 0.4042968,0.167969 z"
+                fill="#17224E"
+              />
+            </svg>
+            <span
+              class="a-breadcrumb__label last-item"
+            >
+              New Invoice
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="detail-container"
+      >
+        <div
+          class="a-layouts"
+        >
+          <div
+            class="sidebar-inner-container"
+          >
+            <div
+              class="panel left-panel"
+            >
+              <div
+                class="a-progress"
+              >
+                <div
+                  class="a-progress__items completed"
+                >
+                  <span
+                    class="count"
+                  >
+                    1
+                  </span>
+                  <span
+                    class="label"
+                  >
+                    New Invoice
+                  </span>
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    2
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    3
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    <svg
+                      class=""
+                      height="24px"
+                      style="display: inline-block; vertical-align: middle;"
+                      viewBox="-2 -3 24 24"
+                      width="24px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <path
+                        d="M1.04892 8.20174C0.943259 8.08271 0.79464 8.01053 0.635759 8.00108C0.476878 7.99163 0.32075 8.04568 0.201721 8.15134C0.0826916 8.257 0.0105119 8.40562 0.00106008 8.5645C-0.00839175 8.72338 0.0456585 8.87951 0.151321 8.99854L4.95132 14.3985C5.0056 14.4598 5.07184 14.5094 5.14598 14.5441C5.22012 14.5789 5.30058 14.598 5.38242 14.6005C5.46425 14.603 5.54573 14.5887 5.62183 14.5585C5.69793 14.5283 5.76704 14.4828 5.82492 14.4249L18.4249 1.82494C18.5376 1.71243 18.6009 1.55978 18.6011 1.40056C18.6012 1.24134 18.538 1.0886 18.4255 0.975939C18.313 0.863275 18.1604 0.799917 18.0011 0.799805C17.8419 0.799692 17.6892 0.862833 17.5765 0.975338L5.42412 13.1253L1.04772 8.20174H1.04892Z"
+                        fill="#526FD6"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+              </div>
+            </div>
+            <div
+              class="panel right-panel"
+            >
+              <div
+                style="background: white; padding: 40px 80px; border-radius: 0.5rem;"
+              >
+                <div
+                  class="newinvoice-container"
+                >
+                  <h3>
+                    New Invoice
+                  </h3>
+                  <div
+                    class="dropdown"
+                  ...
+    at waitForWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\wait-for.js:187:27)
+    at findAllByText (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\query-helpers.js:101:33)
+    at _callee11$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:552:40)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:32:7
+    at new Promise (<anonymous>)
+    at Object.<anonymous> (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:21:12)
+    at Promise.then.completed (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
+    at _callCircusTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
+    at _runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:60:9)
+    at run (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
+    at runAndTransformResultsToJestFormat (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
+    at jestAdapter (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
+    at runTestInternal (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="Test case for ProductInvoice Test for add new From" duration="1051">
+      <failure message="Error: Unable to find an element by: [data-testid=&quot;save&quot;]"><![CDATA[Error: Unable to find an element by: [data-testid="save"]
+
+Ignored nodes: comments, <script />, <style />
+<body>
+  <div>
+    <div
+      class="newinvoice-container"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        <div
+          class="a-breadcrumb"
+        >
+          <span
+            class="steps"
+          >
+            <span
+              class="a-breadcrumb__label label-active"
+            >
+              Invoices
+            </span>
+          </span>
+          <span
+            class="steps"
+          >
+            <svg
+              class=""
+              height="20px"
+              style="display: inline-block; vertical-align: middle;"
+              viewBox="-2 -4 24 24"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                d="M 0.8574456,11.144166 A 0.57143003,0.57143003 0 0 0 1.2617425,10.976197 L 5.832055,6.4058847 a 0.57148717,0.57148717 0 0 0 0,-0.8085938 L 1.2617425,1.0250248 a 0.57143003,0.57143003 0 0 0 -0.8085937,0 0.57143003,0.57143003 0 0 0 0,0.808594 l 4.1679687,4.167969 -4.1679687,4.1679692 a 0.57143003,0.57143003 0 0 0 0,0.80664 0.57143003,0.57143003 0 0 0 0.4042968,0.167969 z"
+                fill="#17224E"
+              />
+            </svg>
+            <span
+              class="a-breadcrumb__label last-item"
+            >
+              New Invoice
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="detail-container"
+      >
+        <div
+          class="a-layouts"
+        >
+          <div
+            class="sidebar-inner-container"
+          >
+            <div
+              class="panel left-panel"
+            >
+              <div
+                class="a-progress"
+              >
+                <div
+                  class="a-progress__items completed"
+                >
+                  <span
+                    class="count"
+                  >
+                    1
+                  </span>
+                  <span
+                    class="label"
+                  >
+                    New Invoice
+                  </span>
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    2
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    3
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    <svg
+                      class=""
+                      height="24px"
+                      style="display: inline-block; vertical-align: middle;"
+                      viewBox="-2 -3 24 24"
+                      width="24px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <path
+                        d="M1.04892 8.20174C0.943259 8.08271 0.79464 8.01053 0.635759 8.00108C0.476878 7.99163 0.32075 8.04568 0.201721 8.15134C0.0826916 8.257 0.0105119 8.40562 0.00106008 8.5645C-0.00839175 8.72338 0.0456585 8.87951 0.151321 8.99854L4.95132 14.3985C5.0056 14.4598 5.07184 14.5094 5.14598 14.5441C5.22012 14.5789 5.30058 14.598 5.38242 14.6005C5.46425 14.603 5.54573 14.5887 5.62183 14.5585C5.69793 14.5283 5.76704 14.4828 5.82492 14.4249L18.4249 1.82494C18.5376 1.71243 18.6009 1.55978 18.6011 1.40056C18.6012 1.24134 18.538 1.0886 18.4255 0.975939C18.313 0.863275 18.1604 0.799917 18.0011 0.799805C17.8419 0.799692 17.6892 0.862833 17.5765 0.975338L5.42412 13.1253L1.04772 8.20174H1.04892Z"
+                        fill="#526FD6"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+              </div>
+            </div>
+            <div
+              class="panel right-panel"
+            >
+              <div
+                style="background: white; padding: 40px 80px; border-radius: 0.5rem;"
+              >
+                <div
+                  class="newinvoice-container"
+                >
+                  <h3>
+                    New Invoice
+                  </h3>
+                  <div
+                    class="dropdown"
+                  ...
+    at waitForWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\wait-for.js:187:27)
+    at findByTestId (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\query-helpers.js:101:33)
+    at _callee12$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:562:38)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:32:7
+    at new Promise (<anonymous>)
+    at Object.<anonymous> (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:21:12)
+    at Promise.then.completed (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
+    at _callCircusTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
+    at _runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:60:9)
+    at run (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
+    at runAndTransformResultsToJestFormat (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
+    at jestAdapter (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
+    at runTestInternal (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="Test case for ProductInvoice Test for add new From" duration="1052">
+      <failure message="Error: Unable to find an element by: [data-testid=&quot;Add-New-Item&quot;]"><![CDATA[Error: Unable to find an element by: [data-testid="Add-New-Item"]
+
+Ignored nodes: comments, <script />, <style />
+<body>
+  <div>
+    <div
+      class="newinvoice-container"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        <div
+          class="a-breadcrumb"
+        >
+          <span
+            class="steps"
+          >
+            <span
+              class="a-breadcrumb__label label-active"
+            >
+              Invoices
+            </span>
+          </span>
+          <span
+            class="steps"
+          >
+            <svg
+              class=""
+              height="20px"
+              style="display: inline-block; vertical-align: middle;"
+              viewBox="-2 -4 24 24"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                d="M 0.8574456,11.144166 A 0.57143003,0.57143003 0 0 0 1.2617425,10.976197 L 5.832055,6.4058847 a 0.57148717,0.57148717 0 0 0 0,-0.8085938 L 1.2617425,1.0250248 a 0.57143003,0.57143003 0 0 0 -0.8085937,0 0.57143003,0.57143003 0 0 0 0,0.808594 l 4.1679687,4.167969 -4.1679687,4.1679692 a 0.57143003,0.57143003 0 0 0 0,0.80664 0.57143003,0.57143003 0 0 0 0.4042968,0.167969 z"
+                fill="#17224E"
+              />
+            </svg>
+            <span
+              class="a-breadcrumb__label last-item"
+            >
+              New Invoice
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="detail-container"
+      >
+        <div
+          class="a-layouts"
+        >
+          <div
+            class="sidebar-inner-container"
+          >
+            <div
+              class="panel left-panel"
+            >
+              <div
+                class="a-progress"
+              >
+                <div
+                  class="a-progress__items completed"
+                >
+                  <span
+                    class="count"
+                  >
+                    1
+                  </span>
+                  <span
+                    class="label"
+                  >
+                    New Invoice
+                  </span>
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    2
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    3
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    <svg
+                      class=""
+                      height="24px"
+                      style="display: inline-block; vertical-align: middle;"
+                      viewBox="-2 -3 24 24"
+                      width="24px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <path
+                        d="M1.04892 8.20174C0.943259 8.08271 0.79464 8.01053 0.635759 8.00108C0.476878 7.99163 0.32075 8.04568 0.201721 8.15134C0.0826916 8.257 0.0105119 8.40562 0.00106008 8.5645C-0.00839175 8.72338 0.0456585 8.87951 0.151321 8.99854L4.95132 14.3985C5.0056 14.4598 5.07184 14.5094 5.14598 14.5441C5.22012 14.5789 5.30058 14.598 5.38242 14.6005C5.46425 14.603 5.54573 14.5887 5.62183 14.5585C5.69793 14.5283 5.76704 14.4828 5.82492 14.4249L18.4249 1.82494C18.5376 1.71243 18.6009 1.55978 18.6011 1.40056C18.6012 1.24134 18.538 1.0886 18.4255 0.975939C18.313 0.863275 18.1604 0.799917 18.0011 0.799805C17.8419 0.799692 17.6892 0.862833 17.5765 0.975338L5.42412 13.1253L1.04772 8.20174H1.04892Z"
+                        fill="#526FD6"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+              </div>
+            </div>
+            <div
+              class="panel right-panel"
+            >
+              <div
+                style="background: white; padding: 40px 80px; border-radius: 0.5rem;"
+              >
+                <div
+                  class="newinvoice-container"
+                >
+                  <h3>
+                    New Invoice
+                  </h3>
+                  <div
+                    class="dropdown"
+                  ...
+    at waitForWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\wait-for.js:187:27)
+    at findByTestId (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\query-helpers.js:101:33)
+    at _callee13$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:574:37)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:32:7
+    at new Promise (<anonymous>)
+    at Object.<anonymous> (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:21:12)
+    at Promise.then.completed (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
+    at _callCircusTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
+    at _runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:60:9)
+    at run (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
+    at runAndTransformResultsToJestFormat (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
+    at jestAdapter (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
+    at runTestInternal (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
+    <testCase name="Test case for ProductInvoice Test remove item button" duration="1061">
+      <failure message="Error: Unable to find an element by: [data-testid=&quot;remove-item-button&quot;]"><![CDATA[Error: Unable to find an element by: [data-testid="remove-item-button"]
+
+Ignored nodes: comments, <script />, <style />
+<body>
+  <div>
+    <div
+      class="newinvoice-container"
+    >
+      <div
+        class="breadcrumbs"
+      >
+        <div
+          class="a-breadcrumb"
+        >
+          <span
+            class="steps"
+          >
+            <span
+              class="a-breadcrumb__label label-active"
+            >
+              Invoices
+            </span>
+          </span>
+          <span
+            class="steps"
+          >
+            <svg
+              class=""
+              height="20px"
+              style="display: inline-block; vertical-align: middle;"
+              viewBox="-2 -4 24 24"
+              width="20px"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <path
+                d="M 0.8574456,11.144166 A 0.57143003,0.57143003 0 0 0 1.2617425,10.976197 L 5.832055,6.4058847 a 0.57148717,0.57148717 0 0 0 0,-0.8085938 L 1.2617425,1.0250248 a 0.57143003,0.57143003 0 0 0 -0.8085937,0 0.57143003,0.57143003 0 0 0 0,0.808594 l 4.1679687,4.167969 -4.1679687,4.1679692 a 0.57143003,0.57143003 0 0 0 0,0.80664 0.57143003,0.57143003 0 0 0 0.4042968,0.167969 z"
+                fill="#17224E"
+              />
+            </svg>
+            <span
+              class="a-breadcrumb__label last-item"
+            >
+              New Invoice
+            </span>
+          </span>
+        </div>
+      </div>
+      <div
+        class="detail-container"
+      >
+        <div
+          class="a-layouts"
+        >
+          <div
+            class="sidebar-inner-container"
+          >
+            <div
+              class="panel left-panel"
+            >
+              <div
+                class="a-progress"
+              >
+                <div
+                  class="a-progress__items completed"
+                >
+                  <span
+                    class="count"
+                  >
+                    1
+                  </span>
+                  <span
+                    class="label"
+                  >
+                    New Invoice
+                  </span>
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    2
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    3
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+                <div
+                  class="a-progress__items"
+                >
+                  <span
+                    class="count"
+                  >
+                    <svg
+                      class=""
+                      height="24px"
+                      style="display: inline-block; vertical-align: middle;"
+                      viewBox="-2 -3 24 24"
+                      width="24px"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink"
+                    >
+                      <path
+                        d="M1.04892 8.20174C0.943259 8.08271 0.79464 8.01053 0.635759 8.00108C0.476878 7.99163 0.32075 8.04568 0.201721 8.15134C0.0826916 8.257 0.0105119 8.40562 0.00106008 8.5645C-0.00839175 8.72338 0.0456585 8.87951 0.151321 8.99854L4.95132 14.3985C5.0056 14.4598 5.07184 14.5094 5.14598 14.5441C5.22012 14.5789 5.30058 14.598 5.38242 14.6005C5.46425 14.603 5.54573 14.5887 5.62183 14.5585C5.69793 14.5283 5.76704 14.4828 5.82492 14.4249L18.4249 1.82494C18.5376 1.71243 18.6009 1.55978 18.6011 1.40056C18.6012 1.24134 18.538 1.0886 18.4255 0.975939C18.313 0.863275 18.1604 0.799917 18.0011 0.799805C17.8419 0.799692 17.6892 0.862833 17.5765 0.975338L5.42412 13.1253L1.04772 8.20174H1.04892Z"
+                        fill="#526FD6"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="label"
+                  />
+                </div>
+                <span
+                  class="splitter"
+                />
+              </div>
+            </div>
+            <div
+              class="panel right-panel"
+            >
+              <div
+                style="background: white; padding: 40px 80px; border-radius: 0.5rem;"
+              >
+                <div
+                  class="newinvoice-container"
+                >
+                  <h3>
+                    New Invoice
+                  </h3>
+                  <div
+                    class="dropdown"
+                  ...
+    at waitForWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\wait-for.js:187:27)
+    at findByTestId (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\query-helpers.js:101:33)
+    at _callee14$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:585:37)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:32:7
+    at new Promise (<anonymous>)
+    at Object.<anonymous> (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:21:12)
+    at Promise.then.completed (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:391:28)
+    at new Promise (<anonymous>)
+    at callAsyncCircusFn (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\utils.js:316:10)
+    at _callCircusTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:218:40)
+    at _runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:155:3)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:66:9)
+    at _runTestsForDescribeBlock (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:60:9)
+    at run (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\run.js:25:3)
+    at runAndTransformResultsToJestFormat (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:170:21)
+    at jestAdapter (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:82:19)
+    at runTestInternal (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
+    at runTest (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
+    at Object.worker (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+    </testCase>
   </file>
 </testExecutions>

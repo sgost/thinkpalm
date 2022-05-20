@@ -7,6 +7,8 @@ import { getCountryByCustomer, urls, productInvoice, CountryApi } from "../../..
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 const ProductInvoiceCreation = ({
+    todos,
+    setTodos,
     dateFrom,
     setDateFrom,
     countryService,
@@ -31,13 +33,18 @@ const ProductInvoiceCreation = ({
 
     console.log(newArrPush)
 
+    let finalBal = quantity * amount
 
-    const [task, setTask] = useState("")
-    const [todos, setTodos] = useState([])
+
+
     const submitHandler = (e) => {
         e.preventDefault();
-        const newTodos = [...todos, { id: Math.random(), date: dateFrom, product: productService, description: description, country: countryService, quantity: quantity, amount: amount, balance: quantity * amount }];
+        const newTodos = [...todos, { id: Math.random(), date: dateFrom, product: productService, description: description, country: countryService, quantity: quantity, amount: amount, balance: finalBal }];
         setTodos(newTodos);
+        setDateFrom("")
+        setDescription("")
+        setQuantity("")
+        setAmount("")
     }
 
     const remove = (i: any) => {
@@ -56,6 +63,12 @@ const ProductInvoiceCreation = ({
     console.log('countryApi', countryApi)
 
     useEffect(() => {
+        callAgain()
+    }, [])
+
+
+
+    const callAgain = () => {
         axios.get(productApi).then((response: any) => {
             const temp: any = []
             response?.data.map((item: any) => temp.push({
@@ -75,8 +88,7 @@ const ProductInvoiceCreation = ({
             }))
             setNewArrPushs(temp)
         })
-    }, [])
-
+    }
 
 
 
@@ -91,7 +103,7 @@ const ProductInvoiceCreation = ({
                         <div id="head_sec">
                             <h3>Summary</h3>
                             <div id="action_buttons">
-                                <div id="icon_1" data-testid="remove-item-button" onClick={() => remove()}>
+                                {/* <div id="icon_1" data-testid="remove-item-button" onClick={() => remove()}>
                                     <Icon
                                         icon="trash"
                                         size="small"
@@ -100,7 +112,7 @@ const ProductInvoiceCreation = ({
                                         color="#526FD6"
                                     />
                                     Delete
-                                </div>
+                                </div> */}
 
                                 {/* <div id="icon_1">
                                         <Icon
@@ -124,7 +136,7 @@ const ProductInvoiceCreation = ({
                             >
                                 <DatePicker
                                     handleDateChange={(date: any) => {
-                                        const startDate = format(date, "dd MM yyyy");
+                                        const startDate = format(date, "dd MMM yyyy");
                                         setDateFrom(startDate)
                                     }
                                     }
@@ -160,6 +172,7 @@ const ProductInvoiceCreation = ({
                                     }}
                                     handleDropdownClick={(bool: any) => {
                                         setOpen(bool);
+
                                     }}
                                     isOpen={Open}
                                     title={`Product Service`}
@@ -203,6 +216,7 @@ const ProductInvoiceCreation = ({
                                     }}
                                     handleDropdownClick={(bool: any) => {
                                         setOpens(bool);
+
                                     }}
                                     isOpen={Opens}
                                     title={`Country Service`}
@@ -225,11 +239,14 @@ const ProductInvoiceCreation = ({
 
 
                     <div id="container_main3" className="buttons">
+                        {todos.length === 0 ? <button style={{ border: `none`, outline: `none`, padding: `15px 30px`, borderRadius: `5px`, margin: `0 4rem 0 0`, color: `white`, background: `#201cdf8f`, fontSize: `13px`, cursor: `pointer` }} onClick={submitHandler}>Save</button> :
+                            ""
+                        }
                         <span>
                             Total Balance
                         </span>
                         <Button
-                            label={quantity !== "" || amount !== "" ? ("USD " + quantity * amount) : "USD 0000"}
+                            label={quantity !== "" || amount !== "" ? ("USD " + finalBal) : "USD 0000"}
                             className="secondary-btn medium button"
                             handleOnClick={() => { }}
                         />
@@ -239,25 +256,23 @@ const ProductInvoiceCreation = ({
             </div>
 
 
-
-            <div className="newinvoice-container2" data-testid="Add-New-Item">
-                <div id="icon_1" onClick={submitHandler}>
-                    <span>
-                        <Icon
-                            icon="add"
-                            size="small"
-                            width="20"
-                            height="20"
-                            color="white"
-                            style={{ margin: `0 4px 0 0` }}
-                        />
-                    </span>
-                    Add New Item
+            {todos.length === 0 ? "" :
+                <div className="newinvoice-container2" data-testid="Add-New-Item">
+                    <div id="icon_1" onClick={submitHandler}>
+                        <span>
+                            <Icon
+                                icon="add"
+                                size="small"
+                                width="20"
+                                height="20"
+                                color="white"
+                                style={{ margin: `0 4px 0 0` }}
+                            />
+                        </span>
+                        Add New Item
+                    </div>
                 </div>
-                <input value={task} onChange={(e) => setTask(e.target.value)} />
-                <button onClick={submitHandler}>submit</button>
-
-            </div>
+            }
 
             {todos?.map((item, i) =>
                 <div id="detail_card_main" key={i}>

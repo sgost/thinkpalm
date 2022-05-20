@@ -20,7 +20,8 @@ import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
 
-
+  const [task, setTask] = useState("")
+  const [todos, setTodos] = useState([])
   //ProductIncoice Data
   const [dateFrom, setDateFrom] = useState("");
   //Set Product Service
@@ -37,8 +38,13 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState([])
   const [Opens, setOpens] = useState(false)
 
+
   //Product Stepper2 Data
   const product_stepper = {
+    task,
+    setTask,
+    todos,
+    setTodos,
     dateFrom,
     setDateFrom,
     countryService,
@@ -477,7 +483,7 @@ const NewInvoice = () => {
           rightPanel={
             <>
               {stepsCount == 1 ? (
-                <ProductInvoiceCreation {...product_stepper} />
+                <NewInvoiceCreation {...stepperOneProps} />
               ) : stepsCount == 2 ? (
                 stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 3 ? (

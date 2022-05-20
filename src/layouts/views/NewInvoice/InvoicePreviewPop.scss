@@ -6,7 +6,6 @@
 
     #body_main {
         background-color: white;
-        padding: 65px 105px;
         border-radius: 0.5rem;
     }
 
@@ -183,13 +182,18 @@
     }
 
 
+    #invoice_pop #invoice_body #cards_main_div #body_center {
+        border-bottom: 1px solid black;
+        border-top: 0;
+        margin: 0;
+        padding: 0 0 40px 0;
+    }
 
-
-    #invoice_pop #invoice_body #body_center {
+    #invoice_pop #invoice_body #cards_main_div #body_center:first-child {
         border-top: 1px solid #EBEBED;
         border-bottom: 1px solid black;
         margin: 75px 0 0 0;
-        padding: 59px 0;
+        padding: 0 0 40px 0;
     }
 
     #invoice_pop #invoice_body #body_center #title {

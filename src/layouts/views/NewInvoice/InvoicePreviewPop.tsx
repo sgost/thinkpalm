@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
-import { Button, Dropdown, Icon, DatePicker, Modal } from "atlasuikit";
-import { format } from "date-fns";
-import axios from "axios";
+import { useState } from "react";
+import { Icon, Modal } from "atlasuikit";
 import "./InvoicePreviewPop.scss";
-import { getCountryByCustomer, urls, productInvoice, CountryApi } from "../../../urls/urls";
-import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 
 const InvoicePreviewPop = ({
     accessToken,
@@ -15,6 +11,7 @@ const InvoicePreviewPop = ({
     CustomerOptions,
     typeOptions,
 
+    todos,
     dateFrom,
     productService,
     countryService,
@@ -49,6 +46,15 @@ const InvoicePreviewPop = ({
 
     const [opend, setOpend] = useState(false)
 
+    const emptyAmount: any = []
+    const amountPush = todos.map((item: any) => emptyAmount.push(item.balance))
+    const newAmount = emptyAmount.reduce((partialSum, a) => partialSum + a, 0)
+
+    console.log('todos', todos)
+    console.log('emptyAmount', emptyAmount)
+    console.log('amountPush', amountPush)
+    console.log('newAmount', newAmount)
+
 
     return (
         <div id="popover_main" style={{ background: `white`, padding: `40px 80px`, borderRadius: `0.5rem` }}>
@@ -79,8 +85,9 @@ const InvoicePreviewPop = ({
                                 /></span>Credit Memo No. 791230</h1>
                             </div>
                             <div id="head_price">
-                                <span>USD {quantity}</span>
-                                <span>USD {amount}</span>
+                                {todos.map((item) =>
+                                    <span>USD {item.balance}</span>
+                                )}
                             </div>
                         </div>
 
@@ -98,10 +105,12 @@ const InvoicePreviewPop = ({
                                     </div>
                                 </div>
                                 <div id="cards">
-                                    <div id="cards_date_container">
-                                        <h3>Invoice Date</h3>
-                                        <span id="description">{dateFrom}</span>
-                                    </div>
+                                    {todos.map((item) =>
+                                        <div id="cards_date_container">
+                                            <h3>Invoice Date</h3>
+                                            <span id="description">{item.date}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div id="cards">
                                     <div id="cards_date_container">
@@ -118,45 +127,48 @@ const InvoicePreviewPop = ({
                                     </div>
                                 </div>
                             </div>
-
-                            <div id="body_center">
-                                <h3 id="title">Summary</h3>
-                                <div id="body_center_cards">
-                                    <div id="cards">
-                                        <div id="cards_date_container">
-                                            <h3>Invoice Date</h3>
-                                            <span id="description">{dateFrom}</span>
-                                        </div>
-                                        <div id="cards_date_container">
-                                            <h3>Service Country</h3>
-                                            <span id="description">{countryService}</span>
+                            <div id='cards_main_div'>
+                                {todos.map((item) =>
+                                    <div id="body_center">
+                                        <h3 id="title">Summary</h3>
+                                        <div id="body_center_cards">
+                                            <div id="cards">
+                                                <div id="cards_date_container">
+                                                    <h3>Invoice Date</h3>
+                                                    <span id="description">{item.date}</span>
+                                                </div>
+                                                <div id="cards_date_container">
+                                                    <h3>Service Country</h3>
+                                                    <span id="description">{item.country}</span>
+                                                </div>
+                                            </div>
+                                            <div id="cards">
+                                                <div id="cards_date_container">
+                                                    <h3>Invoice Type</h3>
+                                                    <span id="description">{item.product}</span>
+                                                </div>
+                                                <div id="cards_date_container">
+                                                    <h3>Quantity</h3>
+                                                    <span id="description">{item.quantity}</span>
+                                                </div>
+                                            </div>
+                                            <div id="cards">
+                                                <div id="cards_date_container">
+                                                    <h3>Description</h3>
+                                                    <span id="description">{item.description}</span>
+                                                </div>
+                                                <div id="cards_date_container">
+                                                    <h3>Amount</h3>
+                                                    <span id="description">{item.amount}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="cards">
-                                        <div id="cards_date_container">
-                                            <h3>Invoice Type</h3>
-                                            <span id="description">{productService}</span>
-                                        </div>
-                                        <div id="cards_date_container">
-                                            <h3>Quantity</h3>
-                                            <span id="description">{quantity}</span>
-                                        </div>
-                                    </div>
-                                    <div id="cards">
-                                        <div id="cards_date_container">
-                                            <h3>Description</h3>
-                                            <span id="description">{description}</span>
-                                        </div>
-                                        <div id="cards_date_container">
-                                            <h3>Amount</h3>
-                                            <span id="description">{amount}</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                )}
                             </div>
                             <div id="invoice_bottom">
                                 <span id="bal_text">Total Balance</span>
-                                <span id="button">USD {quantity * amount}</span>
+                                <span id="button">USD {newAmount}</span>
                             </div>
                         </div>
                     </div>
