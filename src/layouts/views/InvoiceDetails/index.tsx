@@ -9,6 +9,8 @@ import {
   BreadCrumb,
   Checkbox,
   Modal,
+  Cards,
+  Logs,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -44,19 +46,20 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
+  // const state = { transactionType: 4, InvoiceId: "100678"};
   const topPanelObj = {
-    from : '',
+    from: '',
     to: '',
     toAddress: '',
-    poNumber:'',
+    poNumber: '',
     invoiceDate:'',
     invoiceApproval:'',
     paymentDue: '',
     location: '',
     region: '',
-    billingCurrency: '',
-    total: '',
-    open: ''
+    billingCurrency:'',
+    total:'',
+    open:''
   }
   const permission: any = getDecodedToken();
   const [activeTab, setActiveTab] = useState("payroll");
@@ -120,6 +123,24 @@ export default function InvoiceDetails() {
   const [creditMemoData, setCreditMemoData] = useState<any>(null)
   const [topPanel, setTopPanel] = useState<any>(topPanelObj);
   const [vatValue, setVatValue] = useState();
+  const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
+  const viewLimit = 10;
+  const [isLogsOpen, setIsLogsOpen] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(true);
+  const [changeLogs, setChangeLogs] = useState<any>([]);
+
+  useEffect(() => {
+    if(logsData.length === 0) return;
+    const splicedData:any = [...logsData].splice(0, viewLimit);
+    setChangeLogs([...splicedData])
+  }, [logsData])
+
+  useEffect(() => {
+    if (changeLogs.length === logsData.length) {
+      setDataAvailable(false);
+    }
+  }, [changeLogs]);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (!hideTopCheck) {
@@ -148,12 +169,24 @@ export default function InvoiceDetails() {
 
         if (state.transactionType != 7 && state.transactionType != 4) {
           axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails:any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"), 
+              customerEmail: log?.email, 
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
+          axios
             .get(api, headers)
             .then((res: any) => {
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
               }
-
               let billingCurrency = countryRes.data.find(
                 (e: any) => e.currencyId === res.data.invoice.currencyId
               );
@@ -163,6 +196,10 @@ export default function InvoiceDetails() {
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
+              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
+              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
+              //   res.data = apiInvoiceMockData;
+              // }
 
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
@@ -308,7 +345,7 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              setTransactionType(res.data.invoice.transactionType);
+              // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
                 (a: any, b: any) => a + (b || 0),
@@ -322,7 +359,24 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else if(state.transactionType == 7) {
+        } else if(state.transactionType == 4){
+          axios.get(getCMInvoiceUrl(id), headers).then((response)=>{
+            if(response.status == 200){
+              setCreditMemoData(response.data);
+              setNotes(response.data.invoiceNotes);
+              setDocuments(response.data.invoiceDocuments);
+            }
+          }).catch((res)=>{
+            console.log(res);
+          });
+          axios.get(getVatValue(cid)).then((resp)=>{
+            if(resp.status == 200){
+              setVatValue(resp?.data?.feeConfiguration?.percentage);
+            }
+          }).catch((resp)=>{
+            console.log(resp);
+          })
+        }else {
           let res: any = {
             data: {
               ...apiInvoiceMockData,
@@ -342,23 +396,6 @@ export default function InvoiceDetails() {
             setApiData(res);
             setTransactionType(res.data.invoice.transactionType);
           });
-        }else if(state.transactionType == 4){
-          axios.get(getCMInvoiceUrl(id), headers).then((response)=>{
-            if(response.status == 200){
-              setCreditMemoData(response.data);
-              setNotes(response.data.invoiceNotes);
-              setDocuments(response.data.invoiceDocuments);
-            }
-          }).catch((res)=>{
-            console.log(res);
-          });
-          axios.get(getVatValue(cid)).then((resp)=>{
-            if(resp.status == 200){
-              setVatValue(resp?.data?.feeConfiguration?.percentage);
-            }
-          }).catch((resp)=>{
-            console.log(resp);
-          })
         }
       })
       .catch((e: any) => {
@@ -401,17 +438,17 @@ export default function InvoiceDetails() {
     }
     if(state.transactionType != 4){
       axios
-      .get(notesApi, headers)
-      .then((res: any) => {
-        if (isClient == "true") {
-          setNotes(res.data.reverse().filter((e: any) => e.isCustomerVisible));
-        } else {
-          setNotes(res.data.reverse());
-        }
-      })
-      .catch((e: any) => {
-        console.log("error e", e);
-      });
+        .get(notesApi, headers)
+        .then((res: any) => {
+          if (isClient == "true") {
+            setNotes(res.data.reverse().filter((e: any) => e.isCustomerVisible));
+          } else {
+            setNotes(res.data.reverse());
+          }
+        })
+        .catch((e: any) => {
+          console.log("error e", e);
+        });
     }
   }, []);
 
@@ -424,15 +461,15 @@ export default function InvoiceDetails() {
       });
     }
   }, [lookupData, apiData]);
-  useEffect(() => {
-    if (lookupData?.data && creditMemoData) {
-      lookupData.data.invoiceStatuses.forEach((e: any) => {
-        if (e.value === creditMemoData.status) {
+  useEffect(()=>{
+    if(lookupData?.data && creditMemoData){
+      lookupData.data.invoiceStatuses.forEach((e: any)=>{
+        if(e.value === creditMemoData.status){
           setStatus(e.text);
         }
       });
     }
-  }, [lookupData, creditMemoData]);
+  }, [lookupData, creditMemoData])
 
   useEffect(() => {
     if (apiData?.data && feeData?.data) {
@@ -531,13 +568,12 @@ export default function InvoiceDetails() {
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
       return currency.currency.code;
-    }else if (creditMemoData && countriesData?.data) {
+    }else if(creditMemoData && countriesData?.data){
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === creditMemoData.currencyId
       );
       return currency.currency.code;
-    }
-    else {
+    } else {
       return "";
     }
   };
@@ -869,7 +905,7 @@ export default function InvoiceDetails() {
       case 7:
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
-        return "Credit Memo Invoice No. " + creditMemoData?.invoiceNo;
+        return "Credit Memo Invoice No. " + creditMemoData.invoiceNo;
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
@@ -1424,7 +1460,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "files" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && (
+        state.transactionType != 7 && <>
           <div className="filesNotes">
             <NotesWidget
               notes={notes}
@@ -1442,7 +1478,60 @@ export default function InvoiceDetails() {
               id={id}
             ></FileUploadWidget>
           </div>
-        )}
+          <Cards className="invoice-logs">
+          <Logs
+            custom
+            isOpen={isLogsOpen}
+            data={changeLogs}
+            title={<><Icon icon="edit" size="small" color="#526FD6" viewBox="-2 -1 24 24" style={{
+              marginTop: "0",
+              padding: "0"
+            }} /> View Change Log</>}
+            name="View-change-log"
+            handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
+            actions={{
+              primary: {
+                label: "View More",
+                icon: {
+                  icon: "edit",
+                  size: "small",
+                  color: "#526FD6",
+                  viewBox: "-2 -1 24 24"
+                },
+                handleOnClick: () => {
+                  if (dataAvailable) {
+                    const spliced = [...logsData].splice(changeLogs.length, viewLimit);
+                    setChangeLogs([...changeLogs, ...spliced]);
+                  }
+                },
+                disabled: !dataAvailable
+              },
+              secondary: {
+                label: "View Less",
+                icon: {
+                  icon: "edit",
+                  size: "small",
+                  color: "#526FD6",
+                  viewBox: "-2 -1 24 24"
+                },
+                handleOnClick: () => {
+                  const logs = [...changeLogs.reverse()];
+                  const limit = changeLogs?.length-1 === viewLimit ? 1 : viewLimit;
+                  if(changeLogs.length === limit) {
+                    return;
+                  }
+                  logs.splice(0, limit);
+                  setChangeLogs([...logs.reverse()]);
+                  if (logs.length > viewLimit) {
+                    setDataAvailable(true);
+                  }
+                },
+                disabled: changeLogs.length <= viewLimit
+              }
+            }}
+          />
+        </Cards>
+        </>}
       {state.transactionType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}

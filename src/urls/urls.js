@@ -59,7 +59,8 @@ export const urls = {
   declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
   billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/",
-  products: metaDataUrl + services.apngMetaDataService + "/Products"
+  products: metaDataUrl + services.apngMetaDataService + "/Products",
+  invoiceLogs: baseURL + services.atlasInvoiceService + "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2"
 };
 
 export const getClientListingUrl = (
@@ -197,5 +198,15 @@ export const getEmployee = (customerId, countryId) => {
 export const createManualInvoice = () => {
   return (
     baseURL + services.atlasIdgService + `/InvoiceData/CreateManualInvoice`
+  );
+};
+
+export const getCreditMemoStep4Url = (invoiceId) => {
+  // https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/relatedData/{invoiceId}
+
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    `/invoices/relatedData/${invoiceId}`
   );
 };

@@ -271,7 +271,7 @@ export default function CreditMemoSummary(props: any) {
                                     <Dropdown
                                         handleDropOptionClick={function noRefCheck() { }}
                                         handleDropdownClick={() => { }}
-                                        isOpen={true}
+                                        isOpen={false}
                                         isDisabled={editCheck}
                                         options={multipleCountryArr}
                                         title="Service Country"

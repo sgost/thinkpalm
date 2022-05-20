@@ -29,7 +29,7 @@
             }
         }
     }
-    
+
     .newPayrollInvoiceModal {
         .a-modal__body {
             height: 95vh;
@@ -90,6 +90,10 @@
                     margin-bottom: 1.875rem;
                 }
 
+                .valuebold {
+                    font-weight: 100 !important;
+                }
+                
                 div {
                     width: 25%;
                     border-right-style: solid;
@@ -133,6 +137,12 @@
                 }
                 .table {
                     max-width: 87rem;
+                }
+                .table__row__data img,
+                .table__row__header img {
+                    margin-right: 0.5rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
                 }
                 .newInvoiceFeeSummaryCalc {
                     display: flex;

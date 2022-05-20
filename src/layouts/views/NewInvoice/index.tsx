@@ -87,32 +87,32 @@ const NewInvoice = () => {
     {
       isSelected: false,
       label: "2019",
-      value: "0",
+      value: 2019,
     },
     {
       isSelected: false,
       label: "2020",
-      value: "1",
+      value: 2020,
     },
     {
       isSelected: false,
       label: "2021",
-      value: "2",
+      value: 2021,
     },
     {
       isSelected: false,
       label: "2022",
-      value: "3",
+      value: 2022,
     },
     {
       isSelected: false,
       label: "2023",
-      value: "4",
+      value: 2023,
     },
     {
       isSelected: false,
       label: "2024",
-      value: "5",
+      value: 2024,
     },
   ]);
 
@@ -171,19 +171,6 @@ const NewInvoice = () => {
       tableSharedColumns.adminFees,
       tableSharedColumns.healthcareBenefits,
     ],
-    data: [
-      {
-        employeeID: "73917",
-        name: "Camila Lopez",
-        grossWages: "USD 20,000.00",
-        allowances: "USD 200.00",
-        expenseReimb: "USD 400.00",
-        employerLiability: "USD 7,210.00",
-        countryVAT: "0.63",
-        adminFees: "USD 650.00",
-        healthcareBenefits: "USD 0.00",
-      },
-    ],
     showDefaultColumn: true,
   };
 
@@ -200,23 +187,6 @@ const NewInvoice = () => {
       tableSharedColumns.exchangeRate,
       tableSharedColumns.total,
     ],
-    data: [
-      {
-        country: {
-          value: "Spain",
-          // img: { src: getFlagPath("ES") },
-        },
-        currency: "EUR",
-        employees: "14",
-        grossWages: "95,000",
-        allowances: "13,690",
-        expenseReimb: "950.00",
-        employerLiability: "2,000.00",
-        countryVAT: "0.00",
-        exchangeRate: "0.75355",
-        total: "121,411.97",
-      },
-    ],
     showDefaultColumn: true,
   };
 
@@ -231,22 +201,6 @@ const NewInvoice = () => {
       tableSharedColumns.benefits,
       tableSharedColumns.employeeContribution,
       tableSharedColumns.total,
-    ],
-    data: [
-      {
-        country: {
-          value: "Spain",
-          // img: { src: getFlagPath("ES") },
-        },
-        currency: "EUR",
-        adminFees: "3.900.00",
-        OnOffboardings: "0.00",
-        fxRate: "1,5",
-        fxBill: "95,000.00",
-        benefits: "3,780.00",
-        employeeContribution: "0.00",
-        total: "121,411.97",
-      },
     ],
     showDefaultColumn: true,
   };
@@ -269,6 +223,10 @@ const NewInvoice = () => {
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
   const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
+  const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState({})
+
+  // stepper three data
+  const [transactionType, setTransactionType] = useState();
 
   // steppers one Props
   const stepperOneProps = {
@@ -300,11 +258,22 @@ const NewInvoice = () => {
     setSelectedRowPostData,
   };
 
+   //stepper three payroll props
   const stepperThreeProps = {
     accessToken,
     newInvoiceEmployeeDetailTable,
     newInvoiceCountrySummaryTable,
     newInvoiceFeeSummaryOptions,
+    CreateManualPayrollRes,
+    stepperOneData,
+    setTransactionType
+  };
+
+   //stepper four payroll props
+  const stepperFourProps = {
+    CreateManualPayrollRes,
+    stepperOneData,
+    transactionType
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -338,7 +307,9 @@ const NewInvoice = () => {
   };
 
   const handleNextButtonClick = () => {
-    setStepsCount(stepsCount + 1);
+    if (stepsCount != 2) {
+      setStepsCount(stepsCount + 1);
+    }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
       const PrepareData = employeeRowData;
       PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
@@ -361,7 +332,10 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
-          console.log("resss", res);
+          if (res.data) {
+            setCreateManualPayrollRes(res.data)
+            setStepsCount(stepsCount + 1);
+          }
         })
         .catch((e: any) => {
           console.log(e);
@@ -409,8 +383,8 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                  ? "step2-right-panel"
-                  : "",
+                    ? "step2-right-panel"
+                    : "",
             },
           }}
           leftPanel={
@@ -420,8 +394,8 @@ const NewInvoice = () => {
                 stepperOneData?.type === "Payroll"
                   ? stepsName
                   : stepperOneData?.type === "Credit Memo"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
@@ -436,7 +410,7 @@ const NewInvoice = () => {
               ) : stepsCount == 3 ? (
                 <PreviewInvoice {...stepperThreeProps} />
               ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
-                <FinishSTepper />
+                <FinishSTepper {...stepperFourProps} />
               ) : (
                 <></>
               )}
@@ -472,8 +446,8 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                ? disableFunForStepOneCreditMemo()
-                : true
+                  ? disableFunForStepOneCreditMemo()
+                  : true
             }
             data-testid="next-button"
             icon={{
