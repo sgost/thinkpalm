@@ -21,7 +21,7 @@ import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 const NewInvoice = () => {
 
   const [task, setTask] = useState("")
-  const [todos, setTodos] = useState([{ id: Math.random(), date: "", product: productService, description: "", country: "", quantity: "", amount: "" }])
+  const [todos, setTodos] = useState([{ id: Math.random(), date: "", product: "", description: "", country: "", quantity: "", amount: "" }])
   //ProductIncoice Data
   const [dateFrom, setDateFrom] = useState("");
   //Set Product Service
@@ -483,8 +483,8 @@ const NewInvoice = () => {
           rightPanel={
             <>
               {stepsCount == 1 ? (
-                // <NewInvoiceCreation {...stepperOneProps} />
-                <ProductInvoiceCreation {...product_stepper} />
+                <NewInvoiceCreation {...stepperOneProps} />
+                // <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 2 ? (
                 stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 3 ? (

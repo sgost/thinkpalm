@@ -10,18 +10,9 @@ import { loadavg } from "os";
 const ProductInvoiceCreation = ({
     todos,
     setTodos,
-    dateFrom,
     setDateFrom,
-    countryService,
     setCountryService,
-    productService,
     setProductService,
-    description,
-    setDescription,
-    quantity,
-    setQuantity,
-    amount,
-    setAmount,
     newArrPush,
     setNewArrPush,
     Open,
@@ -260,7 +251,7 @@ const ProductInvoiceCreation = ({
                                 Total Balance
                             </span>
                             <Button
-                                label={("USD " + item.quantity * item.amount)}
+                                label={("USD " + (item.quantity * item.amount).toLocaleString('en-US'))}
                                 className="secondary-btn medium button"
                                 handleOnClick={() => { }}
                             />

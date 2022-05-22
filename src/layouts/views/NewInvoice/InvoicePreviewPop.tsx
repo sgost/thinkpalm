@@ -47,7 +47,7 @@ const InvoicePreviewPop = ({
     const [opend, setOpend] = useState(false)
 
     const emptyAmount: any = []
-    const amountPush = todos.map((item: any) => emptyAmount.push(item.balance))
+    const amountPush = todos.map((item: any) => emptyAmount.push(item.quantity * item.amount))
     const newAmount = emptyAmount.reduce((partialSum, a) => partialSum + a, 0)
 
     console.log('todos', todos)
@@ -86,7 +86,7 @@ const InvoicePreviewPop = ({
                             </div>
                             <div id="head_price">
                                 {todos.map((item) =>
-                                    <span>USD {item.balance}</span>
+                                    <span>USD {(item.quantity * item.amount).toLocaleString('en-US')}</span>
                                 )}
                             </div>
                         </div>
@@ -168,7 +168,7 @@ const InvoicePreviewPop = ({
                             </div>
                             <div id="invoice_bottom">
                                 <span id="bal_text">Total Balance</span>
-                                <span id="button">USD {newAmount}</span>
+                                <span id="button">USD {newAmount.toLocaleString('en-US')}</span>
                             </div>
                         </div>
                     </div>
