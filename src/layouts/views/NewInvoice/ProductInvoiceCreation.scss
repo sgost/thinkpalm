@@ -8,6 +8,16 @@
     background-color: white;
 }
 
+#click_input {
+    position: absolute;
+    border: 1px solid red;
+    z-index: 999;
+    width: 16.2vw;
+    height: 2.78rem;
+    outline: none;
+    background: transparent;
+}
+
 .newinvoice-container .a-layouts .sidebar-inner-container .panel.right-panel {
     padding: 0 !important;
     background: transparent !important;
@@ -49,6 +59,11 @@
     #container_main1 {
         display: flex;
         margin: 3vw 0 0 0;
+
+        .react-datepicker__icon {
+            width: 2rem;
+            height: 2rem;
+        }
 
         .dropdownP {
             position: relative;
