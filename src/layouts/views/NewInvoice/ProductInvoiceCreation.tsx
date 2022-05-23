@@ -53,9 +53,9 @@ const ProductInvoiceCreation = ({
     const countryFun = (countryApi: any) => {
         axios.get(countryApi).then((response: any) => {
             const temp: any = []
-            response?.data.locations.map((item: any) => temp.push({
+            response?.data.serviceCountries.map((item: any) => temp.push({
                 "isSelected": false,
-                "label": item.integrationId,
+                "label": item.text,
                 "value": item.order
             }))
             setNewArrPushs(temp);
