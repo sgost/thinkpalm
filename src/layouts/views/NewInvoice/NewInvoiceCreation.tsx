@@ -20,11 +20,8 @@ const NewInvoiceCreation = ({
   typeOptions,
   setTypeOptions,
   loading,
-  setLoading
-
+  setLoading,
 }: any) => {
-
-
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
   const [istypeOpen, setIstypeOpen] = useState(false);
@@ -32,17 +29,18 @@ const NewInvoiceCreation = ({
   const [isMonthOpen, setIsMonthOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
 
-
   const preparedCustomerData = (data: any) => {
     const newData = data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
+          ...item,
           isSelected: true,
           label: item.name,
           value: item.customerId,
         };
       } else {
         return {
+          ...item,
           isSelected: false,
           label: item.name,
           value: item.customerId,
@@ -60,14 +58,14 @@ const NewInvoiceCreation = ({
       },
     };
 
-    setLoading(true)
+    setLoading(true);
 
     axios
       .get(api, headers)
       .then((res: any) => {
         const preData: any = preparedCustomerData(res.data);
         setCustomerOption(preData);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -152,197 +150,192 @@ const NewInvoiceCreation = ({
 
   return (
     <>
-      {
-        loading ?
-          <Loader />
-          :
-          <div>
-            <div className="newinvoice-container">
-              <h3>New Invoice</h3>
-              <div className="dropdown">
+      {loading ? (
+        <Loader />
+      ) : (
+        <div>
+          <div className="newinvoice-container">
+            <h3>New Invoice</h3>
+            <div className="dropdown">
+              <Dropdown
+                handleDropOptionClick={(item: any) => {
+                  handleDropOption(
+                    item,
+                    CustomerOptions,
+                    setCustomerOption,
+                    setIsCustomerOpen
+                  );
+                  setCountryOptions([]);
+
+                  setStepperOneData({
+                    ...stepperOneData,
+                    customer: item.label,
+                    customerId: item.value,
+                    countryId: "",
+                    country: "",
+                  });
+                }}
+                handleDropdownClick={(b: boolean) => {
+                  setIsCustomerOpen(b);
+                  setIstypeOpen(false);
+                  setIsCountryOpen(false);
+                  setIsMonthOpen(false);
+                  setIsYearOpen(false);
+                }}
+                isOpen={isCustomerOpen}
+                options={CustomerOptions}
+                title={`Customer`}
+                search
+              />
+            </div>
+
+            <div className="dropdowns">
+              <Dropdown
+                handleDropOptionClick={(item: any) => {
+                  handleDropOption(
+                    item,
+                    typeOptions,
+                    setTypeOptions,
+                    setIstypeOpen
+                  );
+                  setStepperOneData({
+                    ...stepperOneData,
+                    type: item.label,
+                    typeId: item.value,
+                  });
+                }}
+                handleDropdownClick={(b: boolean) => {
+                  setIstypeOpen(b);
+                  setIsCustomerOpen(false);
+                  setIsCountryOpen(false);
+                  setIsMonthOpen(false);
+                  setIsYearOpen(false);
+                }}
+                isOpen={istypeOpen}
+                options={typeOptions}
+                title={`Type`}
+              />
+            </div>
+
+            {stepperOneData?.type === "Payroll" && (
+              <div className="dropdownC">
                 <Dropdown
                   handleDropOptionClick={(item: any) => {
                     handleDropOption(
                       item,
-                      CustomerOptions,
-                      setCustomerOption,
-                      setIsCustomerOpen
+                      CountryOptions,
+                      setCountryOptions,
+                      setIsCountryOpen
                     );
-                    setCountryOptions([])
-
                     setStepperOneData({
                       ...stepperOneData,
-                      customer: item.label,
-                      customerId: item.value,
-                      countryId: "",
-                      country: ""
-
+                      country: item.label,
+                      countryId: item.value,
                     });
                   }}
                   handleDropdownClick={(b: boolean) => {
-                    setIsCustomerOpen(b);
+                    setIsCountryOpen(b);
+                    setIsCustomerOpen(false);
                     setIstypeOpen(false);
-                    setIsCountryOpen(false);
                     setIsMonthOpen(false);
                     setIsYearOpen(false);
                   }}
-                  isOpen={isCustomerOpen}
-                  options={CustomerOptions}
-                  title={`Customer`}
-                  search
+                  isOpen={isCountryOpen}
+                  options={CountryOptions}
+                  title={`Countries`}
                 />
               </div>
+            )}
 
-              <div className="dropdowns">
+            <div style={{ display: "flex", flexDirection: "row", zIndex: "1" }}>
+              <div
+                className="dropdown-margin"
+                onClick={() => {
+                  setIsMonthOpen(!isMonthOpen);
+                  setIsCustomerOpen(false);
+                  setIstypeOpen(false);
+                  setIsCountryOpen(false);
+                  setIsYearOpen(false);
+                }}
+              >
                 <Dropdown
                   handleDropOptionClick={(item: any) => {
                     handleDropOption(
                       item,
-                      typeOptions,
-                      setTypeOptions,
-                      setIstypeOpen
+                      MonthOptions,
+                      setMonthOptions,
+                      setIsMonthOpen
                     );
                     setStepperOneData({
                       ...stepperOneData,
-                      type: item.label,
-                      typeId: item.value,
+                      month: item.label,
+                      monthId: item.value,
                     });
                   }}
                   handleDropdownClick={(b: boolean) => {
-                    setIstypeOpen(b);
-                    setIsCustomerOpen(false);
-                    setIsCountryOpen(false);
-                    setIsMonthOpen(false);
-                    setIsYearOpen(false);
+                    // setIsMonthOpen(b);
                   }}
-                  isOpen={istypeOpen}
-                  options={typeOptions}
-                  title={`Type`}
+                  isOpen={isMonthOpen}
+                  options={MonthOptions}
+                  title="Select Month"
                 />
+                <div className="calendar">
+                  <Icon
+                    icon="calendar"
+                    size="small"
+                    width="30"
+                    height="30"
+                    color="#3E3E3E"
+                  />
+                </div>
               </div>
 
-              {stepperOneData?.type === 'Payroll' && (
-                <div className="dropdownC">
-                  <Dropdown
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        CountryOptions,
-                        setCountryOptions,
-                        setIsCountryOpen
-                      );
-                      setStepperOneData({
-                        ...stepperOneData,
-                        country: item.label,
-                        countryId: item.value,
-                      });
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      setIsCountryOpen(b);
-                      setIsCustomerOpen(false);
-                      setIstypeOpen(false);
-                      setIsMonthOpen(false);
-                      setIsYearOpen(false);
-                    }}
-                    isOpen={isCountryOpen}
-                    options={CountryOptions}
-                    title={`Countries`}
-                  />
-                </div>
-              )}
-
-              <div style={{ display: "flex", flexDirection: "row", zIndex: "1" }}>
-                <div
-                  className="dropdown-margin"
-                  onClick={() => {
-                    setIsMonthOpen(!isMonthOpen);
-                    setIsCustomerOpen(false);
-                    setIstypeOpen(false);
-                    setIsCountryOpen(false);
-                    setIsYearOpen(false);
+              <div
+                className="year-dropdown"
+                onClick={() => {
+                  setIsYearOpen(!isYearOpen);
+                  setIsCustomerOpen(false);
+                  setIstypeOpen(false);
+                  setIsCountryOpen(false);
+                  setIsMonthOpen(false);
+                }}
+              >
+                <Dropdown
+                  handleDropOptionClick={(item: any) => {
+                    handleDropOption(
+                      item,
+                      YearOptions,
+                      setYearOptions,
+                      setIsYearOpen
+                    );
+                    setStepperOneData({
+                      ...stepperOneData,
+                      year: item.label,
+                      yearId: item.value,
+                    });
                   }}
-                >
-                  <Dropdown
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        MonthOptions,
-                        setMonthOptions,
-                        setIsMonthOpen
-                      );
-                      setStepperOneData({
-                        ...stepperOneData,
-                        month: item.label,
-                        monthId: item.value,
-                      });
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      // setIsMonthOpen(b);
-                    }}
-                    isOpen={isMonthOpen}
-                    options={MonthOptions}
-                    title="Select Month"
-                  />
-                  <div className="calendar">
-                    <Icon
-                      icon="calendar"
-                      size="small"
-                      width="30"
-                      height="30"
-                      color="#3E3E3E"
-                    />
-                  </div>
-                </div>
-
-                <div
-                  className="year-dropdown"
-                  onClick={() => {
-                    setIsYearOpen(!isYearOpen);
-                    setIsCustomerOpen(false);
-                    setIstypeOpen(false);
-                    setIsCountryOpen(false);
-                    setIsMonthOpen(false);
+                  handleDropdownClick={(b: boolean) => {
+                    // setIsYearOpen(!isYearOpen);
                   }}
-                >
-                  <Dropdown
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        YearOptions,
-                        setYearOptions,
-                        setIsYearOpen
-                      );
-                      setStepperOneData({
-                        ...stepperOneData,
-                        year: item.label,
-                        yearId: item.value,
-                      });
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      // setIsYearOpen(!isYearOpen);
-                    }}
-                    isOpen={isYearOpen}
-                    options={YearOptions}
-                    title="Select Year"
-                  />
+                  isOpen={isYearOpen}
+                  options={YearOptions}
+                  title="Select Year"
+                />
 
-                  <div className="calendar">
-                    <Icon
-                      icon="calendar"
-                      size="small"
-                      width="30"
-                      height="30"
-                      color="#3E3E3E"
-                    />
-                  </div>
+                <div className="calendar">
+                  <Icon
+                    icon="calendar"
+                    size="small"
+                    width="30"
+                    height="30"
+                    color="#3E3E3E"
+                  />
                 </div>
               </div>
             </div>
           </div>
-      }
-
-
-
+        </div>
+      )}
     </>
   );
 };

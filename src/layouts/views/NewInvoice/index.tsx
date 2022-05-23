@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
-import InvoicePreviewPop from "./InvoicePreviewPop"
-import ProductInvoiceCreation from "./ProductInvoiceCreation"
+import InvoicePreviewPop from "./InvoicePreviewPop";
+import ProductInvoiceCreation from "./ProductInvoiceCreation";
 import SelectEmployees from "./SelectEmployees";
 import PreviewInvoice from "./PreviewInvoice";
 import "./index.scss";
@@ -15,29 +15,43 @@ import {
 } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
-import { createManualInvoice, getHeaders, updateInvoiceStatus } from "../../../urls/urls";
+import {
+  createManualInvoice,
+  getHeaders,
+  updateInvoiceStatus,
+  urls,
+} from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
-
-  const [task, setTask] = useState("")
-  const [todos, setTodos] = useState([{ id: Math.random(), date: "", product: "", description: "", country: "", quantity: "", amount: "" }])
+  const [task, setTask] = useState("");
+  const [todos, setTodos] = useState([
+    {
+      id: Math.random(),
+      date: "",
+      product: "",
+      description: "",
+      country: "",
+      quantity: "",
+      amount: "",
+    },
+  ]);
   //ProductIncoice Data
   const [dateFrom, setDateFrom] = useState("");
   //Set Product Service
-  const [productService, setProductService] = useState("")
+  const [productService, setProductService] = useState("");
   //set Country
-  const [countryService, setCountryService] = useState("")
+  const [countryService, setCountryService] = useState("");
   //Description
-  const [description, setDescription] = useState("")
+  const [description, setDescription] = useState("");
   //Quantity, Amount
-  const [quantity, setQuantity] = useState("")
-  const [amount, setAmount] = useState("")
-  const [newArrPush, setNewArrPush] = useState([])
-  const [Open, setOpen] = useState(false)
-  const [newArrPushs, setNewArrPushs] = useState([])
-  const [Opens, setOpens] = useState(false)
-
+  const [quantity, setQuantity] = useState("");
+  const [amount, setAmount] = useState("");
+  const [newArrPush, setNewArrPush] = useState([]);
+  const [Open, setOpen] = useState(false);
+  const [newArrPushs, setNewArrPushs] = useState([]);
+  const [Opens, setOpens] = useState(false);
+  const [invoiceId, setInvoiceId] = useState();
 
   //Product Stepper2 Data
   const product_stepper = {
@@ -64,22 +78,22 @@ const NewInvoice = () => {
     newArrPushs,
     setNewArrPushs,
     Opens,
-    setOpens
-  }
+    setOpens,
+  };
 
-  console.log(dateFrom)
-  console.log('product_stepper', product_stepper)
+  console.log(dateFrom);
+  console.log("product_stepper", product_stepper);
   ///////////////////////////
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
 
-  var CurrentYear = new Date().getFullYear()
+  var CurrentYear = new Date().getFullYear();
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   //steps for payroll
   const stepsName = [
     sharedSteps.newInvoice,
@@ -254,7 +268,7 @@ const NewInvoice = () => {
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
   const [selectedRowPostData, setSelectedRowPostData] = useState<any>({});
-  const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState<any>({})
+  const [CreateManualPayrollRes, setCreateManualPayrollRes] = useState<any>({});
 
   // stepper three data
   const [transactionType, setTransactionType] = useState();
@@ -275,7 +289,7 @@ const NewInvoice = () => {
     typeOptions,
     setTypeOptions,
     loading,
-    setLoading
+    setLoading,
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -290,7 +304,7 @@ const NewInvoice = () => {
     setEmployeeApiData,
     setSelectedRowPostData,
     loading,
-    setLoading
+    setLoading,
   };
 
   //stepper three payroll props
@@ -303,14 +317,14 @@ const NewInvoice = () => {
     stepperOneData,
     setTransactionType,
     loading,
-    setLoading
+    setLoading,
   };
 
   //stepper four payroll props
   const stepperFourProps = {
     CreateManualPayrollRes,
     stepperOneData,
-    transactionType
+    transactionType,
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -348,7 +362,7 @@ const NewInvoice = () => {
       setStepsCount(stepsCount + 1);
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
-      setLoading(true)
+      setLoading(true);
       const PrepareData = employeeRowData;
       PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
       const data = {
@@ -371,9 +385,9 @@ const NewInvoice = () => {
       })
         .then((res: any) => {
           if (res.data) {
-            setCreateManualPayrollRes(res.data)
+            setCreateManualPayrollRes(res.data);
             setStepsCount(stepsCount + 1);
-            setLoading(false)
+            setLoading(false);
           }
         })
         .catch((e: any) => {
@@ -381,7 +395,7 @@ const NewInvoice = () => {
         });
     }
     if (stepsCount == 3 && stepperOneData.type == "Payroll") {
-      setLoading(true)
+      setLoading(true);
 
       axios({
         method: "PUT",
@@ -389,12 +403,85 @@ const NewInvoice = () => {
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
         .then((res: any) => {
-            setLoading(false)
-            setStepsCount(stepsCount + 1);
-          
+          setLoading(false);
+          setStepsCount(stepsCount + 1);
         })
         .catch((e: any) => {
           console.log("error", e);
+        });
+    }
+
+    if (stepsCount == 2 && stepperOneData?.type === "Credit Memo") {
+      setStepsCount(3);
+    }
+
+    if (stepsCount == 3 && stepperOneData?.type === "Credit Memo") {
+      // console.log("new arr", CustomerOptions);
+
+      let invoiceItems = todos.map((e: any) => {
+        return {
+          ServiceDate: e.date, // ?
+          ProductId: newArrPush.find((n: any) => n.label === e.product).id, // prod id
+          Description: e.description,
+          Amount: e.amount,
+          Quantity: e.quantity,
+          TotalAmount: e.amount * e.quantity, // multiple ?
+          ServiceCountry: newArrPushs.find((n: any) => n.label === e.country)
+            .value, // keyword? or id
+          ModifiedBy: stepperOneData?.customerId, // ?
+        };
+      });
+
+      let balance = 0;
+
+      todos.forEach((item) => {
+        balance += parseFloat(item.amount) * parseFloat(item.quantity);
+      });
+
+      const currDate = new Date();
+      const dueDate = new Date();
+      dueDate.setDate(currDate.getDate() + 1);
+
+      let data = {
+        CustomerId: stepperOneData?.customerId,
+        CustomerName: stepperOneData.customer, // customer name
+        CustomerLocation:
+          CustomerOptions.find(
+            (c: any) => c.customerId === stepperOneData?.customerId
+          ).billingAddressCountryName || "India", // loc name
+        CurrencyId: 840, // tbd
+        Status: 1, // hard code
+        TransactionType: 4, // type
+        // CreatedDate: currDate, // ? current date
+        DueDate: currDate, // ? do not send
+        CreatedDate: dueDate,
+
+        // DueDate: "2022-05-23T12:31:21.125Z",
+        TotalAmount: balance, //  total balance
+        InvoiceBalance: balance, //  total balance
+        IsClientVisible: true, // hard code
+        CreatedBy: stepperOneData?.customerId, // ?do not send
+        ModifiedBy: stepperOneData?.customerId, // ?do not send
+        InvoiceDocuments: [],
+        InvoiceItems: invoiceItems,
+        InvoiceNotes: [],
+        InvoiceRelatedInvoices: [],
+        InvoiceRelatedRelatedInvoices: [],
+      };
+      console.log(data);
+
+      axios({
+        method: "POST",
+        url: urls.createCreditMemo,
+        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+        data: data,
+      })
+        .then((res: any) => {
+          console.log(res);
+          setInvoiceId(res.data.id);
+        })
+        .catch((e: any) => {
+          console.log(e);
         });
     }
   };
@@ -439,8 +526,8 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                    ? "step2-right-panel"
-                    : "",
+                  ? "step2-right-panel"
+                  : "",
             },
           }}
           leftPanel={
@@ -450,8 +537,8 @@ const NewInvoice = () => {
                 stepperOneData?.type === "Payroll"
                   ? stepsName
                   : stepperOneData?.type === "Credit Memo"
-                    ? creditMemoSteps
-                    : stepsInitial
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />
@@ -462,19 +549,27 @@ const NewInvoice = () => {
               {stepsCount == 1 ? (
                 <NewInvoiceCreation {...stepperOneProps} />
               ) : stepsCount == 2 ? (
-                stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation {...product_stepper} />
+                stepperOneData?.type === "Payroll" ? (
+                  <SelectEmployees {...stepperTwoProps} />
+                ) : (
+                  <ProductInvoiceCreation {...product_stepper} />
+                )
               ) : stepsCount == 3 ? (
-                stepperOneData?.type === "Payroll" ?
+                stepperOneData?.type === "Payroll" ? (
                   <PreviewInvoice {...stepperThreeProps} />
-                  :
-                  <InvoicePreviewPop {...stepperOneProps} {...product_stepper} />
+                ) : (
+                  <InvoicePreviewPop
+                    {...stepperOneProps}
+                    {...product_stepper}
+                  />
+                )
               ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
                 <FinishSTepper {...stepperFourProps} />
               ) : (
                 <></>
               )}
               {stepsCount === 4 && stepperOneData?.type === "Credit Memo" && (
-                <FinishCreditMemo />
+                <FinishCreditMemo invoiceId={invoiceId} />
               )}
             </>
           }
@@ -505,8 +600,8 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                  ? disableFunForStepOneCreditMemo()
-                  : true
+                ? disableFunForStepOneCreditMemo()
+                : true
             }
             data-testid="next-button"
             icon={{
