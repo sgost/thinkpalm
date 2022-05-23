@@ -144,7 +144,7 @@ const ProductInvoiceCreation = ({
                                 {/* Product Service */}
 
                                 <div className="dropdownP" onClick={() => localStorage.setItem('name_value', "product")} data-testid="product_name">
-                                    <input type="text" value={item.product} data-testid="product_open" onClick={() => setOpen(true)} id="click_input" placeholder="Please Select" />
+                                    <input type="text" value={item.product} data-testid="product_open" onClick={() => setOpen(true)} id="click_input" placeholder="Please Select" autoComplete="off" />
                                     <Dropdown
                                         handleDropOptionClick={(opt: any) => {
                                             setProductService(opt.label);
@@ -190,7 +190,7 @@ const ProductInvoiceCreation = ({
                             <div id="container_main2">
                                 {/* Country Service */}
                                 <div className="dropdownP" data-testid="Country_name" onClick={() => localStorage.setItem('name_value', "country")}>
-                                    <input type="text" value={item.country} data-testid="Country_open" onClick={() => setOpens(true)} id="click_input" placeholder="Please Select" />
+                                    <input type="text" value={item.country} data-testid="Country_open" onClick={() => setOpens(true)} id="click_input" placeholder="Please Select" autoComplete="off" />
                                     <Dropdown
                                         handleDropOptionClick={(opt: any) => {
                                             setCountryService(opt.label);
