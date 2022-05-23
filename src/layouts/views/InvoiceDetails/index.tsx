@@ -37,6 +37,7 @@ import {
   getDownloadFileUrl,
   getCMInvoiceUrl,
   getVatValue,
+  getEmployeeBreakdownUrl,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -810,18 +811,18 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     };
 
-    const downloadEmployeeBreakdwonApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-idg-service/api/InvoiceData/EmployeeBreakdownReport/${id}`;
+    const downloadEmployeeBreakdwonApi = getEmployeeBreakdownUrl(id);
     axios
       .get(downloadEmployeeBreakdwonApi, headers)
       .then((res: any) => {
         console.log("downloadEmployeeBreakdwonApi", res)
-        // if (res.status === 200) {
-        //   let url2 = res.data.url;
-        //   let a = document.createElement("a");
-        //   a.href = url2;
-        //   a.download = `${res.data.name}`;
-        //   a.click();
-        // }
+        if (res.status === 200) {
+          let url2 = res.data.url;
+          let a = document.createElement("a");
+          a.href = url2;
+          a.download = `${res.data.name}`;
+          a.click();
+        }
       })
       .catch((e: any) => {
         console.log("error", e);

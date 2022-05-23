@@ -26,6 +26,7 @@ import {
   getDeleteInvoiceUrl,
   getDownloadFileUrl,
   getDownloadUrl,
+  getEmployeeBreakdownUrl,
   getExcelUrl,
   getNotesUrl,
   urls,
@@ -171,6 +172,12 @@ describe("Invoice details", () => {
       url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
       name: "sample.pdf",
     });
+
+    mock.onGet(getEmployeeBreakdownUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
     mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
   });
 
@@ -210,6 +217,10 @@ describe("Invoice details", () => {
     fireEvent.click(download);
     const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
     fireEvent.click(excel);
+screen.debug()
+fireEvent.click(download);
+    const BreakDown = await waitFor(() => screen.getByText(/Employee Breakdown/));
+    fireEvent.click(BreakDown);
   });
 
   test("approve invoice clickable ", async () => {
@@ -1981,4 +1992,78 @@ describe("Invoice details countries api fail", () => {
     // expect(payrollTab).toBeInTheDocument();
   });
   
+});
+
+
+describe("Invoice details employeeBreakDown api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getEmployeeBreakdownUrl(id)).reply(500, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+  });
+
+  test("download clickable ", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const download = screen.getByText(/Download/);
+    fireEvent.click(download);
+    const pdf = await waitFor(() => screen.getByText(/Invoice as PDF/));
+    fireEvent.click(pdf);
+    fireEvent.click(download);
+    const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
+    fireEvent.click(excel);
+     
+    fireEvent.click(download);
+    const BreakDown = await waitFor(() => screen.getByText(/Employee Breakdown/));
+    fireEvent.click(BreakDown);
+  });
 });
