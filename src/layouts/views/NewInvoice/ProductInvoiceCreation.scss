@@ -8,6 +8,18 @@
     background-color: white;
 }
 
+#click_input {
+    position: absolute;
+    width: 13rem;
+    outline: none;
+    z-index: 9999;
+    height: 2rem;
+    font-size: 1rem;
+    border: none;
+    top: 0.5rem;
+    left: 0.5rem;
+}
+
 .newinvoice-container .a-layouts .sidebar-inner-container .panel.right-panel {
     padding: 0 !important;
     background: transparent !important;
@@ -69,8 +81,8 @@
                 width: 15.5vw;
                 padding: 0 0 0 4.75px;
                 border-radius: 0.222rem;
-                outline: none;
                 border: 0.056rem solid #ced4da;
+                outline-color: #526FD6;
             }
         }
     }
@@ -82,6 +94,7 @@
 
         .dropdownP {
             margin: 0;
+            position: relative;
         }
 
         .dropdownCount {
@@ -90,7 +103,7 @@
 
             #count_tags {
                 position: absolute;
-                top: -23px;
+                top: -1.5rem;
 
                 span {
                     font-size: 0.889rem;
@@ -112,7 +125,7 @@
                 .inputField {
                     padding: 0 0 0 4.75px;
                     border-radius: 0.222rem;
-                    outline: none;
+                    outline-color: #526FD6;
                     border: 0.056rem solid #ced4da;
                 }
             }

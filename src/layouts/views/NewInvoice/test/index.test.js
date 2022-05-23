@@ -575,4 +575,50 @@ describe("Test case for ProductInvoice", () => {
     fireEvent.click(RemoveItem)
 
   })
+
+  test('Product name save in local storage', async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+    const Productname = await screen.findByTestId("product_name");
+    expect(Productname).toBeInTheDocument();
+    fireEvent.click(Productname)
+
+  })
+
+  test('Product dropdown open', async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+    const ProductOpen = await screen.findByTestId("product_open");
+    expect(ProductOpen).toBeInTheDocument();
+    fireEvent.click(ProductOpen)
+  })
+
+  test('Country input name set', async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+    const CountryName = await screen.findByTestId("Country_name");
+    expect(CountryName).toBeInTheDocument();
+    fireEvent.click(CountryName)
+  })
+
+  test('Country dropdown open', async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+    const CountryOpen = await screen.findByTestId("Country_open");
+    expect(CountryOpen).toBeInTheDocument();
+    fireEvent.click(CountryOpen)
+  })
+
 })

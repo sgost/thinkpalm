@@ -484,7 +484,6 @@ const NewInvoice = () => {
             <>
               {stepsCount == 1 ? (
                 <NewInvoiceCreation {...stepperOneProps} />
-                // <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 2 ? (
                 stepperOneData?.type === "Payroll" ? <SelectEmployees {...stepperTwoProps} /> : <ProductInvoiceCreation {...product_stepper} />
               ) : stepsCount == 3 ? (

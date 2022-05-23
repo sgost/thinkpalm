@@ -9,27 +9,27 @@ export const mockapidata = {
       "billingAddressCountryName": null,
       "entityInfo": null,
       "contactDetails": {
-          "officeLandline": {
-              "countryCode": null,
-              "number": "NULL",
-              "extension": null
-          },
-          "additionalLandline": {
-              "countryCode": null,
-              "number": "NULL",
-              "extension": null
-          },
-          "officeMobile": {
-              "countryCode": null,
-              "number": "NULL"
-          },
-          "additionalMobile": null,
-          "fax": {
-              "countryCode": null,
-              "number": "NULL",
-              "extension": null
-          },
-          "email": "email_1585@skbskbs.com"
+        "officeLandline": {
+          "countryCode": null,
+          "number": "NULL",
+          "extension": null
+        },
+        "additionalLandline": {
+          "countryCode": null,
+          "number": "NULL",
+          "extension": null
+        },
+        "officeMobile": {
+          "countryCode": null,
+          "number": "NULL"
+        },
+        "additionalMobile": null,
+        "fax": {
+          "countryCode": null,
+          "number": "NULL",
+          "extension": null
+        },
+        "email": "email_1585@skbskbs.com"
       },
       "customers": [],
       "purchaseOrders": [],
@@ -37,7 +37,7 @@ export const mockapidata = {
       "paymentInfo": null,
       "accountReceivable": null,
       "subscriptions": []
-  },
+    },
   ],
   resGetAllCountry: [
     {
@@ -437,47 +437,47 @@ export const currentOrgTokenMock = {
   },
 };
 
-export const  currentOrgForListing = {
+export const currentOrgForListing = {
   Name: "DSM Nutritional Products",
   Zone: "EU",
   Type: "Service_Consumers",
   Payments: {
-      Role: "Customer",
-      InvoiceDetails: [
-          "Browse",
-          "Reject",
-          "Select",
-          "Download",
-          "View",
-          "Publish",
-          "Approve",
-          "DeleteFile"
-      ],
-      CreditMemoInvoice: [
-          "Browse",
-          "Download",
-          "View",
-          "Publish",
-          "DeleteFile"
-      ],
-      MiscellaneousInvoice: [
-          "Browse",
-          "Download",
-          "View",
-          "Publish",
-          "DeleteFile"
-      ],
-      ProformaInvoice: [
-          "Browse",
-          "Download",
-          "View",
-          "Publish",
-          "DeleteFile"
-      ],
-      InvoiceList: [
-          "Edit",
-          "Download",
-          "View"
-      ]
+    Role: "Customer",
+    InvoiceDetails: [
+      "Browse",
+      "Reject",
+      "Select",
+      "Download",
+      "View",
+      "Publish",
+      "Approve",
+      "DeleteFile"
+    ],
+    CreditMemoInvoice: [
+      "Browse",
+      "Download",
+      "View",
+      "Publish",
+      "DeleteFile"
+    ],
+    MiscellaneousInvoice: [
+      "Browse",
+      "Download",
+      "View",
+      "Publish",
+      "DeleteFile"
+    ],
+    ProformaInvoice: [
+      "Browse",
+      "Download",
+      "View",
+      "Publish",
+      "DeleteFile"
+    ],
+    InvoiceList: [
+      "Edit",
+      "Download",
+      "View"
+    ]
   }
 }

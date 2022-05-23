@@ -24,24 +24,21 @@ const ProductInvoiceCreation = ({
 }: any) => {
 
     //Product API
-
-    const [totalBal, setTotalBal] = useState("00")
-    const [totalAmo, setTotalAmo] = useState("0000")
-    console.log('totalBal', totalBal)
     let productApi = productInvoice();
+    const [toggleState, setToggleState] = useState(0);
+    const [totalQuantity, setTotalQuantity] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
 
     //CountryAPI
-
     let countryApi = CountryApi();
-    console.log('countryApi', countryApi)
 
     useEffect(() => {
-        callAgain()
+        productFun(productApi);
+        countryFun(countryApi);
     }, [])
 
 
-
-    const callAgain = () => {
+    const productFun = (productApi: any) => {
         axios.get(productApi).then((response: any) => {
             const temp: any = []
             response?.data.map((item: any) => temp.push({
@@ -49,9 +46,11 @@ const ProductInvoiceCreation = ({
                 "label": item.glDescription,
                 "value": item.glDescription
             }))
-            setNewArrPush(temp)
+            setNewArrPush(temp);
         })
+    }
 
+    const countryFun = (countryApi: any) => {
         axios.get(countryApi).then((response: any) => {
             const temp: any = []
             response?.data.locations.map((item: any) => temp.push({
@@ -59,30 +58,21 @@ const ProductInvoiceCreation = ({
                 "label": item.integrationId,
                 "value": item.order
             }))
-            setNewArrPushs(temp)
+            setNewArrPushs(temp);
         })
     }
 
-
-    var finalBal: any = totalBal * totalAmo
-
     const handleAdd = () => {
         setTodos([...todos, { id: Math.random(), date: "", product: "", description: "", country: "", quantity: "", amount: "" }]);
+        setTotalQuantity(0);
+        setTotalAmount(0);
     }
-
     const remove = (item: any) => {
-        setTodos(todos.filter((todo) => todo.id !== item.id));
+        setTodos(todos.filter((todo: any) => todo.id !== item.id));
     }
 
-
-    const new_handle = (e) => {
-        console.log(e)
-        localStorage.setItem('name_value', e.target.name)
-    }
-
-    const new_handle2 = (e, index) => {
+    const new_handle2 = (e: any, index: any) => {
         let kk = localStorage.getItem('name_value')
-
         let ss = {
             e: {
                 target: {
@@ -91,11 +81,10 @@ const ProductInvoiceCreation = ({
                 }
             }
         }
-
         handleChange(ss.e, index)
     }
 
-    const handleChange = (e, index) => {
+    const handleChange = (e: any, index: any) => {
         const tempData = todos
         tempData[index][e.target.name] = e.target.value
         console.log(tempData)
@@ -108,7 +97,7 @@ const ProductInvoiceCreation = ({
 
     return (
         <div>
-            {todos?.map((item, i) =>
+            {todos?.map((item: any, i: any) =>
                 <div className="newinvoice_main" >
 
                     <div>
@@ -137,9 +126,8 @@ const ProductInvoiceCreation = ({
                                     className="year-dropdown"
                                     onClick={() => localStorage.setItem('name_value', "date")}
                                 >
-                                    {/* <input defaultValue={item.date} onClick={(e) => new_handle(e)} name="date" id="click_input" /> */}
                                     <DatePicker
-                                        handleDateChange={(date) => {
+                                        handleDateChange={(date: any) => {
                                             const startDate = format(date, "dd MMM yyyy");
                                             setDateFrom(startDate)
                                             new_handle2(startDate, i)
@@ -155,12 +143,12 @@ const ProductInvoiceCreation = ({
 
                                 {/* Product Service */}
 
-                                <div className="dropdownP" onClick={() => localStorage.setItem('name_value', "product")}>
-                                    {/* <input defaultValue={item.product} onClick={(e) => new_handle(e)} name="product" id="click_input" /> */}
+                                <div className="dropdownP" onClick={() => localStorage.setItem('name_value', "product")} data-testid="product_name">
+                                    <input type="text" value={item.product} data-testid="product_open" onClick={() => setOpen(true)} id="click_input" placeholder="Please Select" />
                                     <Dropdown
-                                        handleDropOptionClick={(opt) => {
+                                        handleDropOptionClick={(opt: any) => {
                                             setProductService(opt.label);
-                                            setOpen(false)
+                                            setOpen(false);
                                             let index = newArrPush.findIndex((e: any) => e.value === opt.value);
 
                                             let copy = [...newArrPush];
@@ -175,14 +163,14 @@ const ProductInvoiceCreation = ({
                                                 }
                                             });
 
-                                            setNewArrPush(copy)
-
-                                            new_handle2(opt.label, i)
+                                            setNewArrPush(copy);
+                                            new_handle2(opt.label, i);
                                         }}
                                         handleDropdownClick={(bool: any) => {
                                             setOpen(bool);
+                                            setToggleState(i);
                                         }}
-                                        isOpen={Open}
+                                        isOpen={toggleState == i ? Open : false}
                                         title={`Product Service`}
                                         options={newArrPush}
                                     />
@@ -193,28 +181,27 @@ const ProductInvoiceCreation = ({
 
                                 <div className="dropdownP">
                                     <span id="desc_label">Description<span style={{ color: `red` }}>*</span></span>
-                                    <input type="text" defaultValue={item.description} placeholder="Description" id="description_input" name="description" onChange={(e) => handleChange(e, i)} />
+                                    <input type="text" defaultValue={item.description} placeholder="Description" id="description_input" name="description" data-testid="description_set" onChange={(e) => handleChange(e, i)} />
                                 </div>
                             </div>
 
 
 
                             <div id="container_main2">
-                                {/* Product Service */}
-
-                                <div className="dropdownP" onClick={() => localStorage.setItem('name_value', "country")}>
-                                    {/* <input defaultValue={item.country} onClick={(e) => new_handle(e)} name="country" id="click_input" /> */}
+                                {/* Country Service */}
+                                <div className="dropdownP" data-testid="Country_name" onClick={() => localStorage.setItem('name_value', "country")}>
+                                    <input type="text" value={item.country} data-testid="Country_open" onClick={() => setOpens(true)} id="click_input" placeholder="Please Select" />
                                     <Dropdown
                                         handleDropOptionClick={(opt: any) => {
-                                            setCountryService(opt.label)
-                                            setOpens(false)
+                                            setCountryService(opt.label);
+                                            setOpens(false);
                                             let index = newArrPushs.findIndex((e: any) => e.value === opt.value);
 
                                             let copy = [...newArrPushs];
-                                            copy.forEach((e, i) => {
-                                                if (i === index) {
+                                            copy.forEach((e, ind) => {
+                                                if (ind === index) {
                                                     if (copy[index].isSelected) {
-                                                        copy[index] = { ...opt, isSelected: false };
+                                                        copy[index] = { ...copy[index], isSelected: false };
                                                     } else {
                                                         copy[index] = { ...opt, isSelected: true };
                                                     }
@@ -225,8 +212,9 @@ const ProductInvoiceCreation = ({
                                         }}
                                         handleDropdownClick={(bool: any) => {
                                             setOpens(bool);
+                                            setToggleState(i);
                                         }}
-                                        isOpen={Opens}
+                                        isOpen={toggleState == i ? Opens : false}
                                         title={`Country Service`}
                                         options={newArrPushs}
                                     />
@@ -237,8 +225,8 @@ const ProductInvoiceCreation = ({
                                         <span>Amount <span style={{ color: 'red' }}>*</span></span>
                                     </div>
                                     <div id="dropdownCount_inputs">
-                                        <input placeholder="0" defaultValue={item.quantity} className="inputField" onChange={(e) => { handleChange(e, i); setTotalBal(e.target.value) }} name="quantity" />
-                                        <input placeholder="00" defaultValue={item.amount} className="inputField" onChange={(e) => { handleChange(e, i), setTotalAmo(e.target.value) }} name="amount" />
+                                        <input placeholder="0" defaultValue={item.quantity} className="inputField" onChange={(e) => { handleChange(e, i); setTotalQuantity(JSON.parse(e.target.value)) }} name="quantity" />
+                                        <input placeholder="00" defaultValue={item.amount} className="inputField" onChange={(e) => { handleChange(e, i); setTotalAmount(JSON.parse(e.target.value)) }} name="amount" />
                                     </div>
                                 </div>
 
@@ -251,7 +239,7 @@ const ProductInvoiceCreation = ({
                                 Total Balance
                             </span>
                             <Button
-                                label={("USD " + (item.quantity * item.amount).toLocaleString('en-US'))}
+                                label={("USD " + (item.amount ? item.quantity * item.amount : totalQuantity * totalAmount).toLocaleString('en-US'))}
                                 className="secondary-btn medium button"
                                 handleOnClick={() => { }}
                             />
@@ -261,8 +249,8 @@ const ProductInvoiceCreation = ({
                 </div>
             )}
 
-            <div className="newinvoice-container2" data-testid="Add-New-Item">
-                <div id="icon_1" onClick={handleAdd}>
+            <div className="newinvoice-container2">
+                <div id="icon_1" onClick={handleAdd} data-testid="Add-New-Item">
                     <span>
                         <Icon
                             icon="add"
