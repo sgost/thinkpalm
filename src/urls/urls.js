@@ -216,7 +216,6 @@ export const updateInvoiceStatus = (invoiceId) => {
   return (
     baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`
   );
-<<<<<<< HEAD
 };
 
 
@@ -230,6 +229,4 @@ export const CountryApi = () => {
   return (
     metaDataUrl + services.apngMetaDataService + `/Lookup`
   );
-=======
->>>>>>> edd40558281adf3888c0866ea6b66be7f3bbbef4
 };

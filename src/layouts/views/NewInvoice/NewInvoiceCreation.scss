@@ -60,6 +60,7 @@
     .year-dropdown {
         position: relative;
         cursor: pointer;
+
         .a-dropdown__option__container {
             height: 2.889rem;
         }
@@ -130,9 +131,6 @@ button.a-button.primary-blue.medium.button {
     flex-direction: row-reverse;
     // height: 3.4rem;
     height: 3.34rem;
-<<<<<<< HEAD
-}
-=======
 }
 
 @media screen and (max-width: 1350px) {
@@ -159,7 +157,7 @@ button.a-button.primary-blue.medium.button {
     }
 }
 
-@media screen and (max-width: 1450px) and  (min-width: 1350px) {
+@media screen and (max-width: 1450px) and (min-width: 1350px) {
     .newinvoice-container .dropdown-margin .calendar {
         display: flex;
         justify-content: end;
@@ -182,4 +180,3 @@ button.a-button.primary-blue.medium.button {
         width: 23px;
     }
 }
->>>>>>> edd40558281adf3888c0866ea6b66be7f3bbbef4
