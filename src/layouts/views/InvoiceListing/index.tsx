@@ -510,7 +510,7 @@ export default function InvoiceListing() {
         </div>
         <div className="dropdowns">
           <div className="inputContainer">
-            <Icon icon="search" size="small" />
+            <Icon icon="search" size="medium" />
             <input
               className="input"
               placeholder={

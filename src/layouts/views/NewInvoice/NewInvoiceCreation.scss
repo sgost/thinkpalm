@@ -4,13 +4,13 @@
 .newinvoice-container {
     .a-layouts .sidebar-inner-container .panel.right-panel {
         flex-grow: 2;
-        padding: 40px 80px;
+        padding: 2.2222rem 4.4444rem;
         position: relative;
     }
     h3 {
         font-weight: 400;
-        font-size: 24px;
-        line-height: 35px;
+        font-size: 1.3333rem;
+        line-height: 1.9444rem;
         color: #041e42;
     }
 
@@ -22,7 +22,8 @@
             color: red;
         }
         .a-dropdown__search {
-            width: 15rem;
+            // width: 15rem;
+            box-sizing: border-box !important;
         }
     }
     .dropdowns {
@@ -30,6 +31,13 @@
         span.a-dropdown__title:after {
             content: "*";
             color: red;
+        }
+        .a-dropdown.isOpen{
+            .icon-up{
+                width: 2.2222rem;
+                height: 2.2222rem;
+                top: 0.833rem;
+            }
         }
     }
     .dropdownC {
@@ -77,8 +85,8 @@
     justify-content: end;
     z-index: 99999;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0.5556rem;
+    right: 0.5556rem;
 }
 
 .newinvoice-container .dropdown-margin .calendar {
@@ -86,8 +94,8 @@
     justify-content: end;
     z-index: 99999;
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0.5556rem;
+    right: 0.5556rem;
 }
 
 .stepper-one-buttons {
@@ -99,18 +107,20 @@
     // bottom: 18%;
 
     button.a-button.medium {
-        font-size: 1.2rem;
+        font-size: 1rem;
         height: 3.13rem;
         width: 7.13rem;
-        margin-right: 25px;
+        margin-right: 1.3889rem;
     }
 }
 
 button.a-button.next-button svg {
     padding-right: 0.5rem;
-    margin-top: 5px;
-    margin-right: -8px;
-    margin-left: 16px;
+    margin-top: 0.2778rem;
+    margin-right: -0.4444rem;
+    width: 1.3333rem;
+    height: 1.3333rem;
+    margin-left: 0.8889rem;
 }
 
 button.a-button.primary-blue.medium.button {
@@ -122,50 +132,4 @@ button.a-button.primary-blue.medium.button {
     height: 3.34rem;
 }
 
-@media screen and (max-width: 1350px) {
-    .newinvoice-container .dropdown-margin .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: -1px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
 
-    .newinvoice-container .year-dropdown .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: -1px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
-}
-
-@media screen and (max-width: 1450px) and  (min-width: 1350px) {
-    .newinvoice-container .dropdown-margin .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
-
-    .newinvoice-container .year-dropdown .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
-}
