@@ -286,7 +286,6 @@ const NewInvoiceCreation = ({
                   <div className="calendar">
                     <Icon
                       icon="calendar"
-                      size="small"
                       width="30"
                       height="30"
                       color="#3E3E3E"
@@ -329,7 +328,6 @@ const NewInvoiceCreation = ({
                   <div className="calendar">
                     <Icon
                       icon="calendar"
-                      size="small"
                       width="30"
                       height="30"
                       color="#3E3E3E"
