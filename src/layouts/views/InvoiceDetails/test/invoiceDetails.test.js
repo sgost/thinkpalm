@@ -189,7 +189,7 @@ describe("Invoice details", () => {
     const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
     fireEvent.click(masterTab);
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    fireEvent.click(filesTab);
+    if (filesTab) { fireEvent.click(filesTab) }
 
     // expect(payrollTab).toBeInTheDocument();
   });
@@ -234,7 +234,7 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    fireEvent.click(filesTab);
+    if (filesTab) { fireEvent.click(filesTab) }
     const input = await waitFor(() =>
       screen.getByPlaceholderText(/Add a note here.../)
     );
@@ -252,7 +252,7 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    fireEvent.click(filesTab);
+    if (filesTab) { fireEvent.click(filesTab) }
     const download = await waitFor(() =>
       screen.getByTestId(/file-upload-button-0/)
     );
@@ -267,7 +267,7 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    fireEvent.click(filesTab);
+    if (filesTab) { fireEvent.click(filesTab) }
     const download = await waitFor(() =>
       screen.getByTestId(/file-upload-button-1/)
     );

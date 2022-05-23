@@ -10,16 +10,21 @@
             color: #041e42;
             font-size: 1.333rem;
             line-height: 1.944rem;
+            font-weight: 500;
         }
         .employee-checkbox {
             display: flex;
             align-items: center;
-            width: 13rem;
+            // width: 13rem;
+            width: 14rem;
             .a-checkbox-wrapper {
                 margin: 0;
                 label {
                     top: 0.1rem;
                 }
+            }
+            .a-checkbox-wrapper label {
+                font-weight: 500;
             }
         }
     }
@@ -166,5 +171,47 @@
                 border-top-right-radius: 0px !important;
             }
         }
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    .select-employee-container .full-table-container-after-data .user-detail .table-location {
+        width: 20rem;
+    }
+    .select-employee-container .full-table-container-after-data .user-detail .table-location .table-icon-location {
+        width: 11.444rem;
+    }
+    .select-employee-container .full-table-container-after-data .user-detail .table-location svg.icon.location {
+        height: 20px !important;
+        margin-top: 14px !important;
+    }
+    .select-employee-container .full-table-container-after-data .user-detail .table-location svg.icon.up {
+        height: 34px !important;
+        margin-top: 15px !important;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .select-employee-container .full-table-container-after-data .user-detail .table-location h5 {
+        color: #767676;
+        font-size: 1.125rem;
+        margin: 33px 0px !important;
+    }
+}
+
+@media screen and (max-width: 1350px) {
+    .select-employee-container .full-table-container-after-data .user-detail .table-location {
+        width: 20rem;
+    }
+    .select-employee-container .full-table-container-after-data .user-detail .table-location .table-icon-location {
+        width: 11.444rem;
+    }
+    .select-employee-container .full-table-container-after-data .user-detail .table-location svg.icon.location {
+        height: 22px !important;
+        margin-top: 14px !important;
+    }
+    .select-employee-container .full-table-container-after-data .user-detail .table-location svg.icon.up {
+        height: 34px !important;
+        margin-top: 17px !important;
     }
 }

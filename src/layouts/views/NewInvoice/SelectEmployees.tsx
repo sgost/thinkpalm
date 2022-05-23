@@ -4,6 +4,7 @@ import axios from "axios";
 import "./SelectEmployees.scss";
 import { getEmployee, getHeaders } from "../../../urls/urls";
 import { format } from "date-fns";
+import { Loader } from "../../../components/Comman/Utils/utils";
 
 const SelectEmployees = ({
   accessToken,
@@ -15,7 +16,9 @@ const SelectEmployees = ({
   employeeRowData,
   employeeApiData,
   setEmployeeApiData,
-  setSelectedRowPostData
+  setSelectedRowPostData,
+  loading,
+  setLoading
 }: any) => {
 
   const [cssForData, setCssForData] = useState(false);
@@ -36,14 +39,20 @@ const SelectEmployees = ({
 
     const apiUrl = getEmployee(
       stepperOneData?.customerId,
-      stepperOneData?.countryId
+      stepperOneData?.countryId,
+      stepperOneData?.monthId,
+      stepperOneData?.yearId,
     );
+    
+    setLoading(true)
+
     axios
       .get(apiUrl, headers)
       .then((res: any) => {
         if (res.status === 200) {
           setEmployeeApiData(res.data);
           setCssForData(true);
+          setLoading(false)
         }
       })
       .catch((e: any) => {
@@ -56,7 +65,7 @@ const SelectEmployees = ({
   }, []);
 
   const onRowCheckboxChange = (selectedRows: any) => {
-    setSelectedRowPostData(selectedRows); 
+    setSelectedRowPostData(selectedRows);
   };
 
   const preparedTableData = (item: any, check: any) => {
@@ -70,7 +79,7 @@ const SelectEmployees = ({
               payItemName: CompensationItems.payItemName || '',
               amount: CompensationItems?.amount || '',
               currencyCode: CompensationItems?.currencyCode || '',
-              effectiveDate:CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "" ,
+              effectiveDate: CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "",
               endDate: CompensationItems?.endDate ? format(new Date(CompensationItems?.endDate), "d MMM yyyy") : "",
               scopesName: CompensationItems?.scopesName || '',
               payItemFrequencyName: CompensationItems?.payItemFrequencyName || '',
@@ -85,7 +94,7 @@ const SelectEmployees = ({
             payItemName: CompensationItems.payItemName || '',
             amount: CompensationItems?.amount || '',
             currencyCode: CompensationItems?.currencyCode || '',
-            effectiveDate:CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "" ,
+            effectiveDate: CompensationItems?.effectiveDate ? format(new Date(CompensationItems?.effectiveDate), "d MMM yyyy") : "",
             endDate: CompensationItems?.endDate ? format(new Date(CompensationItems?.endDate), "d MMM yyyy") : "",
             scopesName: CompensationItems?.scopesName || '',
             payItemFrequencyName: CompensationItems?.payItemFrequencyName || '',
@@ -112,117 +121,123 @@ const SelectEmployees = ({
 
   return (
     <>
-      <div className="select-employee-container">
-        <div className="employee-header">
-          <div>
-            <h3>Select Employees</h3>
-          </div>
-          <div className="employee-checkbox">
-            <Checkbox
-              checked={isPayrollItemsChecked}
-              onChange={(e: any) => {
-                setIsPayrollItemsChecked(e.target.checked);
-                if (e.target.checked === true) {
-                  preparedTableData(employeeRowData, false);
-                }
-                if (e.target.checked === false) {
-                  preparedTableData(employeeRowData, true)
-                }
-              }}
-              label="Show Billed Payroll Items"
-            />
-          </div>
-        </div>
-        <div className={cssForData ? "" : "full-table-container"}>
-          {employeeApiData && employeeApiData.length ? (
-            employeeApiData.map((item: any, key: any) => {
-              return (
-                <div className={cssForData ? "full-table-container-after-data" : ""}>
-                  <div className="user-detail">
-                    <div className="table-header">
-                      <ProfileHeader
-                        user={{
-                          name: `${item?.employeeDetail?.personalDetails?.firstName} ${item?.employeeDetail?.personalDetails?.lastName}`,
-                          data: "",
-                          img: item?.employeeDetail?.personalDetails?.photoUrl,
-                          // initials: "CY"
-                        }}
-                      />
-                    </div>
-                    <div className="table-location">
-                      <div className="table-icon-location d-flax">
-                        <Icon
-                          className="icon location"
-                          color="#767676"
-                          icon="location"
-                          size="medium"
-                        />
-
-                        <h5>
-                          {
-                            item?.employeeDetail?.personalDetails?.homeAddress
-                              ?.country
-                          }
-                        </h5>
-                      </div>
-                      <div
-                        className="table-up-down"
-                        data-testid="showHide-button"
-                        onClick={() => {
-                          onRowIconClick(item)
-                        }}
-                      >
-                        {item?.employeeDetail?.compensation?.payItems?.length ? (
-                          <Icon
-                            className="icon up"
-                            color="#526FD6"
-                            icon={
-                              showTable === true &&
-                                employeeRowData?.employeeDetail?.employeeID ===
-                                item?.employeeDetail?.employeeID
-                                ? "chevronUp"
-                                : "chevronDown"
-                            }
-                            size="medium"
+      {
+        loading ?
+          <Loader />
+          :
+          <div className="select-employee-container">
+            <div className="employee-header">
+              <div>
+                <h3>Select Employees</h3>
+              </div>
+              <div className="employee-checkbox">
+                <Checkbox
+                  checked={isPayrollItemsChecked}
+                  onChange={(e: any) => {
+                    setIsPayrollItemsChecked(e.target.checked);
+                    if (e.target.checked === true) {
+                      preparedTableData(employeeRowData, false);
+                    }
+                    if (e.target.checked === false) {
+                      preparedTableData(employeeRowData, true)
+                    }
+                  }}
+                  label="Show Billed Payroll Items"
+                />
+              </div>
+            </div>
+            <div className={cssForData ? "" : "full-table-container"}>
+              {employeeApiData && employeeApiData.length ? (
+                employeeApiData.map((item: any, key: any) => {
+                  return (
+                    <div className={cssForData ? "full-table-container-after-data" : ""}>
+                      <div className="user-detail">
+                        <div className="table-header">
+                          <ProfileHeader
+                            user={{
+                              name: `${item?.employeeDetail?.personalDetails?.firstName} ${item?.employeeDetail?.personalDetails?.lastName}`,
+                              data: "",
+                              img: item?.employeeDetail?.personalDetails?.photoUrl,
+                              // initials: "CY"
+                            }}
                           />
-                        ) : (
-                          <></>
+                        </div>
+                        <div className="table-location">
+                          <div className="table-icon-location d-flax">
+                            <Icon
+                              className="icon location"
+                              color="#767676"
+                              icon="location"
+                              size="medium"
+                            />
+
+                            <h5>
+                              {
+                                item?.employeeDetail?.personalDetails?.homeAddress
+                                  ?.country
+                              }
+                            </h5>
+                          </div>
+                          <div
+                            className="table-up-down"
+                            data-testid="showHide-button"
+                            onClick={() => {
+                              onRowIconClick(item)
+                            }}
+                          >
+                            {item?.employeeDetail?.compensation?.payItems?.length ? (
+                              <Icon
+                                className="icon up"
+                                color="#526FD6"
+                                icon={
+                                  showTable === true &&
+                                    employeeRowData?.employeeDetail?.employeeID ===
+                                    item?.employeeDetail?.employeeID
+                                    ? "chevronUp"
+                                    : "chevronDown"
+                                }
+                                size="medium"
+                              />
+                            ) : (
+                              <></>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      {showTable &&
+                        employeeRowData?.employeeDetail?.employeeID ===
+                        item?.employeeDetail?.employeeID && (
+                          <div className="table-container">
+                            <Table
+                              options={
+                                employeeRowData?.employeeDetail?.compensation
+                                  ?.payItems?.length
+                                  ? {
+                                    ...tableOptions,
+                                    enableMultiSelect: true,
+                                    disableRowCheckbox: { key: "isInvoiced", value: true },
+                                    isMultiSelectDisabled: true,
+                                    onRowCheckboxChange: onRowCheckboxChange,
+                                  }
+                                  : {
+                                    ...tableOptionsForNoData,
+                                    enableMultiSelect: true,
+                                    isMultiSelectDisabled: true,
+                                  }
+                              }
+                              colSort
+                            />
+                          </div>
                         )}
-                      </div>
                     </div>
-                  </div>
-                  {showTable &&
-                    employeeRowData?.employeeDetail?.employeeID ===
-                    item?.employeeDetail?.employeeID && (
-                      <div className="table-container">
-                        <Table
-                          options={
-                            employeeRowData?.employeeDetail?.compensation
-                              ?.payItems?.length
-                              ? {
-                                ...tableOptions,
-                                enableMultiSelect: true,
-                                isMultiSelectDisabled: true,
-                                onRowCheckboxChange: onRowCheckboxChange,
-                              }
-                              : {
-                                ...tableOptionsForNoData,
-                                enableMultiSelect: true,
-                                isMultiSelectDisabled: true,
-                              }
-                          }
-                          colSort
-                        />
-                      </div>
-                    )}
-                </div>
-              );
-            })
-          ) : (
-            <></>
-          )}
-        </div>
-      </div>
+                  );
+                })
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+      }
     </>
   );
 };

@@ -1,6 +1,7 @@
 import moment from "moment";
-import {Icon} from 'atlasuikit'
+import { Icon } from 'atlasuikit'
 import { useEffect } from "react";
+import './utils.scss'
 /* istanbul ignore next */
 export const amountWithCommas = (amount: number, decimalDigits: number = 2) => {
     const roundedValue = decimalDigits > 2 ? amount : Math.round(amount * 100) / 100;
@@ -54,7 +55,7 @@ export const formatFileSize = (bytes: number, decimalPoint: number = 0) => {
     return parseFloat((Number(bytes) / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 };
 /* istanbul ignore next */
-export const ToastContainer = ({ showToast, setShowToast, message}: { showToast: boolean, setShowToast: (arg: boolean) => any, message: any}) => {
+export const ToastContainer = ({ showToast, setShowToast, message }: { showToast: boolean, setShowToast: (arg: boolean) => any, message: any }) => {
 
     useEffect(() => {
         if (showToast) {
@@ -75,4 +76,21 @@ export const ToastContainer = ({ showToast, setShowToast, message}: { showToast:
             </span>
         </div>
     ) : null;
+}
+
+export const Loader = () => {
+    return (
+        <div className="table-loader">
+            <div className="lds-roller">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    );
 }

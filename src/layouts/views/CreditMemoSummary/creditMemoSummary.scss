@@ -13,6 +13,14 @@
             .a-dpicker{
                 margin-top: 1.25rem;
             }
+            .a-dpicker__container{
+                width: 100% !important;
+            }
+            .react-datepicker__input-container{
+                .a-input{
+                    width: -webkit-fill-available !important;
+                }
+            }
         }
 
         .quantity-box {

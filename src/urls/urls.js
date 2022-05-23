@@ -31,7 +31,7 @@ const services = {
   apngMetaDataService: "/metadataservice/api",
   atlasCustomerService: "/cs/api",
   contractorPayBillingService: "/billingservice/api",
-  atlasSubscriptionService: "/atlas-subscriptionservice/api",
+  atlasSubscriptionService: "/atlas-subscriptionservice/api"
 };
 
 export const urls = {
@@ -56,13 +56,13 @@ export const urls = {
   uploadFile: metaDataUrl + services.apngMetaDataService + "/Blob/UploadFile",
   createDocument:
     baseURL + services.atlasInvoiceService + "/InvoiceDocument/Create",
-  declineInvoice:
-    baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
+  declineInvoice: baseURL + services.atlasInvoiceService + "/Invoices/declineInvoice",
   customers: baseURL + services.atlasCustomerService + "/Customer/GetAll",
-  billsPerInvoice:
-    baseURL +
-    services.contractorPayBillingService +
-    "/billing/bill/GetBillDetailsPerInvoice/",
+  billsPerInvoice: baseURL + services.contractorPayBillingService + "/billing/bill/GetBillDetailsPerInvoice/",
+  products: metaDataUrl + services.apngMetaDataService + "/Products",
+  invoiceLogs: baseURL + services.atlasInvoiceService + "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2",
+
+  contractorBillingService: baseURL + services.contractorPayBillingService + "/billing/"
 };
 
 export const getClientListingUrl = (
@@ -90,7 +90,12 @@ export const getInternalListingUrl = (
     `/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
   );
 };
-
+export const getVatValue = (cid) => {
+  return (baseURL + services.atlasInvoiceService + "/Invoices/vatdetails/" + cid);
+}
+export const updateCreditMemoUrl = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;
+}
 export const getGenerateSinglePdfUrl = (singleInvoiceId) => {
   return (
     baseURL +
@@ -161,7 +166,7 @@ export const getDeleteInvoiceUrl = (invoiceId) => {
 };
 
 export const getCMInvoiceUrl = (invoiceId) => {
-  return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}`;
+  return baseURL + services.atlasInvoiceService + `/invoices/relatedData/${invoiceId}`;
 };
 
 export const getAutoApproveCheckUrl = (id, isChecked) => {
@@ -182,18 +187,13 @@ export const getDownloadFileUrl = (docurl) => {
 
 export const getCountryByCustomer = (id) => {
   return (
-    baseURL +
-    services.atlasSubscriptionService +
-    "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=" +
-    id
+    baseURL + services.atlasSubscriptionService + "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=" + id
   );
 };
 
-export const getEmployee = (customerId, countryId) => {
+export const getEmployee = (customerId, countryId, monthId, yearId) => {
   return (
-    baseURL +
-    services.atlasIdgService +
-    `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}`
+    baseURL + services.atlasIdgService + `/PayrollChangeItems?customerId=${customerId}&countryId=${countryId}&month=${monthId}&year=${yearId}`
   );
 };
 
@@ -210,7 +210,13 @@ export const getCreditMemoStep4Url = (invoiceId) => {
     baseURL +
     services.atlasInvoiceService +
     `/invoices/relatedData/${invoiceId}`
+  )
+}
+export const updateInvoiceStatus = (invoiceId) => {
+  return (
+    baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`
   );
+<<<<<<< HEAD
 };
 
 
@@ -224,4 +230,6 @@ export const CountryApi = () => {
   return (
     metaDataUrl + services.apngMetaDataService + `/Lookup`
   );
+=======
+>>>>>>> edd40558281adf3888c0866ea6b66be7f3bbbef4
 };

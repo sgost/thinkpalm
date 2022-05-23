@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { amountWithCommas, customDate, formatFileSize, formatTimePeriod, ToastContainer } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
+import {
+    urls
+} from "../../../urls/urls";
 import "./billTable.scss";
 
 /* istanbul ignore next */
@@ -14,9 +17,10 @@ export const getFlagURL = (code: string, size?: string) => {
 export default function BillsTable(props: any) {
     const customerId = props.customerId;
     const invoiceId = props.invoiceId
-    const basecontractorURL = "https://apigw-dev-eu.atlasbyelements.com/billingservice/api/billing/";
+    const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
-    const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID=" 
+    const moveToNextEndPoint = "bill/removeinvoice"
+    const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID="
     const endpoint = "customer/bills?"
     const TableColumns = {
         columns: [
@@ -36,11 +40,12 @@ export default function BillsTable(props: any) {
     const [openModal, setOpenModal] = useState(false);
     const [clickedApiData, setClickedApiData] = useState<any>(null);
     const [rejectBanner, setRejectBanner] = useState(false);
+    const [moveNextBanner, setMoveNextBanner] = useState(false);
     const [openRejectReason, setOpenRejectReason] = useState(false);
     const [rejectReason, setRejectReason] = useState('');
-    const [rawData, setRawData] = useState<any>(props.tableData.data);
+    const [rawData, setRawData] = useState<any>([]);
     const [showToast, setShowToast] = useState(false);
-    var rejectMessage = `${clickedApiData?.referenceNumber} has been rejected.`;
+    const [toastMessage, setToastMessage] = useState("");
 
     useEffect(() => {
         let data: any = [];
@@ -65,8 +70,14 @@ export default function BillsTable(props: any) {
             paysConverted = paysConverted + (item.payAmount * item.exchangeRate.toFixed(2));
         })
         setTotalPayConverted(paysConverted);
-        setTableData(data); 
+        setTableData(data);
     }, [rawData])
+
+    useEffect(() => {
+        if (props?.tableData?.data) {
+            setRawData(props?.tableData?.data || []);
+        }
+    }, [props.tableData])
 
     const toCurrencyFormat = (amount: any) => {
         const cFormat = new Intl.NumberFormat("en-US", {
@@ -77,48 +88,82 @@ export default function BillsTable(props: any) {
         return cFormat.format(amount).slice(1);
     };
     /* istanbul ignore next */
-    const openBillDetailModal = (rowData : any) => {
-        setOpenModal(!openModal); 
+    const openBillDetailModal = (rowData: any) => {
+        setOpenModal(!openModal);
         axios
-        .get(basecontractorURL+endpoint+"BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, { headers: { accept: "text/plain", customerid: customerId } })
-        .then((response: any) => {
-            if (response.status == 200) {
-            setClickedApiData(response.data.data.data[0]);
-            console.log(response.data.data.data[0]);
-            } else {
-            console.log("Bill API failing on contractor service");
-            }
-        })
-        .catch((e: any) => {
-            console.log("error", e);
-        });
+            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, { headers: { accept: "text/plain", customerid: customerId } })
+            .then((response: any) => {
+                if (response.status == 200) {
+                    setClickedApiData(response.data.data.data[0]);
+                    console.log(response.data.data.data[0]);
+                } else {
+                    console.log("Bill API failing on contractor service");
+                }
+            })
+            .catch((e: any) => {
+                console.log("error", e);
+            });
 
     }
     /* istanbul ignore next */
     const rejectBillCall = () => {
-        let payload:any = [{
+        let payload: any = [{
             id: clickedApiData?.id,
             reason: rejectReason
         }];
         axios
-        .post(basecontractorURL+rejectEndPoint, payload, { headers: { accept: "text/plain" } })
-        .then((response: any) => {
-            
-            if (response.status == 200 && response.data.responseCode == 200) {
-                setRejectBanner(false); 
-                setOpenRejectReason(false); 
-                setRejectReason('');
-                setOpenModal(false);
-                setRawData(rawData.filter( (x:any) => x.billReferenceNo != clickedApiData.referenceNumber ));
-                setShowToast(true);
-            } else {
-                console.log("Bill reject API failing on contractor service");
-            }
-            
-        })
-        .catch((e: any) => {
-            console.log("error", e);
-        });
+            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain" } })
+            .then((response: any) => {
+
+                if (response.status == 200 && response.data.responseCode == 200) {
+                    setRejectBanner(false);
+                    setOpenRejectReason(false);
+                    setRejectReason('');
+                    setOpenModal(false);
+                    setRawData(rawData.filter((x: any) => x.billReferenceNo != clickedApiData.referenceNumber));
+                    setShowToast(true);
+                    setToastMessage(`${clickedApiData?.referenceNumber} has been rejected.`);
+                } else {
+                    console.log("Bill reject API failing on contractor service");
+                }
+
+            })
+            .catch((e: any) => {
+                console.log("error", e);
+            });
+    }
+
+    /* istanbul ignore next */
+    const postMoveToNextBill = () => {
+        let payload: any = {
+            BillId: clickedApiData?.id
+        };
+
+        const APIFails = () => {
+            setMoveNextBanner(false);
+            setOpenModal(false);
+            setShowToast(true);
+            setToastMessage(`Failed to void the Invoice. Please try again!`);
+            props.navigate("/pay");
+        }
+
+        axios
+            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain" } })
+            .then((response: any) => {
+                if (response.status == 200 && response.data.responseCode == 200) {
+                    if (moveNextBanner) {
+                        setMoveNextBanner(false);
+                        setRejectReason('');
+                        setOpenModal(false);
+                        setShowToast(true);
+                        setToastMessage(`Bill Reference No. ${clickedApiData?.referenceNumber} has been moved to a new invoice and Invoice No. ${invoiceId} has been Voided.`);
+                        setTimeout(() => {
+                            props.navigate("/pay");
+                        }, 1000);
+                    }
+                } else { APIFails() }
+            })
+            .catch((e: any) => APIFails());
     }
     /* istanbul ignore next */
     const getBillingPeriodText = () => {
@@ -130,18 +175,20 @@ export default function BillsTable(props: any) {
     /* istanbul ignore next */
     const getSignedDownloadURL = async (payload: any = {}) => {
         axios
-        .get(documentDownloadApi + payload.fileID, { headers: { accept: "*/*"} })
-        .then((response: any) => {
-            if (response.status == 200) {
-            return response.data;
-            } else {
-            console.log("Document Download API failing on contractor service");
-            }
-        })
-        .catch((e: any) => {
-            console.log("error", e);
-        });
+            .get(documentDownloadApi + payload.fileID, { headers: { accept: "*/*" } })
+            .then((response: any) => {
+                if (response.status == 200) {
+                    return response.data;
+                } else {
+                    console.log("Document Download API failing on contractor service");
+                }
+            })
+            .catch((e: any) => {
+                console.log("error", e);
+            });
     };
+
+    /* istanbul ignore next */
     return (
         <div className="invoice_bill_table">
             <Table
@@ -149,11 +196,11 @@ export default function BillsTable(props: any) {
                     ...TableColumns,
                     ...{ data: tableData }
                 }}
-                handleRowClick= {(rowData: any)=> {openBillDetailModal(rowData)}}
+                handleRowClick={(rowData: any) => { openBillDetailModal(rowData) }}
                 colSort
                 pagination
-                pagingOptions={[15, 30, 45, 60]} 
-                
+                pagingOptions={[15, 30, 45, 60]}
+
             />
             <div className="feeSummaryCalc">
                 <div className="rowFee">
@@ -168,7 +215,7 @@ export default function BillsTable(props: any) {
             <div className='modal-wrapper'>
                 <Modal
                     className="zero-padding"
-                    handleClose={() => {setOpenModal(false); setRejectBanner(false)}}
+                    handleClose={() => { setOpenModal(false); setRejectBanner(false) }}
                     width="79.625rem"
                     height="auto"
                     isOpen={openModal}
@@ -247,7 +294,7 @@ export default function BillsTable(props: any) {
                                                     icon: 'download',
                                                     width: '35',
                                                     handleOnClick: /* istanbul ignore next */ async () => {
-                                                        getSignedDownloadURL({ fileID: clickedApiData.documents[0]?.documentId }).then(( data:any ) => {
+                                                        getSignedDownloadURL({ fileID: clickedApiData.documents[0]?.documentId }).then((data: any) => {
                                                             window.open(data?.url, '_blank');
                                                         });
                                                     },
@@ -282,53 +329,92 @@ export default function BillsTable(props: any) {
                                     <span>Bill Total</span><span className='total-value'>{clickedApiData?.contractor?.currencyCode} {amountWithCommas(clickedApiData.total)}</span>
                                 </div>
                             </div>
-                            
+
                         </div>
                         <div className='margin-top'>
-                        {rejectBanner && <Banner type="warning">
-                            <div
-                            style={{
-                                display: 'flex',
-                                width: '100%',
-                                alignItems:'center'
-                            }}
-                            >
-                            <Icon
-                                className="reject-banner-icon"
-                                color="orange"
-                                icon="info"
-                                viewBox="3 0 24 24"
-                            />
-                            <span className='info-banner'>
-                                <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. Are you sure you want to reject it and remove it from this invoice?
-                            </span>
-                            </div>
-                        </Banner>}
+                            {rejectBanner && <Banner type="warning">
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        width: '100%',
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    <Icon
+                                        className="reject-banner-icon"
+                                        color="orange"
+                                        icon="info"
+                                        viewBox="3 0 24 24"
+                                    />
+                                    <span className='info-banner'>
+                                        <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. Are you sure you want to reject it and remove it from this invoice?
+                                    </span>
+                                </div>
+                            </Banner>}
+                            {moveNextBanner && <Banner type="warning">
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        width: '100%',
+                                        alignItems: 'center'
+                                    }}
+                                >
+                                    <Icon
+                                        className="reject-banner-icon"
+                                        color="orange"
+                                        icon="info"
+                                        viewBox="3 0 24 24"
+                                    />
+                                    <span className='info-banner'>
+                                        <strong>Heads up!</strong> This bill is currently included in <strong>Invoice {invoiceId}</strong>.
+                                        If you move it to the next invoice, this invoice will be voided and the bill will automatically be
+                                        added to the next invoice that is generated for you. Do you want to continue?
+                                    </span>
+                                </div>
+                            </Banner>}
                         </div>
                         <div className='action-btns'>
-                        
+
                             <div className='justification margin-right'>
-                                {!rejectBanner && <><Button
+                                {!(rejectBanner || moveNextBanner) && <><Button
                                     label="Reject Bill"
                                     className="secondary-btn medium secondary-button reject-button"
-                                    handleOnClick={()=>{setRejectBanner(true)}}
-
+                                    handleOnClick={() => { setRejectBanner(true) }}
                                 />
-                                <Button
-                                    className="primary-blue medium primary next-invoice-button"
-                                    label="Move To Next Invoice"
-                                /></>}
-                                {rejectBanner && <><Button
-                                    label="Cancel"
-                                    className="secondary-btn medium secondary-button cancel-button"
-                                    handleOnClick={()=>{setRejectBanner(false)}}
+                                    {(clickedApiData?.invoiceStatus === "Pending Approval" || clickedApiData?.invoiceStatus === "Invoiced") && (
+                                        <Button
+                                            className="primary-blue medium primary next-invoice-button"
+                                            label="Move To Next Invoice"
+                                            handleOnClick={() => { setMoveNextBanner(true) }}
+                                        />
+                                    )}
+                                </>}
 
-                                />
-                                <Button
-                                    className="primary-blue medium primary approve-reject-button"
-                                    label="Yes, Reject Bill"
-                                    handleOnClick={()=>{setOpenRejectReason(true)}}
-                                /></>}
+                                {(moveNextBanner) ? (<>
+                                    <Button
+                                        label="Cancel"
+                                        className="secondary-btn medium secondary-button cancel-button"
+                                        handleOnClick={() => { setMoveNextBanner(false) }}
+                                    />
+                                    <Button
+                                        className="primary-blue medium primary move-to-next-button"
+                                        label="Yes, Move To Next Invoice"
+                                        handleOnClick={postMoveToNextBill}
+                                    />
+                                </>) : (<>
+                                    {rejectBanner && <><Button
+                                        label="Cancel"
+                                        className="secondary-btn medium secondary-button cancel-button"
+                                        handleOnClick={() => { setRejectBanner(false) }}
+
+                                    />
+                                        <Button
+                                            className="primary-blue medium primary approve-reject-button"
+                                            label="Yes, Reject Bill"
+                                            handleOnClick={() => { setOpenRejectReason(true) }}
+                                        /></>}
+                                </>)}
+
                             </div>
                         </div>
                         <Modal
@@ -343,7 +429,7 @@ export default function BillsTable(props: any) {
                                     Add A Rejection Reason
                                 </div>
                                 <div className='reject-text'>
-                                    Please add a comment for <strong>{clickedApiData.contractor.name}</strong> about why you rejected this bill. 
+                                    Please add a comment for <strong>{clickedApiData.contractor.name}</strong> about why you rejected this bill.
                                 </div>
                                 <div className="form-group">
                                     <label>
@@ -367,23 +453,23 @@ export default function BillsTable(props: any) {
                                     <Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
-                                        handleOnClick={()=>{setRejectBanner(false); setOpenRejectReason(false); setRejectReason('')}}
+                                        handleOnClick={() => { setRejectBanner(false); setOpenRejectReason(false); setRejectReason('') }}
                                     />
                                     <Button
                                         className="primary-blue medium primary cancel-button"
                                         label="Reject"
-                                        handleOnClick={()=>{rejectBillCall()}}
+                                        handleOnClick={() => { rejectBillCall() }}
                                     />
                                 </div>
                             </div>
                         </Modal>
                     </div>}
-                    {!clickedApiData &&<div>
+                    {!clickedApiData && <div>
                         Loading...
-                        </div>}
+                    </div>}
                 </Modal>
             </div>
-            <ToastContainer showToast={showToast} setShowToast={setShowToast} message={rejectMessage} />
+            <ToastContainer showToast={showToast} setShowToast={setShowToast} message={toastMessage} />
         </div>
 
     );
