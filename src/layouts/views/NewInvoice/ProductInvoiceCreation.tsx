@@ -131,19 +131,21 @@ const ProductInvoiceCreation = ({
                                             const startDate = format(date, "dd MMM yyyy");
                                             setDateFrom(startDate)
                                             new_handle2(startDate, i)
+                                            console.log(date)
                                         }
                                         }
                                         inline={false}
                                         label="Invoice Date"
                                         data-testid="Date-picker"
                                         minDate={new Date()}
+                                        placeholderText={item.date ? item.date : 'Please Select'}
                                     />
 
                                 </div>
 
                                 {/* Product Service */}
 
-                                <div className="dropdownP" onClick={() => localStorage.setItem('name_value', "product")} data-testid="product_name">
+                                <div className="dropdownP" onClick={() => (localStorage.setItem('name_value', "product"), setOpen(true))} data-testid="product_name">
                                     <input type="text" value={item.product} data-testid="product_open" onClick={() => setOpen(true)} id="click_input" placeholder="Please Select" autoComplete="off" />
                                     <Dropdown
                                         handleDropOptionClick={(opt: any) => {
@@ -189,7 +191,7 @@ const ProductInvoiceCreation = ({
 
                             <div id="container_main2">
                                 {/* Country Service */}
-                                <div className="dropdownP" data-testid="Country_name" onClick={() => localStorage.setItem('name_value', "country")}>
+                                <div className="dropdownP" data-testid="Country_name" onClick={() => { localStorage.setItem('name_value', "country"), setOpens(true) }}>
                                     <input type="text" value={item.country} data-testid="Country_open" onClick={() => setOpens(true)} id="click_input" placeholder="Please Select" autoComplete="off" />
                                     <Dropdown
                                         handleDropOptionClick={(opt: any) => {
@@ -225,8 +227,8 @@ const ProductInvoiceCreation = ({
                                         <span>Amount <span style={{ color: 'red' }}>*</span></span>
                                     </div>
                                     <div id="dropdownCount_inputs">
-                                        <input placeholder="0" defaultValue={item.quantity} className="inputField" onChange={(e) => { handleChange(e, i); setTotalQuantity(JSON.parse(e.target.value)) }} name="quantity" />
-                                        <input placeholder="00" defaultValue={item.amount} className="inputField" onChange={(e) => { handleChange(e, i); setTotalAmount(JSON.parse(e.target.value)) }} name="amount" />
+                                        <input placeholder="0" defaultValue={item.quantity} className="inputField" onChange={(e) => { handleChange(e, i); setTotalQuantity(JSON.parse(e.target.value)) }} name="quantity" autoComplete="off" />
+                                        <input placeholder="00" defaultValue={item.amount} className="inputField" onChange={(e) => { handleChange(e, i); setTotalAmount(JSON.parse(e.target.value)) }} name="amount" autoComplete="off" />
                                     </div>
                                 </div>
 
