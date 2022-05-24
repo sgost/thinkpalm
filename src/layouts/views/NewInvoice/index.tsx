@@ -290,6 +290,28 @@ const NewInvoice = () => {
     }
   };
 
+  const disableFunForStepOneProforma = () => {
+    if (stepsCount == 1) {
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        stepperOneData?.year !== "" &&
+        stepperOneData?.month !== ""
+      );
+    }
+  };
+
+  const disableFunForStepOneMiscellaneous = () => {
+    if (stepsCount == 1) {
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        stepperOneData?.year !== "" &&
+        stepperOneData?.month !== ""
+      );
+    }
+  };
+
   const handleNextButtonClick = () => {
     if (stepsCount != 2) {
       setStepsCount(stepsCount + 1);
@@ -336,9 +358,9 @@ const NewInvoice = () => {
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
         .then((res: any) => {
-            setLoading(false)
-            setStepsCount(stepsCount + 1);
-          
+          setLoading(false)
+          setStepsCount(stepsCount + 1);
+
         })
         .catch((e: any) => {
           console.log("error", e);
@@ -396,7 +418,9 @@ const NewInvoice = () => {
               steps={
                 stepperOneData?.type === "Payroll"
                   ? stepsName
-                  : stepperOneData?.type === "Credit Memo"
+                  : stepperOneData?.type === "Credit Memo" ||
+                    stepperOneData?.type === "Proforma" ||
+                    stepperOneData?.type === "Miscellaneous"
                     ? creditMemoSteps
                     : stepsInitial
               }
@@ -450,7 +474,11 @@ const NewInvoice = () => {
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
                   ? disableFunForStepOneCreditMemo()
-                  : true
+                  : stepperOneData?.type === "Proforma"
+                    ? disableFunForStepOneProforma()
+                    : stepperOneData?.type === "Miscellaneous"
+                      ? disableFunForStepOneMiscellaneous()
+                      : true
             }
             data-testid="next-button"
             icon={{
