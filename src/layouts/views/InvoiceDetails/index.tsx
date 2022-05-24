@@ -38,6 +38,7 @@ import {
   getCMInvoiceUrl,
   getVatValue,
   getEmployeeBreakdownUrl,
+  getAutoApproveCheckUrl,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -1194,20 +1195,21 @@ export default function InvoiceDetails() {
                       onChange={(e: any) => {
                         setIsAutoApprove(e.target.checked);
 
-                        const headers = {
-                          authorization: `Bearer ${tempToken}`,
-                          "x-apng-base-region": "EMEA",
-                          "x-apng-customer-id": cid || "",
-                          "x-apng-external": "false",
-                          "x-apng-inter-region": "0",
-                          "x-apng-target-region": "EMEA",
-                          customer_id: cid || "",
-                        };
+                        // const headers = {
+                        //   authorization: `Bearer ${tempToken}`,
+                        //   "x-apng-base-region": "EMEA",
+                        //   "x-apng-customer-id": cid || "",
+                        //   "x-apng-external": "false",
+                        //   "x-apng-inter-region": "0",
+                        //   "x-apng-target-region": "EMEA",
+                        //   customer_id: cid || "",
+                        // };
 
                         axios({
-                          url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
+                          // url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
+                          url: getAutoApproveCheckUrl(id, e.target.checked),
                           method: "POST",
-                          headers,
+                          headers: getHeaders(tempToken, cid, isClient),
                         })
                           .then((res: any) => {
                             if (res.status === 200) {
