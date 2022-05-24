@@ -290,6 +290,7 @@ const ProductInvoiceCreation = ({
                   </div>
                   <div id="dropdownCount_inputs">
                     <input
+                      data-testid="Quantity"
                       placeholder="0"
                       defaultValue={item.quantity}
                       className="inputField"
@@ -301,6 +302,7 @@ const ProductInvoiceCreation = ({
                       autoComplete="off"
                     />
                     <input
+                      data-testid="Amount"
                       placeholder="00"
                       defaultValue={item.amount}
                       className="inputField"
@@ -327,7 +329,8 @@ const ProductInvoiceCreation = ({
                   ).toLocaleString("en-US")
                 }
                 className="secondary-btn medium button"
-                handleOnClick={() => {}}
+                handleOnClick={() => { }}
+                data-testid="Button_Balance"
               />
             </div>
           </div>
