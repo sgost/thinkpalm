@@ -3,7 +3,7 @@ import axios from 'axios';
 import { te } from 'date-fns/locale';
 import moment from "moment";
 import { useEffect, useState } from 'react';
-import { updateCreditMemoUrl, urls } from '../../../urls/urls';
+import { getHeaders, updateCreditMemoUrl, urls } from '../../../urls/urls';
 import FileUploadWidget from '../../../components/FileUpload';
 import Input from '../../../components/Input/input';
 import NotesWidget from '../../../components/Notes';
@@ -18,10 +18,12 @@ export default function CreditMemoSummary(props: any) {
     const [newAmount, setNewAmount] = useState<any>();
     const [newTotalAmount, setNewTotalAmount] = useState<any>();
     const [openProductService, setOpenProductService] = useState(false);
+    const [openEditProductService, setOpenEditProductService] = useState<any>();
     const [openCountryService, setOpenCountryService] = useState(false);
+    const [openEditCountryService, setOpenEditCountryService] = useState<any>();
     const [openLogs, setOpenLogs] = useState(false);
     const [addSectionCheck, setAddSectionCheck] = useState(false);
-    const [editCheck, setEditCheck] = useState(true);
+    const [editCheck, setEditCheck] = useState<any>();
     const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
     const [vatAmount, setVatAmount] = useState<any>();
     const [subTotalAmount, setSubTotalAmount] = useState<any>(creditMemoData.totalAmount);
@@ -32,6 +34,7 @@ export default function CreditMemoSummary(props: any) {
     const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
     const [isProductOpen , setIsProductOpen] = useState()
     const [isCountryOpen , setIsCountryOpen] = useState()
+    const [payload , setPayload] = useState<any>(creditMemoData)
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
@@ -40,16 +43,6 @@ export default function CreditMemoSummary(props: any) {
         axios.get(urls.products).then((resp) => {
             if (resp.status == 200) {
                 let arr:any = []
-                // creditMemoData?.invoiceItems?.foreach((item: any) => {
-                //     arr.push(resp.data.map((x: any) => {
-                //         return {
-                //             isSelected: false,
-                //             label: x.glDescription,
-                //             value: x.id
-                //         }
-                //     }))
-                // })
-                console.log(creditMemoData.invoiceItems);
                 for(let i of creditMemoData.invoiceItems){
                     arr.push(resp.data.map((x: any) => {
                                 return {
@@ -59,7 +52,6 @@ export default function CreditMemoSummary(props: any) {
                                 }
                             }))
                 }
-                console.log(arr)
                 setMultipleProductArr(arr);
                 setProductOptions(
                     resp.data.map((x: any) => {
@@ -152,20 +144,44 @@ export default function CreditMemoSummary(props: any) {
         obj.serviceCountry = country.value;
         obj.amount = newAmount;
         obj.invoiceId = creditMemoData.id;
-        var payload = creditMemoData;
-        payload.invoiceItems.push(obj);
+        payload?.invoiceItems.push(obj);
         cleanNewObject();
         updateDropdowns();
         reCalculateTotal();
-        setAddSectionCheck(false);
-        // axios.put(updateCreditMemoUrl(creditMemoData?.id), payload).then((resp) => {
-        //     if (resp.status == 200) {
-        //         console.log(resp)
-                
-        //     }
-        // }).catch((err) => {
-        //     console.log("update call failed");
-        // })
+        callUpdateAPI();
+    }
+
+    /* istanbul ignore next */
+    const editInvoiceItems = (index: number) => {
+        setEditCheck(creditMemoData.invoiceItems.length)
+        console.log(creditMemoData);
+    }
+    const deleteInvoiceItem = (index: number) => {
+        payload.invoiceItems.splice(index, 1);
+        var resp = callUpdateAPI();
+        if(resp){
+            reCalculateTotal()
+        }
+        // debugger
+    }
+
+    /* istanbul ignore next */
+    const callUpdateAPI = () :boolean =>{
+        const tempToken = localStorage.getItem("accessToken");
+        var headers = getHeaders(tempToken, cid, isClient);
+        
+        axios.put(updateCreditMemoUrl(creditMemoData?.id), payload, {headers: headers}).then((resp) => {
+            if ((resp.status == 200 || resp.status == 201) && resp.data) {
+                setAddSectionCheck(false);
+                setFieldValues(resp.data.invoiceItems);
+                return true;
+            }
+            return false;
+        }).catch((err) => {
+            console.log("update call failed");
+            return false;
+        })
+        return false;
     }
     /* istanbul ignore next */
     const cleanNewObject = () => {
@@ -226,6 +242,13 @@ export default function CreditMemoSummary(props: any) {
         }
         setMultipleProductArr(arr);
     }
+    const setEditDescription = (index: number, value: any) => {
+        fieldValues[index].description = value;
+        console.log(value + " " + index )
+        console.log(fieldValues);
+
+        setFieldValues(fieldValues)
+    }
     /* istanbul ignore next */
     const handleArrOptionClick = (
         selOption: any,
@@ -266,61 +289,61 @@ export default function CreditMemoSummary(props: any) {
     return (
         <div className="credit-summary-wrapper">
             <Cards className="summary-card">
-                <div className='top'>
-                    <span className='title'>Summary</span>
-                    <div className='top-action'>
-                        {addSectionCheck && <>
-                            <Button
-                                className="secondary-btn no-border medium save"
-                                label="Cancel Save"
-                                handleOnClick={()=>{setAddSectionCheck(false)}}
-                            />
-                            <Button
-                                className="primary-blue medium save"
-                                label="Save"
-                                handleOnClick={saveInvoiceItems}
-                            />
-                        </>}
-                        {editCheck && !addSectionCheck && (creditMemoData.status == 1 || creditMemoData.status == 2) && <Button
-                            className="primary-blue medium edit"
-                            icon={{
-                                color: '#fff',
-                                icon: 'edit',
-                                size: 'medium'
-                            }}
-                            label="Edit"
-                            handleOnClick={() => { setEditCheck(false) }}
-                        />}
-                        {!editCheck && <>
-                            <Button
-                                className="secondary-btn no-border medium save"
-                                label="Cancel Edit"
-                                handleOnClick={() => { setEditCheck(true) }}
-                            />
-                            <Button
-                                className="primary-blue medium save-changes"
-                                label="Save Changes"
-                                handleOnClick={() => { setEditCheck(true) }}
-                            />
-                        </>}
-                    </div>
-                </div>
                 {fieldValues.map((item: any, index: number) => {
-                    // console.log(fieldValues)
                     return (
                         <>
+                            <div className='top'>
+                                { index == 0 && <span className='title'>Summary</span>}
+                                { index != 0 && <span className='title'></span>}
+                                <div className='top-action'>
+                                    
+                                    {editCheck != index && (creditMemoData.status == 1 || creditMemoData.status == 2) && 
+                                    <>
+                                    { index != 0 && <Button
+                                        icon={{
+                                            color: '#526fd5',
+                                            icon: 'trash',
+                                            size: 'large'
+                                        }}
+                                        className="secondary-btn no-border medium delete"
+                                        label="Delete Items"
+                                        handleOnClick={()=>{deleteInvoiceItem(index)} }
+                                    />}
+                                    <Button
+                                        className="primary-blue medium edit"
+                                        icon={{
+                                            color: '#fff',
+                                            icon: 'edit',
+                                            size: 'large'
+                                        }}
+                                        label="Edit"
+                                        handleOnClick={() => { setEditCheck(index) }}
+                                    /></>}
+                                    {editCheck == index && <>
+                                        <Button
+                                            className="secondary-btn no-border medium save"
+                                            label="Cancel Edit"
+                                            handleOnClick={() => { setEditCheck(creditMemoData.invoiceItems.length) }}
+                                        />
+                                        <Button
+                                            className="primary-blue medium save-changes"
+                                            label="Save Changes"
+                                            handleOnClick={() => { editInvoiceItems(index) }}
+                                        />
+                                    </>}
+                                </div>
+                            </div>
                             <div className='UI-align-boxes margin-top'>
                                 <div className='UI-line-text-box'>
                                     <DatePicker
                                         value={moment(item.serviceDate).format('DD MMM YYYY')}
                                         label="Service Date"
-                                        disabled={editCheck}
-                                        handleDateChange={(date: any) => { console.log(date) }}
+                                        disabled={editCheck != index}
+                                        handleDateChange={(date: any) => { fieldValues[index].serviceDate = date; setFieldValues(fieldValues) }}
                                     />
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Dropdown
-                                        // handleDropOptionClick={function noRefCheck() { }}
                                         handleDropOptionClick={(option: any) =>
                                             handleArrOptionClick(
                                               option,
@@ -330,26 +353,26 @@ export default function CreditMemoSummary(props: any) {
                                               index
                                             )
                                           }
-                                        handleDropdownClick={() => { console.log(productOptions)}}
-                                        isOpen={false}
-                                        isDisabled={editCheck}
+                                        handleDropdownClick={(e:any) => {e?setOpenEditProductService(index):setOpenEditProductService(fieldValues.length+1) }}
+                                        isOpen={openEditProductService == index}
+                                        isDisabled={editCheck != index}
                                         options={multipleProductArr[index] || []}//error
                                         title="Product Service"
                                     />
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Input
+                                        setValue={(value: any)=>{setEditDescription(index, value)}}
                                         value={item.description}
                                         label="Description"
                                         type="text"
                                         name="service-date-input"
                                         placeholder="Please enter"
-                                        disable={editCheck}
+                                        disable={editCheck != index}
                                     ></Input>
                                 </div>
                                 <div className='UI-line-text-box'>
                                     <Dropdown
-                                        // handleDropOptionClick={function noRefCheck() { }}
                                         handleDropOptionClick={(option: any) =>
                                             handleArrOptionClick(
                                               option,
@@ -359,9 +382,9 @@ export default function CreditMemoSummary(props: any) {
                                               index
                                             )
                                           }
-                                        handleDropdownClick={() => { }}
-                                        isOpen={false}
-                                        isDisabled={editCheck}
+                                        handleDropdownClick={(e:any) => { e?setOpenEditCountryService(index):setOpenEditCountryService(fieldValues.length +1) }}
+                                        isOpen={openEditCountryService == index}
+                                        isDisabled={editCheck != index}
                                         options={multipleCountryArr[index] || []}
                                         title="Service Country"
                                     />
@@ -376,7 +399,7 @@ export default function CreditMemoSummary(props: any) {
                                             type="number"
                                             name="service-date-input"
                                             placeholder="Please enter"
-                                            disable={editCheck}
+                                            disable={editCheck != index}
                                         ></Input>
                                     </div>
                                     <div className='amount-box'>
@@ -386,7 +409,7 @@ export default function CreditMemoSummary(props: any) {
                                             type="text"
                                             name="service-date-input"
                                             placeholder="Please enter"
-                                            disable={editCheck}
+                                            disable={editCheck != index}
                                         ></Input>
                                     </div>
                                 </div>
@@ -397,7 +420,7 @@ export default function CreditMemoSummary(props: any) {
                                         type="text"
                                         name="service-date-input"
                                         placeholder="Please enter"
-                                        disable={editCheck}
+                                        disable={editCheck != index}
                                     ></Input>
                                 </div>
                             </div>
@@ -406,6 +429,23 @@ export default function CreditMemoSummary(props: any) {
                     )
                 })}
                 {addSectionCheck && <>
+                        <div className='top'>
+                            <span className='title'></span>
+                            <div className='top-action'>
+                            {addSectionCheck && <>
+                            <Button
+                                className="secondary-btn no-border medium save"
+                                label="Cancel Save"
+                                handleOnClick={()=>{setAddSectionCheck(false)}}
+                            />
+                            <Button
+                                className="primary-blue medium save"
+                                label="Save"
+                                handleOnClick={saveInvoiceItems}
+                            />
+                        </>}
+                            </div>
+                        </div>
                     <div className='UI-align-boxes margin-top'>
                         <div className='UI-line-text-box'>
                             <DatePicker
