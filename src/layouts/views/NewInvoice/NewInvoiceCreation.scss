@@ -2,181 +2,179 @@
 @import "../../../styles/styles";
 
 .newinvoice-container {
-    .a-layouts .sidebar-inner-container .panel.right-panel {
-        flex-grow: 2;
-        padding: 40px 80px;
-        position: relative;
+  .a-layouts .sidebar-inner-container .panel.right-panel {
+    flex-grow: 2;
+    padding: 2.2222rem 4.4444rem;
+    position: relative;
+  }
+
+  h3 {
+    font-weight: 400;
+    font-size: 1.3333rem;
+    line-height: 1.9444rem;
+    color: #041e42;
+  }
+
+  .dropdown {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    span.a-dropdown__title:after {
+      content: "*";
+      color: red;
     }
 
-    h3 {
-        font-weight: 400;
-        font-size: 24px;
-        line-height: 35px;
-        color: #041e42;
+    .a-dropdown__search {
+      // width: 15rem;
+      box-sizing: border-box !important;
+    }
+  }
+
+  .dropdowns {
+    margin-bottom: 3rem;
+
+    span.a-dropdown__title:after {
+      content: "*";
+      color: red;
+    }
+    .a-dropdown.isOpen {
+      .icon-up {
+        width: 2.2222rem;
+        height: 2.2222rem;
+        top: 0.833rem;
+      }
+    }
+  }
+
+  .dropdownC {
+    margin-bottom: 3rem;
+
+    span.a-dropdown__title:after {
+      content: "*";
+      color: red;
     }
 
-    .dropdown {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-
-        span.a-dropdown__title:after {
-            content: "*";
-            color: red;
-        }
-
-        .a-dropdown__search {
-            width: 15rem;
-        }
+    .a-dropdown__option__container {
+      height: 2.889rem;
     }
+  }
 
-    .dropdowns {
-        margin-bottom: 3rem;
+  .dropdown-margin {
+    margin-right: 40px;
+    position: relative;
+    cursor: pointer;
+  }
 
-        span.a-dropdown__title:after {
-            content: "*";
-            color: red;
-        }
+  .year-dropdown {
+    position: relative;
+    cursor: pointer;
+
+    .a-dropdown__option__container {
+      height: 2.889rem;
     }
-
-    .dropdownC {
-        margin-bottom: 3rem;
-
-        span.a-dropdown__title:after {
-            content: "*";
-            color: red;
-        }
-
-        .a-dropdown__option__container {
-            height: 2.889rem;
-        }
-    }
-
-    .dropdown-margin {
-        margin-right: 40px;
-        position: relative;
-        cursor: pointer;
-    }
-
-    .year-dropdown {
-        position: relative;
-        cursor: pointer;
-
-        .a-dropdown__option__container {
-            height: 2.889rem;
-        }
-    }
+  }
 }
 
 .dropdown-margin svg.icon-down {
-    display: none !important;
+  display: none !important;
 }
 
 .dropdown-margin svg.icon-up {
-    display: none !important;
+  display: none !important;
 }
 
 .year-dropdown svg.icon-down {
-    display: none !important;
+  display: none !important;
 }
 
 .year-dropdown svg.icon-up {
-    display: none !important;
+  display: none !important;
 }
 
 .newinvoice-container .year-dropdown .calendar {
-    display: flex;
-    justify-content: end;
-    z-index: 99999;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  display: flex;
+  justify-content: end;
+  z-index: 99999;
+  position: absolute;
+  top: 0.5556rem;
+  right: 0.5556rem;
 }
 
 .newinvoice-container .dropdown-margin .calendar {
-    display: flex;
-    justify-content: end;
-    z-index: 99999;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  display: flex;
+  justify-content: end;
+  z-index: 99999;
+  position: absolute;
+  top: 0.5556rem;
+  right: 0.5556rem;
 }
 
 .stepper-one-buttons {
-    display: flex;
-    justify-content: end;
-    position: absolute;
-    bottom: -5rem;
-    right: -1.5rem;
-    // bottom: 18%;
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  bottom: -5rem;
+  right: -1.5rem;
+  // bottom: 18%;
 
-    button.a-button.medium {
-        font-size: 1.2rem;
-        height: 3.13rem;
-        width: 7.13rem;
-        margin-right: 25px;
-    }
+  button.a-button.medium {
+    font-size: 1rem;
+    height: 3.13rem;
+    width: 7.13rem;
+    margin-right: 1.3889rem;
+  }
 }
 
 button.a-button.next-button svg {
-    padding-right: 0.5rem;
-    margin-top: 5px;
-    margin-right: -8px;
-    margin-left: 16px;
+  padding-right: 0.5rem;
+  margin-top: 0.2778rem;
+  margin-right: -0.4444rem;
+  width: 1.3333rem;
+  height: 1.3333rem;
+  margin-left: 0.8889rem;
 }
 
 button.a-button.primary-blue.medium.button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row-reverse;
-    // height: 3.4rem;
-    height: 3.34rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row-reverse;
+  // height: 3.4rem;
+  height: 3.34rem;
 }
 
-@media screen and (max-width: 1350px) {
-    .newinvoice-container .dropdown-margin .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: -1px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
+//     .newinvoice-container .year-dropdown .calendar {
+//         display: flex;
+//         justify-content: end;
+//         z-index: 99999;
+//         position: absolute;
+//         top: -1px;
+//         right: 5px;
+//         height: 20px;
+//         width: 23px;
+//     }
+// }
 
-    .newinvoice-container .year-dropdown .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: -1px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
-}
+// @media screen and (max-width: 1450px) and (min-width: 1350px) {
+//     .newinvoice-container .dropdown-margin .calendar {
+//         display: flex;
+//         justify-content: end;
+//         z-index: 99999;
+//         position: absolute;
+//         top: 5px;
+//         right: 5px;
+//         height: 20px;
+//         width: 23px;
+//     }
 
-@media screen and (max-width: 1450px) and (min-width: 1350px) {
-    .newinvoice-container .dropdown-margin .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
-
-    .newinvoice-container .year-dropdown .calendar {
-        display: flex;
-        justify-content: end;
-        z-index: 99999;
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        height: 20px;
-        width: 23px;
-    }
-}
+//     .newinvoice-container .year-dropdown .calendar {
+//         display: flex;
+//         justify-content: end;
+//         z-index: 99999;
+//         position: absolute;
+//         top: 5px;
+//         right: 5px;
+//         height: 20px;
+//         width: 23px;
+//     }
+// }

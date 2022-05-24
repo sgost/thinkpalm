@@ -451,7 +451,7 @@ const NewInvoice = () => {
         CustomerLocation:
           CustomerOptions.find(
             (c: any) => c.customerId === stepperOneData?.customerId
-          ).billingAddressCountryName || "India", // loc name
+          )?.billingAddressCountryName || "India", // loc name
         CurrencyId: 840, // tbd
         Status: 1, // hard code
         TransactionType: 4, // type

@@ -241,3 +241,11 @@ export const productInvoice = () => {
 export const CountryApi = () => {
   return metaDataUrl + services.apngMetaDataService + `/Lookup`;
 };
+
+export const getEmployeeBreakdownUrl = (id) => {
+  return (
+    baseURL +
+    services.atlasIdgService +
+    `/InvoiceData/EmployeeBreakdownReport/${id}`
+  );
+};

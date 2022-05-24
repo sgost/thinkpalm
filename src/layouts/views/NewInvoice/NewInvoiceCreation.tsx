@@ -33,14 +33,12 @@ const NewInvoiceCreation = ({
     const newData = data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
-          ...item,
           isSelected: true,
           label: item.name,
           value: item.customerId,
         };
       } else {
         return {
-          ...item,
           isSelected: false,
           label: item.name,
           value: item.customerId,
@@ -282,7 +280,6 @@ const NewInvoiceCreation = ({
                 <div className="calendar">
                   <Icon
                     icon="calendar"
-                    size="small"
                     width="30"
                     height="30"
                     color="#3E3E3E"
@@ -325,7 +322,6 @@ const NewInvoiceCreation = ({
                 <div className="calendar">
                   <Icon
                     icon="calendar"
-                    size="small"
                     width="30"
                     height="30"
                     color="#3E3E3E"

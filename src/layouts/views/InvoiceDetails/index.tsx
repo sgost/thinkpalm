@@ -37,6 +37,7 @@ import {
   getDownloadFileUrl,
   getCMInvoiceUrl,
   getVatValue,
+  getEmployeeBreakdownUrl,
   getAutoApproveCheckUrl,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
@@ -806,6 +807,30 @@ export default function InvoiceDetails() {
     setIsDownloadOpen(false);
   };
 
+  const downloadEmployeeBreakdownFunction = () => {
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    };
+
+    const downloadEmployeeBreakdwonApi = getEmployeeBreakdownUrl(id);
+    axios
+      .get(downloadEmployeeBreakdwonApi, headers)
+      .then((res: any) => {
+        console.log("downloadEmployeeBreakdwonApi", res);
+        if (res.status === 200) {
+          let url2 = res.data.url;
+          let a = document.createElement("a");
+          a.href = url2;
+          a.download = `${res.data.name}`;
+          a.click();
+        }
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+    setIsDownloadOpen(false);
+  };
+
   const handleVoid = async () => {
     const headers = getHeaders(tempToken, cid, isClient);
 
@@ -1006,7 +1031,9 @@ export default function InvoiceDetails() {
             <div className="openDownloadDropdown">
               <p onClick={() => downloadFunction()}>Invoice as PDF</p>
               <p onClick={() => downloadExcelFunction()}>Invoice as Excel</p>
-              <p>Employee Breakdown</p>
+              <p onClick={() => downloadEmployeeBreakdownFunction()}>
+                Employee Breakdown
+              </p>
             </div>
           )}
 
