@@ -4,7 +4,7 @@ import "./FinishCreditMemo.scss";
 import { useNavigate } from "react-router-dom";
 import { getCreditMemoStep4Data } from "../../../apis/apis";
 
-export default function FinishCreditMemo() {
+export default function FinishCreditMemo({ invoiceId }: any) {
   const navigate = useNavigate();
 
   return (
@@ -17,26 +17,24 @@ export default function FinishCreditMemo() {
       </p>
       <Button
         handleOnClick={() => {
-          getCreditMemoStep4Data("3b70a1d7-19fd-44e6-9995-18d0966eb790").then(
-            (res: any) => {
-              console.log(res);
-              navigate(
-                "/pay/invoicedetails" +
-                  "3b70a1d7-19fd-44e6-9995-18d0966eb790" +
-                  "/" +
-                  // "a9bbee6d-797a-4724-a86a-5b1a2e28763f" +
-                  res.data.customerId +
-                  "/" +
-                  "true",
-                {
-                  state: {
-                    InvoiceId: "3b70a1d7-19fd-44e6-9995-18d0966eb790",
-                    transactionType: 4,
-                  },
-                }
-              );
-            }
-          );
+          getCreditMemoStep4Data(invoiceId).then((res: any) => {
+            console.log(res);
+            navigate(
+              "/pay/invoicedetails" +
+                invoiceId +
+                "/" +
+                // "a9bbee6d-797a-4724-a86a-5b1a2e28763f" +
+                res.data.customerId +
+                "/" +
+                "true",
+              {
+                state: {
+                  InvoiceId: invoiceId,
+                  transactionType: 4,
+                },
+              }
+            );
+          });
         }}
         className="primary-blue small"
         label="Go to Invoice"
