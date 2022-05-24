@@ -149,13 +149,13 @@ export default function CreditMemoSummary(props: any) {
 
     /* istanbul ignore next */
     const editInvoiceItems = (index: number) => {        
-        var resp = callUpdateAPI();        
+        callUpdateAPI();        
         console.log(creditMemoData);
     }
     /* istanbul ignore next */
     const deleteInvoiceItem = (index: number) => {
         payload.invoiceItems.splice(index, 1);
-        var resp = callUpdateAPI();
+        callUpdateAPI();
     }
 
     /* istanbul ignore next */
