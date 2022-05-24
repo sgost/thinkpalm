@@ -15,7 +15,7 @@ import {
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
 
-import moment from "moment";
+import moment from "moment"; 
 import GetFlag, { getFlagPath } from "./getFlag";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
