@@ -2,405 +2,381 @@
 @import "../../../styles/styles";
 
 .newinvoice_main {
-    padding: 2.5rem 5rem;
-    margin-top: 0.6rem;
-    border-radius: 0.5rem 0.5rem 0 0;
-    background-color: white;
+  padding: 2.5rem 5rem;
+  margin-top: 0.6rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background-color: white;
 }
 
 #click_input {
-    position: absolute;
-    width: 13rem;
-    outline: none;
-    z-index: 9999;
-    height: 2rem;
-    font-size: 1rem;
-    border: none;
-    top: 0.5rem;
-    left: 0.5rem;
+  position: absolute;
+  width: 13rem;
+  outline: none;
+  z-index: 9999;
+  height: 2rem;
+  font-size: 1rem;
+  border: none;
+  top: 0.5rem;
+  left: 0.5rem;
 }
 
 .newinvoice-container .a-layouts .sidebar-inner-container .panel.right-panel {
-    padding: 0 !important;
-    background: transparent !important;
+  padding: 0 !important;
+  background: transparent !important;
 }
 
 .newinvoice_main:first-child {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .newinvoice-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 6rem 0;
+
+  #head_sec {
     display: flex;
-    flex-direction: column;
-    padding: 0 0 6rem 0;
+    justify-content: space-between;
 
-    #head_sec {
+    #action_buttons {
+      display: flex;
+      width: fit-content;
+
+      #icon_1 {
         display: flex;
-        justify-content: space-between;
-
-        #action_buttons {
-            display: flex;
-            width: fit-content;
-
-            #icon_1 {
-                display: flex;
-                font-weight: bold;
-                font-size: 1rem;
-                color: #526FD6;
-                align-items: center;
-                margin: 0 0 0 1.5rem;
-                cursor: pointer;
-            }
-        }
+        font-weight: bold;
+        font-size: 1rem;
+        color: #526fd6;
+        align-items: center;
+        margin: 0 0 0 1.5rem;
+        cursor: pointer;
+      }
     }
+  }
 
-    .a-dropdown {
-        width: 17vw !important;
-    }
+  .a-dropdown {
+    width: 17vw !important;
+  }
 
-    #container_main1 {
-        display: flex;
-        margin: 3vw 0 0 0;
+  #container_main1 {
+    display: flex;
+    margin: 3vw 0 0 0;
 
-        .react-datepicker__icon {
-            width: 1.6rem;
-            height: 1.6rem;
-        }
-
-        .dropdownP {
-            position: relative;
-
-            #desc_label {
-                position: absolute;
-                font-size: 0.889rem;
-                color: #3e3e3e;
-                bottom: 3.2rem;
-            }
-
-            #description_input {
-                width: 15.5vw;
-                padding: 0 0 0 4.75px;
-                border-radius: 0.222rem;
-                border: 0.056rem solid #ced4da;
-                outline-color: #526FD6;
-            }
-        }
-    }
-
-    #container_main2 {
-        display: flex;
-        z-index: 0;
-        margin: 1vw 0 0 0;
-
-        .dropdownP {
-            margin: 0;
-            position: relative;
-        }
-
-        .dropdownCount {
-            margin: 0 0 0 2.2rem;
-            position: relative;
-
-            #count_tags {
-                position: absolute;
-                top: -1.5rem;
-
-                span {
-                    font-size: 0.889rem;
-                    color: #3e3e3e;
-                }
-
-                span:nth-child(2) {
-                    margin: 0 0 0 3.7vw;
-                }
-            }
-
-            #dropdownCount_inputs {
-                display: grid;
-                height: 100%;
-                grid-template-columns: 6vw 9.6vw;
-                gap: 1.5rem;
-                align-items: center;
-
-                .inputField {
-                    padding: 0 0 0 4.75px;
-                    border-radius: 0.222rem;
-                    outline-color: #526FD6;
-                    border: 0.056rem solid #ced4da;
-                }
-            }
-        }
-    }
-
-
-    #container_main3 {
-        width: fit-content;
-        margin: 0 0 0 auto;
-        padding: 1.6rem 0 0 0;
-
-        span {
-            font-style: normal;
-            font-weight: 400;
-            font-size: 1rem;
-            color: #526FD6;
-            border-radius: 10px;
-            font-style: normal;
-            font-weight: 600;
-        }
-
-        .secondary-btn {
-            width: 15.2rem;
-            height: 4.03rem;
-            background: #EEF1FB !important;
-            border-radius: 0.6rem;
-            color: #526FD6;
-            margin: 0 0 0 3.1rem;
-            border: none;
-            align-items: center;
-
-            span {
-                font-style: normal;
-                font-weight: 600 !important;
-                font-size: 1.5rem;
-            }
-        }
-    }
-
-
-    .newinvoice-container2 {
-        margin: 0.6rem 0 0 0;
-        background: white;
-        padding: 1.1rem 5rem;
-        border-radius: 0 0 0.5rem 0.5rem;
-
-        #icon_1 {
-            display: flex;
-            align-items: center;
-            font-style: normal;
-            font-weight: bold;
-            font-size: 0.8rem;
-            color: #526FD6;
-            cursor: pointer;
-
-            span {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: #526FD6;
-                padding: 1px 0 1px 2px;
-                border-radius: 1.8rem;
-                margin: 0 5px 0 0;
-
-                svg {
-                    margin: 0 !important;
-                }
-            }
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    h3 {
-        font-weight: 400;
-        font-size: 24px;
-        line-height: 35px;
-        color: #041e42;
-    }
-
-    .dropdown {
-        margin-top: 3rem;
-        margin-bottom: 3rem;
-
-        span.a-dropdown__title:after {
-            content: "*";
-            color: red;
-        }
-    }
-
-    .dropdowns {
-        margin-bottom: 3rem;
-
-        span.a-dropdown__title:after {
-            content: "*";
-            color: red;
-        }
+    .react-datepicker__icon {
+      width: 1.6rem;
+      height: 1.6rem;
     }
 
     .dropdownP {
-        margin: 0 0 3rem 2rem;
+      position: relative;
 
-        span.a-dropdown__title:after {
-            content: "*";
-            color: red;
-        }
+      #desc_label {
+        position: absolute;
+        font-size: 0.889rem;
+        color: #3e3e3e;
+        bottom: 3.2rem;
+      }
 
-        .a-dropdown__option__container {
-            height: 8rem;
-        }
+      #description_input {
+        width: 15.5vw;
+        padding: 0 0 0 4.75px;
+        border-radius: 0.222rem;
+        border: 0.056rem solid #ced4da;
+        outline-color: #526fd6;
+      }
+    }
+  }
+
+  #container_main2 {
+    display: flex;
+    z-index: 0;
+    margin: 1vw 0 0 0;
+
+    .dropdownP {
+      margin: 0;
+      position: relative;
     }
 
-    .dropdown-margin {
-        margin-right: 2.5rem;
-        position: relative;
-        cursor: pointer;
-    }
+    .dropdownCount {
+      margin: 0 0 0 2.2rem;
+      position: relative;
 
-    .year-dropdown {
-        position: relative;
-        cursor: pointer;
-        width: fit-content;
+      #count_tags {
+        position: absolute;
+        top: -1.5rem;
 
-        .a-dpicker .react-datepicker__input-container input {
-            width: 14vw;
+        span {
+          font-size: 0.889rem;
+          color: #3e3e3e;
         }
+
+        span:nth-child(2) {
+          margin: 0 0 0 3.7vw;
+        }
+      }
+
+      #dropdownCount_inputs {
+        display: grid;
+        height: 100%;
+        grid-template-columns: 6vw 9.6vw;
+        gap: 1.5rem;
+        align-items: center;
+
+        .inputField {
+          padding: 0 0 0 4.75px;
+          border-radius: 0.222rem;
+          outline-color: #526fd6;
+          border: 0.056rem solid #ced4da;
+        }
+      }
     }
+  }
+
+  #container_main3 {
+    width: fit-content;
+    margin: 0 0 0 auto;
+    padding: 1.6rem 0 0 0;
+
+    span {
+      font-size: 1rem;
+      color: #526fd6;
+      border-radius: 10px;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .secondary-btn {
+      width: 15.2rem;
+      height: 4.03rem;
+      background: #eef1fb !important;
+      border-radius: 0.6rem;
+      color: #526fd6;
+      margin: 0 0 0 3.1rem;
+      border: none;
+      align-items: center;
+
+      span {
+        font-style: normal;
+        font-weight: 600 !important;
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .newinvoice-container2 {
+    margin: 0.6rem 0 0 0;
+    background: white;
+    padding: 1.1rem 5rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+
+    #icon_1 {
+      display: flex;
+      align-items: center;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 0.8rem;
+      color: #526fd6;
+      cursor: pointer;
+
+      span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #526fd6;
+        padding: 1px 0 1px 2px;
+        border-radius: 1.8rem;
+        margin: 0 5px 0 0;
+
+        svg {
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+
+  h3 {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 35px;
+    color: #041e42;
+  }
+
+  .dropdown {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+
+    span.a-dropdown__title:after {
+      content: "*";
+      color: red;
+    }
+  }
+
+  .dropdowns {
+    margin-bottom: 3rem;
+
+    span.a-dropdown__title:after {
+      content: "*";
+      color: red;
+    }
+  }
+
+  .dropdownP {
+    margin: 0 0 3rem 2rem;
+
+    span.a-dropdown__title:after {
+      content: "*";
+      color: red;
+    }
+
+    .a-dropdown__option__container {
+      height: 8rem;
+    }
+  }
+
+  .dropdown-margin {
+    margin-right: 2.5rem;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .year-dropdown {
+    position: relative;
+    cursor: pointer;
+    width: fit-content;
+
+    .a-dpicker .react-datepicker__input-container input {
+      width: 14vw;
+    }
+  }
 }
 
 .dropdown-margin svg.icon-down {
-    display: none !important;
+  display: none !important;
 }
 
 .dropdown-margin svg.icon-up {
-    display: none !important;
+  display: none !important;
 }
 
 .year-dropdown svg.icon-down {
-    display: none !important;
+  display: none !important;
 }
 
 .year-dropdown svg.icon-up {
-    display: none !important;
+  display: none !important;
 }
 
 .newinvoice-container .year-dropdown .calendar {
-    display: flex;
-    justify-content: end;
-    z-index: 99999;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  display: flex;
+  justify-content: end;
+  z-index: 99999;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .newinvoice-container .dropdown-margin .calendar {
-    display: flex;
-    justify-content: end;
-    z-index: 99999;
-    position: absolute;
-    top: 10px;
-    right: 10px;
+  display: flex;
+  justify-content: end;
+  z-index: 99999;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .stepper-one-buttons {
-    display: flex;
-    justify-content: end;
-    position: absolute;
-    bottom: -5rem;
-    right: -1.5rem;
-    // bottom: 18%;
+  display: flex;
+  justify-content: end;
+  position: absolute;
+  bottom: -5rem;
+  right: -1.5rem;
+  // bottom: 18%;
 
-    button.a-button.medium {
-        font-size: 1rem;
-        height: 3.13rem;
-        width: 7.13rem;
-        margin-right: 25px
-    }
+  button.a-button.medium {
+    font-size: 1rem;
+    height: 3.13rem;
+    width: 7.13rem;
+    margin-right: 25px;
+  }
 }
 
 button.a-button.next-button svg {
-    padding-right: 0.5rem;
-    margin-top: 5px;
-    margin-right: -8px;
-    margin-left: 16px;
+  padding-right: 0.5rem;
+  margin-top: 5px;
+  margin-right: -8px;
+  margin-left: 16px;
 }
 
 button.a-button.primary-blue.medium.button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row-reverse;
-    // height: 3.4rem;
-    height: 3.34rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row-reverse;
+  // height: 3.4rem;
+  height: 3.34rem;
 }
-
-
 
 // Detail Cards
 #detail_card_main {
-    padding: 50px;
-    border-radius: 0.5rem;
-    background-color: white;
-    margin-top: 1.5rem;
+  padding: 50px;
+  border-radius: 0.5rem;
+  background-color: white;
+  margin-top: 1.5rem;
 }
 
 #detail_card_main #detail_cards #card_head_detail {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #detail_card_main #detail_cards #card_head_detail #detail_title {
-    font-size: 30px;
-    font-weight: 600;
+  font-size: 30px;
+  font-weight: 600;
 }
 
 #detail_card_main #detail_cards #card_head_detail #card_detail_btns #delete {
-    font-size: 15px;
-    color: #526FD6;
-    cursor: pointer;
+  font-size: 15px;
+  color: #526fd6;
+  cursor: pointer;
 }
 
 #detail_card_main #detail_cards #top_row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    margin: 40px 0 0 0;
-    gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin: 40px 0 0 0;
+  gap: 30px;
 }
 
 #detail_card_main #detail_cards #top_row #roe_detatil_card #detail_card_title {
-    font-size: 20px;
-    font-weight: 600;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 #detail_card_main #detail_cards #top_row #roe_detatil_card p {
-    font-size: 15px;
-    font-weight: 400;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 #detail_card_main #detail_cards #balance_row {
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    margin: 35px 0 0 auto;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  margin: 35px 0 0 auto;
 }
 
 #detail_card_main #detail_cards #balance_row #detail_balance_text {
-    font-size: 20px;
-    font-weight: 600;
-    color: #526FD6;
+  font-size: 20px;
+  font-weight: 600;
+  color: #526fd6;
 }
 
 #detail_card_main #detail_cards #balance_row #detail_card_balance {
-    font-size: 20px;
-    font-weight: 600;
-    color: #526FD6;
-    margin: 0 0 0 30px;
-    background-color: #EEF1FB;
-    border-radius: 0.5rem;
-    padding: 10px 41px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #526fd6;
+  margin: 0 0 0 30px;
+  background-color: #eef1fb;
+  border-radius: 0.5rem;
+  padding: 10px 41px;
 }
