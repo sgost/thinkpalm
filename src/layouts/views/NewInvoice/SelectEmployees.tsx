@@ -43,6 +43,8 @@ const SelectEmployees = ({
       stepperOneData?.monthId,
       stepperOneData?.yearId,
     );
+
+    console.log("stepperOneData?.yearId", typeof stepperOneData?.yearId)
     
     setLoading(true)
 

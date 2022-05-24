@@ -217,3 +217,9 @@ export const updateInvoiceStatus = (invoiceId) => {
     baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`
   );
 };
+
+export const getEmployeeBreakdownUrl = (id) => {
+  return (
+    baseURL + services.atlasIdgService + `/InvoiceData/EmployeeBreakdownReport/${id}`
+  );
+};
