@@ -236,8 +236,8 @@ const ProductInvoiceCreation = ({
                   className="dropdownP"
                   data-testid="Country_name"
                   onClick={() => {
-                    localStorage.setItem("name_value", "country"),
-                      setOpens(true);
+                    localStorage.setItem("name_value", "country");
+                    setOpens(true);
                   }}
                 >
                   <input
