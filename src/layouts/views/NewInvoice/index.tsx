@@ -358,7 +358,7 @@ const NewInvoice = () => {
   };
 
   const handleNextButtonClick = () => {
-    if (stepsCount != 2) {
+    if (stepsCount != 2 && stepperOneData.type == "Payroll") {
       setStepsCount(stepsCount + 1);
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
@@ -411,8 +411,11 @@ const NewInvoice = () => {
         });
     }
 
-    if (stepsCount == 2 && stepperOneData?.type === "Credit Memo") {
-      setStepsCount(3);
+    if (
+      (stepsCount == 1 || stepsCount == 2) &&
+      stepperOneData?.type === "Credit Memo"
+    ) {
+      setStepsCount(stepsCount + 1);
     }
 
     if (stepsCount == 3 && stepperOneData?.type === "Credit Memo") {
@@ -479,6 +482,7 @@ const NewInvoice = () => {
         .then((res: any) => {
           console.log(res);
           setInvoiceId(res.data.id);
+          setStepsCount(4);
         })
         .catch((e: any) => {
           console.log(e);
