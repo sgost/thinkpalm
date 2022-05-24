@@ -1650,3 +1650,133 @@ describe("Stepper 3 country api fail", () => {
     fireEvent.click(stepTwoNextButton);
   });
 });
+
+
+// test cases for Proforma 
+
+describe("New Invoice for Proforma ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+
+  });
+
+  test("breadcumbs are working", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const invoiceBreadClick = await screen.findAllByText(/Invoices/);
+    expect(invoiceBreadClick[0]).toBeInTheDocument();
+    fireEvent.click(invoiceBreadClick[0]);
+  });
+  test("dropDown Value change stepper 1", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Proforma/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+  });
+});
+
+
+
+// test cases for Miscellaneous 
+
+describe("New Invoice for Miscellaneous ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    
+  });
+
+  test("breadcumbs are working", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const invoiceBreadClick = await screen.findAllByText(/Invoices/);
+    expect(invoiceBreadClick[0]).toBeInTheDocument();
+    fireEvent.click(invoiceBreadClick[0]);
+  });
+  test("dropDown Value change stepper 1", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Miscellaneous/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+  });
+});
+

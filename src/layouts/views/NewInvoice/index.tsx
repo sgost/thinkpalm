@@ -357,6 +357,28 @@ const NewInvoice = () => {
     }
   };
 
+  const disableFunForStepOneProforma = () => {
+    if (stepsCount == 1) {
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        stepperOneData?.year !== "" &&
+        stepperOneData?.month !== ""
+      );
+    }
+  };
+
+  const disableFunForStepOneMiscellaneous = () => {
+    if (stepsCount == 1) {
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        stepperOneData?.year !== "" &&
+        stepperOneData?.month !== ""
+      );
+    }
+  };
+
   const handleNextButtonClick = () => {
     if (stepsCount != 2 && stepperOneData.type == "Payroll") {
       setStepsCount(stepsCount + 1);
@@ -540,9 +562,11 @@ const NewInvoice = () => {
               steps={
                 stepperOneData?.type === "Payroll"
                   ? stepsName
-                  : stepperOneData?.type === "Credit Memo"
-                  ? creditMemoSteps
-                  : stepsInitial
+                  : stepperOneData?.type === "Credit Memo" ||
+                    stepperOneData?.type === "Proforma" ||
+                    stepperOneData?.type === "Miscellaneous"
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
@@ -604,8 +628,12 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                ? disableFunForStepOneCreditMemo()
-                : true
+                  ? disableFunForStepOneCreditMemo()
+                  : stepperOneData?.type === "Proforma"
+                    ? disableFunForStepOneProforma()
+                    : stepperOneData?.type === "Miscellaneous"
+                      ? disableFunForStepOneMiscellaneous()
+                      : true
             }
             data-testid="next-button"
             icon={{
