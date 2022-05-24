@@ -1,61 +1,259 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="28" failures="0" errors="0" time="8.325">
-  <testsuite name="New Invoice" errors="0" failures="0" skipped="0" timestamp="2022-05-24T07:06:13" time="7.404" tests="28">
-    <testcase classname="New Invoice breadcumbs are working" name="New Invoice breadcumbs are working" time="0.194">
+<testsuites name="jest tests" tests="77" failures="1" errors="0" time="34.356">
+  <testsuite name="Bills Table" errors="0" failures="0" skipped="0" timestamp="2022-05-24T12:25:54" time="7.318" tests="1">
+    <testcase classname="Bills Table Render" name="Bills Table Render" time="0.499">
     </testcase>
-    <testcase classname="New Invoice dropDown Value change stepper 1" name="New Invoice dropDown Value change stepper 1" time="0.237">
+  </testsuite>
+  <testsuite name="Credit Memo Summary" errors="0" failures="0" skipped="0" timestamp="2022-05-24T12:25:54" time="8.426" tests="2">
+    <testcase classname="Credit Memo Summary Render CM" name="Credit Memo Summary Render CM" time="0.788">
     </testcase>
-    <testcase classname="step one getCustomer api fail  dropDown Value change" name="step one getCustomer api fail  dropDown Value change" time="0.051">
+    <testcase classname="Notes fail Render CM" name="Notes fail Render CM" time="0.308">
     </testcase>
-    <testcase classname="step one getCOuntry api fail dropDown Value change" name="step one getCOuntry api fail dropDown Value change" time="0.073">
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2022-05-24T12:25:54" time="9.672" tests="1">
+    <testcase classname=" renders learn react link" name=" renders learn react link" time="0.475">
     </testcase>
-    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.191">
+  </testsuite>
+  <testsuite name="client view" errors="0" failures="0" skipped="0" timestamp="2022-05-24T12:25:54" time="13.249" tests="17">
+    <testcase classname="client view Datepicker dropdowns clickoutside clickable" name="client view Datepicker dropdowns clickoutside clickable" time="0.981">
     </testcase>
-    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.203">
+    <testcase classname="client view Datepicker dropdowns today clickable" name="client view Datepicker dropdowns today clickable" time="0.572">
     </testcase>
-    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.364">
+    <testcase classname="client view Datepicker dropdowns Yesterday clickable" name="client view Datepicker dropdowns Yesterday clickable" time="0.34">
     </testcase>
-    <testcase classname="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " time="0.157">
+    <testcase classname="client view Datepicker dropdowns This Week clickable" name="client view Datepicker dropdowns This Week clickable" time="0.255">
     </testcase>
-    <testcase classname="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.176">
+    <testcase classname="client view Datepicker dropdowns This Month clickable" name="client view Datepicker dropdowns This Month clickable" time="0.235">
     </testcase>
-    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.129">
+    <testcase classname="client view Datepicker dropdowns This Quarter clickable" name="client view Datepicker dropdowns This Quarter clickable" time="0.227">
     </testcase>
-    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.17">
+    <testcase classname="client view Datepicker dropdowns This Year clickable" name="client view Datepicker dropdowns This Year clickable" time="0.181">
     </testcase>
-    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.213">
+    <testcase classname="client view table row clickable" name="client view table row clickable" time="0.179">
     </testcase>
-    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.12">
+    <testcase classname="client view Status clickable" name="client view Status clickable" time="0.189">
     </testcase>
-    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.157">
+    <testcase classname="client view Type clickable" name="client view Type clickable" time="0.172">
     </testcase>
-    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.199">
+    <testcase classname="client view Clear filters clickable" name="client view Clear filters clickable" time="0.264">
     </testcase>
-    <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.16">
+    <testcase classname="client view search" name="client view search" time="0.192">
     </testcase>
-    <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.242">
+    <testcase classname="checkbox and download checkbox and download are clickable in client view" name="checkbox and download checkbox and download are clickable in client view" time="0.384">
     </testcase>
-    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.118">
+    <testcase classname="checkbox and download checkbox and download are clickable in internal view" name="checkbox and download checkbox and download are clickable in internal view" time="0.116">
     </testcase>
-    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.159">
+    <testcase classname="checkbox and download checkbox and download are clickable in client view and searched view" name="checkbox and download checkbox and download are clickable in client view and searched view" time="0.364">
     </testcase>
-    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.228">
+    <testcase classname="Internal View Download click and checkbox Click table row clickable" name="Internal View Download click and checkbox Click table row clickable" time="0.469">
     </testcase>
-    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.107">
+    <testcase classname="Internal View Download click for single invoice  api fail Click table row clickable" name="Internal View Download click for single invoice  api fail Click table row clickable" time="0.381">
     </testcase>
-    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.143">
+  </testsuite>
+  <testsuite name="Invoice details" errors="0" failures="0" skipped="0" timestamp="2022-05-24T12:25:54" time="17.061" tests="28">
+    <testcase classname="Invoice details tabs are working" name="Invoice details tabs are working" time="1.867">
     </testcase>
-    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.175">
+    <testcase classname="Invoice details download clickable " name="Invoice details download clickable " time="0.651">
     </testcase>
-    <testcase classname="New Invoice for Proforma  breadcumbs are working" name="New Invoice for Proforma  breadcumbs are working" time="0.042">
+    <testcase classname="Invoice details approve invoice clickable " name="Invoice details approve invoice clickable " time="0.279">
     </testcase>
-    <testcase classname="New Invoice for Proforma  dropDown Value change stepper 1" name="New Invoice for Proforma  dropDown Value change stepper 1" time="0.067">
+    <testcase classname="Invoice details publish notes" name="Invoice details publish notes" time="0.351">
     </testcase>
-    <testcase classname="New Invoice for Miscellaneous  breadcumbs are working" name="New Invoice for Miscellaneous  breadcumbs are working" time="0.04">
+    <testcase classname="Invoice details download file" name="Invoice details download file" time="0.339">
     </testcase>
-    <testcase classname="New Invoice for Miscellaneous  dropDown Value change stepper 1" name="New Invoice for Miscellaneous  dropDown Value change stepper 1" time="0.067">
+    <testcase classname="Invoice details delete file" name="Invoice details delete file" time="0.283">
     </testcase>
-    <testcase classname="Stepper for Credit Memo  1 and 2  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" name="Stepper for Credit Memo  1 and 2  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" time="0.674">
+    <testcase classname="Invoice details Navigate with breadcrumbs" name="Invoice details Navigate with breadcrumbs" time="0.229">
+    </testcase>
+    <testcase classname="Invoice details Decline invoice click on cancel button" name="Invoice details Decline invoice click on cancel button" time="0.24">
+    </testcase>
+    <testcase classname="Invoice details Decline invoice onchange textarea and click on decline button" name="Invoice details Decline invoice onchange textarea and click on decline button" time="0.309">
+    </testcase>
+    <testcase classname="Api returns transaction type = 7 Render Invoice Details" name="Api returns transaction type = 7 Render Invoice Details" time="0.276">
+    </testcase>
+    <testcase classname="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" time="0.368">
+    </testcase>
+    <testcase classname="void test cases on Apprroved tabs are working" name="void test cases on Apprroved tabs are working" time="0.421">
+    </testcase>
+    <testcase classname="void test cases on Apprroved Upload Api Failed tabs are working" name="void test cases on Apprroved Upload Api Failed tabs are working" time="0.701">
+    </testcase>
+    <testcase classname="void test cases on Apprroved Create Api Failed tabs are working" name="void test cases on Apprroved Create Api Failed tabs are working" time="0.589">
+    </testcase>
+    <testcase classname="void test cases on Apprroved Void Api Failed tabs are working" name="void test cases on Apprroved Void Api Failed tabs are working" time="0.387">
+    </testcase>
+    <testcase classname="void test cases on Apprroved and click on cancel tabs are working" name="void test cases on Apprroved and click on cancel tabs are working" time="0.22">
+    </testcase>
+    <testcase classname="api fail tabs are working" name="api fail tabs are working" time="0.033">
+    </testcase>
+    <testcase classname="delete test cases on AR Reveiew on true tabs are working" name="delete test cases on AR Reveiew on true tabs are working" time="0.201">
+    </testcase>
+    <testcase classname="delete test cases on AR Reveiew click on cancel button tabs are working" name="delete test cases on AR Reveiew click on cancel button tabs are working" time="0.197">
+    </testcase>
+    <testcase classname="delete test cases on AR Reveiew on false tabs are working" name="delete test cases on AR Reveiew on false tabs are working" time="0.169">
+    </testcase>
+    <testcase classname="delete test cases on AR Reveiew on api fail tabs are working" name="delete test cases on AR Reveiew on api fail tabs are working" time="0.188">
+    </testcase>
+    <testcase classname="Invoice details auto approve checkbox click approve invoice clickable " name="Invoice details auto approve checkbox click approve invoice clickable " time="0.171">
+    </testcase>
+    <testcase classname="Invoice details auto approve checkbox click api fail approve invoice clickable " name="Invoice details auto approve checkbox click api fail approve invoice clickable " time="0.171">
+    </testcase>
+    <testcase classname="Invoice details fee api fail tabs are working" name="Invoice details fee api fail tabs are working" time="0.035">
+    </testcase>
+    <testcase classname="Invoice details invoice detail api fail tabs are working" name="Invoice details invoice detail api fail tabs are working" time="0.023">
+    </testcase>
+    <testcase classname="Invoice details lookup api fail tabs are working" name="Invoice details lookup api fail tabs are working" time="0.025">
+    </testcase>
+    <testcase classname="Invoice details countries api fail tabs are working" name="Invoice details countries api fail tabs are working" time="0.018">
+    </testcase>
+    <testcase classname="Invoice details employeeBreakDown api fail download clickable " name="Invoice details employeeBreakDown api fail download clickable " time="0.26">
+    </testcase>
+  </testsuite>
+  <testsuite name="New Invoice" errors="0" failures="1" skipped="0" timestamp="2022-05-24T12:25:54" time="21.818" tests="28">
+    <testcase classname="New Invoice breadcumbs are working" name="New Invoice breadcumbs are working" time="0.455">
+    </testcase>
+    <testcase classname="New Invoice dropDown Value change stepper 1" name="New Invoice dropDown Value change stepper 1" time="0.669">
+    </testcase>
+    <testcase classname="step one getCustomer api fail  dropDown Value change" name="step one getCustomer api fail  dropDown Value change" time="0.12">
+    </testcase>
+    <testcase classname="step one getCOuntry api fail dropDown Value change" name="step one getCOuntry api fail dropDown Value change" time="0.18">
+    </testcase>
+    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.684">
+    </testcase>
+    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.676">
+    </testcase>
+    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.758">
+    </testcase>
+    <testcase classname="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " time="0.325">
+    </testcase>
+    <testcase classname="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.353">
+    </testcase>
+    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.254">
+    </testcase>
+    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.317">
+    </testcase>
+    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.56">
+    </testcase>
+    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.409">
+    </testcase>
+    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.487">
+    </testcase>
+    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.328">
+    </testcase>
+    <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.234">
+    </testcase>
+    <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.251">
+    </testcase>
+    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.214">
+    </testcase>
+    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.222">
+    </testcase>
+    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.26">
+    </testcase>
+    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.18">
+    </testcase>
+    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.194">
+    </testcase>
+    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.242">
+    </testcase>
+    <testcase classname="New Invoice for Proforma  breadcumbs are working" name="New Invoice for Proforma  breadcumbs are working" time="0.05">
+    </testcase>
+    <testcase classname="New Invoice for Proforma  dropDown Value change stepper 1" name="New Invoice for Proforma  dropDown Value change stepper 1" time="0.117">
+    </testcase>
+    <testcase classname="New Invoice for Miscellaneous  breadcumbs are working" name="New Invoice for Miscellaneous  breadcumbs are working" time="0.061">
+    </testcase>
+    <testcase classname="New Invoice for Miscellaneous  dropDown Value change stepper 1" name="New Invoice for Miscellaneous  dropDown Value change stepper 1" time="0.159">
+    </testcase>
+    <testcase classname="Stepper for Credit Memo  1 and 2  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" name="Stepper for Credit Memo  1 and 2  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" time="0.75">
+      <failure>Error: Request failed with status code 404
+    at createAxiosError (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\utils.js:151:15)
+    at Object.settle (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\utils.js:142:12)
+    at handleRequest (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\handle_request.js:127:15)
+    at C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\index.js:26:9
+    at new Promise (&lt;anonymous&gt;)
+    at MockAdapter.&lt;anonymous&gt; (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\index.js:25:14)
+    at dispatchRequest (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\core\dispatchRequest.js:58:10)
+    at Axios.request (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\core\Axios.js:108:15)
+    at Axios.&lt;computed&gt; [as get] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\core\Axios.js:129:17)
+    at Function.get (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\helpers\bind.js:9:15)
+    at productFun (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\ProductInvoiceCreation.tsx:45:11)
+    at C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\ProductInvoiceCreation.tsx:40:5
+    at invokePassiveEffectCreate (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23487:20)
+    at HTMLUnknownElement.callCallback (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
+    at invokeEventListeners (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
+    at HTMLUnknownElement.dispatchEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
+    at Object.invokeGuardedCallbackDev (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
+    at invokeGuardedCallback (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
+    at flushPassiveEffectsImpl (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23574:9)
+    at unstable_runWithPriority (C:\Projects\New folder\Atlas-Payments-UI\node_modules\scheduler\cjs\scheduler.development.js:468:12)
+    at runWithPriority$1 (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11276:10)
+    at flushPassiveEffects (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23447:14)
+    at performSyncWorkOnRoot (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22269:3)
+    at C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11327:26
+    at unstable_runWithPriority (C:\Projects\New folder\Atlas-Payments-UI\node_modules\scheduler\cjs\scheduler.development.js:468:12)
+    at runWithPriority$1 (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11276:10)
+    at flushSyncCallbackQueueImpl (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11322:9)
+    at flushSyncCallbackQueue (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11309:3)
+    at batchedUpdates$1 (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22387:7)
+    at act (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom-test-utils.development.js:1042:14)
+    at Object.eventWrapper (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:65:28)
+    at fireEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:16:35)
+    at Function.fireEvent.&lt;computed&gt; [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:36)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee27$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1784:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)</failure>
+      <failure>Error: Request failed with status code 404
+    at createAxiosError (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\utils.js:151:15)
+    at Object.settle (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\utils.js:142:12)
+    at handleRequest (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\handle_request.js:127:15)
+    at C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\index.js:26:9
+    at new Promise (&lt;anonymous&gt;)
+    at MockAdapter.&lt;anonymous&gt; (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios-mock-adapter\src\index.js:25:14)
+    at dispatchRequest (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\core\dispatchRequest.js:58:10)
+    at Axios.request (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\core\Axios.js:108:15)
+    at Axios.&lt;computed&gt; [as get] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\core\Axios.js:129:17)
+    at Function.get (C:\Projects\New folder\Atlas-Payments-UI\node_modules\axios\lib\helpers\bind.js:9:15)
+    at countryFun (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\ProductInvoiceCreation.tsx:60:11)
+    at C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\ProductInvoiceCreation.tsx:41:5
+    at invokePassiveEffectCreate (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23487:20)
+    at HTMLUnknownElement.callCallback (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
+    at invokeEventListeners (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
+    at HTMLUnknownElementImpl._dispatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
+    at HTMLUnknownElementImpl.dispatchEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
+    at HTMLUnknownElement.dispatchEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
+    at Object.invokeGuardedCallbackDev (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
+    at invokeGuardedCallback (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
+    at flushPassiveEffectsImpl (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23574:9)
+    at unstable_runWithPriority (C:\Projects\New folder\Atlas-Payments-UI\node_modules\scheduler\cjs\scheduler.development.js:468:12)
+    at runWithPriority$1 (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11276:10)
+    at flushPassiveEffects (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:23447:14)
+    at performSyncWorkOnRoot (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22269:3)
+    at C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11327:26
+    at unstable_runWithPriority (C:\Projects\New folder\Atlas-Payments-UI\node_modules\scheduler\cjs\scheduler.development.js:468:12)
+    at runWithPriority$1 (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11276:10)
+    at flushSyncCallbackQueueImpl (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11322:9)
+    at flushSyncCallbackQueue (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11309:3)
+    at batchedUpdates$1 (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22387:7)
+    at act (C:\Projects\New folder\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom-test-utils.development.js:1042:14)
+    at Object.eventWrapper (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:65:28)
+    at fireEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:16:35)
+    at Function.fireEvent.&lt;computed&gt; [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:36)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee27$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1784:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)</failure>
     </testcase>
   </testsuite>
 </testsuites>
