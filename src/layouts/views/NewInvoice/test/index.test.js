@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata, currentOrgTokenMock } from "./mockData";
+import { mockapidata, currentOrgTokenMock, productInvoiceMoc } from "./mockData";
 import axios from "axios";
 import NewInvoice from "..";
 import {
@@ -12,6 +12,8 @@ import {
   getBillingAddressUrl,
   getInvoiceDetailsUrl,
   updateInvoiceStatus,
+  productInvoice,
+  CountryApi
 } from "../../../../urls/urls";
 
 localStorage.setItem(
@@ -1724,7 +1726,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
-    
+
   });
 
   test("breadcumbs are working", async () => {
@@ -1780,3 +1782,129 @@ describe("New Invoice for Miscellaneous ", () => {
   });
 });
 
+
+
+/// Credit Memo
+
+describe("Stepper for Credit Memo  1 and 2 ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
+    mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
+
+  });
+
+  test("dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Credit Memo/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const SelectEmployeeText = await screen.findAllByText(/Add New Item/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+    const summaryText = await screen.findAllByText(/Summary/);
+    expect(summaryText[0]).toBeInTheDocument();
+
+    const pleaseSelectDropDownStepper2 = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDownStepper2[0]);
+
+
+    const productServiceDropDownValue = await screen.findAllByText(/Contract Termination Fee/);
+    expect(productServiceDropDownValue[0]).toBeInTheDocument();
+    fireEvent.click(productServiceDropDownValue[0]);
+
+    fireEvent.click(pleaseSelectDropDownStepper2[1]);
+    const countryServiceDropDownValue = await screen.findAllByText(/AFG -- Afghanistan/);
+    expect(countryServiceDropDownValue[0]).toBeInTheDocument();
+    fireEvent.click(countryServiceDropDownValue[0]);
+
+    const countryName = await screen.findByTestId("Country_name");
+    expect(countryName).toBeInTheDocument();
+    fireEvent.click(countryName);
+
+    const countryOpen = await screen.findByTestId("Country_open");
+    expect(countryOpen).toBeInTheDocument();
+    fireEvent.click(countryOpen);
+
+    const DescriptionInputField = await screen.findByPlaceholderText(/Description/);
+    expect(DescriptionInputField).toBeInTheDocument();
+    fireEvent.change(DescriptionInputField, { target: { value: 'test' } })
+
+    const QuantityInputField = await screen.findByTestId(/Quantity/);
+    expect(QuantityInputField).toBeInTheDocument();
+    fireEvent.change(QuantityInputField, { target: { value: 30 } })
+
+    const AmountInputField = await screen.findByTestId(/Amount/);
+    expect(AmountInputField).toBeInTheDocument();
+    fireEvent.change(AmountInputField, { target: { value: 1 } })
+
+
+    const addNewText = await screen.findAllByText(/Add New Item/);
+    expect(addNewText[0]).toBeInTheDocument();
+    fireEvent.click(addNewText[0]);
+
+
+    const DeleteText = await screen.findAllByText(/Delete/);
+    expect(DeleteText[0]).toBeInTheDocument();
+    fireEvent.click(DeleteText[0]);
+
+    const ButtonBalance = await screen.findByTestId("Button_Balance");
+    expect(ButtonBalance).toBeInTheDocument();
+    fireEvent.click(ButtonBalance);
+
+    const HandleAdd = await screen.findByTestId("Add-New-Item");
+    expect(HandleAdd).toBeInTheDocument();
+    fireEvent.click(HandleAdd);
+
+    const nextPreview = await screen.findByTestId("next-button");
+    expect(nextPreview).toBeInTheDocument();
+    fireEvent.click(nextPreview);
+
+    const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
+    expect(InvoiceTab[0]).toBeInTheDocument();
+
+
+    const openModal = await screen.findByTestId("PreviewButton");
+    expect(openModal).toBeInTheDocument();
+    fireEvent.click(openModal);
+
+    const openModalPreview = await screen.findByTestId("Modal_div");
+    expect(openModalPreview).toBeInTheDocument();
+    fireEvent.click(openModalPreview);
+
+  });
+});

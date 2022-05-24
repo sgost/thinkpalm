@@ -64,12 +64,12 @@ const InvoicePreviewPop = ({
                     <p id="description">Please preview the new payroll invoice has been created. You can access it right from here
                         or from the
                         Invoices listing page.</p>
-                    <button id="button" onClick={() => setOpend(true)}>Preview Invoice</button>
+                    <button id="button" data-testid="PreviewButton" onClick={() => setOpend(true)}>Preview Invoice</button>
                 </div>
 
                 {/* POPUP */}
                 <Modal isOpen={opend}>
-                    <div id="invoice_pop" onClick={() => setOpend(false)}>
+                    <div id="invoice_pop" data-testid="Modal_div" onClick={() => setOpend(false)}>
                         <span id="close"><Icon
                             color="white"
                             icon="remove"
