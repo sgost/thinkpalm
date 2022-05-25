@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.27% </span>
+                <span class="strong">92.72% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/55</span>
+                <span class='fraction'>51/55</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.07% </span>
+                <span class="strong">84.61% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>19/26</span>
+                <span class='fraction'>22/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.27% </span>
+                <span class="strong">92.72% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>48/55</span>
+                <span class='fraction'>51/55</span>
             </div>
         
             
@@ -314,7 +314,9 @@
 <a name='L249'></a><a href='#L249'>249</a>
 <a name='L250'></a><a href='#L250'>250</a>
 <a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -515,7 +517,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">37x</span>
+<span class="cline-any cline-yes">40x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -540,7 +542,7 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -551,11 +553,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -574,6 +576,7 @@ const validateIsURLValid = () =&gt; {
     return process?.env?.ATLAS_ENVIRONMENT;
   }
   return "dev";
+  // return "qa";
 };
 /* istanbul ignore next */
 &nbsp;
@@ -788,10 +791,10 @@ export const createManualInvoice = () =&gt; {
   );
 };
 &nbsp;
-export const getCreditMemoStep4Url = <span class="fstat-no" title="function not covered" >(i</span>nvoiceId) =&gt; {
+export const getCreditMemoStep4Url = (invoiceId) =&gt; {
   // https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/relatedData/{invoiceId}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     baseURL +
     services.atlasInvoiceService +
     `/invoices/relatedData/${invoiceId}`
@@ -801,12 +804,12 @@ export const updateInvoiceStatus = (invoiceId) =&gt; {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`;
 };
 &nbsp;
-export const productInvoice = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >  return metaDataUrl + services.apngMetaDataService + `/Products`;</span>
+export const productInvoice = () =&gt; {
+  return metaDataUrl + services.apngMetaDataService + `/Products`;
 };
 &nbsp;
-export const CountryApi = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >  return metaDataUrl + services.apngMetaDataService + `/Lookup`;</span>
+export const CountryApi = () =&gt; {
+  return metaDataUrl + services.apngMetaDataService + `/Lookup`;
 };
 &nbsp;
 export const getEmployeeBreakdownUrl = (id) =&gt; {
@@ -823,7 +826,7 @@ export const getEmployeeBreakdownUrl = (id) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue May 24 2022 10:18:57 GMT+0500 (Pakistan Standard Time)
+                at Wed May 25 2022 11:49:23 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
