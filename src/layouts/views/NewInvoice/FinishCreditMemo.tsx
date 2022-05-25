@@ -30,7 +30,7 @@ export default function FinishCreditMemo({ invoiceId }: any) {
               {
                 state: {
                   InvoiceId: invoiceId,
-                  transactionType: 4,
+                  transactionType: res.data.transactionType,
                 },
               }
             );
