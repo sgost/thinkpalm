@@ -1,91 +1,100 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-.newinvoice-container {
-    display: flex;
-    flex-direction: column;
-        .dropdown-margin, .year-dropdown{
-            .calendar{
-                svg{
+.atlas-payment-invoices {
+    .newinvoice-container {
+        display: flex;
+        flex-direction: column;
+
+        .dropdown-margin,
+        .year-dropdown {
+            .calendar {
+                svg {
                     width: 1.6667rem;
                     height: 1.6667rem;
                 }
             }
         }
-        .dropdown{
-            .a-dropdown.isOpen{
-                svg{
+
+        .dropdown {
+            .a-dropdown.isOpen {
+                svg {
                     width: 2.2222rem;
                     height: 2.2222rem;
                     top: 0.833rem;
                 }
             }
         }
-    .Stepper-buttons {
-        display: flex;
-        justify-content: flex-end;
-        margin-right: 1rem;
 
-        button.a-button.medium {
-            font-size: 1rem;
-            width: 7.13rem;
+        .Stepper-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 1rem;
+
+            button.a-button.medium {
+                font-size: 1rem;
+                width: 7.13rem;
+            }
+        }
+
+        .stepper-two-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-right: 1rem;
+
+            button.a-button.medium {
+                font-size: 1rem;
+                width: 7.13rem;
+            }
+
+            .previous-button {
+                width: 9.13rem !important;
+            }
         }
     }
 
-    .stepper-two-buttons {
+    .a-progress {
+        background-color: #fff !important;
+        box-sizing: border-box;
         display: flex;
-        justify-content: space-between;
-        margin-right: 1rem;
-
-        button.a-button.medium {
-            font-size: 1rem;
-            width: 7.13rem;
-        }
-
-        .previous-button {
-            width: 9.13rem !important;
-        }
+        flex-direction: column;
+        height: 25rem;
+        justify-content: space-around;
+        padding: 3.556rem 1.333rem;
+        width: 11rem !important;
     }
-}
 
-.a-progress {
-    background-color: #fff !important;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    height: 25rem;
-    justify-content: space-around;
-    padding: 3.556rem 1.333rem;
-    width: 11rem !important;
-}
+    .a-layouts .sidebar-inner-container {
+        display: flex;
+        padding: 1rem;
+        margin-left: -19px;
+    }
 
-.a-layouts .sidebar-inner-container {
-    display: flex;
-    padding: 1rem;
-    margin-left: -19px;
-}
+    .a-progress .splitter {
+        border-left: 0.056rem dashed #767676 !important;
+        display: block;
+        height: 3.5rem !important;
+        margin: 1rem;
+    }
 
-.a-progress .splitter {
-    border-left: 0.056rem dashed #767676 !important;
-    display: block;
-    height: 3.5rem !important;
-    margin: 1rem;
-}
+    .step2-right-panel {
+        width: 68%;
+    }
 
-.step2-right-panel {
-    width: 68%;
-}
+    .newinvoice-container .dropdowns {
+        z-index: 1;
+    }
 
-.newinvoice-container .dropdowns {
-    z-index: 1;
-}
-.a-dropdown__option.open,
-.a-dropdown__option__container {
-    z-index: 9999999 !important;
-}
-.newinvoice-container .dropdownC {
-    z-index: 2 !important;
-}
-.newinvoice-container .dropdowns {
-    z-index: 3;
+    .a-dropdown__option.open,
+    .a-dropdown__option__container {
+        z-index: 9999999 !important;
+    }
+
+    .newinvoice-container .dropdownC {
+        z-index: 2 !important;
+    }
+
+    .newinvoice-container .dropdowns {
+        z-index: 3;
+    }
 }

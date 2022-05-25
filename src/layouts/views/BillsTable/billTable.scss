@@ -1,451 +1,500 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-.invoice_bill_table {
-    margin-top: 2.667rem;
-    .toast {
-        position: fixed;
-        bottom: 0;
-        display: flex !important;
-        background: #041e42;
-        right: 3rem;
-        color: #ffffff;
-        width: 21.5rem;
-        height: 4.75rem;
-        align-items: center;
-        justify-content: space-around;
-        z-index: 9999;
-        opacity: 1 !important;
+.atlas-payment-invoices {
+    .invoice_bill_table {
+        margin-top: 2.667rem;
 
-        &__action {
-            background: #526FD6;
-            border-radius: 100%;
-            display: flex;
-            cursor: pointer;
-        }
-    }
-    .table {
-        border-bottom: 1px solid #767676;
-    }
-    .table__header{
-        border-radius: 10px 10px 0 0;
-    }
-    .feeSummaryCalc {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        background-color: $white;
-        padding: 20px;
-
-        .spacerclass{
-            width: 70%;
-        }
-        .rowFee {
-            display: flex;
-            border-bottom-style: solid;
-            // border-bottom-width: 1;
-            border-color: $light-gray;
-            border-width: 2px;
-            width: 30%;
-            padding-right: 3.6rem;
-            justify-content: space-between;
-
-            .title {
-                font-weight: 400;
-                font-size: 1rem;
-                color: $secondary-gray;
-                font-family: 'CircularXX', sans-serif;
-
-            }
-
-            .amount {
-                font-weight: 600;
-                font-size: 1rem;
-                color: #041e42;
-            }
-        }
-
-        .row2 {
-            display: flex;
-            width: 30%;
-            justify-content: space-between;
-            padding-right: 3.6rem;
-
-            .title {
-                font-weight: 400;
-                font-size: 1rem;
-                color: $secondary-gray;
-            }
-
-            .amount {
-                font-weight: 600;
-                font-size: 1rem;
-                color: #041e42;
-            }
-        }
-        .totalRow {
-            display: flex;
+        .toast {
+            position: fixed;
+            bottom: 0;
+            display: flex !important;
+            background: #041e42;
+            right: 3rem;
+            color: #ffffff;
+            width: 21.5rem;
+            height: 4.75rem;
             align-items: center;
-            width: 30%;
+            justify-content: space-around;
+            z-index: 9999;
+            opacity: 1 !important;
+
+            &__action {
+                background: #526FD6;
+                border-radius: 100%;
+                display: flex;
+                cursor: pointer;
+            }
+        }
+
+        .table {
+            border-bottom: 1px solid #767676;
+        }
+
+        .table__header {
+            border-radius: 10px 10px 0 0;
+        }
+
+        .feeSummaryCalc {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            background-color: $white;
+            padding: 20px;
+
+            .spacerclass {
+                width: 70%;
+            }
+
+            .rowFee {
+                display: flex;
+                border-bottom-style: solid;
+                // border-bottom-width: 1;
+                border-color: $light-gray;
+                border-width: 2px;
+                width: 30%;
+                padding-right: 3.6rem;
+                justify-content: space-between;
+
+                .title {
+                    font-weight: 400;
+                    font-size: 1rem;
+                    color: $secondary-gray;
+                    font-family: 'CircularXX', sans-serif;
+
+                }
+
+                .amount {
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #041e42;
+                }
+            }
+
+            .row2 {
+                display: flex;
+                width: 30%;
+                justify-content: space-between;
+                padding-right: 3.6rem;
+
+                .title {
+                    font-weight: 400;
+                    font-size: 1rem;
+                    color: $secondary-gray;
+                }
+
+                .amount {
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #041e42;
+                }
+            }
+
+            .totalRow {
+                display: flex;
+                align-items: center;
+                width: 30%;
+                justify-content: space-between;
+
+                p {
+                    color: $primary-blue;
+                }
+
+                .total {
+                    color: $primary-blue;
+                    background-color: $active;
+                    padding: 18px 32px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 24px;
+                }
+            }
+
+
+        }
+
+        .lastRow {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            background-color: $white;
+            padding: 20px;
+
+        }
+
+        .view-bills {
+            flex-direction: row;
             justify-content: space-between;
-            p {
-                color: $primary-blue;
-            }
-
-            .total {
-                color: $primary-blue;
-                background-color: $active;
-                padding: 18px 32px;
-                border-radius: 10px;
-                font-weight: 600;
-                font-size: 24px;
-            }
-        }
-
-        
-    }
-    .lastRow{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        background-color: $white;
-        padding: 20px;
-        
-    }
-    .view-bills {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin:0;
-        padding: 2rem 5rem;
-        padding-top:4.5rem;
-        border-radius: 0.5rem 0.5rem 0 0;
-        width: -webkit-fill-available;
-
-        // & > div:first-child {
-        //     width: 80%;
-        // }
-
-        .mt-4 {
-            margin-top: 1.5rem;
-        }
-
-        .bill-status {
-            padding: 0.2rem 1.5rem;
-            border-radius: 1rem;
-            background: inherit !important;
-            border: 1px solid #041e42 !important;
-            color: #041e42 !important;
-            width: fit-content;
-        }
-
-        .reference-description {
-            font-size: 1.7778rem;
-            color: #041e42;
-            position: relative;
-            top: 0.2222rem;
-        }
-
-        .rejected-bill {
-            background: rgba(227, 44, 21, 0.1);
-            border: 1px solid #E32C15;
-            color: #E32C15;
-        }
-
-        .section-2 {
-            font-size: 1.25rem;
-            line-height: 1.875rem;
-            text-align: right;
-            color: #041e42;
-            width: 20%;
-            font-weight: 400;
-            font-family: 'Circular-Book', Arial, serif;
-            span {
-                font-family: "circularmed", Arial, serif;
-            }
-        }
-    }
-}
-
-.modal-wrapper{
-    .zero-padding{
-        padding:0px
-    }
-    .a-modal__body{
-        align-items: center;
-        background: #fff!important;
-        border-radius: 0.556rem;
-        display: flex;
-        justify-content: flex-start;
-        padding: 0rem;
-        position: relative;
-        flex-direction: column;
-        max-height: 90%;
-        
-    }
-    .a-cards {
-        align-items: flex-start;
-        justify-content: flex-start;
-        flex-direction: column;
-    
-        &__title {
-            margin-bottom: 2.5rem;
-            font-size: 28px;
-            color: #041e42;
-            font-weight: 400;
-            line-height: 35px;
-        }
-    
-        p {
+            align-items: flex-end;
             margin: 0;
-            font-size: 1.125rem;
+            padding: 2rem 5rem;
+            padding-top: 4.5rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            width: -webkit-fill-available;
+
+            // & > div:first-child {
+            //     width: 80%;
+            // }
+
+            .mt-4 {
+                margin-top: 1.5rem;
+            }
+
+            .bill-status {
+                padding: 0.2rem 1.5rem;
+                border-radius: 1rem;
+                background: inherit !important;
+                border: 1px solid #041e42 !important;
+                color: #041e42 !important;
+                width: fit-content;
+            }
+
+            .reference-description {
+                font-size: 1.7778rem;
+                color: #041e42;
+                position: relative;
+                top: 0.2222rem;
+            }
+
+            .rejected-bill {
+                background: rgba(227, 44, 21, 0.1);
+                border: 1px solid #E32C15;
+                color: #E32C15;
+            }
+
+            .section-2 {
+                font-size: 1.25rem;
+                line-height: 1.875rem;
+                text-align: right;
+                color: #041e42;
+                width: 20%;
+                font-weight: 400;
+                font-family: 'Circular-Book', Arial, serif;
+
+                span {
+                    font-family: "circularmed", Arial, serif;
+                }
+            }
         }
     }
-}
 
-.bill-details {
-    border-radius: 0 0 0.5rem 0.5rem;
-    margin: 0;
-    display: flex;
-    padding: 1rem 0 2rem;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-between;
-    font-family: 'CircularXX', Arial, serif;
+    .modal-wrapper {
+        .zero-padding {
+            padding: 0px
+        }
 
-    &__section {
+        .a-modal__body {
+            align-items: center;
+            background: #fff !important;
+            border-radius: 0.556rem;
+            display: flex;
+            justify-content: flex-start;
+            padding: 0rem;
+            position: relative;
+            flex-direction: column;
+            max-height: 90%;
+
+        }
+
+        .a-cards {
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-direction: column;
+
+            &__title {
+                margin-bottom: 2.5rem;
+                font-size: 28px;
+                color: #041e42;
+                font-weight: 400;
+                line-height: 35px;
+            }
+
+            p {
+                margin: 0;
+                font-size: 1.125rem;
+            }
+        }
+    }
+
+    .bill-details {
+        border-radius: 0 0 0.5rem 0.5rem;
+        margin: 0;
         display: flex;
-        justify-content: center;
-        border-right: 1px solid #EBEBED;
-        height: 12rem;
-        flex-grow: 1;
-        padding: 2rem 4rem;
+        padding: 1rem 0 2rem;
+        flex-direction: row;
         width: 100%;
-        
-        &:first-child {
-            justify-content: flex-start;  
-            padding-left: 5rem;                  
-        }
-        &:last-child {
-            border: none;
-            justify-content: flex-end;
-            padding-right: 5rem;
-        }
-        label {
-            display: block;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.5rem;
-            color: #526FD6;
-            font-family: 'CircularXX', Arial, serif;
-        }
-        .title {
-            font-weight: bold;
-            color: #3E3E3E;
-            margin: 0.5rem 0 0.813rem;
-            font-family: 'Circular', Arial, serif;
-            font-size: 1.25rem;
-            line-height: 1.875rem;
-        }
-        .sub-title {
-            font-weight: normal;
-            line-height: 1.5rem;
-            color: #3E3E3E;
-        }
-    }
-    
-}
-.sup-label {
-    font-size: 0.813rem;
-    color: #767676;
-    font-weight: 400;
-}
-.bill-identity .info {
-    color: #3E3E3E;
-    display: block;
-    font-size: 1.125rem;
-    font-weight: 400;
-    margin-top: 0.3rem;
-    font-family: 'CircularXX', Arial, Helvetica, sans-serif;
-}
-.description-number {
-    display: flex;
-    gap: 20px;
-}
-.bill-total {
-    font-family: 'Circular', Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    font-style: normal;
-    font-size: 1rem;
-    color: #526FD6;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    .total-value {
-        background: #E0E5F8;
-        border-radius: 10px;
-        padding: 1.125rem 2rem;
-        font-size: 1.5rem;
-        margin-left: 3rem;
-    }
-    
-}
-.justification{
-    justify-content: center;
-    
-}
-.line-between{
-    width: -webkit-fill-available;
-    border-top: 1px solid #EBEBED;
-}
+        justify-content: space-between;
+        font-family: 'CircularXX', Arial, serif;
 
-.file-row{
-    width: -webkit-fill-available;
-    padding-left: 4.5rem;
-    margin-top: 4rem;
-    margin-right: 4.5rem;
-}
-.bills-file-handler{
-    width: 100% !important;
-}
-.file-handler-column{
-    flex: 0 0 auto;
-    width: 66.66666667%;
-}
-.mt-5 {
-    margin-top: 3rem;
-}
-.action-btns{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    font-family: 'CircularXX', sans-serif!important;
-    margin-bottom: 2.5rem;
-    width: -webkit-fill-available;
-    padding-top: 2.5rem;
-    box-shadow: 0px -2px 4px rgba(112, 128, 144, 0.05);
-    button.a-button.medium {
-        font-size: 1.125rem !important;
-        line-height: 1.625rem !important;
+        &__section {
+            display: flex;
+            justify-content: center;
+            border-right: 1px solid #EBEBED;
+            height: 12rem;
+            flex-grow: 1;
+            padding: 2rem 4rem;
+            width: 100%;
+
+            &:first-child {
+                justify-content: flex-start;
+                padding-left: 5rem;
+            }
+
+            &:last-child {
+                border: none;
+                justify-content: flex-end;
+                padding-right: 5rem;
+            }
+
+            label {
+                display: block;
+                font-style: normal;
+                font-weight: 400;
+                font-size: 16px;
+                line-height: 1.5rem;
+                color: #526FD6;
+                font-family: 'CircularXX', Arial, serif;
+            }
+
+            .title {
+                font-weight: bold;
+                color: #3E3E3E;
+                margin: 0.5rem 0 0.813rem;
+                font-family: 'Circular', Arial, serif;
+                font-size: 1.25rem;
+                line-height: 1.875rem;
+            }
+
+            .sub-title {
+                font-weight: normal;
+                line-height: 1.5rem;
+                color: #3E3E3E;
+            }
+        }
+
+    }
+
+    .sup-label {
+        font-size: 0.813rem;
+        color: #767676;
         font-weight: 400;
     }
-}
-.reject-action{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    font-family: 'CircularXX', sans-serif!important;
-    width: -webkit-fill-available;
-    padding-top: 2.5rem;
-    button.a-button.medium {
-        font-size: 1.125rem !important;
-        line-height: 1.625rem !important;
-        font-weight: 400;
-    }
-}
-.info-banner{
-    font-family: 'Circular', Arial, Helvetica, sans-serif !important;
-    font-weight: 500;
-    font-size: 1.37rem;
-}
-.cancel-button{
-    width: 6.5rem !important;
-}
-.approve-reject-button{
-    width: 10.4rem !important;
-}
-.move-to-next-button{
-    width: 15.4rem !important;
-}
-.reject-button{
-    width: 7.9rem !important;
-}
-.next-invoice-button{
-    width: 14.125rem !important;
-}
-.reject-banner-icon{
-    height: 50px !important;
-    width: 50px !important;
-    padding-right:21px;
-}
-.margin-top{
-    margin-top: 4rem;
-}
-.margin-right{
-    margin-right: 4.5rem;
-}
 
-.popup-modal-wrapper{
-    margin: 2rem;
-    width: -webkit-fill-available;
-
-    .modal-heading {
-        font-family: 'circularmed', sans-serif;
-        font-weight: 500;
-        font-size: 1.75rem;
-        color: #041E42 !important;
-    }
-
-    .modal-body {
-        margin-top: 1.875rem;
-        font-family: 'CircularXX', sans-serif;
-        font-size: 1.125rem;
+    .bill-identity .info {
         color: #3E3E3E;
+        display: block;
+        font-size: 1.125rem;
+        font-weight: 400;
+        margin-top: 0.3rem;
+        font-family: 'CircularXX', Arial, Helvetica, sans-serif;
     }
 
-    .modal-footer-action{
+    .description-number {
+        display: flex;
+        gap: 20px;
+    }
+
+    .bill-total {
+        font-family: 'Circular', Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-style: normal;
+        font-size: 1rem;
+        color: #526FD6;
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        font-family: 'CircularXX', sans-serif!important;
+
+        .total-value {
+            background: #E0E5F8;
+            border-radius: 10px;
+            padding: 1.125rem 2rem;
+            font-size: 1.5rem;
+            margin-left: 3rem;
+        }
+
+    }
+
+    .justification {
+        justify-content: center;
+
+    }
+
+    .line-between {
+        width: -webkit-fill-available;
+        border-top: 1px solid #EBEBED;
+    }
+
+    .file-row {
+        width: -webkit-fill-available;
+        padding-left: 4.5rem;
+        margin-top: 4rem;
+        margin-right: 4.5rem;
+    }
+
+    .bills-file-handler {
+        width: 100% !important;
+    }
+
+    .file-handler-column {
+        flex: 0 0 auto;
+        width: 66.66666667%;
+    }
+
+    .mt-5 {
+        margin-top: 3rem;
+    }
+
+    .action-btns {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        font-family: 'CircularXX', sans-serif !important;
+        margin-bottom: 2.5rem;
         width: -webkit-fill-available;
         padding-top: 2.5rem;
+        box-shadow: 0px -2px 4px rgba(112, 128, 144, 0.05);
+
         button.a-button.medium {
             font-size: 1.125rem !important;
             line-height: 1.625rem !important;
             font-weight: 400;
         }
     }
-}
 
-.reject-reason-wrapper{
-    margin: 2.5rem;
-    width: -webkit-fill-available;
-    .form-group{
+    .reject-action {
         display: flex;
-        flex-direction: column;
-        margin-top: 2.5rem;
-        label{
-            font-size: 0.813rem;
-            margin-bottom: 0.6rem;
+        flex-direction: row;
+        justify-content: flex-end;
+        font-family: 'CircularXX', sans-serif !important;
+        width: -webkit-fill-available;
+        padding-top: 2.5rem;
+
+        button.a-button.medium {
+            font-size: 1.125rem !important;
+            line-height: 1.625rem !important;
+            font-weight: 400;
         }
     }
-}
-.reason-heading{
-    font-family: 'circularmed', sans-serif;
-    font-weight: 500;
-    font-size: 1.75rem;
-    color: #041e42 !important;
-}
-.reject-text{
-    margin-top:1rem;
-    font-size: 1rem;
-    font-weight: 500;
 
-}
-.secondary-button{
-    height: 2.9rem !important;
-}
-.primary{
-    height: 3.125rem !important;
-    margin-left: 2rem;
-}
-.modal-content{
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+    .info-banner {
+        font-family: 'Circular', Arial, Helvetica, sans-serif !important;
+        font-weight: 500;
+        font-size: 1.37rem;
+    }
 
-.required{
-    color: red;
+    .cancel-button {
+        width: 6.5rem !important;
+    }
+
+    .approve-reject-button {
+        width: 10.4rem !important;
+    }
+
+    .move-to-next-button {
+        width: 15.4rem !important;
+    }
+
+    .reject-button {
+        width: 7.9rem !important;
+    }
+
+    .next-invoice-button {
+        width: 14.125rem !important;
+    }
+
+    .reject-banner-icon {
+        height: 50px !important;
+        width: 50px !important;
+        padding-right: 21px;
+    }
+
+    .margin-top {
+        margin-top: 4rem;
+    }
+
+    .margin-right {
+        margin-right: 4.5rem;
+    }
+
+    .popup-modal-wrapper {
+        margin: 2rem;
+        width: -webkit-fill-available;
+
+        .modal-heading {
+            font-family: 'circularmed', sans-serif;
+            font-weight: 500;
+            font-size: 1.75rem;
+            color: #041E42 !important;
+        }
+
+        .modal-body {
+            margin-top: 1.875rem;
+            font-family: 'CircularXX', sans-serif;
+            font-size: 1.125rem;
+            color: #3E3E3E;
+        }
+
+        .modal-footer-action {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            font-family: 'CircularXX', sans-serif !important;
+            width: -webkit-fill-available;
+            padding-top: 2.5rem;
+
+            button.a-button.medium {
+                font-size: 1.125rem !important;
+                line-height: 1.625rem !important;
+                font-weight: 400;
+            }
+        }
+    }
+
+    .reject-reason-wrapper {
+        margin: 2.5rem;
+        width: -webkit-fill-available;
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-top: 2.5rem;
+
+            label {
+                font-size: 0.813rem;
+                margin-bottom: 0.6rem;
+            }
+        }
+    }
+
+    .reason-heading {
+        font-family: 'circularmed', sans-serif;
+        font-weight: 500;
+        font-size: 1.75rem;
+        color: #041e42 !important;
+    }
+
+    .reject-text {
+        margin-top: 1rem;
+        font-size: 1rem;
+        font-weight: 500;
+
+    }
+
+    .secondary-button {
+        height: 2.9rem !important;
+    }
+
+    .primary {
+        height: 3.125rem !important;
+        margin-left: 2rem;
+    }
+
+    .modal-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .required {
+        color: red;
+    }
 }
