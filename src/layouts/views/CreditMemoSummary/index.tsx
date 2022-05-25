@@ -90,11 +90,6 @@ export default function CreditMemoSummary(props: any) {
         setVatAmount(creditMemoData.totalAmount * (vatValue / 100));
 
     }, [])
-    // useEffect(()=>{
-    //     if(countryOptions.length > 0){
-    //         updateOptions(countryOptions, creditMemoData.invoiceItems[0].serviceCountry, setCountryOptions)
-    //     }
-    // },[countryOptions])
 
     /* istanbul ignore next */
     const toCurrencyFormat = (amount: number) => {
@@ -102,6 +97,7 @@ export default function CreditMemoSummary(props: any) {
             style: "currency",
             currency: "USD",
         });
+        var a = cFormat.format(amount)
         return cFormat.format(amount).slice(1);
     };
     /* istanbul ignore next */
@@ -152,27 +148,26 @@ export default function CreditMemoSummary(props: any) {
     }
 
     /* istanbul ignore next */
-    const editInvoiceItems = (index: number) => {
-        setEditCheck(creditMemoData.invoiceItems.length)
+    const editInvoiceItems = (index: number) => {        
+        callUpdateAPI();        
         console.log(creditMemoData);
     }
+    /* istanbul ignore next */
     const deleteInvoiceItem = (index: number) => {
         payload.invoiceItems.splice(index, 1);
-        var resp = callUpdateAPI();
-        if(resp){
-            reCalculateTotal()
-        }
-        // debugger
+        callUpdateAPI();
     }
 
     /* istanbul ignore next */
-    const callUpdateAPI = () :boolean =>{
+    const callUpdateAPI = () :any =>{
         const tempToken = localStorage.getItem("accessToken");
         var headers = getHeaders(tempToken, cid, isClient);
         
         axios.put(updateCreditMemoUrl(creditMemoData?.id), payload, {headers: headers}).then((resp) => {
             if ((resp.status == 200 || resp.status == 201) && resp.data) {
                 setAddSectionCheck(false);
+                reCalculateTotal();
+                setEditCheck(creditMemoData.invoiceItems.length);
                 setFieldValues(resp.data.invoiceItems);
                 return true;
             }
@@ -181,7 +176,6 @@ export default function CreditMemoSummary(props: any) {
             console.log("update call failed");
             return false;
         })
-        return false;
     }
     /* istanbul ignore next */
     const cleanNewObject = () => {
@@ -242,12 +236,29 @@ export default function CreditMemoSummary(props: any) {
         }
         setMultipleProductArr(arr);
     }
+    /* istanbul ignore next */
     const setEditDescription = (index: number, value: any) => {
         fieldValues[index].description = value;
-        console.log(value + " " + index )
-        console.log(fieldValues);
-
-        setFieldValues(fieldValues)
+        setFieldValues([...fieldValues])
+    }
+    /* istanbul ignore next */
+    const setEditQuantity = (index: number, value: any) => {
+        fieldValues[index].quantity = value;
+        setFieldValues([...fieldValues])
+    }
+    /* istanbul ignore next */
+    const setEditTotal = (index: number, value: any) => {
+        var newValue = value.replace(',', '');
+        newValue = newValue.substring(0, value.length-3);
+        fieldValues[index].totalAmount = newValue;
+        setFieldValues([...fieldValues])
+    }
+    /* istanbul ignore next */
+    const setEditAmount = (index: number, value: any) => {
+        var newValue = value.replace(',', '');
+        newValue = newValue.substring(0, value.length-3);
+        fieldValues[index].amount = newValue
+        setFieldValues([...fieldValues])
     }
     /* istanbul ignore next */
     const handleArrOptionClick = (
@@ -255,7 +266,8 @@ export default function CreditMemoSummary(props: any) {
         options: any,
         set: any,
         setIsOpen: any,
-        index: number
+        index: number,
+        type: any
       ) => {
         let arr = [...options];
   
@@ -274,15 +286,16 @@ export default function CreditMemoSummary(props: any) {
             };
           }
         });
-  
-        // let countryTableTemp = [...countryTable];
-        // setCountryTable([]);
-        set(arr);
-        setIsOpen(null);
-  
-        // setTimeout(() => {
-        //   setCountryTable(countryTableTemp);
-        // }, 1);
+        set([]);
+        setTimeout(() => {
+            set([...arr]);
+        }, 1);
+        setIsOpen(creditMemoData.invoiceItems.length + 1);
+        if(type == "product"){
+            payload.invoiceItems[index].productId = selOption.value
+        }else if(type == "country"){
+            payload.invoiceItems[index].serviceCountry = selOption.value
+        }
       };
 
     /* istanbul ignore next */
@@ -339,7 +352,7 @@ export default function CreditMemoSummary(props: any) {
                                         value={moment(item.serviceDate).format('DD MMM YYYY')}
                                         label="Service Date"
                                         disabled={editCheck != index}
-                                        handleDateChange={(date: any) => { fieldValues[index].serviceDate = date; setFieldValues(fieldValues) }}
+                                        handleDateChange={(date: any) => { fieldValues[index].serviceDate = date; setFieldValues([...fieldValues]) }}
                                     />
                                 </div>
                                 <div className='UI-line-text-box'>
@@ -349,8 +362,9 @@ export default function CreditMemoSummary(props: any) {
                                               option,
                                               multipleProductArr,
                                               setMultipleProductArr,
-                                              setIsProductOpen,
-                                              index
+                                              setOpenEditProductService,
+                                              index,
+                                              "product"
                                             )
                                           }
                                         handleDropdownClick={(e:any) => {e?setOpenEditProductService(index):setOpenEditProductService(fieldValues.length+1) }}
@@ -378,8 +392,9 @@ export default function CreditMemoSummary(props: any) {
                                               option,
                                               multipleCountryArr,
                                               setMultipleCountryArr,
-                                              setIsCountryOpen,
-                                              index
+                                              setOpenEditCountryService,
+                                              index,
+                                              "country"
                                             )
                                           }
                                         handleDropdownClick={(e:any) => { e?setOpenEditCountryService(index):setOpenEditCountryService(fieldValues.length +1) }}
@@ -394,6 +409,7 @@ export default function CreditMemoSummary(props: any) {
                                 <div className='line-sec-width UI-flex'>
                                     <div className='quantity-box'>
                                         <Input
+                                            setValue={(value: any)=>{setEditQuantity(index, value)}}
                                             value={item.quantity}
                                             label="Quantity"
                                             type="number"
@@ -404,7 +420,9 @@ export default function CreditMemoSummary(props: any) {
                                     </div>
                                     <div className='amount-box'>
                                         <Input
+                                            setValue={(value: any)=>{setEditAmount(index, value)}}
                                             value={toCurrencyFormat(item.amount)}
+                                            // value={item.amount.toString()}
                                             label="Amount"
                                             type="text"
                                             name="service-date-input"
@@ -416,6 +434,7 @@ export default function CreditMemoSummary(props: any) {
                                 <div className='line-sec-width'>
                                     <Input
                                         value={toCurrencyFormat(item.totalAmount)}
+                                        setValue={(value: any)=>{setEditTotal(index, value)}}
                                         label="Total Amount"
                                         type="text"
                                         name="service-date-input"
