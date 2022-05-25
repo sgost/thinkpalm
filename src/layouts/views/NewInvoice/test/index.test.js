@@ -1711,9 +1711,9 @@ describe("New Invoice for Proforma ", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-    const nextButton = await screen.findByTestId("next-button");
-    expect(nextButton).toBeInTheDocument();
-    fireEvent.click(nextButton);
+    // const nextButton = await screen.findByTestId("next-button");
+    // expect(nextButton).toBeInTheDocument();
+    // fireEvent.click(nextButton);
   });
 });
 
@@ -1776,9 +1776,9 @@ describe("New Invoice for Miscellaneous ", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-    const nextButton = await screen.findByTestId("next-button");
-    expect(nextButton).toBeInTheDocument();
-    fireEvent.click(nextButton);
+    // const nextButton = await screen.findByTestId("next-button");
+    // expect(nextButton).toBeInTheDocument();
+    // fireEvent.click(nextButton);
   });
 });
 
