@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  cleanup,
+  waitFor,
+} from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import MockAdapter from "axios-mock-adapter";
 import {
@@ -18,7 +24,9 @@ import {
   updateInvoiceStatus,
   productInvoice,
   CountryApi,
+  getCreditMemoStep4Url,
 } from "../../../../urls/urls";
+import FinishCreditMemo from "../FinishCreditMemo";
 
 localStorage.setItem(
   "accessToken",
@@ -1715,9 +1723,9 @@ describe("New Invoice for Proforma ", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-    const nextButton = await screen.findByTestId("next-button");
-    expect(nextButton).toBeInTheDocument();
-    fireEvent.click(nextButton);
+    // const nextButton = await screen.findByTestId("next-button");
+    // expect(nextButton).toBeInTheDocument();
+    // fireEvent.click(nextButton);
   });
 });
 
@@ -1779,9 +1787,9 @@ describe("New Invoice for Miscellaneous ", () => {
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-    const nextButton = await screen.findByTestId("next-button");
-    expect(nextButton).toBeInTheDocument();
-    fireEvent.click(nextButton);
+    // const nextButton = await screen.findByTestId("next-button");
+    // expect(nextButton).toBeInTheDocument();
+    // fireEvent.click(nextButton);
   });
 });
 
@@ -1884,31 +1892,50 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     expect(addNewText[0]).toBeInTheDocument();
     fireEvent.click(addNewText[0]);
 
-    // const DeleteText = await screen.findAllByText(/Delete/);
-    // expect(DeleteText[0]).toBeInTheDocument();
-    // fireEvent.click(DeleteText[0]);
+    const DeleteText = await screen.findAllByText(/Delete/);
+    expect(DeleteText[0]).toBeInTheDocument();
+    fireEvent.click(DeleteText[0]);
 
-    // const ButtonBalance = await screen.findByTestId("Button_Balance");
-    // expect(ButtonBalance).toBeInTheDocument();
-    // fireEvent.click(ButtonBalance);
+    const ButtonBalance = await screen.findByTestId("Button_Balance");
+    expect(ButtonBalance).toBeInTheDocument();
+    fireEvent.click(ButtonBalance);
 
-    // const HandleAdd = await screen.findByTestId("Add-New-Item");
-    // expect(HandleAdd).toBeInTheDocument();
-    // fireEvent.click(HandleAdd);
+    const HandleAdd = await screen.findByTestId("Add-New-Item");
+    expect(HandleAdd).toBeInTheDocument();
+    fireEvent.click(HandleAdd);
 
-    // const nextPreview = await screen.findByTestId("next-button");
-    // expect(nextPreview).toBeInTheDocument();
-    // fireEvent.click(nextPreview);
+    const nextPreview = await screen.findByTestId("next-button");
+    expect(nextPreview).toBeInTheDocument();
+    fireEvent.click(nextPreview);
 
-    // const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
-    // expect(InvoiceTab[0]).toBeInTheDocument();
+    const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
+    expect(InvoiceTab[0]).toBeInTheDocument();
 
-    // const openModal = await screen.findByTestId("PreviewButton");
-    // expect(openModal).toBeInTheDocument();
-    // fireEvent.click(openModal);
+    const openModal = await screen.findByTestId("PreviewButton");
+    expect(openModal).toBeInTheDocument();
+    fireEvent.click(openModal);
 
-    // const openModalPreview = await screen.findByTestId("Modal_div");
-    // expect(openModalPreview).toBeInTheDocument();
-    // fireEvent.click(openModalPreview);
+    const openModalPreview = await screen.findByTestId("Modal_div");
+    expect(openModalPreview).toBeInTheDocument();
+    fireEvent.click(openModalPreview);
+  });
+});
+
+describe("final stepper", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    mock
+      .onGet(getCreditMemoStep4Url("0b5d231b-2fa8-4001-a737-b89328b2b6f2"))
+      .reply(200, mockapidata.resFinalStepper);
+  });
+  test("final stepper", () => {
+    render(
+      <HashRouter>
+        <FinishCreditMemo invoiceId="0b5d231b-2fa8-4001-a737-b89328b2b6f2" />
+      </HashRouter>
+    );
+
+    const goto = screen.getByText(/Go to Invoice/);
+    fireEvent.click(goto);
   });
 });

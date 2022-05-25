@@ -514,6 +514,11 @@ const NewInvoice = () => {
     if (stepsCount == 1 && stepperOneData?.type === "Miscellaneous") {
       setStepsCount(stepsCount + 1);
     }
+
+    if (stepsCount == 2 && stepperOneData?.type === "Miscellaneous") {
+      //API integration here
+      setStepsCount(3);
+    }
   };
 
   useEffect(() => {
@@ -592,6 +597,9 @@ const NewInvoice = () => {
                 <PreviewInvoice {...stepperThreeProps} />
               )}
               {stepsCount == 3 && stepperOneData?.type === "Credit Memo" && (
+                <InvoicePreviewPop {...stepperOneProps} {...product_stepper} />
+              )}
+              {stepsCount == 3 && stepperOneData?.type === "Miscellaneous" && (
                 <InvoicePreviewPop {...stepperOneProps} {...product_stepper} />
               )}
               {stepsCount == 4 && stepperOneData?.type === "Payroll" && (
