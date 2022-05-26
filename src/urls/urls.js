@@ -174,7 +174,7 @@ export const getDeleteInvoiceUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}`;
 };
 
-export const getCMInvoiceUrl = (invoiceId) => {
+export const getRelatedInvoiceUrl = (invoiceId) => {
   return (
     baseURL +
     services.atlasInvoiceService +
@@ -221,15 +221,7 @@ export const createManualInvoice = () => {
   );
 };
 
-export const getCreditMemoStep4Url = (invoiceId) => {
-  // https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/relatedData/{invoiceId}
 
-  return (
-    baseURL +
-    services.atlasInvoiceService +
-    `/invoices/relatedData/${invoiceId}`
-  );
-};
 export const updateInvoiceStatus = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`;
 };

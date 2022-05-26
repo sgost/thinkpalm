@@ -19,21 +19,24 @@ export default function FinishCreditMemo({ invoiceId }: any) {
         handleOnClick={() => {
           getCreditMemoStep4Data(invoiceId).then((res: any) => {
             console.log(res);
-            navigate(
-              "/pay/invoicedetails" +
-                invoiceId +
-                "/" +
-                // "a9bbee6d-797a-4724-a86a-5b1a2e28763f" +
-                res.data.customerId +
-                "/" +
-                "true",
-              {
-                state: {
-                  InvoiceId: invoiceId,
-                  transactionType: res.data.transactionType,
-                },
-              }
-            );
+            if(res.status == 200 || res.statu == 201){
+              navigate(
+                "/pay/invoicedetails" +
+                  invoiceId +
+                  "/" +
+                  // "a9bbee6d-797a-4724-a86a-5b1a2e28763f" +
+                  res.data.customerId +
+                  "/" +
+                  "true",
+                {
+                  state: {
+                    InvoiceId: res.data.invoiceNo,
+                    transactionType: res.data.transactionType,
+                  },
+                }
+              );
+            }
+            
           });
         }}
         className="primary-blue small"
