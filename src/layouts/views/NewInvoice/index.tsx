@@ -36,6 +36,7 @@ const NewInvoice = () => {
       amount: "",
     },
   ]);
+
   //ProductIncoice Data
   const [dateFrom, setDateFrom] = useState("");
   //Set Product Service
@@ -53,7 +54,6 @@ const NewInvoice = () => {
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
 
-  console.log(dateFrom);
   ///////////////////////////
   const navigate = useNavigate();
 
@@ -62,7 +62,7 @@ const NewInvoice = () => {
 
   var CurrentYear = new Date().getFullYear();
 
-  const [stepsCount, setStepsCount] = useState(1);
+  const [stepsCount, setStepsCount] = useState(3);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [loading, setLoading] = useState(false);
   //steps for payroll
@@ -327,8 +327,6 @@ const NewInvoice = () => {
     stepperOneData,
   };
 
-  console.log("product_stepper", product_stepper);
-
   const disableFunForStepOnePayroll = () => {
     if (stepsCount == 1) {
       return !(
@@ -354,8 +352,29 @@ const NewInvoice = () => {
         stepperOneData?.month !== ""
       );
     }
-    if (stepsCount == 2 && stepperOneData.type === "Payroll") {
-      return selectedRowPostData?.length > 0 ? false : true;
+    if (stepsCount == 2 && stepperOneData.type === "Credit Memo") {
+      let condition :any = [];
+      let boolen = false;
+      todos.map((item) => {
+        if (
+          item.product.length &&
+          item.amount.length &&
+          item.date.length &&
+          item.quantity.length &&
+          item.country.length
+        ) {
+          condition.push(false);
+        }else {
+          condition.push(true);
+        }
+      });
+
+      condition.forEach((element:any) => {
+        if(element){
+          boolen = element
+        }
+      });
+      return boolen;
     }
   };
 
@@ -567,8 +586,10 @@ const NewInvoice = () => {
               className:
                 stepsCount === 1
                   ? ""
-                  : stepsCount === 2
+                  : stepsCount === 2 && stepperOneData?.type === "Payroll"
                   ? "step2-right-panel"
+                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                  ? "step2-credit-memo"
                   : "",
             },
           }}

@@ -105,9 +105,8 @@ const ProductInvoiceCreation = ({
   };
 
   const handleChange = (e: any, index: any) => {
-    const tempData = todos;
+    const tempData = [...todos];
     tempData[index][e.target.name] = e.target.value;
-    console.log(tempData);
     setTodos(tempData);
   };
 
@@ -153,7 +152,7 @@ const ProductInvoiceCreation = ({
                       console.log(date);
                     }}
                     inline={false}
-                    label="Invoice Date"
+                    label="Service Date"
                     data-testid="Date-picker"
                     minDate={new Date()}
                     placeholderText={item.date ? item.date : "Please Select"}
@@ -163,7 +162,7 @@ const ProductInvoiceCreation = ({
                 {/* Product Service */}
 
                 <div
-                  className="dropdownP"
+                  className="dropdownP mandotary-field"
                   onClick={() => {
                     localStorage.setItem("name_value", "product");
                     setOpen(true);
@@ -212,11 +211,11 @@ const ProductInvoiceCreation = ({
                   />
                 </div>
 
-                {/* Product Service */}
+                {/* Description */}
 
                 <div className="dropdownP">
                   <span id="desc_label">
-                    Description<span style={{ color: `red` }}>*</span>
+                    Description
                   </span>
                   <input
                     type="text"
@@ -233,7 +232,7 @@ const ProductInvoiceCreation = ({
               <div id="container_main2">
                 {/* Country Service */}
                 <div
-                  className="dropdownP"
+                  className="dropdownP mandotary-field"
                   data-testid="Country_name"
                   onClick={() => {
                     localStorage.setItem("name_value", "country");
@@ -275,7 +274,7 @@ const ProductInvoiceCreation = ({
                       setToggleState(i);
                     }}
                     isOpen={toggleState == i ? Opens : false}
-                    title={`Country Service`}
+                    title="Service Country"
                     options={newArrPushs}
                   />
                 </div>
@@ -292,6 +291,8 @@ const ProductInvoiceCreation = ({
                     <input
                       data-testid="Quantity"
                       placeholder="0"
+                      type="number"
+                      min="0"
                       defaultValue={item.quantity}
                       className="inputField"
                       onChange={(e) => {
@@ -303,7 +304,9 @@ const ProductInvoiceCreation = ({
                     />
                     <input
                       data-testid="Amount"
-                      placeholder="00"
+                      placeholder="0"
+                      type="number"
+                      min="0"
                       defaultValue={item.amount}
                       className="inputField"
                       onChange={(e) => {

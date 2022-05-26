@@ -1,12 +1,6 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-.newinvoice_main {
-  padding: 2.5rem 5rem;
-  margin-top: 0.6rem;
-  border-radius: 0.5rem 0.5rem 0 0;
-  background-color: white;
-}
 
 #click_input {
   position: absolute;
@@ -20,10 +14,6 @@
   left: 0.5rem;
 }
 
-// .newinvoice-container .a-layouts .sidebar-inner-container .panel.right-panel {
-//   padding: 0 !important;
-//   background: transparent !important;
-// }
 
 .newinvoice_main:first-child {
   margin-top: 0;
@@ -164,17 +154,12 @@
   }
 
   .newinvoice-container2 {
-    margin: 0.6rem 0 0 0;
-    background: white;
-    padding: 1.1rem 5rem;
-    border-radius: 0 0 0.5rem 0.5rem;
 
     #icon_1 {
       display: flex;
       align-items: center;
       font-style: normal;
       font-weight: bold;
-      font-size: 0.8rem;
       color: #526fd6;
       cursor: pointer;
 
@@ -183,7 +168,7 @@
         justify-content: center;
         align-items: center;
         background: #526fd6;
-        padding: 1px 0 1px 2px;
+        padding: 3px 1px 2px 4px;
         border-radius: 1.8rem;
         margin: 0 5px 0 0;
 
@@ -220,13 +205,15 @@
     }
   }
 
-  .dropdownP {
-    margin: 0 0 3rem 2rem;
-
+  .mandotary-field {
     span.a-dropdown__title:after {
       content: "*";
       color: red;
     }
+  }
+
+  .dropdownP {
+    margin: 0 0 3rem 2rem;
 
     .a-dropdown__option__container {
       height: 8rem;
@@ -247,6 +234,11 @@
     .a-dpicker .react-datepicker__input-container input {
       width: 14vw;
     }
+
+    span.react-datepicker__label:after {
+      content: "*";
+      color: red;
+  }
   }
 }
 
@@ -379,4 +371,10 @@ button.a-button.primary-blue.medium.button {
   background-color: #eef1fb;
   border-radius: 0.5rem;
   padding: 10px 41px;
+}
+
+.newinvoice_main .newinvoice-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 0.1rem solid #000000;
 }
