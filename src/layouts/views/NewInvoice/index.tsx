@@ -354,7 +354,11 @@ const NewInvoice = () => {
 
   const disableFunForStepOneCreditMemo = () => {
     if (stepsCount == 1) {
-      return !(stepperOneData?.customer !== "" && stepperOneData?.type !== "");
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        invoiceDate !== ""
+      );
     }
     if (stepsCount == 2 && stepperOneData.type === "Payroll") {
       return selectedRowPostData?.length > 0 ? false : true;
@@ -363,13 +367,21 @@ const NewInvoice = () => {
 
   const disableFunForStepOneProforma = () => {
     if (stepsCount == 1) {
-      return !(stepperOneData?.customer !== "" && stepperOneData?.type !== "");
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        invoiceDate !== ""
+      );
     }
   };
 
   const disableFunForStepOneMiscellaneous = () => {
     if (stepsCount == 1) {
-      return !(stepperOneData?.customer !== "" && stepperOneData?.type !== "");
+      return !(
+        stepperOneData?.customer !== "" &&
+        stepperOneData?.type !== "" &&
+        invoiceDate !== ""
+      );
     }
   };
 
