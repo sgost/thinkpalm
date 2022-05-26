@@ -549,7 +549,7 @@ export default function InvoiceDetails() {
       );
       model.paymentDue = moment(creditMemoData?.dueDate).format("DD MMM YYYY");
       model.location = creditMemoData?.customerLocation;
-      model.region = "EMEA";
+      model.region = addressData?.data?.region;
       model.total = creditMemoData?.totalAmount;
       model.open = creditMemoData?.invoiceBalance;
       setTopPanel(model);
