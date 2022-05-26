@@ -500,7 +500,7 @@ describe("Internal View Download click and checkbox Click", () => {
     mock
       .onGet(
         getGenerateMultiplePdfUrl(
-          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06"
+          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7"
         )
       )
       .reply(200, {
@@ -526,7 +526,7 @@ describe("Internal View Download click and checkbox Click", () => {
     screen.debug(download);
     fireEvent.click(download);
 
-    const toast = await screen.findByText("Downloaded...");
+    const toast = await screen.findByText(/Downloaded.../);
     expect(toast).toBeInTheDocument();
 
     const toastRemoveButton = await screen.findByTestId("remove-button-toast");
@@ -562,7 +562,7 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     mock
       .onGet(
         getGenerateMultiplePdfUrl(
-          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7,5e507200-78a1-4708-b389-2a18032ade06"
+          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7"
         )
       )
       .reply(200, {
