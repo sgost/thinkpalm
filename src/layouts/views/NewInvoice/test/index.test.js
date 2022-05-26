@@ -24,7 +24,7 @@ import {
   updateInvoiceStatus,
   productInvoice,
   CountryApi,
-  getCreditMemoStep4Url,
+  getRelatedInvoiceUrl,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
 
@@ -1925,7 +1925,7 @@ describe("final stepper", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
     mock
-      .onGet(getCreditMemoStep4Url("0b5d231b-2fa8-4001-a737-b89328b2b6f2"))
+      .onGet(getRelatedInvoiceUrl("0b5d231b-2fa8-4001-a737-b89328b2b6f2"))
       .reply(200, mockapidata.resFinalStepper);
   });
   test("final stepper", () => {
