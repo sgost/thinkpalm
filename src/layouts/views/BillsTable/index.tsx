@@ -91,7 +91,10 @@ export default function BillsTable(props: any) {
     const openBillDetailModal = (rowData: any) => {
         setOpenModal(!openModal);
         axios
-            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, { headers: { accept: "text/plain", customerid: customerId } })
+            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, { headers: { 
+                accept: "text/plain", 
+                customerid: customerId,
+                authorization: `Bearer ${localStorage.accessToken}` } })
             .then((response: any) => {
                 if (response.status == 200) {
                     setClickedApiData(response.data.data.data[0]);
