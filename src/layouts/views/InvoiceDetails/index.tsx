@@ -432,10 +432,20 @@ export default function InvoiceDetails() {
     if (state.transactionType == 7) {
       let URL = baseBillApi + state.InvoiceId;
       axios
-        .get(URL, { headers: { accept: "text/plain" } })
+        .get(URL, { headers: { 
+            accept: "text/plain", 
+            Authorization: `Bearer ${localStorage.accessToken}`,
+            customerID: localStorage["current-org-id"]
+          } })
         .then((response: any) => {
           if (response.status == 200) {
-            setBillTableData(response);
+            const { data } = response.data;
+            if(data?.length > 0 ){
+              setBillTableData(response);
+            }
+            else {
+              console.log("no data");
+            }
           } else {
             console.log("Bill API failing on contractor service");
           }
