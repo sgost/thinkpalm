@@ -1,21 +1,22 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
+.atlas-payment-invoices{
+  .finishCreditMemoContainer {
+    .finish {
+      font-size: 1.2rem;
+    }
+    .done {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
 
-.finishCreditMemoContainer {
-  .finish {
-    font-size: 1.2rem;
-  }
-  .done {
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
+    .msg {
+      font-size: 1rem;
+    }
 
-  .msg {
-    font-size: 1rem;
-  }
-
-  button.a-button.small {
-    margin-top: 2rem;
-    width: 7rem;
+    button.a-button.small {
+      margin-top: 2rem;
+      width: 7rem;
+    }
   }
 }

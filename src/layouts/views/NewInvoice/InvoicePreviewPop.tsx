@@ -82,7 +82,10 @@ const InvoicePreviewPop = ({
                                     icon="invoices"
                                     size="large"
                                     className="title_icon"
-                                /></span>Credit Memo No. 791230</h1>
+                                /></span>
+                                {stepperOneData?.type + " No. 791230"}
+                                {/* Credit Memo No. 791230 */}
+                                </h1>
                             </div>
                             <div id="head_price">
                                 {todos.map((item) =>

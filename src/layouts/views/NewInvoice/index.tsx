@@ -53,36 +53,7 @@ const NewInvoice = () => {
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
 
-  //Product Stepper2 Data
-  const product_stepper = {
-    task,
-    setTask,
-    todos,
-    setTodos,
-    dateFrom,
-    setDateFrom,
-    countryService,
-    setCountryService,
-    productService,
-    setProductService,
-    description,
-    setDescription,
-    quantity,
-    setQuantity,
-    amount,
-    setAmount,
-    newArrPush,
-    setNewArrPush,
-    Open,
-    setOpen,
-    newArrPushs,
-    setNewArrPushs,
-    Opens,
-    setOpens,
-  };
-
   console.log(dateFrom);
-  console.log("product_stepper", product_stepper);
   ///////////////////////////
   const navigate = useNavigate();
 
@@ -327,6 +298,37 @@ const NewInvoice = () => {
     transactionType,
   };
 
+  //Product Stepper2 Data
+  const product_stepper = {
+    task,
+    setTask,
+    todos,
+    setTodos,
+    dateFrom,
+    setDateFrom,
+    countryService,
+    setCountryService,
+    productService,
+    setProductService,
+    description,
+    setDescription,
+    quantity,
+    setQuantity,
+    amount,
+    setAmount,
+    newArrPush,
+    setNewArrPush,
+    Open,
+    setOpen,
+    newArrPushs,
+    setNewArrPushs,
+    Opens,
+    setOpens,
+    stepperOneData,
+  };
+
+  console.log("product_stepper", product_stepper);
+
   const disableFunForStepOnePayroll = () => {
     if (stepsCount == 1) {
       return !(
@@ -435,12 +437,17 @@ const NewInvoice = () => {
 
     if (
       (stepsCount == 1 || stepsCount == 2) &&
-      stepperOneData?.type === "Credit Memo"
+      (stepperOneData?.type === "Credit Memo" ||
+        stepperOneData?.type === "Proforma")
     ) {
       setStepsCount(stepsCount + 1);
     }
 
-    if (stepsCount == 3 && stepperOneData?.type === "Credit Memo") {
+    if (
+      stepsCount == 3 &&
+      (stepperOneData?.type === "Credit Memo" ||
+        stepperOneData?.type === "Proforma")
+    ) {
       // console.log("new arr", CustomerOptions);
 
       let invoiceItems = todos.map((e: any) => {
@@ -510,6 +517,15 @@ const NewInvoice = () => {
           console.log(e);
         });
     }
+
+    if (stepsCount == 1 && stepperOneData?.type === "Miscellaneous") {
+      setStepsCount(stepsCount + 1);
+    }
+
+    if (stepsCount == 2 && stepperOneData?.type === "Miscellaneous") {
+      //API integration here
+      setStepsCount(3);
+    }
   };
 
   useEffect(() => {
@@ -565,8 +581,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                    ? creditMemoSteps
-                    : stepsInitial
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />
@@ -574,27 +590,34 @@ const NewInvoice = () => {
           type="sidebar-inner-container"
           rightPanel={
             <>
-              {stepsCount == 1 ? (
-                <NewInvoiceCreation {...stepperOneProps} />
-              ) : stepsCount == 2 ? (
-                stepperOneData?.type === "Payroll" ? (
-                  <SelectEmployees {...stepperTwoProps} />
-                ) : (
+              {stepsCount == 1 && <NewInvoiceCreation {...stepperOneProps} />}
+              {stepsCount == 2 && stepperOneData?.type === "Payroll" && (
+                <SelectEmployees {...stepperTwoProps} />
+              )}
+              {stepsCount == 2 &&
+                (stepperOneData?.type === "Credit Memo" ||
+                  stepperOneData?.type === "Proforma") && (
                   <ProductInvoiceCreation {...product_stepper} />
-                )
-              ) : stepsCount == 3 ? (
-                stepperOneData?.type === "Payroll" ? (
-                  <PreviewInvoice {...stepperThreeProps} />
-                ) : (
+                )}
+              {stepsCount == 2 && stepperOneData?.type === "Miscellaneous" && (
+                <ProductInvoiceCreation {...product_stepper} />
+              )}
+              {stepsCount == 3 && stepperOneData?.type === "Payroll" && (
+                <PreviewInvoice {...stepperThreeProps} />
+              )}
+              {stepsCount == 3 &&
+                (stepperOneData?.type === "Credit Memo" ||
+                  stepperOneData?.type === "Proforma") && (
                   <InvoicePreviewPop
                     {...stepperOneProps}
                     {...product_stepper}
                   />
-                )
-              ) : stepsCount == 4 && stepperOneData?.type === "Payroll" ? (
+                )}
+              {stepsCount == 3 && stepperOneData?.type === "Miscellaneous" && (
+                <InvoicePreviewPop {...stepperOneProps} {...product_stepper} />
+              )}
+              {stepsCount == 4 && stepperOneData?.type === "Payroll" && (
                 <FinishSTepper {...stepperFourProps} />
-              ) : (
-                <></>
               )}
               {stepsCount === 4 && stepperOneData?.type === "Credit Memo" && (
                 <FinishCreditMemo invoiceId={invoiceId} />
@@ -628,12 +651,12 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                  ? disableFunForStepOneCreditMemo()
-                  : stepperOneData?.type === "Proforma"
-                    ? disableFunForStepOneProforma()
-                    : stepperOneData?.type === "Miscellaneous"
-                      ? disableFunForStepOneMiscellaneous()
-                      : true
+                ? disableFunForStepOneCreditMemo()
+                : stepperOneData?.type === "Proforma"
+                ? disableFunForStepOneProforma()
+                : stepperOneData?.type === "Miscellaneous"
+                ? disableFunForStepOneMiscellaneous()
+                : true
             }
             data-testid="next-button"
             icon={{

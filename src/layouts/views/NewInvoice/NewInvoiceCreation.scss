@@ -1,180 +1,147 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-.newinvoice-container {
-  .a-layouts .sidebar-inner-container .panel.right-panel {
-    flex-grow: 2;
-    padding: 2.2222rem 4.4444rem;
-    position: relative;
-  }
-
-  h3 {
-    font-weight: 400;
-    font-size: 1.3333rem;
-    line-height: 1.9444rem;
-    color: #041e42;
-  }
-
-  .dropdown {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-
-    span.a-dropdown__title:after {
-      content: "*";
-      color: red;
+.atlas-payment-invoices {
+  .newinvoice-container {
+    .a-layouts .sidebar-inner-container .panel.right-panel {
+      flex-grow: 2;
+      padding: 2.2222rem 4.4444rem;
+      position: relative;
     }
 
-    .a-dropdown__search {
-      // width: 15rem;
-      box-sizing: border-box !important;
+    h3 {
+      font-weight: 400;
+      font-size: 1.3333rem;
+      line-height: 1.9444rem;
+      color: #041e42;
     }
-  }
 
-  .dropdowns {
-    margin-bottom: 3rem;
+    .dropdown {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
 
-    span.a-dropdown__title:after {
-      content: "*";
-      color: red;
+      span.a-dropdown__title:after {
+        content: "*";
+        color: red;
+      }
+
+      .a-dropdown__search {
+        // width: 15rem;
+        box-sizing: border-box !important;
+      }
     }
-    .a-dropdown.isOpen {
-      .icon-up {
-        width: 2.2222rem;
-        height: 2.2222rem;
-        top: 0.833rem;
+
+    .dropdowns {
+      margin-bottom: 3rem;
+
+      span.a-dropdown__title:after {
+        content: "*";
+        color: red;
+      }
+
+      .a-dropdown.isOpen {
+        .icon-up {
+          width: 2.2222rem;
+          height: 2.2222rem;
+          top: 0.833rem;
+        }
+      }
+    }
+
+    .dropdownC {
+      margin-bottom: 3rem;
+
+      span.a-dropdown__title:after {
+        content: "*";
+        color: red;
+      }
+
+      .a-dropdown__option__container {
+        height: 2.889rem;
+      }
+    }
+
+    .dropdown-margin {
+      margin-right: 40px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .year-dropdown {
+      position: relative;
+      cursor: pointer;
+
+      .a-dropdown__option__container {
+        height: 2.889rem;
       }
     }
   }
 
-  .dropdownC {
-    margin-bottom: 3rem;
+  .dropdown-margin svg.icon-down {
+    display: none !important;
+  }
 
-    span.a-dropdown__title:after {
-      content: "*";
-      color: red;
+  .dropdown-margin svg.icon-up {
+    display: none !important;
+  }
+
+  .year-dropdown svg.icon-down {
+    display: none !important;
+  }
+
+  .year-dropdown svg.icon-up {
+    display: none !important;
+  }
+
+  .newinvoice-container .year-dropdown .calendar {
+    display: flex;
+    justify-content: end;
+    z-index: 99999;
+    position: absolute;
+    top: 0.5556rem;
+    right: 0.5556rem;
+  }
+
+  .newinvoice-container .dropdown-margin .calendar {
+    display: flex;
+    justify-content: end;
+    z-index: 99999;
+    position: absolute;
+    top: 0.5556rem;
+    right: 0.5556rem;
+  }
+
+  .stepper-one-buttons {
+    display: flex;
+    justify-content: end;
+    position: absolute;
+    bottom: -5rem;
+    right: -1.5rem;
+    // bottom: 18%;
+
+    button.a-button.medium {
+      font-size: 1rem;
+      height: 3.13rem;
+      width: 7.13rem;
+      margin-right: 1.3889rem;
     }
-
-    .a-dropdown__option__container {
-      height: 2.889rem;
-    }
   }
 
-  .dropdown-margin {
-    margin-right: 40px;
-    position: relative;
-    cursor: pointer;
+  button.a-button.next-button svg {
+    padding-right: 0.5rem;
+    margin-top: 0.2778rem;
+    margin-right: -0.4444rem;
+    width: 1.3333rem;
+    height: 1.3333rem;
+    margin-left: 0.8889rem;
   }
 
-  .year-dropdown {
-    position: relative;
-    cursor: pointer;
-
-    .a-dropdown__option__container {
-      height: 2.889rem;
-    }
+  button.a-button.primary-blue.medium.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row-reverse;
+    height: 3.34rem;
   }
+
 }
-
-.dropdown-margin svg.icon-down {
-  display: none !important;
-}
-
-.dropdown-margin svg.icon-up {
-  display: none !important;
-}
-
-.year-dropdown svg.icon-down {
-  display: none !important;
-}
-
-.year-dropdown svg.icon-up {
-  display: none !important;
-}
-
-.newinvoice-container .year-dropdown .calendar {
-  display: flex;
-  justify-content: end;
-  z-index: 99999;
-  position: absolute;
-  top: 0.5556rem;
-  right: 0.5556rem;
-}
-
-.newinvoice-container .dropdown-margin .calendar {
-  display: flex;
-  justify-content: end;
-  z-index: 99999;
-  position: absolute;
-  top: 0.5556rem;
-  right: 0.5556rem;
-}
-
-.stepper-one-buttons {
-  display: flex;
-  justify-content: end;
-  position: absolute;
-  bottom: -5rem;
-  right: -1.5rem;
-  // bottom: 18%;
-
-  button.a-button.medium {
-    font-size: 1rem;
-    height: 3.13rem;
-    width: 7.13rem;
-    margin-right: 1.3889rem;
-  }
-}
-
-button.a-button.next-button svg {
-  padding-right: 0.5rem;
-  margin-top: 0.2778rem;
-  margin-right: -0.4444rem;
-  width: 1.3333rem;
-  height: 1.3333rem;
-  margin-left: 0.8889rem;
-}
-
-button.a-button.primary-blue.medium.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row-reverse;
-  // height: 3.4rem;
-  height: 3.34rem;
-}
-
-//     .newinvoice-container .year-dropdown .calendar {
-//         display: flex;
-//         justify-content: end;
-//         z-index: 99999;
-//         position: absolute;
-//         top: -1px;
-//         right: 5px;
-//         height: 20px;
-//         width: 23px;
-//     }
-// }
-
-// @media screen and (max-width: 1450px) and (min-width: 1350px) {
-//     .newinvoice-container .dropdown-margin .calendar {
-//         display: flex;
-//         justify-content: end;
-//         z-index: 99999;
-//         position: absolute;
-//         top: 5px;
-//         right: 5px;
-//         height: 20px;
-//         width: 23px;
-//     }
-
-//     .newinvoice-container .year-dropdown .calendar {
-//         display: flex;
-//         justify-content: end;
-//         z-index: 99999;
-//         position: absolute;
-//         top: 5px;
-//         right: 5px;
-//         height: 20px;
-//         width: 23px;
-//     }
-// }

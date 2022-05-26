@@ -1,262 +1,250 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-#popover {
-  #body_main {
-    background-color: white;
-    border-radius: 0.5rem;
-  }
-
-  #body_main #title {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    color: #17224e;
-  }
-
-  #body_main #description {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 32px;
-    color: #3e3e3e;
-    margin: 35px 0 50px 0;
-    max-width: 526px;
-  }
-
-  #body_main #button {
-    width: 154px;
-    height: 33px;
-    background: #526fd6;
-    box-shadow: 0px 4px 8px rgba(112, 128, 144, 0.1);
-    border-radius: 4px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color: #ffffff;
-    border: none;
-    outline: none;
-    cursor: pointer;
-  }
-
-  //popup
-  .a-modal__body {
-    height: 98vh !important;
-    padding: 0 !important;
-    width: 90% !important;
-    overflow: scroll !important;
-    overflow-y: hidden;
-    overflow-x: hidden;
-  }
-
-  .a-modal__body::-webkit-scrollbar {
-    display: none;
-    transition: 0.5s ease-in-out;
-  }
-
-  .a-modal__body:hover::-webkit-scrollbar {
-    display: flex;
-  }
-
-  .a-modal__body span.close {
-    display: none;
-  }
-
-  #invoice_pop {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    background-color: white;
-    position: relative;
-  }
-
-  #invoice_pop #close {
-    position: fixed;
-    right: 30px;
-    top: 20px;
-    cursor: pointer;
-  }
-
-  #invoice_pop #invoice_head {
-    display: flex;
-    background: #cbd4f3;
-    justify-content: space-between;
-    padding: 90px 90px 50px 90px;
-    border-radius: 10px 10px 0 0;
-  }
-
-  #invoice_pop #invoice_head #head_title h1 {
-    font-style: normal;
-    font-weight: 600;
-    font-size: 32px;
-    line-height: 45px;
-    color: #17224e;
-    display: flex;
-    align-items: center;
-
-    .title_icon {
-      width: 40px;
-      height: 40px;
-      margin: 0 10px 0 0;
+.atlas-payment-invoices {
+  #popover {
+    #body_main {
+      background-color: white;
+      border-radius: 0.5rem;
     }
-  }
 
-  #invoice_pop #invoice_head #head_price {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+    #body_main #title {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 24px;
+      color: #17224e;
+    }
 
-  #invoice_pop #invoice_head #head_price span {
-    line-height: 30px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 20px;
-    color: #17224e;
-  }
+    #body_main #description {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 32px;
+      color: #3e3e3e;
+      margin: 35px 0 50px 0;
+      max-width: 526px;
+    }
 
-  #invoice_pop #invoice_body {
-    padding: 50px 90px;
-  }
+    #body_main #button {
+      width: 154px;
+      height: 33px;
+      background: #526fd6;
+      box-shadow: 0px 4px 8px rgba(112, 128, 144, 0.1);
+      border-radius: 4px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      color: #ffffff;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
 
-  #invoice_pop #invoice_body #body_top {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
+    //popup
+    .a-modal__body {
+      height: 98vh !important;
+      padding: 0 !important;
+      width: 90% !important;
+      overflow: scroll !important;
+      overflow-y: hidden;
+      overflow-x: hidden;
+    }
 
-  #invoice_pop #invoice_body #body_top #cards {
-    display: flex;
-    height: 230px;
-    flex-direction: column;
-    padding: 0 0 0 5rem;
-    border-left: 1px solid #ebebed;
-  }
+    .a-modal__body::-webkit-scrollbar {
+      display: none;
+      transition: 0.5s ease-in-out;
+    }
 
-  #invoice_pop #invoice_body #body_top #cards:first-child {
-    padding: 0;
-    border: none;
-  }
+    .a-modal__body:hover::-webkit-scrollbar {
+      display: flex;
+    }
 
-  #invoice_pop
-    #invoice_body
-    #body_top
-    #cards
-    #cards_date_container:first-child {
-    margin: 0;
-  }
+    .a-modal__body span.close {
+      display: none;
+    }
 
-  #invoice_pop #invoice_body #body_top #cards #cards_date_container {
-    margin: 10px 0 0 0;
-  }
+    #invoice_pop {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      background-color: white;
+      position: relative;
+    }
 
-  #invoice_pop
-    #invoice_body
-    #body_top
-    #cards
-    #cards_date_container
-    #description {
-    font-size: 18px;
-  }
+    #invoice_pop #close {
+      position: fixed;
+      right: 30px;
+      top: 20px;
+      cursor: pointer;
+    }
 
-  #invoice_pop #invoice_body #body_top #cards h3 {
-    font-size: 16px;
-    font-weight: 400;
-    color: #526fd6;
-    line-height: 0;
-  }
+    #invoice_pop #invoice_head {
+      display: flex;
+      background: #cbd4f3;
+      justify-content: space-between;
+      padding: 90px 90px 50px 90px;
+      border-radius: 10px 10px 0 0;
+    }
 
-  #invoice_pop #invoice_body #body_top #cards #description {
-    font-size: 20px;
-    font-weight: 600;
-    color: #000000cc;
-  }
+    #invoice_pop #invoice_head #head_title h1 {
+      font-style: normal;
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 45px;
+      color: #17224e;
+      display: flex;
+      align-items: center;
 
-  #invoice_pop #invoice_body #body_top #cards #cards_sub_div {
-    display: flex;
-    flex-direction: column;
-    max-width: 177px;
-  }
+      .title_icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 10px 0 0;
+      }
+    }
 
-  #invoice_pop #invoice_body #body_top #cards #cards_sub_div #name {
-    margin: 5px 0 8px 0;
-  }
+    #invoice_pop #invoice_head #head_price {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
 
-  #invoice_pop #invoice_body #body_top #cards #cards_sub_div #content {
-    line-height: 1.5rem;
-  }
+    #invoice_pop #invoice_head #head_price span {
+      line-height: 30px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 20px;
+      color: #17224e;
+    }
 
-  #invoice_pop #invoice_body #cards_main_div #body_center {
-    border-bottom: 1px solid black;
-    border-top: 0;
-    margin: 0;
-    padding: 0 0 40px 0;
-  }
+    #invoice_pop #invoice_body {
+      padding: 50px 90px;
+    }
 
-  #invoice_pop #invoice_body #cards_main_div #body_center:first-child {
-    border-top: 1px solid #ebebed;
-    border-bottom: 1px solid black;
-    margin: 75px 0 0 0;
-    padding: 0 0 40px 0;
-  }
+    #invoice_pop #invoice_body #body_top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
 
-  #invoice_pop #invoice_body #body_center #title {
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 35px;
-    color: #041e42;
-  }
+    #invoice_pop #invoice_body #body_top #cards {
+      display: flex;
+      height: 230px;
+      flex-direction: column;
+      padding: 0 0 0 5rem;
+      border-left: 1px solid #ebebed;
+    }
 
-  #invoice_pop #invoice_body #body_center #body_center_cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+    #invoice_pop #invoice_body #body_top #cards:first-child {
+      padding: 0;
+      border: none;
+    }
 
-  #invoice_pop #invoice_body #body_center #body_center_cards #cards h3 {
-    font-size: 13px;
-    font-weight: 400;
-    line-height: 20px;
-    color: #767676;
-    margin: 48px 0 0 0;
-  }
+    #invoice_pop #invoice_body #body_top #cards #cards_date_container:first-child {
+      margin: 0;
+    }
 
-  #invoice_pop
-    #invoice_body
-    #body_center
-    #body_center_cards
-    #cards
-    #description {
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 30px;
-    color: #3e3e3e;
-  }
+    #invoice_pop #invoice_body #body_top #cards #cards_date_container {
+      margin: 10px 0 0 0;
+    }
 
-  #invoice_pop #invoice_body #invoice_bottom {
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    margin: 40px 0 40px auto;
-  }
+    #invoice_pop #invoice_body #body_top #cards #cards_date_container #description {
+      font-size: 18px;
+    }
 
-  #invoice_pop #invoice_body #invoice_bottom #bal_text {
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #526fd6;
-  }
+    #invoice_pop #invoice_body #body_top #cards h3 {
+      font-size: 16px;
+      font-weight: 400;
+      color: #526fd6;
+      line-height: 0;
+    }
 
-  #invoice_pop #invoice_body #invoice_bottom #button {
-    padding: 18px 32px;
-    background: #eef1fb;
-    border-radius: 10px;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 34px;
-    color: #526fd6;
-    cursor: pointer;
-    margin: 0 0 0 50px;
+    #invoice_pop #invoice_body #body_top #cards #description {
+      font-size: 20px;
+      font-weight: 600;
+      color: #000000cc;
+    }
+
+    #invoice_pop #invoice_body #body_top #cards #cards_sub_div {
+      display: flex;
+      flex-direction: column;
+      max-width: 177px;
+    }
+
+    #invoice_pop #invoice_body #body_top #cards #cards_sub_div #name {
+      margin: 5px 0 8px 0;
+    }
+
+    #invoice_pop #invoice_body #body_top #cards #cards_sub_div #content {
+      line-height: 1.5rem;
+    }
+
+    #invoice_pop #invoice_body #cards_main_div #body_center {
+      border-bottom: 1px solid black;
+      border-top: 0;
+      margin: 0;
+      padding: 0 0 40px 0;
+    }
+
+    #invoice_pop #invoice_body #cards_main_div #body_center:first-child {
+      border-top: 1px solid #ebebed;
+      border-bottom: 1px solid black;
+      margin: 75px 0 0 0;
+      padding: 0 0 40px 0;
+    }
+
+    #invoice_pop #invoice_body #body_center #title {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 35px;
+      color: #041e42;
+    }
+
+    #invoice_pop #invoice_body #body_center #body_center_cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    #invoice_pop #invoice_body #body_center #body_center_cards #cards h3 {
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #767676;
+      margin: 48px 0 0 0;
+    }
+
+    #invoice_pop #invoice_body #body_center #body_center_cards #cards #description {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 30px;
+      color: #3e3e3e;
+    }
+
+    #invoice_pop #invoice_body #invoice_bottom {
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      margin: 40px 0 40px auto;
+    }
+
+    #invoice_pop #invoice_body #invoice_bottom #bal_text {
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+      color: #526fd6;
+    }
+
+    #invoice_pop #invoice_body #invoice_bottom #button {
+      padding: 18px 32px;
+      background: #eef1fb;
+      border-radius: 10px;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 34px;
+      color: #526fd6;
+      cursor: pointer;
+      margin: 0 0 0 50px;
+    }
   }
 }

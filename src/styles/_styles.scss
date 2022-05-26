@@ -1,41 +1,5 @@
 @import "mixins";
 
-// @font-face {
-//   font-family: "Circular";
-//   src: local("Circular"),
-//     url("../assets/fonts/AvenirLTStd-Book.otf") format("opentype");
-// }
-
-// @font-face {
-//   font-family: "Circular";
-//   src: local("Circular"),
-//     url("../assets/fonts/CircularStd-Bold.otf") format("opentype");
-//   font-weight: bold;
-// }
-
-// @font-face {
-//   font-family: "Circular";
-//   src: url("../assets/fonts/CircularStd-Medium.ttf") format("truetype");
-//   font-weight: 500;
-//   font-style: normal;
-//   font-display: swap;
-// }
-
-// @font-face {
-//   font-family: "Circular";
-//   src: url("../assets/fonts/CircularSpotifyText-Light.ttf") format("truetype");
-//   font-weight: 300;
-//   font-style: normal;
-//   font-display: swap;
-// }
-
-// @font-face {
-//   font-family: circular;
-//   src: url("../assets/fonts/CircularStd-Book.ttf") format("truetype");
-//   font-weight: normal;
-//   font-style: normal;
-//   font-display: swap;
-// }
 @font-face {
   font-family: "Circular-Medium";
   src: local("Circular"),
@@ -83,38 +47,11 @@
   src: local("Circular"),
     url("../assets/fonts/CircularXXWeb-Book.woff2") format("woff2");
 }
-// @font-face {
-//   font-family: circular;
-//   src: url("../assets/fonts/CircularXXSub-Bold.woff") format("woff");
-//   font-weight: bold;
-// }
-// @font-face {
-//   font-family: circularbook;
-//   src: url("../assets/fonts/CircularXXSub-Book.woff") format("woff");
-// }
-
-// @font-face {
-//   font-family: circularmed;
-//   src: url("../assets/fonts/CircularXXSub-Medium.woff") format("woff");
-// }
 
 body {
   margin: 0;
-  // font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-  //   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-  //   sans-serif;
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
-  // font-family: circular;
 }
 
-// code {
-//   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-//     monospace;
-// }
-
-//  You can add global styles to this file, and also import other style files
-//  Provide sufficient contrast against white background
 
 // Breakpoints
 $bp-768: 48em; // 768px - DONE
@@ -196,11 +133,6 @@ body {
     overflow: auto;
   }
 }
-
-// ::-webkit-scrollbar-thumb {
-//   background: gray;
-//   border-radius: 10px;
-// }
 ::selection {
   background: #526fd6;
   color: #fff;
