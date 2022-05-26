@@ -1,93 +1,369 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="457"/>
+    <testCase name="Bills Table Render" duration="705"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
-    <testCase name="Credit Memo Summary Render CM" duration="791"/>
-    <testCase name="Notes fail Render CM" duration="254"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="415"/>
+    <testCase name="Credit Memo Summary Render CM" duration="1069"/>
+    <testCase name="Notes fail Render CM" duration="352"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="1040"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="386"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="300"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="275"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="234"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="197"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="214"/>
-    <testCase name="client view table row clickable" duration="172"/>
-    <testCase name="client view Status clickable" duration="198"/>
-    <testCase name="client view Type clickable" duration="200"/>
-    <testCase name="client view Clear filters clickable" duration="254"/>
-    <testCase name="client view search" duration="205"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="406"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="151"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="406"/>
-    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="460"/>
-    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="359"/>
+    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="1589"/>
+    <testCase name="client view Datepicker dropdowns today clickable" duration="486"/>
+    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="353"/>
+    <testCase name="client view Datepicker dropdowns This Week clickable" duration="264"/>
+    <testCase name="client view Datepicker dropdowns This Month clickable" duration="273"/>
+    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="310"/>
+    <testCase name="client view Datepicker dropdowns This Year clickable" duration="325"/>
+    <testCase name="client view table row clickable" duration="263"/>
+    <testCase name="client view Status clickable" duration="319"/>
+    <testCase name="client view Type clickable" duration="325"/>
+    <testCase name="client view Clear filters clickable" duration="363"/>
+    <testCase name="client view search" duration="317"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="558"/>
+    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="179"/>
+    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="496"/>
+    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="591"/>
+    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="558"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1755"/>
-    <testCase name="Invoice details download clickable " duration="709"/>
-    <testCase name="Invoice details approve invoice clickable " duration="288"/>
-    <testCase name="Invoice details publish notes" duration="366"/>
-    <testCase name="Invoice details download file" duration="320"/>
-    <testCase name="Invoice details delete file" duration="276"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="242"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="313"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="383"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="214"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="265"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="451"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="713"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="546"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="355"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="233"/>
-    <testCase name="api fail tabs are working" duration="49"/>
-    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="180"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="187"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="151"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="198"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="188"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="171"/>
-    <testCase name="Invoice details fee api fail tabs are working" duration="41"/>
-    <testCase name="Invoice details invoice detail api fail tabs are working" duration="26"/>
-    <testCase name="Invoice details lookup api fail tabs are working" duration="19"/>
-    <testCase name="Invoice details countries api fail tabs are working" duration="17"/>
-    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="271"/>
+  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
+    <testCase name="renders learn react link" duration="578"/>
   </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="479"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="683"/>
-    <testCase name="step one getCustomer api fail  dropDown Value change" duration="99"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="180"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="431"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="411"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="819"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="422"/>
-    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="506"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="297"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="353"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="870"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="377"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="419"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="306"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="294"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="297"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="194"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="324"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="334"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="207"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="322"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="590"/>
-    <testCase name="New Invoice for Proforma  breadcumbs are working" duration="145"/>
-    <testCase name="New Invoice for Proforma  dropDown Value change stepper 1" duration="244"/>
-    <testCase name="New Invoice for Miscellaneous  breadcumbs are working" duration="146"/>
-    <testCase name="New Invoice for Miscellaneous  dropDown Value change stepper 1" duration="200"/>
-    <testCase name="Stepper for Credit Memo  1 and 2  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" duration="832"/>
-    <testCase name="final stepper final stepper" duration="8"/>
+    <testCase name="New Invoice breadcumbs are working" duration="723"/>
+    <testCase name="New Invoice dropDown Value change stepper 1" duration="530">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee2$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:100:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="step one getCustomer api fail  dropDown Value change" duration="181"/>
+    <testCase name="step one getCOuntry api fail dropDown Value change" duration="208"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="333">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee5$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:231:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="306">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee6$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:285:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="239">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee7$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:338:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="228">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee8$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:456:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="180">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee9$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:528:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="160">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee10$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:637:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="204">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee11$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:691:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="157">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee12$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:744:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="184">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee13$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:864:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="189">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee14$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:918:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="172">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee15$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:971:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="159">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee16$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1138:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="179">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee17$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1191:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="181">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee18$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1299:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="169">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee19$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1353:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="162">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee20$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1406:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="155">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee21$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1514:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="156">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee22$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1568:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="177">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee23$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1621:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="New Invoice for Proforma  breadcumbs are working" duration="79"/>
+    <testCase name="New Invoice for Proforma  dropDown Value change stepper 1" duration="104">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee25$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1716:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="New Invoice for Miscellaneous  breadcumbs are working" duration="95"/>
+    <testCase name="New Invoice for Miscellaneous  dropDown Value change stepper 1" duration="105">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee27$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1780:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Stepper for Credit Memo  1 and 2  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" duration="158">
+      <failure message="Error: Unable to fire a &quot;click&quot; event - please provide a DOM element."><![CDATA[Error: Unable to fire a "click" event - please provide a DOM element.
+    at createEvent (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:34:11)
+    at Function.createEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:120:38)
+    at Function.fireEvent.<computed> [as click] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:68)
+    at Function.click (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee28$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js:1831:15)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="final stepper final stepper" duration="90"/>
+  </file>
+  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
+    <testCase name="Invoice details tabs are working" duration="1776"/>
+    <testCase name="Invoice details download clickable " duration="896"/>
+    <testCase name="Invoice details approve invoice clickable " duration="501"/>
+    <testCase name="Invoice details publish notes" duration="696"/>
+    <testCase name="Invoice details download file" duration="532"/>
+    <testCase name="Invoice details delete file" duration="466"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="373"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="360"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="330"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="212"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="291"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="397"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="372"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="364"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="338"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="299"/>
+    <testCase name="api fail tabs are working" duration="37"/>
+    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="249"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="237"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="195"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="225"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="209"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="224"/>
+    <testCase name="Invoice details fee api fail tabs are working" duration="40"/>
+    <testCase name="Invoice details invoice detail api fail tabs are working" duration="29"/>
+    <testCase name="Invoice details lookup api fail tabs are working" duration="25"/>
+    <testCase name="Invoice details countries api fail tabs are working" duration="23"/>
+    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="298"/>
   </file>
 </testExecutions>

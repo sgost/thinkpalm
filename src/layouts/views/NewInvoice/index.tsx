@@ -47,14 +47,12 @@ const NewInvoice = () => {
   //Quantity, Amount
   const [quantity, setQuantity] = useState("");
   const [amount, setAmount] = useState("");
-  const [newArrPush, setNewArrPush] = useState([]);
+  const [newArrPush, setNewArrPush] = useState<any>([]);
   const [Open, setOpen] = useState(false);
-  const [newArrPushs, setNewArrPushs] = useState([]);
+  const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
 
-  console.log(dateFrom);
-  ///////////////////////////
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
@@ -92,7 +90,7 @@ const NewInvoice = () => {
   ];
 
   // payroll DropdownOptions
-  const [CustomerOptions, setCustomerOption] = useState([]);
+  const [CustomerOptions, setCustomerOption] = useState<any>([]);
 
   const [typeOptions, setTypeOptions] = useState([
     tableSharedColumns.payroll,
@@ -131,6 +129,8 @@ const NewInvoice = () => {
       value: CurrentYear,
     },
   ]);
+
+  const [invoiceDate, setInvoiceDate] = useState<any>("");
 
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
@@ -235,6 +235,11 @@ const NewInvoice = () => {
     monthId: "",
   });
 
+  //flag to stop multiple post calls for invoice Creation
+  const [isInvoiceCreated, setIsInvoiceCreated] = useState(false);
+
+  const [invoicePreviewData, SetinvoicePreviewData] = useState({});
+
   //stepper Two payroll Row Data
   const [employeeRowData, setEmployeeRowData] = useState<any>({});
   const [employeeApiData, setEmployeeApiData] = useState([]);
@@ -261,6 +266,8 @@ const NewInvoice = () => {
     setTypeOptions,
     loading,
     setLoading,
+    invoiceDate,
+    setInvoiceDate,
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -289,6 +296,7 @@ const NewInvoice = () => {
     setTransactionType,
     loading,
     setLoading,
+    invoicePreviewData,
   };
 
   //stepper four payroll props
@@ -346,13 +354,7 @@ const NewInvoice = () => {
 
   const disableFunForStepOneCreditMemo = () => {
     if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        // stepperOneData?.country !== "" &&
-        stepperOneData?.year !== "" &&
-        stepperOneData?.month !== ""
-      );
+      return !(stepperOneData?.customer !== "" && stepperOneData?.type !== "");
     }
     if (stepsCount == 2 && stepperOneData.type === "Payroll") {
       return selectedRowPostData?.length > 0 ? false : true;
@@ -361,23 +363,13 @@ const NewInvoice = () => {
 
   const disableFunForStepOneProforma = () => {
     if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        stepperOneData?.year !== "" &&
-        stepperOneData?.month !== ""
-      );
+      return !(stepperOneData?.customer !== "" && stepperOneData?.type !== "");
     }
   };
 
   const disableFunForStepOneMiscellaneous = () => {
     if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        stepperOneData?.year !== "" &&
-        stepperOneData?.month !== ""
-      );
+      return !(stepperOneData?.customer !== "" && stepperOneData?.type !== "");
     }
   };
 
@@ -436,7 +428,7 @@ const NewInvoice = () => {
     }
 
     if (
-      (stepsCount == 1 || stepsCount == 2) &&
+      stepsCount == 1 &&
       (stepperOneData?.type === "Credit Memo" ||
         stepperOneData?.type === "Proforma")
     ) {
@@ -444,78 +436,19 @@ const NewInvoice = () => {
     }
 
     if (
+      stepsCount == 2 &&
+      (stepperOneData?.type === "Credit Memo" ||
+        stepperOneData?.type === "Proforma")
+    ) {
+      handleInvoiceCreation();
+    }
+
+    if (
       stepsCount == 3 &&
       (stepperOneData?.type === "Credit Memo" ||
         stepperOneData?.type === "Proforma")
     ) {
-      // console.log("new arr", CustomerOptions);
-
-      let invoiceItems = todos.map((e: any) => {
-        return {
-          ServiceDate: e.date, // ?
-          ProductId: newArrPush.find((n: any) => n.label === e.product).id, // prod id
-          Description: e.description,
-          Amount: e.amount,
-          Quantity: e.quantity,
-          TotalAmount: e.amount * e.quantity, // multiple ?
-          ServiceCountry: newArrPushs.find((n: any) => n.label === e.country)
-            .value, // keyword? or id
-          ModifiedBy: stepperOneData?.customerId, // ?
-        };
-      });
-
-      let balance = 0;
-
-      todos.forEach((item) => {
-        balance += parseFloat(item.amount) * parseFloat(item.quantity);
-      });
-
-      const currDate = new Date();
-      const dueDate = new Date();
-      dueDate.setDate(currDate.getDate() + 1);
-
-      let data = {
-        CustomerId: stepperOneData?.customerId,
-        CustomerName: stepperOneData.customer, // customer name
-        CustomerLocation:
-          CustomerOptions.find(
-            (c: any) => c.customerId === stepperOneData?.customerId
-          )?.billingAddressCountryName || "India", // loc name
-        CurrencyId: 840, // tbd
-        Status: 1, // hard code
-        TransactionType: 4, // type
-        // CreatedDate: currDate, // ? current date
-        DueDate: currDate, // ? do not send
-        CreatedDate: dueDate,
-
-        // DueDate: "2022-05-23T12:31:21.125Z",
-        TotalAmount: balance, //  total balance
-        InvoiceBalance: balance, //  total balance
-        IsClientVisible: true, // hard code
-        CreatedBy: stepperOneData?.customerId, // ?do not send
-        ModifiedBy: stepperOneData?.customerId, // ?do not send
-        InvoiceDocuments: [],
-        InvoiceItems: invoiceItems,
-        InvoiceNotes: [],
-        InvoiceRelatedInvoices: [],
-        InvoiceRelatedRelatedInvoices: [],
-      };
-      console.log(data);
-
-      axios({
-        method: "POST",
-        url: urls.createCreditMemo,
-        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
-        data: data,
-      })
-        .then((res: any) => {
-          console.log(res);
-          setInvoiceId(res.data.id);
-          setStepsCount(4);
-        })
-        .catch((e: any) => {
-          console.log(e);
-        });
+      setStepsCount(4);
     }
 
     if (stepsCount == 1 && stepperOneData?.type === "Miscellaneous") {
@@ -533,6 +466,92 @@ const NewInvoice = () => {
       navigate("/pay");
     }
   }, [hideTopCheck]);
+
+  const handleInvoiceCreation = () => {
+    let invoiceItems = todos.map((e: any) => {
+      return {
+        ServiceDate: e.date, // ?
+        ProductId: newArrPush.find((n: any) => n.label === e.product).id, // prod id
+        Description: e.description,
+        Amount: e.amount,
+        Quantity: e.quantity,
+        TotalAmount: e.amount * e.quantity, // multiple ?
+        ServiceCountry: newArrPushs.find((n: any) => n.label === e.country)
+          .value, // keyword? or id
+        ModifiedBy: stepperOneData?.customerId, // ?
+      };
+    });
+
+    let balance = 0;
+
+    todos.forEach((item) => {
+      balance += parseFloat(item.amount) * parseFloat(item.quantity);
+    });
+
+    // const currDate = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(invoiceDate.getDate() + 7);
+
+    let data = {
+      CustomerId: stepperOneData?.customerId,
+      CustomerName: stepperOneData.customer, // customer name
+      CustomerLocation:
+        CustomerOptions.find(
+          (c: any) => c.customerId === stepperOneData?.customerId
+        )?.billingAddressCountryName || "India", // currently its coming null thats why fallback is India
+      CurrencyId: 840, // backend will provide it
+      Status: 1, // hard code
+      TransactionType: 4, //
+      // CreatedDate: currDate, // ? current date
+      DueDate: dueDate, //
+      CreatedDate: invoiceDate,
+
+      // DueDate: "2022-05-23T12:31:21.125Z",
+      TotalAmount: balance, //  total balance
+      InvoiceBalance: balance, //  total balance
+      IsClientVisible: true, // hard code
+      CreatedBy: stepperOneData?.customerId, //
+      ModifiedBy: stepperOneData?.customerId, //
+      InvoiceDocuments: [],
+      InvoiceItems: invoiceItems,
+      InvoiceNotes: [],
+      InvoiceRelatedInvoices: [],
+      InvoiceRelatedRelatedInvoices: [],
+    };
+    console.log(data);
+    if (!isInvoiceCreated) {
+      axios({
+        method: "POST",
+        url: urls.createCreditMemo,
+        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+        data: data,
+      })
+        .then((res: any) => {
+          setInvoiceId(res.data.id);
+          setIsInvoiceCreated(true);
+          SetinvoicePreviewData(res.data);
+          setStepsCount(3);
+        })
+        .catch((e: any) => {
+          console.log(e);
+        });
+    } else {
+      axios({
+        method: "PUT",
+        url: urls.createCreditMemo,
+        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+        data: data,
+      })
+        .then((res: any) => {
+          setInvoiceId(res.data.id);
+          SetinvoicePreviewData(res.data);
+          setStepsCount(3);
+        })
+        .catch((e: any) => {
+          console.log(e);
+        });
+    }
+  };
 
   return (
     <div className="newinvoice-container">
