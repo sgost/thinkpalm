@@ -62,7 +62,7 @@ const NewInvoice = () => {
 
   var CurrentYear = new Date().getFullYear();
 
-  const [stepsCount, setStepsCount] = useState(3);
+  const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [loading, setLoading] = useState(false);
   //steps for payroll
