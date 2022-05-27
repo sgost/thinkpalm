@@ -69,8 +69,8 @@ const InvoicePreviewPop = ({
 
                 {/* POPUP */}
                 <Modal isOpen={opend}>
-                    <div id="invoice_pop" data-testid="Modal_div" onClick={() => setOpend(false)}>
-                        <span id="close"><Icon
+                    <div id="invoice_pop">
+                        <span id="close" data-testid="Modal_div" onClick={() => setOpend(false)}><Icon
                             color="white"
                             icon="remove"
                             size="large"
@@ -83,8 +83,8 @@ const InvoicePreviewPop = ({
                                     size="large"
                                     className="title_icon"
                                 /></span>
-                                {stepperOneData?.type + " No. 791230"}
-                                {/* Credit Memo No. 791230 */}
+                                    {stepperOneData?.type + " No. 791230"}
+                                    {/* Credit Memo No. 791230 */}
                                 </h1>
                             </div>
                             <div id="head_price">
