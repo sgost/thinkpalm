@@ -1620,11 +1620,12 @@ export default function InvoiceDetails() {
             <div className="text-invoive-no">
               <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
             </div>
-            <h6>
-              Comment<span className="comment">*</span>
-            </h6>
+           
 
-            <div>
+            <div className="text-invoive-comment">
+            <label>
+              Comment<span className="comment">*</span>
+            </label>
               <textarea
                 value={inputValue}
                 className="textarea-box"
