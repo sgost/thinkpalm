@@ -1741,7 +1741,7 @@ describe("New Invoice for Miscellaneous ", () => {
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
     mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resCreateCreditMemo);
 
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+    // jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("breadcumbs are working", async () => {
@@ -1852,17 +1852,8 @@ describe("New Invoice for Miscellaneous ", () => {
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
     fireEvent.click(nextPreview);
-
-    // const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
-    // expect(InvoiceTab[0]).toBeInTheDocument();
-
-    // const openModal = await screen.findAllByText(/Preview Invoice/);
-    // expect(openModal[0]).toBeInTheDocument();
-    // fireEvent.click(openModal[0]);
-
-    // const closeButton = container.querySelector(".close");
-    // fireEvent.click(closeButton);
-  }, 5000);
+    
+  });
 });
 
 /// Credit Memo
@@ -1878,7 +1869,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
 
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+    // jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo", async () => {
