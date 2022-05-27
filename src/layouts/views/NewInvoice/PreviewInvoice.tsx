@@ -24,7 +24,6 @@ const PreviewInvoice = ({
   setTransactionType,
   loading,
   setLoading,
-  invoicePreviewData,
 }: any) => {
   const api = getInvoiceDetailsUrl(CreateManualPayrollRes?.invoiceId);
 
@@ -404,14 +403,12 @@ const PreviewInvoice = ({
                     <p className="newInvoiceHeading">From</p>
                     <p className="newInvoiceValue">
                       {apiData?.data?.invoiceFrom?.companyName}
-                      {/* {invoicePreviewData?.invoiceFrom?.companyName} */}
                     </p>
                   </div>
                   <div>
                     <p className="newInvoiceHeading">To</p>
                     <p className="newInvoiceValue valuebold">
                       {apiData?.data?.invoice?.customerName}
-                      {/* {invoicePreviewData?.invoice?.customerName} */}
                     </p>
                     <p className="newInvoiceAddress">
                       {addressData?.data?.billingAddress?.street}
