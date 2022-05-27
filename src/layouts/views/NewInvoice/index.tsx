@@ -18,6 +18,7 @@ import axios from "axios";
 import {
   createManualInvoice,
   getHeaders,
+  getUpdateCreditMemoUrl,
   updateInvoiceStatus,
   urls,
 } from "../../../urls/urls";
@@ -550,9 +551,12 @@ const NewInvoice = () => {
     } else {
       axios({
         method: "PUT",
-        url: urls.createCreditMemo,
+        url: getUpdateCreditMemoUrl(invoiceId),
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
-        data: data,
+        data: {
+          ...invoicePreviewData,
+          ...data,
+        },
       })
         .then((res: any) => {
           setInvoiceId(res.data.id);

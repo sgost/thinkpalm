@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
@@ -451,7 +451,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -509,7 +509,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -518,7 +518,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -537,11 +537,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -694,15 +694,15 @@ export const getNotesUrl = <span class="fstat-no" title="function not covered" >
 <span class="cstat-no" title="statement not covered" >  return baseURL + services.atlasInvoiceService + `/InvoiceNote/notes/${id}`;</span>
 };
 &nbsp;
-export const getHeaders = (token, cid, isClient) =&gt; {
-  return {
+export const getHeaders = <span class="fstat-no" title="function not covered" >(t</span>oken, cid, isClient) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return {</span>
     authorization: `Bearer ${token}`,
     "x-apng-base-region": "EMEA",
-    "x-apng-customer-id": cid || <span class="branch-1 cbranch-no" title="branch not covered" >"",</span>
+    "x-apng-customer-id": cid || "",
     "x-apng-external": isClient,
     "x-apng-inter-region": "0",
     "x-apng-target-region": "EMEA",
-    customer_id: cid || <span class="branch-1 cbranch-no" title="branch not covered" >"",</span>
+    customer_id: cid || "",
   };
 };
 &nbsp;
@@ -761,8 +761,8 @@ export const getCountryByCustomer = (id) =&gt; {
   );
 };
 &nbsp;
-export const getEmployee = (customerId, countryId, monthId, yearId) =&gt; {
-  return (
+export const getEmployee = <span class="fstat-no" title="function not covered" >(c</span>ustomerId, countryId, monthId, yearId) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return (</span>
     baseURL +
     services.atlasIdgService +
     `/PayrollChangeItems?customerId=${customerId}&amp;countryId=${countryId}&amp;month=${monthId}&amp;year=${yearId}`
@@ -780,12 +780,12 @@ export const updateInvoiceStatus = <span class="fstat-no" title="function not co
 <span class="cstat-no" title="statement not covered" >  return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`;</span>
 };
 &nbsp;
-export const productInvoice = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >  return metaDataUrl + services.apngMetaDataService + `/Products`;</span>
+export const productInvoice = () =&gt; {
+  return metaDataUrl + services.apngMetaDataService + `/Products`;
 };
 &nbsp;
-export const CountryApi = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >  return metaDataUrl + services.apngMetaDataService + `/Lookup`;</span>
+export const CountryApi = () =&gt; {
+  return metaDataUrl + services.apngMetaDataService + `/Lookup`;
 };
 &nbsp;
 export const getEmployeeBreakdownUrl = <span class="fstat-no" title="function not covered" >(i</span>d) =&gt; {
@@ -802,7 +802,7 @@ export const getEmployeeBreakdownUrl = <span class="fstat-no" title="function no
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Thu May 26 2022 16:33:42 GMT+0500 (Pakistan Standard Time)
+                at Fri May 27 2022 09:59:11 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../prettify.js"></script>
         <script>
