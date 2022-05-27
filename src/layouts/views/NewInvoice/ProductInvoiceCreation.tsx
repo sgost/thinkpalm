@@ -142,6 +142,7 @@ const ProductInvoiceCreation = ({
                 {/* Customer */}
                 <div
                   className="year-dropdown"
+                  data-testid="Date-picker"
                   onClick={() => localStorage.setItem("name_value", "date")}
                 >
                   <DatePicker
@@ -149,20 +150,19 @@ const ProductInvoiceCreation = ({
                       const startDate = format(date, "dd MMM yyyy");
                       setDateFrom(startDate);
                       new_handle2(startDate, i);
-                      console.log(date);
                     }}
                     inline={false}
                     label="Service Date"
-                    data-testid="Date-picker"
+                    
                     minDate={new Date()}
-                    placeholderText={item.date ? item.date : "Please Select"}
+                    placeholderText={item.date ? item.date: "Please Select"}
                   />
                 </div>
 
                 {/* Product Service */}
 
                 <div
-                  className="dropdownP mandotary-field"
+                  className="dropdownP mandotary-field textcolor"
                   onClick={() => {
                     localStorage.setItem("name_value", "product");
                     setOpen(true);
@@ -219,6 +219,7 @@ const ProductInvoiceCreation = ({
                   </span>
                   <input
                     type="text"
+                    className="font-color"
                     defaultValue={item.description}
                     placeholder="Description"
                     id="description_input"
@@ -232,7 +233,7 @@ const ProductInvoiceCreation = ({
               <div id="container_main2">
                 {/* Country Service */}
                 <div
-                  className="dropdownP mandotary-field"
+                  className="dropdownP mandotary-field textcolor"
                   data-testid="Country_name"
                   onClick={() => {
                     localStorage.setItem("name_value", "country");
@@ -332,7 +333,7 @@ const ProductInvoiceCreation = ({
                   ).toLocaleString("en-US")
                 }
                 className="secondary-btn medium button"
-                handleOnClick={() => { }}
+                // handleOnClick={() => { }}
                 data-testid="Button_Balance"
               />
             </div>

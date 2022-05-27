@@ -54,7 +54,6 @@ const NewInvoice = () => {
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
 
-  ///////////////////////////
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
@@ -77,8 +76,8 @@ const NewInvoice = () => {
   const creditMemoSteps = [
     sharedSteps.newInvoice,
     {
-      key: "productService",
-      label: "Product Service",
+      key: "summary",
+      label: "Summary",
     },
     sharedSteps.invoicePreview,
     sharedSteps.finish,

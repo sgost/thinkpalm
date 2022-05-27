@@ -394,11 +394,11 @@ const PreviewInvoice = ({
                       <p className="newInvoiceAddress">
                         {addressData?.data?.billingAddress?.street}
                       </p>
-                      <p className="address">{addressData?.data?.billingAddress?.city}</p>
-                      <p className="address">
+                      <p className="newInvoiceAddress">{addressData?.data?.billingAddress?.city}</p>
+                      <p className="newInvoiceAddress">
                         {addressData?.data?.billingAddress?.state}
                       </p>
-                      <p className="address">
+                      <p className="newInvoiceAddress">
                         {addressData?.data?.billingAddress?.country}
                       </p>
 

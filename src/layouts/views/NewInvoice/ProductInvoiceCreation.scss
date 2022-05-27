@@ -115,7 +115,8 @@
         .inputField {
           padding: 0 0 0 4.75px;
           border-radius: 0.222rem;
-          outline-color: #526fd6;
+          color: grey;
+          // outline-color: #526fd6;
           border: 0.056rem solid #ced4da;
         }
       }
@@ -239,6 +240,15 @@
       content: "*";
       color: red;
   }
+  }
+}
+.font-color {
+  color: grey;
+}
+
+.textcolor {
+  #click_input {
+    color: grey;
   }
 }
 
