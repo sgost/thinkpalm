@@ -1692,7 +1692,7 @@ describe("New Invoice for Proforma ", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-  });
+  },30000);
   test("dropDown Value change stepper 1", async () => {
     render(
       <HashRouter>
@@ -1727,7 +1727,7 @@ describe("New Invoice for Proforma ", () => {
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
-  });
+  },30000);
 });
 
 // test cases for Miscellaneous
@@ -1741,7 +1741,7 @@ describe("New Invoice for Miscellaneous ", () => {
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
     mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resCreateCreditMemo);
 
-    // jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("breadcumbs are working", async () => {
@@ -1757,7 +1757,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-  });
+  },30000);
   test("dropDown Value change stepper 1", async () => {
     render(
       <HashRouter>
@@ -1853,7 +1853,7 @@ describe("New Invoice for Miscellaneous ", () => {
     expect(nextPreview).toBeInTheDocument();
     fireEvent.click(nextPreview);
     
-  });
+  },30000);
 });
 
 /// Credit Memo
@@ -1869,7 +1869,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
 
-    // jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo", async () => {
@@ -1972,7 +1972,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
 
     // const closeButton = container.querySelector(".close");
     // fireEvent.click(closeButton);
-  });
+  },30000);
 });
 
 describe("final stepper", () => {
@@ -1991,5 +1991,5 @@ describe("final stepper", () => {
 
     const goto = screen.getByText(/Go to Invoice/);
     fireEvent.click(goto);
-  });
+  },30000);
 });

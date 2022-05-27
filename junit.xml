@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="29" failures="0" errors="0" time="13.189">
-  <testsuite name="New Invoice" errors="0" failures="0" skipped="0" timestamp="2022-05-27T08:38:19" time="12.779" tests="29">
-    <testcase classname="New Invoice breadcumbs are working" name="New Invoice breadcumbs are working" time="0.121">
+<testsuites name="jest tests" tests="29" failures="0" errors="0" time="13.742">
+  <testsuite name="New Invoice" errors="0" failures="0" skipped="0" timestamp="2022-05-27T08:53:19" time="13.321" tests="29">
+    <testcase classname="New Invoice breadcumbs are working" name="New Invoice breadcumbs are working" time="0.131">
     </testcase>
-    <testcase classname="New Invoice dropDown Value change stepper 1" name="New Invoice dropDown Value change stepper 1" time="0.158">
+    <testcase classname="New Invoice dropDown Value change stepper 1" name="New Invoice dropDown Value change stepper 1" time="0.169">
     </testcase>
-    <testcase classname="step one getCustomer api fail  dropDown Value change" name="step one getCustomer api fail  dropDown Value change" time="0.029">
+    <testcase classname="step one getCustomer api fail  dropDown Value change" name="step one getCustomer api fail  dropDown Value change" time="0.033">
     </testcase>
-    <testcase classname="step one getCOuntry api fail dropDown Value change" name="step one getCOuntry api fail dropDown Value change" time="0.041">
+    <testcase classname="step one getCOuntry api fail dropDown Value change" name="step one getCOuntry api fail dropDown Value change" time="0.045">
     </testcase>
-    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.127">
+    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.132">
     </testcase>
-    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.147">
+    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.151">
     </testcase>
-    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.284">
+    <testcase classname="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.266">
     </testcase>
-    <testcase classname="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " time="0.105">
+    <testcase classname="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " time="0.106">
     </testcase>
-    <testcase classname="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.118">
+    <testcase classname="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.123">
     </testcase>
-    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.082">
+    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.086">
     </testcase>
-    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.114">
+    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.115">
     </testcase>
-    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.152">
+    <testcase classname="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " time="0.148">
     </testcase>
-    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.08">
+    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.077">
     </testcase>
-    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.113">
+    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.106">
     </testcase>
-    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.152">
+    <testcase classname="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.144">
     </testcase>
     <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.106">
     </testcase>
-    <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.161">
+    <testcase classname="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.159">
     </testcase>
-    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.08">
+    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.088">
     </testcase>
-    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.101">
+    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.099">
     </testcase>
-    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.17">
+    <testcase classname="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.165">
     </testcase>
-    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.07">
+    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" time="0.078">
     </testcase>
-    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.093">
+    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" time="0.092">
     </testcase>
-    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.118">
+    <testcase classname="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " time="0.122">
     </testcase>
     <testcase classname="New Invoice for Proforma  breadcumbs are working" name="New Invoice for Proforma  breadcumbs are working" time="0.025">
     </testcase>
-    <testcase classname="New Invoice for Proforma  dropDown Value change stepper 1" name="New Invoice for Proforma  dropDown Value change stepper 1" time="1.639">
+    <testcase classname="New Invoice for Proforma  dropDown Value change stepper 1" name="New Invoice for Proforma  dropDown Value change stepper 1" time="1.611">
     </testcase>
-    <testcase classname="New Invoice for Miscellaneous  breadcumbs are working" name="New Invoice for Miscellaneous  breadcumbs are working" time="0.029">
+    <testcase classname="New Invoice for Miscellaneous  breadcumbs are working" name="New Invoice for Miscellaneous  breadcumbs are working" time="0.03">
     </testcase>
-    <testcase classname="New Invoice for Miscellaneous  dropDown Value change stepper 1" name="New Invoice for Miscellaneous  dropDown Value change stepper 1" time="3.738">
+    <testcase classname="New Invoice for Miscellaneous  dropDown Value change stepper 1" name="New Invoice for Miscellaneous  dropDown Value change stepper 1" time="3.638">
     </testcase>
-    <testcase classname="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" name="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" time="3.67">
+    <testcase classname="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" name="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" time="3.555">
     </testcase>
-    <testcase classname="final stepper final stepper" name="final stepper final stepper" time="0.005">
+    <testcase classname="final stepper final stepper" name="final stepper final stepper" time="0.006">
     </testcase>
   </testsuite>
 </testsuites>
