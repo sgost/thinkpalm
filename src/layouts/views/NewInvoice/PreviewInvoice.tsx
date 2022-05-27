@@ -363,7 +363,11 @@ const PreviewInvoice = ({
                   <div className="newInvoiceInnerHeader">
                     <div className="newInvoiceNoHeader">
                       <div className="orderSummary">
-                        <Icon color="#000" icon="orderSummary" size="large" />
+                        <Icon
+                          color="#17224E"
+                          icon="orderSummary"
+                          size="large"
+                        />
                       </div>
                       <div className="heading">
                         <p>

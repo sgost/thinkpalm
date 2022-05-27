@@ -293,7 +293,7 @@ export default function InvoiceListing() {
     if (apiData?.data?.results) {
       const apiTableData: any = [];
       // const apiTableData = apiData?.data?.results;
-      apiData?.data?.results.push(listData);
+      // apiData?.data?.results.push(listData);
       apiData?.data?.results.forEach((item: any) => {
         const cFormat = Intl.NumberFormat("en-US", {
           style: "currency",

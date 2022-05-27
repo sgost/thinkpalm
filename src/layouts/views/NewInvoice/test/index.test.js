@@ -27,6 +27,7 @@ import {
   getRelatedInvoiceUrl,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
+import { mockLogsdata } from "../../InvoiceDetails/mockData";
 
 localStorage.setItem(
   "accessToken",
@@ -1738,7 +1739,7 @@ describe("New Invoice for Miscellaneous ", () => {
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
-    mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resForCreateCreditMemo);
+    mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resCreateCreditMemo);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
@@ -1873,7 +1874,9 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
-    mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resForCreateCreditMemo);
+    mock
+      .onPost(urls.createCreditMemo)
+      .reply(200, mockapidata.resCreateCreditMemo);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });

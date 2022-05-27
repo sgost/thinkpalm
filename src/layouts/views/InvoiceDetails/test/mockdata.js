@@ -10061,7 +10061,7 @@ export const mockapidata = {
     customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
   },
   declineInvoicePost: {},
-  voidApiPost : {
+  voidApiPost: {
     "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
     "customerName": "DSM Nutritional Products AG",
     "customerLocation": "Switzerland",
@@ -10096,33 +10096,33 @@ export const mockapidata = {
     "customer": null,
     "currency": null,
     "id": "9a3d7481-2078-4038-9d89-9d2be51efc47"
-},
-  createDocument:{
+  },
+  createDocument: {
     "invoiceId": "9a3d7481-2078-4038-9d89-9d2be51efc47",
     "documentId": "0915de1f-ca0f-46bd-a18f-2f3b46388d88",
     "isCustomerVisible": false,
     "customerId": null,
     "document": {
-        "url": "https://apnguatemeaservices.blob.core.windows.net/data/58dfe3fc-dc54-452d-83e3-77d0fa85e3b3.pdf?sv=2019-07-07&sr=b&sig=o%2FVQy0p2hioj8K2MmKckqFaO2OmVMT%2BD%2FeNUa%2BiKIBw%3D&se=2022-05-04T14%3A46%3A47Z&sp=rl",
-        "documentType": 0,
-        "documentName": "hello.pdf",
-        "uploadDate": "0001-01-01T00:00:00",
-        "modifiedBy": "00000000-0000-0000-0000-000000000000",
-        "customerId": null,
-        "customerDocuments": [],
-        "serviceContacts": [],
-        "id": "0915de1f-ca0f-46bd-a18f-2f3b46388d88"
+      "url": "https://apnguatemeaservices.blob.core.windows.net/data/58dfe3fc-dc54-452d-83e3-77d0fa85e3b3.pdf?sv=2019-07-07&sr=b&sig=o%2FVQy0p2hioj8K2MmKckqFaO2OmVMT%2BD%2FeNUa%2BiKIBw%3D&se=2022-05-04T14%3A46%3A47Z&sp=rl",
+      "documentType": 0,
+      "documentName": "hello.pdf",
+      "uploadDate": "0001-01-01T00:00:00",
+      "modifiedBy": "00000000-0000-0000-0000-000000000000",
+      "customerId": null,
+      "customerDocuments": [],
+      "serviceContacts": [],
+      "id": "0915de1f-ca0f-46bd-a18f-2f3b46388d88"
     }
-},
+  },
   uploadFile: {
     "fileName": "hello.pdf",
     "url": "https://apnguatemeaservices.blob.core.windows.net/data/58dfe3fc-dc54-452d-83e3-77d0fa85e3b3.pdf?sv=2019-07-07&sr=b&sig=o%2FVQy0p2hioj8K2MmKckqFaO2OmVMT%2BD%2FeNUa%2BiKIBw%3D&se=2022-05-04T14%3A46%3A47Z&sp=rl"
-}
-,
-resAddressDataFailedApi : {
-  "error": 1,
-  "message": "something went wrong"
-}
+  }
+  ,
+  resAddressDataFailedApi: {
+    "error": 1,
+    "message": "something went wrong"
+  }
 };
 export const mockCreditMemoData = {
   "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
@@ -10155,35 +10155,49 @@ export const mockCreditMemoData = {
   "ageingPaid": null,
   "invoiceDocuments": [],
   invoiceItems: [
-      {
-          "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
-          "serviceDate": "2022-01-24T18:30:00",
-          "productId": "3adac939-a4d1-4432-8301-e1eda5ba989b",
-          "description": "cc",
-          "amount": 25.00,
-          "quantity": 2,
-          "totalAmount": 50.00,
-          "serviceCountry": 4,
-          "modifiedBy": "00000000-0000-0000-0000-000000000000",
-          "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
-          "product": null,
-          "id": "1fb476fb-f346-44d6-bf8f-e691dbd8369c"
-      }
+    {
+      "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
+      "serviceDate": "2022-01-24T18:30:00",
+      "productId": "3adac939-a4d1-4432-8301-e1eda5ba989b",
+      "description": "cc",
+      "amount": 25.00,
+      "quantity": 2,
+      "totalAmount": 50.00,
+      "serviceCountry": 4,
+      "modifiedBy": "00000000-0000-0000-0000-000000000000",
+      "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
+      "product": null,
+      "id": "1fb476fb-f346-44d6-bf8f-e691dbd8369c"
+    },
+    {
+      "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
+      "serviceDate": "2022-01-24T18:30:00",
+      "productId": "3adac939-a4d1-4432-8301-e1eda5ba989b",
+      "description": "cc",
+      "amount": 25.00,
+      "quantity": 2,
+      "totalAmount": 50.00,
+      "serviceCountry": 4,
+      "modifiedBy": "00000000-0000-0000-0000-000000000000",
+      "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
+      "product": null,
+      "id": "1fb476fb-f346-44d6-bf8f-e691dbd8369c"
+    }
   ],
   invoiceNotes: [
-      {
-          "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
-          "noteType": 2,
-          "note": "CREATED",
-          "isCustomerVisible": true,
-          "exportToQuickbooks": false,
-          "createdDate": "2022-01-25T04:42:50Z",
-          "modifiedBy": "48a69262-1054-4d96-830e-8514c78b0eb1",
-          "modifiedByUser": null,
-          "displayInPDF": false,
-          "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
-          "id": 23180
-      }
+    {
+      "invoiceId": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3",
+      "noteType": 2,
+      "note": "CREATED",
+      "isCustomerVisible": true,
+      "exportToQuickbooks": false,
+      "createdDate": "2022-01-25T04:42:50Z",
+      "modifiedBy": "48a69262-1054-4d96-830e-8514c78b0eb1",
+      "modifiedByUser": null,
+      "displayInPDF": false,
+      "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",
+      "id": 23180
+    }
   ],
   "invoiceRelatedInvoices": [],
   "invoiceRelatedRelatedInvoices": [],
@@ -10192,3 +10206,745 @@ export const mockCreditMemoData = {
   "currency": null,
   "id": "e6adaad5-089b-4a6f-b24f-a398b33c8cf3"
 }
+export const mockProductData = [
+  {
+    "glCode": "46100",
+    "glDescription": "Contract Termination Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "004eac1f-f500-4f15-8639-1fbec408f85a"
+  },
+  {
+    "glCode": "20175",
+    "glDescription": "Customer Deposit",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "185dd0e4-94f0-4e38-a3d3-2ad34e3e2c30"
+  },
+  {
+    "glCode": "42200",
+    "glDescription": "Dental & Vision Benefits",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "1a2046b6-e840-4986-8a58-b0809a93acae"
+  },
+  {
+    "glCode": "40100",
+    "glDescription": "In Country Annual Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "20fbf7aa-0e1f-4400-b068-9cee6e4b6bc9"
+  },
+  {
+    "glCode": "40102",
+    "glDescription": "Local Tax Burden",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "2e2b5f3f-0b7d-48c1-9c9c-d5b107816377"
+  },
+  {
+    "glCode": "45100",
+    "glDescription": "Worker's Compensation",
+    "isActive": false,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "31a0d581-fd38-49cd-b676-26b7aa60439f"
+  },
+  {
+    "glCode": "48800",
+    "glDescription": "Postage and Delivery",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "39595d83-51a2-4e62-9192-050e30ef83de"
+  },
+  {
+    "glCode": "40102",
+    "glDescription": "Country VAT",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "3adac939-a4d1-4432-8301-e1eda5ba989b"
+  },
+  {
+    "glCode": "40151",
+    "glDescription": "Mobility Services",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "44b6ad2a-2790-4568-bb0d-d1bf39399009"
+  },
+  {
+    "glCode": "40151",
+    "glDescription": "Visa Fees",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "53df63cd-310f-43ba-a601-21e0f3f4b727"
+  },
+  {
+    "glCode": "46100",
+    "glDescription": "Late Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "5b6335f0-b2a2-47c8-9973-0779a6f55c5d"
+  },
+  {
+    "glCode": "46100",
+    "glDescription": "Non-Compliance Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "6151811d-5448-400f-8699-81f2b196363e"
+  },
+  {
+    "glCode": "40140",
+    "glDescription": "Out of Cycle Payroll Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "6202fbc5-30f8-4fe8-97a5-2a89224917d7"
+  },
+  {
+    "glCode": "40455",
+    "glDescription": "Health Insurance Commissions",
+    "isActive": false,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "63b01fcb-7e01-489a-93d4-f75d7abfd136"
+  },
+  {
+    "glCode": "40151",
+    "glDescription": "Professional Services",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "6ac7d11c-0b5e-4cee-8fe9-c01db95e7793"
+  },
+  {
+    "glCode": "40900",
+    "glDescription": "Expense Reimbursement",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "72d074a7-f3de-4023-9044-1a088f4a89bc"
+  },
+  {
+    "glCode": "40140",
+    "glDescription": "In country Processing Fees",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "72f9da86-a70f-4802-97f7-2f858cb81b8a"
+  },
+  {
+    "glCode": "42321",
+    "glDescription": "HRIS",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "74e22834-1f9b-4927-9ded-b00f7a8b85ad"
+  },
+  {
+    "glCode": "40151",
+    "glDescription": "Professional Services - Admin Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "85092eca-59c3-4c53-adce-bea90b8dc7ac"
+  },
+  {
+    "glCode": "27002",
+    "glDescription": "Healthcare Employee Contribution- Client",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "8525c10d-17b1-49cb-beb9-25f8893916b5"
+  },
+  {
+    "glCode": "40100",
+    "glDescription": "Pension/401K Set Up Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "85a4c9dc-03b3-424d-8120-73f844ad5321"
+  },
+  {
+    "glCode": "40001",
+    "glDescription": "Gross wages",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "8a83dada-6158-4ae6-a1ce-d614b0590576"
+  },
+  {
+    "glCode": "40221",
+    "glDescription": "Misc Benefits Bill",
+    "isActive": false,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "93a3a30f-7606-4d97-922d-73aa4ad438d0"
+  },
+  {
+    "glCode": "40170",
+    "glDescription": "New Hire Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "941f57e7-e465-4d93-a489-22dea73f28bf"
+  },
+  {
+    "glCode": "40215",
+    "glDescription": "Long Term Disability Insurance",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "97e63581-50c1-4d10-aca3-c817e4460fa5"
+  },
+  {
+    "glCode": "40100",
+    "glDescription": "New Country Set Up Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "9861226e-085e-4815-b811-2d268a156e8c"
+  },
+  {
+    "glCode": "40215",
+    "glDescription": "Short Term Disability Insurance",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "9a0abfdb-c5f3-46c2-86c2-74aadd82ecee"
+  },
+  {
+    "glCode": "40220",
+    "glDescription": "Misc Business Insurance",
+    "isActive": false,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "9a3b93cc-552a-4c56-9011-db289ca64c2a"
+  },
+  {
+    "glCode": "40100",
+    "glDescription": "Set Up Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "9ea064c2-049f-42ea-a1fb-61831d3f973d"
+  },
+  {
+    "glCode": "40170",
+    "glDescription": "Onboarding Fees",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "a6bf647e-cfb0-41cd-99a7-dd0f3cccfb10"
+  },
+  {
+    "glCode": "40218",
+    "glDescription": "Life Insurance",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "b3a74917-21c3-4aee-971e-123054af17cf"
+  },
+  {
+    "glCode": "40215",
+    "glDescription": "Disability Insurance",
+    "isActive": false,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "b72231ed-987f-4a44-9537-83d65fe24ba7"
+  },
+  {
+    "glCode": "43100",
+    "glDescription": "Pension or 401K Contributions (Client)",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "c0b40348-c98f-458e-aec9-6e6f40e9cbaa"
+  },
+  {
+    "glCode": "40171",
+    "glDescription": "Off Boarding Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "c5cda02f-f7af-4f2a-9290-f8ff206529b5"
+  },
+  {
+    "glCode": "40140",
+    "glDescription": "Payroll Processing Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "cdd57af0-3b3e-474f-b749-7cbc9a7058f0"
+  },
+  {
+    "glCode": "48800",
+    "glDescription": "Shipping Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "d7992a9f-8438-4c6e-9cdd-271c379a2f1e"
+  },
+  {
+    "glCode": "49050",
+    "glDescription": "Currency Exchange Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "d928d308-eb3f-4e79-b498-dab939a953f6"
+  },
+  {
+    "glCode": "46100",
+    "glDescription": "Administrative Fee",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "d9cf923c-f9cc-4429-997a-b0d5e0a6ce20"
+  },
+  {
+    "glCode": "46901",
+    "glDescription": "Incoming wire fees",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "de99ca01-b0da-4c94-9c0f-1854a2d8c2e0"
+  },
+  {
+    "glCode": "20172",
+    "glDescription": "Value Added Tax (VAT)",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "e2fb2e13-4179-45e5-b465-6abcc253330f"
+  },
+  {
+    "glCode": "40211",
+    "glDescription": "Health Insurance",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "ede3ec1a-1e9c-46e0-a9ca-6aa5cbfbc5c8"
+  },
+  {
+    "glCode": "40456",
+    "glDescription": "Workers Compensation Insurance",
+    "isActive": true,
+    "changeTypes": [],
+    "fees": [],
+    "invoiceItems": [],
+    "id": "f0bbb46c-e5d3-4592-bd6a-554e759fea5b"
+  }
+]
+export const mockServiceCountries = [
+  {
+    "keyword": "ServiceCountry",
+    "value": 1,
+    "text": "AFG -- Afghanistan",
+    "order": 1,
+    "isActive": true,
+    "integrationId": null,
+    "id": "261c1bcb-005e-41f7-8eed-8a183f80115b"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 2,
+    "text": "ALA -- Aland Islands",
+    "order": 2,
+    "isActive": true,
+    "integrationId": null,
+    "id": "b578f242-23b8-4543-a0a2-51284e797289"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 3,
+    "text": "ALB -- Albania",
+    "order": 3,
+    "isActive": true,
+    "integrationId": null,
+    "id": "daf990c5-c9a2-46b3-abc5-bd48cb384eac"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 4,
+    "text": "DZA -- Algeria",
+    "order": 4,
+    "isActive": true,
+    "integrationId": null,
+    "id": "6d33a5de-ec43-4fb9-b3ba-9a907681a0d4"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 5,
+    "text": "ASM -- American Samoa",
+    "order": 5,
+    "isActive": true,
+    "integrationId": null,
+    "id": "2fa5f264-0d85-45ec-88fb-5f4bfc299f89"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 6,
+    "text": "AND -- Andorra",
+    "order": 6,
+    "isActive": true,
+    "integrationId": null,
+    "id": "ec81ebb5-49e3-44ef-81e5-be5be3e60cb6"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 7,
+    "text": "AGO -- Angola",
+    "order": 7,
+    "isActive": true,
+    "integrationId": null,
+    "id": "7d8bb8aa-1a5a-4027-86c1-ede61dcb2153"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 8,
+    "text": "AIA -- Anguilla",
+    "order": 8,
+    "isActive": true,
+    "integrationId": null,
+    "id": "f75b7818-b501-4d17-8ff2-6a0dc2702be7"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 9,
+    "text": "ATA -- Antarctica",
+    "order": 9,
+    "isActive": true,
+    "integrationId": null,
+    "id": "72bdb9cc-fe52-4a27-8fd0-2b81cf4f79a9"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 10,
+    "text": "ATG -- Antigua and Barbuda",
+    "order": 10,
+    "isActive": true,
+    "integrationId": null,
+    "id": "b889fd8a-1127-486b-a513-1e5eb5c4fa5c"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 11,
+    "text": "ARG -- Argentina",
+    "order": 11,
+    "isActive": true,
+    "integrationId": null,
+    "id": "026f359b-da22-4386-bcff-3dddf5d16d12"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 12,
+    "text": "ARM -- Armenia",
+    "order": 12,
+    "isActive": true,
+    "integrationId": null,
+    "id": "41eaea0f-1dd0-4374-bab8-fd838c03706a"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 13,
+    "text": "ABW -- Aruba",
+    "order": 13,
+    "isActive": true,
+    "integrationId": null,
+    "id": "bc4c277b-9345-4cb7-a066-112aa4ac55ba"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 14,
+    "text": "AUS -- Australia",
+    "order": 14,
+    "isActive": true,
+    "integrationId": null,
+    "id": "fa8c9ae0-8c43-4db2-be8d-7921d8dd788d"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 15,
+    "text": "AUT -- Austria",
+    "order": 15,
+    "isActive": true,
+    "integrationId": null,
+    "id": "295dbd73-2c7e-4f23-8214-24b281611acf"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 16,
+    "text": "AZE -- Azerbaijan",
+    "order": 16,
+    "isActive": true,
+    "integrationId": null,
+    "id": "b5f25df0-0572-48f7-b2e5-584b652fa11d"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 17,
+    "text": "BHS -- Bahamas",
+    "order": 17,
+    "isActive": true,
+    "integrationId": null,
+    "id": "d3a4051f-4df0-4c07-9729-2990893e4688"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 18,
+    "text": "BHR -- Bahrain",
+    "order": 18,
+    "isActive": true,
+    "integrationId": null,
+    "id": "d132c0f7-6ad3-42b8-9604-5b0b6d5a96c5"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 19,
+    "text": "BGD -- Bangladesh",
+    "order": 19,
+    "isActive": true,
+    "integrationId": null,
+    "id": "8bb752e8-e985-426a-a0e6-9dfe69c93eef"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 20,
+    "text": "BRB -- Barbados",
+    "order": 20,
+    "isActive": true,
+    "integrationId": null,
+    "id": "805d3df8-6dd7-480c-89f8-42ee0e0503a2"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 21,
+    "text": "BLR -- Belarus",
+    "order": 21,
+    "isActive": true,
+    "integrationId": null,
+    "id": "8178b081-f6ad-47be-864d-3c095d6646a6"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 22,
+    "text": "BEL -- Belgium",
+    "order": 22,
+    "isActive": true,
+    "integrationId": null,
+    "id": "3efb2a56-d3d2-424a-ab2a-bf0b68350737"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 23,
+    "text": "BLZ -- Belize",
+    "order": 23,
+    "isActive": true,
+    "integrationId": null,
+    "id": "1abe811e-15ea-4b34-b33d-439ea369bcf8"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 24,
+    "text": "BEN -- Benin",
+    "order": 24,
+    "isActive": true,
+    "integrationId": null,
+    "id": "dc2aef1b-d781-48d5-979a-558457ff68cb"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 25,
+    "text": "BMU -- Bermuda",
+    "order": 25,
+    "isActive": true,
+    "integrationId": null,
+    "id": "1d5d2979-b5c9-41e5-a37a-7ff5927f0db2"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 26,
+    "text": "BTN -- Bhutan",
+    "order": 26,
+    "isActive": true,
+    "integrationId": null,
+    "id": "b8218096-7c25-4015-85a6-cd09c14d96b9"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 27,
+    "text": "BOL -- Bolivia",
+    "order": 27,
+    "isActive": true,
+    "integrationId": null,
+    "id": "7d2648d8-84dd-4c58-aa26-442c7e0e00e6"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 28,
+    "text": "BIH -- Bosnia and Herzegovina",
+    "order": 28,
+    "isActive": true,
+    "integrationId": null,
+    "id": "0af2b3b3-29af-41a2-a7f9-9c5bd3596d23"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 29,
+    "text": "BWA -- Botswana",
+    "order": 29,
+    "isActive": true,
+    "integrationId": null,
+    "id": "6525e392-cdb6-4046-8ea9-4e206e60f2d0"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 30,
+    "text": "BVT -- Bouvet Island",
+    "order": 30,
+    "isActive": true,
+    "integrationId": null,
+    "id": "5c22a6f6-d4cb-4eb6-8da4-a971bca73583"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 31,
+    "text": "BRA -- Brazil",
+    "order": 31,
+    "isActive": true,
+    "integrationId": null,
+    "id": "fd8482e6-866a-4c46-b238-ad0a86ef9128"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 32,
+    "text": "VGB -- British Virgin Islands",
+    "order": 32,
+    "isActive": true,
+    "integrationId": null,
+    "id": "8e0c1b0c-4fba-4b10-8195-7cfaffb767f0"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 33,
+    "text": "IOT -- British Indian Ocean Territory",
+    "order": 33,
+    "isActive": true,
+    "integrationId": null,
+    "id": "602ed424-87c7-4519-bed3-ded4169baf3b"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 34,
+    "text": "BRN -- Brunei Darussalam",
+    "order": 34,
+    "isActive": true,
+    "integrationId": null,
+    "id": "8c3c36fa-b06d-480a-b6b2-de94b856e832"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 35,
+    "text": "BGR -- Bulgaria",
+    "order": 35,
+    "isActive": true,
+    "integrationId": null,
+    "id": "086cabc9-d343-440c-b97a-22b67e7be27e"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 36,
+    "text": "BFA -- Burkina Faso",
+    "order": 36,
+    "isActive": true,
+    "integrationId": null,
+    "id": "fc29e8a6-4857-48fb-a309-95e705241034"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 37,
+    "text": "BDI -- Burundi",
+    "order": 37,
+    "isActive": true,
+    "integrationId": null,
+    "id": "50cbfcaa-cbfb-4019-95bd-d0c621bcc8c6"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 38,
+    "text": "KHM -- Cambodia",
+    "order": 38,
+    "isActive": true,
+    "integrationId": null,
+    "id": "2dd18069-5cab-4004-98d1-0871a77f05bb"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 39,
+    "text": "CMR -- Cameroon",
+    "order": 39,
+    "isActive": true,
+    "integrationId": null,
+    "id": "8fcbe4f4-b8fb-4d0e-a298-9458378da7ba"
+  },
+  {
+    "keyword": "ServiceCountry",
+    "value": 40,
+    "text": "CAN -- Canada",
+    "order": 40,
+    "isActive": true,
+    "integrationId": null,
+    "id": "2ee6965a-ab9c-4e4d-ac90-29eb1fa95bdc"
+  }
+]

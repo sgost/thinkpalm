@@ -3,13 +3,13 @@
 
 .atlas-payment-invoices {
   .container {
-    padding-bottom: 20px;
-    margin-top: 60px;
+    padding-bottom: 1.1111rem;
+    margin-top: 3.3333rem;
 
     .new-invoice-button {
       display: flex;
       justify-content: end;
-      margin-bottom: 42px;
+      margin-bottom: 2.3333rem;
 
       button.a-button.medium {
         font-size: 1rem;
@@ -21,14 +21,13 @@
     .dropdowns {
       display: flex;
       justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 16px;
+      gap: 1.1111rem;
+      margin-bottom: 0.8889rem;
 
       .inputContainer {
-        padding: 0px 5px 0px 20px;
+        padding: 0px 0.2778rem 0px 1.1111rem;
         align-items: center;
         background: #fff !important;
-        // border: 0.056rem solid #767676 !important;
         border: 0.056rem solid #ced4da;
         border-radius: 0.222rem;
         cursor: pointer;
@@ -44,12 +43,11 @@
           border-style: hidden;
           font-style: normal;
           font-weight: 400;
-          // font-size: 18px;
           line-height: 140%;
           display: flex;
           align-items: center;
           color: #767676;
-          margin: 0px 8px;
+          margin: 0px 0.4444rem;
           height: 2.188rem;
           width: 100%;
         }
@@ -65,7 +63,7 @@
         gap: 1.1111rem;
 
         .a-dropdown {
-          width: 270px;
+          width: 15rem;
         }
 
         .download {
@@ -88,7 +86,7 @@
       }
 
       .downloadicon {
-        margin-top: 19px;
+        margin-top: 1.0556rem;
         cursor: pointer;
       }
     }
