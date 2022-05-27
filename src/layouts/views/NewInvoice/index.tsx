@@ -654,7 +654,7 @@ const NewInvoice = () => {
               {stepsCount == 4 && stepperOneData?.type === "Payroll" && (
                 <FinishSTepper {...stepperFourProps} />
               )}
-              {stepsCount === 4 && stepperOneData?.type === "Credit Memo" || stepsCount === 4 && stepperOneData?.type === "Proforma" && (
+              {stepsCount === 4 && (stepperOneData?.type === "Credit Memo" || stepperOneData?.type === "Proforma") && (
                 <FinishCreditMemo invoiceId={invoiceId} />
               )}
             </>
