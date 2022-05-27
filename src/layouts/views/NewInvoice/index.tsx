@@ -484,13 +484,13 @@ const NewInvoice = () => {
     let invoiceItems = todos.map((e: any) => {
       return {
         ServiceDate: e.date, // ?
-        ProductId: newArrPush.find((n: any) => n.label === e.product).id, // prod id
+        ProductId: newArrPush.find((n: any) => n.label === e.product)?.id, // prod id
         Description: e.description,
         Amount: e.amount,
         Quantity: e.quantity,
         TotalAmount: e.amount * e.quantity, // multiple ?
         ServiceCountry: newArrPushs.find((n: any) => n.label === e.country)
-          .value, // keyword? or id
+          ?.value, // keyword? or id
         ModifiedBy: stepperOneData?.customerId, // ?
       };
     });
