@@ -377,38 +377,44 @@ const PreviewInvoice = ({
                       </div>
                     </div>
                     <div className="newInvoiceHeaderAmount">
-                      <div className="newInvoiceHeaderAmount-one">
-                        {getPayrollBillingCurrency()}{" "}
-                        {payrollToCurrencyFormat(
-                          apiData?.data?.invoice?.invoiceBalance
-                        )}
-                      </div>
-                      <div className="newInvoiceHeaderAmount-two">
-                        {getPayrollBillingCurrency()}{" "}
-                        {payrollToCurrencyFormat(
-                          apiData?.data?.invoice?.totalAmount
-                        )}
-                      </div>
+                      <p className="newInvoiceHeaderAmount-one">
+                        Open{" "}
+                        <span>
+                          {getPayrollBillingCurrency()}{" "}
+                          {payrollToCurrencyFormat(
+                            apiData?.data?.invoice?.invoiceBalance
+                          )}
+                        </span>
+                      </p>
+                      <p className="newInvoiceHeaderAmount-two">
+                        Total{" "}
+                        <span>
+                          {getPayrollBillingCurrency()}{" "}
+                          {payrollToCurrencyFormat(
+                            apiData?.data?.invoice?.totalAmount
+                          )}
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </div>
-
-                <div className="newInfoDetails">
+           
+               <div className="newInfoDetails">
                   <div className="column1">
                     <p className="newInvoiceHeading">From</p>
                     <p className="newInvoiceValue">
-                      {/* {apiData?.data?.invoiceFrom?.companyName} */}
-                      {invoicePreviewData?.invoiceFrom?.companyName}
+                      {apiData?.data?.invoiceFrom?.companyName}
+                      {/* {invoicePreviewData?.invoiceFrom?.companyName} */}
                     </p>
                   </div>
                   <div>
                     <p className="newInvoiceHeading">To</p>
                     <p className="newInvoiceValue valuebold">
-                      {/* {apiData?.data?.invoice?.customerName} */}
-                      {invoicePreviewData?.invoice?.customerName}
+                      {apiData?.data?.invoice?.customerName}
+                      {/* {invoicePreviewData?.invoice?.customerName} */}
                     </p>
                     <p className="newInvoiceAddress">
-                      {/* {addressData?.data?.billingAddress?.street} */}
+                      {addressData?.data?.billingAddress?.street}
                     </p>
                     <p className="address">
                       {addressData?.data?.billingAddress?.city}
