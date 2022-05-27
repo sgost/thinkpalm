@@ -105,9 +105,8 @@ const ProductInvoiceCreation = ({
   };
 
   const handleChange = (e: any, index: any) => {
-    const tempData = todos;
+    const tempData = [...todos];
     tempData[index][e.target.name] = e.target.value;
-    console.log(tempData);
     setTodos(tempData);
   };
 
@@ -143,6 +142,7 @@ const ProductInvoiceCreation = ({
                 {/* Customer */}
                 <div
                   className="year-dropdown"
+                  data-testid="Date-picker"
                   onClick={() => localStorage.setItem("name_value", "date")}
                 >
                   <DatePicker
@@ -150,20 +150,19 @@ const ProductInvoiceCreation = ({
                       const startDate = format(date, "dd MMM yyyy");
                       setDateFrom(startDate);
                       new_handle2(startDate, i);
-                      console.log(date);
                     }}
                     inline={false}
-                    label="Invoice Date"
-                    data-testid="Date-picker"
+                    label="Service Date"
+                    
                     minDate={new Date()}
-                    placeholderText={item.date ? item.date : "Please Select"}
+                    placeholderText={item.date ? item.date: "Please Select"}
                   />
                 </div>
 
                 {/* Product Service */}
 
                 <div
-                  className="dropdownP"
+                  className="dropdownP mandotary-field textcolor"
                   onClick={() => {
                     localStorage.setItem("name_value", "product");
                     setOpen(true);
@@ -212,14 +211,15 @@ const ProductInvoiceCreation = ({
                   />
                 </div>
 
-                {/* Product Service */}
+                {/* Description */}
 
                 <div className="dropdownP">
                   <span id="desc_label">
-                    Description<span style={{ color: `red` }}>*</span>
+                    Description
                   </span>
                   <input
                     type="text"
+                    className="font-color"
                     defaultValue={item.description}
                     placeholder="Description"
                     id="description_input"
@@ -233,7 +233,7 @@ const ProductInvoiceCreation = ({
               <div id="container_main2">
                 {/* Country Service */}
                 <div
-                  className="dropdownP"
+                  className="dropdownP mandotary-field textcolor"
                   data-testid="Country_name"
                   onClick={() => {
                     localStorage.setItem("name_value", "country");
@@ -275,7 +275,7 @@ const ProductInvoiceCreation = ({
                       setToggleState(i);
                     }}
                     isOpen={toggleState == i ? Opens : false}
-                    title={`Country Service`}
+                    title="Service Country"
                     options={newArrPushs}
                   />
                 </div>
@@ -292,6 +292,8 @@ const ProductInvoiceCreation = ({
                     <input
                       data-testid="Quantity"
                       placeholder="0"
+                      type="number"
+                      min="0"
                       defaultValue={item.quantity}
                       className="inputField"
                       onChange={(e) => {
@@ -303,7 +305,9 @@ const ProductInvoiceCreation = ({
                     />
                     <input
                       data-testid="Amount"
-                      placeholder="00"
+                      placeholder="0"
+                      type="number"
+                      min="0"
                       defaultValue={item.amount}
                       className="inputField"
                       onChange={(e) => {
@@ -329,7 +333,7 @@ const ProductInvoiceCreation = ({
                   ).toLocaleString("en-US")
                 }
                 className="secondary-btn medium button"
-                handleOnClick={() => { }}
+                // handleOnClick={() => { }}
                 data-testid="Button_Balance"
               />
             </div>

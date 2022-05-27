@@ -37,6 +37,7 @@ const NewInvoice = () => {
       amount: "",
     },
   ]);
+
   //ProductIncoice Data
   const [dateFrom, setDateFrom] = useState("");
   //Set Product Service
@@ -76,8 +77,8 @@ const NewInvoice = () => {
   const creditMemoSteps = [
     sharedSteps.newInvoice,
     {
-      key: "productService",
-      label: "Product Service",
+      key: "summary",
+      label: "Summary",
     },
     sharedSteps.invoicePreview,
     sharedSteps.finish,
@@ -336,8 +337,6 @@ const NewInvoice = () => {
     stepperOneData,
   };
 
-  console.log("product_stepper", product_stepper);
-
   const disableFunForStepOnePayroll = () => {
     if (stepsCount == 1) {
       return !(
@@ -361,8 +360,29 @@ const NewInvoice = () => {
         invoiceDate !== ""
       );
     }
-    if (stepsCount == 2 && stepperOneData.type === "Payroll") {
-      return selectedRowPostData?.length > 0 ? false : true;
+    if (stepsCount == 2 && stepperOneData.type === "Credit Memo") {
+      let condition: any = [];
+      let boolen = false;
+      todos.forEach((item) => {
+        if (
+          item.product.length &&
+          item.amount.length &&
+          item.date.length &&
+          item.quantity.length &&
+          item.country.length
+        ) {
+          condition.push(false);
+        } else {
+          condition.push(true);
+        }
+      });
+
+      condition.forEach((element: any) => {
+        if (element) {
+          boolen = element
+        }
+      });
+      return boolen;
     }
   };
 
@@ -540,6 +560,7 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
+          console.log("res.data", res.data)
           setInvoiceId(res.data.id);
           setIsInvoiceCreated(true);
           SetinvoicePreviewData(res.data);
@@ -602,9 +623,11 @@ const NewInvoice = () => {
               className:
                 stepsCount === 1
                   ? ""
-                  : stepsCount === 2
+                  : stepsCount === 2 && stepperOneData?.type === "Payroll"
                     ? "step2-right-panel"
-                    : "",
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -640,6 +663,7 @@ const NewInvoice = () => {
               {stepsCount == 3 && stepperOneData?.type === "Payroll" && (
                 <PreviewInvoice {...stepperThreeProps} />
               )}
+              {console.log("stepperOneData?.type", stepperOneData?.type, stepsCount)}
               {stepsCount == 3 &&
                 (stepperOneData?.type === "Credit Memo" ||
                   stepperOneData?.type === "Proforma") && (
