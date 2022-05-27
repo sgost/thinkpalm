@@ -1734,7 +1734,6 @@ describe("New Invoice for Proforma ", () => {
 
 describe("New Invoice for Miscellaneous ", () => {
   beforeAll(() => {
-    jest.setTimeout(60000);
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
@@ -1760,6 +1759,7 @@ describe("New Invoice for Miscellaneous ", () => {
     fireEvent.click(invoiceBreadClick[0]);
   });
   test("dropDown Value change stepper 1", async () => {
+    jest.setTimeout(10000);
     render(
       <HashRouter>
         <NewInvoice />
