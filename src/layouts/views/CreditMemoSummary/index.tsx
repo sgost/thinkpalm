@@ -38,7 +38,7 @@ export default function CreditMemoSummary(props: any) {
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
-    /* istanbul ignore next */
+
     useEffect(() => {
         axios.get(urls.products).then((resp) => {
             if (resp.status == 200) {
@@ -91,7 +91,7 @@ export default function CreditMemoSummary(props: any) {
 
     }, [])
 
-    /* istanbul ignore next */
+    
     const toCurrencyFormat = (amount: number) => {
         const cFormat = new Intl.NumberFormat("en-US", {
             style: "currency",
@@ -119,7 +119,7 @@ export default function CreditMemoSummary(props: any) {
         isDropOpen: openCountryService,
         updateOptions: setCountryOptions,
     });
-    /* istanbul ignore next */
+    
     const productDropOptionClick = (option: any) => handleOptionClick({
         option,
         dropOptions: productOptions,
@@ -147,12 +147,12 @@ export default function CreditMemoSummary(props: any) {
         callUpdateAPI();
     }
 
-    /* istanbul ignore next */
+    
     const editInvoiceItems = (index: number) => {        
         callUpdateAPI();        
         console.log(creditMemoData);
     }
-    /* istanbul ignore next */
+    
     const deleteInvoiceItem = (index: number) => {
         payload.invoiceItems.splice(index, 1);
         callUpdateAPI();
@@ -298,7 +298,7 @@ export default function CreditMemoSummary(props: any) {
         }
       };
 
-    /* istanbul ignore next */
+    
     return (
         <div className="credit-summary-wrapper">
             <Cards className="summary-card">
@@ -313,6 +313,7 @@ export default function CreditMemoSummary(props: any) {
                                     {editCheck != index && (creditMemoData.status == 1 || creditMemoData.status == 2) && 
                                     <>
                                     { index != 0 && <Button
+                                        data-testid="delete-summary-button"
                                         icon={{
                                             color: '#526fd5',
                                             icon: 'trash',
@@ -323,6 +324,7 @@ export default function CreditMemoSummary(props: any) {
                                         handleOnClick={()=>{deleteInvoiceItem(index)} }
                                     />}
                                     <Button
+                                        data-testid = "edit-summary-button"
                                         className="primary-blue medium edit"
                                         icon={{
                                             color: '#fff',
@@ -334,11 +336,13 @@ export default function CreditMemoSummary(props: any) {
                                     /></>}
                                     {editCheck == index && <>
                                         <Button
+                                            data-testid = "cancel-edit-summary-button"
                                             className="secondary-btn no-border medium save"
                                             label="Cancel Edit"
                                             handleOnClick={() => { setEditCheck(creditMemoData.invoiceItems.length) }}
                                         />
                                         <Button
+                                            data-testid = "save-edit-summary-button"
                                             className="primary-blue medium save-changes"
                                             label="Save Changes"
                                             handleOnClick={() => { editInvoiceItems(index) }}
@@ -357,6 +361,7 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='UI-line-text-box ui-dropdown-req'>
                                     <Dropdown
+                                        // testId="summary-ps"
                                         handleDropOptionClick={(option: any) =>
                                             handleArrOptionClick(
                                               option,
@@ -566,6 +571,7 @@ export default function CreditMemoSummary(props: any) {
             </Cards>
             {(creditMemoData.status == 1 || creditMemoData.status == 2) && <Cards className="add-item">
                 <Button
+                    data-testid="Invoice-Add-New-Summary"
                     label="Add New Item"
                     className="secondary-btn large no-border"
                     icon={{

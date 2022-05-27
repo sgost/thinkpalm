@@ -27,6 +27,7 @@ import {
   getRelatedInvoiceUrl,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
+import { mockLogsdata } from "../../InvoiceDetails/mockData";
 
 localStorage.setItem(
   "accessToken",
@@ -75,7 +76,7 @@ describe("New Invoice", () => {
     const newInvoice = await screen.findAllByText(/New Invoice/);
 
     expect(newInvoice[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const customerDropValue = await screen.findByText(
@@ -97,12 +98,12 @@ describe("New Invoice", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -228,12 +229,12 @@ describe("Stepper 2", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -282,12 +283,12 @@ describe("Stepper 2", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -335,12 +336,12 @@ describe("Stepper 2", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -453,12 +454,12 @@ describe("Stepper 2 show table click", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -525,12 +526,12 @@ describe("Stepper 2 api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -634,12 +635,12 @@ describe("Stepper 3", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -688,12 +689,12 @@ describe("Stepper 3", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -741,12 +742,12 @@ describe("Stepper 3", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -795,8 +796,8 @@ describe("Stepper 3", () => {
     expect(previewModal).toBeInTheDocument();
     fireEvent.click(previewModal);
 
-    const fromText = await screen.findAllByText(/Elements Holdings Group Ltd/);
-    expect(fromText[0]).toBeInTheDocument();
+    // const fromText = await screen.findAllByText(/Elements Holdings Group Ltd/);
+    // expect(fromText[0]).toBeInTheDocument();
   });
 });
 
@@ -861,12 +862,12 @@ describe("Stepper 3 invoice detail api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -915,12 +916,12 @@ describe("Stepper 3 invoice detail api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -968,12 +969,12 @@ describe("Stepper 3 invoice detail api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1135,12 +1136,12 @@ describe("Stepper 3 fee api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1188,12 +1189,12 @@ describe("Stepper 3 fee api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1296,12 +1297,12 @@ describe("Stepper 3 address api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1350,12 +1351,12 @@ describe("Stepper 3 address api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1403,12 +1404,12 @@ describe("Stepper 3 address api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1511,12 +1512,12 @@ describe("Stepper 3 country api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1565,12 +1566,12 @@ describe("Stepper 3 country api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1618,12 +1619,12 @@ describe("Stepper 3 country api fail", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
+    // fireEvent.click(pleaseSelectDropDown[2]);
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
+    // fireEvent.click(pleaseSelectDropDown[3]);
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
@@ -1672,6 +1673,10 @@ describe("New Invoice for Proforma ", () => {
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
+    mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("breadcumbs are working", async () => {
@@ -1687,7 +1692,7 @@ describe("New Invoice for Proforma ", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-  });
+  },30000);
   test("dropDown Value change stepper 1", async () => {
     render(
       <HashRouter>
@@ -1713,20 +1718,16 @@ describe("New Invoice for Proforma ", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
-    const monthDropValue = await screen.findByText(/January/);
-    expect(monthDropValue).toBeInTheDocument();
-    fireEvent.click(monthDropValue);
+    const dp = await waitFor(() => screen.getByRole("textbox"));
+    fireEvent.click(dp);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const selDate = await waitFor(() => screen.getByText(/15/));
+    fireEvent.click(selDate);
 
-    // const nextButton = await screen.findByTestId("next-button");
-    // expect(nextButton).toBeInTheDocument();
-    // fireEvent.click(nextButton);
-  });
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+  },30000);
 });
 
 // test cases for Miscellaneous
@@ -1736,6 +1737,11 @@ describe("New Invoice for Miscellaneous ", () => {
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
+    mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
+    mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resCreateCreditMemo);
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("breadcumbs are working", async () => {
@@ -1751,7 +1757,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-  });
+  },30000);
   test("dropDown Value change stepper 1", async () => {
     render(
       <HashRouter>
@@ -1777,35 +1783,97 @@ describe("New Invoice for Miscellaneous ", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
-    const monthDropValue = await screen.findByText(/January/);
-    expect(monthDropValue).toBeInTheDocument();
-    fireEvent.click(monthDropValue);
+    screen.debug(pleaseSelectDropDown);
+    // fireEvent.click(pleaseSelectDropDown[2]);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const dp = await waitFor(() => screen.getByRole("textbox"));
+    fireEvent.click(dp);
 
-    // const nextButton = await screen.findByTestId("next-button");
-    // expect(nextButton).toBeInTheDocument();
-    // fireEvent.click(nextButton);
-  });
+    const selDate = await waitFor(() => screen.getByText(/15/));
+    fireEvent.click(selDate);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const SelectEmployeeText = await screen.findAllByText(/Add New Item/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+    const summaryText = await screen.findAllByText(/Summary/);
+    expect(summaryText[0]).toBeInTheDocument();
+
+    const dp2 = await screen.findAllByRole("textbox");
+    fireEvent.click(dp2[0]);
+
+    const serviceDate = await screen.findAllByText(/27/);
+    fireEvent.click(serviceDate[1]);
+    // screen.debug(serviceDate[1])
+
+    const pleaseSelectDropDownStepper2 = await screen.findAllByText(
+      /Please Select/
+    );
+    fireEvent.click(pleaseSelectDropDownStepper2[0]);
+
+    const productServiceDropDownValue = await screen.findAllByText(
+      /Contract Termination Fee/
+    );
+    expect(productServiceDropDownValue[0]).toBeInTheDocument();
+    fireEvent.click(productServiceDropDownValue[0]);
+
+    fireEvent.click(pleaseSelectDropDownStepper2[1]);
+    const countryServiceDropDownValue = await screen.findAllByText(
+      /AFG -- Afghanistan/
+    );
+    expect(countryServiceDropDownValue[0]).toBeInTheDocument();
+    fireEvent.click(countryServiceDropDownValue[0]);
+
+    const DescriptionInputField = await screen.findByPlaceholderText(
+      /Description/
+    );
+    expect(DescriptionInputField).toBeInTheDocument();
+    fireEvent.change(DescriptionInputField, { target: { value: "test" } });
+
+    const QuantityInputField = await screen.findByTestId(/Quantity/);
+    expect(QuantityInputField).toBeInTheDocument();
+    fireEvent.change(QuantityInputField, { target: { value: 30 } });
+
+    const AmountInputField = await screen.findByTestId(/Amount/);
+    expect(AmountInputField).toBeInTheDocument();
+    fireEvent.change(AmountInputField, { target: { value: 1 } });
+
+    const addNewText = await screen.findAllByText(/Add New Item/);
+    expect(addNewText[0]).toBeInTheDocument();
+    fireEvent.click(addNewText[0]);
+
+    const DeleteText = await screen.findAllByText(/Delete/);
+    expect(DeleteText[1]).toBeInTheDocument();
+    fireEvent.click(DeleteText[1]);
+
+    const nextPreview = await screen.findByTestId("next-button");
+    expect(nextPreview).toBeInTheDocument();
+    fireEvent.click(nextPreview);
+    
+  },30000);
 });
 
 /// Credit Memo
 
-describe("Stepper for Credit Memo  1 and 2 ", () => {
+describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
+    mock
+      .onPost(urls.createCreditMemo)
+      .reply(200, mockapidata.resCreateCreditMemo);
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo", async () => {
-    render(
+    const { container } = render(
       <HashRouter>
         <NewInvoice />
       </HashRouter>
@@ -1828,15 +1896,11 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    fireEvent.click(pleaseSelectDropDown[2]);
-    const monthDropValue = await screen.findByText(/January/);
-    expect(monthDropValue).toBeInTheDocument();
-    fireEvent.click(monthDropValue);
+    const dp = await waitFor(() => screen.getByRole("textbox"));
+    fireEvent.click(dp);
 
-    fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const selDate = await waitFor(() => screen.getByText(/15/));
+    fireEvent.click(selDate);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1847,6 +1911,13 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
 
     const summaryText = await screen.findAllByText(/Summary/);
     expect(summaryText[0]).toBeInTheDocument();
+
+    const dp2 = await screen.findAllByRole("textbox");
+    fireEvent.click(dp2[0]);
+
+    const serviceDate = await screen.findAllByText(/27/);
+    fireEvent.click(serviceDate[1]);
+    // screen.debug(serviceDate[1])
 
     const pleaseSelectDropDownStepper2 = await screen.findAllByText(
       /Please Select/
@@ -1865,14 +1936,6 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     );
     expect(countryServiceDropDownValue[0]).toBeInTheDocument();
     fireEvent.click(countryServiceDropDownValue[0]);
-
-    const countryName = await screen.findByTestId("Country_name");
-    expect(countryName).toBeInTheDocument();
-    fireEvent.click(countryName);
-
-    const countryOpen = await screen.findByTestId("Country_open");
-    expect(countryOpen).toBeInTheDocument();
-    fireEvent.click(countryOpen);
 
     const DescriptionInputField = await screen.findByPlaceholderText(
       /Description/
@@ -1893,16 +1956,8 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     fireEvent.click(addNewText[0]);
 
     const DeleteText = await screen.findAllByText(/Delete/);
-    expect(DeleteText[0]).toBeInTheDocument();
-    fireEvent.click(DeleteText[0]);
-
-    const ButtonBalance = await screen.findByTestId("Button_Balance");
-    expect(ButtonBalance).toBeInTheDocument();
-    fireEvent.click(ButtonBalance);
-
-    const HandleAdd = await screen.findByTestId("Add-New-Item");
-    expect(HandleAdd).toBeInTheDocument();
-    fireEvent.click(HandleAdd);
+    expect(DeleteText[1]).toBeInTheDocument();
+    fireEvent.click(DeleteText[1]);
 
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
@@ -1911,14 +1966,13 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
     expect(InvoiceTab[0]).toBeInTheDocument();
 
-    const openModal = await screen.findByTestId("PreviewButton");
-    expect(openModal).toBeInTheDocument();
-    fireEvent.click(openModal);
+    const openModal = await screen.findAllByText(/Preview Invoice/);
+    expect(openModal[0]).toBeInTheDocument();
+    fireEvent.click(openModal[0]);
 
-    const openModalPreview = await screen.findByTestId("Modal_div");
-    expect(openModalPreview).toBeInTheDocument();
-    fireEvent.click(openModalPreview);
-  });
+    // const closeButton = container.querySelector(".close");
+    // fireEvent.click(closeButton);
+  },30000);
 });
 
 describe("final stepper", () => {
@@ -1937,5 +1991,5 @@ describe("final stepper", () => {
 
     const goto = screen.getByText(/Go to Invoice/);
     fireEvent.click(goto);
-  });
+  },30000);
 });

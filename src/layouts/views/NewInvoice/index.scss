@@ -97,4 +97,25 @@
     .newinvoice-container .dropdowns {
         z-index: 3;
     }
+
+    .step2-credit-memo{
+            flex-grow: 2;
+            padding: 0rem !important; 
+            position: relative;
+
+        .newinvoice_main {
+            margin-top: 0.6rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            background-color: white;
+            padding: 2rem 5rem;
+        }
+
+         .newinvoice-container2 {
+            margin: 0.6rem 0 0 0;
+            padding: 2rem 5rem;
+            border-radius: 0 0 0.5rem 0.5rem;
+            border-top: 1rem solid #eff1f4;
+        }
+    }
 }
+
