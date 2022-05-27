@@ -1017,6 +1017,7 @@ export default function InvoiceDetails() {
                 />
               </div>
             )}
+            <div className="download-invoice-deopdown">
           {permission?.InvoiceDetails.includes("Download") && (
             <div
               onClick={() =>
@@ -1050,7 +1051,7 @@ export default function InvoiceDetails() {
               </p>
             </div>
           )}
-
+          </div>
           <div className="decline-invoice">
             {status === "Pending Approval" &&
               permission?.InvoiceDetails.includes("Approve") && (

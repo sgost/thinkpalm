@@ -57,7 +57,7 @@
           border-style: solid;
           border-color: $primary-blue;
           border-radius: 4px;
-          height: 2.3rem;
+          height: 2.5rem;
           font-size: 1rem;
           border-width: 0.1rem;
           cursor: pointer;
@@ -136,6 +136,9 @@
         &:disabled{
           border: 2px solid #cbd4f3!important;
         }
+      }
+      .download-invoice-deopdown{
+        position: relative;
       }
     }
 
@@ -369,7 +372,6 @@
       .rowFee {
         display: flex;
         border-bottom-style: solid;
-        // border-bottom-width: 1;
         border-color: $light-gray;
         border-width: 1px;
         width: 30%;
@@ -460,7 +462,6 @@
         border-radius: 10px;
         background-color: $white;
         padding: 4rem;
-        // overflow: auto;
 
         h3 {
           font-size: 1.5rem;
@@ -473,14 +474,11 @@
 
         .notesContainer {
           height: 24rem;
-          // overflow: auto;
           margin-top: 1rem;
           margin-right: 3rem;
 
           .notesSubContainer {
-            // display: flex;
-            // align-items: center;
-            // justify-content: space-between;
+          
 
             .noteInfoBtn {
               display: flex;
@@ -547,7 +545,6 @@
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          // justify-content: space-between;
 
           .btnContainercheckbox {
             display: flex;
@@ -729,7 +726,6 @@
 
         .decline-button {
           max-width: 11rem;
-          // margin-left: 1.611rem;
         }
       }
     }
@@ -853,19 +849,19 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        width: 140px;
+        width: 8.7778rem;
         margin-left: -2rem;
         align-items: center;
         cursor: pointer;
 
         img {
-          height: 20px;
-          width: 20px;
+          height: 1.1111rem;
+          width: 1.1111rem;
           // margin-top: 12px;
         }
 
         h5 {
-          font-size: 17px;
+          font-size: 1rem;
           margin: 0rem;
           color: red;
         }
