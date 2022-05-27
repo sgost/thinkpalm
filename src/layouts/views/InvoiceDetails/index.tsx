@@ -15,7 +15,7 @@ import {
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
 
-import moment from "moment"; 
+import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -169,7 +169,7 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        if (state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 2) {
+        if (state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 3 && state.transactionType != 2) {
           axios
             .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
             .then((res: any) => {
@@ -361,7 +361,7 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else if (state.transactionType == 4 || state.transactionType == 2) {
+        } else if (state.transactionType == 4 || state.transactionType == 3 || state.transactionType == 2) {
           axios
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
@@ -434,15 +434,17 @@ export default function InvoiceDetails() {
     if (state.transactionType == 7) {
       let URL = baseBillApi + state.InvoiceId;
       axios
-        .get(URL, { headers: { 
-            accept: "text/plain", 
+        .get(URL, {
+          headers: {
+            accept: "text/plain",
             Authorization: `Bearer ${localStorage.accessToken}`,
             customerID: localStorage["current-org-id"]
-          } })
+          }
+        })
         .then((response: any) => {
           if (response.status == 200) {
             const { data } = response.data;
-            if(data?.length > 0 ){
+            if (data?.length > 0) {
               setBillTableData(response);
             }
             else {
@@ -456,7 +458,7 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    if (state.transactionType != 4 && state.transactionType != 2) {
+    if (state.transactionType != 4 && state.transactionType != 3 && state.transactionType != 2) {
       axios
         .get(notesApi, headers)
         .then((res: any) => {
@@ -962,6 +964,8 @@ export default function InvoiceDetails() {
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
         return "Credit Memo Invoice No. " + creditMemoData.invoiceNo;
+      case 3:
+        return "Proformo Invoice No. " + creditMemoData.invoiceNo
       case 2:
         return "Miscellaneous No. " + creditMemoData.invoiceNo;
       default:
@@ -1022,14 +1026,13 @@ export default function InvoiceDetails() {
               onClick={() =>
                 state.transactionType != 7
                   ? setIsDownloadOpen(!isDownloadOpen)
-                  : function noRefCheck() {}
+                  : function noRefCheck() { }
               }
-              className={`${
-                state.transactionType == 7 || deleteDisableButtons === true
-                  ? "download_disable"
-                  : "download"
-              }`}
-              // className="download"
+              className={`${state.transactionType == 7 || deleteDisableButtons === true
+                ? "download_disable"
+                : "download"
+                }`}
+            // className="download"
             >
               <p className="text">Download</p>
               <Icon
@@ -1280,7 +1283,7 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {(state.transactionType == 4 || state.transactionType == 2) && 
+      {(state.transactionType == 4 || state.transactionType == 3 || state.transactionType == 2) &&
         currentOrgToken?.Payments?.Role == "FinanceAR" && (
           <CreditMemoSummary
             notes={notes}
@@ -1297,7 +1300,7 @@ export default function InvoiceDetails() {
           ></CreditMemoSummary>
         )}
 
-      {state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 2 && (
+      {state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 3 && state.transactionType != 2 && (
         <div className="tab">
           <p
             onClick={() => setActiveTab("payroll")}
@@ -1327,7 +1330,7 @@ export default function InvoiceDetails() {
       )}
 
       {activeTab === "master" &&
-        state.transactionType != 4 &&
+        state.transactionType != 4 && state.transactionType != 3 &&
         state.transactionType != 7 && state.transactionType != 2 && (
           <div className="master">
             <h3 className="tableHeader">Country Summary</h3>
@@ -1375,7 +1378,7 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "payroll" &&
-        state.transactionType != 4 &&
+        state.transactionType != 4 && state.transactionType != 3 &&
         state.transactionType != 7 && state.transactionType != 2 && (
           <div className="payroll">
             {payrollTables.map((item: any) => {
@@ -1400,8 +1403,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             item.currencyCode +
-                              " " +
-                              toCurrencyFormat(item.feeSummary.subTotalDue)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.subTotalDue)
 
                             // item.feeSummary.subTotalDue
                             //   .toFixed(2)
@@ -1423,10 +1426,10 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(
-                                item.feeSummary.subTotalDue * item.exchangeRate
-                              )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.subTotalDue * item.exchangeRate
+                            )
                             // (item.feeSummary.subTotalDue * item.exchangeRate)
                             //   .toFixed(2)
                             //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1438,10 +1441,10 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(
-                                item.feeSummary.inCountryProcessingFee
-                              )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.inCountryProcessingFee
+                            )
 
                             // getInCountryProcessingFee()
                             //   .toFixed(2)
@@ -1454,8 +1457,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(item.feeSummary.fxBill)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.fxBill)
 
                             // item.feeSummary.fxBill
                             //   .toFixed(2)
@@ -1468,8 +1471,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(item.feeSummary.totalCountryVat)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                             // item.feeSummary.totalCountryVat
                             //   .toFixed(2)
@@ -1482,8 +1485,8 @@ export default function InvoiceDetails() {
                         <h3>
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(item.countryTotalDue)
+                            " " +
+                            toCurrencyFormat(item.countryTotalDue)
 
                             // item.feeSummary.total
                             //   .toFixed(2)
@@ -1512,7 +1515,7 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "files" &&
-        state.transactionType != 4 &&
+        state.transactionType != 4 && state.transactionType != 3 &&
         state.transactionType != 7 && state.transactionType != 2 && (
           <>
             <div className="filesNotes">

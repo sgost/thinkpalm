@@ -514,7 +514,7 @@ const NewInvoice = () => {
         )?.billingAddressCountryName || "India", // currently its coming null thats why fallback is India
       CurrencyId: 840, // backend will provide it
       Status: 1, // hard code
-      TransactionType: 4, //
+      TransactionType: stepperOneData?.type === "Proforma" ? 3 : 4, //
       // CreatedDate: currDate, // ? current date
       DueDate: dueDate, //
       CreatedDate: invoiceDate,
@@ -603,8 +603,8 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2
-                  ? "step2-right-panel"
-                  : "",
+                    ? "step2-right-panel"
+                    : "",
             },
           }}
           leftPanel={
@@ -616,8 +616,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
@@ -654,7 +654,7 @@ const NewInvoice = () => {
               {stepsCount == 4 && stepperOneData?.type === "Payroll" && (
                 <FinishSTepper {...stepperFourProps} />
               )}
-              {stepsCount === 4 && stepperOneData?.type === "Credit Memo" && (
+              {stepsCount === 4 && stepperOneData?.type === "Credit Memo" || stepsCount === 4 && stepperOneData?.type === "Proforma" && (
                 <FinishCreditMemo invoiceId={invoiceId} />
               )}
             </>
@@ -686,12 +686,12 @@ const NewInvoice = () => {
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
                 : stepperOneData?.type === "Credit Memo"
-                ? disableFunForStepOneCreditMemo()
-                : stepperOneData?.type === "Proforma"
-                ? disableFunForStepOneProforma()
-                : stepperOneData?.type === "Miscellaneous"
-                ? disableFunForStepOneMiscellaneous()
-                : true
+                  ? disableFunForStepOneCreditMemo()
+                  : stepperOneData?.type === "Proforma"
+                    ? disableFunForStepOneProforma()
+                    : stepperOneData?.type === "Miscellaneous"
+                      ? disableFunForStepOneMiscellaneous()
+                      : true
             }
             data-testid="next-button"
             icon={{
