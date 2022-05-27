@@ -334,6 +334,7 @@ const NewInvoice = () => {
     Opens,
     setOpens,
     stepperOneData,
+    invoiceId,
   };
 
   console.log("product_stepper", product_stepper);

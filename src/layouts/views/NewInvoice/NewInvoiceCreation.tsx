@@ -226,12 +226,12 @@ const NewInvoiceCreation = ({
                   handleDateChange={function (date: any) {
                     setInvoiceDate(date);
                   }}
-                  label="Select Date"
+                  label="Invoice Date"
                   minDate={new Date()}
-                  required
+                  required={true}
                   placeholderText={
                     invoiceDate
-                      ? invoiceDate.toString().slice(0, 15)
+                      ? invoiceDate.toString().slice(4, 15).replaceAll(" ", "/")
                       : "Please Select"
                   }
                 />
