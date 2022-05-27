@@ -1979,8 +1979,8 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     expect(openModal[0]).toBeInTheDocument();
     fireEvent.click(openModal[0]);
 
-    const closeButton = container.querySelector(".close");
-    fireEvent.click(closeButton);
+    // const closeButton = container.querySelector(".close");
+    // fireEvent.click(closeButton);
   });
 });
 
