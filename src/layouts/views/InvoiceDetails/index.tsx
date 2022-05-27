@@ -1017,7 +1017,7 @@ export default function InvoiceDetails() {
                 />
               </div>
             )}
-            <div className="download-invoice-deopdown">
+            <div className="download-invoice-dropdown">
           {permission?.InvoiceDetails.includes("Download") && (
             <div
               onClick={() =>
@@ -1633,7 +1633,7 @@ export default function InvoiceDetails() {
             </div>
            
 
-            <div className="text-invoive-comment">
+            <div className="text-invoice-comment">
             <label>
               Comment<span className="comment">*</span>
             </label>
