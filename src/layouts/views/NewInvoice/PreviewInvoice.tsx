@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import { Button, Modal, Icon, Table } from "atlasuikit";
-import avatar from '../InvoiceDetails/avatar.png'
+import avatar from "../InvoiceDetails/avatar.png";
 
-import "./PreviewInvoice.scss"
+import "./PreviewInvoice.scss";
 import {
   urls,
   getInvoiceDetailsUrl,
   getBillingAddressUrl,
-  getHeaders
-} from '../../../urls/urls';
-import axios from 'axios';
-import { getFlagPath } from '../InvoiceDetails/getFlag';
+  getHeaders,
+} from "../../../urls/urls";
+import axios from "axios";
+import { getFlagPath } from "../InvoiceDetails/getFlag";
 import moment from "moment";
 import { Loader } from "../../../components/Comman/Utils/utils";
 
@@ -23,9 +23,9 @@ const PreviewInvoice = ({
   stepperOneData,
   setTransactionType,
   loading,
-  setLoading
+  setLoading,
+  invoicePreviewData,
 }: any) => {
-
   const api = getInvoiceDetailsUrl(CreateManualPayrollRes?.invoiceId);
 
   const addressApi = getBillingAddressUrl(stepperOneData?.customerId);
@@ -37,11 +37,11 @@ const PreviewInvoice = ({
   const tempToken = localStorage.getItem("accessToken");
 
   // states
-  const [isPreviewModal, setIsPreviewModal] = useState(false)
+  const [isPreviewModal, setIsPreviewModal] = useState(false);
   const [feeData, setFeeData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
 
-  //dataaaa 
+  //dataaaa
   const [payrollTables, setPayrollTables] = useState<any>([]);
   const [apiData, setApiData] = useState<any>(null);
   const [countrySummary, setCountrySummary] = useState<any>([]);
@@ -61,7 +61,6 @@ const PreviewInvoice = ({
     return cFormat.format(amount).slice(1);
   };
 
-
   const getPayrollBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
       let currency = countriesData.data.find(
@@ -79,7 +78,7 @@ const PreviewInvoice = ({
       headers: getHeaders(tempToken, stepperOneData.customerId, "false"),
     };
 
-    setLoading(true)
+    setLoading(true);
 
     axios
       .get(feeApi, headers)
@@ -98,7 +97,6 @@ const PreviewInvoice = ({
         axios
           .get(api, headers)
           .then((res: any) => {
-
             let billingCurrencyPayroll = countryRes.data.find(
               (e: any) => e.currencyId === res.data.invoice.currencyId
             );
@@ -124,16 +122,24 @@ const PreviewInvoice = ({
                     style: { borderRadius: 12 },
                   },
                   grossWages:
-                    currencyCodePayroll + " " + payrollToCurrencyFormat(item.totalWage),
+                    currencyCodePayroll +
+                    " " +
+                    payrollToCurrencyFormat(item.totalWage),
 
                   allowances:
-                    currencyCodePayroll + " " + payrollToCurrencyFormat(item.allowance),
+                    currencyCodePayroll +
+                    " " +
+                    payrollToCurrencyFormat(item.allowance),
 
                   expenseReimb:
-                    currencyCodePayroll + " " + payrollToCurrencyFormat(item.expenseRe),
+                    currencyCodePayroll +
+                    " " +
+                    payrollToCurrencyFormat(item.expenseRe),
 
                   employerLiability:
-                    currencyCodePayroll + " " + payrollToCurrencyFormat(item.liability),
+                    currencyCodePayroll +
+                    " " +
+                    payrollToCurrencyFormat(item.liability),
 
                   countryVAT: item.countryVat.toFixed(2),
 
@@ -146,7 +152,6 @@ const PreviewInvoice = ({
                     billingCurrencyPayroll.currency.code +
                     " " +
                     payrollToCurrencyFormat(item.healthcare),
-
                 });
               });
 
@@ -201,11 +206,15 @@ const PreviewInvoice = ({
 
               let countrySumTotalTempPayroll =
                 precisionRound(
-                  (totalGrossWagesPayroll + totalAllowancesPayroll) * e.exchangeRate,
+                  (totalGrossWagesPayroll + totalAllowancesPayroll) *
+                    e.exchangeRate,
                   2
                 ) +
                 precisionRound(totalExpenseReimbPayroll * e.exchangeRate, 2) +
-                precisionRound(totalEmployerLiabilityPayroll * e.exchangeRate, 2) +
+                precisionRound(
+                  totalEmployerLiabilityPayroll * e.exchangeRate,
+                  2
+                ) +
                 precisionRound(totalCountryVATPayroll * e.exchangeRate, 2);
 
               countrySumTotalArrPayroll.push(countrySumTotalTempPayroll);
@@ -220,7 +229,9 @@ const PreviewInvoice = ({
                 grossWages: payrollToCurrencyFormat(totalGrossWagesPayroll),
                 allowances: payrollToCurrencyFormat(totalAllowancesPayroll),
                 expenseReimb: payrollToCurrencyFormat(totalExpenseReimbPayroll),
-                employerLiability: payrollToCurrencyFormat(totalEmployerLiabilityPayroll),
+                employerLiability: payrollToCurrencyFormat(
+                  totalEmployerLiabilityPayroll
+                ),
                 countryVAT: payrollToCurrencyFormat(totalCountryVATPayroll),
                 exchangeRate: e.exchangeRate,
                 total: payrollToCurrencyFormat(countrySumTotalTempPayroll),
@@ -254,16 +265,14 @@ const PreviewInvoice = ({
             );
             settotalCountrySummaryDue(totalCountrySummaryDueTemp);
             setFeeSummary(feeSummaryPayroll);
-            setLoading(false)
+            setLoading(false);
           })
           .catch((e: any) => {
             console.log("error e", e);
-
           });
       })
       .catch((e: any) => {
         console.log("error", e);
-
       });
 
     axios
@@ -274,11 +283,10 @@ const PreviewInvoice = ({
       .catch((e: any) => {
         console.log("error", e);
       });
-
-  }
+  };
 
   useEffect(() => {
-    previewPageAllApi()
+    previewPageAllApi();
   }, []);
 
   useEffect(() => {
@@ -304,291 +312,288 @@ const PreviewInvoice = ({
           0
         ) +
         (terminationFeeTempPayroll ? terminationFeeTempPayroll.amount : 0) +
-        (incomingWirePaymentTempPayroll ? incomingWirePaymentTempPayroll.amount : 0);
+        (incomingWirePaymentTempPayroll
+          ? incomingWirePaymentTempPayroll.amount
+          : 0);
 
       setFeeSummaryTotalDue(totalFeeSummaryTempPayroll);
     }
   }, [apiData, feeData]);
 
-
   return (
     <>
-      {
-        loading ?
-          <Loader />
-          :
-          <div className='preview-invoice-container'>
-            <div className='preview-invoice-inner-container'>
-              <div className='preview-header'>
-                <h3>Invoice Preview</h3>
-              </div>
-              <div className='preview-para-one'>
-                <p>Please preview the new payroll invoice has been created.</p>
-              </div>
-              <div className='preview-para-two'>
-                <p>You can access it right from here or from the Invoice listing page.</p>
-              </div>
-              <div className='preview-invoice-button'>
-                <Button
-                  data-testid="preview-modal"
-                  label="Preview Invoice"
-                  className="primary-blue medium"
-                  handleOnClick={() => {
-                    setIsPreviewModal(true)
-                  }}
-                />
-              </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="preview-invoice-container">
+          <div className="preview-invoice-inner-container">
+            <div className="preview-header">
+              <h3>Invoice Preview</h3>
             </div>
-
-            <div className='newPayrollInvoiceModal'>
-              <Modal
-                isOpen={isPreviewModal}
-                handleClose={() => {
-                  setIsPreviewModal(false)
+            <div className="preview-para-one">
+              <p>Please preview the new payroll invoice has been created.</p>
+            </div>
+            <div className="preview-para-two">
+              <p>
+                You can access it right from here or from the Invoice listing
+                page.
+              </p>
+            </div>
+            <div className="preview-invoice-button">
+              <Button
+                data-testid="preview-modal"
+                label="Preview Invoice"
+                className="primary-blue medium"
+                handleOnClick={() => {
+                  setIsPreviewModal(true);
                 }}
-              >
-                <div className='body-wrapper-style'>
+              />
+            </div>
+          </div>
 
-                  <div className='newInvoiceTopBar'>
-                    <div className='newInvoiceInnerHeader'>
-                      <div className="newInvoiceNoHeader">
-                        <div className='orderSummary'>
-                          <Icon color="#000" icon="orderSummary" size="large" />
-                        </div>
-                        <div className='heading'>
-                          <p>{"Payroll Invoice No." + apiData?.data?.invoice?.invoiceNo} </p>
-                        </div>
+          <div className="newPayrollInvoiceModal">
+            <Modal
+              isOpen={isPreviewModal}
+              handleClose={() => {
+                setIsPreviewModal(false);
+              }}
+            >
+              <div className="body-wrapper-style">
+                <div className="newInvoiceTopBar">
+                  <div className="newInvoiceInnerHeader">
+                    <div className="newInvoiceNoHeader">
+                      <div className="orderSummary">
+                        <Icon color="#000" icon="orderSummary" size="large" />
                       </div>
-                      <div className='newInvoiceHeaderAmount'>
-                        <div className='newInvoiceHeaderAmount-one'>
-                          {getPayrollBillingCurrency()}{" "}
-                          {
-                            payrollToCurrencyFormat(apiData?.data?.invoice?.invoiceBalance)
-
-                          }
-
-                        </div>
-                        <div className='newInvoiceHeaderAmount-two'>
-                          {getPayrollBillingCurrency()}{" "}
-                          {
-                            payrollToCurrencyFormat(apiData?.data?.invoice?.totalAmount)
-
-                          }
-                        </div>
+                      <div className="heading">
+                        <p>
+                          {"Payroll Invoice No." +
+                            apiData?.data?.invoice?.invoiceNo}{" "}
+                        </p>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="newInfoDetails">
-                    <div className="column1">
-                      <p className="newInvoiceHeading">From</p>
-                      <p className="newInvoiceValue">
-                        {apiData?.data?.invoiceFrom?.companyName}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="newInvoiceHeading">To</p>
-                      <p className="newInvoiceValue valuebold">
-                        {apiData?.data?.invoice?.customerName}
-                      </p>
-                      <p className="newInvoiceAddress">
-                        {addressData?.data?.billingAddress?.street}
-                      </p>
-                      <p className="newInvoiceAddress">{addressData?.data?.billingAddress?.city}</p>
-                      <p className="newInvoiceAddress">
-                        {addressData?.data?.billingAddress?.state}
-                      </p>
-                      <p className="newInvoiceAddress">
-                        {addressData?.data?.billingAddress?.country}
-                      </p>
-
-                    </div>
-                    <div>
-                      <p className="newInvoiceHeading">Invoice Date</p>
-                      <p className="newInvoiceValue">
-                        {moment(apiData?.data?.invoice?.createdDate).format(
-                          "DD MMM YYYY"
-                        )}
-                      </p>
-
-                      <p className="newInvoiceHeading">Invoice Approval</p>
-                      <p className="newInvoiceValue">
-                        {moment(apiData?.data?.invoice?.approvalDate).format(
-                          "DD MMM YYYY"
-                        )}
-                      </p>
-
-                      <p className="newInvoiceHeading">Payment Due</p>
-                      <p className="newInvoiceValue">
-                        {moment(apiData?.data?.invoice?.dueDate).format(
-                          "DD MMM YYYY"
-                        )}
-                      </p>
-
-                    </div>
-                    <div className="newInvoiceLastCloumn">
-                      <p className="newInvoiceHeading">Location</p>
-                      <p className="newInvoiceValue">
-                        {apiData?.data?.invoice?.customerLocation}
-                      </p>
-                      <p className="newInvoiceHeading">Region</p>
-                      <p className="newInvoiceValue">
-                        {apiData?.data?.regionItemCode?.toUpperCase()}
-                      </p>
-                      <p className="newInvoiceHeading">Billing Currency</p>
-                      <p className="newInvoiceValue">
-                        {getPayrollBillingCurrency()}
-                      </p>
-                    </div>
-                  </div>
-
-                  {payrollTables.map((item: any) => {
-                    return (
-                      <div className='newInvoiceEmployeeDetail'>
-                        <div className='newInvoiceTable'>
-                          <Table
-                            options={{
-                              ...newInvoiceEmployeeDetailTable,
-                              ...{ data: item.data },
-
-                            }}
-                            colSort
-                          />
-                        </div>
-                        <div className="newInvoiceFeeSummaryCalc">
-                          <div className="newInvoiceRowFee">
-                            <p className="newInvoiceTitle">Country Subtotal Due</p>
-                            <p className="newInvoiceAmount">
-                              {
-                                item.currencyCode +
-                                " " +
-                                payrollToCurrencyFormat(item.feeSummary.subTotalDue)
-                              }
-                            </p>
-                          </div>
-                          <div className="newInvoiceRowFee">
-                            <p className="newInvoiceTitle">
-                              Country EXC Rate {" "}
-                              {
-                                item.exchangeRate
-                              }
-                            </p>
-                            <p className="newInvoiceAmount">
-                              {
-                                getPayrollBillingCurrency() +
-                                " " +
-                                payrollToCurrencyFormat(
-                                  item.feeSummary.subTotalDue * item.exchangeRate
-                                )
-                              }
-                            </p>
-                          </div>
-                          <div className="newInvoiceRowFee">
-                            <p className="newInvoiceTitle">In Country Processing Fee</p>
-                            <p className="newInvoiceAmount">
-                              {
-                                getPayrollBillingCurrency() +
-                                " " +
-                                payrollToCurrencyFormat(
-                                  item.feeSummary.inCountryProcessingFee
-                                )
-                              }
-                            </p>
-                          </div>
-                          <div className="newInvoiceRowFee">
-                            <p className="newInvoiceTitle">FX Bill</p>
-                            <p className="newInvoiceAmount">
-                              {
-                                getPayrollBillingCurrency() +
-                                " " +
-                                payrollToCurrencyFormat(item.feeSummary.fxBill)
-                              }
-                            </p>
-                          </div>
-                          <div className="newInvoiceRow2">
-                            <p className="newInvoiceTitle">Total Country VAT</p>
-                            <p className="newInvoiceAmount">
-                              {
-                                getPayrollBillingCurrency() +
-                                " " +
-                                payrollToCurrencyFormat(item.feeSummary.totalCountryVat)
-                              }
-                            </p>
-                          </div>
-                          <div className="newInvoiceTotalRow">
-                            <p>Country Total Due</p>
-                            <h3>
-                              {
-                                getPayrollBillingCurrency() +
-                                " " +
-                                payrollToCurrencyFormat(item.countryTotalDue)
-                              }
-                            </h3>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-
-
-                  <div className="newInvoiceCountrySummary-Container">
-                    <h3 className="countryTableHeader">Country Summary</h3>
-                    <div className='newInvoiceCountryTable'>
-                      <Table
-                        options={{
-                          ...newInvoiceCountrySummaryTable,
-                          ...{ data: countrySummary },
-                        }}
-                        colSort
-                      />
-                    </div>
-                    <div className="newInvoiceCountrySummaryCalc">
-                      <p>Total Due</p>
-                      <h3>
+                    <div className="newInvoiceHeaderAmount">
+                      <div className="newInvoiceHeaderAmount-one">
                         {getPayrollBillingCurrency()}{" "}
-                        {payrollToCurrencyFormat(totalCountrySummaryDue)}
-                      </h3>
-                    </div>
-
-                    <h3 className="countryTableHeader">Fee Summary</h3>
-                    <div className='newInvoiceCountryTable'>
-                      <Table
-                        options={{
-                          ...newInvoiceFeeSummaryOptions,
-                          ...{ data: feeSummary }
-                        }}
-                        colSort
-                      />
-                    </div>
-                    <div className="newInvoiceFeeSummaryCalc">
-                      <div className="newInvoiceRowFee">
-                        <p className="title">Incoming Wire Payment</p>
-                        <p className="amount">
-                          {getPayrollBillingCurrency()} {payrollToCurrencyFormat(incomingWirePayment)}
-                        </p>
+                        {payrollToCurrencyFormat(
+                          apiData?.data?.invoice?.invoiceBalance
+                        )}
                       </div>
-                      <div className="newInvoicerow2">
-                        <p className="title">Contract Termination Fee</p>
-                        <p className="amount">
-                          {getPayrollBillingCurrency()}{" "}
-                          {payrollToCurrencyFormat(contractTerminationFee)}
-                        </p>
-                      </div>
-                      <div className="newInvoiceTotalRow">
-                        <p>Total Due</p>
-                        <h3>
-                          {getPayrollBillingCurrency()} {payrollToCurrencyFormat(feeSummaryTotalDue)}
-                        </h3>
+                      <div className="newInvoiceHeaderAmount-two">
+                        {getPayrollBillingCurrency()}{" "}
+                        {payrollToCurrencyFormat(
+                          apiData?.data?.invoice?.totalAmount
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-              </Modal>
-            </div>
-          </div>
-      }
-    </>
-  )
-}
 
-export default PreviewInvoice
+                <div className="newInfoDetails">
+                  <div className="column1">
+                    <p className="newInvoiceHeading">From</p>
+                    <p className="newInvoiceValue">
+                      {/* {apiData?.data?.invoiceFrom?.companyName} */}
+                      {invoicePreviewData?.invoiceFrom?.companyName}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="newInvoiceHeading">To</p>
+                    <p className="newInvoiceValue valuebold">
+                      {/* {apiData?.data?.invoice?.customerName} */}
+                      {invoicePreviewData?.invoice?.customerName}
+                    </p>
+                    <p className="newInvoiceAddress">
+                      {/* {addressData?.data?.billingAddress?.street} */}
+                    </p>
+                    <p className="address">
+                      {addressData?.data?.billingAddress?.city}
+                    </p>
+                    <p className="address">
+                      {addressData?.data?.billingAddress?.state}
+                    </p>
+                    <p className="address">
+                      {addressData?.data?.billingAddress?.country}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="newInvoiceHeading">Invoice Date</p>
+                    <p className="newInvoiceValue">
+                      {moment(apiData?.data?.invoice?.createdDate).format(
+                        "DD MMM YYYY"
+                      )}
+                    </p>
+
+                    <p className="newInvoiceHeading">Invoice Approval</p>
+                    <p className="newInvoiceValue">
+                      {moment(apiData?.data?.invoice?.approvalDate).format(
+                        "DD MMM YYYY"
+                      )}
+                    </p>
+
+                    <p className="newInvoiceHeading">Payment Due</p>
+                    <p className="newInvoiceValue">
+                      {moment(apiData?.data?.invoice?.dueDate).format(
+                        "DD MMM YYYY"
+                      )}
+                    </p>
+                  </div>
+                  <div className="newInvoiceLastCloumn">
+                    <p className="newInvoiceHeading">Location</p>
+                    <p className="newInvoiceValue">
+                      {apiData?.data?.invoice?.customerLocation}
+                    </p>
+                    <p className="newInvoiceHeading">Region</p>
+                    <p className="newInvoiceValue">
+                      {apiData?.data?.regionItemCode?.toUpperCase()}
+                    </p>
+                    <p className="newInvoiceHeading">Billing Currency</p>
+                    <p className="newInvoiceValue">
+                      {getPayrollBillingCurrency()}
+                    </p>
+                  </div>
+                </div>
+
+                {payrollTables.map((item: any) => {
+                  return (
+                    <div className="newInvoiceEmployeeDetail">
+                      <div className="newInvoiceTable">
+                        <Table
+                          options={{
+                            ...newInvoiceEmployeeDetailTable,
+                            ...{ data: item.data },
+                          }}
+                          colSort
+                        />
+                      </div>
+                      <div className="newInvoiceFeeSummaryCalc">
+                        <div className="newInvoiceRowFee">
+                          <p className="newInvoiceTitle">
+                            Country Subtotal Due
+                          </p>
+                          <p className="newInvoiceAmount">
+                            {item.currencyCode +
+                              " " +
+                              payrollToCurrencyFormat(
+                                item.feeSummary.subTotalDue
+                              )}
+                          </p>
+                        </div>
+                        <div className="newInvoiceRowFee">
+                          <p className="newInvoiceTitle">
+                            Country EXC Rate {item.exchangeRate}
+                          </p>
+                          <p className="newInvoiceAmount">
+                            {getPayrollBillingCurrency() +
+                              " " +
+                              payrollToCurrencyFormat(
+                                item.feeSummary.subTotalDue * item.exchangeRate
+                              )}
+                          </p>
+                        </div>
+                        <div className="newInvoiceRowFee">
+                          <p className="newInvoiceTitle">
+                            In Country Processing Fee
+                          </p>
+                          <p className="newInvoiceAmount">
+                            {getPayrollBillingCurrency() +
+                              " " +
+                              payrollToCurrencyFormat(
+                                item.feeSummary.inCountryProcessingFee
+                              )}
+                          </p>
+                        </div>
+                        <div className="newInvoiceRowFee">
+                          <p className="newInvoiceTitle">FX Bill</p>
+                          <p className="newInvoiceAmount">
+                            {getPayrollBillingCurrency() +
+                              " " +
+                              payrollToCurrencyFormat(item.feeSummary.fxBill)}
+                          </p>
+                        </div>
+                        <div className="newInvoiceRow2">
+                          <p className="newInvoiceTitle">Total Country VAT</p>
+                          <p className="newInvoiceAmount">
+                            {getPayrollBillingCurrency() +
+                              " " +
+                              payrollToCurrencyFormat(
+                                item.feeSummary.totalCountryVat
+                              )}
+                          </p>
+                        </div>
+                        <div className="newInvoiceTotalRow">
+                          <p>Country Total Due</p>
+                          <h3>
+                            {getPayrollBillingCurrency() +
+                              " " +
+                              payrollToCurrencyFormat(item.countryTotalDue)}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+                <div className="newInvoiceCountrySummary-Container">
+                  <h3 className="countryTableHeader">Country Summary</h3>
+                  <div className="newInvoiceCountryTable">
+                    <Table
+                      options={{
+                        ...newInvoiceCountrySummaryTable,
+                        ...{ data: countrySummary },
+                      }}
+                      colSort
+                    />
+                  </div>
+                  <div className="newInvoiceCountrySummaryCalc">
+                    <p>Total Due</p>
+                    <h3>
+                      {getPayrollBillingCurrency()}{" "}
+                      {payrollToCurrencyFormat(totalCountrySummaryDue)}
+                    </h3>
+                  </div>
+
+                  <h3 className="countryTableHeader">Fee Summary</h3>
+                  <div className="newInvoiceCountryTable">
+                    <Table
+                      options={{
+                        ...newInvoiceFeeSummaryOptions,
+                        ...{ data: feeSummary },
+                      }}
+                      colSort
+                    />
+                  </div>
+                  <div className="newInvoiceFeeSummaryCalc">
+                    <div className="newInvoiceRowFee">
+                      <p className="title">Incoming Wire Payment</p>
+                      <p className="amount">
+                        {getPayrollBillingCurrency()}{" "}
+                        {payrollToCurrencyFormat(incomingWirePayment)}
+                      </p>
+                    </div>
+                    <div className="newInvoicerow2">
+                      <p className="title">Contract Termination Fee</p>
+                      <p className="amount">
+                        {getPayrollBillingCurrency()}{" "}
+                        {payrollToCurrencyFormat(contractTerminationFee)}
+                      </p>
+                    </div>
+                    <div className="newInvoiceTotalRow">
+                      <p>Total Due</p>
+                      <h3>
+                        {getPayrollBillingCurrency()}{" "}
+                        {payrollToCurrencyFormat(feeSummaryTotalDue)}
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Modal>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default PreviewInvoice;

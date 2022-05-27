@@ -35,7 +35,7 @@ import {
   getNotesUrl,
   getHeaders,
   getDownloadFileUrl,
-  getCMInvoiceUrl,
+  getRelatedInvoiceUrl,
   getVatValue,
   getEmployeeBreakdownUrl,
   getAutoApproveCheckUrl,
@@ -169,7 +169,7 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        if (state.transactionType != 7 && state.transactionType != 4) {
+        if (state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 2) {
           axios
             .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
             .then((res: any) => {
@@ -361,9 +361,9 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else if (state.transactionType == 4) {
+        } else if (state.transactionType == 4 || state.transactionType == 2) {
           axios
-            .get(getCMInvoiceUrl(id), headers)
+            .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
               if (response.status == 200) {
                 setCreditMemoData(response.data);
@@ -373,6 +373,8 @@ export default function InvoiceDetails() {
             })
             .catch((res) => {
               console.log(res);
+              setIsErr(true);
+
             });
           axios
             .get(getVatValue(cid))
@@ -444,7 +446,7 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    if (state.transactionType != 4) {
+    if (state.transactionType != 4 && state.transactionType != 2) {
       axios
         .get(notesApi, headers)
         .then((res: any) => {
@@ -950,6 +952,8 @@ export default function InvoiceDetails() {
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
         return "Credit Memo Invoice No. " + creditMemoData.invoiceNo;
+      case 2:
+        return "Miscellaneous No. " + creditMemoData.invoiceNo;
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
@@ -1266,7 +1270,7 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {state.transactionType == 4 &&
+      {(state.transactionType == 4 || state.transactionType == 2) && 
         currentOrgToken?.Payments?.Role == "FinanceAR" && (
           <CreditMemoSummary
             notes={notes}
@@ -1283,7 +1287,7 @@ export default function InvoiceDetails() {
           ></CreditMemoSummary>
         )}
 
-      {state.transactionType != 7 && state.transactionType != 4 && (
+      {state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 2 && (
         <div className="tab">
           <p
             onClick={() => setActiveTab("payroll")}
@@ -1314,7 +1318,7 @@ export default function InvoiceDetails() {
 
       {activeTab === "master" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && (
+        state.transactionType != 7 && state.transactionType != 2 && (
           <div className="master">
             <h3 className="tableHeader">Country Summary</h3>
             <Table
@@ -1362,7 +1366,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "payroll" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && (
+        state.transactionType != 7 && state.transactionType != 2 && (
           <div className="payroll">
             {payrollTables.map((item: any) => {
               return (
@@ -1499,7 +1503,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "files" &&
         state.transactionType != 4 &&
-        state.transactionType != 7 && (
+        state.transactionType != 7 && state.transactionType != 2 && (
           <>
             <div className="filesNotes">
               <NotesWidget

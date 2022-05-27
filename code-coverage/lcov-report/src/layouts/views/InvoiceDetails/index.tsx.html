@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.6% </span>
+                <span class="strong">79.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>324/407</span>
+                <span class='fraction'>324/409</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.63% </span>
+                <span class="strong">71.68% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>149/208</span>
+                <span class='fraction'>157/219</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">79.65% </span>
+                <span class="strong">79.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>321/403</span>
+                <span class='fraction'>321/405</span>
             </div>
         
             
@@ -1859,7 +1859,11 @@
 <a name='L1794'></a><a href='#L1794'>1794</a>
 <a name='L1795'></a><a href='#L1795'>1795</a>
 <a name='L1796'></a><a href='#L1796'>1796</a>
-<a name='L1797'></a><a href='#L1797'>1797</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L1797'></a><a href='#L1797'>1797</a>
+<a name='L1798'></a><a href='#L1798'>1798</a>
+<a name='L1799'></a><a href='#L1799'>1799</a>
+<a name='L1800'></a><a href='#L1800'>1800</a>
+<a name='L1801'></a><a href='#L1801'>1801</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2234,6 +2238,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -2807,6 +2813,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">196x</span>
 <span class="cline-any cline-yes">392x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -3692,7 +3700,7 @@ import {
   getNotesUrl,
   getHeaders,
   getDownloadFileUrl,
-  getCMInvoiceUrl,
+  getRelatedInvoiceUrl,
   getVatValue,
   getEmployeeBreakdownUrl,
   getAutoApproveCheckUrl,
@@ -3826,7 +3834,7 @@ export default function InvoiceDetails() {
       .then((countryRes: any) =&gt; {
         setCountriesData(countryRes);
 &nbsp;
-        if (state.transactionType != 7 &amp;&amp; state.transactionType != 4) {
+        if (state.transactionType != 7 &amp;&amp; state.transactionType != 4 &amp;&amp; state.transactionType != 2) {
           axios
             .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
             .then(<span class="fstat-no" title="function not covered" >(r</span>es: any) =&gt; {
@@ -4018,9 +4026,9 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (state.transactionType == 4) {</span>
+        } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (state.transactionType == 4 || state.transactionType == 2) {</span>
 <span class="cstat-no" title="statement not covered" >          axios</span>
-            .get(getCMInvoiceUrl(id), headers)
+            .get(getRelatedInvoiceUrl(id), headers)
             .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
 <span class="cstat-no" title="statement not covered" >              if (response.status == 200) {</span>
 <span class="cstat-no" title="statement not covered" >                setCreditMemoData(response.data);</span>
@@ -4030,6 +4038,8 @@ export default function InvoiceDetails() {
             })
             .catch(<span class="fstat-no" title="function not covered" >(r</span>es) =&gt; {
 <span class="cstat-no" title="statement not covered" >              console.log(res);</span>
+<span class="cstat-no" title="statement not covered" >              setIsErr(true);</span>
+&nbsp;
             });
 <span class="cstat-no" title="statement not covered" >          axios</span>
             .get(getVatValue(cid))
@@ -4101,7 +4111,7 @@ export default function InvoiceDetails() {
 <span class="cstat-no" title="statement not covered" >          console.log("error", e);</span>
         });
     }
-    <span class="missing-if-branch" title="else path not taken" >E</span>if (state.transactionType != 4) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (state.transactionType != 4 &amp;&amp; state.transactionType != 2) {
       axios
         .get(notesApi, headers)
         .then((res: any) =&gt; {
@@ -4607,6 +4617,8 @@ export default function InvoiceDetails() {
 <span class="cstat-no" title="statement not covered" >        return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;</span>
 <span class="branch-1 cbranch-no" title="branch not covered" >      case 4:</span>
 <span class="cstat-no" title="statement not covered" >        return "Credit Memo Invoice No. " + creditMemoData.invoiceNo;</span>
+<span class="branch-2 cbranch-no" title="branch not covered" >      case 2:</span>
+<span class="cstat-no" title="statement not covered" >        return "Miscellaneous No. " + creditMemoData.invoiceNo;</span>
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
@@ -4923,9 +4935,9 @@ export default function InvoiceDetails() {
           &lt;/span&gt;
         &lt;/div&gt;
       )}
-      {state.transactionType == 4 &amp;&amp;
-<span class="branch-1 cbranch-no" title="branch not covered" >        currentOrgToken?.Payments?.Role == "FinanceAR" </span>&amp;&amp; (
-<span class="branch-2 cbranch-no" title="branch not covered" >          &lt;CreditMemoSummary</span>
+      {(state.transactionType == 4 || state.transactionType == 2) &amp;&amp; 
+<span class="branch-2 cbranch-no" title="branch not covered" >        currentOrgToken?.Payments?.Role == "FinanceAR" </span>&amp;&amp; (
+<span class="branch-3 cbranch-no" title="branch not covered" >          &lt;CreditMemoSummary</span>
             notes={notes}
             setNotes={setNotes}
             documents={documents}
@@ -4940,7 +4952,7 @@ export default function InvoiceDetails() {
           &gt;&lt;/CreditMemoSummary&gt;
         )}
 &nbsp;
-      {state.transactionType != 7 &amp;&amp; state.transactionType != 4 &amp;&amp; (
+      {state.transactionType != 7 &amp;&amp; state.transactionType != 4 &amp;&amp; state.transactionType != 2 &amp;&amp; (
         &lt;div className="tab"&gt;
           &lt;p
             onClick={() =&gt; setActiveTab("payroll")}
@@ -4971,7 +4983,7 @@ export default function InvoiceDetails() {
 &nbsp;
       {activeTab === "master" &amp;&amp;
         state.transactionType != 4 &amp;&amp;
-        state.transactionType != 7 &amp;&amp; (
+        state.transactionType != 7 &amp;&amp; state.transactionType != 2 &amp;&amp; (
           &lt;div className="master"&gt;
             &lt;h3 className="tableHeader"&gt;Country Summary&lt;/h3&gt;
             &lt;Table
@@ -5019,7 +5031,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "payroll" &amp;&amp;
         state.transactionType != 4 &amp;&amp;
-        state.transactionType != 7 &amp;&amp; (
+        state.transactionType != 7 &amp;&amp; state.transactionType != 2 &amp;&amp; (
           &lt;div className="payroll"&gt;
             {payrollTables.map((item: any) =&gt; {
               return (
@@ -5156,7 +5168,7 @@ export default function InvoiceDetails() {
         )}
       {activeTab === "files" &amp;&amp;
         state.transactionType != 4 &amp;&amp;
-        state.transactionType != 7 &amp;&amp; (
+        state.transactionType != 7 &amp;&amp; state.transactionType != 2 &amp;&amp; (
           &lt;&gt;
             &lt;div className="filesNotes"&gt;
               &lt;NotesWidget
@@ -5458,7 +5470,7 @@ export default function InvoiceDetails() {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Wed May 25 2022 11:49:23 GMT+0500 (Pakistan Standard Time)
+                at Fri May 27 2022 10:33:50 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
