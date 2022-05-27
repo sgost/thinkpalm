@@ -1021,6 +1021,7 @@ export default function InvoiceDetails() {
                 />
               </div>
             )}
+            <div className="download-invoice-dropdown">
           {permission?.InvoiceDetails.includes("Download") && (
             <div
               onClick={() =>
@@ -1053,7 +1054,7 @@ export default function InvoiceDetails() {
               </p>
             </div>
           )}
-
+          </div>
           <div className="decline-invoice">
             {status === "Pending Approval" &&
               permission?.InvoiceDetails.includes("Approve") && (
@@ -1633,11 +1634,12 @@ export default function InvoiceDetails() {
             <div className="text-invoive-no">
               <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
             </div>
-            <h6>
-              Comment<span className="comment">*</span>
-            </h6>
+           
 
-            <div>
+            <div className="text-invoice-comment">
+            <label>
+              Comment<span className="comment">*</span>
+            </label>
               <textarea
                 value={inputValue}
                 className="textarea-box"
