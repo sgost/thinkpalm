@@ -355,7 +355,7 @@ export default function CreditMemoSummary(props: any) {
                                         handleDateChange={(date: any) => { fieldValues[index].serviceDate = date; setFieldValues([...fieldValues]) }}
                                     />
                                 </div>
-                                <div className='UI-line-text-box'>
+                                <div className='UI-line-text-box ui-dropdown-req'>
                                     <Dropdown
                                         handleDropOptionClick={(option: any) =>
                                             handleArrOptionClick(
@@ -383,6 +383,7 @@ export default function CreditMemoSummary(props: any) {
                                         name="service-date-input"
                                         placeholder="Please enter"
                                         disable={editCheck != index}
+                                        
                                     ></Input>
                                 </div>
                                 <div className='UI-line-text-box'>
@@ -416,6 +417,7 @@ export default function CreditMemoSummary(props: any) {
                                             name="service-date-input"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
+                                            required={true}
                                         ></Input>
                                     </div>
                                     <div className='amount-box'>
@@ -428,6 +430,7 @@ export default function CreditMemoSummary(props: any) {
                                             name="service-date-input"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
+                                            required={true}
                                         ></Input>
                                     </div>
                                 </div>
@@ -474,7 +477,7 @@ export default function CreditMemoSummary(props: any) {
                                 handleDateChange={(date: any) => { setNewServiceDate(date) }}
                             />
                         </div>
-                        <div className='UI-line-text-box'>
+                        <div className='UI-line-text-box ui-dropdown-req'>
                             <Dropdown
                                 handleDropOptionClick={productDropOptionClick}
                                 handleDropdownClick={setOpenProductService}
@@ -515,6 +518,7 @@ export default function CreditMemoSummary(props: any) {
                                     type="number"
                                     name="service-date-input"
                                     disable={false}
+                                    required={true}
                                 ></Input>
                             </div>
                             <div className='amount-box'>
@@ -525,6 +529,7 @@ export default function CreditMemoSummary(props: any) {
                                     type="text"
                                     name="service-date-input"
                                     disable={false}
+                                    required={true}
                                 ></Input>
                             </div>
                         </div>

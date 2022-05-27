@@ -8,7 +8,12 @@
 
     .summary-card {
       padding: 2.813rem 4rem 5.315rem 4rem;
-
+      .ui-dropdown-req{
+        span.a-dropdown__title:after {
+          content: "*";
+          color: red;
+        }
+      }
       .UI-line-text-box {
         width: 22% !important;
         .a-dpicker {
