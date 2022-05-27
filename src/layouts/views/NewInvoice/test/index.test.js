@@ -1905,18 +1905,10 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     const addNewText = await waitFor(() => screen.getByText(/add new item/i));
     expect(addNewText).toBeInTheDocument();
     fireEvent.click(addNewText);
-    // return;
-    // screen.logTestingPlaygroundURL();
 
     const DeleteText = await screen.findAllByText(/Delete/);
     expect(DeleteText[0]).toBeInTheDocument();
     fireEvent.click(DeleteText[0]);
-
-    return;
-
-    const ButtonBalance = await screen.findByTestId("Button_Balance");
-    expect(ButtonBalance).toBeInTheDocument();
-    fireEvent.click(ButtonBalance);
 
     const HandleAdd = await screen.findByTestId("Add-New-Item");
     expect(HandleAdd).toBeInTheDocument();
@@ -1925,8 +1917,6 @@ describe("Stepper for Credit Memo  1 and 2 ", () => {
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
     fireEvent.click(nextPreview);
-
-    // return;
 
     const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
     expect(InvoiceTab[0]).toBeInTheDocument();
