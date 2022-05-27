@@ -1734,6 +1734,7 @@ describe("New Invoice for Proforma ", () => {
 
 describe("New Invoice for Miscellaneous ", () => {
   beforeAll(() => {
+    jest.setTimeout(60000);
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
