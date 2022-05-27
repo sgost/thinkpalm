@@ -10387,6 +10387,89 @@ export const mockapidata = {
     currency: null,
     id: "0b5d231b-2fa8-4001-a737-b89328b2b6f2",
   },
+  resForCreateCreditMemo: {
+    "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    "customerName": "DSM Nutritional Products AG",
+    "customerLocation": "India",
+    "currencyId": 840,
+    "qbInvoiceNo": 0,
+    "invoiceNo": "1100559",
+    "status": 1,
+    "statusLabel": null,
+    "transactionType": 4,
+    "transactionTypeLabel": null,
+    "createdDate": "2022-05-27T18:30:00Z",
+    "paymentDate": null,
+    "approvalDate": null,
+    "submissionDate": null,
+    "dueDate": "2022-06-04T06:47:09.993Z",
+    "exchangeRate": 1,
+    "totalAmount": 484,
+    "invoiceBalance": 484,
+    "invoiceFrom": null,
+    "regionItemCode": null,
+    "isClientVisible": true,
+    "depositTo": null,
+    "createdBy": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+    "modifiedBy": "f1704399-ea6c-459e-ae98-63c923250658",
+    "eorSubscriptionId": null,
+    "invoicerId": null,
+    "bankingDetailId": null,
+    "poNumber": null,
+    "ageingNotPaid": null,
+    "ageingPaid": null,
+    "invoiceDocuments": [],
+    "invoiceItems": [
+        {
+            "invoiceId": "b20a1529-c746-4f73-ab8f-3db963295a64",
+            "serviceDate": "2022-05-27T00:00:00",
+            "productId": "004eac1f-f500-4f15-8639-1fbec408f85a",
+            "description": "test",
+            "amount": 22,
+            "quantity": 22,
+            "totalAmount": 484,
+            "serviceCountry": 1,
+            "modifiedBy": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "product": {
+                "glCode": "46100",
+                "glDescription": "Contract Termination Fee",
+                "taxable": false,
+                "isActive": true,
+                "changeTypes": [],
+                "fees": [],
+                "invoiceItems": [],
+                "id": "004eac1f-f500-4f15-8639-1fbec408f85a"
+            },
+            "id": "3e8554d9-90e2-4e85-8df8-3188e977d843"
+        }
+    ],
+    "invoiceNotes": [
+        {
+            "invoiceId": "b20a1529-c746-4f73-ab8f-3db963295a64",
+            "noteType": 2,
+            "note": "CREATED",
+            "isCustomerVisible": true,
+            "exportToQuickbooks": false,
+            "createdDate": "2022-05-27T06:47:10.3792921Z",
+            "modifiedBy": "f1704399-ea6c-459e-ae98-63c923250658",
+            "modifiedByUser": null,
+            "displayInPDF": false,
+            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "id": 39961
+        }
+    ],
+    "invoiceRelatedInvoices": [],
+    "invoiceRelatedRelatedInvoices": [],
+    "payrolls": [],
+    "customer": null,
+    "currency": {
+        "code": "USD",
+        "description": "US Dollar",
+        "id": 840
+    },
+    "id": "b20a1529-c746-4f73-ab8f-3db963295a64"
+}
 };
 
 export const currentOrgTokenMock = {

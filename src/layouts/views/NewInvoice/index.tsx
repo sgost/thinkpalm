@@ -560,6 +560,7 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
+          console.log("res.data", res.data)
           setInvoiceId(res.data.id);
           setIsInvoiceCreated(true);
           SetinvoicePreviewData(res.data);
@@ -662,6 +663,7 @@ const NewInvoice = () => {
               {stepsCount == 3 && stepperOneData?.type === "Payroll" && (
                 <PreviewInvoice {...stepperThreeProps} />
               )}
+              {console.log("stepperOneData?.type", stepperOneData?.type, stepsCount)}
               {stepsCount == 3 &&
                 (stepperOneData?.type === "Credit Memo" ||
                   stepperOneData?.type === "Proforma") && (
