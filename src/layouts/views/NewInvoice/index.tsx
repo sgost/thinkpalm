@@ -363,7 +363,7 @@ const NewInvoice = () => {
     if (stepsCount == 2 && stepperOneData.type === "Credit Memo") {
       let condition :any = [];
       let boolen = false;
-      todos.map((item) => {
+      todos.forEach((item) => {
         if (
           item.product.length &&
           item.amount.length &&
