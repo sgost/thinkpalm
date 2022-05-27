@@ -1759,7 +1759,6 @@ describe("New Invoice for Miscellaneous ", () => {
     fireEvent.click(invoiceBreadClick[0]);
   });
   test("dropDown Value change stepper 1", async () => {
-    jest.setTimeout(10000);
     render(
       <HashRouter>
         <NewInvoice />
@@ -1863,7 +1862,7 @@ describe("New Invoice for Miscellaneous ", () => {
 
     // const closeButton = container.querySelector(".close");
     // fireEvent.click(closeButton);
-  });
+  }, 5000);
 });
 
 /// Credit Memo
