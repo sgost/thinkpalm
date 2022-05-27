@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">58.18% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>30/55</span>
+                <span class='fraction'>32/55</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.84% </span>
+                <span class="strong">11.53% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/26</span>
+                <span class='fraction'>3/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">58.18% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>30/55</span>
+                <span class='fraction'>32/55</span>
             </div>
         
             
@@ -310,12 +310,7 @@
 <a name='L245'></a><a href='#L245'>245</a>
 <a name='L246'></a><a href='#L246'>246</a>
 <a name='L247'></a><a href='#L247'>247</a>
-<a name='L248'></a><a href='#L248'>248</a>
-<a name='L249'></a><a href='#L249'>249</a>
-<a name='L250'></a><a href='#L250'>250</a>
-<a name='L251'></a><a href='#L251'>251</a>
-<a name='L252'></a><a href='#L252'>252</a>
-<a name='L253'></a><a href='#L253'>253</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L248'></a><a href='#L248'>248</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -517,7 +512,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -540,24 +535,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -566,6 +552,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* istanbul ignore next */
 const validateIsURLValid = () =&gt; {
@@ -744,7 +734,7 @@ export const getDeleteInvoiceUrl = <span class="fstat-no" title="function not co
 <span class="cstat-no" title="statement not covered" >  return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}`;</span>
 };
 &nbsp;
-export const getCMInvoiceUrl = <span class="fstat-no" title="function not covered" >(i</span>nvoiceId) =&gt; {
+export const getRelatedInvoiceUrl = <span class="fstat-no" title="function not covered" >(i</span>nvoiceId) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return (</span>
     baseURL +
     services.atlasInvoiceService +
@@ -768,8 +758,8 @@ export const getDownloadFileUrl = <span class="fstat-no" title="function not cov
   );
 };
 &nbsp;
-export const getCountryByCustomer = <span class="fstat-no" title="function not covered" >(i</span>d) =&gt; {
-<span class="cstat-no" title="statement not covered" >  return (</span>
+export const getCountryByCustomer = (id) =&gt; {
+  return (
     baseURL +
     services.atlasSubscriptionService +
     "/Subscription/GetEORSubscriptionCountriesByCustomer?CustomerId=" +
@@ -791,25 +781,16 @@ export const createManualInvoice = <span class="fstat-no" title="function not co
   );
 };
 &nbsp;
-export const getCreditMemoStep4Url = (invoiceId) =&gt; {
-  // https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/invoices/relatedData/{invoiceId}
-&nbsp;
-  return (
-    baseURL +
-    services.atlasInvoiceService +
-    `/invoices/relatedData/${invoiceId}`
-  );
-};
 export const updateInvoiceStatus = <span class="fstat-no" title="function not covered" >(i</span>nvoiceId) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`;</span>
 };
 &nbsp;
-export const productInvoice = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >  return metaDataUrl + services.apngMetaDataService + `/Products`;</span>
+export const productInvoice = () =&gt; {
+  return metaDataUrl + services.apngMetaDataService + `/Products`;
 };
 &nbsp;
-export const CountryApi = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >  return metaDataUrl + services.apngMetaDataService + `/Lookup`;</span>
+export const CountryApi = () =&gt; {
+  return metaDataUrl + services.apngMetaDataService + `/Lookup`;
 };
 &nbsp;
 export const getEmployeeBreakdownUrl = <span class="fstat-no" title="function not covered" >(i</span>d) =&gt; {
@@ -819,6 +800,10 @@ export const getEmployeeBreakdownUrl = <span class="fstat-no" title="function no
     `/InvoiceData/EmployeeBreakdownReport/${id}`
   );
 };
+&nbsp;
+export const getUpdateCreditMemoUrl = <span class="fstat-no" title="function not covered" >(i</span>nvoiceId) =&gt; {
+<span class="cstat-no" title="statement not covered" >  return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;</span>
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -826,7 +811,7 @@ export const getEmployeeBreakdownUrl = <span class="fstat-no" title="function no
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Wed May 25 2022 11:45:11 GMT+0500 (Pakistan Standard Time)
+                at Fri May 27 2022 10:46:25 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

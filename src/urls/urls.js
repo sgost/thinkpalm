@@ -222,7 +222,6 @@ export const createManualInvoice = () => {
   );
 };
 
-
 export const updateInvoiceStatus = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`;
 };
@@ -241,4 +240,8 @@ export const getEmployeeBreakdownUrl = (id) => {
     services.atlasIdgService +
     `/InvoiceData/EmployeeBreakdownReport/${id}`
   );
+};
+
+export const getUpdateCreditMemoUrl = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;
 };
