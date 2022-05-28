@@ -1200,49 +1200,38 @@ export default function InvoiceDetails() {
             <p className="heading">Invoice Date</p>
             <p className="value">{topPanel.invoiceDate}</p>
 
-            {state.transactionType != 7 && (
+            {state.transactionType != 7 && state.transactionType != 4 && (
               <>
-                <p className="heading">Invoice Changes</p>
-                <p className="value">{topPanel.invoiceApproval}</p>
+                {state.transactionType != 2 && <>
+                  <p className="heading">Invoice Changes</p>
+                  <p className="value">{topPanel.invoiceApproval}</p>
 
-                {isClient == "false" && (
-                  <div className="autoapproveContainer">
-                    <Checkbox
-                      onChange={(e: any) => {
-                        setIsAutoApprove(e.target.checked);
-
-                        // const headers = {
-                        //   authorization: `Bearer ${tempToken}`,
-                        //   "x-apng-base-region": "EMEA",
-                        //   "x-apng-customer-id": cid || "",
-                        //   "x-apng-external": "false",
-                        //   "x-apng-inter-region": "0",
-                        //   "x-apng-target-region": "EMEA",
-                        //   customer_id: cid || "",
-                        // };
-
-                        axios({
-                          // url: `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/SaveInvoiceSetting/?invoiceId=${id}&settingTypeId=1&IsActive=${e.target.checked}`,
-                          url: getAutoApproveCheckUrl(id, e.target.checked),
-                          method: "POST",
-                          headers: getHeaders(tempToken, cid, isClient),
-                        })
-                          .then((res: any) => {
-                            if (res.status === 200) {
-                              setShowAutoApprovedToast(true);
-                            }
+                  {isClient == "false" && (
+                    <div className="autoapproveContainer">
+                      <Checkbox
+                        onChange={(e: any) => {
+                          setIsAutoApprove(e.target.checked);
+                          axios({
+                            url: getAutoApproveCheckUrl(id, e.target.checked),
+                            method: "POST",
+                            headers: getHeaders(tempToken, cid, isClient),
                           })
-                          .catch((err: any) => {
-                            setIsAutoApprove(!e.target.checked);
-                            console.log(err);
-                          });
-                      }}
-                      label="Auto-Approval after 24h"
-                      checked={isAutoApprove}
-                    />
-                  </div>
-                )}
-
+                            .then((res: any) => {
+                              if (res.status === 200) {
+                                setShowAutoApprovedToast(true);
+                              }
+                            })
+                            .catch((err: any) => {
+                              setIsAutoApprove(!e.target.checked);
+                              console.log(err);
+                            });
+                        }}
+                        label="Auto-Approval after 24h"
+                        checked={isAutoApprove}
+                      />
+                    </div>
+                  )}
+                </>}
                 <p className="heading">Payment Due</p>
                 <p className="value">{topPanel.paymentDue}</p>
               </>

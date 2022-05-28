@@ -556,20 +556,22 @@ export default function CreditMemoSummary(props: any) {
                     <div className='line-between'></div>
                 </>}
                 <div className="feeSummaryCalc">
-                    <div className="rowFee">
-                        <p className="title">Subtotal Due</p>
-                        {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
-                        <p className="amount">{currency} {toCurrencyFormat(subTotalAmount)}</p>
-                    </div>
-                    <div className="rowFee no-border">
-                        <p className="title">VAT Amount</p>
-                        {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
-                        <p className="amount">{currency} {toCurrencyFormat(vatAmount)}</p>
-                    </div>
-                    <div className="totalRow">
-                        <p>Total Balance</p>
-                        <p className='total'>{currency} {toCurrencyFormat(subTotalAmount + vatAmount)}</p>
-                        {/* <p className='total'>{props.currency} {toCurrencyFormat(totalAmount)}</p> */}
+                    <div className='rowBox'>
+                        <div className="rowFee">
+                            <p className="title">Subtotal Due</p>
+                            {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                            <p className="amount">{currency} {toCurrencyFormat(subTotalAmount)}</p>
+                        </div>
+                        <div className="rowFee no-border">
+                            <p className="title">VAT Amount</p>
+                            {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                            <p className="amount">{currency} {toCurrencyFormat(vatAmount)}</p>
+                        </div>
+                        <div className="totalRow">
+                            <p>Total Balance</p>
+                            <p className='total'>{currency} {toCurrencyFormat(subTotalAmount + vatAmount)}</p>
+                            {/* <p className='total'>{props.currency} {toCurrencyFormat(totalAmount)}</p> */}
+                        </div>
                     </div>
                 </div>
             </Cards>
@@ -579,6 +581,7 @@ export default function CreditMemoSummary(props: any) {
                     label="Add New Item"
                     className="secondary-btn large no-border"
                     icon={{
+                        viewBox:"-2 0 24 24",
                         icon: 'circularAdd',
                         size: 'large',
                         color: '#526FD6'
