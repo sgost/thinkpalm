@@ -700,7 +700,12 @@
 <a name='L635'></a><a href='#L635'>635</a>
 <a name='L636'></a><a href='#L636'>636</a>
 <a name='L637'></a><a href='#L637'>637</a>
-<a name='L638'></a><a href='#L638'>638</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L638'></a><a href='#L638'>638</a>
+<a name='L639'></a><a href='#L639'>639</a>
+<a name='L640'></a><a href='#L640'>640</a>
+<a name='L641'></a><a href='#L641'>641</a>
+<a name='L642'></a><a href='#L642'>642</a>
+<a name='L643'></a><a href='#L643'>643</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -739,6 +744,11 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1694,7 +1704,7 @@ export default function CreditMemoSummary(props: any) {
                                         handleDateChange={(date: any) =&gt; { fieldValues[index].serviceDate = date; setFieldValues([...fieldValues]) }}
                                     /&gt;
                                 &lt;/div&gt;
-                                &lt;div className='UI-line-text-box'&gt;
+                                &lt;div className='UI-line-text-box ui-dropdown-req'&gt;
                                     &lt;Dropdown
                                         handleDropOptionClick={(option: any) =&gt;
                                             handleArrOptionClick(
@@ -1722,6 +1732,7 @@ export default function CreditMemoSummary(props: any) {
                                         name="service-date-input"
                                         placeholder="Please enter"
                                         disable={editCheck != index}
+                                        
                                     &gt;&lt;/Input&gt;
                                 &lt;/div&gt;
                                 &lt;div className='UI-line-text-box'&gt;
@@ -1755,6 +1766,7 @@ export default function CreditMemoSummary(props: any) {
                                             name="service-date-input"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
+                                            required={true}
                                         &gt;&lt;/Input&gt;
                                     &lt;/div&gt;
                                     &lt;div className='amount-box'&gt;
@@ -1767,6 +1779,7 @@ export default function CreditMemoSummary(props: any) {
                                             name="service-date-input"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
+                                            required={true}
                                         &gt;&lt;/Input&gt;
                                     &lt;/div&gt;
                                 &lt;/div&gt;
@@ -1813,7 +1826,7 @@ export default function CreditMemoSummary(props: any) {
                                 handleDateChange={(date: any) =&gt; { setNewServiceDate(date) }}
                             /&gt;
                         &lt;/div&gt;
-                        &lt;div className='UI-line-text-box'&gt;
+                        &lt;div className='UI-line-text-box ui-dropdown-req'&gt;
                             &lt;Dropdown
                                 handleDropOptionClick={productDropOptionClick}
                                 handleDropdownClick={setOpenProductService}
@@ -1854,6 +1867,7 @@ export default function CreditMemoSummary(props: any) {
                                     type="number"
                                     name="service-date-input"
                                     disable={false}
+                                    required={true}
                                 &gt;&lt;/Input&gt;
                             &lt;/div&gt;
                             &lt;div className='amount-box'&gt;
@@ -1864,6 +1878,7 @@ export default function CreditMemoSummary(props: any) {
                                     type="text"
                                     name="service-date-input"
                                     disable={false}
+                                    required={true}
                                 &gt;&lt;/Input&gt;
                             &lt;/div&gt;
                         &lt;/div&gt;
@@ -1981,7 +1996,7 @@ export default function CreditMemoSummary(props: any) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Wed May 25 2022 11:49:23 GMT+0500 (Pakistan Standard Time)
+                at Fri May 27 2022 11:48:19 GMT+0500 (Pakistan Standard Time)
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

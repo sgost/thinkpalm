@@ -16,6 +16,11 @@
       color: #041e42;
     }
 
+    .dropdownRow {
+      display: flex;
+      gap: 4rem;
+    }
+
     .dropdown {
       margin-top: 3rem;
       margin-bottom: 3rem;
@@ -92,6 +97,15 @@
     display: none !important;
   }
 
+  .dpStepContainer {
+    .a-dpicker .react-datepicker__input-container input {
+      width: 15.2rem;
+    }
+    .a-dpicker .a-dpicker__container svg {
+      right: 46rem;
+    }
+  }
+
   .newinvoice-container .year-dropdown .calendar {
     display: flex;
     justify-content: end;
@@ -143,4 +157,9 @@
     height: 3.34rem;
   }
 
+  .monthYearContainer {
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+  }
 }
