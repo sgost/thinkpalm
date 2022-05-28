@@ -548,7 +548,7 @@ export default function InvoiceDetails() {
   useEffect(() => {
     if (creditMemoData && addressData?.data) {
       let model: any = topPanelObj;
-      model.from = "Elements Holdings Group Ltd";
+      model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
       model.invoiceDate = moment(creditMemoData?.createdDate).format(
@@ -961,7 +961,7 @@ export default function InvoiceDetails() {
       case 7:
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
-        return "Credit Memo Invoice No. " + creditMemoData.invoiceNo;
+        return "Credit Memo No. " + creditMemoData.invoiceNo;
       case 2:
         return "Miscellaneous No. " + creditMemoData.invoiceNo;
       default:
@@ -1294,6 +1294,7 @@ export default function InvoiceDetails() {
             serviceCountries={lookupData?.data.serviceCountries}
             currency={getBillingCurrency()}
             vatValue={vatValue}
+            setCreditMemoData={setCreditMemoData}
           ></CreditMemoSummary>
         )}
 
