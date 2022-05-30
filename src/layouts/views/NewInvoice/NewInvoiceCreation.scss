@@ -104,6 +104,10 @@
     .a-dpicker .a-dpicker__container svg {
       right: 46rem;
     }
+    span.react-datepicker__label:after {
+      content: "*";
+      color: red;
+    }
   }
 
   .newinvoice-container .year-dropdown .calendar {

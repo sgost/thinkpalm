@@ -1,8 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon, Modal, Button } from "atlasuikit";
 import "./InvoicePreviewPop.scss";
+import { getCreditMemoStep4Data } from "../../../apis/apis";
+import moment from "moment";
+import axios from "axios";
+import { urls } from "../../../urls/urls";
 
-const InvoicePreviewPop = ({ stepperOneData, todos }: any) => {
+const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
+  const [invoiceData, setInvoiceData] = useState<any>(null);
+  const [countriesData, setCountriesData] = useState<any>(null);
+
+  useEffect(() => {
+    getCreditMemoStep4Data(invoiceId)
+      .then((res: any) => {
+        setInvoiceData(res?.data);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+
+    axios
+      .get(urls.countries)
+      .then((countryRes: any) => {
+        setCountriesData(countryRes);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }, []);
+
+  const getCustlBillingCurrency = () => {
+    if (countriesData?.data && invoiceData) {
+      console.log("c", countriesData, invoiceData);
+
+      let currency = countriesData.data.find(
+        (e: any) => e.currencyId === invoiceData.currencyId
+      );
+      console.log("c", currency);
+      return currency.currency.code;
+    } else {
+      return "";
+    }
+  };
+
   const [isCreditMemoModalOpen, setIsCreditMemoModalOpen] = useState(false);
 
   const emptyAmount: any = [];
@@ -49,17 +89,30 @@ const InvoicePreviewPop = ({ stepperOneData, todos }: any) => {
                       <Icon color="#000" icon="orderSummary" size="large" />
                     </div>
                     <div className="creditMemoheading">
-                      <p>{stepperOneData?.type + " No. 791230"}</p>
+                      <p>
+                        {" "}
+                        {stepperOneData?.type +
+                          " No. " +
+                          invoiceData?.invoiceNo}
+                      </p>
                     </div>
                   </div>
                   <div className="creditMemoHeaderAmount">
                     <p>
                       Open{" "}
-                      <span>USD {newAmount.toLocaleString("en-US")}</span>
+                      <span>
+                        {" "}
+                        {getCustlBillingCurrency()}{" "}
+                        {invoiceData?.invoiceBalance?.toLocaleString("en-US")}
+                      </span>
                     </p>
                     <p>
                       Total{" "}
-                      <span>USD {newAmount.toLocaleString("en-US")}</span>
+                      <span>
+                        {" "}
+                        {getCustlBillingCurrency()}{" "}
+                        {invoiceData?.invoiceBalance?.toLocaleString("en-US")}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -69,65 +122,42 @@ const InvoicePreviewPop = ({ stepperOneData, todos }: any) => {
                 <div className="column1">
                   <p className="creditMemoInvoiceHeading">From</p>
                   <p className="creditMemoInvoiceValue">
-                    Elements Global Services
-                    {/* {apiData?.data?.invoiceFrom?.companyName} */}
+                    {invoiceData?.invoiceFrom?.companyName}
                   </p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">To</p>
                   <p className="creditMemoInvoiceValue valuebold">
-                    Camila Lopez
-                    {/* {apiData?.data?.invoice?.customerName} */}
+                    {invoiceData?.customerName}
                   </p>
-                  <p className="creditMemoInvoiceAddress">
-                    1101 15th Street NW
-                    {/* {addressData?.data?.billingAddress?.street} */}
-                  </p>
-                  <p className="creditMemoInvoiceAddress">
-                    90001, Los Angeles, CA
-                    {/* {addressData?.data?.billingAddress?.city} */}
-                  </p>
-                  <p className="creditMemoInvoiceAddress">
-                    United States of America
-                    {/* {addressData?.data?.billingAddress?.state} */}
-                  </p>
-                  <p className="creditMemoInvoiceAddress">
-                    USA
-                    {/* {addressData?.data?.billingAddress?.country} */}
-                  </p>
+                  <p className="creditMemoInvoiceAddress"></p>
+                  <p className="creditMemoInvoiceAddress"></p>
+                  <p className="creditMemoInvoiceAddress"></p>
+                  <p className="creditMemoInvoiceAddress"></p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">Invoice Date</p>
                   <p className="creditMemoInvoiceValue">
-                    01 Nov 2022
-                    {/* {moment(apiData?.data?.invoice?.createdDate).format(
-                          "DD MMM YYYY"
-                        )} */}
+                    {moment(invoiceData?.createdDate).format("DD MMM YYYY")}
                   </p>
 
                   <p className="creditMemoInvoiceHeading">Payment Due</p>
                   <p className="creditMemoInvoiceValue">
-                    8 Nov 2022
-                    {/* {moment(apiData?.data?.invoice?.dueDate).format(
-                          "DD MMM YYYY"
-                        )} */}
+                    {moment(invoiceData?.dueDate).format("DD MMM YYYY")}
                   </p>
                 </div>
                 <div className="creditMemoInvoiceLastCloumn">
                   <p className="creditMemoInvoiceHeading">Location</p>
                   <p className="creditMemoInvoiceValue">
-                    Nigeria
-                    {/* {apiData?.data?.invoice?.customerLocation} */}
+                    {invoiceData?.customerLocation}
                   </p>
                   <p className="creditMemoInvoiceHeading">Region</p>
                   <p className="creditMemoInvoiceValue">
-                    EMEA
-                    {/* {apiData?.data?.regionItemCode?.toUpperCase()} */}
+                    {invoiceData?.regionItemCode}
                   </p>
                   <p className="creditMemoInvoiceHeading">Billing Currency</p>
                   <p className="creditMemoInvoiceValue">
-                    USD
-                    {/* {getPayrollBillingCurrency()} */}
+                    {getCustlBillingCurrency()}
                   </p>
                 </div>
               </div>
@@ -177,7 +207,10 @@ const InvoicePreviewPop = ({ stepperOneData, todos }: any) => {
 
               <div className="invoice_bottom">
                 <p>Total Balance</p>
-                <h3>USD {newAmount.toLocaleString("en-US")}</h3>
+                <h3>
+                  {getCustlBillingCurrency()}{" "}
+                  {newAmount.toLocaleString("en-US")}
+                </h3>
               </div>
             </div>
           </Modal>

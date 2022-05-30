@@ -335,6 +335,7 @@ const NewInvoice = () => {
     Opens,
     setOpens,
     stepperOneData,
+    invoiceId,
   };
 
   const disableFunForStepOnePayroll = () => {
