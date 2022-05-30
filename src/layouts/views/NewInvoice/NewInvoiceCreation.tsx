@@ -229,14 +229,14 @@ const NewInvoiceCreation = ({
                   label="Invoice Date"
                   minDate={new Date()}
                   required={true}
-                  placeholderText={
-                    invoiceDate
-                      ? invoiceDate
-                          ?.toString()
-                          ?.slice(4, 15)
-                          ?.replaceAll(" ", "/")
-                      : "Please Select"
-                  }
+                  // placeholderText={
+                  //   invoiceDate
+                  //     ? invoiceDate
+                  //         ?.toString()
+                  //         ?.slice(4, 15)
+                  //         ?.replaceAll(" ", "/")
+                  //     : "Please Select"
+                  // }
                 />
               </div>
             )}
