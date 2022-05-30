@@ -4,6 +4,7 @@ import axios from "axios";
 import "./NewInvoiceCreation.scss";
 import { getCountryByCustomer, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
+import moment from "moment";
 
 const NewInvoiceCreation = ({
   accessToken,
@@ -224,19 +225,17 @@ const NewInvoiceCreation = ({
               <div className="dpStepContainer">
                 <DatePicker
                   handleDateChange={function (date: any) {
+                    console.log("date", date);
                     setInvoiceDate(date);
                   }}
                   label="Invoice Date"
                   minDate={new Date()}
                   required={true}
-                  // placeholderText={
-                  //   invoiceDate
-                  //     ? invoiceDate
-                  //         ?.toString()
-                  //         ?.slice(4, 15)
-                  //         ?.replaceAll(" ", "/")
-                  //     : "Please Select"
-                  // }
+                  placeholderText={
+                    invoiceDate
+                      ? moment(invoiceDate).format("DD/MMM/YYYY")
+                      : "Please Select"
+                  }
                 />
               </div>
             )}
