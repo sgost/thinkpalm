@@ -962,7 +962,7 @@ export default function InvoiceDetails() {
       case 4:
         return "Credit Memo No. " + creditMemoData.invoiceNo;
       case 3:
-        return "Proformo Invoice No. " + creditMemoData.invoiceNo
+        return "Proforma Invoice No. " + creditMemoData.invoiceNo
       case 2:
         return "Miscellaneous No. " + creditMemoData.invoiceNo;
       default:
@@ -1018,39 +1018,39 @@ export default function InvoiceDetails() {
                 />
               </div>
             )}
-            <div className="download-invoice-dropdown">
-          {permission?.InvoiceDetails.includes("Download") && (
-            <div
-              onClick={() =>
-                state.transactionType != 7
-                  ? setIsDownloadOpen(!isDownloadOpen)
-                  : function noRefCheck() { }
-              }
-              className={`${state.transactionType == 7 || deleteDisableButtons === true
-                ? "download_disable"
-                : "download"
-                }`}
-            // className="download"
-            >
-              <p className="text">Download</p>
-              <Icon
-                className="icon"
-                color="#526fd6"
-                icon="chevronDown"
-                size="medium"
-              />
-            </div>
-          )}
+          <div className="download-invoice-dropdown">
+            {permission?.InvoiceDetails.includes("Download") && (
+              <div
+                onClick={() =>
+                  state.transactionType != 7
+                    ? setIsDownloadOpen(!isDownloadOpen)
+                    : function noRefCheck() { }
+                }
+                className={`${state.transactionType == 7 || deleteDisableButtons === true
+                  ? "download_disable"
+                  : "download"
+                  }`}
+              // className="download"
+              >
+                <p className="text">Download</p>
+                <Icon
+                  className="icon"
+                  color="#526fd6"
+                  icon="chevronDown"
+                  size="medium"
+                />
+              </div>
+            )}
 
-          {isDownloadOpen && (
-            <div className="openDownloadDropdown">
-              <p onClick={() => downloadFunction()}>Invoice as PDF</p>
-              <p onClick={() => downloadExcelFunction()}>Invoice as Excel</p>
-              <p onClick={() => downloadEmployeeBreakdownFunction()}>
-                Employee Breakdown
-              </p>
-            </div>
-          )}
+            {isDownloadOpen && (
+              <div className="openDownloadDropdown">
+                <p onClick={() => downloadFunction()}>Invoice as PDF</p>
+                <p onClick={() => downloadExcelFunction()}>Invoice as Excel</p>
+                <p onClick={() => downloadEmployeeBreakdownFunction()}>
+                  Employee Breakdown
+                </p>
+              </div>
+            )}
           </div>
           <div className="decline-invoice">
             {status === "Pending Approval" &&
@@ -1621,12 +1621,12 @@ export default function InvoiceDetails() {
             <div className="text-invoive-no">
               <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
             </div>
-           
+
 
             <div className="text-invoice-comment">
-            <label>
-              Comment<span className="comment">*</span>
-            </label>
+              <label>
+                Comment<span className="comment">*</span>
+              </label>
               <textarea
                 value={inputValue}
                 className="textarea-box"
