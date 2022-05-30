@@ -231,7 +231,10 @@ const NewInvoiceCreation = ({
                   required={true}
                   placeholderText={
                     invoiceDate
-                      ? invoiceDate.toString().slice(4, 15).replaceAll(" ", "/")
+                      ? invoiceDate
+                          ?.toString()
+                          ?.slice(4, 15)
+                          ?.replaceAll(" ", "/")
                       : "Please Select"
                   }
                 />
