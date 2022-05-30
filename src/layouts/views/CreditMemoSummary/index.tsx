@@ -397,7 +397,7 @@ export default function CreditMemoSummary(props: any) {
                                         value={item.description}
                                         label="Description"
                                         type="text"
-                                        placeholder="Please enter"
+                                        placeholder="Enter a description"
                                         disable={editCheck != index}
                                     ></Input>
                                 </div>
@@ -428,7 +428,7 @@ export default function CreditMemoSummary(props: any) {
                                             setValue={(value: any)=>{setEditQuantity(index, value)}}
                                             value={item.quantity}
                                             label="Quantity"
-                                            type="number"
+                                            type="amount"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
                                             required={true}
@@ -470,7 +470,7 @@ export default function CreditMemoSummary(props: any) {
                             <Button
                                 className="secondary-btn no-border medium save"
                                 label="Cancel"
-                                handleOnClick={()=>{setAddSectionCheck(false)}}
+                                handleOnClick={()=>{setAddSectionCheck(false);  cleanNewObject();}}
                             />
                             <Button
                                 className="primary-blue medium save"
@@ -481,7 +481,7 @@ export default function CreditMemoSummary(props: any) {
                         </>}
                             </div>
                         </div>
-                    <div className='UI-align-boxes margin-top'>
+                    <div className='UI-align-boxes margin-top ui-datepicker-req'>
                         <div className='UI-line-text-box'>
                             <DatePicker
                                 value={moment(newServiceDate).format('DD MMM YYYY')}
@@ -505,11 +505,12 @@ export default function CreditMemoSummary(props: any) {
                                 setValue={setNewDescription}
                                 value={newDescription}
                                 label="Description"
+                                placeholder="Enter a description"
                                 type="text"
                                 disable={false}
                             ></Input>
                         </div>
-                        <div className='UI-line-text-box'>
+                        <div className='UI-line-text-box ui-dropdown-req'>
                             <Dropdown
                                 handleDropOptionClick={CountryDropOptionClick}
                                 handleDropdownClick={setOpenCountryService}
@@ -527,7 +528,7 @@ export default function CreditMemoSummary(props: any) {
                                     value={newQuantity}
                                     setValue={setNewQuantity}
                                     label="Quantity"
-                                    type="number"
+                                    type="amount"
                                     disable={false}
                                     required={true}
                                 ></Input>
@@ -587,6 +588,7 @@ export default function CreditMemoSummary(props: any) {
                         color: '#526FD6'
                     }}
                     handleOnClick={showAddFields}
+                    disabled={addSectionCheck}
                 />
             </Cards>}
             <div className='filesNotes'>
