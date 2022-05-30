@@ -1692,7 +1692,7 @@ describe("New Invoice for Proforma ", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-  },30000);
+  }, 30000);
   test("dropDown Value change stepper 1", async () => {
     render(
       <HashRouter>
@@ -1727,21 +1727,28 @@ describe("New Invoice for Proforma ", () => {
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
-  },30000);
+  }, 30000);
 });
 
 // test cases for Miscellaneous
 
 describe("New Invoice for Miscellaneous ", () => {
-  beforeAll(() => {
+  beforeEach(async () => {
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
-    mock.onPost(urls.createCreditMemo).reply(201, mockapidata.resCreateCreditMemo);
+    mock
+      .onPost(urls.createCreditMemo)
+      .reply(201, mockapidata.resCreateCreditMemo);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  afterEach(() => {
+    cleanup();
+    jest.resetAllMocks();
   });
 
   test("breadcumbs are working", async () => {
@@ -1757,7 +1764,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const invoiceBreadClick = await screen.findAllByText(/Invoices/);
     expect(invoiceBreadClick[0]).toBeInTheDocument();
     fireEvent.click(invoiceBreadClick[0]);
-  },30000);
+  }, 30000);
   test("dropDown Value change stepper 1", async () => {
     render(
       <HashRouter>
@@ -1852,8 +1859,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
     fireEvent.click(nextPreview);
-    
-  },30000);
+  }, 30000);
 });
 
 /// Credit Memo
@@ -1861,6 +1867,7 @@ describe("New Invoice for Miscellaneous ", () => {
 describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
     mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
@@ -1868,6 +1875,9 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     mock
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
+    // mock
+    //   .onGet(getRelatedInvoiceUrl("1d05e427-71ec-4183-a838-1668cebe5f53"))
+    //   .reply(200, mockapidata.resFinalStepper);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
@@ -1878,6 +1888,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
         <NewInvoice />
       </HashRouter>
     );
+
     const payrollTab = await screen.findAllByText(/New Invoice/);
 
     expect(payrollTab[0]).toBeInTheDocument();
@@ -1887,6 +1898,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const customerDropValue = await screen.findByText(
       /"DSM Nutritional Products AG"/
     );
+
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
 
@@ -1950,7 +1962,6 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const AmountInputField = await screen.findByTestId(/Amount/);
     expect(AmountInputField).toBeInTheDocument();
     fireEvent.change(AmountInputField, { target: { value: 1 } });
-
     const addNewText = await screen.findAllByText(/Add New Item/);
     expect(addNewText[0]).toBeInTheDocument();
     fireEvent.click(addNewText[0]);
@@ -1972,7 +1983,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
 
     // const closeButton = container.querySelector(".close");
     // fireEvent.click(closeButton);
-  },30000);
+  }, 30000);
 });
 
 describe("final stepper", () => {
@@ -1991,5 +2002,5 @@ describe("final stepper", () => {
 
     const goto = screen.getByText(/Go to Invoice/);
     fireEvent.click(goto);
-  },30000);
+  }, 30000);
 });

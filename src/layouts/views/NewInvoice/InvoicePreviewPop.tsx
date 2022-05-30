@@ -11,13 +11,22 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const [countriesData, setCountriesData] = useState<any>(null);
 
   useEffect(() => {
-    getCreditMemoStep4Data(invoiceId).then((res: any) => {
-      setInvoiceData(res.data);
-    });
+    getCreditMemoStep4Data(invoiceId)
+      .then((res: any) => {
+        setInvoiceData(res?.data);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
 
-    axios.get(urls.countries).then((countryRes: any) => {
-      setCountriesData(countryRes);
-    });
+    axios
+      .get(urls.countries)
+      .then((countryRes: any) => {
+        setCountriesData(countryRes);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
 
   const getCustlBillingCurrency = () => {

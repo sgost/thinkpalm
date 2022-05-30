@@ -42,33 +42,43 @@ const ProductInvoiceCreation = ({
   }, []);
 
   const productFun = (productApi: any) => {
-    axios.get(productApi).then((response: any) => {
-      const temp: any = [];
-      response?.data.map((item: any) =>
-        temp.push({
-          ...item,
-          isSelected: false,
-          label: item.glDescription,
-          value: item.glDescription,
-        })
-      );
-      setNewArrPush(temp);
-    });
+    axios
+      .get(productApi)
+      .then((response: any) => {
+        const temp: any = [];
+        response?.data.map((item: any) =>
+          temp.push({
+            ...item,
+            isSelected: false,
+            label: item.glDescription,
+            value: item.glDescription,
+          })
+        );
+        setNewArrPush(temp);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   };
 
   const countryFun = (countryApi: any) => {
-    axios.get(countryApi).then((response: any) => {
-      const temp: any = [];
-      response?.data.serviceCountries.map((item: any) =>
-        temp.push({
-          ...item,
-          isSelected: false,
-          label: item.text,
-          value: item.order,
-        })
-      );
-      setNewArrPushs(temp);
-    });
+    axios
+      .get(countryApi)
+      .then((response: any) => {
+        const temp: any = [];
+        response?.data.serviceCountries.map((item: any) =>
+          temp.push({
+            ...item,
+            isSelected: false,
+            label: item.text,
+            value: item.order,
+          })
+        );
+        setNewArrPushs(temp);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   };
 
   const handleAdd = () => {
@@ -153,9 +163,8 @@ const ProductInvoiceCreation = ({
                     }}
                     inline={false}
                     label="Service Date"
-                    
                     minDate={new Date()}
-                    placeholderText={item.date ? item.date: "Please Select"}
+                    placeholderText={item.date ? item.date : "Please Select"}
                   />
                 </div>
 
@@ -214,9 +223,7 @@ const ProductInvoiceCreation = ({
                 {/* Description */}
 
                 <div className="dropdownP">
-                  <span id="desc_label">
-                    Description
-                  </span>
+                  <span id="desc_label">Description</span>
                   <input
                     type="text"
                     className="font-color"
