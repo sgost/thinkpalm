@@ -290,6 +290,31 @@ export default function InvoiceListing() {
   }, [currentRoles]);
 
   useEffect(() => {
+    if(localStorage.contractorInvoiceState) {      
+      const rowDetails = JSON.parse(localStorage.contractorInvoiceState);
+      const { id, invoiceNo, transactionType } = rowDetails;
+      navigate(
+        "/pay/invoicedetails" +
+        id +
+        "/" +
+        rowDetails?.customerId +
+        "/" +
+        true,
+        {
+          state: {
+            InvoiceId: invoiceNo,
+            transactionType,
+            rowDetails,
+          },
+        }
+      );
+    }
+    return () => {
+      localStorage.removeItem("contractorInvoiceState");
+    }
+  }, []);
+
+  useEffect(() => {
     if (apiData?.data?.results) {
       const apiTableData: any = [];
       // const apiTableData = apiData?.data?.results;
