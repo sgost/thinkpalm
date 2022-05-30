@@ -1598,6 +1598,7 @@ export default function InvoiceDetails() {
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
           customerId={cid}
+          billStatus={status}
           invoiceId={state.InvoiceId}
           navigate={navigate}
         ></BillsTable>
