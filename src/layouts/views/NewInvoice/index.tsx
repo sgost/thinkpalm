@@ -552,7 +552,6 @@ const NewInvoice = () => {
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
     };
-    console.log(data);
     if (!isInvoiceCreated) {
       axios({
         method: "POST",
@@ -561,7 +560,6 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
-          console.log("res.data", res.data)
           setInvoiceId(res.data.id);
           setIsInvoiceCreated(true);
           SetinvoicePreviewData(res.data);
@@ -664,7 +662,6 @@ const NewInvoice = () => {
               {stepsCount == 3 && stepperOneData?.type === "Payroll" && (
                 <PreviewInvoice {...stepperThreeProps} />
               )}
-              {console.log("stepperOneData?.type", stepperOneData?.type, stepsCount)}
               {stepsCount == 3 &&
                 (stepperOneData?.type === "Credit Memo" ||
                   stepperOneData?.type === "Proforma") && (
@@ -690,7 +687,7 @@ const NewInvoice = () => {
       <div
         className={stepsCount === 1 ? "Stepper-buttons" : "stepper-two-buttons"}
       >
-        {stepsCount != 1 && (
+        {(stepsCount == 2 || stepsCount == 3) && (
           <Button
             data-testid="back-button"
             icon={{

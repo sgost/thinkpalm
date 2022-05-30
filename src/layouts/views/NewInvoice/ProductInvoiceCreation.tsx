@@ -120,7 +120,6 @@ const ProductInvoiceCreation = ({
     setTodos(tempData);
   };
 
-  console.log("todos", todos);
 
   return (
     <div>
