@@ -57,7 +57,7 @@
           border-style: solid;
           border-color: $primary-blue;
           border-radius: 4px;
-          height: 2.3rem;
+          height: 2.5rem;
           font-size: 1rem;
           border-width: 0.1rem;
           cursor: pointer;
@@ -80,7 +80,7 @@
           border-style: solid;
           border-color: $primary-blue;
           border-radius: 0.2222rem;
-          height: 2.3rem;
+          height: 2.5rem;
           font-size: 1rem;
           border-width: 0.1rem;
           cursor: no-drop;
@@ -130,6 +130,15 @@
             }
           }
         }
+      }
+      button.a-button.small{
+        border: 2px solid #526fd6!important;
+        &:disabled{
+          border: 2px solid #cbd4f3!important;
+        }
+      }
+      .download-invoice-dropdown{
+        position: relative;
       }
     }
 
@@ -363,7 +372,6 @@
       .rowFee {
         display: flex;
         border-bottom-style: solid;
-        // border-bottom-width: 1;
         border-color: $light-gray;
         border-width: 1px;
         width: 30%;
@@ -454,10 +462,10 @@
         border-radius: 10px;
         background-color: $white;
         padding: 4rem;
-        // overflow: auto;
 
         h3 {
           font-size: 1.5rem;
+          font-weight: 400;
         }
 
         p {
@@ -467,14 +475,11 @@
 
         .notesContainer {
           height: 24rem;
-          // overflow: auto;
           margin-top: 1rem;
           margin-right: 3rem;
 
           .notesSubContainer {
-            // display: flex;
-            // align-items: center;
-            // justify-content: space-between;
+          
 
             .noteInfoBtn {
               display: flex;
@@ -541,7 +546,6 @@
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          // justify-content: space-between;
 
           .btnContainercheckbox {
             display: flex;
@@ -579,6 +583,7 @@
 
         h3 {
           font-size: 1.5rem;
+          font-weight: 400;
         }
 
         p {
@@ -680,18 +685,19 @@
         color: #3e3e3e;
         margin-top: -0.722rem;
       }
-
-      h6 {
-        color: #3e3e3e;
-        font-weight: 400;
-        font-size: 0.722rem;
-        line-height: 0.889rem;
-        margin-top: 2.222rem;
+      .text-invoice-comment{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3333rem;
+        label {
+          color: #3e3e3e;
+          font-weight: 400;
+          font-size: 0.722rem;
+          line-height: 0.889rem;
+        }
       }
-
       .textarea-box {
-        margin-top: -22px;
-        border-radius: 4px;
+        border-radius: 0.2222rem;
         padding: 1.111rem;
         max-width: 25rem;
         font-family: "Circular", sans-serif;
@@ -708,6 +714,12 @@
 
         button.a-button.medium {
           font-size: 1.099rem;
+          line-height: 1.3333rem;
+          font-weight: 400;
+          border: 2px solid #526fd6;
+          &:disabled{
+            border: 2px solid #cbd4f3 !important;
+          }
         }
 
         .cancel-button {
@@ -716,7 +728,6 @@
 
         .decline-button {
           max-width: 11rem;
-          margin-left: 1.611rem;
         }
       }
     }
@@ -840,19 +851,19 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        width: 140px;
+        width: 8.7778rem;
         margin-left: -2rem;
         align-items: center;
         cursor: pointer;
 
         img {
-          height: 20px;
-          width: 20px;
+          height: 1.1111rem;
+          width: 1.1111rem;
           // margin-top: 12px;
         }
 
         h5 {
-          font-size: 17px;
+          font-size: 1rem;
           margin: 0rem;
           color: red;
         }
@@ -880,6 +891,7 @@
         button.a-button.medium {
           font-size: 1.16rem;
           width: 9.13rem;
+          border: 2px solid #526fd6!important;
         }
       }
 

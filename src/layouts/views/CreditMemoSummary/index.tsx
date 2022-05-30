@@ -11,11 +11,13 @@ import "./creditMemoSummary.scss";
 
 export default function CreditMemoSummary(props: any) {
 
-    const { notes, setNotes, documents, setDocuments, isClient, cid, id, currency, creditMemoData, serviceCountries, vatValue } = props
-    const [newServiceDate, setNewServiceDate] = useState<Date>();
+    const { notes, setNotes, documents, setDocuments, isClient, cid, id, currency, creditMemoData, serviceCountries, vatValue, setCreditMemoData } = props
+    const [newServiceDate, setNewServiceDate] = useState<Date>(new Date);
     const [newDescription, setNewDescription] = useState('');
-    const [newQuantity, setNewQuantity] = useState<number>();
-    const [newAmount, setNewAmount] = useState<any>();
+    const [newQuantity, setNewQuantity] = useState<number>(0);
+    const [newAmount, setNewAmount] = useState<any>(0);
+    const [newCountry, setNewCountry] = useState<any>();
+    const [newProduct, setNewProduct] = useState<any>();
     const [newTotalAmount, setNewTotalAmount] = useState<any>();
     const [openProductService, setOpenProductService] = useState(false);
     const [openEditProductService, setOpenEditProductService] = useState<any>();
@@ -38,7 +40,9 @@ export default function CreditMemoSummary(props: any) {
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
-
+    useEffect(() => {
+        reCalculateTotal();
+    },[creditMemoData])
     useEffect(() => {
         axios.get(urls.products).then((resp) => {
             if (resp.status == 200) {
@@ -102,13 +106,17 @@ export default function CreditMemoSummary(props: any) {
     };
     /* istanbul ignore next */
     const handleOptionClick = (args: any) => {
-        const { option, dropOptions, updateIsOpen, isDropOpen, updateOptions } = args;
+        const { option, dropOptions, updateIsOpen, isDropOpen, updateOptions, type } = args;
         updateIsOpen(!isDropOpen);
         let updatedOptions = dropOptions.map((opt: any) => {
             opt.isSelected = option.value === opt.value;
             return opt;
         });
-
+        if(type == "country"){
+            setNewCountry(option)
+        }else if(type == "product"){
+            setNewProduct(option)
+        }
         updateOptions(updatedOptions);
     };
     /* istanbul ignore next */
@@ -118,6 +126,7 @@ export default function CreditMemoSummary(props: any) {
         updateIsOpen: setOpenCountryService,
         isDropOpen: openCountryService,
         updateOptions: setCountryOptions,
+        type: "country"
     });
     
     const productDropOptionClick = (option: any) => handleOptionClick({
@@ -126,18 +135,20 @@ export default function CreditMemoSummary(props: any) {
         updateIsOpen: setOpenProductService,
         isDropOpen: openProductService,
         updateOptions: setProductOptions,
+        type: "product"
     });
     /* istanbul ignore next */
     const saveInvoiceItems = () => {
-        let serviceProduct: any = productOptions.filter((x: any) => x.isSelected)[0];
-        let country: any = countryOptions.filter((x: any) => x.isSelected)[0];
+        setNewTotalAmount(newQuantity * newAmount);
+        // let serviceProduct: any = productOptions.filter((x: any) => x.isSelected)[0];
+        // let country: any = countryOptions.filter((x: any) => x.isSelected)[0];
         let obj: any = {};
         obj.serviceDate = newServiceDate;
-        obj.productId = serviceProduct.value;
+        obj.productId = newProduct.value;
         obj.description = newDescription;
-        obj.totalAmount = newTotalAmount;
+        obj.totalAmount = newQuantity * newAmount;
         obj.quantity = newQuantity;
-        obj.serviceCountry = country.value;
+        obj.serviceCountry = newCountry.value;
         obj.amount = newAmount;
         obj.invoiceId = creditMemoData.id;
         payload?.invoiceItems.push(obj);
@@ -148,9 +159,10 @@ export default function CreditMemoSummary(props: any) {
     }
 
     
-    const editInvoiceItems = (index: number) => {        
+    const editInvoiceItems = (index: number) => {       
+        fieldValues[index].totalAmount = fieldValues[index].quantity * fieldValues[index].amount
+        payload.invoiceItems[index] = fieldValues[index];
         callUpdateAPI();        
-        console.log(creditMemoData);
     }
     
     const deleteInvoiceItem = (index: number) => {
@@ -160,21 +172,18 @@ export default function CreditMemoSummary(props: any) {
 
     /* istanbul ignore next */
     const callUpdateAPI = () :any =>{
+        reCalculateTotal();
         const tempToken = localStorage.getItem("accessToken");
         var headers = getHeaders(tempToken, cid, isClient);
-        
         axios.put(updateCreditMemoUrl(creditMemoData?.id), payload, {headers: headers}).then((resp) => {
             if ((resp.status == 200 || resp.status == 201) && resp.data) {
                 setAddSectionCheck(false);
-                reCalculateTotal();
-                setEditCheck(creditMemoData.invoiceItems.length);
+                setEditCheck(creditMemoData.invoiceItems.length + 1);
                 setFieldValues(resp.data.invoiceItems);
-                return true;
+                setCreditMemoData(resp.data);
             }
-            return false;
         }).catch((err) => {
             console.log("update call failed");
-            return false;
         })
     }
     /* istanbul ignore next */
@@ -188,6 +197,8 @@ export default function CreditMemoSummary(props: any) {
             }
         })
         )
+        setNewCountry(null);
+        setNewProduct(null);
         setNewDescription('');
         setCountryOptions(
             serviceCountries.map((x: any) => {
@@ -199,7 +210,7 @@ export default function CreditMemoSummary(props: any) {
             })
         )
         setNewQuantity(0);
-        setNewAmount('');
+        setNewAmount(0);
         setNewTotalAmount('');
     }
     /* istanbul ignore next */
@@ -210,6 +221,7 @@ export default function CreditMemoSummary(props: any) {
         }
         setSubTotalAmount(subtotal);
         setVatAmount(subtotal * (vatValue/100))
+        payload.totalAmount = subtotal + (subtotal * (vatValue/100))
     }
     /* istanbul ignore next */
     const updateDropdowns = () =>{
@@ -385,10 +397,8 @@ export default function CreditMemoSummary(props: any) {
                                         value={item.description}
                                         label="Description"
                                         type="text"
-                                        name="service-date-input"
                                         placeholder="Please enter"
                                         disable={editCheck != index}
-                                        
                                     ></Input>
                                 </div>
                                 <div className='UI-line-text-box'>
@@ -419,7 +429,6 @@ export default function CreditMemoSummary(props: any) {
                                             value={item.quantity}
                                             label="Quantity"
                                             type="number"
-                                            name="service-date-input"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
                                             required={true}
@@ -431,8 +440,7 @@ export default function CreditMemoSummary(props: any) {
                                             value={toCurrencyFormat(item.amount)}
                                             // value={item.amount.toString()}
                                             label="Amount"
-                                            type="text"
-                                            name="service-date-input"
+                                            type="amount"
                                             placeholder="Please enter"
                                             disable={editCheck != index}
                                             required={true}
@@ -441,13 +449,12 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='line-sec-width'>
                                     <Input
-                                        value={toCurrencyFormat(item.totalAmount)}
+                                        value={toCurrencyFormat(item.amount * item.quantity)}
                                         setValue={(value: any)=>{setEditTotal(index, value)}}
                                         label="Total Amount"
                                         type="text"
-                                        name="service-date-input"
                                         placeholder="Please enter"
-                                        disable={editCheck != index}
+                                        disable={true}
                                     ></Input>
                                 </div>
                             </div>
@@ -462,13 +469,14 @@ export default function CreditMemoSummary(props: any) {
                             {addSectionCheck && <>
                             <Button
                                 className="secondary-btn no-border medium save"
-                                label="Cancel Save"
+                                label="Cancel"
                                 handleOnClick={()=>{setAddSectionCheck(false)}}
                             />
                             <Button
                                 className="primary-blue medium save"
                                 label="Save"
                                 handleOnClick={saveInvoiceItems}
+                                disabled={!newServiceDate || newQuantity == 0 || newQuantity == null || newAmount == "0" || newAmount == "" || !newCountry || !newProduct }
                             />
                         </>}
                             </div>
@@ -498,7 +506,6 @@ export default function CreditMemoSummary(props: any) {
                                 value={newDescription}
                                 label="Description"
                                 type="text"
-                                name="service-date-input"
                                 disable={false}
                             ></Input>
                         </div>
@@ -521,7 +528,6 @@ export default function CreditMemoSummary(props: any) {
                                     setValue={setNewQuantity}
                                     label="Quantity"
                                     type="number"
-                                    name="service-date-input"
                                     disable={false}
                                     required={true}
                                 ></Input>
@@ -529,10 +535,9 @@ export default function CreditMemoSummary(props: any) {
                             <div className='amount-box'>
                                 <Input
                                     value={newAmount}
-                                    setValue={setNewAmount}
+                                    setValue={(e: any)=>{setNewAmount(e)}}
                                     label="Amount"
-                                    type="text"
-                                    name="service-date-input"
+                                    type="amount"
                                     disable={false}
                                     required={true}
                                 ></Input>
@@ -540,32 +545,33 @@ export default function CreditMemoSummary(props: any) {
                         </div>
                         <div className='line-sec-width'>
                             <Input
-                                value={newTotalAmount}
+                                value={(newQuantity * newAmount).toString()}
                                 setValue={setNewTotalAmount}
                                 label="Total Amount"
                                 type="text"
-                                name="service-date-input"
-                                disable={false}
+                                disable={true}
                             ></Input>
                         </div>
                     </div>
                     <div className='line-between'></div>
                 </>}
                 <div className="feeSummaryCalc">
-                    <div className="rowFee">
-                        <p className="title">Subtotal Due</p>
-                        {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
-                        <p className="amount">{currency} {toCurrencyFormat(subTotalAmount)}</p>
-                    </div>
-                    <div className="rowFee no-border">
-                        <p className="title">VAT Amount</p>
-                        {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
-                        <p className="amount">{currency} {toCurrencyFormat(vatAmount)}</p>
-                    </div>
-                    <div className="totalRow">
-                        <p>Total Balance</p>
-                        <p className='total'>{currency} {toCurrencyFormat(subTotalAmount + vatAmount)}</p>
-                        {/* <p className='total'>{props.currency} {toCurrencyFormat(totalAmount)}</p> */}
+                    <div className='rowBox'>
+                        <div className="rowFee">
+                            <p className="title">Subtotal Due</p>
+                            {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                            <p className="amount">{currency} {toCurrencyFormat(subTotalAmount)}</p>
+                        </div>
+                        <div className="rowFee no-border">
+                            <p className="title">VAT Amount</p>
+                            {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
+                            <p className="amount">{currency} {toCurrencyFormat(vatAmount)}</p>
+                        </div>
+                        <div className="totalRow">
+                            <p>Total Balance</p>
+                            <p className='total'>{currency} {toCurrencyFormat(subTotalAmount + vatAmount)}</p>
+                            {/* <p className='total'>{props.currency} {toCurrencyFormat(totalAmount)}</p> */}
+                        </div>
                     </div>
                 </div>
             </Cards>
@@ -575,6 +581,7 @@ export default function CreditMemoSummary(props: any) {
                     label="Add New Item"
                     className="secondary-btn large no-border"
                     icon={{
+                        viewBox:"-2 0 24 24",
                         icon: 'circularAdd',
                         size: 'large',
                         color: '#526FD6'
