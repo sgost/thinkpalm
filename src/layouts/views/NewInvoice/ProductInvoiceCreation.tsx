@@ -120,7 +120,6 @@ const ProductInvoiceCreation = ({
     setTodos(tempData);
   };
 
-  console.log("todos", todos);
 
   return (
     <div>
@@ -131,20 +130,22 @@ const ProductInvoiceCreation = ({
               <div id="head_sec">
                 <h3>Summary</h3>
                 <div id="action_buttons">
-                  <div
-                    id="icon_1"
-                    data-testid="remove-item-button"
-                    onClick={() => remove(item)}
-                  >
-                    <Icon
-                      icon="trash"
-                      size="small"
-                      width="30"
-                      height="30"
-                      color="#526FD6"
-                    />
-                    Delete
-                  </div>
+                  {i != 0 && (
+                    <div
+                      id="icon_1"
+                      data-testid="remove-item-button"
+                      onClick={() => remove(item)}
+                    >
+                      <Icon
+                        icon="trash"
+                        size="small"
+                        width="30"
+                        height="30"
+                        color="#526FD6"
+                      />
+                      Delete
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -228,7 +229,7 @@ const ProductInvoiceCreation = ({
                     type="text"
                     className="font-color"
                     defaultValue={item.description}
-                    placeholder="Description"
+                    placeholder="Enter description"
                     id="description_input"
                     name="description"
                     data-testid="description_set"

@@ -98,19 +98,24 @@ describe("New Invoice", () => {
     expect(countryDropValue).toBeInTheDocument();
     fireEvent.click(countryDropValue);
 
-    // fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropDown = await screen.findByText(/Select Month/);
+    expect(monthDropDown).toBeInTheDocument();
+    fireEvent.click(monthDropDown);
+
+    
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
 
-    // fireEvent.click(pleaseSelectDropDown[3]);
+    const yearDropDown = await screen.findByText(/Select Year/);
+    expect(yearDropDown).toBeInTheDocument();
+    fireEvent.click(yearDropDown);
+
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
 
-    const nextButton = await screen.findByTestId("next-button");
-    expect(nextButton).toBeInTheDocument();
-    fireEvent.click(nextButton);
+
   });
 });
 
@@ -571,6 +576,140 @@ describe("Stepper 2 api fail", () => {
     const stepTwoNextButton = await screen.findByTestId("next-button");
     expect(stepTwoNextButton).toBeInTheDocument();
     fireEvent.click(stepTwoNextButton);
+  });
+});
+describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+
+    mock
+      .onGet(getCountryByCustomer(id))
+      .reply(200, mockapidata.resGetAllCountry);
+    mock
+      .onGet(getEmployee(customerId, countryId, monthId, yearId))
+      .reply(500, "dfg");
+    
+  });
+
+  test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish ", async () => {
+    const { container } = render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(
+      /"DSM Nutritional Products AG"/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    const countryDropDown = await screen.findByText("Countries");
+    fireEvent.click(countryDropDown);
+
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+    // fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    // fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const errorText = await screen.findByText(/An error occurred while fetching employees for this customer/);
+    expect(errorText).toBeInTheDocument();
+    
+   
+  });
+});
+describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+
+    mock
+      .onGet(getCountryByCustomer(id))
+      .reply(200, mockapidata.resGetAllCountry);
+    mock
+      .onGet(getEmployee(customerId, countryId, monthId, yearId))
+      .reply(500, "No Employees found under this customer");
+    
+  });
+
+  test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish ", async () => {
+    const { container } = render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const customerDropValue = await screen.findByText(
+      /"DSM Nutritional Products AG"/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    const countryDropDown = await screen.findByText("Countries");
+    fireEvent.click(countryDropDown);
+
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+    // fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    // fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const errorText = await screen.findByText(/No Employees found under this customer/);
+    expect(errorText).toBeInTheDocument();
+    
+   
   });
 });
 
@@ -1835,7 +1974,7 @@ describe("New Invoice for Miscellaneous ", () => {
     fireEvent.click(countryServiceDropDownValue[0]);
 
     const DescriptionInputField = await screen.findByPlaceholderText(
-      /Description/
+      /Enter description/
     );
     expect(DescriptionInputField).toBeInTheDocument();
     fireEvent.change(DescriptionInputField, { target: { value: "test" } });
@@ -1853,8 +1992,8 @@ describe("New Invoice for Miscellaneous ", () => {
     fireEvent.click(addNewText[0]);
 
     const DeleteText = await screen.findAllByText(/Delete/);
-    expect(DeleteText[1]).toBeInTheDocument();
-    fireEvent.click(DeleteText[1]);
+    expect(DeleteText[0]).toBeInTheDocument();
+    fireEvent.click(DeleteText[0]);
 
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
@@ -1950,7 +2089,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     fireEvent.click(countryServiceDropDownValue[0]);
 
     const DescriptionInputField = await screen.findByPlaceholderText(
-      /Description/
+      /Enter description/
     );
     expect(DescriptionInputField).toBeInTheDocument();
     fireEvent.change(DescriptionInputField, { target: { value: "test" } });
@@ -1967,8 +2106,8 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     fireEvent.click(addNewText[0]);
 
     const DeleteText = await screen.findAllByText(/Delete/);
-    expect(DeleteText[1]).toBeInTheDocument();
-    fireEvent.click(DeleteText[1]);
+    expect(DeleteText[0]).toBeInTheDocument();
+    fireEvent.click(DeleteText[0]);
 
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
