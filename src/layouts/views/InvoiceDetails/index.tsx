@@ -393,9 +393,9 @@ export default function InvoiceDetails() {
                 customerName: state.rowDetails?.customerName,
                 createdDate: state.rowDetails?.createdDate,
                 invoiceBalance:
-                  parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                  parseFloat(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
                 totalAmount:
-                  parseInt(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                  parseFloat(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
               },
             },
           };
@@ -1601,6 +1601,7 @@ export default function InvoiceDetails() {
           billStatus={status}
           invoiceId={state.InvoiceId}
           navigate={navigate}
+          totalAmount={apiData.data?.invoice?.totalAmount}
         ></BillsTable>
       )}
 
