@@ -41,9 +41,7 @@
             .table-header {
                 .a-cards {
                     background-color: transparent !important;
-                    padding: 2rem;
-                    margin-top: -12px !important;
-                    margin-left: 0px !important;
+                    padding: 1.2rem;
                 }
                 .a-iupload {
                     height: 2.375rem;
@@ -198,19 +196,3 @@
     }
 }
 
-@media screen and (max-width: 1350px) {
-    .select-employee-container .full-table-container-after-data .user-detail .table-location {
-        width: 20rem;
-    }
-    .select-employee-container .full-table-container-after-data .user-detail .table-location .table-icon-location {
-        width: 11.444rem;
-    }
-    .select-employee-container .full-table-container-after-data .user-detail .table-location svg.icon.location {
-        height: 22px !important;
-        margin-top: 14px !important;
-    }
-    .select-employee-container .full-table-container-after-data .user-detail .table-location svg.icon.up {
-        height: 34px !important;
-        margin-top: 17px !important;
-    }
-}
