@@ -66,7 +66,6 @@ stages:
           #envsubst < $(ENV_FILE) > src/environments/environment.ts
           #cat src/environments/environment.ts
           npm i -g yarn
-          npm install atlasuikit@1.0.40
           yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
           yarn install
           yarn build
@@ -260,7 +259,6 @@ stages:
           #envsubst < $(ENV_FILE) > src/environments/environment.ts
           #cat src/environments/environment.ts
           npm i -g yarn
-          npm install atlasuikit@1.0.40
           yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
           yarn install
           yarn build
@@ -436,7 +434,6 @@ stages:
           #envsubst < $(ENV_FILE) > src/environments/environment.ts
           #cat src/environments/environment.ts
           npm i -g yarn
-          npm install atlasuikit@1.0.40
           yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
           yarn install
           yarn build
@@ -623,7 +620,6 @@ stages:
           #envsubst < $(ENV_FILE) > src/environments/environment.ts
           #cat src/environments/environment.ts
           npm i -g yarn
-          npm install atlasuikit@1.0.40
           yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
           yarn install
           yarn build
