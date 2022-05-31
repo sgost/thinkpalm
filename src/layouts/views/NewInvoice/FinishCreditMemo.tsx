@@ -6,6 +6,7 @@ import { getCreditMemoStep4Data } from "../../../apis/apis";
 
 export default function FinishCreditMemo({ invoiceId }: any) {
   const navigate = useNavigate();
+  const currentRoles = JSON.parse(localStorage.getItem("current-org") || "");
 
   return (
     <div className="finishCreditMemoContainer">
@@ -27,7 +28,7 @@ export default function FinishCreditMemo({ invoiceId }: any) {
                   // "a9bbee6d-797a-4724-a86a-5b1a2e28763f" +
                   res.data.customerId +
                   "/" +
-                  "true",
+                  (currentRoles?.Payments?.Role === "Customer"),
                 {
                   state: {
                     InvoiceId: res.data.invoiceNo,
