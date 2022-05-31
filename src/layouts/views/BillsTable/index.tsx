@@ -16,7 +16,8 @@ export const getFlagURL = (code: string, size?: string) => {
 
 export default function BillsTable(props: any) {
     const customerId = props.customerId;
-    const invoiceId = props.invoiceId
+    const invoiceId = props.invoiceId;
+    const total = props.totalAmount;
     const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
     const moveToNextEndPoint = "bill/removeinvoice"
@@ -80,6 +81,7 @@ export default function BillsTable(props: any) {
     }, [props.tableData])
 
     const toCurrencyFormat = (amount: any) => {
+        
         const cFormat = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -208,11 +210,11 @@ export default function BillsTable(props: any) {
             <div className="feeSummaryCalc">
                 <div className="rowFee">
                     <p className="title">Pay Converted Total</p>
-                    <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
+                    <p className="amount">{props.currency} {toCurrencyFormat(total)}</p>
                 </div>
                 <div className="totalRow">
                     <p>Total Due</p>
-                    <p className='total'>{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
+                    <p className='total'>{props.currency} {toCurrencyFormat(total)}</p>
                 </div>
             </div>
             <div className='modal-wrapper'>
