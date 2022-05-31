@@ -38,9 +38,7 @@ export default function CreditMemoSummary(props: any) {
         setAddSectionCheck(true);
     }
     useEffect(() => {
-        reCalculateTotal();
-        creditMemoData.invoiceItems.forEach((x: any)=>{
-        })
+        reCalculateTotal();      
     },[creditMemoData])
     useEffect(() => {
 
@@ -100,8 +98,6 @@ export default function CreditMemoSummary(props: any) {
             style: "currency",
             currency: "USD",
         });
-        var b = Number({amount}).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
-        var a = cFormat.format(amount)
         return cFormat.format(amount).slice(1);
     };
     /* istanbul ignore next */
@@ -267,7 +263,6 @@ export default function CreditMemoSummary(props: any) {
     /* istanbul ignore next */
     const setEditAmount = (index: number, value: any) => {
         var newValue = value.replace(',', '');
-        // newValue = newValue.substring(0, value.length-3);
         fieldValues[index].amount = newValue
         setFieldValues([...fieldValues])
     }
