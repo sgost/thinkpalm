@@ -9,7 +9,7 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.13",
-    "atlasuikit": "1.1.57",
+    "atlasuikit": "1.1.59",
     "axios": "^0.26.1",
     "copy-webpack-plugin": "^10.2.4",
     "date-fns": "^2.28.0",
