@@ -122,7 +122,6 @@ const ProductInvoiceCreation = ({
 
   const blockInvalidChar = (e: any) => ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
 
-
   return (
     <div>
       {todos?.map((item: any, i: any) => (
