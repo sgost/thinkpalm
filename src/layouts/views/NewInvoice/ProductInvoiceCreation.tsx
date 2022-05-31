@@ -120,6 +120,7 @@ const ProductInvoiceCreation = ({
     setTodos(tempData);
   };
 
+  const blockInvalidChar = (e: any) => ['e', 'E', '+', '-'].includes(e.key) && e.preventDefault();
 
   return (
     <div>
@@ -303,6 +304,7 @@ const ProductInvoiceCreation = ({
                       type="number"
                       min="0"
                       defaultValue={item.quantity}
+                      onKeyDown={(e) => blockInvalidChar(e)}
                       className="inputField"
                       onChange={(e) => {
                         handleChange(e, i);
@@ -317,6 +319,7 @@ const ProductInvoiceCreation = ({
                       type="number"
                       min="0"
                       defaultValue={item.amount}
+                      onKeyDown={(e) => blockInvalidChar(e)}
                       className="inputField"
                       onChange={(e) => {
                         handleChange(e, i);
