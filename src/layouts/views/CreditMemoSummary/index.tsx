@@ -42,8 +42,12 @@ export default function CreditMemoSummary(props: any) {
     }
     useEffect(() => {
         reCalculateTotal();
+        creditMemoData.invoiceItems.forEach((x: any)=>{
+            // x.amount = parseFloat(x.amount).toFixed(2);
+        })
     },[creditMemoData])
     useEffect(() => {
+
         axios.get(urls.products).then((resp) => {
             if (resp.status == 200) {
                 let arr:any = []
@@ -91,7 +95,7 @@ export default function CreditMemoSummary(props: any) {
             }))
         })
         setMultipleCountryArr(countryArr);
-        setVatAmount(creditMemoData.totalAmount * (vatValue / 100));
+        // setVatAmount(creditMemoData.totalAmount * (vatValue / 100));
 
     }, [])
 
@@ -220,8 +224,9 @@ export default function CreditMemoSummary(props: any) {
             subtotal = subtotal + parseInt(a.totalAmount)
         }
         setSubTotalAmount(subtotal);
-        setVatAmount(subtotal * (vatValue/100))
+        setVatAmount(subtotal * (vatValue/100))//debug why the totals are different
         payload.totalAmount = subtotal + (subtotal * (vatValue/100))
+        payload.invoiceBalance = subtotal + (subtotal * (vatValue/100))
     }
     /* istanbul ignore next */
     const updateDropdowns = () =>{
@@ -437,6 +442,7 @@ export default function CreditMemoSummary(props: any) {
                                     <div className='amount-box'>
                                         <Input
                                             setValue={(value: any)=>{setEditAmount(index, value)}}
+                                            // value={item.amount}
                                             value={toCurrencyFormat(item.amount)}
                                             // value={item.amount.toString()}
                                             label="Amount"
