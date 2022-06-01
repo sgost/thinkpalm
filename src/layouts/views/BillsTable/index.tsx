@@ -117,7 +117,7 @@ export default function BillsTable(props: any) {
             reason: rejectReason
         }];
         axios
-            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain" } })
+            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}` } })
             .then((response: any) => {
 
                 if (response.status == 200 && response.data.responseCode == 200) {
@@ -153,7 +153,7 @@ export default function BillsTable(props: any) {
         }
 
         axios
-            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain" } })
+            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`} })
             .then((response: any) => {
                 if (response.status == 200 && response.data.responseCode == 200) {
                     if (moveNextBanner) {
@@ -193,6 +193,11 @@ export default function BillsTable(props: any) {
             });
     };
 
+    const handleClose = () => {
+        setRejectBanner(false); 
+        setOpenRejectReason(false); 
+        setRejectReason('');
+    }
     /* istanbul ignore next */
     return (
         <div className="invoice_bill_table">
@@ -424,7 +429,7 @@ export default function BillsTable(props: any) {
                         </div>
                         <Modal
                             className="zero-padding"
-                            handleClose={setOpenRejectReason}
+                            handleClose={() => handleClose()}
                             width="32.5rem"
                             height="auto"
                             isOpen={openRejectReason}
@@ -458,10 +463,11 @@ export default function BillsTable(props: any) {
                                     <Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
-                                        handleOnClick={() => { setRejectBanner(false); setOpenRejectReason(false); setRejectReason('') }}
+                                        handleOnClick={() => handleClose()}
                                     />
                                     <Button
                                         className="primary-blue medium primary cancel-button"
+                                        disabled={rejectReason?.length === 0}
                                         label="Reject"
                                         handleOnClick={() => { rejectBillCall() }}
                                     />
