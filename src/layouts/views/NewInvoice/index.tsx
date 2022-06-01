@@ -362,7 +362,7 @@ const NewInvoice = () => {
         invoiceDate !== ""
       );
     }
-    if (stepsCount == 2 && stepperOneData.type === "Credit Memo") {
+    if (stepsCount == 2) {
       let condition: any = [];
       let boolen = false;
       todos.forEach((item) => {
@@ -734,13 +734,7 @@ const NewInvoice = () => {
             disabled={
               stepperOneData?.type === "Payroll"
                 ? disableFunForStepOnePayroll()
-                : stepperOneData?.type === "Credit Memo"
-                ? disableFunForStepOneCreditMemo()
-                : stepperOneData?.type === "Proforma"
-                ? disableFunForStepOneProforma()
-                : stepperOneData?.type === "Miscellaneous"
-                ? disableFunForStepOneMiscellaneous()
-                : true
+                : disableFunForStepOneCreditMemo()
             }
             data-testid="next-button"
             icon={{
