@@ -106,13 +106,7 @@ export const getPermissions = (transactionType: any, permission: string) => {
 
   switch (transactionType) {
     case 3:
-      switch (permission) {
-        case "Edit":
-          return decTok.ProformaInvoice.includes("Edit");
-
-        default:
-          return false;
-      }
+      return decTok.ProformaInvoice.includes(permission);
 
     default:
       return false;
