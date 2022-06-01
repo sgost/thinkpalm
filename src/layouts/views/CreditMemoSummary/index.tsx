@@ -1,6 +1,5 @@
 import { Cards, Button, Dropdown, Logs, DatePicker } from 'atlasuikit';
 import axios from 'axios';
-import { te } from 'date-fns/locale';
 import moment from "moment";
 import { useEffect, useState } from 'react';
 import { getHeaders, updateCreditMemoUrl, urls } from '../../../urls/urls';
@@ -34,16 +33,15 @@ export default function CreditMemoSummary(props: any) {
     const [productOptions, setProductOptions] = useState([]);
     const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
     const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
-    const [isProductOpen , setIsProductOpen] = useState()
-    const [isCountryOpen , setIsCountryOpen] = useState()
     const [payload , setPayload] = useState<any>(creditMemoData)
     const showAddFields = () => {
         setAddSectionCheck(true);
     }
     useEffect(() => {
-        reCalculateTotal();
+        reCalculateTotal();      
     },[creditMemoData])
     useEffect(() => {
+
         axios.get(urls.products).then((resp) => {
             if (resp.status == 200) {
                 let arr:any = []
@@ -91,17 +89,15 @@ export default function CreditMemoSummary(props: any) {
             }))
         })
         setMultipleCountryArr(countryArr);
-        setVatAmount(creditMemoData.totalAmount * (vatValue / 100));
 
     }, [])
 
     
-    const toCurrencyFormat = (amount: number) => {
+    const toCurrencyFormat = (amount: any) => {
         const cFormat = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
         });
-        var a = cFormat.format(amount)
         return cFormat.format(amount).slice(1);
     };
     /* istanbul ignore next */
@@ -140,8 +136,6 @@ export default function CreditMemoSummary(props: any) {
     /* istanbul ignore next */
     const saveInvoiceItems = () => {
         setNewTotalAmount(newQuantity * newAmount);
-        // let serviceProduct: any = productOptions.filter((x: any) => x.isSelected)[0];
-        // let country: any = countryOptions.filter((x: any) => x.isSelected)[0];
         let obj: any = {};
         obj.serviceDate = newServiceDate;
         obj.productId = newProduct.value;
@@ -182,7 +176,7 @@ export default function CreditMemoSummary(props: any) {
                 setFieldValues(resp.data.invoiceItems);
                 setCreditMemoData(resp.data);
             }
-        }).catch((err) => {
+        }).catch(() => {
             console.log("update call failed");
         })
     }
@@ -222,6 +216,7 @@ export default function CreditMemoSummary(props: any) {
         setSubTotalAmount(subtotal);
         setVatAmount(subtotal * (vatValue/100))
         payload.totalAmount = subtotal + (subtotal * (vatValue/100))
+        payload.invoiceBalance = subtotal + (subtotal * (vatValue/100))
     }
     /* istanbul ignore next */
     const updateDropdowns = () =>{
@@ -268,7 +263,6 @@ export default function CreditMemoSummary(props: any) {
     /* istanbul ignore next */
     const setEditAmount = (index: number, value: any) => {
         var newValue = value.replace(',', '');
-        newValue = newValue.substring(0, value.length-3);
         fieldValues[index].amount = newValue
         setFieldValues([...fieldValues])
     }
@@ -373,7 +367,6 @@ export default function CreditMemoSummary(props: any) {
                                 </div>
                                 <div className='UI-line-text-box ui-dropdown-req'>
                                     <Dropdown
-                                        // testId="summary-ps"
                                         handleDropOptionClick={(option: any) =>
                                             handleArrOptionClick(
                                               option,
@@ -387,7 +380,7 @@ export default function CreditMemoSummary(props: any) {
                                         handleDropdownClick={(e:any) => {e?setOpenEditProductService(index):setOpenEditProductService(fieldValues.length+1) }}
                                         isOpen={openEditProductService == index}
                                         isDisabled={editCheck != index}
-                                        options={multipleProductArr[index] || []}//error
+                                        options={multipleProductArr[index] || []}
                                         title="Product Service"
                                     />
                                 </div>
@@ -397,7 +390,7 @@ export default function CreditMemoSummary(props: any) {
                                         value={item.description}
                                         label="Description"
                                         type="text"
-                                        placeholder="Please enter"
+                                        placeholder="Enter a description"
                                         disable={editCheck != index}
                                     ></Input>
                                 </div>
@@ -437,8 +430,7 @@ export default function CreditMemoSummary(props: any) {
                                     <div className='amount-box'>
                                         <Input
                                             setValue={(value: any)=>{setEditAmount(index, value)}}
-                                            value={toCurrencyFormat(item.amount)}
-                                            // value={item.amount.toString()}
+                                            value={editCheck == index ? item.amount :toCurrencyFormat(item.amount)}
                                             label="Amount"
                                             type="amount"
                                             placeholder="Please enter"
@@ -470,7 +462,7 @@ export default function CreditMemoSummary(props: any) {
                             <Button
                                 className="secondary-btn no-border medium save"
                                 label="Cancel"
-                                handleOnClick={()=>{setAddSectionCheck(false)}}
+                                handleOnClick={()=>{setAddSectionCheck(false);  cleanNewObject();}}
                             />
                             <Button
                                 className="primary-blue medium save"
@@ -481,7 +473,7 @@ export default function CreditMemoSummary(props: any) {
                         </>}
                             </div>
                         </div>
-                    <div className='UI-align-boxes margin-top'>
+                    <div className='UI-align-boxes margin-top ui-datepicker-req'>
                         <div className='UI-line-text-box'>
                             <DatePicker
                                 value={moment(newServiceDate).format('DD MMM YYYY')}
@@ -505,11 +497,12 @@ export default function CreditMemoSummary(props: any) {
                                 setValue={setNewDescription}
                                 value={newDescription}
                                 label="Description"
+                                placeholder="Enter a description"
                                 type="text"
                                 disable={false}
                             ></Input>
                         </div>
-                        <div className='UI-line-text-box'>
+                        <div className='UI-line-text-box ui-dropdown-req'>
                             <Dropdown
                                 handleDropOptionClick={CountryDropOptionClick}
                                 handleDropdownClick={setOpenCountryService}
@@ -559,18 +552,15 @@ export default function CreditMemoSummary(props: any) {
                     <div className='rowBox'>
                         <div className="rowFee">
                             <p className="title">Subtotal Due</p>
-                            {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
                             <p className="amount">{currency} {toCurrencyFormat(subTotalAmount)}</p>
                         </div>
                         <div className="rowFee no-border">
                             <p className="title">VAT Amount</p>
-                            {/* <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p> */}
                             <p className="amount">{currency} {toCurrencyFormat(vatAmount)}</p>
                         </div>
                         <div className="totalRow">
                             <p>Total Balance</p>
                             <p className='total'>{currency} {toCurrencyFormat(subTotalAmount + vatAmount)}</p>
-                            {/* <p className='total'>{props.currency} {toCurrencyFormat(totalAmount)}</p> */}
                         </div>
                     </div>
                 </div>
@@ -587,6 +577,7 @@ export default function CreditMemoSummary(props: any) {
                         color: '#526FD6'
                     }}
                     handleOnClick={showAddFields}
+                    disabled={addSectionCheck}
                 />
             </Cards>}
             <div className='filesNotes'>
