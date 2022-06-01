@@ -161,6 +161,10 @@ export const getApproveUrl = (id) => {
   return baseURL + services.atlasInvoiceService + `/invoices/${id}/4`;
 };
 
+export const getApproveUrlNo = (id, no) => {
+  return baseURL + services.atlasInvoiceService + `/invoices/${id}/${no}`;
+};
+
 export const getApproveARUrl = () => {
   return baseURL + services.atlasInvoiceService + `/Invoices/Reviewed`;
 };
