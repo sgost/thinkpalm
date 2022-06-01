@@ -346,7 +346,6 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              alert(1)
               console.log('setApiData', apiData)
               // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
@@ -984,6 +983,7 @@ export default function InvoiceDetails() {
 
   console.log('status', status)
   console.log('permission', permission)
+  console.log('state.transactionType', state.transactionType)
 
   return (
     <div className="invoiceDetailsContainer">
@@ -1009,7 +1009,7 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          {status === "AR Review" || status === "Open" &&
+          {((status === "AR Review") || (status === "Open" && state.transactionType !== 1) || (status === "Open")) &&
             permission?.InvoiceDetails.includes("Delete") && (
               <div className="upper-delete-button">
                 <div
@@ -1068,7 +1068,7 @@ export default function InvoiceDetails() {
             )}
           </div>
           <div className="decline-invoice">
-            {status === "Pending Approval" || status === "AR Review" &&
+            {((status === "Pending Approval") || (status === "AR Review" && state.transactionType === 2) || (status === "AR Review" && state.transactionType === 3) || (status === "AR Review" && state.transactionType === 4)) &&
               permission?.InvoiceDetails.includes("Approve") && (
                 <Button
                   data-testid="decline-button"
@@ -1086,7 +1086,8 @@ export default function InvoiceDetails() {
           </div>
 
           <div>
-            {status === "AR Review" || status == "open" &&
+            {((status === "AR Review") && (state.transactionType !== 2) && (state.transactionType !== 3) && (state.transactionType !== 4))
+              &&
               permission?.InvoiceDetails.includes("Send") && (
                 <Button
                   className="primary-blue small"
@@ -1116,7 +1117,28 @@ export default function InvoiceDetails() {
                   }}
                 />
               )} */}
-            {status === "Pending Approval" || status === "AR Review" &&
+            {/* {status == "Pending Approval" &&
+              state.transactionType === 1
+              &&
+              permission.InvoiceDetails.includes("Approve") && (
+                <Button
+                  disabled={
+                    state.transactionType == 7 || deleteDisableButtons === true
+                  }
+                  handleOnClick={() => {
+                    handleApproveInvoice(4);
+                  }}
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Approve Invoice"
+                />
+              )} */}
+
+            {((status == "Pending Approval" && state.transactionType === 1) || (status === "AR Review" && state.transactionType === 2) || (status === "AR Review" && state.transactionType === 3) || (status === "AR Review" && state.transactionType === 4)) &&
               permission.InvoiceDetails.includes("Approve") && (
                 <Button
                   disabled={
@@ -1135,7 +1157,7 @@ export default function InvoiceDetails() {
                 />
               )}
 
-            {status === "Open" &&
+            {status === "Open" && state.transactionType !== 1 &&
               permission?.InvoiceDetails.includes("Send") && (
                 <Button
                   className="primary-blue small"
