@@ -26,6 +26,7 @@ import {
   getExcelUrl,
   getApproveARUrl,
   getApproveUrl,
+  getApproveUrlNo,
   getInvoiceDetailsUrl,
   getBillingAddressUrl,
   urls,
@@ -344,6 +345,8 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
+              alert(1)
+              console.log('setApiData', apiData)
               // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
@@ -477,7 +480,7 @@ export default function InvoiceDetails() {
     if (lookupData?.data && apiData?.data) {
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
-          setStatus(e.text);
+          setStatus(e.text === "In Review" ? "AR Review" : e.text);
         }
       });
     }
@@ -486,7 +489,7 @@ export default function InvoiceDetails() {
     if (lookupData?.data && creditMemoData) {
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === creditMemoData.status) {
-          setStatus(e.text);
+          setStatus(e.text === "In Review" ? "AR Review" : e.text);
         }
       });
     }
@@ -723,8 +726,8 @@ export default function InvoiceDetails() {
     setIsDownloadOpen(false);
   };
 
-  const handleApproveInvoice = () => {
-    const approveApi = getApproveUrl(id);
+  const handleApproveInvoice = (no: any) => {
+    const approveApi = state.transactionType == 2 || state.transactionType == 3 || state.transactionType == 4 ? getApproveUrlNo(id, no) : getApproveUrl(id);
 
     axios({
       method: "PUT",
@@ -732,8 +735,11 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
+        alert(1)
         if (res.status === 201) {
-          setStatus("Approved");
+          console.log('res', res)
+          alert(2)
+          setStatus(no == 2 ? "AR Review" : no == 4 ? "Approved" : "Approved");
           setApprovalMsg("Invoice approve successfully");
           setTimeout(() => {
             setApprovalMsg("");
@@ -782,8 +788,8 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
       data: [
         {
-          InvoiceNo: apiData?.data?.invoice?.invoiceNo,
-          TransactionType: apiData?.data?.invoice?.transactionType,
+          InvoiceNo: state.transactionType == 4 && status == 'Open' ? state.InvoiceId : apiData?.data?.invoice?.invoiceNo,
+          TransactionType: state.transactionType == 4 && status == 'Open' ? state.transactionType : apiData?.data?.invoice?.transactionType,
         },
       ],
     })
@@ -907,7 +913,7 @@ export default function InvoiceDetails() {
         if (response.status == 200) {
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
-              setStatus(e.text);
+              setStatus(e.text === "In Review" ? "AR Review" : e.text);
             }
           });
           setVoidFileData({});
@@ -927,8 +933,13 @@ export default function InvoiceDetails() {
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
     };
-    const deleteApi = getDeleteInvoiceUrl(apiData?.data?.invoice?.id);
+    const deleteApi = getDeleteInvoiceUrl(state.transactionType == 4 ? id : apiData?.data?.invoice?.id);
 
+
+    console.log('tempToken', tempToken);
+    console.log('cid', cid)
+    console.log('id', id)
+    console.log('isClient', isClient)
     await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
@@ -970,6 +981,10 @@ export default function InvoiceDetails() {
     }
   };
 
+
+  console.log('status', status)
+  console.log('permission', permission)
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -994,7 +1009,7 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          {status === "In Review" &&
+          {status === "AR Review" || status === "Open" &&
             permission?.InvoiceDetails.includes("Delete") && (
               <div className="upper-delete-button">
                 <div
@@ -1053,7 +1068,7 @@ export default function InvoiceDetails() {
             )}
           </div>
           <div className="decline-invoice">
-            {status === "Pending Approval" &&
+            {status === "Pending Approval" || status === "AR Review" &&
               permission?.InvoiceDetails.includes("Approve") && (
                 <Button
                   data-testid="decline-button"
@@ -1071,7 +1086,7 @@ export default function InvoiceDetails() {
           </div>
 
           <div>
-            {status === "In Review" &&
+            {status === "AR Review" || status == "open" &&
               permission?.InvoiceDetails.includes("Send") && (
                 <Button
                   className="primary-blue small"
@@ -1101,14 +1116,14 @@ export default function InvoiceDetails() {
                   }}
                 />
               )} */}
-            {status === "Pending Approval" &&
+            {status === "Pending Approval" || status === "AR Review" &&
               permission.InvoiceDetails.includes("Approve") && (
                 <Button
                   disabled={
                     state.transactionType == 7 || deleteDisableButtons === true
                   }
                   handleOnClick={() => {
-                    handleApproveInvoice();
+                    handleApproveInvoice(4);
                   }}
                   className="primary-blue small"
                   icon={{
@@ -1119,6 +1134,22 @@ export default function InvoiceDetails() {
                   label="Approve Invoice"
                 />
               )}
+
+            {status === "Open" &&
+              permission?.InvoiceDetails.includes("Send") && (
+                <Button
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Send for Review"
+                  handleOnClick={() => {
+                    handleApproveInvoice(2);
+                  }}
+                />
+              )}
           </div>
         </div>
       </div>
@@ -1127,7 +1158,7 @@ export default function InvoiceDetails() {
         <div className="topBar">
           <div className="invoic-status">
             <p className="status">
-              {status === "In Review" ? "AR Review" : status}
+              {status}
             </p>
           </div>
           <div className="topBarrow">
@@ -1651,7 +1682,7 @@ export default function InvoiceDetails() {
               <Button
                 data-testid="decline-button-submit"
                 disabled={!inputValue}
-                label="Decline Invoice"
+                label="Decline"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
                   const url = urls.declineInvoice;
@@ -1672,7 +1703,7 @@ export default function InvoiceDetails() {
                       if (res.status == 200) {
                         lookupData.data.invoiceStatuses.forEach((e: any) => {
                           if (e.value === res.data.status) {
-                            setStatus(e.text);
+                            setStatus(e.text === "In Review" ? "AR Reviews" : e.text);
                           }
                         });
                         setInputValue("");
