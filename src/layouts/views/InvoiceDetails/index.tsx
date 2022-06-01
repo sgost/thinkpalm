@@ -736,9 +736,8 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         if (res.status === 201) {
-          console.log('res', res)
-          setStatus(no == 2 ? "AR Review" : no == 4 ? "Approved" : "Approved");
-          setApprovalMsg(res.data.status == 4 ? "Invoice approve successfully" : "");
+          setStatus((res.data.status === 2) ? "AR Review" : "Approved");
+          setApprovalMsg((res.data.status === 4) ? "Invoice approve successfully" : "");
           setTimeout(() => {
             setApprovalMsg("");
           }, 3000);
@@ -1102,43 +1101,8 @@ export default function InvoiceDetails() {
                   }}
                 />
               )}
-            {/* {status === "Pending Approval" &&
-              permission?.InvoiceDetails.includes("Approve") && (
-                <Button
-                  className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
-                  label="Submit to Customer"
-                  handleOnClick={() => {
-                    handleApproveAR();
-                  }}
-                />
-              )} */}
-            {/* {status == "Pending Approval" &&
-              state.transactionType === 1
-              &&
-              permission.InvoiceDetails.includes("Approve") && (
-                <Button
-                  disabled={
-                    state.transactionType == 7 || deleteDisableButtons === true
-                  }
-                  handleOnClick={() => {
-                    handleApproveInvoice(4);
-                  }}
-                  className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
-                  label="Approve Invoice"
-                />
-              )} */}
 
-            {((status == "Pending Approval" && state.transactionType === 1) || (status === "AR Review" && state.transactionType === 2) || (status === "AR Review" && state.transactionType === 3) || (status === "AR Review" && state.transactionType === 4)) &&
+            {((status === "Pending Approval" && state.transactionType === 1) || (status === "AR Review" && state.transactionType === 2) || (status === "AR Review" && state.transactionType === 3) || (status === "AR Review" && state.transactionType === 4)) &&
               permission.InvoiceDetails.includes("Approve") && (
                 <Button
                   disabled={
@@ -1157,9 +1121,10 @@ export default function InvoiceDetails() {
                 />
               )}
 
-            {status === "Open" && state.transactionType !== 1 &&
+            {((status === "Open") && (state.transactionType !== 1)) &&
               permission?.InvoiceDetails.includes("Send") && (
                 <Button
+                  data-testid="review-button"
                   className="primary-blue small"
                   icon={{
                     color: "#fff",
