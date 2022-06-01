@@ -26,6 +26,10 @@ import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
   const [task, setTask] = useState("");
+  const [productInitialData, setProductInitialData] = useState({})
+  const [tempData, setTempData] = useState<any>([])
+  const [countryInitialData, setCountryInitialData] = useState({})
+  const [tempDataCountry, setTempDataCountry] = useState<any>([])
   const [todos, setTodos] = useState([
     {
       id: Math.random(),
@@ -336,6 +340,14 @@ const NewInvoice = () => {
     setOpens,
     stepperOneData,
     invoiceId,
+    productInitialData, 
+    setProductInitialData ,
+    tempData, 
+    setTempData ,
+    countryInitialData, 
+    setCountryInitialData,
+    tempDataCountry, 
+    setTempDataCountry
   };
 
   const disableFunForStepOnePayroll = () => {

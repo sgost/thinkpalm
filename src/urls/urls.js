@@ -73,6 +73,9 @@ export const urls = {
   contractorBillingService:
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
+
+  allPayrollCustomerSubscriptionapi: baseURL + services.atlasSubscriptionService + "/Subscription/GetCustomerWithSubscription"
+
 };
 
 export const getClientListingUrl = (

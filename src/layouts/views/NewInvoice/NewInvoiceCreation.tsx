@@ -51,7 +51,7 @@ const NewInvoiceCreation = ({
   };
 
   const getCustomerDropdownOptions = () => {
-    let api = urls.customers;
+    let allCustomerapi = urls.customers;
     const headers = {
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -61,10 +61,52 @@ const NewInvoiceCreation = ({
     setLoading(true);
 
     axios
-      .get(api, headers)
+      .get(allCustomerapi, headers)
       .then((res: any) => {
         const preData: any = preparedCustomerData(res.data);
         setCustomerOption(preData);
+        setLoading(false);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
+  const preparedPayrollCustomerData = (data: any) => {
+    const newData = data?.customers?.map((item: any) => {
+      if (item.customerId === stepperOneData?.customerId) {
+        return {
+          isSelected: true,
+          label: item.name,
+          value: item.customerId,
+        };
+      } else {
+        return {
+          isSelected: false,
+          label: item.name,
+          value: item.customerId,
+        };
+      }
+    });
+    return newData;
+  };
+
+  const getPayrollCustomerDropdownOptions = () => {
+    let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi
+    const headers = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    setLoading(true);
+
+    axios
+      .get(allPayrollCustomerapi, headers)
+      .then((res: any) => {
+        const preData: any = preparedPayrollCustomerData(res.data);
+        setCustomerOption(preData);
+        console.log("cutomer payroll api")
         setLoading(false);
       })
       .catch((e: any) => {
@@ -139,8 +181,22 @@ const NewInvoiceCreation = ({
   };
 
   useEffect(() => {
-    getCustomerDropdownOptions();
-  }, []);
+    if (
+      stepperOneData?.type === "Credit Memo" ||
+      stepperOneData?.type === "Proforma" ||
+      stepperOneData?.type === "Miscellaneous"
+    ) {
+      getCustomerDropdownOptions();
+    }
+  }, [stepperOneData?.type]);
+
+  useEffect(() => {
+    if (
+      stepperOneData?.type === "Payroll"
+    ) {
+      getPayrollCustomerDropdownOptions();
+    }
+  }, [stepperOneData?.type]);
 
   useEffect(() => {
     if (stepperOneData?.customerId) {
