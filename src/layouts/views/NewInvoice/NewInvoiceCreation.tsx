@@ -215,6 +215,35 @@ const NewInvoiceCreation = ({
             <h3>New Invoice</h3>
 
             <div className="dropdownRow">
+
+              <div className="dropdown">
+                <Dropdown
+                  handleDropOptionClick={(item: any) => {
+                    handleDropOption(
+                      item,
+                      typeOptions,
+                      setTypeOptions,
+                      setIstypeOpen
+                    );
+                    setStepperOneData({
+                      ...stepperOneData,
+                      type: item.label,
+                      typeId: item.value,
+                    });
+                  }}
+                  handleDropdownClick={(b: boolean) => {
+                    setIstypeOpen(b);
+                    setIsCustomerOpen(false);
+                    setIsCountryOpen(false);
+                    setIsMonthOpen(false);
+                    setIsYearOpen(false);
+                  }}
+                  isOpen={istypeOpen}
+                  options={typeOptions}
+                  title={`Type`}
+                />
+              </div>
+
               <div className="dropdown">
                 <Dropdown
                   handleDropOptionClick={(item: any) => {
@@ -245,34 +274,6 @@ const NewInvoiceCreation = ({
                   options={CustomerOptions}
                   title={`Customer`}
                   search
-                />
-              </div>
-
-              <div className="dropdown">
-                <Dropdown
-                  handleDropOptionClick={(item: any) => {
-                    handleDropOption(
-                      item,
-                      typeOptions,
-                      setTypeOptions,
-                      setIstypeOpen
-                    );
-                    setStepperOneData({
-                      ...stepperOneData,
-                      type: item.label,
-                      typeId: item.value,
-                    });
-                  }}
-                  handleDropdownClick={(b: boolean) => {
-                    setIstypeOpen(b);
-                    setIsCustomerOpen(false);
-                    setIsCountryOpen(false);
-                    setIsMonthOpen(false);
-                    setIsYearOpen(false);
-                  }}
-                  isOpen={istypeOpen}
-                  options={typeOptions}
-                  title={`Type`}
                 />
               </div>
             </div>
