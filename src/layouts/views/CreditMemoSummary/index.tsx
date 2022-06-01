@@ -303,6 +303,14 @@ export default function CreditMemoSummary(props: any) {
             payload.invoiceItems[index].serviceCountry = selOption.value
         }
       };
+    const checkDisableEditbutton = (index : any) => {
+      if(fieldValues[index].amount == "" || fieldValues[index].amount == "0" || fieldValues[index].quantity == "" || fieldValues[index].quantity == "0"){
+        return true;
+      }
+      else {
+        return false;
+      } 
+    }
 
     
     return (
@@ -338,7 +346,8 @@ export default function CreditMemoSummary(props: any) {
                                             size: 'large'
                                         }}
                                         label="Edit"
-                                        handleOnClick={() => { setEditCheck(index) }}
+                                        // disabled={true}
+                                        handleOnClick={() => { setEditCheck(index); }}
                                     /></>}
                                     {editCheck == index && <>
                                         <Button
@@ -351,13 +360,14 @@ export default function CreditMemoSummary(props: any) {
                                             data-testid = "save-edit-summary-button"
                                             className="primary-blue medium save-changes"
                                             label="Save Changes"
+                                            disabled={ checkDisableEditbutton(index)}
                                             handleOnClick={() => { editInvoiceItems(index) }}
                                         />
                                     </>}
                                 </div>
                             </div>
                             <div className='UI-align-boxes margin-top'>
-                                <div className='UI-line-text-box'>
+                                <div className='UI-line-text-box ui-datepicker-req'>
                                     <DatePicker
                                         value={moment(item.serviceDate).format('DD MMM YYYY')}
                                         label="Service Date"
@@ -394,7 +404,7 @@ export default function CreditMemoSummary(props: any) {
                                         disable={editCheck != index}
                                     ></Input>
                                 </div>
-                                <div className='UI-line-text-box'>
+                                <div className='UI-line-text-box ui-dropdown-req'>
                                     <Dropdown
                                         handleDropOptionClick={(option: any) =>
                                             handleArrOptionClick(
