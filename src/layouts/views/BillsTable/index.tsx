@@ -117,7 +117,8 @@ export default function BillsTable(props: any) {
             reason: rejectReason
         }];
         axios
-            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}` } })
+            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`, 
+            customerid: customerId } })
             .then((response: any) => {
 
                 if (response.status == 200 && response.data.responseCode == 200) {
@@ -153,7 +154,8 @@ export default function BillsTable(props: any) {
         }
 
         axios
-            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`} })
+            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`, 
+            customerid: customerId } })
             .then((response: any) => {
                 if (response.status == 200 && response.data.responseCode == 200) {
                     if (moveNextBanner) {
