@@ -36,12 +36,14 @@ const NewInvoiceCreation = ({
     const newData = data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
+          ...item,
           isSelected: true,
           label: item.name,
           value: item.customerId,
         };
       } else {
         return {
+          ...item,
           isSelected: false,
           label: item.name,
           value: item.customerId,
@@ -93,7 +95,7 @@ const NewInvoiceCreation = ({
   };
 
   const getPayrollCustomerDropdownOptions = () => {
-    let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi
+    let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi;
     const headers = {
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -107,7 +109,7 @@ const NewInvoiceCreation = ({
       .then((res: any) => {
         const preData: any = preparedPayrollCustomerData(res.data);
         setCustomerOption(preData);
-        console.log("cutomer payroll api")
+        console.log("cutomer payroll api");
         setLoading(false);
       })
       .catch((e: any) => {
@@ -145,9 +147,7 @@ const NewInvoiceCreation = ({
     axios
       .get(api, headers)
       .then((res: any) => {
-       
         if (res.data) {
-         
           const preData: any = preparedCountryData(res.data);
           setCountryOptions(preData);
         }
@@ -194,9 +194,7 @@ const NewInvoiceCreation = ({
   }, [stepperOneData?.type]);
 
   useEffect(() => {
-    if (
-      stepperOneData?.type === "Payroll"
-    ) {
+    if (stepperOneData?.type === "Payroll") {
       getPayrollCustomerDropdownOptions();
     }
   }, [stepperOneData?.type]);
@@ -217,7 +215,6 @@ const NewInvoiceCreation = ({
             <h3>New Invoice</h3>
 
             <div className="dropdownRow">
-
               <div className="dropdown">
                 <Dropdown
                   handleDropOptionClick={(item: any) => {
