@@ -189,7 +189,7 @@ const ProductInvoiceCreation = ({
                     }}
                     inline={false}
                     label="Service Date"
-                    minDate={new Date()}
+                    // minDate={new Date()}
                     placeholderText={item.date ? item.date : "Please Select"}
                   />
                 </div>
@@ -283,7 +283,6 @@ const ProductInvoiceCreation = ({
                 >
                   <input
                     type="text"
-                    
                     data-testid="Country_open"
                     onClick={() => setOpens(true)}
                     id="click_input"

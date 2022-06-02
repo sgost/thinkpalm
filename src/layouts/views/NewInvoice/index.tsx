@@ -27,10 +27,10 @@ import { format } from "date-fns";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
   const [task, setTask] = useState("");
-  const [productInitialData, setProductInitialData] = useState({})
-  const [tempData, setTempData] = useState<any>([])
-  const [countryInitialData, setCountryInitialData] = useState({})
-  const [tempDataCountry, setTempDataCountry] = useState<any>([])
+  const [productInitialData, setProductInitialData] = useState({});
+  const [tempData, setTempData] = useState<any>([]);
+  const [countryInitialData, setCountryInitialData] = useState({});
+  const [tempDataCountry, setTempDataCountry] = useState<any>([]);
   const [todos, setTodos] = useState([
     {
       id: Math.random(),
@@ -59,6 +59,7 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
+  const [countriesData, setCountriesData] = useState<any>([]);
 
   const navigate = useNavigate();
 
@@ -341,14 +342,14 @@ const NewInvoice = () => {
     setOpens,
     stepperOneData,
     invoiceId,
-    productInitialData, 
-    setProductInitialData ,
-    tempData, 
-    setTempData ,
-    countryInitialData, 
+    productInitialData,
+    setProductInitialData,
+    tempData,
+    setTempData,
+    countryInitialData,
     setCountryInitialData,
-    tempDataCountry, 
-    setTempDataCountry
+    tempDataCountry,
+    setTempDataCountry,
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -517,6 +518,17 @@ const NewInvoice = () => {
     }
   }, [hideTopCheck]);
 
+  useEffect(() => {
+    axios
+      .get(urls.countries)
+      .then((countryRes: any) => {
+        setCountriesData(countryRes.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const handleInvoiceCreation = () => {
     let invoiceItems = todos.map((e: any) => {
       return {
@@ -561,14 +573,25 @@ const NewInvoice = () => {
         break;
     }
 
+    const customer = CustomerOptions.find(
+      (c: any) => c.customerId === stepperOneData?.customerId
+    );
+
+    const currencyId = countriesData.find(
+      (c: any) => c.currency.code === customer?.billingCurrency
+    );
+    console.log(
+      "CustomerOptions",
+      customer?.billingAddress?.country,
+      stepperOneData?.customerId,
+      currencyId?.currency?.id
+    );
+
     let data = {
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
-      CustomerLocation:
-        CustomerOptions.find(
-          (c: any) => c.customerId === stepperOneData?.customerId
-        )?.billingAddressCountryName || "", // currently its coming null thats why fallback is India , backend will provice it in future
-      CurrencyId: 840, // backend will provide it
+      CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
+      CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
       TransactionType: transactionType, //
       // CreatedDate: currDate, // ? current date

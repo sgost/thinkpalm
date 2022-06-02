@@ -36,12 +36,14 @@ const NewInvoiceCreation = ({
     const newData = data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
+          ...item,
           isSelected: true,
           label: item.name,
           value: item.customerId,
         };
       } else {
         return {
+          ...item,
           isSelected: false,
           label: item.name,
           value: item.customerId,

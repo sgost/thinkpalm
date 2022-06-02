@@ -45,7 +45,9 @@ describe("New Invoice", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -79,8 +81,8 @@ describe("New Invoice", () => {
 
     let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
-    screen.debug(pleaseSelectDropDown)
-    
+    screen.debug(pleaseSelectDropDown);
+
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
@@ -104,7 +106,6 @@ describe("New Invoice", () => {
     expect(monthDropDown).toBeInTheDocument();
     fireEvent.click(monthDropDown);
 
-    
     const monthDropValue = await screen.findByText(/January/);
     expect(monthDropValue).toBeInTheDocument();
     fireEvent.click(monthDropValue);
@@ -116,15 +117,15 @@ describe("New Invoice", () => {
     const YearDropValue = await screen.findByText(/2022/);
     expect(YearDropValue).toBeInTheDocument();
     fireEvent.click(YearDropValue);
-
-
   });
 });
 
 describe("step one getCustomerSubscription api fail ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(400, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(400, mockapidata.resGetCustomerWithSuscription);
   });
 
   test("dropDown Value change", async () => {
@@ -140,7 +141,7 @@ describe("step one getCustomerSubscription api fail ", () => {
     expect(newInvoice[0]).toBeInTheDocument();
     let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
-    
+
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
@@ -151,7 +152,9 @@ describe("step one getCOuntry api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -189,7 +192,9 @@ describe("Stepper 2", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -378,7 +383,9 @@ describe("Stepper 2 show table click", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -448,7 +455,9 @@ describe("Stepper 2 api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -544,7 +553,9 @@ describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -552,7 +563,6 @@ describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
     mock
       .onGet(getEmployee(customerId, countryId, monthId, yearId))
       .reply(500, "dfg");
-    
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish ", async () => {
@@ -601,17 +611,19 @@ describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-    const errorText = await screen.findByText(/An error occurred while fetching employees for this customer/);
+    const errorText = await screen.findByText(
+      /An error occurred while fetching employees for this customer/
+    );
     expect(errorText).toBeInTheDocument();
-    
-   
   });
 });
 describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -619,7 +631,6 @@ describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
     mock
       .onGet(getEmployee(customerId, countryId, monthId, yearId))
       .reply(500, "No Employees found under this customer");
-    
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish ", async () => {
@@ -668,10 +679,10 @@ describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-    const errorText = await screen.findByText(/No Employees found under this customer/);
+    const errorText = await screen.findByText(
+      /No Employees found under this customer/
+    );
     expect(errorText).toBeInTheDocument();
-    
-   
   });
 });
 
@@ -679,7 +690,9 @@ describe("Stepper 3", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -906,7 +919,9 @@ describe("Stepper 3 invoice detail api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1121,7 +1136,9 @@ describe("Stepper 3 fee api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1282,7 +1299,9 @@ describe("Stepper 3 address api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1497,7 +1516,9 @@ describe("Stepper 3 country api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
+    mock
+      .onGet(urls.allPayrollCustomerSubscriptionapi)
+      .reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1791,7 +1812,7 @@ describe("step one Proforma getCustomer api fail ", () => {
     expect(newInvoice[0]).toBeInTheDocument();
     let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
-    
+
     const typeDropDownValue = await screen.findByText(/Proforma/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
@@ -2036,9 +2057,9 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
     expect(InvoiceTab[0]).toBeInTheDocument();
 
-    const openModal = await screen.findAllByText(/Preview Invoice/);
-    expect(openModal[0]).toBeInTheDocument();
-    fireEvent.click(openModal[0]);
+    // const openModal = await screen.findAllByText(/Preview Invoice/);
+    // expect(openModal[0]).toBeInTheDocument();
+    // fireEvent.click(openModal[0]);
 
     // const closeButton = container.querySelector(".close");
     // fireEvent.click(closeButton);
