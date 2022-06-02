@@ -11,9 +11,10 @@ import axios from "axios";
 import '../../layouts/views/InvoiceDetails/invoiceDetails.scss'
 import { useState } from "react";
 import { getDecodedToken } from "../getDecodedToken";
+import { getPermissions } from "../Comman/Utils/utils";
 
 export default function FileUploadWidget(props: any) {
-    const { documents, setDocuments, isClient, cid, id } = props;
+    const { documents, setDocuments, isClient, cid, id, transactionType } = props;
     const tempToken = localStorage.getItem("accessToken");
     const [isFileError, setIsFileError] = useState<any>(null);
     const permission: any = getDecodedToken();
@@ -35,7 +36,7 @@ export default function FileUploadWidget(props: any) {
                                         width: "40",
                                     },
                                     suffix: [
-                                        {
+                                        getPermissions(transactionType, "Download") ?{
                                             color: "#526FD6",
                                             height: "40",
                                             icon: "download",
@@ -45,7 +46,6 @@ export default function FileUploadWidget(props: any) {
                                                     headers: getHeaders(tempToken, cid, isClient),
                                                 };
 
-                                                // const downloadApi = `https://apigw-uat-emea.apnextgen.com/metadataservice/api/Blob/getBlobUrlWithSASToken?url=${item.document.url}`;
                                                 const downloadApi = getDownloadFileUrl(
                                                     item.document.url
                                                 );
@@ -53,7 +53,6 @@ export default function FileUploadWidget(props: any) {
                                                     .get(downloadApi, headers)
                                                     .then((res: any) => {
                                                         if (res.status === 200) {
-                                                            // let url = res.data.url;
                                                             let a = document.createElement("a");
                                                             a.href = res.data.url;
                                                             a.download = `${res.data.name}`;
@@ -64,8 +63,8 @@ export default function FileUploadWidget(props: any) {
                                                         console.log("error", e);
                                                     });
                                             },
-                                        },
-                                        permission.InvoiceDetails.includes("DeleteFile") ?
+                                        }:{},
+                                        getPermissions(transactionType, "DeleteFile") ?
                                         {
                                             color: "#526FD6",
                                             height: "30",
@@ -80,7 +79,6 @@ export default function FileUploadWidget(props: any) {
 
                                                 axios({
                                                     method: "DELETE",
-                                                    // url: "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
                                                     url: urls.deleteFile,
                                                     data: {
                                                         invoiceId: id,
@@ -96,27 +94,6 @@ export default function FileUploadWidget(props: any) {
                                                     .catch((e: any) => {
                                                         console.log(e);
                                                     });
-
-                                                // axios
-                                                //   .post(
-                                                //     "https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceDocument/Delete",
-                                                //     {
-                                                //       invoiceId: id,
-                                                //       documentId: documents[index].documentId,
-                                                //     },
-                                                //     {
-                                                //       headers: headers,
-                                                //     }
-                                                //   )
-                                                //   .then((res: any) => {
-                                                //     console.log("del rs", res);
-                                                //     let cpy = [...documents];
-                                                //     cpy.splice(index, 1);
-                                                //     setDocuments(cpy);
-                                                //   })
-                                                //   .catch((e: any) => {
-                                                //     console.log(e);
-                                                //   });
                                             },
                                         }
                                         :
@@ -132,7 +109,7 @@ export default function FileUploadWidget(props: any) {
                     })}
                 </div>
 
-                {permission.InvoiceDetails.includes("Browse") && (
+                {getPermissions(transactionType, "Browse") && (
                 <div className="uploadConatiner">
                     <FileUpload
                         fileList={[]}

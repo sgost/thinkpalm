@@ -14,9 +14,10 @@ import {
 import axios from "axios";
 import '../../layouts/views/InvoiceDetails/invoiceDetails.scss'
 import { getDecodedToken } from "../getDecodedToken";
+import { getPermissions } from "../Comman/Utils/utils";
 
 export default function NotesWidget(props: any) {
-    const { notes, isClient, cid, id, setNotes } = props;
+    const { notes, isClient, cid, id, setNotes, transactionType } = props;
     const [noteText, setNoteText] = useState("");
     const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
     const [isExportToQb, setIsExportToQb] = useState(false);
@@ -28,7 +29,6 @@ export default function NotesWidget(props: any) {
     return (
         <div className="box">
             <h3>Notes</h3>
-            {/* <p>Write a Note relevant for this Invoice.</p> */}
 
             <Scrollbars
                 renderView={(props: any) => (
@@ -87,7 +87,6 @@ export default function NotesWidget(props: any) {
                                         </div>
                                         <div className="noteBtn">
                                             <Icon color="#526FD6" icon="edit" size="small" />
-                                            {/* <Icon icon="trash" color="#FBAF00" size="small" /> */}
 
                                             <svg
                                                 width="18"
@@ -132,17 +131,7 @@ export default function NotesWidget(props: any) {
                                     <div className="note">
                                         <p>{item.note}</p>
                                     </div>
-                                    {/* <div>
-                      <p className="noteDate">
-                        {moment(item.createdDate).format("DD/MM/YYYY, HH:mm")}
-                      </p>
-                    </div>
-
-                    <div>
-                      <p className="notes">
-                        <span>test@email.com</span> {item.note}{" "}
-                      </p>
-                    </div> */}
+                                    
                                 </div>
                             );
                         })
@@ -150,81 +139,82 @@ export default function NotesWidget(props: any) {
                 </div>
             </Scrollbars>
 
-            <div className="inpContinaer">
-                <textarea
-                    maxLength={400}
-                    value={noteText}
-                    onChange={(e: any) => setNoteText(e.target.value)}
-                    placeholder="Add a note here..."
-                />
-                <span>Characters left: {400 - noteText.length}</span>
-            </div>
-            <div className="btnContainer">
-                {isClient == "false" && (
-                    <div className="btnContainercheckbox">
-                        <Checkbox
-                            onChange={(e: any) => {
-                                setIsVisibleToCustomer(e.target.checked);
-                            }}
-                            label="Visible to Customer"
-                            checked={isVisibleToCustomer}
-                        />
-                        <Checkbox
-                            label="Export to Quickbooks"
-                            onChange={(e: any) => {
-                                setIsExportToQb(e.target.checked);
-                            }}
-                            checked={isExportToQb}
-                        />
-                        <Checkbox
-                            label="Visible on PDF Invoice"
-                            onChange={(e: any) => {
-                                setisVisibleOnPDFInvoice(e.target.checked);
-                            }}
-                            checked={isVisibleOnPDFInvoice}
-                        />
-                    </div>
-                )}
-                {permission.InvoiceDetails.includes("Publish") && (
-                <Button
-                    disabled={
-                        !noteText.length || noteText.length > 400 ? true : false
-                    }
-                    handleOnClick={() => {
-                        // const url = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/InvoiceNote/Create`;
-                        const url = urls.saveNote;
-                        let currDate = new Date();
+            { getPermissions(transactionType, "Publish") &&<>
+                <div className="inpContinaer">
+                    <textarea
+                        maxLength={400}
+                        value={noteText}
+                        onChange={(e: any) => setNoteText(e.target.value)}
+                        placeholder="Add a note here..."
+                    />
+                    <span>Characters left: {400 - noteText.length}</span>
+                </div>
+                <div className="btnContainer">
+                    {isClient == "false" && (
+                        <div className="btnContainercheckbox">
+                            <Checkbox
+                                onChange={(e: any) => {
+                                    setIsVisibleToCustomer(e.target.checked);
+                                }}
+                                label="Visible to Customer"
+                                checked={isVisibleToCustomer}
+                            />
+                            <Checkbox
+                                label="Export to Quickbooks"
+                                onChange={(e: any) => {
+                                    setIsExportToQb(e.target.checked);
+                                }}
+                                checked={isExportToQb}
+                            />
+                            <Checkbox
+                                label="Visible on PDF Invoice"
+                                onChange={(e: any) => {
+                                    setisVisibleOnPDFInvoice(e.target.checked);
+                                }}
+                                checked={isVisibleOnPDFInvoice}
+                            />
+                        </div>
+                    )}
+                    {permission.InvoiceDetails.includes("Publish") && (
+                    <Button
+                        disabled={
+                            !noteText.length || noteText.length > 400 ? true : false
+                        }
+                        handleOnClick={() => {
+                            const url = urls.saveNote;
+                            let currDate = new Date();
 
-                        axios({
-                            method: "POST",
-                            url: url,
-                            headers: getHeaders(tempToken, cid, isClient),
-                            data: {
-                                invoiceId: id,
-                                noteType: "2",
-                                note: noteText,
-                                isCustomerVisible: isVisibleToCustomer,
-                                exportToQuickbooks: isExportToQb,
-                                createdDate: currDate,
-                                modifiedBy: "00000000-0000-0000-0000-000000000000",
-                                modifiedByUser: null,
-                                displayInPDF: isVisibleOnPDFInvoice,
-                                customerId: cid,
-                            },
-                        })
-                            .then((res: any) => {
-                                setNotes([res.data, ...notes]);
-                                setNoteText("");
+                            axios({
+                                method: "POST",
+                                url: url,
+                                headers: getHeaders(tempToken, cid, isClient),
+                                data: {
+                                    invoiceId: id,
+                                    noteType: "2",
+                                    note: noteText,
+                                    isCustomerVisible: isVisibleToCustomer,
+                                    exportToQuickbooks: isExportToQb,
+                                    createdDate: currDate,
+                                    modifiedBy: "00000000-0000-0000-0000-000000000000",
+                                    modifiedByUser: null,
+                                    displayInPDF: isVisibleOnPDFInvoice,
+                                    customerId: cid,
+                                },
                             })
-                            .catch((e: any) => {
-                                console.log(e);
-                            });
-                    }}
-                    className="primary-blue small"
-                    label="Save"
-                />
-                )}
-            </div>
+                                .then((res: any) => {
+                                    setNotes([res.data, ...notes]);
+                                    setNoteText("");
+                                })
+                                .catch((e: any) => {
+                                    console.log(e);
+                                });
+                        }}
+                        className="primary-blue small"
+                        label="Save"
+                    />
+                    )}
+                </div>
+            </>}
         </div>
         // </div>
     )

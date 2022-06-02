@@ -11,6 +11,7 @@ import {
   Routes,
   useParams,
   MemoryRouter,
+  useLocation,
 } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
@@ -128,9 +129,15 @@ const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
-localStorage.setItem("accessToken", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTI0NDA0NTQsImlhdCI6MTY1MjQzODY1NCwiYXV0aF90aW1lIjowLCJqdGkiOiJjNjc1ZjYwMy0xNmQ1LTQ5MGEtYWQ3Mi04OWViNDFlMjdjZjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiYXRfaGFzaCI6IjdEV25wVExkdFZ3MnM1cFlaeVNCelEiLCJhY3IiOiIxIiwic2lkIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.DdBvd-6ivuV9e3oPNT6RodPnuTJwvjX9P098LEzIEtee-T9O9887HDSnyYKq-ukOBdQEHQaFYsxU8agEnQbJOPKeba2t1urFKeKX1LqsD5FPQ66-Ulq3N2zgjqAC7gRjAIvSAU64WRubFlQP_-A3aQn8ETS-Y3M_hb1-a9YpHXMgUumYo0pDFriHXjOZXGO3RaooDZBVqSRVTJiQEy37-4DzqJWqLEOxbnpEqSKqoWksmzXoMYrssm4sxSD6D-68f7LN_hZ5k1_Q_D39LbZh5HLF2kw9XfJ-IErvwuOKF5gD499JTum3NEslpvZH1eBvnlAjsuW1hqXdlbD1GqpeMQ");
+localStorage.setItem(
+  "accessToken",
+  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTI0NDA0NTQsImlhdCI6MTY1MjQzODY1NCwiYXV0aF90aW1lIjowLCJqdGkiOiJjNjc1ZjYwMy0xNmQ1LTQ5MGEtYWQ3Mi04OWViNDFlMjdjZjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiYXRfaGFzaCI6IjdEV25wVExkdFZ3MnM1cFlaeVNCelEiLCJhY3IiOiIxIiwic2lkIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.DdBvd-6ivuV9e3oPNT6RodPnuTJwvjX9P098LEzIEtee-T9O9887HDSnyYKq-ukOBdQEHQaFYsxU8agEnQbJOPKeba2t1urFKeKX1LqsD5FPQ66-Ulq3N2zgjqAC7gRjAIvSAU64WRubFlQP_-A3aQn8ETS-Y3M_hb1-a9YpHXMgUumYo0pDFriHXjOZXGO3RaooDZBVqSRVTJiQEy37-4DzqJWqLEOxbnpEqSKqoWksmzXoMYrssm4sxSD6D-68f7LN_hZ5k1_Q_D39LbZh5HLF2kw9XfJ-IErvwuOKF5gD499JTum3NEslpvZH1eBvnlAjsuW1hqXdlbD1GqpeMQ"
+);
 localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
-localStorage.setItem("current-org", '{ "Name": "EGS", "Zone": "EU", "Type": "Atlas_Owners", "Payments": { "Role": "FinanceAR", "MiscellaneousInvoiceCreation": [ "Save", "Edit" ], "ManualPayrollInvoiceCreation": [ "Save", "Edit" ], "InvoiceList": [ "Add", "Edit", "Download", "View" ], "ProformaInvoiceCreation": [ "Save", "Edit" ], "CreditMemoInvoiceCreation": [ "Save", "Edit" ], "MiscellaneousInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "InvoiceDetails": [ "Add", "Delete", "Paid", "Edit", "View", "Send", "Browse", "Reject", "Select", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "CreditMemoInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "ProformaInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ] } }')
+localStorage.setItem(
+  "current-org",
+  '{ "Name": "EGS", "Zone": "EU", "Type": "Atlas_Owners", "Payments": { "Role": "FinanceAR", "MiscellaneousInvoiceCreation": [ "Save", "Edit" ], "ManualPayrollInvoiceCreation": [ "Save", "Edit" ], "InvoiceList": [ "Add", "Edit", "Download", "View" ], "ProformaInvoiceCreation": [ "Save", "Edit" ], "CreditMemoInvoiceCreation": [ "Save", "Edit" ], "MiscellaneousInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "InvoiceDetails": [ "Add", "Delete", "Paid", "Edit", "View", "Send", "Browse", "Reject", "Select", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "CreditMemoInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "ProformaInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ] } }'
+);
 
 describe("Invoice details", () => {
   beforeAll(() => {
@@ -139,6 +146,13 @@ describe("Invoice details", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "true",
     }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
@@ -201,7 +215,9 @@ describe("Invoice details", () => {
     const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
     fireEvent.click(masterTab);
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
 
     // expect(payrollTab).toBeInTheDocument();
   });
@@ -222,9 +238,11 @@ describe("Invoice details", () => {
     fireEvent.click(download);
     const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
     fireEvent.click(excel);
-    screen.debug()
+    screen.debug();
     fireEvent.click(download);
-    const BreakDown = await waitFor(() => screen.getByText(/Employee Breakdown/));
+    const BreakDown = await waitFor(() =>
+      screen.getByText(/Employee Breakdown/)
+    );
     fireEvent.click(BreakDown);
   });
 
@@ -237,21 +255,23 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const approve = screen.getByTestId("approve-button")
-    fireEvent.click(approve)
-
+    const approve = screen.getByTestId("approve-button");
+    fireEvent.click(approve);
   });
 
   test("publish notes", async () => {
     render(
-      <HashRouter>``
+      <HashRouter>
+        ``
         <InvoiceDetails />
       </HashRouter>
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
     const input = await waitFor(() =>
       screen.getByPlaceholderText(/Add a note here.../)
     );
@@ -269,7 +289,9 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
     const download = await waitFor(() =>
       screen.getByTestId(/file-upload-button-0/)
     );
@@ -284,7 +306,9 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
     const download = await waitFor(() =>
       screen.getByTestId(/file-upload-button-1/)
     );
@@ -1897,7 +1921,6 @@ describe("Invoice details invoice detail api fail", () => {
 
     // expect(payrollTab).toBeInTheDocument();
   });
-
 });
 
 describe("Invoice details lookup api fail", () => {
@@ -1965,7 +1988,6 @@ describe("Invoice details lookup api fail", () => {
 
     // expect(payrollTab).toBeInTheDocument();
   });
-
 });
 
 describe("Invoice details countries api fail", () => {
@@ -2033,9 +2055,7 @@ describe("Invoice details countries api fail", () => {
 
     // expect(payrollTab).toBeInTheDocument();
   });
-
 });
-
 
 describe("Invoice details employeeBreakDown api fail", () => {
   beforeAll(() => {
@@ -2107,7 +2127,9 @@ describe("Invoice details employeeBreakDown api fail", () => {
     fireEvent.click(excel);
 
     fireEvent.click(download);
-    const BreakDown = await waitFor(() => screen.getByText(/Employee Breakdown/));
+    const BreakDown = await waitFor(() =>
+      screen.getByText(/Employee Breakdown/)
+    );
     fireEvent.click(BreakDown);
   });
 });
