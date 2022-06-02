@@ -42,7 +42,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
-import { getPermissions } from "src/components/Comman/Utils/utils";
+import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -1039,7 +1039,8 @@ export default function InvoiceDetails() {
               </div>
             )}
           <div className="download-invoice-dropdown">
-            {permission?.InvoiceDetails.includes("Download") && (
+            {(permission?.InvoiceDetails.includes("Download") ||
+              state.transactionType != 1) && (
               <div
                 onClick={() =>
                   state.transactionType != 7
@@ -1295,23 +1296,22 @@ export default function InvoiceDetails() {
       )}
       {(state.transactionType == 4 ||
         state.transactionType == 3 ||
-        state.transactionType == 2) &&
-        currentOrgToken?.Payments?.Role == "FinanceAR" && (
-          <CreditMemoSummary
-            notes={notes}
-            setNotes={setNotes}
-            documents={documents}
-            setDocuments={setDocuments}
-            isClient={isClient}
-            cid={cid}
-            id={id}
-            creditMemoData={creditMemoData}
-            serviceCountries={lookupData?.data.serviceCountries}
-            currency={getBillingCurrency()}
-            vatValue={vatValue}
-            setCreditMemoData={setCreditMemoData}
-          ></CreditMemoSummary>
-        )}
+        state.transactionType == 2) && (
+        <CreditMemoSummary
+          notes={notes}
+          setNotes={setNotes}
+          documents={documents}
+          setDocuments={setDocuments}
+          isClient={isClient}
+          cid={cid}
+          id={id}
+          creditMemoData={creditMemoData}
+          serviceCountries={lookupData?.data.serviceCountries}
+          currency={getBillingCurrency()}
+          vatValue={vatValue}
+          setCreditMemoData={setCreditMemoData}
+        ></CreditMemoSummary>
+      )}
 
       {state.transactionType != 7 &&
         state.transactionType != 4 &&
@@ -1547,6 +1547,7 @@ export default function InvoiceDetails() {
                 isClient={isClient}
                 cid={cid}
                 id={id}
+                transactionType={state.transactionType}
               ></NotesWidget>
 
               <FileUploadWidget
@@ -1555,6 +1556,7 @@ export default function InvoiceDetails() {
                 isClient={isClient}
                 cid={cid}
                 id={id}
+                transactionType={state.transactionType}
               ></FileUploadWidget>
             </div>
             <Cards className="invoice-logs">

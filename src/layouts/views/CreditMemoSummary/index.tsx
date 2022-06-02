@@ -356,7 +356,7 @@ export default function CreditMemoSummary(props: any) {
                     (creditMemoData.status == 1 ||
                       creditMemoData.status == 2) && (
                       <>
-                        {index != 0 && (
+                        {index != 0 && getPermissions(creditMemoData?.transactionType, "DeleteItem") && (
                           <Button
                             data-testid="delete-summary-button"
                             icon={{
@@ -371,7 +371,7 @@ export default function CreditMemoSummary(props: any) {
                             }}
                           />
                         )}
-                        {getPermissions(3, "Edit") && (
+                        {getPermissions(creditMemoData?.transactionType, "Edit") && (
                           <Button
                             data-testid="edit-summary-button"
                             className="primary-blue medium edit"
@@ -667,7 +667,7 @@ export default function CreditMemoSummary(props: any) {
           </div>
         </div>
       </Cards>
-      {(creditMemoData.status == 1 || creditMemoData.status == 2) && (
+      {(creditMemoData.status == 1 || creditMemoData.status == 2) && getPermissions(creditMemoData?.transactionType, "Add") && (
         <Cards className="add-item">
           <Button
             data-testid="Invoice-Add-New-Summary"
@@ -691,6 +691,7 @@ export default function CreditMemoSummary(props: any) {
           isClient={isClient}
           cid={cid}
           id={id}
+          transactionType={creditMemoData?.transactionType}
         ></NotesWidget>
         <FileUploadWidget
           documents={documents}
@@ -698,6 +699,7 @@ export default function CreditMemoSummary(props: any) {
           isClient={isClient}
           cid={cid}
           id={id}
+          transactionType={creditMemoData?.transactionType}
         ></FileUploadWidget>
       </div>
       <Cards className="UI-change-log">

@@ -110,7 +110,9 @@ export const getPermissions = (transactionType: any, permission: string) => {
     case 2:
       return decTok?.MiscellaneousInvoice?.includes(permission);
     case 3:
-      return decTok?.ProformaInvoice?.includes(permission);
+      return decTok.ProformaInvoice.includes(permission);
+    case 4:
+      return decTok.CreditMemoInvoice.includes(permission);
 
     default:
       return false;
