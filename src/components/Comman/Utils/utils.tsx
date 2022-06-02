@@ -115,6 +115,6 @@ export const getPermissions = (transactionType: any, permission: string) => {
       return decTok.CreditMemoInvoice.includes(permission);
 
     default:
-      return false;
+      return true;
   }
 };

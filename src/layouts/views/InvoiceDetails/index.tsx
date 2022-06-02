@@ -414,9 +414,9 @@ export default function InvoiceDetails() {
                 customerName: state.rowDetails?.customerName,
                 createdDate: state.rowDetails?.createdDate,
                 invoiceBalance:
-                  parseFloat(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                  parseFloat(state.rowDetails?.totalAmount?.split(" ")[1].replace(',','')) || 0,
                 totalAmount:
-                  parseFloat(state.rowDetails?.totalAmount?.split(" ")[1]) || 0,
+                  parseFloat(state.rowDetails?.totalAmount?.split(" ")[1].replace(',','')) || 0,
               },
             },
           };
