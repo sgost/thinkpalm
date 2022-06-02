@@ -47,7 +47,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const amountPush = todos.map((item: any) =>
     emptyAmount.push(item.quantity * item.amount)
   );
-  const newAmount = emptyAmount.reduce((partialSum, a) => partialSum + a, 0);
+  const newAmount = emptyAmount.reduce((partialSum: any, a: any) => partialSum + a, 0);
 
   return (
     <div id="popover_main">
