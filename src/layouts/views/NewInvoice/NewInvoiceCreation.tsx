@@ -145,7 +145,9 @@ const NewInvoiceCreation = ({
     axios
       .get(api, headers)
       .then((res: any) => {
+       
         if (res.data) {
+         
           const preData: any = preparedCountryData(res.data);
           setCountryOptions(preData);
         }

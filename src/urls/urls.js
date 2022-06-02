@@ -230,7 +230,7 @@ export const updateInvoiceStatus = (invoiceId) => {
 };
 
 export const productInvoice = () => {
-  return metaDataUrl + services.apngMetaDataService + `/Products`;
+  return metaDataUrl + services.apngMetaDataService + `/Products?orderBy=GLDescription`;
 };
 
 export const CountryApi = () => {
