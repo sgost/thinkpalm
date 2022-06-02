@@ -42,6 +42,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
+import { getPermissions } from "src/components/Comman/Utils/utils";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -166,7 +167,12 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
-        if (state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 3 && state.transactionType != 2) {
+        if (
+          state.transactionType != 7 &&
+          state.transactionType != 4 &&
+          state.transactionType != 3 &&
+          state.transactionType != 2
+        ) {
           axios
             .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
             .then((res: any) => {
@@ -358,7 +364,11 @@ export default function InvoiceDetails() {
               console.log("error e", e);
               setIsErr(true);
             });
-        } else if (state.transactionType == 4 || state.transactionType == 3 || state.transactionType == 2) {
+        } else if (
+          state.transactionType == 4 ||
+          state.transactionType == 3 ||
+          state.transactionType == 2
+        ) {
           axios
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
@@ -371,7 +381,6 @@ export default function InvoiceDetails() {
             .catch((res) => {
               console.log(res);
               setIsErr(true);
-
             });
           axios
             .get(getVatValue(cid))
@@ -435,16 +444,15 @@ export default function InvoiceDetails() {
           headers: {
             accept: "text/plain",
             Authorization: `Bearer ${localStorage.accessToken}`,
-            customerID: localStorage["current-org-id"]
-          }
+            customerID: localStorage["current-org-id"],
+          },
         })
         .then((response: any) => {
           if (response.status == 200) {
             const { data } = response.data;
             if (data?.length > 0) {
               setBillTableData(response);
-            }
-            else {
+            } else {
               console.log("no data");
             }
           } else {
@@ -455,7 +463,11 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    if (state.transactionType != 4 && state.transactionType != 3 && state.transactionType != 2) {
+    if (
+      state.transactionType != 4 &&
+      state.transactionType != 3 &&
+      state.transactionType != 2
+    ) {
       axios
         .get(notesApi, headers)
         .then((res: any) => {
@@ -962,13 +974,20 @@ export default function InvoiceDetails() {
       case 4:
         return "Credit Memo No. " + creditMemoData.invoiceNo;
       case 3:
-        return "Proforma Invoice No. " + creditMemoData.invoiceNo
+        return "Proforma Invoice No. " + creditMemoData.invoiceNo;
       case 2:
         return "Miscellaneous No. " + creditMemoData.invoiceNo;
       default:
         return "Payroll Invoice No. " + apiData?.data?.invoice?.invoiceNo;
     }
   };
+
+  if (
+    state.transactionType != 1 &&
+    !getPermissions(state.transactionType, "View")
+  ) {
+    return <p>You do not have permission to view this page.</p>;
+  }
 
   return (
     <div className="invoiceDetailsContainer">
@@ -995,7 +1014,8 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           {status === "In Review" &&
-            permission?.InvoiceDetails.includes("Delete") && (
+            (getPermissions(state.transactionType, "Delete") ||
+              getPermissions(state.transactionType, "DeleteInvoice")) && (
               <div className="upper-delete-button">
                 <div
                   className="delete-invoice"
@@ -1007,7 +1027,7 @@ export default function InvoiceDetails() {
               </div>
             )}
           {status === "Approved" &&
-            permission?.InvoiceDetails.includes("Void") && (
+            getPermissions(state.transactionType, "Void") && (
               <div className="void-button">
                 <Button
                   className="secondary-btn small"
@@ -1024,13 +1044,14 @@ export default function InvoiceDetails() {
                 onClick={() =>
                   state.transactionType != 7
                     ? setIsDownloadOpen(!isDownloadOpen)
-                    : function noRefCheck() { }
+                    : function noRefCheck() {}
                 }
-                className={`${state.transactionType == 7 || deleteDisableButtons === true
-                  ? "download_disable"
-                  : "download"
-                  }`}
-              // className="download"
+                className={`${
+                  state.transactionType == 7 || deleteDisableButtons === true
+                    ? "download_disable"
+                    : "download"
+                }`}
+                // className="download"
               >
                 <p className="text">Download</p>
                 <Icon
@@ -1054,7 +1075,7 @@ export default function InvoiceDetails() {
           </div>
           <div className="decline-invoice">
             {status === "Pending Approval" &&
-              permission?.InvoiceDetails.includes("Approve") && (
+              getPermissions(state.transactionType, "Reject") && (
                 <Button
                   data-testid="decline-button"
                   disabled={deleteDisableButtons === true}
@@ -1072,7 +1093,7 @@ export default function InvoiceDetails() {
 
           <div>
             {status === "In Review" &&
-              permission?.InvoiceDetails.includes("Send") && (
+              getPermissions(state.transactionType, "Send") && (
                 <Button
                   className="primary-blue small"
                   icon={{
@@ -1102,7 +1123,7 @@ export default function InvoiceDetails() {
                 />
               )} */}
             {status === "Pending Approval" &&
-              permission.InvoiceDetails.includes("Approve") && (
+              getPermissions(state.transactionType, "Approve") && (
                 <Button
                   disabled={
                     state.transactionType == 7 || deleteDisableButtons === true
@@ -1203,36 +1224,38 @@ export default function InvoiceDetails() {
 
             {state.transactionType != 7 && state.transactionType != 4 && (
               <>
-                {state.transactionType != 2 && <>
-                  <p className="heading">Invoice Changes</p>
-                  <p className="value">{topPanel.invoiceApproval}</p>
+                {state.transactionType != 2 && (
+                  <>
+                    <p className="heading">Invoice Changes</p>
+                    <p className="value">{topPanel.invoiceApproval}</p>
 
-                  {isClient == "false" && (
-                    <div className="autoapproveContainer">
-                      <Checkbox
-                        onChange={(e: any) => {
-                          setIsAutoApprove(e.target.checked);
-                          axios({
-                            url: getAutoApproveCheckUrl(id, e.target.checked),
-                            method: "POST",
-                            headers: getHeaders(tempToken, cid, isClient),
-                          })
-                            .then((res: any) => {
-                              if (res.status === 200) {
-                                setShowAutoApprovedToast(true);
-                              }
+                    {isClient == "false" && (
+                      <div className="autoapproveContainer">
+                        <Checkbox
+                          onChange={(e: any) => {
+                            setIsAutoApprove(e.target.checked);
+                            axios({
+                              url: getAutoApproveCheckUrl(id, e.target.checked),
+                              method: "POST",
+                              headers: getHeaders(tempToken, cid, isClient),
                             })
-                            .catch((err: any) => {
-                              setIsAutoApprove(!e.target.checked);
-                              console.log(err);
-                            });
-                        }}
-                        label="Auto-Approval after 24h"
-                        checked={isAutoApprove}
-                      />
-                    </div>
-                  )}
-                </>}
+                              .then((res: any) => {
+                                if (res.status === 200) {
+                                  setShowAutoApprovedToast(true);
+                                }
+                              })
+                              .catch((err: any) => {
+                                setIsAutoApprove(!e.target.checked);
+                                console.log(err);
+                              });
+                          }}
+                          label="Auto-Approval after 24h"
+                          checked={isAutoApprove}
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
                 <p className="heading">Payment Due</p>
                 <p className="value">{topPanel.paymentDue}</p>
               </>
@@ -1270,7 +1293,9 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {(state.transactionType == 4 || state.transactionType == 3 || state.transactionType == 2) &&
+      {(state.transactionType == 4 ||
+        state.transactionType == 3 ||
+        state.transactionType == 2) &&
         currentOrgToken?.Payments?.Role == "FinanceAR" && (
           <CreditMemoSummary
             notes={notes}
@@ -1288,38 +1313,43 @@ export default function InvoiceDetails() {
           ></CreditMemoSummary>
         )}
 
-      {state.transactionType != 7 && state.transactionType != 4 && state.transactionType != 3 && state.transactionType != 2 && (
-        <div className="tab">
-          <p
-            onClick={() => setActiveTab("payroll")}
-            className={
-              activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
-            }
-          >
-            Payroll Journal
-          </p>
-          <p
-            onClick={() => setActiveTab("master")}
-            className={
-              activeTab === "master" ? "tabTextActive" : "tabTextPassive"
-            }
-          >
-            Master Invoice
-          </p>
-          <p
-            onClick={() => setActiveTab("files")}
-            className={
-              activeTab === "files" ? "tabTextActive" : "tabTextPassive"
-            }
-          >
-            Files & Notes
-          </p>
-        </div>
-      )}
+      {state.transactionType != 7 &&
+        state.transactionType != 4 &&
+        state.transactionType != 3 &&
+        state.transactionType != 2 && (
+          <div className="tab">
+            <p
+              onClick={() => setActiveTab("payroll")}
+              className={
+                activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
+              }
+            >
+              Payroll Journal
+            </p>
+            <p
+              onClick={() => setActiveTab("master")}
+              className={
+                activeTab === "master" ? "tabTextActive" : "tabTextPassive"
+              }
+            >
+              Master Invoice
+            </p>
+            <p
+              onClick={() => setActiveTab("files")}
+              className={
+                activeTab === "files" ? "tabTextActive" : "tabTextPassive"
+              }
+            >
+              Files & Notes
+            </p>
+          </div>
+        )}
 
       {activeTab === "master" &&
-        state.transactionType != 4 && state.transactionType != 3 &&
-        state.transactionType != 7 && state.transactionType != 2 && (
+        state.transactionType != 4 &&
+        state.transactionType != 3 &&
+        state.transactionType != 7 &&
+        state.transactionType != 2 && (
           <div className="master">
             <h3 className="tableHeader">Country Summary</h3>
             <Table
@@ -1366,8 +1396,10 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "payroll" &&
-        state.transactionType != 4 && state.transactionType != 3 &&
-        state.transactionType != 7 && state.transactionType != 2 && (
+        state.transactionType != 4 &&
+        state.transactionType != 3 &&
+        state.transactionType != 7 &&
+        state.transactionType != 2 && (
           <div className="payroll">
             {payrollTables.map((item: any) => {
               return (
@@ -1391,8 +1423,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             item.currencyCode +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.subTotalDue)
+                              " " +
+                              toCurrencyFormat(item.feeSummary.subTotalDue)
 
                             // item.feeSummary.subTotalDue
                             //   .toFixed(2)
@@ -1414,10 +1446,10 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.subTotalDue * item.exchangeRate
-                            )
+                              " " +
+                              toCurrencyFormat(
+                                item.feeSummary.subTotalDue * item.exchangeRate
+                              )
                             // (item.feeSummary.subTotalDue * item.exchangeRate)
                             //   .toFixed(2)
                             //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1429,10 +1461,10 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.inCountryProcessingFee
-                            )
+                              " " +
+                              toCurrencyFormat(
+                                item.feeSummary.inCountryProcessingFee
+                              )
 
                             // getInCountryProcessingFee()
                             //   .toFixed(2)
@@ -1445,8 +1477,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.fxBill)
+                              " " +
+                              toCurrencyFormat(item.feeSummary.fxBill)
 
                             // item.feeSummary.fxBill
                             //   .toFixed(2)
@@ -1459,8 +1491,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.totalCountryVat)
+                              " " +
+                              toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                             // item.feeSummary.totalCountryVat
                             //   .toFixed(2)
@@ -1473,8 +1505,8 @@ export default function InvoiceDetails() {
                         <h3>
                           {
                             getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.countryTotalDue)
+                              " " +
+                              toCurrencyFormat(item.countryTotalDue)
 
                             // item.feeSummary.total
                             //   .toFixed(2)
@@ -1503,8 +1535,10 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "files" &&
-        state.transactionType != 4 && state.transactionType != 3 &&
-        state.transactionType != 7 && state.transactionType != 2 && (
+        state.transactionType != 4 &&
+        state.transactionType != 3 &&
+        state.transactionType != 7 &&
+        state.transactionType != 2 && (
           <>
             <div className="filesNotes">
               <NotesWidget
@@ -1623,7 +1657,6 @@ export default function InvoiceDetails() {
             <div className="text-invoive-no">
               <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
             </div>
-
 
             <div className="text-invoice-comment">
               <label>

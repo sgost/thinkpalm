@@ -555,7 +555,7 @@ const NewInvoice = () => {
       CustomerLocation:
         CustomerOptions.find(
           (c: any) => c.customerId === stepperOneData?.customerId
-        )?.billingAddressCountryName || "India", // currently its coming null thats why fallback is India , backend will provice it in future
+        )?.billingAddressCountryName || "", // currently its coming null thats why fallback is India , backend will provice it in future
       CurrencyId: 840, // backend will provide it
       Status: 1, // hard code
       TransactionType: transactionType, //

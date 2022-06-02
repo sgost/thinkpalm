@@ -105,8 +105,12 @@ export const getPermissions = (transactionType: any, permission: string) => {
   const decTok = getDecodedToken();
 
   switch (transactionType) {
+    case 1:
+      return decTok?.InvoiceDetails?.includes(permission);
+    case 2:
+      return decTok?.MiscellaneousInvoice?.includes(permission);
     case 3:
-      return decTok.ProformaInvoice.includes(permission);
+      return decTok?.ProformaInvoice?.includes(permission);
 
     default:
       return false;
