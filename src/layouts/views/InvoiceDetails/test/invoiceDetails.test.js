@@ -2133,3 +2133,76 @@ describe("Invoice details employeeBreakDown api fail", () => {
     fireEvent.click(BreakDown);
   });
 });
+
+describe("Invoice details view change log click", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(urls.invoiceLogs.replace("{invoice-id}", id)).reply(200, mockapidata.resInvoiceNotesData);
+
+  });
+
+  test("publish notes", async () => {
+    render(
+      <HashRouter>
+        ``
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
+    const input = await waitFor(() =>
+      screen.getByPlaceholderText(/Add a note here.../)
+    );
+    fireEvent.change(input, { target: { value: "Pending" } });
+    const publish = screen.getByText(/Save/);
+    fireEvent.click(publish);
+
+    const changeViewText = await screen.findByText(/View Change Log/)
+    fireEvent.click(changeViewText)
+
+    const text = await screen.findByText(/test 9/);
+     expect(text).toBeInTheDocument()
+
+    const viewMoreText = await screen.findByText(/View More/)
+    fireEvent.click(viewMoreText)
+    fireEvent.click(viewMoreText)
+    fireEvent.click(viewMoreText)
+
+    const viewLessText = await screen.findByText(/View Less/)
+    fireEvent.click(viewLessText)
+
+  });
+});
