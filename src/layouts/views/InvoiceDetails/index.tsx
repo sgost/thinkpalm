@@ -1691,7 +1691,7 @@ export default function InvoiceDetails() {
                       if (res.status == 200) {
                         lookupData.data.invoiceStatuses.forEach((e: any) => {
                           if (e.value === res.data.status) {
-                            setStatus(e.text === "In Review" ? "AR Reviews" : e.text);
+                            setStatus(e.text === "In Review" ? "AR Review" : e.text);
                           }
                         });
                         setInputValue("");
