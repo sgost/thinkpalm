@@ -979,6 +979,14 @@ export default function InvoiceDetails() {
     }
   };
 
+  const deleteFun = () => {
+    if (deleteApp) {
+      return "Delete"
+    } else {
+      return "Pending..."
+    }
+  }
+
 
   console.log('status', status)
   console.log('permission', permission)
@@ -1809,7 +1817,7 @@ export default function InvoiceDetails() {
               />
               <Button
                 data-testid="delete-button-submit"
-                label={deleteApp ? "Delete" : "Pending..."}
+                label={deleteFun()}
                 className="primary-blue medium delete-button"
                 handleOnClick={() => handleDeleteInvoice()}
               />
