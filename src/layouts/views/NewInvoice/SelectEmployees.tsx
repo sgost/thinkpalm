@@ -50,7 +50,7 @@ const SelectEmployees = ({
         }
       })
       .catch((e: any) => {
-        if (e.response.data.includes('No Employees found under this customer')) {
+        if (e.response?.data?.includes('No Employees found under this customer')) {
           setLoading(false);
           setShowNoEmployeeText('No Employees found under this customer');
         } else {
