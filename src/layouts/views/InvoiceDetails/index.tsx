@@ -1809,7 +1809,7 @@ export default function InvoiceDetails() {
               />
               <Button
                 data-testid="delete-button-submit"
-                label={deleteApp == true ? "Delete" : "Pending..."}
+                label={deleteApp ? "Delete" : "Pending..."}
                 className="primary-blue medium delete-button"
                 handleOnClick={() => handleDeleteInvoice()}
               />
