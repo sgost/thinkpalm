@@ -1228,37 +1228,39 @@ export default function InvoiceDetails() {
             <p className="heading">Invoice Date</p>
             <p className="value">{topPanel.invoiceDate}</p>
 
-            {state.transactionType != 7 && state.transactionType != 4 && (
+            {(state.transactionType != 7) && (
               <>
                 {state.transactionType != 2 && <>
                   <p className="heading">Invoice Changes</p>
                   <p className="value">{topPanel.invoiceApproval}</p>
 
-                  {isClient == "false" && state.transactionType !== 3 && (
-                    <div className="autoapproveContainer">
-                      <Checkbox
-                        onChange={(e: any) => {
-                          setIsAutoApprove(e.target.checked);
-                          axios({
-                            url: getAutoApproveCheckUrl(id, e.target.checked),
-                            method: "POST",
-                            headers: getHeaders(tempToken, cid, isClient),
-                          })
-                            .then((res: any) => {
-                              if (res.status === 200) {
-                                setShowAutoApprovedToast(true);
-                              }
-                            })
-                            .catch((err: any) => {
-                              setIsAutoApprove(!e.target.checked);
-                              console.log(err);
-                            });
-                        }}
-                        label="Auto-Approval after 24h"
-                        checked={isAutoApprove}
-                      />
-                    </div>
-                  )}
+                  {isClient == "false" && (
+                    <>
+                      {status !== "Open" && (
+                        <div className="autoapproveContainer">
+                          <Checkbox
+                            onChange={(e: any) => {
+                              setIsAutoApprove(e.target.checked);
+                              axios({
+                                url: getAutoApproveCheckUrl(id, e.target.checked),
+                                method: "POST",
+                                headers: getHeaders(tempToken, cid, isClient),
+                              })
+                                .then((res: any) => {
+                                  if (res.status === 200) {
+                                    setShowAutoApprovedToast(true);
+                                  }
+                                })
+                                .catch((err: any) => {
+                                  setIsAutoApprove(!e.target.checked);
+                                  console.log(err);
+                                });
+                            }}
+                            label="Auto-Approval after 24h"
+                            checked={isAutoApprove}
+                          />
+                        </div>
+                      )} </>)}
                 </>}
                 <p className="heading">Payment Due</p>
                 <p className="value">{topPanel.paymentDue}</p>
