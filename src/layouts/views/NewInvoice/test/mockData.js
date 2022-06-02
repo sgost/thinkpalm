@@ -41,15 +41,15 @@ export const mockapidata = {
   ],
   resGetAllCountry: [
     {
-      id: "7defc4f9-906d-437f-a6d9-c822ca2ecfd7",
-      currencyId: 404,
-      location: 1,
-      name: "Kenya",
-      officialName: "The Republic of Kenya",
-      code: "KE",
-      colorCode: "#C9E554",
-    },
-  ],
+        "id": "7defc4f9-906d-437f-a6d9-c822ca2ecfd7",
+        "currencyId": 404,
+        "location": 1,
+        "name": "Kenya",
+        "officialName": "The Republic of Kenya",
+        "code": "KE",
+        "colorCode": "#C9E554"
+    }
+],
   resForStepperTwo: [
     {
       employeeDetail: {
@@ -10471,6 +10471,62 @@ export const mockapidata = {
     },
     id: "1d05e427-71ec-4183-a838-1668cebe5f53",
   },
+
+  resGetCustomerWithSuscription: {
+    "customers": [
+        {
+            "id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "custId": 1585,
+            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "name": "DSM Nutritional Products AG",
+            "email": null,
+            "webSite": "http://www.dsm.com",
+            "billingAddressId": null,
+            "shippingAddressId": null,
+            "note": null,
+            "taxIdentifier": null,
+            "landPhone": null,
+            "mobilePhone": null,
+            "faxPhone": null,
+            "otherPhone": null,
+            "billingCurrency": 1,
+            "location": 1,
+            "class": 1,
+            "payrollDue": 1,
+            "otherDue": 1,
+            "preferredPayment": 1,
+            "status": 1,
+            "renewalEffectiveDate": "0001-01-01T00:00:00Z",
+            "hrisIncludedInAdmin": 1,
+            "qbClientId": null,
+            "poNumber": null,
+            "modifiedBy": "00000000-0000-0000-0000-000000000000",
+            "payrollApprovalRequired": null,
+            "billingAddress": {
+                "type": 0,
+                "street": null,
+                "city": "City",
+                "state": "State",
+                "postalCode": "123456",
+                "countryId": null,
+                "modifiedBy": "00000000-0000-0000-0000-000000000000",
+                "customerId": "00000000-0000-0000-0000-000000000000",
+                "employerId": "00000000-0000-0000-0000-000000000000",
+                "regionId": 0,
+                "country": null,
+                "customerBillingAddresses": [],
+                "customerShippingAddresses": [],
+                "id": "00000000-0000-0000-0000-000000000000"
+            },
+            "shippingAddress": null,
+            "customerNotes": null,
+            "customerDocuments": null,
+            "customerUsers": null,
+            "customerFees": null,
+            "customerCountries": null
+        }
+    ]
+}
 };
 
 export const currentOrgTokenMock = {

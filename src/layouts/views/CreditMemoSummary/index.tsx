@@ -356,22 +356,29 @@ export default function CreditMemoSummary(props: any) {
                     (creditMemoData.status == 1 ||
                       creditMemoData.status == 2) && (
                       <>
-                        {index != 0 && getPermissions(creditMemoData?.transactionType, "DeleteItem") && (
-                          <Button
-                            data-testid="delete-summary-button"
-                            icon={{
-                              color: "#526fd5",
-                              icon: "trash",
-                              size: "large",
-                            }}
-                            className="secondary-btn no-border medium delete"
-                            label="Delete Items"
-                            handleOnClick={() => {
-                              deleteInvoiceItem(index);
-                            }}
-                          />
-                        )}
-                        {getPermissions(creditMemoData?.transactionType, "Edit") && (
+                        {index != 0 &&
+                          getPermissions(
+                            creditMemoData?.transactionType,
+                            "DeleteItem"
+                          ) && (
+                            <Button
+                              data-testid="delete-summary-button"
+                              icon={{
+                                color: "#526fd5",
+                                icon: "trash",
+                                size: "large",
+                              }}
+                              className="secondary-btn no-border medium delete"
+                              label="Delete Items"
+                              handleOnClick={() => {
+                                deleteInvoiceItem(index);
+                              }}
+                            />
+                          )}
+                        {getPermissions(
+                          creditMemoData?.transactionType,
+                          "Edit"
+                        ) && (
                           <Button
                             data-testid="edit-summary-button"
                             className="primary-blue medium edit"
@@ -453,7 +460,7 @@ export default function CreditMemoSummary(props: any) {
                     value={item.description}
                     label="Description"
                     type="text"
-                    placeholder="Enter a description"
+                    placeholder="Enter description"
                     disable={editCheck != index}
                   ></Input>
                 </div>
@@ -590,7 +597,7 @@ export default function CreditMemoSummary(props: any) {
                   setValue={setNewDescription}
                   value={newDescription}
                   label="Description"
-                  placeholder="Enter a description"
+                  placeholder="Enter description"
                   type="text"
                   disable={false}
                 ></Input>
@@ -667,23 +674,24 @@ export default function CreditMemoSummary(props: any) {
           </div>
         </div>
       </Cards>
-      {(creditMemoData.status == 1 || creditMemoData.status == 2) && getPermissions(creditMemoData?.transactionType, "Add") && (
-        <Cards className="add-item">
-          <Button
-            data-testid="Invoice-Add-New-Summary"
-            label="Add New Item"
-            className="secondary-btn large no-border"
-            icon={{
-              viewBox: "-2 0 24 24",
-              icon: "circularAdd",
-              size: "large",
-              color: "#526FD6",
-            }}
-            handleOnClick={showAddFields}
-            disabled={addSectionCheck}
-          />
-        </Cards>
-      )}
+      {(creditMemoData.status == 1 || creditMemoData.status == 2) &&
+        getPermissions(creditMemoData?.transactionType, "Add") && (
+          <Cards className="add-item">
+            <Button
+              data-testid="Invoice-Add-New-Summary"
+              label="Add New Item"
+              className="secondary-btn large no-border"
+              icon={{
+                viewBox: "-2 0 24 24",
+                icon: "circularAdd",
+                size: "large",
+                color: "#526FD6",
+              }}
+              handleOnClick={showAddFields}
+              disabled={addSectionCheck}
+            />
+          </Cards>
+        )}
       <div className="filesNotes">
         <NotesWidget
           notes={notes}

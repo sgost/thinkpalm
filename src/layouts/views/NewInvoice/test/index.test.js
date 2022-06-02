@@ -35,8 +35,8 @@ localStorage.setItem(
 );
 localStorage.setItem("current-org", JSON.stringify(currentOrgTokenMock));
 localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
-const id = "A9BBEE6D-797A-4724-A86A-5B1A2E28763F";
-const customerId = "A9BBEE6D-797A-4724-A86A-5B1A2E28763F";
+const id = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
+const customerId = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
 const countryId = "7defc4f9-906d-437f-a6d9-c822ca2ecfd7";
 const monthId = 1;
 const yearId = 2022;
@@ -45,7 +45,7 @@ describe("New Invoice", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -76,20 +76,22 @@ describe("New Invoice", () => {
     const newInvoice = await screen.findAllByText(/New Invoice/);
 
     expect(newInvoice[0]).toBeInTheDocument();
+
     let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
-
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
+    screen.debug(pleaseSelectDropDown)
+    
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -119,10 +121,10 @@ describe("New Invoice", () => {
   });
 });
 
-describe("step one getCustomer api fail ", () => {
+describe("step one getCustomerSubscription api fail ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
-    mock.onGet(urls.customers).reply(400, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(400, mockapidata.resGetCustomerWithSuscription);
   });
 
   test("dropDown Value change", async () => {
@@ -134,6 +136,14 @@ describe("step one getCustomer api fail ", () => {
 
     const newInvoice = await screen.findAllByText(/New Invoice/);
     expect(newInvoice[0]).toBeInTheDocument();
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+    
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
   });
 });
 
@@ -141,7 +151,7 @@ describe("step one getCOuntry api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -161,8 +171,14 @@ describe("step one getCOuntry api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
     const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
+      /DSM Nutritional Products AG/
     );
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
@@ -173,7 +189,7 @@ describe("Stepper 2", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -202,60 +218,6 @@ describe("Stepper 2", () => {
       .reply(201, {});
   });
 
-  test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
-    render(
-      <HashRouter>
-        <NewInvoice />
-      </HashRouter>
-    );
-
-    const payrollTab = await screen.findAllByText(/New Invoice/);
-
-    expect(payrollTab[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
-    fireEvent.click(pleaseSelectDropDown[0]);
-
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
-    const typeDropDownValue = await screen.findByText(/Payroll/);
-    expect(typeDropDownValue).toBeInTheDocument();
-    fireEvent.click(typeDropDownValue);
-
-    const countryDropDown = await screen.findByText("Countries");
-    fireEvent.click(countryDropDown);
-
-    const countryDropValue = await screen.findByText(/Kenya/);
-    expect(countryDropValue).toBeInTheDocument();
-    fireEvent.click(countryDropValue);
-
-    // fireEvent.click(pleaseSelectDropDown[2]);
-    const monthDropValue = await screen.findByText(/January/);
-    expect(monthDropValue).toBeInTheDocument();
-    fireEvent.click(monthDropValue);
-
-    // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
-
-    const nextButton = await screen.findByTestId("next-button");
-    expect(nextButton).toBeInTheDocument();
-    fireEvent.click(nextButton);
-
-    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
-    expect(SelectEmployeeText[0]).toBeInTheDocument();
-
-    const stepTwoNextButton = await screen.findByTestId("next-button");
-    expect(stepTwoNextButton).toBeInTheDocument();
-    fireEvent.click(stepTwoNextButton);
-  });
-
   test("dropDown Value change stepper 1 then stepper 2 click on  back button", async () => {
     render(
       <HashRouter>
@@ -269,17 +231,17 @@ describe("Stepper 2", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -322,17 +284,17 @@ describe("Stepper 2", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -416,7 +378,7 @@ describe("Stepper 2 show table click", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -439,17 +401,17 @@ describe("Stepper 2 show table click", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[2]);
     const countryDropDown = await screen.findByText("Countries");
@@ -486,7 +448,7 @@ describe("Stepper 2 api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -512,17 +474,17 @@ describe("Stepper 2 api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -582,7 +544,7 @@ describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -606,17 +568,17 @@ describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -649,7 +611,7 @@ describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -673,17 +635,17 @@ describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -717,7 +679,7 @@ describe("Stepper 3", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -755,17 +717,17 @@ describe("Stepper 3", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -809,17 +771,17 @@ describe("Stepper 3", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -862,17 +824,17 @@ describe("Stepper 3", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -944,7 +906,7 @@ describe("Stepper 3 invoice detail api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -982,17 +944,17 @@ describe("Stepper 3 invoice detail api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1036,17 +998,17 @@ describe("Stepper 3 invoice detail api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1089,17 +1051,17 @@ describe("Stepper 3 invoice detail api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1159,7 +1121,7 @@ describe("Stepper 3 fee api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1184,65 +1146,6 @@ describe("Stepper 3 fee api fail", () => {
       .reply(200, mockapidata.resForInvoiceDetail);
   });
 
-  // test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
-  //   render(
-  //     <HashRouter>
-  //       <NewInvoice />
-  //     </HashRouter>
-  //   );
-  //   const RemoveItem = await screen.findByTestId("remove-item-button");
-  //   expect(RemoveItem).toBeInTheDocument();
-  //   fireEvent.click(RemoveItem)
-
-  // })
-
-  // test('Product name save in local storage', async () => {
-
-  //   const payrollTab = await screen.findAllByText(/New Invoice/);
-
-  //   expect(payrollTab[0]).toBeInTheDocument();
-  //   const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
-  //   fireEvent.click(pleaseSelectDropDown[0]);
-
-  //   const customerDropValue = await screen.findByText(/"DSM Nutritional Products AG"/);
-  //   expect(customerDropValue).toBeInTheDocument();
-  //   fireEvent.click(customerDropValue);
-
-  //   fireEvent.click(pleaseSelectDropDown[1]);
-
-  //   const typeDropDownValue = await screen.findByText(/Payroll/);
-  //   expect(typeDropDownValue).toBeInTheDocument();
-  //   fireEvent.click(typeDropDownValue);
-
-  //   const countryDropDown = await screen.findByText("Countries")
-  //   fireEvent.click(countryDropDown);
-
-  //   const countryDropValue = await screen.findByText(/Kenya/);
-  //   expect(countryDropValue).toBeInTheDocument();
-  //   fireEvent.click(countryDropValue);
-
-  //   fireEvent.click(pleaseSelectDropDown[2]);
-  //   const monthDropValue = await screen.findByText(/January/);
-  //   expect(monthDropValue).toBeInTheDocument();
-  //   fireEvent.click(monthDropValue);
-
-  //   fireEvent.click(pleaseSelectDropDown[3]);
-  //   const YearDropValue = await screen.findByText(/2022/);
-  //   expect(YearDropValue).toBeInTheDocument();
-  //   fireEvent.click(YearDropValue);
-
-  //   const nextButton = await screen.findByTestId("next-button");
-  //   expect(nextButton).toBeInTheDocument();
-  //   fireEvent.click(nextButton);
-
-  //   const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
-  //   expect(SelectEmployeeText[0]).toBeInTheDocument();
-
-  //   const stepTwoNextButton = await screen.findByTestId("next-button");
-  //   expect(stepTwoNextButton).toBeInTheDocument();
-  //   fireEvent.click(stepTwoNextButton);
-  // });
-
   test("dropDown Value change stepper 1 then stepper 2 click on  back button", async () => {
     render(
       <HashRouter>
@@ -1256,17 +1159,17 @@ describe("Stepper 3 fee api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1309,17 +1212,17 @@ describe("Stepper 3 fee api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1379,7 +1282,7 @@ describe("Stepper 3 address api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1417,17 +1320,17 @@ describe("Stepper 3 address api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1471,17 +1374,17 @@ describe("Stepper 3 address api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1524,17 +1427,17 @@ describe("Stepper 3 address api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1594,7 +1497,7 @@ describe("Stepper 3 country api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(urls.allPayrollCustomerSubscriptionapi).reply(200, mockapidata.resGetCustomerWithSuscription);
 
     mock
       .onGet(getCountryByCustomer(id))
@@ -1632,17 +1535,17 @@ describe("Stepper 3 country api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1686,17 +1589,17 @@ describe("Stepper 3 country api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1739,17 +1642,17 @@ describe("Stepper 3 country api fail", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const countryDropDown = await screen.findByText("Countries");
     fireEvent.click(countryDropDown);
@@ -1845,17 +1748,17 @@ describe("New Invoice for Proforma ", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Proforma/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const dp = await waitFor(() => screen.getByRole("textbox"));
     fireEvent.click(dp);
@@ -1867,6 +1770,32 @@ describe("New Invoice for Proforma ", () => {
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
   }, 30000);
+});
+
+describe("step one Proforma getCustomer api fail ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(urls.customers).reply(400, mockapidata.resGetAllCustomer);
+  });
+
+  test("dropDown Value change", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+    expect(newInvoice[0]).toBeInTheDocument();
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+    
+    const typeDropDownValue = await screen.findByText(/Proforma/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+  });
 });
 
 // test cases for Miscellaneous
@@ -1917,20 +1846,17 @@ describe("New Invoice for Miscellaneous ", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Miscellaneous/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    screen.debug(pleaseSelectDropDown);
-    // fireEvent.click(pleaseSelectDropDown[2]);
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const dp = await waitFor(() => screen.getByRole("textbox"));
     fireEvent.click(dp);
@@ -1953,7 +1879,6 @@ describe("New Invoice for Miscellaneous ", () => {
 
     const serviceDate = await screen.findAllByText(/27/);
     fireEvent.click(serviceDate[1]);
-    // screen.debug(serviceDate[1])
 
     const pleaseSelectDropDownStepper2 = await screen.findAllByText(
       /Please Select/
@@ -2014,9 +1939,6 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     mock
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
-    // mock
-    //   .onGet(getRelatedInvoiceUrl("1d05e427-71ec-4183-a838-1668cebe5f53"))
-    //   .reply(200, mockapidata.resFinalStepper);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
@@ -2034,18 +1956,17 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
-    const customerDropValue = await screen.findByText(
-      /"DSM Nutritional Products AG"/
-    );
-
-    expect(customerDropValue).toBeInTheDocument();
-    fireEvent.click(customerDropValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-
     const typeDropDownValue = await screen.findByText(/Credit Memo/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
 
     const dp = await waitFor(() => screen.getByRole("textbox"));
     fireEvent.click(dp);
@@ -2068,7 +1989,6 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
 
     const serviceDate = await screen.findAllByText(/27/);
     fireEvent.click(serviceDate[1]);
-    // screen.debug(serviceDate[1])
 
     const pleaseSelectDropDownStepper2 = await screen.findAllByText(
       /Please Select/
