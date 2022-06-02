@@ -129,17 +129,26 @@ export default function InvoiceDetails() {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
   const [changeLogs, setChangeLogs] = useState<any>([]);
+  const [initail, setInitial] = useState(0);
+  const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
 
   useEffect(() => {
     if (logsData.length === 0) return;
     const splicedData: any = [...logsData].splice(0, viewLimit);
+
     setChangeLogs([...splicedData]);
   }, [logsData]);
 
   useEffect(() => {
-    if (changeLogs.length === logsData.length) {
-      setDataAvailable(false);
+    if (changeLogs.length > 0) {
+      if (logsData.length > 0) {
+        if (changeLogs.length === logsData.length) {
+          setDataAvailable(false);
+        } else {
+          setDataAvailable(true);
+        }
+      }
     }
   }, [changeLogs]);
 
@@ -1654,12 +1663,19 @@ export default function InvoiceDetails() {
                       color: "#526FD6",
                       viewBox: "-2 -1 24 24",
                     },
+
                     handleOnClick: () => {
                       if (dataAvailable) {
                         const spliced = [...logsData].splice(
                           changeLogs.length,
                           viewLimit
                         );
+
+                        if (logsData.length > limitFor) {
+                          setInitial(limitFor);
+                          setLimitFor(limitFor + 10);
+                        }
+
                         setChangeLogs([...changeLogs, ...spliced]);
                       }
                     },
@@ -1674,15 +1690,12 @@ export default function InvoiceDetails() {
                       viewBox: "-2 -1 24 24",
                     },
                     handleOnClick: () => {
-                      const logs = [...changeLogs.reverse()];
-                      const limit =
-                        changeLogs?.length - 1 === viewLimit ? 1 : viewLimit;
-                      if (changeLogs.length === limit) {
-                        return;
-                      }
-                      logs.splice(0, limit);
-                      setChangeLogs([...logs.reverse()]);
-                      if (logs.length > viewLimit) {
+                      const logs = [...changeLogs];
+                      logs.splice(initail, limitFor);
+                      setChangeLogs([...logs]);
+                      setInitial(initail - 10);
+                      setLimitFor(initail);
+                      if (logs.length === changeLogs.length) {
                         setDataAvailable(true);
                       }
                     },

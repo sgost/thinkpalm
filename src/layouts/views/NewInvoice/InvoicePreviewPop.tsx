@@ -125,7 +125,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">To</p>
-                  <p className="creditMemoInvoiceValue valuebold">
+                  <p className="creditMemoInvoiceValue">
                     {invoiceData?.customerName}
                   </p>
                   <p className="creditMemoInvoiceAddress"></p>

@@ -109,7 +109,6 @@ const NewInvoiceCreation = ({
       .then((res: any) => {
         const preData: any = preparedPayrollCustomerData(res.data);
         setCustomerOption(preData);
-        console.log("cutomer payroll api");
         setLoading(false);
       })
       .catch((e: any) => {
@@ -245,6 +244,7 @@ const NewInvoiceCreation = ({
 
               <div className="dropdown">
                 <Dropdown
+                  isDisabled={!stepperOneData?.type}
                   handleDropOptionClick={(item: any) => {
                     handleDropOption(
                       item,
