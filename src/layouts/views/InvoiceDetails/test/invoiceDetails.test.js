@@ -23,6 +23,7 @@ import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 import {
   getApproveUrl,
+  getRelatedInvoiceUrl,
   getApproveUrlNo,
   getBillingAddressUrl,
   getDeleteInvoiceUrl,
@@ -119,9 +120,46 @@ jest.mock("react-router-dom", () => ({
   //   isClient: "true",
   // }),
   useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
-  useLocation: jest.fn().mockReturnValue({ state: { InvoiceId: "1001002" } }),
+  useLocation: jest.fn().mockReturnValue({ state: { transactionType: 1, InvoiceId: "1001002" } }),
 }));
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: jest.fn(),
+  // () => ({
+  //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+  //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   isClient: "true",
+  // }),
+  useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest.fn().mockReturnValue({ state: { transactionType: 2, InvoiceId: "1001002" } }),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: jest.fn(),
+  // () => ({
+  //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+  //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   isClient: "true",
+  // }),
+  useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest.fn().mockReturnValue({ state: { transactionType: 3, InvoiceId: "1001002" } }),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: jest.fn(),
+  // () => ({
+  //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+  //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   isClient: "true",
+  // }),
+  useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest.fn().mockReturnValue({ state: { transactionType: 4, InvoiceId: "1001002" } }),
+}));
+
+const relatedid = "c4ae2c39-715b-4f70-8709-5b54360d09bd";
 const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
@@ -162,6 +200,8 @@ describe("Invoice details", () => {
       .reply(200, mockapidata.resAddressData);
 
     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(getRelatedInvoiceUrl(relatedid)).reply(200, mockapidata.RelatedMock);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -2194,7 +2234,7 @@ describe("Invoice details view change log click", () => {
     fireEvent.click(changeViewText)
 
     const text = await screen.findByText(/test 9/);
-     expect(text).toBeInTheDocument()
+    expect(text).toBeInTheDocument()
 
     const viewMoreText = await screen.findByText(/View More/)
     fireEvent.click(viewMoreText)
