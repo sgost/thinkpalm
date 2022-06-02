@@ -1110,9 +1110,10 @@ export default function InvoiceDetails() {
                 />
               )}
 
-            {((status === "Pending Approval" && state.transactionType === 1) || (status === "AR Review" && state.transactionType === 2) || (status === "AR Review" && state.transactionType === 3) || (status === "AR Review" && state.transactionType === 4)) &&
+            {((status === "Pending Approval") || (status === "AR Review" && state.transactionType === 2) || (status === "AR Review" && state.transactionType === 3) || (status === "AR Review" && state.transactionType === 4)) &&
               permission.InvoiceDetails.includes("Approve") && (
                 <Button
+                  data-testid="approve-button"
                   disabled={
                     state.transactionType == 7 || deleteDisableButtons === true
                   }

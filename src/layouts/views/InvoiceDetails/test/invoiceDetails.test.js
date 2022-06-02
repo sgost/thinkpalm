@@ -236,6 +236,10 @@ describe("Invoice details", () => {
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const approve = screen.getByTestId("approve-button")
+    fireEvent.click(approve)
+
   });
 
   test("publish notes", async () => {
