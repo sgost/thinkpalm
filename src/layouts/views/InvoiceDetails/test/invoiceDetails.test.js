@@ -23,6 +23,7 @@ import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 import {
   getApproveUrl,
+  getApproveUrlNo,
   getBillingAddressUrl,
   getDeleteInvoiceUrl,
   getDownloadFileUrl,
@@ -168,6 +169,10 @@ describe("Invoice details", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrlNo(id, 4)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -250,13 +255,14 @@ describe("Invoice details", () => {
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const approve = screen.getByText(/Approve Invoice/);
+    const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
   });
 
   test("publish notes", async () => {
     render(
       <HashRouter>
+        ``
         <InvoiceDetails />
       </HashRouter>
     );
@@ -383,6 +389,8 @@ describe("Api returns transaction type = 7", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -437,6 +445,8 @@ describe("Invoice details decline api fail case handling", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -504,6 +514,8 @@ describe("void test cases on Apprroved", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -603,6 +615,8 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -700,6 +714,8 @@ describe("void test cases on Apprroved Create Api Failed", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -799,6 +815,8 @@ describe("void test cases on Apprroved Void Api Failed", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -896,6 +914,8 @@ describe("void test cases on Apprroved and click on cancel", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1128,6 +1148,8 @@ describe("api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1196,6 +1218,8 @@ describe("delete test cases on AR Reveiew on true", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1274,6 +1298,8 @@ describe("delete test cases on AR Reveiew click on cancel button", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1350,6 +1376,8 @@ describe("delete test cases on AR Reveiew on false", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1429,6 +1457,8 @@ describe("delete test cases on AR Reveiew on api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1504,6 +1534,8 @@ describe("Invoice details auto approve checkbox click", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1584,6 +1616,8 @@ describe("Invoice details auto approve checkbox click api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1646,6 +1680,8 @@ describe("Invoice details fee api fail", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1843,6 +1879,8 @@ describe("Invoice details invoice detail api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1907,6 +1945,8 @@ describe("Invoice details lookup api fail", () => {
     mock.onGet(urls.lookup).reply(500, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1973,6 +2013,8 @@ describe("Invoice details countries api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -2037,6 +2079,8 @@ describe("Invoice details employeeBreakDown api fail", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
