@@ -1270,8 +1270,7 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {(state.transactionType == 4 || state.transactionType == 3 || state.transactionType == 2) &&
-        currentOrgToken?.Payments?.Role == "FinanceAR" && (
+      {(state.transactionType == 4 || state.transactionType == 3 || state.transactionType == 2) && (
           <CreditMemoSummary
             notes={notes}
             setNotes={setNotes}
@@ -1513,6 +1512,7 @@ export default function InvoiceDetails() {
                 isClient={isClient}
                 cid={cid}
                 id={id}
+                transactionType={state.transactionType}
               ></NotesWidget>
 
               <FileUploadWidget
@@ -1521,6 +1521,7 @@ export default function InvoiceDetails() {
                 isClient={isClient}
                 cid={cid}
                 id={id}
+                transactionType={state.transactionType}
               ></FileUploadWidget>
             </div>
             <Cards className="invoice-logs">
