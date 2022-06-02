@@ -400,7 +400,7 @@ export default function CreditMemoSummary(props: any) {
                                         value={item.description}
                                         label="Description"
                                         type="text"
-                                        placeholder="Enter a description"
+                                        placeholder="Enter description"
                                         disable={editCheck != index}
                                     ></Input>
                                 </div>
@@ -507,7 +507,7 @@ export default function CreditMemoSummary(props: any) {
                                 setValue={setNewDescription}
                                 value={newDescription}
                                 label="Description"
-                                placeholder="Enter a description"
+                                placeholder="Enter description"
                                 type="text"
                                 disable={false}
                             ></Input>
