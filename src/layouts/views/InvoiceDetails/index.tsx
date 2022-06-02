@@ -1234,7 +1234,7 @@ export default function InvoiceDetails() {
                   <p className="heading">Invoice Changes</p>
                   <p className="value">{topPanel.invoiceApproval}</p>
 
-                  {isClient == "false" && (
+                  {isClient == "false" && state.transactionType !== 3 && (
                     <div className="autoapproveContainer">
                       <Checkbox
                         onChange={(e: any) => {
