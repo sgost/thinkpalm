@@ -2,7 +2,7 @@ import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { getHeaders, updateCreditMemoUrl, urls } from "../../../urls/urls";
+import { getHeaders, productInvoice, updateCreditMemoUrl, urls } from "../../../urls/urls";
 import FileUploadWidget from "../../../components/FileUpload";
 import Input from "../../../components/Input/input";
 import NotesWidget from "../../../components/Notes";
@@ -55,9 +55,12 @@ export default function CreditMemoSummary(props: any) {
   useEffect(() => {
     reCalculateTotal();
   }, [creditMemoData]);
+  useEffect(()=>{
+    updateDropdowns();
+  },[fieldValues])
   useEffect(() => {
     axios
-      .get(urls.products)
+      .get(productInvoice())
       .then((resp) => {
         if (resp.status == 200) {
           let arr: any = [];
@@ -175,7 +178,6 @@ export default function CreditMemoSummary(props: any) {
     obj.invoiceId = creditMemoData.id;
     payload?.invoiceItems.push(obj);
     cleanNewObject();
-    updateDropdowns();
     reCalculateTotal();
     callUpdateAPI();
   };
@@ -254,32 +256,38 @@ export default function CreditMemoSummary(props: any) {
   };
   /* istanbul ignore next */
   const updateDropdowns = () => {
-    let countryArr: any = [];
-    creditMemoData.invoiceItems.forEach((item: any) => {
-      countryArr.push(
-        serviceCountries.map((x: any) => {
-          return {
-            isSelected: x.value == item.serviceCountry,
-            label: x.text,
-            value: x.value,
-          };
-        })
-      );
-    });
-    setMultipleCountryArr(countryArr);
-    let arr: any = [];
-    for (let i of creditMemoData.invoiceItems) {
-      arr.push(
-        rawProducts.map((x: any) => {
-          return {
-            isSelected: x.id == i.productId,
-            label: x.glDescription,
-            value: x.id,
-          };
-        })
-      );
+    let countryArr: any = []
+    if(serviceCountries){
+      fieldValues.forEach((item: any) => {
+        countryArr.push(
+          serviceCountries.map((x: any) => {
+            return {
+              isSelected: x.value == item.serviceCountry,
+              label: x.text,
+              value: x.value,
+            };
+          })
+        );
+      });
+      setMultipleCountryArr(countryArr);  
     }
-    setMultipleProductArr(arr);
+    
+    let arr: any = [];
+    if(rawProducts){
+      for (let i of fieldValues) {
+        arr.push(
+          rawProducts.map((x: any) => {
+            return {
+              isSelected: x.id == i.productId,
+              label: x.glDescription,
+              value: x.id,
+            };
+          })
+        );
+      }
+      setMultipleProductArr(arr);
+    }
+    
   };
   /* istanbul ignore next */
   const setEditDescription = (index: number, value: any) => {
@@ -417,7 +425,7 @@ export default function CreditMemoSummary(props: any) {
                   )}
                 </div>
               </div>
-              <div className="UI-align-boxes margin-top">
+              <div className="UI-align-boxes margin-top ui-datepicker-req">
                 <div className="UI-line-text-box">
                   <DatePicker
                     value={moment(item.serviceDate).format("DD MMM YYYY")}
@@ -464,7 +472,7 @@ export default function CreditMemoSummary(props: any) {
                     disable={editCheck != index}
                   ></Input>
                 </div>
-                <div className="UI-line-text-box">
+                <div className="UI-line-text-box ui-dropdown-req">
                   <Dropdown
                     handleDropOptionClick={(option: any) =>
                       handleArrOptionClick(
