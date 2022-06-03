@@ -1275,7 +1275,7 @@ export default function InvoiceDetails() {
 
             {state.transactionType != 7 && (
               <>
-                {state.transactionType != 2 && (
+                {state.transactionType === 1 && (
                   <>
                     {status !== "Open" && (
                       <>
