@@ -16,7 +16,8 @@ export const getFlagURL = (code: string, size?: string) => {
 
 export default function BillsTable(props: any) {
     const customerId = props.customerId;
-    const invoiceId = props.invoiceId
+    const invoiceId = props.invoiceId;
+    const total = props.totalAmount;
     const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
     const moveToNextEndPoint = "bill/removeinvoice"
@@ -80,6 +81,7 @@ export default function BillsTable(props: any) {
     }, [props.tableData])
 
     const toCurrencyFormat = (amount: any) => {
+        
         const cFormat = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -115,7 +117,8 @@ export default function BillsTable(props: any) {
             reason: rejectReason
         }];
         axios
-            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain" } })
+            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`, 
+            customerid: customerId } })
             .then((response: any) => {
 
                 if (response.status == 200 && response.data.responseCode == 200) {
@@ -151,7 +154,8 @@ export default function BillsTable(props: any) {
         }
 
         axios
-            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain" } })
+            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`, 
+            customerid: customerId } })
             .then((response: any) => {
                 if (response.status == 200 && response.data.responseCode == 200) {
                     if (moveNextBanner) {
@@ -191,6 +195,13 @@ export default function BillsTable(props: any) {
             });
     };
 
+    const handleClose = () => {
+        setRejectBanner(false); 
+        setOpenRejectReason(false); 
+        setRejectReason('');
+        setMoveNextBanner(false);
+    }
+    
     /* istanbul ignore next */
     return (
         <div className="invoice_bill_table">
@@ -208,11 +219,11 @@ export default function BillsTable(props: any) {
             <div className="feeSummaryCalc">
                 <div className="rowFee">
                     <p className="title">Pay Converted Total</p>
-                    <p className="amount">{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
+                    <p className="amount">{props.currency} {toCurrencyFormat(total)}</p>
                 </div>
                 <div className="totalRow">
                     <p>Total Due</p>
-                    <p className='total'>{props.currency} {toCurrencyFormat(totalPayConverted)}</p>
+                    <p className='total'>{props.currency} {toCurrencyFormat(total)}</p>
                 </div>
             </div>
             <div className='modal-wrapper'>
@@ -456,10 +467,11 @@ export default function BillsTable(props: any) {
                                     <Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
-                                        handleOnClick={() => { setRejectBanner(false); setMoveNextBanner(false); setOpenRejectReason(false); setRejectReason('') }}
+                                        handleOnClick={() => handleClose()}
                                     />
                                     <Button
                                         className="primary-blue medium primary cancel-button"
+                                        disabled={rejectReason?.length === 0}
                                         label="Reject"
                                         handleOnClick={() => { rejectBillCall() }}
                                     />

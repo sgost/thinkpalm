@@ -4,6 +4,7 @@ import axios from "axios";
 import "./NewInvoiceCreation.scss";
 import { getCountryByCustomer, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
+import moment from "moment";
 
 const NewInvoiceCreation = ({
   accessToken,
@@ -35,6 +36,49 @@ const NewInvoiceCreation = ({
     const newData = data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
+          ...item,
+          isSelected: true,
+          label: item.name,
+          value: item.customerId,
+        };
+      } else {
+        return {
+          ...item,
+          isSelected: false,
+          label: item.name,
+          value: item.customerId,
+        };
+      }
+    });
+    return newData;
+  };
+
+  const getCustomerDropdownOptions = () => {
+    let allCustomerapi = urls.customers;
+    const headers = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    setLoading(true);
+
+    axios
+      .get(allCustomerapi, headers)
+      .then((res: any) => {
+        const preData: any = preparedCustomerData(res.data);
+        setCustomerOption(preData);
+        setLoading(false);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
+  const preparedPayrollCustomerData = (data: any) => {
+    const newData = data?.customers?.map((item: any) => {
+      if (item.customerId === stepperOneData?.customerId) {
+        return {
           isSelected: true,
           label: item.name,
           value: item.customerId,
@@ -50,8 +94,8 @@ const NewInvoiceCreation = ({
     return newData;
   };
 
-  const getCustomerDropdownOptions = () => {
-    let api = urls.customers;
+  const getPayrollCustomerDropdownOptions = () => {
+    let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi;
     const headers = {
       headers: {
         authorization: `Bearer ${accessToken}`,
@@ -61,9 +105,9 @@ const NewInvoiceCreation = ({
     setLoading(true);
 
     axios
-      .get(api, headers)
+      .get(allPayrollCustomerapi, headers)
       .then((res: any) => {
-        const preData: any = preparedCustomerData(res.data);
+        const preData: any = preparedPayrollCustomerData(res.data);
         setCustomerOption(preData);
         setLoading(false);
       })
@@ -139,8 +183,20 @@ const NewInvoiceCreation = ({
   };
 
   useEffect(() => {
-    getCustomerDropdownOptions();
-  }, []);
+    if (
+      stepperOneData?.type === "Credit Memo" ||
+      stepperOneData?.type === "Proforma" ||
+      stepperOneData?.type === "Miscellaneous"
+    ) {
+      getCustomerDropdownOptions();
+    }
+  }, [stepperOneData?.type]);
+
+  useEffect(() => {
+    if (stepperOneData?.type === "Payroll") {
+      getPayrollCustomerDropdownOptions();
+    }
+  }, [stepperOneData?.type]);
 
   useEffect(() => {
     if (stepperOneData?.customerId) {
@@ -160,6 +216,35 @@ const NewInvoiceCreation = ({
             <div className="dropdownRow">
               <div className="dropdown">
                 <Dropdown
+                  handleDropOptionClick={(item: any) => {
+                    handleDropOption(
+                      item,
+                      typeOptions,
+                      setTypeOptions,
+                      setIstypeOpen
+                    );
+                    setStepperOneData({
+                      ...stepperOneData,
+                      type: item.label,
+                      typeId: item.value,
+                    });
+                  }}
+                  handleDropdownClick={(b: boolean) => {
+                    setIstypeOpen(b);
+                    setIsCustomerOpen(false);
+                    setIsCountryOpen(false);
+                    setIsMonthOpen(false);
+                    setIsYearOpen(false);
+                  }}
+                  isOpen={istypeOpen}
+                  options={typeOptions}
+                  title={`Type`}
+                />
+              </div>
+
+              <div className="dropdown">
+                <Dropdown
+                  isDisabled={!stepperOneData?.type}
                   handleDropOptionClick={(item: any) => {
                     handleDropOption(
                       item,
@@ -190,53 +275,23 @@ const NewInvoiceCreation = ({
                   search
                 />
               </div>
-
-              <div className="dropdown">
-                <Dropdown
-                  handleDropOptionClick={(item: any) => {
-                    handleDropOption(
-                      item,
-                      typeOptions,
-                      setTypeOptions,
-                      setIstypeOpen
-                    );
-                    setStepperOneData({
-                      ...stepperOneData,
-                      type: item.label,
-                      typeId: item.value,
-                    });
-                  }}
-                  handleDropdownClick={(b: boolean) => {
-                    setIstypeOpen(b);
-                    setIsCustomerOpen(false);
-                    setIsCountryOpen(false);
-                    setIsMonthOpen(false);
-                    setIsYearOpen(false);
-                  }}
-                  isOpen={istypeOpen}
-                  options={typeOptions}
-                  title={`Type`}
-                />
-              </div>
             </div>
 
             {stepperOneData?.type !== "Payroll" && (
               <div className="dpStepContainer">
                 <DatePicker
                   handleDateChange={function (date: any) {
+                    console.log("date", date);
                     setInvoiceDate(date);
                   }}
                   label="Invoice Date"
                   minDate={new Date()}
                   required={true}
-                  // placeholderText={
-                  //   invoiceDate
-                  //     ? invoiceDate
-                  //         ?.toString()
-                  //         ?.slice(4, 15)
-                  //         ?.replaceAll(" ", "/")
-                  //     : "Please Select"
-                  // }
+                  placeholderText={
+                    invoiceDate
+                      ? moment(invoiceDate).format("DD/MMM/YYYY")
+                      : "Please Select"
+                  }
                 />
               </div>
             )}

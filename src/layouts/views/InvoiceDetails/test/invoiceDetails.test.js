@@ -11,6 +11,7 @@ import {
   Routes,
   useParams,
   MemoryRouter,
+  useLocation,
 } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
@@ -22,6 +23,8 @@ import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 import {
   getApproveUrl,
+  getRelatedInvoiceUrl,
+  getApproveUrlNo,
   getBillingAddressUrl,
   getDeleteInvoiceUrl,
   getDownloadFileUrl,
@@ -117,9 +120,54 @@ jest.mock("react-router-dom", () => ({
   //   isClient: "true",
   // }),
   useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
-  useLocation: jest.fn().mockReturnValue({ state: { InvoiceId: "1001002" } }),
+  useLocation: jest
+    .fn()
+    .mockReturnValue({ state: { transactionType: 1, InvoiceId: "1001002" } }),
 }));
 
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: jest.fn(),
+  // () => ({
+  //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+  //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   isClient: "true",
+  // }),
+  useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest
+    .fn()
+    .mockReturnValue({ state: { transactionType: 2, InvoiceId: "1001002" } }),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: jest.fn(),
+  // () => ({
+  //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+  //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   isClient: "true",
+  // }),
+  useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest
+    .fn()
+    .mockReturnValue({ state: { transactionType: 3, InvoiceId: "1001002" } }),
+}));
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
+  useParams: jest.fn(),
+  // () => ({
+  //   id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+  //   cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+  //   isClient: "true",
+  // }),
+  useRouteMatch: () => ({ url: "/pay/invoicedetailsid/cid" }),
+  useLocation: jest
+    .fn()
+    .mockReturnValue({ state: { transactionType: 4, InvoiceId: "1001002" } }),
+}));
+
+const relatedid = "c4ae2c39-715b-4f70-8709-5b54360d09bd";
 const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
@@ -127,9 +175,15 @@ const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
-localStorage.setItem("accessToken", "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTI0NDA0NTQsImlhdCI6MTY1MjQzODY1NCwiYXV0aF90aW1lIjowLCJqdGkiOiJjNjc1ZjYwMy0xNmQ1LTQ5MGEtYWQ3Mi04OWViNDFlMjdjZjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiYXRfaGFzaCI6IjdEV25wVExkdFZ3MnM1cFlaeVNCelEiLCJhY3IiOiIxIiwic2lkIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.DdBvd-6ivuV9e3oPNT6RodPnuTJwvjX9P098LEzIEtee-T9O9887HDSnyYKq-ukOBdQEHQaFYsxU8agEnQbJOPKeba2t1urFKeKX1LqsD5FPQ66-Ulq3N2zgjqAC7gRjAIvSAU64WRubFlQP_-A3aQn8ETS-Y3M_hb1-a9YpHXMgUumYo0pDFriHXjOZXGO3RaooDZBVqSRVTJiQEy37-4DzqJWqLEOxbnpEqSKqoWksmzXoMYrssm4sxSD6D-68f7LN_hZ5k1_Q_D39LbZh5HLF2kw9XfJ-IErvwuOKF5gD499JTum3NEslpvZH1eBvnlAjsuW1hqXdlbD1GqpeMQ");
+localStorage.setItem(
+  "accessToken",
+  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTI0NDA0NTQsImlhdCI6MTY1MjQzODY1NCwiYXV0aF90aW1lIjowLCJqdGkiOiJjNjc1ZjYwMy0xNmQ1LTQ5MGEtYWQ3Mi04OWViNDFlMjdjZjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiYXRfaGFzaCI6IjdEV25wVExkdFZ3MnM1cFlaeVNCelEiLCJhY3IiOiIxIiwic2lkIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.DdBvd-6ivuV9e3oPNT6RodPnuTJwvjX9P098LEzIEtee-T9O9887HDSnyYKq-ukOBdQEHQaFYsxU8agEnQbJOPKeba2t1urFKeKX1LqsD5FPQ66-Ulq3N2zgjqAC7gRjAIvSAU64WRubFlQP_-A3aQn8ETS-Y3M_hb1-a9YpHXMgUumYo0pDFriHXjOZXGO3RaooDZBVqSRVTJiQEy37-4DzqJWqLEOxbnpEqSKqoWksmzXoMYrssm4sxSD6D-68f7LN_hZ5k1_Q_D39LbZh5HLF2kw9XfJ-IErvwuOKF5gD499JTum3NEslpvZH1eBvnlAjsuW1hqXdlbD1GqpeMQ"
+);
 localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
-localStorage.setItem("current-org", '{ "Name": "EGS", "Zone": "EU", "Type": "Atlas_Owners", "Payments": { "Role": "FinanceAR", "MiscellaneousInvoiceCreation": [ "Save", "Edit" ], "ManualPayrollInvoiceCreation": [ "Save", "Edit" ], "InvoiceList": [ "Add", "Edit", "Download", "View" ], "ProformaInvoiceCreation": [ "Save", "Edit" ], "CreditMemoInvoiceCreation": [ "Save", "Edit" ], "MiscellaneousInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "InvoiceDetails": [ "Add", "Delete", "Paid", "Edit", "View", "Send", "Browse", "Reject", "Select", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "CreditMemoInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "ProformaInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ] } }')
+localStorage.setItem(
+  "current-org",
+  '{ "Name": "EGS", "Zone": "EU", "Type": "Atlas_Owners", "Payments": { "Role": "FinanceAR", "MiscellaneousInvoiceCreation": [ "Save", "Edit" ], "ManualPayrollInvoiceCreation": [ "Save", "Edit" ], "InvoiceList": [ "Add", "Edit", "Download", "View" ], "ProformaInvoiceCreation": [ "Save", "Edit" ], "CreditMemoInvoiceCreation": [ "Save", "Edit" ], "MiscellaneousInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "InvoiceDetails": [ "Add", "Delete", "Paid", "Edit", "View", "Send", "Browse", "Reject", "Select", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "CreditMemoInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "ProformaInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ] } }'
+);
 
 describe("Invoice details", () => {
   beforeAll(() => {
@@ -138,6 +192,13 @@ describe("Invoice details", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "true",
     }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
@@ -148,11 +209,19 @@ describe("Invoice details", () => {
 
     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
+    mock
+      .onGet(getRelatedInvoiceUrl(relatedid))
+      .reply(200, mockapidata.RelatedMock);
+
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrlNo(id, 4)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -196,7 +265,9 @@ describe("Invoice details", () => {
     const masterTab = await waitFor(() => screen.getByText(/Master Invoice/));
     fireEvent.click(masterTab);
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
 
     // expect(payrollTab).toBeInTheDocument();
   });
@@ -217,9 +288,11 @@ describe("Invoice details", () => {
     fireEvent.click(download);
     const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
     fireEvent.click(excel);
-screen.debug()
-fireEvent.click(download);
-    const BreakDown = await waitFor(() => screen.getByText(/Employee Breakdown/));
+    screen.debug();
+    fireEvent.click(download);
+    const BreakDown = await waitFor(() =>
+      screen.getByText(/Employee Breakdown/)
+    );
     fireEvent.click(BreakDown);
   });
 
@@ -232,20 +305,23 @@ fireEvent.click(download);
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    const approve = screen.getByText(/Approve Invoice/);
+    const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
   });
 
   test("publish notes", async () => {
     render(
       <HashRouter>
+        ``
         <InvoiceDetails />
       </HashRouter>
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
     const input = await waitFor(() =>
       screen.getByPlaceholderText(/Add a note here.../)
     );
@@ -263,7 +339,9 @@ fireEvent.click(download);
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
     const download = await waitFor(() =>
       screen.getByTestId(/file-upload-button-0/)
     );
@@ -278,7 +356,9 @@ fireEvent.click(download);
 
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
-    if (filesTab) { fireEvent.click(filesTab) }
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
     const download = await waitFor(() =>
       screen.getByTestId(/file-upload-button-1/)
     );
@@ -359,6 +439,8 @@ describe("Api returns transaction type = 7", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -413,6 +495,8 @@ describe("Invoice details decline api fail case handling", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -480,6 +564,8 @@ describe("void test cases on Apprroved", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -579,6 +665,8 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -676,6 +764,8 @@ describe("void test cases on Apprroved Create Api Failed", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -775,6 +865,8 @@ describe("void test cases on Apprroved Void Api Failed", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -872,6 +964,8 @@ describe("void test cases on Apprroved and click on cancel", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1104,6 +1198,8 @@ describe("api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1172,6 +1268,8 @@ describe("delete test cases on AR Reveiew on true", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1250,6 +1348,8 @@ describe("delete test cases on AR Reveiew click on cancel button", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1326,6 +1426,8 @@ describe("delete test cases on AR Reveiew on false", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1405,6 +1507,8 @@ describe("delete test cases on AR Reveiew on api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1480,6 +1584,8 @@ describe("Invoice details auto approve checkbox click", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1560,6 +1666,8 @@ describe("Invoice details auto approve checkbox click api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1622,6 +1730,8 @@ describe("Invoice details fee api fail", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -1819,6 +1929,8 @@ describe("Invoice details invoice detail api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1859,7 +1971,6 @@ describe("Invoice details invoice detail api fail", () => {
 
     // expect(payrollTab).toBeInTheDocument();
   });
-  
 });
 
 describe("Invoice details lookup api fail", () => {
@@ -1885,6 +1996,8 @@ describe("Invoice details lookup api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1925,7 +2038,6 @@ describe("Invoice details lookup api fail", () => {
 
     // expect(payrollTab).toBeInTheDocument();
   });
-  
 });
 
 describe("Invoice details countries api fail", () => {
@@ -1951,6 +2063,8 @@ describe("Invoice details countries api fail", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
     mock.onPut(getApproveUrl(id)).reply(201);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
@@ -1991,9 +2105,7 @@ describe("Invoice details countries api fail", () => {
 
     // expect(payrollTab).toBeInTheDocument();
   });
-  
 });
-
 
 describe("Invoice details employeeBreakDown api fail", () => {
   beforeAll(() => {
@@ -2017,6 +2129,8 @@ describe("Invoice details employeeBreakDown api fail", () => {
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
@@ -2061,9 +2175,85 @@ describe("Invoice details employeeBreakDown api fail", () => {
     fireEvent.click(download);
     const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
     fireEvent.click(excel);
-     
+
     fireEvent.click(download);
-    const BreakDown = await waitFor(() => screen.getByText(/Employee Breakdown/));
+    const BreakDown = await waitFor(() =>
+      screen.getByText(/Employee Breakdown/)
+    );
     fireEvent.click(BreakDown);
+  });
+});
+
+describe("Invoice details view change log click", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "true",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(urls.invoiceLogs.replace("{invoice-id}", id))
+      .reply(200, mockapidata.resInvoiceNotesData);
+  });
+
+  test("publish notes", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
+    if (filesTab) {
+      fireEvent.click(filesTab);
+    }
+    const input = await waitFor(() =>
+      screen.getByPlaceholderText(/Add a note here.../)
+    );
+    fireEvent.change(input, { target: { value: "Pending" } });
+    const publish = screen.getByText(/Save/);
+    fireEvent.click(publish);
+
+    const changeViewText = await screen.findByText(/View Change Log/);
+    fireEvent.click(changeViewText);
+
+    // const text = await screen.findByText(/test 9/);
+    // expect(text).toBeInTheDocument();
+
+    const viewMoreText = await screen.findByText(/View More/);
+    fireEvent.click(viewMoreText);
+    fireEvent.click(viewMoreText);
+    fireEvent.click(viewMoreText);
+
+    // screen.logTestingPlaygroundURL();
+
+    // const viewLessText = await screen.findByText(/View Less/);
+    // fireEvent.click(viewLessText);
   });
 });

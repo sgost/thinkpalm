@@ -73,6 +73,9 @@ export const urls = {
   contractorBillingService:
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
+
+  allPayrollCustomerSubscriptionapi: baseURL + services.atlasSubscriptionService + "/Subscription/GetCustomerWithSubscription"
+
 };
 
 export const getClientListingUrl = (
@@ -161,6 +164,10 @@ export const getApproveUrl = (id) => {
   return baseURL + services.atlasInvoiceService + `/invoices/${id}/4`;
 };
 
+export const getApproveUrlNo = (id, no) => {
+  return baseURL + services.atlasInvoiceService + `/invoices/${id}/${no}`;
+};
+
 export const getApproveARUrl = () => {
   return baseURL + services.atlasInvoiceService + `/Invoices/Reviewed`;
 };
@@ -227,7 +234,7 @@ export const updateInvoiceStatus = (invoiceId) => {
 };
 
 export const productInvoice = () => {
-  return metaDataUrl + services.apngMetaDataService + `/Products`;
+  return metaDataUrl + services.apngMetaDataService + `/Products?orderBy=GLDescription`;
 };
 
 export const CountryApi = () => {

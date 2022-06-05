@@ -131,13 +131,16 @@
           }
         }
       }
-      button.a-button.small{
-        border: 2px solid #526fd6!important;
-        &:disabled{
-          border: 2px solid #cbd4f3!important;
+
+      button.a-button.small {
+        border: 2px solid #526fd6 !important;
+
+        &:disabled {
+          border: 2px solid #cbd4f3 !important;
         }
       }
-      .download-invoice-dropdown{
+
+      .download-invoice-dropdown {
         position: relative;
       }
     }
@@ -312,7 +315,7 @@
     }
 
     .payroll {
-  
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -479,7 +482,7 @@
           margin-right: 3rem;
 
           .notesSubContainer {
-          
+
 
             .noteInfoBtn {
               display: flex;
@@ -685,10 +688,12 @@
         color: #3e3e3e;
         margin-top: -0.722rem;
       }
-      .text-invoice-comment{
+
+      .text-invoice-comment {
         display: flex;
         flex-direction: column;
         gap: 0.3333rem;
+
         label {
           color: #3e3e3e;
           font-weight: 400;
@@ -696,6 +701,7 @@
           line-height: 0.889rem;
         }
       }
+
       .textarea-box {
         border-radius: 0.2222rem;
         padding: 1.111rem;
@@ -717,7 +723,8 @@
           line-height: 1.3333rem;
           font-weight: 400;
           border: 2px solid #526fd6;
-          &:disabled{
+
+          &:disabled {
             border: 2px solid #cbd4f3 !important;
           }
         }
@@ -822,7 +829,7 @@
 
         button.a-button.medium {
           font-size: 1.16rem;
-          width: 1.1111rem;
+          width: 7.1111rem;
         }
       }
 
@@ -838,6 +845,7 @@
       margin-top: 4.778rem;
       display: flex;
       justify-content: end;
+      align-items: center;
 
       .decline-button {
         margin-left: 1.667rem;
@@ -891,7 +899,7 @@
         button.a-button.medium {
           font-size: 1.16rem;
           width: 9.13rem;
-          border: 2px solid #526fd6!important;
+          border: 2px solid #526fd6 !important;
         }
       }
 

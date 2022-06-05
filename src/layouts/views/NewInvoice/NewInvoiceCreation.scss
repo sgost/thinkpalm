@@ -101,8 +101,9 @@
     .a-dpicker .react-datepicker__input-container input {
       width: 15.2rem;
     }
-    .a-dpicker .a-dpicker__container svg {
-      right: 46rem;
+
+    .a-dpicker__container {
+      width: 18.2rem;
     }
     span.react-datepicker__label:after {
       content: "*";

@@ -1,99 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="339"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="354"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="696"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="344"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="298"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="188"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="296"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="220"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="181"/>
-    <testCase name="client view table row clickable" duration="188"/>
-    <testCase name="client view Status clickable" duration="235"/>
-    <testCase name="client view Type clickable" duration="166"/>
-    <testCase name="client view Clear filters clickable" duration="252"/>
-    <testCase name="client view search" duration="169"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="354"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="95"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="275"/>
-    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="382"/>
-    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="253"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
-    <testCase name="Credit Memo Summary Render CM" duration="795"/>
-    <testCase name="Credit Memo Summary Render CM with status = 2" duration="1126"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; delete a summary" duration="682"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="835"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="608"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="644"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="883"/>
-    <testCase name="Notes fail Render CM" duration="212"/>
-  </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1289"/>
-    <testCase name="Invoice details download clickable " duration="709"/>
-    <testCase name="Invoice details approve invoice clickable " duration="302"/>
-    <testCase name="Invoice details publish notes" duration="347"/>
-    <testCase name="Invoice details download file" duration="322"/>
-    <testCase name="Invoice details delete file" duration="250"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="191"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="198"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="320"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="182"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="185"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="301"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="494"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="472"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="321"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="345"/>
-    <testCase name="api fail tabs are working" duration="43"/>
-    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="188"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="107"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="106"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="124"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="114"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="97"/>
-    <testCase name="Invoice details fee api fail tabs are working" duration="24"/>
-    <testCase name="Invoice details invoice detail api fail tabs are working" duration="16"/>
-    <testCase name="Invoice details lookup api fail tabs are working" duration="16"/>
-    <testCase name="Invoice details countries api fail tabs are working" duration="11"/>
-    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="141"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="498"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="484"/>
-    <testCase name="step one getCustomer api fail  dropDown Value change" duration="76"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="151"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="311"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="388"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="667"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="393"/>
-    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="495"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="296"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="325"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="446"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="121"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="169"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="196"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="151"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="177"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="268"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="330"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="409"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="110"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="123"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="137"/>
-    <testCase name="New Invoice for Proforma  breadcumbs are working" duration="38"/>
-    <testCase name="New Invoice for Proforma  dropDown Value change stepper 1" duration="2271"/>
-    <testCase name="New Invoice for Miscellaneous  breadcumbs are working" duration="37"/>
-    <testCase name="New Invoice for Miscellaneous  dropDown Value change stepper 1" duration="5166"/>
-    <testCase name="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" duration="4945"/>
-    <testCase name="final stepper final stepper" duration="5"/>
+    <testCase name="Invoice details tabs are working" duration="0"/>
+    <testCase name="Invoice details download clickable " duration="0"/>
+    <testCase name="Invoice details approve invoice clickable " duration="0"/>
+    <testCase name="Invoice details publish notes" duration="0"/>
+    <testCase name="Invoice details download file" duration="0"/>
+    <testCase name="Invoice details delete file" duration="0"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="0"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="0"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="0"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="0"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="0"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="0"/>
+    <testCase name="api fail tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="0"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="0"/>
+    <testCase name="Invoice details fee api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details invoice detail api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details lookup api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details countries api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="0"/>
+    <testCase name="Invoice details view change log click publish notes" duration="2089">
+      <failure message="Error: Unable to find an element with the text: /View Less/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."><![CDATA[Error: Unable to find an element with the text: /View Less/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, <script />, <style />
+<body>
+  <div>
+    <div
+      class="invoiceDetailsContainer"
+    >
+      <div
+        class="invoiceDetailsHeaderRow"
+      >
+        <div
+          class="breadcrumbs"
+        >
+          <div
+            class="a-breadcrumb"
+          >
+            <span
+              class="steps"
+            >
+              <span
+                class="a-breadcrumb__label label-active"
+              >
+                Invoices
+              </span>
+            </span>
+            <span
+              class="steps"
+            >
+              <svg
+                class=""
+                height="20px"
+                style="display: inline-block; vertical-align: middle;"
+                viewBox="-2 -4 24 24"
+                width="20px"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <path
+                  d="M 0.8574456,11.144166 A 0.57143003,0.57143003 0 0 0 1.2617425,10.976197 L 5.832055,6.4058847 a 0.57148717,0.57148717 0 0 0 0,-0.8085938 L 1.2617425,1.0250248 a 0.57143003,0.57143003 0 0 0 -0.8085937,0 0.57143003,0.57143003 0 0 0 0,0.808594 l 4.1679687,4.167969 -4.1679687,4.1679692 a 0.57143003,0.57143003 0 0 0 0,0.80664 0.57143003,0.57143003 0 0 0 0.4042968,0.167969 z"
+                  fill="#17224E"
+                />
+              </svg>
+              <span
+                class="a-breadcrumb__label last-item"
+              >
+                Payroll Invoice No. 1000993
+              </span>
+            </span>
+          </div>
+        </div>
+        <div
+          class="buttons"
+        >
+          <div
+            class="download-invoice-dropdown"
+          >
+            <div
+              class="download"
+            >
+              <p
+                class="text"
+              >
+                Download
+              </p>
+              <svg
+                class="icon"
+                height="24px"
+                style="display: inline-block; vertical-align: middle;"
+                viewBox="-2 -3 24 24"
+                width="24px"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <path
+                  d="m 0,0.57189937 a 0.57143003,0.57143003 0 0 0 0.1679688,0.4042969 L 4.7382813,5.5465088 a 0.57148717,0.57148717 0 0 0 0.8085938,0 L 10.11914,0.97619627 a 0.57143003,0.57143003 0 0 0 0,-0.8085937 0.57143003,0.57143003 0 0 0 -0.8085928,0 L 5.1425782,4.3355713 0.9746094,0.16760257 a 0.57143003,0.57143003 0 0 0 -0.8066406,0 A 0.57143003,0.57143003 0 0 0 0,0.57189937 Z"
+                  fill="#526fd6"
+                />
+              </svg>
+            </div>
+          </div>
+          <div
+            class="decline-invoice"
+          >
+            <button
+              class="a-button secondary-btn small"
+              data-testid="decline-button"
+            >
+              <svg
+                class=""
+                height="24px"
+                style="display: inline-block; vertical-align: middle;"
+                viewBox="-2 -3 24 24"
+                width="24px"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+              >
+                <path
+                  d="M0.968875 0.96912C1.03854 0.899275 1.12131 0.84386 1.21242 0.806051C1.30354 0.768241 1.40122 0.748779 1.49988 0.748779C1.59853 0.748779 1.69621 0.768241 1.78733 0.806051C1.87844 0.84386 1.96121 0.899275 2.03088 0.96912L5.99988 4.93962L9.96887 0.96912C10.0386 0.899388 10.1214 0.844073 10.2125 0.806334C10.3036 0.768596 10.4013 0.749172 10.4999 0.749172C10.5985 0.749172 10.6961 0.768596 10.7873 0.806334C10.8784 0.844073 10.9611 0.899388 11.0309 0.96912C11.1006 1.03885 11.1559 1.12164 11.1937 1.21274C11.2314 1.30385 11.2508 1.4015 11.2508 1.50012C11.2508 1.59874 11.2314 1.69639 11.1937 1.7875C11.1559 1.8786 11.1006 1.96139 11.0309 2.03112L7.06037 6.00012L11.0309 9.96912C11.1006 10.0389 11.1559 10.1216 11.1937 10.2127C11.2314 10.3039 11.2508 10.4015 11.2508 10.5001C11.2508 10.5987 11.2314 10.6964 11.1937 10.7875C11.1559 10.8786 11.1006 10.9614 11.0309 11.0311C10.9611 11.1009 10.8784 11.1562 10.7873 11.1939C10.6961 11.2316 10.5985 11.2511 10.4999 11.2511C10.4013 11.2511 10.3036 11.2316 10.2125 11.1939C10.1214 11.1562 10.0386 11.1009 9.96887 11.0311L5.99988 7.06062L2.03088 11.0311C1.96114 11.1009 1.87836 11.1562 1.78725 11.1939C1.69614 11.2316 1.59849 11.2511 1.49988 11.2511C1.40126 11.2511 1.30361 11.2316 1.2125 11.1939C1.12139 11.1562 1.03861 11.1009 0.968875 11.0311C0.899143 10.9614 0.843829 10.8786 0.80609 10.7875C0.768352 10.6964 0.748928 10.5987 0.748928 10.5001C0.748928 10.4015 0.768352 10.3039 0.80609 10.2127C0.843829 10.1216 0.899143 10.0389 0.968875 9.96912L4.93938 6.00012L0.968875 2.03112C0.899031 1.96145 0.843616 1.87869 0.805806 1.78757C0.767997 1.69645 0.748535 1.59877 0.748535 1.50012C0.748535 1.40147 0.767997 1.30379 0.805806 1.21267C0.843616 1.12155 0.899031 1.03879 0.968875 0.96912Z"
+                  fill="#526FD6"
+                />
+              </svg>
+              <span>
+                Decline Invoice
+              </span>
+            </button>
+          </div>
+          <div>
+            <button
+              class="a-button primary-blue small"
+              data-testid="approve-button"
+            >
+              <svg
+                class=""
+                height="24px"
+                st...
+    at waitForWrapper (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\wait-for.js:187:27)
+    at findByText (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\query-helpers.js:101:33)
+    at _callee28$ (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js:2256:39)
+    at tryCatch (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:63:40)
+    at Generator.invoke [as _invoke] (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:294:22)
+    at Generator.next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\regenerator-runtime\runtime.js:119:21)
+    at asyncGeneratorStep (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (C:\Projects\New folder\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
   </file>
 </testExecutions>

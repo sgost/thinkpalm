@@ -31,12 +31,10 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
 
   const getCustlBillingCurrency = () => {
     if (countriesData?.data && invoiceData) {
-      console.log("c", countriesData, invoiceData);
 
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === invoiceData.currencyId
       );
-      console.log("c", currency);
       return currency.currency.code;
     } else {
       return "";
@@ -49,7 +47,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const amountPush = todos.map((item: any) =>
     emptyAmount.push(item.quantity * item.amount)
   );
-  const newAmount = emptyAmount.reduce((partialSum, a) => partialSum + a, 0);
+  const newAmount = emptyAmount.reduce((partialSum: any, a: any) => partialSum + a, 0);
 
   return (
     <div id="popover_main">
@@ -127,7 +125,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">To</p>
-                  <p className="creditMemoInvoiceValue valuebold">
+                  <p className="creditMemoInvoiceValue">
                     {invoiceData?.customerName}
                   </p>
                   <p className="creditMemoInvoiceAddress"></p>

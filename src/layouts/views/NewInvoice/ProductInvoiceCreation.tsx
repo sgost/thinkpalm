@@ -26,6 +26,14 @@ const ProductInvoiceCreation = ({
   setNewArrPushs,
   Opens,
   setOpens,
+  productInitialData,
+  setProductInitialData,
+  tempData,
+  setTempData,
+  countryInitialData,
+  setCountryInitialData,
+  tempDataCountry,
+  setTempDataCountry,
 }: any) => {
   //Product API
   let productApi = productInvoice();
@@ -37,8 +45,10 @@ const ProductInvoiceCreation = ({
   let countryApi = CountryApi();
 
   useEffect(() => {
-    productFun(productApi);
-    countryFun(countryApi);
+    if (!productInitialData[0]?.length) {
+      productFun(productApi);
+      countryFun(countryApi);
+    }
   }, []);
 
   const productFun = (productApi: any) => {
@@ -54,6 +64,8 @@ const ProductInvoiceCreation = ({
             value: item.glDescription,
           })
         );
+        setTempData(temp);
+        setProductInitialData({ [0]: temp });
         setNewArrPush(temp);
       })
       .catch((err: any) => {
@@ -74,6 +86,8 @@ const ProductInvoiceCreation = ({
             value: item.order,
           })
         );
+        setTempDataCountry(temp);
+        setCountryInitialData({ [0]: temp });
         setNewArrPushs(temp);
       })
       .catch((err: any) => {
@@ -94,6 +108,15 @@ const ProductInvoiceCreation = ({
         amount: "",
       },
     ]);
+
+    const addition: any = Object.keys(productInitialData).length;
+    setProductInitialData({ ...productInitialData, [addition]: tempData });
+
+    const additionCountry: any = Object.keys(countryInitialData).length;
+    setCountryInitialData({
+      ...countryInitialData,
+      [additionCountry]: tempDataCountry,
+    });
     setTotalQuantity(0);
     setTotalAmount(0);
   };
@@ -120,7 +143,8 @@ const ProductInvoiceCreation = ({
     setTodos(tempData);
   };
 
-  console.log("todos", todos);
+  const blockInvalidChar = (e: any) =>
+    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
 
   return (
     <div>
@@ -131,20 +155,22 @@ const ProductInvoiceCreation = ({
               <div id="head_sec">
                 <h3>Summary</h3>
                 <div id="action_buttons">
-                  <div
-                    id="icon_1"
-                    data-testid="remove-item-button"
-                    onClick={() => remove(item)}
-                  >
-                    <Icon
-                      icon="trash"
-                      size="small"
-                      width="30"
-                      height="30"
-                      color="#526FD6"
-                    />
-                    Delete
-                  </div>
+                  {i != 0 && (
+                    <div
+                      id="icon_1"
+                      data-testid="remove-item-button"
+                      onClick={() => remove(item)}
+                    >
+                      <Icon
+                        icon="trash"
+                        size="small"
+                        width="30"
+                        height="30"
+                        color="#526FD6"
+                      />
+                      Delete
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -163,7 +189,7 @@ const ProductInvoiceCreation = ({
                     }}
                     inline={false}
                     label="Service Date"
-                    minDate={new Date()}
+                    // minDate={new Date()}
                     placeholderText={item.date ? item.date : "Please Select"}
                   />
                 </div>
@@ -178,46 +204,54 @@ const ProductInvoiceCreation = ({
                   }}
                   data-testid="product_name"
                 >
-                  <input
-                    type="text"
-                    value={item.product}
-                    data-testid="product_open"
-                    onClick={() => setOpen(true)}
-                    id="click_input"
-                    placeholder="Please Select"
-                    autoComplete="off"
-                  />
-                  <Dropdown
-                    handleDropOptionClick={(opt: any) => {
-                      setProductService(opt.label);
-                      setOpen(false);
-                      let index = newArrPush.findIndex(
-                        (e: any) => e.value === opt.value
-                      );
+                  <>
+                    <input
+                      type="text"
+                      data-testid="product_open"
+                      onClick={() => setOpen(true)}
+                      id="click_input"
+                      placeholder="Please Select"
+                      autoComplete="off"
+                    />
+                    <Dropdown
+                      handleDropOptionClick={(opt: any) => {
+                        setProductService(opt.label);
+                        setOpen(false);
+                        let index = productInitialData[i].findIndex(
+                          (e: any) => e.value === opt.value
+                        );
 
-                      let copy = [...newArrPush];
-                      let typesValue = "";
-                      copy.forEach((e, i) => {
-                        if (i === index) {
-                          if (copy[index].isSelected) {
-                            copy[index] = { ...opt, isSelected: false };
-                          } else {
-                            copy[index] = { ...opt, isSelected: true };
+                        let copy = [...tempData];
+                        let typesValue = "";
+                        copy.forEach((e, i) => {
+                          if (i === index) {
+                            if (copy[index].isSelected) {
+                              copy[index] = { ...opt, isSelected: false };
+                            } else {
+                              copy[index] = { ...opt, isSelected: true };
+                            }
                           }
-                        }
-                      });
-
-                      setNewArrPush(copy);
-                      new_handle2(opt.label, i);
-                    }}
-                    handleDropdownClick={(bool: any) => {
-                      setOpen(bool);
-                      setToggleState(i);
-                    }}
-                    isOpen={toggleState == i ? Open : false}
-                    title={`Product Service`}
-                    options={newArrPush}
-                  />
+                        });
+                        setProductInitialData({
+                          ...productInitialData,
+                          [i]: copy,
+                        });
+                        setNewArrPush(copy);
+                        new_handle2(opt.label, i);
+                      }}
+                      handleDropdownClick={(bool: any) => {
+                        setOpen(bool);
+                        setToggleState(i);
+                      }}
+                      isOpen={toggleState == i ? Open : false}
+                      title={`Product Service`}
+                      options={
+                        productInitialData && productInitialData[i]
+                          ? productInitialData[i]
+                          : []
+                      }
+                    />
+                  </>
                 </div>
 
                 {/* Description */}
@@ -228,7 +262,7 @@ const ProductInvoiceCreation = ({
                     type="text"
                     className="font-color"
                     defaultValue={item.description}
-                    placeholder="Description"
+                    placeholder="Enter description"
                     id="description_input"
                     name="description"
                     data-testid="description_set"
@@ -249,7 +283,6 @@ const ProductInvoiceCreation = ({
                 >
                   <input
                     type="text"
-                    value={item.country}
                     data-testid="Country_open"
                     onClick={() => setOpens(true)}
                     id="click_input"
@@ -260,20 +293,25 @@ const ProductInvoiceCreation = ({
                     handleDropOptionClick={(opt: any) => {
                       setCountryService(opt.label);
                       setOpens(false);
-                      let index = newArrPushs.findIndex(
+                      let index = countryInitialData[i].findIndex(
                         (e: any) => e.value === opt.value
                       );
 
-                      let copy = [...newArrPushs];
+                      let copy = [...tempDataCountry];
                       copy.forEach((e, ind) => {
                         if (ind === index) {
                           if (copy[index].isSelected) {
-                            copy[index] = { ...copy[index], isSelected: false };
+                            copy[index] = { ...opt, isSelected: false };
                           } else {
                             copy[index] = { ...opt, isSelected: true };
                           }
                         }
                       });
+                      setCountryInitialData({
+                        ...countryInitialData,
+                        [i]: copy,
+                      });
+
                       setNewArrPushs(copy);
                       new_handle2(opt.label, i);
                     }}
@@ -283,7 +321,11 @@ const ProductInvoiceCreation = ({
                     }}
                     isOpen={toggleState == i ? Opens : false}
                     title="Service Country"
-                    options={newArrPushs}
+                    options={
+                      countryInitialData && countryInitialData[i]
+                        ? countryInitialData[i]
+                        : []
+                    }
                   />
                 </div>
                 <div className="dropdownCount">
@@ -302,6 +344,10 @@ const ProductInvoiceCreation = ({
                       type="number"
                       min="0"
                       defaultValue={item.quantity}
+                      onKeyDown={(e) => {
+                        ["e", "E", "+", "-", "."].includes(e.key) &&
+                          e.preventDefault();
+                      }}
                       className="inputField"
                       onChange={(e) => {
                         handleChange(e, i);
@@ -316,8 +362,13 @@ const ProductInvoiceCreation = ({
                       type="number"
                       min="0"
                       defaultValue={item.amount}
+                      onKeyDown={(e) => blockInvalidChar(e)}
                       className="inputField"
                       onChange={(e) => {
+                        if (e.target.value.split(".")[1]?.length >= 2)
+                          e.target.value = parseFloat(e.target.value).toFixed(
+                            2
+                          );
                         handleChange(e, i);
                         setTotalAmount(JSON.parse(e.target.value));
                       }}
@@ -336,7 +387,7 @@ const ProductInvoiceCreation = ({
                   "USD " +
                   (item.amount
                     ? item.quantity * item.amount
-                    : totalQuantity * totalAmount
+                    : 0
                   ).toLocaleString("en-US")
                 }
                 className="secondary-btn medium button"
