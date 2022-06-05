@@ -218,7 +218,7 @@ export default function BillsTable(props: any) {
             <div className='modal-wrapper'>
                 <Modal
                     className="zero-padding"
-                    handleClose={() => { setOpenModal(false); setRejectBanner(false) }}
+                    handleClose={() => { setOpenModal(false); setRejectBanner(false); setMoveNextBanner(false) }}
                     width="79.625rem"
                     height="auto"
                     isOpen={openModal}
@@ -335,7 +335,7 @@ export default function BillsTable(props: any) {
 
                         </div>
                         <div className='margin-top'>
-                            {rejectBanner && <Banner type="warning">
+                            {(rejectBanner || (moveNextBanner && tableData.length !== 1)) && <Banner type="warning">
                                 <div
                                     style={{
                                         display: 'flex',
@@ -354,7 +354,7 @@ export default function BillsTable(props: any) {
                                     </span>
                                 </div>
                             </Banner>}
-                            {moveNextBanner && <Banner type="warning">
+                            {(moveNextBanner && tableData.length === 1) && <Banner type="warning">
                                 <div
                                     style={{
                                         display: 'flex',
@@ -408,7 +408,7 @@ export default function BillsTable(props: any) {
                                     {rejectBanner && <><Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
-                                        handleOnClick={() => { setRejectBanner(false) }}
+                                        handleOnClick={() => { setMoveNextBanner(false); setRejectBanner(false) }}
 
                                     />
                                         <Button
@@ -456,7 +456,7 @@ export default function BillsTable(props: any) {
                                     <Button
                                         label="Cancel"
                                         className="secondary-btn medium secondary-button cancel-button"
-                                        handleOnClick={() => { setRejectBanner(false); setOpenRejectReason(false); setRejectReason('') }}
+                                        handleOnClick={() => { setRejectBanner(false); setMoveNextBanner(false); setOpenRejectReason(false); setRejectReason('') }}
                                     />
                                     <Button
                                         className="primary-blue medium primary cancel-button"
