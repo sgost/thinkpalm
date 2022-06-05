@@ -395,7 +395,7 @@ export default function InvoiceDetails() {
               setIsErr(true);
             });
           axios
-            .get(getVatValue(cid))
+            .get(getVatValue(cid), headers)
             .then((resp) => {
               if (resp.status == 200) {
                 setVatValue(resp?.data?.feeConfiguration?.percentage);
