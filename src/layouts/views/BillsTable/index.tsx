@@ -422,7 +422,7 @@ export default function BillsTable(props: any) {
                         </div>
                         <Modal
                             className="zero-padding"
-                            handleClose={setOpenRejectReason}
+                            handleClose={() => { setOpenRejectReason(false); setRejectBanner(false); setMoveNextBanner(false) }}
                             width="32.5rem"
                             height="auto"
                             isOpen={openRejectReason}
