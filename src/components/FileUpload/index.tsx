@@ -17,7 +17,6 @@ export default function FileUploadWidget(props: any) {
     const { documents, setDocuments, isClient, cid, id, transactionType } = props;
     const tempToken = localStorage.getItem("accessToken");
     const [isFileError, setIsFileError] = useState<any>(null);
-    const permission: any = getDecodedToken();
     /* istanbul ignore next */
     return (
         <div className="box2">
@@ -86,7 +85,7 @@ export default function FileUploadWidget(props: any) {
                                                     },
                                                     headers: headers,
                                                 })
-                                                    .then((res: any) => {
+                                                    .then(() => {
                                                         let cpy = [...documents];
                                                         cpy.splice(index, 1);
                                                         setDocuments(cpy);
@@ -119,7 +118,7 @@ export default function FileUploadWidget(props: any) {
                             (file: any) => {
                                 const headers = getHeaders(tempToken, cid, isClient);
                                 setTimeout(() => {
-                                    var formData = new FormData();
+                                    let formData = new FormData();
                                     formData.append("asset", file[0]);
                                     axios
                                         .post(

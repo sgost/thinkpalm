@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Button } from "atlasuikit";
 import "./FinishCreditMemo.scss";
 import { useNavigate } from "react-router-dom";
@@ -19,13 +19,11 @@ export default function FinishCreditMemo({ invoiceId }: any) {
       <Button
         handleOnClick={() => {
           getCreditMemoStep4Data(invoiceId).then((res: any) => {
-            console.log(res);
-            if(res.status == 200 || res.statu == 201){
+            if(res.status == 200 || res.status == 201){
               navigate(
                 "/pay/invoicedetails" +
                   invoiceId +
                   "/" +
-                  // "a9bbee6d-797a-4724-a86a-5b1a2e28763f" +
                   res.data.customerId +
                   "/" +
                   (currentRoles?.Payments?.Role === "Customer"),

@@ -928,7 +928,7 @@ export default function InvoiceDetails() {
       });
 
     let currDate = new Date();
-
+  
     await axios
       .post(
         urls.voidInvoice,
@@ -946,6 +946,7 @@ export default function InvoiceDetails() {
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
+              setTopPanel({...topPanel, open : 0.00})
             }
           });
           setVoidFileData({});
