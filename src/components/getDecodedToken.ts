@@ -5,20 +5,9 @@ export const getDecodedToken = () => {
   const currentOrgId: any = localStorage.getItem("current-org-id");
 
   const decoded: any = jwt_decode(accessToken);
-  //   console.log("token", currentOrgId, accessToken, decoded);
 
-  // console.log(
-  //   "per",
-  //   decoded.Permissions[currentOrgId].Payments,
-  //   decoded.Permissions[currentOrgId].Payments.InvoiceList.find(
-  //     (str: any) => str === "Add"
-  //   )
-  // );
 
   /* istanbul ignore next */
   return decoded.Permissions[currentOrgId].Payments || { InvoiceList: [] };
 
-  //   const parseToken = JSON.parse(decoded);
-
-  //   console.log("token", currentOrgId, parseToken);
 };

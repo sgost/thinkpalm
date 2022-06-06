@@ -2,7 +2,7 @@ import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { getHeaders, productInvoice, updateCreditMemoUrl, urls } from "../../../urls/urls";
+import { getHeaders, productInvoice, updateCreditMemoUrl } from "../../../urls/urls";
 import FileUploadWidget from "../../../components/FileUpload";
 import Input from "../../../components/Input/input";
 import NotesWidget from "../../../components/Notes";

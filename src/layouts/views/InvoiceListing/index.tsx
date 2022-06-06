@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table, Dropdown } from "atlasuikit";
-import { FaEllipsisH } from "react-icons/fa";
+import { Icon, Button, Table, Dropdown, ButtonDropdown } from "atlasuikit";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
-import { listData } from "../InvoiceDetails/mockData";
 import dots from "./dots.svg";
 import {
   getClientListingUrl,
@@ -25,8 +23,6 @@ export default function InvoiceListing() {
   let navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
-  // internal token
-  // const accessToken = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJxa1VoLVl2LWc3c25Zc3ktN1ktZVk0OE5TLTlzdldjWm9aMXFoMzZoYnpjIn0.eyJleHAiOjE2NTE5OTU0ODIsImlhdCI6MTY1MTgzNjc0NSwiYXV0aF90aW1lIjoxNjUxODIyNjgyLCJqdGkiOiJmNTE3MjM4NS00MzVkLTQzMjQtODA3My1lZmU4YWJlMTY4ZGYiLCJpc3MiOiJodHRwczovL2FjY291bnRzLXVhdC5hcG5leHRnZW4uY29tL2F1dGgvcmVhbG1zL2VsZW1lbnRzZ3MiLCJzdWIiOiI3NWM2MmFiNi1iMWMyLTQ5NTEtYmY2Yy00MjA3ZGQwZmEwNmEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJhbmd1bGFyLXdlYi1jbGllbnQiLCJub25jZSI6IjBjMmYxNWY3LTg4YTItNDJjMS1hMDg0LWQ1ZDcxMWJkNjg1ZiIsInNlc3Npb25fc3RhdGUiOiIxNWU2MDRhMy01NDRhLTQ2YzYtYjYxOC1iZmU3MGZlZWIxYTQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHBzOi8vd3d3LXVhdC5hcG5leHRnZW4uY29tIiwiaHR0cHM6Ly9lbGVtZW50c2dzLW5nLmFwbmV4dGdlbi5jb20iLCJodHRwczovL2VsZW1lbnRzZ3MtdWF0LmFwbmV4dGdlbi5jb20iXSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsInJvbGUiOiJBcHByb3ZQYXlPd25lcnMiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzRXh0ZXJuYWwiOmZhbHNlLCJuYW1lIjoiSmFzbWluZSBLYXVyIiwiaWQiOiI3NWM2MmFiNi1iMWMyLTQ5NTEtYmY2Yy00MjA3ZGQwZmEwNmEiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJqYXNtaW5la0BlbGVtZW50c2dzLmNvbSIsImdpdmVuX25hbWUiOiJKYXNtaW5lIiwiZmFtaWx5X25hbWUiOiJLYXVyIiwiZW1haWwiOiJqYXNtaW5la0BlbGVtZW50c2dzLmNvbSJ9.Bz3I8XKE6cpPV_KdObEVBj1f3mAcQzXOnwKZzGblhJqf9HMB-QmNXilwL3rNkTioW-Oh2kbHwqj-V91OlFKaeL8JTW8KxEA2pxTxQtyXLYsaQzqRVZunVigTzJ4id2qRL4j8dpZhHFGgnmTXEX6com4alL-RCrBhHDACtOc-OVyi9Qr0zgU0E6q7vTyg1LAFhjUFcarp9YcVoquCCOSGEyflsbHiJVZ-PRoNtkz3psu6aGWYmsxfcoIo958pKSINjkmJjUiU-1C6_FgELQjStw88bj_trHAq-t2m6oGDOeaLopCsVpQLJatuGG6gMrmcbvmOCjtYgiDx51buFxppsA"
   const currentRoles = JSON.parse(localStorage.getItem("current-org") || "");
   const customerId = localStorage.getItem("current-org-id");
   const [isStatusOpen, setIsStatusOpen] = useState(false);
@@ -37,7 +33,8 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
-  const [weAreSorryModalAction, setWeAreSorryModalAction] = useState<boolean>(false);
+  const [weAreSorryModalAction, setWeAreSorryModalAction] =
+    useState<boolean>(false);
 
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
@@ -54,7 +51,6 @@ export default function InvoiceListing() {
   });
   const [singleInvoiceId, setSingleInvoiceId] = useState("");
   const [multiInvoiceId, setMultiInvoiveId] = useState([]);
-  // const [token, setToken] = useState("");
 
   // Contractor, payroll, credit memos, proformas, miscellaneous
   const typeOptions = [
@@ -241,11 +237,9 @@ export default function InvoiceListing() {
 
   const apiFunc = () => {
     if (isClient !== null && isClient === true) {
-      // api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/customer/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
       api = getClientListingUrl(transactionTypes, statusType, dateFrom, dateTo);
       return api;
     } else if (isClient !== null && isClient === false) {
-      // api = `https://apigw-uat-emea.apnextgen.com/invoiceservice/api/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`;
       api = getInternalListingUrl(
         transactionTypes,
         statusType,
@@ -290,16 +284,11 @@ export default function InvoiceListing() {
   }, [currentRoles]);
 
   useEffect(() => {
-    if(localStorage.contractorInvoiceState) {      
+    if (localStorage.contractorInvoiceState) {
       const rowDetails = JSON.parse(localStorage.contractorInvoiceState);
       const { id, invoiceNo, transactionType } = rowDetails;
       navigate(
-        "/pay/invoicedetails" +
-        id +
-        "/" +
-        rowDetails?.customerId +
-        "/" +
-        true,
+        "/pay/invoicedetails" + id + "/" + rowDetails?.customerId + "/" + true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -311,14 +300,12 @@ export default function InvoiceListing() {
     }
     return () => {
       localStorage.removeItem("contractorInvoiceState");
-    }
+    };
   }, []);
 
   useEffect(() => {
     if (apiData?.data?.results) {
       const apiTableData: any = [];
-      // const apiTableData = apiData?.data?.results;
-      // apiData?.data?.results.push(listData);
       apiData?.data?.results.forEach((item: any) => {
         const cFormat = Intl.NumberFormat("en-US", {
           style: "currency",
@@ -344,24 +331,6 @@ export default function InvoiceListing() {
           },
         });
       });
-
-      // apiTableData?.map((item: any) => {
-      //   if (!item.totalAmount.toString().includes("USD")) {
-      //     const cFormat = Intl.NumberFormat("en-US", {
-      //       style: "currency",
-      //       currency: "USD",
-      //     });
-      //     item.totalAmount = `USD ${cFormat.format(item.totalAmount).slice(1)}`;
-      //     item.invoiceBalance = `USD ${cFormat
-      //       .format(item.invoiceBalance)
-      //       .slice(1)}`;
-      //     item.createdDate = format(new Date(item.createdDate), "d MMM yyyy");
-      //     item.dueDate = format(new Date(item.dueDate), "d MMM yyyy");
-
-      //   }
-      // });
-
-      // console.log("internal data", apiTableData);
 
       if (isClient) {
         setClientTableData({ ...clientTableData, data: apiTableData });
@@ -438,20 +407,11 @@ export default function InvoiceListing() {
       headers: getHeaders(accessToken, customerID, isClient),
     };
     if (singleInvoiceId) {
-      const api = getGenerateSinglePdfUrl(singleInvoiceId);
+      const pdfApi = getGenerateSinglePdfUrl(singleInvoiceId);
       axios
-        .get(api, headers)
+        .get(pdfApi, headers)
         .then((res: any) => {
           download(res);
-          // if (res.status === 200) {
-          //   setDownloadDisable(false);
-          //   setShowSuccessToast({ type: true, message: "Downloaded..." });
-          //   let url = res.data.url;
-          //   let a = document.createElement("a");
-          //   a.href = url;
-          //   a.download = `${res.data.name}`;
-          //   a.click();
-          // }
         })
         .catch((e: any) => {
           console.log("error", e);
@@ -459,24 +419,14 @@ export default function InvoiceListing() {
     } else if (multiInvoiceId) {
       setShowSuccessToast({ ...showSuccessToast, type: true });
       const multiDownloadInvoiceId = multiInvoiceId.join(",");
-      const api = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
+      const multiPdfApi = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
       axios({
         method: "get",
-        url: api,
+        url: multiPdfApi,
         headers: headers.headers,
       })
         .then((res: any) => {
           download(res);
-
-          // if (res.status === 200) {
-          //   setDownloadDisable(false);
-          //   setShowSuccessToast({ type: true, message: "Downloaded...." });
-          //   let url = res.data.url;
-          //   let a = document.createElement("a");
-          //   a.href = url;
-          //   a.download = `${res.data.name}`;
-          //   a.click();
-          // }
         })
         .catch((e: any) => {
           console.log("error", e);
@@ -518,9 +468,59 @@ export default function InvoiceListing() {
   return (
     <>
       <div className="container">
-        <div className="new-invoice-button">
-          {permission?.InvoiceList?.find((str: any) => str === "Add") ===
-            "Add" && (
+        <div className="listingBtnContainer">
+          <div>
+            {permission.Role === "FinanceAR" && (
+              <>
+                {downloadDisable ? (
+                  <Button
+                    className="primary-blue medium"
+                    disabled
+                    icon={{
+                      color: "#ffff",
+                      height: "22",
+                      icon: "dollar",
+                      viewBox: "0 -2 22 22",
+                      width: "22",
+                    }}
+                    label="Add New Payment"
+                  />
+                ) : (
+                  <ButtonDropdown
+                    btnClassName="a-button primary-blue medium"
+                    menuItems={{
+                      labelKeyName: "label",
+                      options: [
+                        {
+                          label: "Invoice Payment",
+                          value: "option1",
+                        },
+                        {
+                          label: "Credit Refund",
+                          value: "option2",
+                        },
+                      ],
+                    }}
+                    onChange={function noRefCheck() {}}
+                    testIdButton="test-drop-down-button"
+                    testIdOptions="test-drop-down-button-option"
+                  >
+                    <Icon
+                      color="#ffff"
+                      height="22"
+                      icon="dollar"
+                      viewBox="0 -2 22 22"
+                      width="22"
+                    />
+                    Add New Payment
+                  </ButtonDropdown>
+                )}
+              </>
+            )}
+          </div>
+          <div className="new-invoice-button">
+            {permission?.InvoiceList?.find((str: any) => str === "Add") ===
+              "Add" && (
               <Button
                 label="New Invoice"
                 className="primary-blue medium"
@@ -532,6 +532,7 @@ export default function InvoiceListing() {
                 handleOnClick={() => navigate("/pay/newinvoice")}
               />
             )}
+          </div>
         </div>
         <div className="dropdowns">
           <div className="inputContainer">
@@ -547,19 +548,19 @@ export default function InvoiceListing() {
           <div className="pickers">
             {permission?.InvoiceList?.find((str: any) => str === "Download") ===
               "Download" && (
-                <div
-                  onClick={downloadFunction}
-                  data-testid="download"
-                  className={downloadDisable ? "downloadpointer" : "download"}
-                >
-                  <Icon
-                    className="download"
-                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                    icon="download"
-                    size="large"
-                  />
-                </div>
-              )}
+              <div
+                onClick={downloadFunction}
+                data-testid="download"
+                className={downloadDisable ? "downloadpointer" : "download"}
+              >
+                <Icon
+                  className="download"
+                  color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                  icon="download"
+                  size="large"
+                />
+              </div>
+            )}
 
             <DatepickerDropdown
               title="Date"
@@ -570,7 +571,7 @@ export default function InvoiceListing() {
               selectedDate={selectedDate}
               setSelectedDate={setSelectedDate}
               handleDropOptionClick={(item: any) => {
-                var date = new Date();
+                let date = new Date();
                 switch (item) {
                   case "Today":
                     const todayDate = format(date, "yyyy-MM-dd");
@@ -862,21 +863,18 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                  ...searchedTableData,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
-                : isClient
-                  ? {
-                    ...clientTableData,
-                    // showDefaultColumn: true,
+                    ...searchedTableData,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                  : {
+                : isClient
+                ? {
+                    ...clientTableData,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
+                : {
                     ...internalTabledata,
-                    // showDefaultColumn: true,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
@@ -893,16 +891,16 @@ export default function InvoiceListing() {
               } else {
                 navigate(
                   "/pay/invoicedetails" +
-                  row.id +
-                  "/" +
-                  row.customerId +
-                  "/" +
-                  isClientStr,
+                    row.id +
+                    "/" +
+                    row.customerId +
+                    "/" +
+                    isClientStr,
                   {
                     state: {
                       InvoiceId: row.invoiceNo,
                       transactionType: row.transactionType,
-                      rowDetails: row
+                      rowDetails: row,
                     },
                   }
                 );

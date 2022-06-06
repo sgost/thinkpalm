@@ -6,15 +6,19 @@
     padding-bottom: 1.1111rem;
     margin-top: 3.3333rem;
 
-    .new-invoice-button {
+    .listingBtnContainer {
       display: flex;
       justify-content: end;
-      margin-bottom: 2.3333rem;
+      gap: 1rem;
 
-      button.a-button.medium {
-        font-size: 1rem;
-        height: 3.13rem;
-        width: 11.13rem;
+      .new-invoice-button {
+        margin-bottom: 2.3333rem;
+
+        button.a-button.medium {
+          font-size: 1rem;
+          height: 3.13rem;
+          width: 11.13rem;
+        }
       }
     }
 
