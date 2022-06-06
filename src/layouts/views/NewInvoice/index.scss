@@ -2,6 +2,9 @@
 @import "../../../styles/styles";
 
 .atlas-payment-invoices {
+    .react-datepicker-popper{
+        z-index: 999;
+      }
     .newinvoice-container {
         display: flex;
         flex-direction: column;
