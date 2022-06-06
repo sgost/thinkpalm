@@ -2061,7 +2061,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     // expect(openModal[0]).toBeInTheDocument();
     // fireEvent.click(openModal[0]);
 
-    // const closeButton = container.querySelector(".close");
+     // const closeButton = container.querySelector(".close");
     // fireEvent.click(closeButton);
   }, 30000);
 });
@@ -2072,6 +2072,25 @@ describe("final stepper", () => {
     mock
       .onGet(getRelatedInvoiceUrl("0b5d231b-2fa8-4001-a737-b89328b2b6f2"))
       .reply(200, mockapidata.resFinalStepper);
+  });
+  test("final stepper", () => {
+    render(
+      <HashRouter>
+        <FinishCreditMemo invoiceId="0b5d231b-2fa8-4001-a737-b89328b2b6f2" />
+      </HashRouter>
+    );
+
+    const goto = screen.getByText(/Go to Invoice/);
+    fireEvent.click(goto);
+  }, 30000);
+});
+
+describe("final stepper with 201 status code", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    mock
+      .onGet(getRelatedInvoiceUrl("0b5d231b-2fa8-4001-a737-b89328b2b6f2"))
+      .reply(201, mockapidata.resFinalStepper);
   });
   test("final stepper", () => {
     render(

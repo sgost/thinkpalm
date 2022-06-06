@@ -17,7 +17,6 @@ export default function FileUploadWidget(props: any) {
     const { documents, setDocuments, isClient, cid, id, transactionType } = props;
     const tempToken = localStorage.getItem("accessToken");
     const [isFileError, setIsFileError] = useState<any>(null);
-    const permission: any = getDecodedToken();
     /* istanbul ignore next */
     return (
         <div className="box2">
@@ -77,20 +76,20 @@ export default function FileUploadWidget(props: any) {
                                                         isClient
                                                     );
 
-                                                    axios({
-                                                        method: "DELETE",
-                                                        url: urls.deleteFile,
-                                                        data: {
-                                                            invoiceId: id,
-                                                            documentId: documents[index].documentId,
-                                                        },
-                                                        headers: headers,
+                                                axios({
+                                                    method: "DELETE",
+                                                    url: urls.deleteFile,
+                                                    data: {
+                                                        invoiceId: id,
+                                                        documentId: documents[index].documentId,
+                                                    },
+                                                    headers: headers,
+                                                })
+                                                    .then(() => {
+                                                        let cpy = [...documents];
+                                                        cpy.splice(index, 1);
+                                                        setDocuments(cpy);
                                                     })
-                                                        .then((res: any) => {
-                                                            let cpy = [...documents];
-                                                            cpy.splice(index, 1);
-                                                            setDocuments(cpy);
-                                                        })
                                                         .catch((e: any) => {
                                                             console.log(e);
                                                         });
@@ -110,35 +109,35 @@ export default function FileUploadWidget(props: any) {
                 </div>
 
                 {getPermissions(transactionType, "Browse") && (
-                    <div className="uploadConatiner">
-                        <FileUpload
-                            fileList={[]}
-                            formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
-                            handleUpload={
-                                /* istanbul ignore next */
-                                (file: any) => {
-                                    const headers = getHeaders(tempToken, cid, isClient);
-                                    setTimeout(() => {
-                                        var formData = new FormData();
-                                        formData.append("asset", file[0]);
-                                        axios
-                                            .post(
-                                                urls.uploadFile,
+                <div className="uploadConatiner">
+                    <FileUpload
+                        fileList={[]}
+                        formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
+                        handleUpload={
+                            /* istanbul ignore next */
+                            (file: any) => {
+                                const headers = getHeaders(tempToken, cid, isClient);
+                                setTimeout(() => {
+                                    let formData = new FormData();
+                                    formData.append("asset", file[0]);
+                                    axios
+                                        .post(
+                                            urls.uploadFile,
 
-                                                formData,
-                                                {
-                                                    headers: headers,
-                                                }
-                                            )
-                                            .then((res: any) => {
-                                                axios
-                                                    .post(
-                                                        urls.createDocument,
-                                                        {
-                                                            invoiceId: id,
+                                            formData,
+                                            {
+                                                headers: headers,
+                                            }
+                                        )
+                                        .then((res: any) => {
+                                            axios
+                                                .post(
+                                                    urls.createDocument,
+                                                    {
+                                                        invoiceId: id,
 
-                                                            document: {
-                                                                url: res.data.url,
+                                                        document: {
+                                                            url: res.data.url,
 
                                                                 documentName: res.data.fileName,
                                                             },

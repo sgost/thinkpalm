@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Icon, Button, Modal } from "atlasuikit";
+import { Button, Modal } from "atlasuikit";
 
 interface IModalProps {
     isOpen: boolean,

@@ -31,26 +31,26 @@ export default function NotesWidget(props: any) {
             <h3>Notes</h3>
 
             <Scrollbars
-                renderView={(props: any) => (
+                renderView={(propss: any) => (
                     <div
-                        {...props}
+                        {...propss}
                         style={{
                             overflowX: "hidden",
                         }}
                         className="filesscroll"
                     />
                 )}
-                renderTrackVertical={(props: any) => (
+                renderTrackVertical={(property: any) => (
                     <div
                         style={{ backgroundColor: "black" }}
-                        {...props}
+                        {...property}
                         className="track-vertical"
                     />
                 )}
-                renderThumbVertical={(props: any) => (
+                renderThumbVertical={(properties: any) => (
                     <div
                         style={{ backgroundColor: "gray" }}
-                        {...props}
+                        {...properties}
                         className="thumb-vertical"
                     />
                 )}
