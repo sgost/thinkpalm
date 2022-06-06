@@ -252,7 +252,11 @@ export default function CreditMemoSummary(props: any) {
     setSubTotalAmount(subtotal);
     setVatAmount(subtotal * (vatValue / 100));
     payload.totalAmount = subtotal + subtotal * (vatValue / 100);
-    payload.invoiceBalance = subtotal + subtotal * (vatValue / 100);
+    if(creditMemoData.status != 9 ){
+      payload.invoiceBalance = subtotal + subtotal * (vatValue / 100);
+    }else{
+      payload.invoiceBalance = 0
+    }
   };
   /* istanbul ignore next */
   const updateDropdowns = () => {
