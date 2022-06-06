@@ -558,7 +558,7 @@
             width: 100%;
 
             .a-checkbox-wrapper {
-              align-items: flex-start;
+              margin: 0 0.5rem 0 0;
             }
 
             .a-checkbox-wrapper input[type="checkbox"] {
@@ -568,6 +568,18 @@
 
             label {
               font-size: 0.7rem;
+              display: none;
+            }
+
+            .check_wrapper {
+              display: flex;
+              align-items: center;
+            }
+
+            .check_label {
+              display: flex;
+              font-size: 0.64rem;
+              cursor: pointer;
             }
           }
 

@@ -35,7 +35,7 @@ export default function FileUploadWidget(props: any) {
                                         width: "40",
                                     },
                                     suffix: [
-                                        getPermissions(transactionType, "Download") ?{
+                                        getPermissions(transactionType, "Download") ? {
                                             color: "#526FD6",
                                             height: "40",
                                             icon: "download",
@@ -62,19 +62,19 @@ export default function FileUploadWidget(props: any) {
                                                         console.log("error", e);
                                                     });
                                             },
-                                        }:{},
+                                        } : {},
                                         getPermissions(transactionType, "DeleteFile") ?
-                                        {
-                                            color: "#526FD6",
-                                            height: "30",
-                                            icon: "remove",
-                                            width: "30",
-                                            handleOnClick: () => {
-                                                const headers = getHeaders(
-                                                    tempToken,
-                                                    cid,
-                                                    isClient
-                                                );
+                                            {
+                                                color: "#526FD6",
+                                                height: "30",
+                                                icon: "remove",
+                                                width: "30",
+                                                handleOnClick: () => {
+                                                    const headers = getHeaders(
+                                                        tempToken,
+                                                        cid,
+                                                        isClient
+                                                    );
 
                                                 axios({
                                                     method: "DELETE",
@@ -90,13 +90,13 @@ export default function FileUploadWidget(props: any) {
                                                         cpy.splice(index, 1);
                                                         setDocuments(cpy);
                                                     })
-                                                    .catch((e: any) => {
-                                                        console.log(e);
-                                                    });
-                                            },
-                                        }
-                                        :
-                                        {},
+                                                        .catch((e: any) => {
+                                                            console.log(e);
+                                                        });
+                                                },
+                                            }
+                                            :
+                                            {},
                                     ],
                                 }}
                                 label={{
@@ -139,46 +139,46 @@ export default function FileUploadWidget(props: any) {
                                                         document: {
                                                             url: res.data.url,
 
-                                                            documentName: res.data.fileName,
-                                                        },
-                                                    },
-                                                    {
-                                                        headers: headers,
-                                                    }
-                                                )
-                                                .then((response: any) => {
-                                                    setDocuments([
-                                                        ...documents,
-                                                        {
-                                                            documentId: response.data.documentId,
-                                                            document: {
                                                                 documentName: res.data.fileName,
-                                                                url: res.data.url,
                                                             },
                                                         },
-                                                    ]);
-                                                    setIsFileError(false);
-                                                })
-                                                .catch((e: any) => {
-                                                    console.log(e);
-                                                    setIsFileError(true);
-                                                });
-                                        })
-                                        .catch((e: any) => {
-                                            console.log(e);
-                                            setIsFileError(true);
-                                        });
-                                });
+                                                        {
+                                                            headers: headers,
+                                                        }
+                                                    )
+                                                    .then((response: any) => {
+                                                        setDocuments([
+                                                            ...documents,
+                                                            {
+                                                                documentId: response.data.documentId,
+                                                                document: {
+                                                                    documentName: res.data.fileName,
+                                                                    url: res.data.url,
+                                                                },
+                                                            },
+                                                        ]);
+                                                        setIsFileError(false);
+                                                    })
+                                                    .catch((e: any) => {
+                                                        console.log(e);
+                                                        setIsFileError(true);
+                                                    });
+                                            })
+                                            .catch((e: any) => {
+                                                console.log(e);
+                                                setIsFileError(true);
+                                            });
+                                    });
+                                }
                             }
-                        }
-                        isError={isFileError}
-                        maxSize={25}
-                        resetFiles={function noRefCheck() {
-                            setIsFileError(null);
-                        }}
-                        title="Upload"
-                    />
-                </div>
+                            isError={isFileError}
+                            maxSize={25}
+                            resetFiles={function noRefCheck() {
+                                setIsFileError(null);
+                            }}
+                            title="Upload"
+                        />
+                    </div>
                 )}
             </div>
         </div>

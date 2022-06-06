@@ -758,8 +758,8 @@ export default function InvoiceDetails() {
   const handleApproveInvoice = (no: any) => {
     const approveApi =
       state.transactionType == 2 ||
-      state.transactionType == 3 ||
-      state.transactionType == 4
+        state.transactionType == 3 ||
+        state.transactionType == 4
         ? getApproveUrlNo(id, no)
         : getApproveUrl(id);
 
@@ -1085,28 +1085,27 @@ export default function InvoiceDetails() {
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               state.transactionType != 1) && (
-              <div
-                onClick={() =>
-                  state.transactionType != 7
-                    ? setIsDownloadOpen(!isDownloadOpen)
-                    : function noRefCheck() {}
-                }
-                className={`${
-                  state.transactionType == 7 || deleteDisableButtons === true
+                <div
+                  onClick={() =>
+                    state.transactionType != 7
+                      ? setIsDownloadOpen(!isDownloadOpen)
+                      : function noRefCheck() { }
+                  }
+                  className={`${state.transactionType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                }`}
+                    }`}
                 // className="download"
-              >
-                <p className="text">Download</p>
-                <Icon
-                  className="icon"
-                  color="#526fd6"
-                  icon="chevronDown"
-                  size="medium"
-                />
-              </div>
-            )}
+                >
+                  <p className="text">Download</p>
+                  <Icon
+                    className="icon"
+                    color="#526fd6"
+                    icon="chevronDown"
+                    size="medium"
+                  />
+                </div>
+              )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1359,21 +1358,21 @@ export default function InvoiceDetails() {
       {(state.transactionType == 4 ||
         state.transactionType == 3 ||
         state.transactionType == 2) && (
-        <CreditMemoSummary
-          notes={notes}
-          setNotes={setNotes}
-          documents={documents}
-          setDocuments={setDocuments}
-          isClient={isClient}
-          cid={cid}
-          id={id}
-          creditMemoData={creditMemoData}
-          serviceCountries={lookupData?.data.serviceCountries}
-          currency={getBillingCurrency()}
-          vatValue={vatValue}
-          setCreditMemoData={setCreditMemoData}
-        ></CreditMemoSummary>
-      )}
+          <CreditMemoSummary
+            notes={notes}
+            setNotes={setNotes}
+            documents={documents}
+            setDocuments={setDocuments}
+            isClient={isClient}
+            cid={cid}
+            id={id}
+            creditMemoData={creditMemoData}
+            serviceCountries={lookupData?.data.serviceCountries}
+            currency={getBillingCurrency()}
+            vatValue={vatValue}
+            setCreditMemoData={setCreditMemoData}
+          ></CreditMemoSummary>
+        )}
 
       {state.transactionType != 7 &&
         state.transactionType != 4 &&
@@ -1485,8 +1484,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             item.currencyCode +
-                              " " +
-                              toCurrencyFormat(item.feeSummary.subTotalDue)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.subTotalDue)
 
                             // item.feeSummary.subTotalDue
                             //   .toFixed(2)
@@ -1508,10 +1507,10 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(
-                                item.feeSummary.subTotalDue * item.exchangeRate
-                              )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.subTotalDue * item.exchangeRate
+                            )
                             // (item.feeSummary.subTotalDue * item.exchangeRate)
                             //   .toFixed(2)
                             //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
@@ -1523,10 +1522,10 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(
-                                item.feeSummary.inCountryProcessingFee
-                              )
+                            " " +
+                            toCurrencyFormat(
+                              item.feeSummary.inCountryProcessingFee
+                            )
 
                             // getInCountryProcessingFee()
                             //   .toFixed(2)
@@ -1539,8 +1538,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(item.feeSummary.fxBill)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.fxBill)
 
                             // item.feeSummary.fxBill
                             //   .toFixed(2)
@@ -1553,8 +1552,8 @@ export default function InvoiceDetails() {
                         <p className="amount">
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(item.feeSummary.totalCountryVat)
+                            " " +
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)
 
                             // item.feeSummary.totalCountryVat
                             //   .toFixed(2)
@@ -1567,8 +1566,8 @@ export default function InvoiceDetails() {
                         <h3>
                           {
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(item.countryTotalDue)
+                            " " +
+                            toCurrencyFormat(item.countryTotalDue)
 
                             // item.feeSummary.total
                             //   .toFixed(2)
