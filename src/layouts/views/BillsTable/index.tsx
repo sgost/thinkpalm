@@ -69,7 +69,6 @@ export default function BillsTable(props: any) {
             })
             paysConverted = paysConverted + (item.payAmount * item.exchangeRate.toFixed(2));
         })
-        setTotalPayConverted(paysConverted);
         setTableData(data);
     }, [rawData])
 
