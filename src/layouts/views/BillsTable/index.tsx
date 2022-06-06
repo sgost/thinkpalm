@@ -37,7 +37,6 @@ export default function BillsTable(props: any) {
         showDefaultColumn: true,
     }
     const [tableData, setTableData] = useState<any>([]);
-    const [totalPayConverted, setTotalPayConverted] = useState<number>(0);
     const [openModal, setOpenModal] = useState(false);
     const [clickedApiData, setClickedApiData] = useState<any>(null);
     const [rejectBanner, setRejectBanner] = useState(false);
@@ -70,7 +69,6 @@ export default function BillsTable(props: any) {
             })
             paysConverted = paysConverted + (item.payAmount * item.exchangeRate.toFixed(2));
         })
-        setTotalPayConverted(paysConverted);
         setTableData(data);
     }, [rawData])
 
@@ -170,7 +168,7 @@ export default function BillsTable(props: any) {
                     }
                 } else { APIFails() }
             })
-            .catch((e: any) => APIFails());
+            .catch(() => APIFails());
     }
     /* istanbul ignore next */
     const getBillingPeriodText = () => {

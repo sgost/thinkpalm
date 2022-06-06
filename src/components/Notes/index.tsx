@@ -31,26 +31,26 @@ export default function NotesWidget(props: any) {
             <h3>Notes</h3>
 
             <Scrollbars
-                renderView={(props: any) => (
+                renderView={(propss: any) => (
                     <div
-                        {...props}
+                        {...propss}
                         style={{
                             overflowX: "hidden",
                         }}
                         className="filesscroll"
                     />
                 )}
-                renderTrackVertical={(props: any) => (
+                renderTrackVertical={(property: any) => (
                     <div
                         style={{ backgroundColor: "black" }}
-                        {...props}
+                        {...property}
                         className="track-vertical"
                     />
                 )}
-                renderThumbVertical={(props: any) => (
+                renderThumbVertical={(properties: any) => (
                     <div
                         style={{ backgroundColor: "gray" }}
-                        {...props}
+                        {...properties}
                         className="thumb-vertical"
                     />
                 )}
@@ -131,7 +131,7 @@ export default function NotesWidget(props: any) {
                                     <div className="note">
                                         <p>{item.note}</p>
                                     </div>
-                                    
+
                                 </div>
                             );
                         })
@@ -139,7 +139,7 @@ export default function NotesWidget(props: any) {
                 </div>
             </Scrollbars>
 
-            { getPermissions(transactionType, "Publish") &&<>
+            {getPermissions(transactionType, "Publish") && <>
                 <div className="inpContinaer">
                     <textarea
                         maxLength={400}
@@ -152,66 +152,74 @@ export default function NotesWidget(props: any) {
                 <div className="btnContainer">
                     {isClient == "false" && (
                         <div className="btnContainercheckbox">
-                            <Checkbox
-                                onChange={(e: any) => {
-                                    setIsVisibleToCustomer(e.target.checked);
-                                }}
-                                label="Visible to Customer"
-                                checked={isVisibleToCustomer}
-                            />
-                            <Checkbox
-                                label="Export to Quickbooks"
-                                onChange={(e: any) => {
-                                    setIsExportToQb(e.target.checked);
-                                }}
-                                checked={isExportToQb}
-                            />
-                            <Checkbox
-                                label="Visible on PDF Invoice"
-                                onChange={(e: any) => {
-                                    setisVisibleOnPDFInvoice(e.target.checked);
-                                }}
-                                checked={isVisibleOnPDFInvoice}
-                            />
+                            <div className="check_wrapper">
+                                <Checkbox
+                                    onChange={(e: any) => {
+                                        setIsVisibleToCustomer(e.target.checked);
+                                    }}
+                                    checked={isVisibleToCustomer}
+                                />
+                                <label className="check_label" onClick={() => setIsVisibleToCustomer(!isVisibleToCustomer)}>Visible to Customer</label>
+                            </div>
+                            <div className="check_wrapper">
+                                <Checkbox
+                                    label="Export to Quickbooks"
+                                    onChange={(e: any) => {
+                                        setIsExportToQb(e.target.checked);
+                                    }}
+                                    checked={isExportToQb}
+                                />
+                                <label className="check_label" onClick={() => setIsExportToQb(!isExportToQb)}>Export to Quickbooks</label>
+                            </div>
+                            <div className="check_wrapper">
+                                <Checkbox
+                                    label="Visible on PDF Invoice"
+                                    onChange={(e: any) => {
+                                        setisVisibleOnPDFInvoice(e.target.checked);
+                                    }}
+                                    checked={isVisibleOnPDFInvoice}
+                                />
+                                <label className="check_label" onClick={() => setisVisibleOnPDFInvoice(!isVisibleOnPDFInvoice)}>Visible on PDF Invoice</label>
+                            </div>
                         </div>
                     )}
                     {permission.InvoiceDetails.includes("Publish") && (
-                    <Button
-                        disabled={
-                            !noteText.length || noteText.length > 400 ? true : false
-                        }
-                        handleOnClick={() => {
-                            const url = urls.saveNote;
-                            let currDate = new Date();
+                        <Button
+                            disabled={
+                                !noteText.length || noteText.length > 400 ? true : false
+                            }
+                            handleOnClick={() => {
+                                const url = urls.saveNote;
+                                let currDate = new Date();
 
-                            axios({
-                                method: "POST",
-                                url: url,
-                                headers: getHeaders(tempToken, cid, isClient),
-                                data: {
-                                    invoiceId: id,
-                                    noteType: "2",
-                                    note: noteText,
-                                    isCustomerVisible: isVisibleToCustomer,
-                                    exportToQuickbooks: isExportToQb,
-                                    createdDate: currDate,
-                                    modifiedBy: "00000000-0000-0000-0000-000000000000",
-                                    modifiedByUser: null,
-                                    displayInPDF: isVisibleOnPDFInvoice,
-                                    customerId: cid,
-                                },
-                            })
-                                .then((res: any) => {
-                                    setNotes([res.data, ...notes]);
-                                    setNoteText("");
+                                axios({
+                                    method: "POST",
+                                    url: url,
+                                    headers: getHeaders(tempToken, cid, isClient),
+                                    data: {
+                                        invoiceId: id,
+                                        noteType: "2",
+                                        note: noteText,
+                                        isCustomerVisible: isVisibleToCustomer,
+                                        exportToQuickbooks: isExportToQb,
+                                        createdDate: currDate,
+                                        modifiedBy: "00000000-0000-0000-0000-000000000000",
+                                        modifiedByUser: null,
+                                        displayInPDF: isVisibleOnPDFInvoice,
+                                        customerId: cid,
+                                    },
                                 })
-                                .catch((e: any) => {
-                                    console.log(e);
-                                });
-                        }}
-                        className="primary-blue small"
-                        label="Save"
-                    />
+                                    .then((res: any) => {
+                                        setNotes([res.data, ...notes]);
+                                        setNoteText("");
+                                    })
+                                    .catch((e: any) => {
+                                        console.log(e);
+                                    });
+                            }}
+                            className="primary-blue small"
+                            label="Save"
+                        />
                     )}
                 </div>
             </>}

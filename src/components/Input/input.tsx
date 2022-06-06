@@ -1,10 +1,9 @@
-import {useState} from 'react';
+import React from 'react';
 import './input.scss'
 
 export default function Input(props: any){
 
     const {value, setValue, minLength, maxLength, disable, className, placeholder, type, name, testid, label, required} = props;
-    // const [value, setvalue] = useState(defaultValue);
     const masking = (e: any) => {
         let pattern = null;
         if(type == "amount"){
