@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table, Dropdown } from "atlasuikit";
+import { Icon, Button, Table, Dropdown, ButtonDropdown } from "atlasuikit";
 import { FaEllipsisH } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -37,7 +37,8 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
-  const [weAreSorryModalAction, setWeAreSorryModalAction] = useState<boolean>(false);
+  const [weAreSorryModalAction, setWeAreSorryModalAction] =
+    useState<boolean>(false);
 
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
@@ -290,16 +291,11 @@ export default function InvoiceListing() {
   }, [currentRoles]);
 
   useEffect(() => {
-    if(localStorage.contractorInvoiceState) {      
+    if (localStorage.contractorInvoiceState) {
       const rowDetails = JSON.parse(localStorage.contractorInvoiceState);
       const { id, invoiceNo, transactionType } = rowDetails;
       navigate(
-        "/pay/invoicedetails" +
-        id +
-        "/" +
-        rowDetails?.customerId +
-        "/" +
-        true,
+        "/pay/invoicedetails" + id + "/" + rowDetails?.customerId + "/" + true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -311,7 +307,7 @@ export default function InvoiceListing() {
     }
     return () => {
       localStorage.removeItem("contractorInvoiceState");
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -518,9 +514,59 @@ export default function InvoiceListing() {
   return (
     <>
       <div className="container">
-        <div className="new-invoice-button">
-          {permission?.InvoiceList?.find((str: any) => str === "Add") ===
-            "Add" && (
+        <div className="listingBtnContainer">
+          <div>
+            {permission.Role === "FinanceAR" && (
+              <>
+                {downloadDisable ? (
+                  <Button
+                    className="primary-blue medium"
+                    disabled
+                    icon={{
+                      color: "#ffff",
+                      height: "22",
+                      icon: "dollar",
+                      viewBox: "0 -2 22 22",
+                      width: "22",
+                    }}
+                    label="Add New Payment"
+                  />
+                ) : (
+                  <ButtonDropdown
+                    btnClassName="a-button primary-blue medium"
+                    menuItems={{
+                      labelKeyName: "label",
+                      options: [
+                        {
+                          label: "Invoice Payment",
+                          value: "option1",
+                        },
+                        {
+                          label: "Credit Refund",
+                          value: "option2",
+                        },
+                      ],
+                    }}
+                    onChange={function noRefCheck() {}}
+                    testIdButton="test-drop-down-button"
+                    testIdOptions="test-drop-down-button-option"
+                  >
+                    <Icon
+                      color="#ffff"
+                      height="22"
+                      icon="dollar"
+                      viewBox="0 -2 22 22"
+                      width="22"
+                    />
+                    Add New Payment
+                  </ButtonDropdown>
+                )}
+              </>
+            )}
+          </div>
+          <div className="new-invoice-button">
+            {permission?.InvoiceList?.find((str: any) => str === "Add") ===
+              "Add" && (
               <Button
                 label="New Invoice"
                 className="primary-blue medium"
@@ -532,6 +578,7 @@ export default function InvoiceListing() {
                 handleOnClick={() => navigate("/pay/newinvoice")}
               />
             )}
+          </div>
         </div>
         <div className="dropdowns">
           <div className="inputContainer">
@@ -547,19 +594,19 @@ export default function InvoiceListing() {
           <div className="pickers">
             {permission?.InvoiceList?.find((str: any) => str === "Download") ===
               "Download" && (
-                <div
-                  onClick={downloadFunction}
-                  data-testid="download"
-                  className={downloadDisable ? "downloadpointer" : "download"}
-                >
-                  <Icon
-                    className="download"
-                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                    icon="download"
-                    size="large"
-                  />
-                </div>
-              )}
+              <div
+                onClick={downloadFunction}
+                data-testid="download"
+                className={downloadDisable ? "downloadpointer" : "download"}
+              >
+                <Icon
+                  className="download"
+                  color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                  icon="download"
+                  size="large"
+                />
+              </div>
+            )}
 
             <DatepickerDropdown
               title="Date"
@@ -862,19 +909,19 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                  ...searchedTableData,
-                  // showDefaultColumn: true,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
+                    ...searchedTableData,
+                    // showDefaultColumn: true,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
                 : isClient
-                  ? {
+                ? {
                     ...clientTableData,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                  : {
+                : {
                     ...internalTabledata,
                     // showDefaultColumn: true,
                     enableMultiSelect: true,
@@ -893,16 +940,16 @@ export default function InvoiceListing() {
               } else {
                 navigate(
                   "/pay/invoicedetails" +
-                  row.id +
-                  "/" +
-                  row.customerId +
-                  "/" +
-                  isClientStr,
+                    row.id +
+                    "/" +
+                    row.customerId +
+                    "/" +
+                    isClientStr,
                   {
                     state: {
                       InvoiceId: row.invoiceNo,
                       transactionType: row.transactionType,
-                      rowDetails: row
+                      rowDetails: row,
                     },
                   }
                 );
