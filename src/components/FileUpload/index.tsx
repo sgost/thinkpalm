@@ -36,7 +36,7 @@ export default function FileUploadWidget(props: any) {
                                         width: "40",
                                     },
                                     suffix: [
-                                        getPermissions(transactionType, "Download") ?{
+                                        getPermissions(transactionType, "Download") ? {
                                             color: "#526FD6",
                                             height: "40",
                                             icon: "download",
@@ -63,41 +63,41 @@ export default function FileUploadWidget(props: any) {
                                                         console.log("error", e);
                                                     });
                                             },
-                                        }:{},
+                                        } : {},
                                         getPermissions(transactionType, "DeleteFile") ?
-                                        {
-                                            color: "#526FD6",
-                                            height: "30",
-                                            icon: "remove",
-                                            width: "30",
-                                            handleOnClick: () => {
-                                                const headers = getHeaders(
-                                                    tempToken,
-                                                    cid,
-                                                    isClient
-                                                );
+                                            {
+                                                color: "#526FD6",
+                                                height: "30",
+                                                icon: "remove",
+                                                width: "30",
+                                                handleOnClick: () => {
+                                                    const headers = getHeaders(
+                                                        tempToken,
+                                                        cid,
+                                                        isClient
+                                                    );
 
-                                                axios({
-                                                    method: "DELETE",
-                                                    url: urls.deleteFile,
-                                                    data: {
-                                                        invoiceId: id,
-                                                        documentId: documents[index].documentId,
-                                                    },
-                                                    headers: headers,
-                                                })
-                                                    .then((res: any) => {
-                                                        let cpy = [...documents];
-                                                        cpy.splice(index, 1);
-                                                        setDocuments(cpy);
+                                                    axios({
+                                                        method: "DELETE",
+                                                        url: urls.deleteFile,
+                                                        data: {
+                                                            invoiceId: id,
+                                                            documentId: documents[index].documentId,
+                                                        },
+                                                        headers: headers,
                                                     })
-                                                    .catch((e: any) => {
-                                                        console.log(e);
-                                                    });
-                                            },
-                                        }
-                                        :
-                                        {},
+                                                        .then((res: any) => {
+                                                            let cpy = [...documents];
+                                                            cpy.splice(index, 1);
+                                                            setDocuments(cpy);
+                                                        })
+                                                        .catch((e: any) => {
+                                                            console.log(e);
+                                                        });
+                                                },
+                                            }
+                                            :
+                                            {},
                                     ],
                                 }}
                                 label={{
@@ -110,76 +110,76 @@ export default function FileUploadWidget(props: any) {
                 </div>
 
                 {getPermissions(transactionType, "Browse") && (
-                <div className="uploadConatiner">
-                    <FileUpload
-                        fileList={[]}
-                        formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
-                        handleUpload={
-                            /* istanbul ignore next */
-                            (file: any) => {
-                                const headers = getHeaders(tempToken, cid, isClient);
-                                setTimeout(() => {
-                                    var formData = new FormData();
-                                    formData.append("asset", file[0]);
-                                    axios
-                                        .post(
-                                            urls.uploadFile,
+                    <div className="uploadConatiner">
+                        <FileUpload
+                            fileList={[]}
+                            formats={[".pdf", ".excel", ".jpeg", ".png", ".word"]}
+                            handleUpload={
+                                /* istanbul ignore next */
+                                (file: any) => {
+                                    const headers = getHeaders(tempToken, cid, isClient);
+                                    setTimeout(() => {
+                                        var formData = new FormData();
+                                        formData.append("asset", file[0]);
+                                        axios
+                                            .post(
+                                                urls.uploadFile,
 
-                                            formData,
-                                            {
-                                                headers: headers,
-                                            }
-                                        )
-                                        .then((res: any) => {
-                                            axios
-                                                .post(
-                                                    urls.createDocument,
-                                                    {
-                                                        invoiceId: id,
-
-                                                        document: {
-                                                            url: res.data.url,
-
-                                                            documentName: res.data.fileName,
-                                                        },
-                                                    },
-                                                    {
-                                                        headers: headers,
-                                                    }
-                                                )
-                                                .then((response: any) => {
-                                                    setDocuments([
-                                                        ...documents,
+                                                formData,
+                                                {
+                                                    headers: headers,
+                                                }
+                                            )
+                                            .then((res: any) => {
+                                                axios
+                                                    .post(
+                                                        urls.createDocument,
                                                         {
-                                                            documentId: response.data.documentId,
+                                                            invoiceId: id,
+
                                                             document: {
-                                                                documentName: res.data.fileName,
                                                                 url: res.data.url,
+
+                                                                documentName: res.data.fileName,
                                                             },
                                                         },
-                                                    ]);
-                                                    setIsFileError(false);
-                                                })
-                                                .catch((e: any) => {
-                                                    console.log(e);
-                                                    setIsFileError(true);
-                                                });
-                                        })
-                                        .catch((e: any) => {
-                                            console.log(e);
-                                            setIsFileError(true);
-                                        });
-                                });
+                                                        {
+                                                            headers: headers,
+                                                        }
+                                                    )
+                                                    .then((response: any) => {
+                                                        setDocuments([
+                                                            ...documents,
+                                                            {
+                                                                documentId: response.data.documentId,
+                                                                document: {
+                                                                    documentName: res.data.fileName,
+                                                                    url: res.data.url,
+                                                                },
+                                                            },
+                                                        ]);
+                                                        setIsFileError(false);
+                                                    })
+                                                    .catch((e: any) => {
+                                                        console.log(e);
+                                                        setIsFileError(true);
+                                                    });
+                                            })
+                                            .catch((e: any) => {
+                                                console.log(e);
+                                                setIsFileError(true);
+                                            });
+                                    });
+                                }
                             }
-                        }
-                        isError={isFileError}
-                        maxSize={25}
-                        resetFiles={function noRefCheck() {
-                            setIsFileError(null);
-                        }}
-                        title="Upload"
-                    />
-                </div>
+                            isError={isFileError}
+                            maxSize={25}
+                            resetFiles={function noRefCheck() {
+                                setIsFileError(null);
+                            }}
+                            title="Upload"
+                        />
+                    </div>
                 )}
             </div>
         </div>
