@@ -3,7 +3,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import InvoiceDetails from "../InvoiceDetails";
 import InvoiceListing from "../InvoiceListing";
 import NewInvoice from "../NewInvoice";
-import PaymentDetailPage from "../PaymentDetailPage/PaymentDetailPage";
+import PaymentDetailPage from "../PaymentDetailPage/paymentDetailPage";
 
 export default function RouterComponent() {
   return (
