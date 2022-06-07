@@ -132,6 +132,12 @@
         }
       }
 
+      .saveBtnContainer {
+        button.a-button.secondary-btn {
+          background-color: $white;
+        }
+      }
+
       button.a-button.small {
         border: 2px solid #526fd6 !important;
 
@@ -224,7 +230,7 @@
           margin-bottom: 1.875rem;
         }
 
-        div {
+        .divContainer {
           width: 25%;
           border-right-style: solid;
           border-right-width: 1px;
@@ -278,6 +284,10 @@
           border-style: hidden;
         }
 
+        .poNoInput {
+          height: 2rem;
+        }
+
         .poNo {
           border-style: solid;
           border-width: 1px;
@@ -315,7 +325,6 @@
     }
 
     .payroll {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -326,7 +335,6 @@
     }
 
     .invoice_bill_table {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -336,7 +344,6 @@
     }
 
     .master {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -482,8 +489,6 @@
           margin-right: 3rem;
 
           .notesSubContainer {
-
-
             .noteInfoBtn {
               display: flex;
               align-items: center;
