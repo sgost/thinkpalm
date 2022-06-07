@@ -1,7 +1,6 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
-
 #click_input {
   position: absolute;
   width: 13rem;
@@ -12,7 +11,6 @@
   top: 0.5rem;
   left: 0.5rem;
 }
-
 
 .newinvoice_main:first-child {
   margin-top: 0;
@@ -27,8 +25,8 @@
     display: flex;
     justify-content: space-between;
 
-    h3{
-      color: #041E42;
+    h3 {
+      color: #041e42;
     }
 
     #action_buttons {
@@ -78,6 +76,10 @@
         outline-color: #526fd6;
       }
     }
+
+    .a-dropdown__search {
+      width: 74%;
+    }
   }
 
   #container_main2 {
@@ -124,6 +126,10 @@
         }
       }
     }
+
+    .a-dropdown__search {
+      width: 74%;
+    }
   }
 
   #container_main3 {
@@ -158,7 +164,6 @@
   }
 
   .newinvoice-container2 {
-
     #icon_1 {
       display: flex;
       align-items: center;
@@ -242,7 +247,7 @@
     span.react-datepicker__label:after {
       content: "*";
       color: red;
-  }
+    }
   }
 }
 .font-color {

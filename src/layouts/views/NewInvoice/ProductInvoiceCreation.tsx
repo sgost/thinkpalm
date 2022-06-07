@@ -189,7 +189,6 @@ const ProductInvoiceCreation = ({
                     }}
                     inline={false}
                     label="Service Date"
-                    // minDate={new Date()}
                     placeholderText={item.date ? item.date : "Please Select"}
                   />
                 </div>
@@ -245,6 +244,7 @@ const ProductInvoiceCreation = ({
                       }}
                       isOpen={toggleState == i ? Open : false}
                       title={`Product Service`}
+                      search
                       options={
                         productInitialData && productInitialData[i]
                           ? productInitialData[i]
@@ -321,6 +321,7 @@ const ProductInvoiceCreation = ({
                     }}
                     isOpen={toggleState == i ? Opens : false}
                     title="Service Country"
+                    search
                     options={
                       countryInitialData && countryInitialData[i]
                         ? countryInitialData[i]
