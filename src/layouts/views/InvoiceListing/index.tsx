@@ -228,6 +228,7 @@ export default function InvoiceListing() {
     data: [],
   });
   const [downloadDisable, setDownloadDisable] = useState(true);
+  const [checkedInvoices, setCheckedInvoices] = useState<Array<any>>([]);
   const [customerID, setCustomerId] = useState("");
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [searchText, setSearchText] = useState<any>("");
@@ -384,10 +385,6 @@ export default function InvoiceListing() {
     }
   }, [searchText]);
 
-  useEffect(() => {
-    console.log("sajkdh", permission);
-  }, []);
-
   const downloadFunction = () => {
     const download = (res: any) => {
       if (res.status === 200) {
@@ -436,6 +433,8 @@ export default function InvoiceListing() {
 
   /* istanbul ignore next */
   const onRowCheckboxChange = (selectedRows: any) => {
+    console.log(selectedRows);
+    setCheckedInvoices(selectedRows);
     if (selectedRows.length) {
       setDownloadDisable(false);
     } else {
@@ -461,8 +460,52 @@ export default function InvoiceListing() {
     }
   };
 
+  const handleAddNewPaymentDisable = () => {
+    let bool = false;
+
+    if (!checkedInvoices.length) {
+      return true;
+    }
+
+    checkedInvoices.forEach((e: any) => {
+      if (e.status != 4 && e.status != 10) {
+        bool = true;
+      }
+    });
+
+    return bool;
+  };
+
+  const handleAddPaymentNavigation = (e: any) => {
+    let isClientString = isClient ? "true" : "false";
+    if (e.value === "invoicePayment") {
+      if (checkedInvoices.length === 1) {
+        navigate(
+          "/pay/invoicedetails" +
+            checkedInvoices[0].id +
+            "/" +
+            checkedInvoices[0].customerId +
+            "/" +
+            isClientString +
+            "/payments",
+          {
+            state: {
+              InvoiceId: checkedInvoices[0].invoiceNo,
+              transactionType: checkedInvoices[0].transactionType,
+              rowDetails: checkedInvoices[0],
+            },
+          }
+        );
+      }
+    }
+  };
+
   if (permission?.InvoiceList?.find((str: any) => str === "View") !== "View") {
-    return <p className="invoicelist_permission_tabe">You do not have permission to view this page.</p>;
+    return (
+      <p className="invoicelist_permission_tabe">
+        You do not have permission to view this page.
+      </p>
+    );
   }
 
   return (
@@ -472,7 +515,7 @@ export default function InvoiceListing() {
           <div>
             {permission.Role === "FinanceAR" && (
               <>
-                {downloadDisable ? (
+                {handleAddNewPaymentDisable() ? (
                   <Button
                     className="primary-blue medium"
                     disabled
@@ -493,15 +536,15 @@ export default function InvoiceListing() {
                       options: [
                         {
                           label: "Invoice Payment",
-                          value: "option1",
+                          value: "invoicePayment",
                         },
                         {
                           label: "Credit Refund",
-                          value: "option2",
+                          value: "creditRefund",
                         },
                       ],
                     }}
-                    onChange={function noRefCheck() {}}
+                    onChange={handleAddPaymentNavigation}
                     testIdButton="test-drop-down-button"
                     testIdOptions="test-drop-down-button-option"
                   >
