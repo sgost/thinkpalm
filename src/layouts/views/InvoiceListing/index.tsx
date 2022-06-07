@@ -462,7 +462,7 @@ export default function InvoiceListing() {
   };
 
   if (permission?.InvoiceList?.find((str: any) => str === "View") !== "View") {
-    return <p>You do not have permission to view this page.</p>;
+    return <p className="invoicelist_permission_tabe">You do not have permission to view this page.</p>;
   }
 
   return (
