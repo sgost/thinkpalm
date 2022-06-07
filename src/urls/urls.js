@@ -120,11 +120,6 @@ export const getGenerateSinglePdfUrl = (singleInvoiceId) => {
 };
 
 export const getGenerateMultiplePdfUrl = () => {
-  // return (
-  //   baseURL +
-  //   services.atlasInvoiceService +
-  //   `/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`
-  // );
   return baseURL + services.atlasInvoiceService + `/invoices/DownloadInvoices`;
 };
 
