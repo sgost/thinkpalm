@@ -55,7 +55,7 @@
             margin-right: -2rem;
           }
         }
-        
+
         .download {
           display: flex;
           align-items: center;
@@ -293,6 +293,15 @@
           padding: 0.4444rem;
           text-align: center;
         }
+      }
+    }
+
+    .paymentDisplayContainer {
+      background-color: $white;
+      border-radius: 0.4444rem;
+      .paymentTopHeader{
+        display: flex;
+        justify-content: space-between;
       }
     }
 
