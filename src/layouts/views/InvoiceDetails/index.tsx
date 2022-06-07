@@ -1376,23 +1376,6 @@ export default function InvoiceDetails() {
         </div>
       </div>
 
-      <div className="paymentDisplayContainer">
-        <div className="paymentTopHeader">
-          <p>Payment Details</p>
-          <div className="paymentEdit">
-            <Button
-              className="secondary-btn medium"
-              icon={{
-                color: "#526FD6",
-                icon: "edit",
-                size: "medium",
-              }}
-              label="Edit"
-            />
-          </div>
-        </div>
-      </div>
-
       {showAutoApprovedToast && (
         <div className="toast">
           {isAutoApprove === true
