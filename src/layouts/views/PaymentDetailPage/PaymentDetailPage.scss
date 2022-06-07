@@ -1,0 +1,323 @@
+@import "../../../styles/variables";
+@import "../../../styles/styles";
+
+.paymentDetailPageContainer {
+  .paymentDetailPageHeaderRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 1.333rem;
+  }
+
+  .paymentPageInvoiceInfo {
+    background-color: $white;
+    border-radius: 0.4444rem;
+    margin-bottom: 2.333rem;
+
+    .paymentPageTopBar {
+      background-color: $secondary-blue;
+      border-top-left-radius: 0.4444rem;
+      border-top-right-radius: 0.4444rem;
+      padding: 0rem 5rem;
+      padding-top: 5.0556rem;
+      padding-bottom: 3.4444rem;
+
+      .paymentHeaderContainer {
+        display: flex;
+        flex-direction: column;
+
+        .paymentTopBarrow {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          margin-bottom: 3rem;
+          height: 3.5rem;
+
+          .paymentInvoivceNo {
+            display: flex;
+            align-items: center;
+            gap: 0.333rem;
+
+            p {
+              color: $white;
+              font-size: 1.778rem;
+              font-weight: 400;
+              margin: 0;
+            }
+          }
+
+          .paymentDetailPageamount {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            p {
+              color: #cbd4f3;
+              margin: 0px;
+              font-size: 1.111rem;
+
+              span {
+                color: $white;
+                font-size: 1.111rem;
+              }
+            }
+          }
+        }
+
+        p {
+          color: $white;
+          font-size: 1.22rem;
+          font-weight: 400;
+          margin: 0;
+        }
+      }
+    }
+
+    .paaymentInstallmetOuterContainer {
+      display: flex;
+      flex-direction: column;
+
+      .paymentInstallmentContainer {
+        display: flex;
+        padding: 4rem 2rem 0rem;
+
+        .paymentInstallmentDatepicker {
+          margin-left: 1rem;
+          .a-dpicker .react-datepicker__input-container input {
+            width: 8.778rem;
+          }
+        }
+
+        .paymentInstallmentContainerDropdowns {
+          margin-left: 1rem;
+          .a-dropdown {
+            width: 200px;
+            z-index: inherit;
+          }
+        }
+
+        .PaymentPageTotalAmount {
+          margin-top: -3rem;
+          margin-left: 1rem;
+          p {
+            color: $primary-blue;
+            margin-bottom: 0rem;
+            font-weight: 600;
+          }
+          .amountPaymentPage {
+            color: $primary-blue;
+            background-color: $active;
+            padding: 1rem 1rem;
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 500;
+          }
+          .fullAmountPaymentCheckbox {
+            margin-top: 0.7rem;
+            margin-left: 0.5rem;
+            .a-checkbox-wrapper input[type="checkbox"] {
+              height: 0.8rem;
+              width: 0.8rem;
+            }
+            .a-checkbox-wrapper label {
+              font-weight: 500;
+              top: 0rem;
+            }
+          }
+        }
+      }
+
+      .addPaymentInstallmentButton {
+        button.a-button.secondary-btn {
+          border: 0px;
+          padding: 1rem 2rem 4rem;
+        }
+        button.a-button.medium {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .filesNotes {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 2.333rem;
+
+    .box {
+      width: 40%;
+      height: 45.75rem;
+      border-radius: 10px;
+      background-color: $white;
+      padding: 4rem;
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 400;
+      }
+
+      p {
+        font-size: 1.125rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .notesContainer {
+        height: 24rem;
+        margin-top: 1rem;
+        margin-right: 3rem;
+
+        .notesSubContainer {
+          .noteInfoBtn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .noteInfo {
+              display: flex;
+              align-items: center;
+
+              span {
+                color: $medium-gray;
+                font-size: 0.8rem;
+              }
+            }
+
+            .noteBtn {
+              display: flex;
+              gap: 1rem;
+            }
+          }
+
+          .note {
+            p {
+              display: flex;
+              background-color: $active;
+              padding: 1rem;
+              border-radius: 4px;
+              color: $primary-gray;
+              margin: 1rem 0px;
+              font-size: 0.8rem;
+              word-break: break-all;
+              line-height: 2rem;
+            }
+          }
+        }
+      }
+
+      .inpContinaer {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+        textarea {
+          margin-bottom: 1rem;
+          font-family: "Circular", sans-serif;
+          padding: 0.8rem;
+          padding-bottom: 3rem;
+          resize: none;
+        }
+
+        textarea:focus {
+          outline-color: $primary-blue;
+        }
+
+        span {
+          color: $medium-gray;
+          font-size: 0.7rem;
+        }
+      }
+
+      .btnContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .btnContainercheckbox {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 1rem;
+          width: 100%;
+
+          .a-checkbox-wrapper {
+            margin: 0 0.5rem 0 0;
+          }
+
+          .a-checkbox-wrapper input[type="checkbox"] {
+            width: 0.7rem;
+            height: 0.7rem;
+          }
+
+          label {
+            font-size: 0.7rem;
+            display: none;
+          }
+
+          .check_wrapper {
+            display: flex;
+            align-items: center;
+          }
+
+          .check_label {
+            display: flex;
+            font-size: 0.64rem;
+            cursor: pointer;
+          }
+        }
+
+        button.a-button.small {
+          width: 7.31rem;
+        }
+      }
+    }
+
+    .box2 {
+      width: 60%;
+      height: 45.75rem;
+      border-radius: 10px;
+      background-color: $white;
+      padding: 4rem;
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 400;
+      }
+
+      p {
+        font-size: 1.125rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .boxsubcontainer {
+        height: 38rem;
+        overflow: auto;
+      }
+
+      .fileHandlerContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .a-fhandler {
+          width: 88%;
+        }
+      }
+
+      .uploadConatiner {
+        display: flex;
+        margin-top: 5rem;
+        width: 98%;
+
+        .a-upload {
+          width: 100%;
+        }
+
+        .a-upload__label {
+          font-size: 1.125rem;
+        }
+      }
+    }
+  }
+
+
+}
