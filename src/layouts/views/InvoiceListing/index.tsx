@@ -323,9 +323,9 @@ export default function InvoiceListing() {
           transactionTypeLabel: item.transactionTypeLabel || "",
           createdDate: format(new Date(item.createdDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
-          totalAmount: `USD ${cFormat.format(item.totalAmount).slice(1)}` || "",
+          totalAmount: item.currency.code + " " + cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
-            `USD ${cFormat.format(item.invoiceBalance).slice(1)}` || "",
+            item.currency.code + " " + cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
             value: "Not Exported",
             color: "#767676",
