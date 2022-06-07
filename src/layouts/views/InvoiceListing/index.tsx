@@ -386,6 +386,7 @@ export default function InvoiceListing() {
   }, [searchText]);
 
   const downloadFunction = () => {
+    console.log(multiInvoiceId);
     const download = (res: any) => {
       if (res.status === 200) {
         setDownloadDisable(false);
@@ -415,12 +416,12 @@ export default function InvoiceListing() {
         });
     } else if (multiInvoiceId) {
       setShowSuccessToast({ ...showSuccessToast, type: true });
-      const multiDownloadInvoiceId = multiInvoiceId.join(",");
-      const multiPdfApi = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
+      const multiPdfApi = getGenerateMultiplePdfUrl();
       axios({
-        method: "get",
+        method: "post",
         url: multiPdfApi,
         headers: headers.headers,
+        data: multiInvoiceId,
       })
         .then((res: any) => {
           download(res);
