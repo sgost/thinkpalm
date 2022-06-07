@@ -232,11 +232,7 @@ export const updateInvoiceStatus = (invoiceId) => {
 };
 
 export const productInvoice = () => {
-  return (
-    metaDataUrl +
-    services.apngMetaDataService +
-    `/Products?orderBy=GLDescription`
-  );
+  return metaDataUrl + services.apngMetaDataService + `/Products?sort=1&orderBy=GLDescription`;
 };
 
 export const CountryApi = () => {

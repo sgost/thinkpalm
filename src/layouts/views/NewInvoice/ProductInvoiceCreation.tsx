@@ -344,6 +344,7 @@ const ProductInvoiceCreation = ({
                       placeholder="0"
                       type="number"
                       min="0"
+                      pattern="[+-]?\d+(?:[.,]\d+)?"
                       defaultValue={item.quantity}
                       onKeyDown={(e) => {
                         ["e", "E", "+", "-", "."].includes(e.key) &&

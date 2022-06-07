@@ -50,6 +50,12 @@
           }
         }
 
+        .addPaymentButton {
+          button.a-button.medium {
+            margin-right: -2rem;
+          }
+        }
+
         .download {
           display: flex;
           align-items: center;
@@ -315,7 +321,6 @@
     }
 
     .payroll {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -326,7 +331,6 @@
     }
 
     .invoice_bill_table {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -336,7 +340,6 @@
     }
 
     .master {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -482,8 +485,6 @@
           margin-right: 3rem;
 
           .notesSubContainer {
-
-
             .noteInfoBtn {
               display: flex;
               align-items: center;
