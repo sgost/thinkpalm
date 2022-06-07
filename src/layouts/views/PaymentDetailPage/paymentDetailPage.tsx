@@ -6,7 +6,7 @@ import {
   DatePicker,
   Dropdown,
   Checkbox,
-} from "atlasuikit";
+} from "atlasuikit"; 
 import { useNavigate } from "react-router-dom";
 import "./paymentDetailPage.scss";
 import NotesWidget from "../../../components/Notes";
