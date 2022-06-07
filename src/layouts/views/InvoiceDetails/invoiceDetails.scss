@@ -373,7 +373,7 @@
       flex-direction: column;
       align-items: flex-end;
       background-color: $white;
-      padding: 20px;
+      padding: 1.1111rem;
 
       .rowFee {
         display: flex;
@@ -418,7 +418,7 @@
         h3 {
           color: $primary-blue;
           background-color: $active;
-          padding: 16px;
+          padding: 0.8889rem;
           border-radius: 8px;
         }
       }
@@ -427,7 +427,7 @@
     .countryHeader {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 0.5556rem;
 
       img {
         width: 1.563rem;

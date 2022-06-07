@@ -163,7 +163,7 @@
           flex-direction: column;
           align-items: flex-end;
           background-color: $white;
-          padding: 20px;
+          padding: 1.1111rem;
           max-width: 87rem;
           .newInvoiceRowFee {
             display: flex;
@@ -255,7 +255,7 @@
           flex-direction: column;
           align-items: flex-end;
           background-color: $white;
-          padding: 20px;
+          padding: 1.1111rem;
           .newInvoiceRowFee {
             display: flex;
             border-bottom-style: solid;
@@ -295,7 +295,7 @@
             h3 {
               color: $primary-blue;
               background-color: $active;
-              padding: 16px;
+              padding: 0.8889rem;
               border-radius: 8px;
             }
           }

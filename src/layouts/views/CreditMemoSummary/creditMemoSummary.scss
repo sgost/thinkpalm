@@ -39,13 +39,12 @@
 
       .quantity-box {
         width: 5.8rem;
-        margin-right: 2.8rem;
+        margin-right: 2.2778rem;
       }
 
       .amount-box {
-        width: 80%;
+        width: 55.6%;
       }
-
       .UI-flex {
         display: flex;
       }
@@ -114,7 +113,7 @@
 
       .line-between {
         width: -webkit-fill-available;
-        border-bottom: 1px solid #3e3e3e !important;
+        border-bottom: 1px solid #B4B3BB !important;
         margin-top: 3.6rem !important;
         margin-bottom: 2.063rem;
       }
@@ -194,10 +193,10 @@
           .total {
             color: $primary-blue;
             background-color: $active;
-            padding: 18px 32px;
-            border-radius: 10px;
+            padding: 1rem 1.7778rem;
+            border-radius: 0.5556rem;
             font-weight: 600;
-            font-size: 24px;
+            font-size: 1.3333rem;
           }
         }
       }
@@ -234,19 +233,30 @@
         width: 7.563rem !important;
         height: 3.125rem !important;
         font-size: 1.25rem;
+        line-height: 1.3333rem;
+        svg{
+          width: 1.3333rem;
+          height: 1.3333rem;
+        }
       }
 
       .delete {
         margin-right: 1.3rem;
-        width: 9.563rem !important;
+        width: 11.563rem !important;
         height: 3.125rem !important;
         font-size: 1.25rem;
+        line-height: 1.3333rem;
+        svg{
+          width: 1.6667rem;
+          height: 1.6667rem;
+        }
       }
 
       .save-changes {
         width: 10.725rem !important;
         height: 3.125rem !important;
         font-size: 1.25rem;
+        line-height: 1.3333rem;
       }
 
       .save {
@@ -254,6 +264,7 @@
         width: 7.563rem !important;
         height: 3.125rem !important;
         font-size: 1.25rem;
+        line-height: 1.3333rem;
       }
     }
   }

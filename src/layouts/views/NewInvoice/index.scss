@@ -2,6 +2,15 @@
 @import "../../../styles/styles";
 
 .atlas-payment-invoices {
+    .invoicelist_permission_tabe{
+        display: flex;
+        justify-content: center;
+        height: 52vh;
+        align-items: center;
+    }
+    .react-datepicker-popper{
+        z-index: 999;
+      }
     .newinvoice-container {
         display: flex;
         flex-direction: column;

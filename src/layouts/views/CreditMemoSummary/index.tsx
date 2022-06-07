@@ -397,7 +397,7 @@ export default function CreditMemoSummary(props: any) {
                             icon={{
                               color: "#fff",
                               icon: "edit",
-                              size: "large",
+                              size: "medium",
                             }}
                             label="Edit"
                             handleOnClick={() => {

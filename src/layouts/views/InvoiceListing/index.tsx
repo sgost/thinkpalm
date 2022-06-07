@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table, Dropdown } from "atlasuikit";
+import { Icon, Button, Table, Dropdown, ButtonDropdown } from "atlasuikit";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
@@ -33,7 +33,8 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
-  const [weAreSorryModalAction, setWeAreSorryModalAction] = useState<boolean>(false);
+  const [weAreSorryModalAction, setWeAreSorryModalAction] =
+    useState<boolean>(false);
 
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
@@ -227,6 +228,7 @@ export default function InvoiceListing() {
     data: [],
   });
   const [downloadDisable, setDownloadDisable] = useState(true);
+  const [checkedInvoices, setCheckedInvoices] = useState<Array<any>>([]);
   const [customerID, setCustomerId] = useState("");
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [searchText, setSearchText] = useState<any>("");
@@ -283,16 +285,11 @@ export default function InvoiceListing() {
   }, [currentRoles]);
 
   useEffect(() => {
-    if(localStorage.contractorInvoiceState) {      
+    if (localStorage.contractorInvoiceState) {
       const rowDetails = JSON.parse(localStorage.contractorInvoiceState);
       const { id, invoiceNo, transactionType } = rowDetails;
       navigate(
-        "/pay/invoicedetails" +
-        id +
-        "/" +
-        rowDetails?.customerId +
-        "/" +
-        true,
+        "/pay/invoicedetails" + id + "/" + rowDetails?.customerId + "/" + true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -304,7 +301,7 @@ export default function InvoiceListing() {
     }
     return () => {
       localStorage.removeItem("contractorInvoiceState");
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -388,11 +385,8 @@ export default function InvoiceListing() {
     }
   }, [searchText]);
 
-  useEffect(() => {
-    console.log("sajkdh", permission);
-  }, []);
-
   const downloadFunction = () => {
+    console.log(multiInvoiceId);
     const download = (res: any) => {
       if (res.status === 200) {
         setDownloadDisable(false);
@@ -422,12 +416,12 @@ export default function InvoiceListing() {
         });
     } else if (multiInvoiceId) {
       setShowSuccessToast({ ...showSuccessToast, type: true });
-      const multiDownloadInvoiceId = multiInvoiceId.join(",");
-      const multiPdfApi = getGenerateMultiplePdfUrl(multiDownloadInvoiceId);
+      const multiPdfApi = getGenerateMultiplePdfUrl();
       axios({
-        method: "get",
+        method: "post",
         url: multiPdfApi,
         headers: headers.headers,
+        data: multiInvoiceId,
       })
         .then((res: any) => {
           download(res);
@@ -440,6 +434,8 @@ export default function InvoiceListing() {
 
   /* istanbul ignore next */
   const onRowCheckboxChange = (selectedRows: any) => {
+    console.log(selectedRows);
+    setCheckedInvoices(selectedRows);
     if (selectedRows.length) {
       setDownloadDisable(false);
     } else {
@@ -465,16 +461,110 @@ export default function InvoiceListing() {
     }
   };
 
+  const handleAddNewPaymentDisable = () => {
+    let bool = false;
+
+    if (!checkedInvoices.length) {
+      return true;
+    }
+
+    checkedInvoices.forEach((e: any) => {
+      if (e.status != 4 && e.status != 10) {
+        bool = true;
+      }
+    });
+
+    return bool;
+  };
+
+  const handleAddPaymentNavigation = (e: any) => {
+    let isClientString = isClient ? "true" : "false";
+    if (e.value === "invoicePayment") {
+      if (checkedInvoices.length === 1) {
+        navigate(
+          "/pay/invoicedetails" +
+            checkedInvoices[0].id +
+            "/" +
+            checkedInvoices[0].customerId +
+            "/" +
+            isClientString +
+            "/payments",
+          {
+            state: {
+              InvoiceId: checkedInvoices[0].invoiceNo,
+              transactionType: checkedInvoices[0].transactionType,
+              rowDetails: checkedInvoices[0],
+            },
+          }
+        );
+      }
+    }
+  };
+
   if (permission?.InvoiceList?.find((str: any) => str === "View") !== "View") {
-    return <p>You do not have permission to view this page.</p>;
+    return (
+      <p className="invoicelist_permission_tabe">
+        You do not have permission to view this page.
+      </p>
+    );
   }
 
   return (
     <>
       <div className="container">
-        <div className="new-invoice-button">
-          {permission?.InvoiceList?.find((str: any) => str === "Add") ===
-            "Add" && (
+        <div className="listingBtnContainer">
+          <div>
+            {permission.Role === "FinanceAR" && (
+              <>
+                {handleAddNewPaymentDisable() ? (
+                  <Button
+                    className="primary-blue medium"
+                    disabled
+                    icon={{
+                      color: "#ffff",
+                      height: "22",
+                      icon: "dollar",
+                      viewBox: "0 -2 22 22",
+                      width: "22",
+                    }}
+                    label="Add New Payment"
+                  />
+                ) : (
+                  <ButtonDropdown
+                    btnClassName="a-button primary-blue medium"
+                    menuItems={{
+                      labelKeyName: "label",
+                      options: [
+                        {
+                          label: "Invoice Payment",
+                          value: "invoicePayment",
+                        },
+                        {
+                          label: "Credit Refund",
+                          value: "creditRefund",
+                        },
+                      ],
+                    }}
+                    onChange={handleAddPaymentNavigation}
+                    testIdButton="test-drop-down-button"
+                    testIdOptions="test-drop-down-button-option"
+                  >
+                    <Icon
+                      color="#ffff"
+                      height="22"
+                      icon="dollar"
+                      viewBox="0 -2 22 22"
+                      width="22"
+                    />
+                    Add New Payment
+                  </ButtonDropdown>
+                )}
+              </>
+            )}
+          </div>
+          <div className="new-invoice-button">
+            {permission?.InvoiceList?.find((str: any) => str === "Add") ===
+              "Add" && (
               <Button
                 label="New Invoice"
                 className="primary-blue medium"
@@ -486,6 +576,7 @@ export default function InvoiceListing() {
                 handleOnClick={() => navigate("/pay/newinvoice")}
               />
             )}
+          </div>
         </div>
         <div className="dropdowns">
           <div className="inputContainer">
@@ -501,19 +592,19 @@ export default function InvoiceListing() {
           <div className="pickers">
             {permission?.InvoiceList?.find((str: any) => str === "Download") ===
               "Download" && (
-                <div
-                  onClick={downloadFunction}
-                  data-testid="download"
-                  className={downloadDisable ? "downloadpointer" : "download"}
-                >
-                  <Icon
-                    className="download"
-                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                    icon="download"
-                    size="large"
-                  />
-                </div>
-              )}
+              <div
+                onClick={downloadFunction}
+                data-testid="download"
+                className={downloadDisable ? "downloadpointer" : "download"}
+              >
+                <Icon
+                  className="download"
+                  color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                  icon="download"
+                  size="large"
+                />
+              </div>
+            )}
 
             <DatepickerDropdown
               title="Date"
@@ -816,17 +907,17 @@ export default function InvoiceListing() {
             options={
               searchText
                 ? {
-                  ...searchedTableData,
-                  enableMultiSelect: true,
-                  onRowCheckboxChange: onRowCheckboxChange,
-                }
+                    ...searchedTableData,
+                    enableMultiSelect: true,
+                    onRowCheckboxChange: onRowCheckboxChange,
+                  }
                 : isClient
-                  ? {
+                ? {
                     ...clientTableData,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
                   }
-                  : {
+                : {
                     ...internalTabledata,
                     enableMultiSelect: true,
                     onRowCheckboxChange: onRowCheckboxChange,
@@ -844,16 +935,16 @@ export default function InvoiceListing() {
               } else {
                 navigate(
                   "/pay/invoicedetails" +
-                  row.id +
-                  "/" +
-                  row.customerId +
-                  "/" +
-                  isClientStr,
+                    row.id +
+                    "/" +
+                    row.customerId +
+                    "/" +
+                    isClientStr,
                   {
                     state: {
                       InvoiceId: row.invoiceNo,
                       transactionType: row.transactionType,
-                      rowDetails: row
+                      rowDetails: row,
                     },
                   }
                 );
