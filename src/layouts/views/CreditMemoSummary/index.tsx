@@ -247,7 +247,9 @@ export default function CreditMemoSummary(props: any) {
   const reCalculateTotal = () => {
     var subtotal = 0;
     for (let a of creditMemoData.invoiceItems) {
-      subtotal = subtotal + parseInt(a.totalAmount);
+      // removed parseInt beacuse it is creating problem in decimal values
+      // subtotal = subtotal + parseInt(a.totalAmount);
+      subtotal = subtotal + a.totalAmount;
     }
     setSubTotalAmount(subtotal);
     setVatAmount(subtotal * (vatValue / 100));

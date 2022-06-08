@@ -9,7 +9,8 @@ export default function Input(props: any){
         if(type == "amount"){
             pattern = /[0-9]|\./;        
         }else if(type == "number"){
-            pattern = /[0-9]/;
+            // pattern = /[0-9]/;
+            pattern = /[+-]?\d+(?:[.,]\d+)?/;
         }
 
         if(pattern && !pattern.test(e.key)){

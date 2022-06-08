@@ -4,13 +4,19 @@ import "./InvoicePreviewPop.scss";
 import { getCreditMemoStep4Data } from "../../../apis/apis";
 import moment from "moment";
 import axios from "axios";
-import { urls } from "../../../urls/urls";
+import { getHeaders, urls } from "../../../urls/urls";
 
 const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
+  const tempToken = localStorage.getItem("accessToken");
+  const cid = localStorage.getItem("current-org-id");
+
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
 
   useEffect(() => {
+    const headers = {
+      headers: getHeaders(tempToken, cid, "false"),
+    };
     getCreditMemoStep4Data(invoiceId)
       .then((res: any) => {
         setInvoiceData(res?.data);
@@ -20,7 +26,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
       });
 
     axios
-      .get(urls.countries)
+      .get(urls.countries, headers)
       .then((countryRes: any) => {
         setCountriesData(countryRes);
       })
@@ -31,7 +37,6 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
 
   const getCustlBillingCurrency = () => {
     if (countriesData?.data && invoiceData) {
-
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === invoiceData.currencyId
       );
@@ -47,7 +52,10 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const amountPush = todos.map((item: any) =>
     emptyAmount.push(item.quantity * item.amount)
   );
-  const newAmount = emptyAmount.reduce((partialSum: any, a: any) => partialSum + a, 0);
+  const newAmount = emptyAmount.reduce(
+    (partialSum: any, a: any) => partialSum + a,
+    0
+  );
 
   return (
     <div id="popover_main">
