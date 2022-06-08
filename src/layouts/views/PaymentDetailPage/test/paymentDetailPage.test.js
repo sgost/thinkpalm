@@ -54,6 +54,5 @@ describe("Payment details page", () => {
 
     const addPaymentInstallmentButton = await screen.findByText("Add payment Installment");
     fireEvent.click(addPaymentInstallmentButton)
-    
   });
 });
