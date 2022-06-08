@@ -968,3 +968,26 @@
     }
   }
 }
+
+.toast {
+  position: fixed;
+  bottom: 0;
+  display: flex !important;
+  background: #041e42;
+  right: 3rem;
+  color: #ffffff;
+  width: 21.5rem;
+  height: 4.75rem;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 9999;
+  opacity: 1 !important;
+  padding: 1rem;
+
+  &__action {
+      background: #526FD6;
+      border-radius: 100%;
+      display: flex;
+      cursor: pointer;
+  }
+}

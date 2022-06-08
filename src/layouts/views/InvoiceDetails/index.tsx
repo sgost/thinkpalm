@@ -1745,6 +1745,7 @@ export default function InvoiceDetails() {
           invoiceId={state.InvoiceId}
           navigate={navigate}
           totalAmount={apiData.data?.invoice?.totalAmount}
+          state={state}
         ></BillsTable>
       )}
 
