@@ -475,6 +475,13 @@ describe("Invoice details decline api fail case handling", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "true",
     }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
     const mock = new MockAdapter(axios);
 
     mock
@@ -648,6 +655,11 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
@@ -747,6 +759,11 @@ describe("void test cases on Apprroved Create Api Failed", () => {
       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
+    }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
     }));
     const mock = new MockAdapter(axios);
 
@@ -848,6 +865,11 @@ describe("void test cases on Apprroved Void Api Failed", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 4;
@@ -947,6 +969,11 @@ describe("void test cases on Apprroved and click on cancel", () => {
       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
+    }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
     }));
     const mock = new MockAdapter(axios);
 
@@ -1252,6 +1279,11 @@ describe("delete test cases on AR Reveiew on true", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 2;
@@ -1331,6 +1363,11 @@ describe("delete test cases on AR Reveiew click on cancel button", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 2;
@@ -1409,6 +1446,11 @@ describe("delete test cases on AR Reveiew on false", () => {
       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
+    }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
     }));
     const mock = new MockAdapter(axios);
 
@@ -1490,6 +1532,11 @@ describe("delete test cases on AR Reveiew on api fail", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mockapidata.resData.invoice.status = 2;
@@ -1568,6 +1615,11 @@ describe("Invoice details auto approve checkbox click", () => {
       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
+    }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
     }));
     const mock = new MockAdapter(axios);
 
@@ -1650,6 +1702,11 @@ describe("Invoice details auto approve checkbox click api fail", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "false",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
@@ -1714,6 +1771,11 @@ describe("Invoice details fee api fail", () => {
       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "true",
+    }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
     }));
     const mock = new MockAdapter(axios);
 
@@ -2114,6 +2176,11 @@ describe("Invoice details employeeBreakDown api fail", () => {
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
       isClient: "true",
     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
@@ -2227,7 +2294,7 @@ describe("Invoice details view change log click", () => {
         <InvoiceDetails />
       </HashRouter>
     );
-
+      return
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
@@ -2237,7 +2304,7 @@ describe("Invoice details view change log click", () => {
       screen.getByPlaceholderText(/Add a note here.../)
     );
     fireEvent.change(input, { target: { value: "Pending" } });
-    const publish = screen.getByText(/Save/);
+    const publish = await waitFor(() => screen.getByText(/Save/));
     fireEvent.click(publish);
 
     const changeViewText = await screen.findByText(/View Change Log/);
