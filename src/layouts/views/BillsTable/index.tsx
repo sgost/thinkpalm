@@ -50,6 +50,7 @@ export default function BillsTable(props: any) {
     localStorage.removeItem("redirectingReferenceNumber");
     localStorage.removeItem("voidedInvoice");
 
+    /* istanbul ignore next */
     useEffect(() => {
         if (state?.referenceNumber) {
             setShowToast(true);
@@ -58,6 +59,7 @@ export default function BillsTable(props: any) {
         }
     }, [state?.referenceNumber, state?.isMoveBills]);
 
+    /* istanbul ignore next */
     useEffect(() => {
         let data: any = [];
         let paysConverted = 0;
@@ -83,6 +85,7 @@ export default function BillsTable(props: any) {
         setTableData(data);
     }, [rawData])
 
+    /* istanbul ignore next */
     useEffect(() => {
         if (props?.tableData?.data) {
             setRawData(props?.tableData?.data || []);
@@ -221,6 +224,7 @@ export default function BillsTable(props: any) {
             });
     };
 
+    /* istanbul ignore next */
     const handleClose = () => {
         setRejectBanner(false);
         setOpenRejectReason(false);
