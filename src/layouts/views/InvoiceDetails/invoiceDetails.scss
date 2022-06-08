@@ -138,6 +138,15 @@
         }
       }
 
+      .saveBtnContainer {
+        button.a-button.secondary-btn {
+          background-color: $white;
+        }
+        button.a-button.small {
+          width: 9.31rem;
+        }
+      }
+
       button.a-button.small {
         border: 2px solid #526fd6 !important;
 
@@ -230,12 +239,25 @@
           margin-bottom: 1.875rem;
         }
 
-        div {
+        .divContainer {
           width: 25%;
           border-right-style: solid;
           border-right-width: 1px;
           border-color: #ebebed;
           padding: 0rem 4rem;
+
+          .dpContainer {
+            .a-dpicker__container {
+              width: 14rem;
+            }
+            .a-dpicker .react-datepicker__input-container input {
+              width: 10.778rem;
+            }
+          }
+
+          .dpMidMargin {
+            margin-bottom: 1rem;
+          }
         }
 
         .autoapproveContainer {
@@ -282,6 +304,10 @@
 
         .lastCloumn {
           border-style: hidden;
+        }
+
+        .poNoInput {
+          height: 2rem;
         }
 
         .poNo {

@@ -91,29 +91,39 @@ export default function CreditMemoSummary(props: any) {
       .catch((err) => {
         console.log(err);
       });
-    setCountryOptions(
-      serviceCountries.map((x: any) => {
-        return {
-          isSelected: false,
-          label: x.text,
-          value: x.value,
-        };
-      })
-    );
-    let countryArr: any = [];
-    creditMemoData.invoiceItems.forEach((item: any) => {
-      countryArr.push(
+      
+  
+  }, []);
+
+  useEffect(() => {
+
+    if(serviceCountries){
+      setCountryOptions(
         serviceCountries.map((x: any) => {
           return {
-            isSelected: x.value == item.serviceCountry,
+            isSelected: false,
             label: x.text,
             value: x.value,
           };
         })
       );
-    });
-    setMultipleCountryArr(countryArr);
-  }, []);
+      let countryArr: any = [];
+      creditMemoData.invoiceItems.forEach((item: any) => {
+        countryArr.push(
+          serviceCountries.map((x: any) => {
+            return {
+              isSelected: x.value == item.serviceCountry,
+              label: x.text,
+              value: x.value,
+            };
+          })
+        );
+      });
+      setMultipleCountryArr(countryArr);
+    }
+   
+  },[serviceCountries] )
+
 
   const toCurrencyFormat = (amount: any) => {
     const cFormat = new Intl.NumberFormat("en-US", {

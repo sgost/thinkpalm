@@ -8,6 +8,7 @@ import {
   Modal,
   Cards,
   Logs,
+  DatePicker,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -1070,6 +1071,7 @@ export default function InvoiceDetails() {
                 </div>
               </div>
             )}
+
           {status === "Approved" &&
             getPermissions(state.transactionType, "Void") && (
               <div className="void-button">
@@ -1121,6 +1123,13 @@ export default function InvoiceDetails() {
             )}
           </div>
 
+          <div className="saveBtnContainer">
+            {(status === "AR Review" || status === "Open") &&
+              getPermissions(state.transactionType, "Edit") && (
+                <Button className="secondary-btn small" label="Save" />
+              )}
+          </div>
+
           {(status === "Approved" &&
             state.transactionType !== 4 &&
             state.transactionType !== 7) ||
@@ -1157,10 +1166,10 @@ export default function InvoiceDetails() {
             <></>
           )}
 
-          <div className="decline-invoice">
-            {(status === "Pending Approval" ||
-              (status === "AR Review" && state.transactionType !== 1)) &&
-              getPermissions(state.transactionType, "Reject") && (
+          {(status === "Pending Approval" ||
+            (status === "AR Review" && state.transactionType !== 1)) &&
+            getPermissions(state.transactionType, "Reject") && (
+              <div className="decline-invoice">
                 <Button
                   data-testid="decline-button"
                   disabled={deleteDisableButtons === true}
@@ -1173,8 +1182,8 @@ export default function InvoiceDetails() {
                   }}
                   handleOnClick={() => setIsOpen(true)}
                 />
-              )}
-          </div>
+              </div>
+            )}
 
           <div>
             {status === "AR Review" &&
@@ -1283,11 +1292,11 @@ export default function InvoiceDetails() {
         </div>
 
         <div className="infoDetails">
-          <div className="column1">
+          <div className="column1 divContainer">
             <p className="heading">From</p>
             <p className="value">{topPanel.from}</p>
           </div>
-          <div>
+          <div className="divContainer">
             <p className="heading">To</p>
             <p className="value">{topPanel.to}</p>
             <p className="address">
@@ -1303,13 +1312,27 @@ export default function InvoiceDetails() {
             {state.transactionType != 7 && (
               <>
                 <p>PO Number</p>
-                <p className="poNo">{topPanel.poNumber}</p>
+                {status === "AR Review" || status === "Open" ? (
+                  <input type="number" className="poNoInput" />
+                ) : (
+                  <p className="value">{topPanel.poNumber} 009</p>
+                )}
               </>
             )}
           </div>
-          <div>
+          <div className="divContainer">
             <p className="heading">Invoice Date</p>
-            <p className="value">{topPanel.invoiceDate}</p>
+            {status === "AR Review" || status === "Open" ? (
+              <div className="dpContainer">
+                <DatePicker
+                  placeholderText={moment(topPanel.invoiceDate).format(
+                    "DD/MMM/YYYY"
+                  )}
+                />
+              </div>
+            ) : (
+              <p className="value">{topPanel.invoiceDate}</p>
+            )}
 
             {state.transactionType != 7 && (
               <>
@@ -1318,7 +1341,17 @@ export default function InvoiceDetails() {
                     {status !== "Open" && (
                       <>
                         <p className="heading">Invoice Changes</p>
-                        <p className="value">{topPanel.invoiceApproval}</p>
+                        {status === "AR Review" || status === "Open" ? (
+                          <div className="dpContainer dpMidMargin">
+                            <DatePicker
+                              placeholderText={moment(
+                                topPanel.invoiceApproval
+                              ).format("DD/MMM/YYYY")}
+                            />
+                          </div>
+                        ) : (
+                          <p className="value">{topPanel.invoiceApproval}</p>
+                        )}
 
                         {isClient == "false" && (
                           <>
@@ -1360,12 +1393,23 @@ export default function InvoiceDetails() {
                     )}
                   </>
                 )}
+
                 <p className="heading">Payment Due</p>
-                <p className="value">{topPanel.paymentDue}</p>
+                {status === "AR Review" || status === "Open" ? (
+                  <div className="dpContainer">
+                    <DatePicker
+                      placeholderText={moment(topPanel.paymentDue).format(
+                        "DD/MMM/YYYY"
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <p className="value">{topPanel.paymentDue}</p>
+                )}
               </>
             )}
           </div>
-          <div className="lastCloumn">
+          <div className="lastCloumn divContainer">
             <p className="heading">Location</p>
             <p className="value">{topPanel.location}</p>
             <p className="heading">Region</p>

@@ -24,7 +24,7 @@ const validateIsRegionValid = () => {
 /* istanbul ignore next */
 
 const baseURL = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.atlasbyelements.com`;
-const metaDataUrl = `https://apigw-uat-emea.apnextgen.com`;
+const metaDataUrl = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.atlasbyelements.com`;
 
 const services = {
   atlasInvoiceService: "/atlas-invoiceservice/api",
@@ -232,7 +232,11 @@ export const updateInvoiceStatus = (invoiceId) => {
 };
 
 export const productInvoice = () => {
-  return metaDataUrl + services.apngMetaDataService + `/Products?sort=1&orderBy=GLDescription`;
+  return (
+    metaDataUrl +
+    services.apngMetaDataService +
+    `/Products?sort=1&orderBy=GLDescription`
+  );
 };
 
 export const CountryApi = () => {
