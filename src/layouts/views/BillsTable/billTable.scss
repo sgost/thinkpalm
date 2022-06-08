@@ -40,7 +40,7 @@
             flex-direction: column;
             align-items: flex-end;
             background-color: $white;
-            padding: 20px;
+            padding: 1.1111rem;
 
             .spacerclass {
                 width: 70%;
@@ -103,10 +103,10 @@
                 .total {
                     color: $primary-blue;
                     background-color: $active;
-                    padding: 18px 32px;
+                    padding: 1rem 1.7778rem;
                     border-radius: 10px;
                     font-weight: 600;
-                    font-size: 24px;
+                    font-size: 1.3333rem;
                 }
             }
 
@@ -118,7 +118,7 @@
             flex-direction: column;
             align-items: flex-end;
             background-color: $white;
-            padding: 20px;
+            padding: 1.1111rem;
 
         }
 
@@ -131,10 +131,6 @@
             padding-top: 4.5rem;
             border-radius: 0.5rem 0.5rem 0 0;
             width: -webkit-fill-available;
-
-            // & > div:first-child {
-            //     width: 80%;
-            // }
 
             .mt-4 {
                 margin-top: 1.5rem;

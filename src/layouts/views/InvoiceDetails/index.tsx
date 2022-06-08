@@ -1130,6 +1130,42 @@ export default function InvoiceDetails() {
               )}
           </div>
 
+          {(status === "Approved" &&
+            state.transactionType !== 4 &&
+            state.transactionType !== 7) ||
+          (status === "Invoiced" && state.transactionType === 7) ? (
+            <div className="addPaymentButton">
+              <Button
+                className="primary-blue medium"
+                icon={{
+                  color: "#fff",
+                  icon: "dollar",
+                  size: "medium",
+                }}
+                label="Add Payment"
+                handleOnClick={() => {
+                  navigate(
+                    "/pay/invoicedetails" +
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
+                    {
+                      state: {
+                        InvoiceId: apiData?.data?.invoice?.invoiceNo,
+                        transactionType: state.transactionType,
+                      },
+                    }
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+
           {(status === "Pending Approval" ||
             (status === "AR Review" && state.transactionType !== 1)) &&
             getPermissions(state.transactionType, "Reject") && (

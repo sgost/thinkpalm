@@ -79,7 +79,7 @@ export default function BillsTable(props: any) {
     }, [props.tableData])
 
     const toCurrencyFormat = (amount: any) => {
-        
+
         const cFormat = new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -91,10 +91,13 @@ export default function BillsTable(props: any) {
     const openBillDetailModal = (rowData: any) => {
         setOpenModal(!openModal);
         axios
-            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, { headers: { 
-                accept: "text/plain", 
-                customerid: customerId,
-                authorization: `Bearer ${localStorage.accessToken}` } })
+            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, {
+                headers: {
+                    accept: "text/plain",
+                    customerid: customerId,
+                    authorization: `Bearer ${localStorage.accessToken}`
+                }
+            })
             .then((response: any) => {
                 if (response.status == 200) {
                     setClickedApiData(response.data.data.data[0]);
@@ -115,8 +118,12 @@ export default function BillsTable(props: any) {
             reason: rejectReason
         }];
         axios
-            .post(basecontractorURL + rejectEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`, 
-            customerid: customerId } })
+            .post(basecontractorURL + rejectEndPoint, payload, {
+                headers: {
+                    accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`,
+                    customerid: customerId
+                }
+            })
             .then((response: any) => {
 
                 if (response.status == 200 && response.data.responseCode == 200) {
@@ -152,8 +159,12 @@ export default function BillsTable(props: any) {
         }
 
         axios
-            .post(basecontractorURL + moveToNextEndPoint, payload, { headers: { accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`, 
-            customerid: customerId } })
+            .post(basecontractorURL + moveToNextEndPoint, payload, {
+                headers: {
+                    accept: "text/plain", authorization: `Bearer ${localStorage.accessToken}`,
+                    customerid: customerId
+                }
+            })
             .then((response: any) => {
                 if (response.status == 200 && response.data.responseCode == 200) {
                     if (moveNextBanner) {
@@ -194,12 +205,12 @@ export default function BillsTable(props: any) {
     };
 
     const handleClose = () => {
-        setRejectBanner(false); 
-        setOpenRejectReason(false); 
+        setRejectBanner(false);
+        setOpenRejectReason(false);
         setRejectReason('');
         setMoveNextBanner(false);
     }
-    
+
     /* istanbul ignore next */
     return (
         <div className="invoice_bill_table">
@@ -344,7 +355,7 @@ export default function BillsTable(props: any) {
 
                         </div>
                         <div className='margin-top'>
-                            {(rejectBanner || (moveNextBanner && tableData.length !== 1)) && <Banner type="warning">
+                            {(rejectBanner) && <Banner type="warning">
                                 <div
                                     style={{
                                         display: 'flex',
@@ -358,12 +369,19 @@ export default function BillsTable(props: any) {
                                         icon="info"
                                         viewBox="3 0 24 24"
                                     />
-                                    <span className='info-banner'>
-                                        <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. Are you sure you want to reject it and remove it from this invoice?
-                                    </span>
+                                    {tableData.length === 1 ? (
+                                        <span className='info-banner'>
+                                            <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. If you reject or remove the last bill, 
+                                            then the invoice will be automatically voided. Are you sure you want to reject it and remove it from this invoice?
+                                        </span>
+                                    ) : (
+                                        <span className='info-banner'>
+                                            <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. Are you sure you want to reject it and remove it from this invoice?
+                                        </span>
+                                    )}
                                 </div>
                             </Banner>}
-                            {(moveNextBanner && tableData.length === 1) && <Banner type="warning">
+                            {(moveNextBanner) && <Banner type="warning">
                                 <div
                                     style={{
                                         display: 'flex',
@@ -377,11 +395,19 @@ export default function BillsTable(props: any) {
                                         icon="info"
                                         viewBox="3 0 24 24"
                                     />
-                                    <span className='info-banner'>
-                                        <strong>Heads up!</strong> This bill is currently included in <strong>Invoice {invoiceId}</strong>.
-                                        If you move it to the next invoice, this invoice will be voided and the bill will automatically be
-                                        added to the next invoice that is generated for you. Do you want to continue?
-                                    </span>
+                                    {tableData.length === 1 ? (
+                                        <span className='info-banner'>
+                                            <strong>Heads up!</strong> This bill is currently included in <strong>Invoice {invoiceId}</strong>.
+                                            If you move it to the next invoice, this invoice will be voided and the bill will automatically be
+                                            added to the next invoice that is generated for you. Do you want to continue?
+                                        </span>
+                                    ) : (
+                                        <span className='info-banner'>
+                                            <strong>Heads up!</strong> This bill is currently included in <strong>Invoice {invoiceId}</strong>.
+                                            If you move it to the next invoice, the bill will be automatically added to
+                                            the next invoice generated. Do you want to continue?
+                                        </span>
+                                    )}
                                 </div>
                             </Banner>}
                         </div>

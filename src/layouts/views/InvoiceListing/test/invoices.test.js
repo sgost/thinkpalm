@@ -497,18 +497,12 @@ describe("Internal View Download click and checkbox Click", () => {
       .onGet(getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3"))
       .reply(200, resDownloadSinlgeApiData);
 
-    mock
-      .onGet(
-        getGenerateMultiplePdfUrl(
-          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7"
-        )
-      )
-      .reply(200, {
-        id: "00000000-0000-0000-0000-000000000000",
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
-        name: "Invoices.zip",
-        regionItemCode: "emea",
-      });
+    mock.onPost(getGenerateMultiplePdfUrl()).reply(200, {
+      id: "00000000-0000-0000-0000-000000000000",
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+      name: "Invoices.zip",
+      regionItemCode: "emea",
+    });
 
     const { container } = render(
       <HashRouter>
@@ -559,18 +553,12 @@ describe("Internal View Download click for single invoice  api fail Click", () =
       .onGet(getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3"))
       .reply(400, resDownloadSinlgeApiData);
 
-    mock
-      .onGet(
-        getGenerateMultiplePdfUrl(
-          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7"
-        )
-      )
-      .reply(200, {
-        id: "00000000-0000-0000-0000-000000000000",
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
-        name: "Invoices.zip",
-        regionItemCode: "emea",
-      });
+    mock.onPost(getGenerateMultiplePdfUrl()).reply(200, {
+      id: "00000000-0000-0000-0000-000000000000",
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+      name: "Invoices.zip",
+      regionItemCode: "emea",
+    });
 
     const { container } = render(
       <HashRouter>

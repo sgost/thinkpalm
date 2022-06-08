@@ -74,8 +74,10 @@ export const urls = {
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
 
-  allPayrollCustomerSubscriptionapi: baseURL + services.atlasSubscriptionService + "/Subscription/GetCustomerWithSubscription"
-
+  allPayrollCustomerSubscriptionapi:
+    baseURL +
+    services.atlasSubscriptionService +
+    "/Subscription/GetCustomerWithSubscription",
 };
 
 export const getClientListingUrl = (
@@ -117,12 +119,8 @@ export const getGenerateSinglePdfUrl = (singleInvoiceId) => {
   );
 };
 
-export const getGenerateMultiplePdfUrl = (multiDownloadInvoiceId) => {
-  return (
-    baseURL +
-    services.atlasInvoiceService +
-    `/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`
-  );
+export const getGenerateMultiplePdfUrl = () => {
+  return baseURL + services.atlasInvoiceService + `/invoices/DownloadInvoices`;
 };
 
 export const getInvoiceDetailsUrl = (id) => {
@@ -234,7 +232,7 @@ export const updateInvoiceStatus = (invoiceId) => {
 };
 
 export const productInvoice = () => {
-  return metaDataUrl + services.apngMetaDataService + `/Products?orderBy=GLDescription`;
+  return metaDataUrl + services.apngMetaDataService + `/Products?sort=1&orderBy=GLDescription`;
 };
 
 export const CountryApi = () => {
