@@ -16,12 +16,13 @@ import {
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata } from "./mockdata";
+import { mockapidata, mockCreditMemoDatas, approveMock } from "./mockdata";
 import axios from "axios";
 import { act } from "react-dom/test-utils";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 import {
+  getUpdateCreditMemoUrl,
   getApproveUrl,
   getRelatedInvoiceUrl,
   getApproveUrlNo,
@@ -33,6 +34,7 @@ import {
   getExcelUrl,
   getNotesUrl,
   urls,
+  getHeaders,
 } from "../../../../urls/urls";
 // describe("Invoice detail", () => {
 //   let mock;
@@ -200,6 +202,7 @@ describe("Invoice details", () => {
     }));
 
     const mock = new MockAdapter(axios);
+    const tempToken = localStorage.getItem("accessToken");
 
     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
     mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
@@ -219,11 +222,13 @@ describe("Invoice details", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201, approveMock);
 
-    mock.onPut(getApproveUrlNo(id, 4)).reply(201);
+    mock.onPut(getApproveUrlNo(id, 4)).reply(201, approveMock);
 
     mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPut(getUpdateCreditMemoUrl(id), mockCreditMemoDatas, getHeaders(tempToken, cid, id)).reply(200, mockCreditMemoDatas);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
@@ -307,12 +312,15 @@ describe("Invoice details", () => {
 
     const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
+
+    // const convert = screen.getByText(/Change to Miscellaneous/);
+    // fireEvent.click(convert);
   });
+
 
   test("publish notes", async () => {
     render(
       <HashRouter>
-        ``
         <InvoiceDetails />
       </HashRouter>
     );

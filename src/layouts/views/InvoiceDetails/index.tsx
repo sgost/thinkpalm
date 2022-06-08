@@ -772,6 +772,7 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
+        console.log(getApproveUrlNo, res)
         if (res.status === 201) {
           setStatus(res.data.status === 2 ? "AR Review" : "Approved");
           setApprovalMsg(
@@ -1039,16 +1040,20 @@ export default function InvoiceDetails() {
 
   // To change the the invoice into Miscellineous
 
-  const migrationInvoice = (transId: any) => {
+  const migrationInvoice = () => {
     let payload: any = creditMemoData;
-    payload.transactionType = transId;
-    console.log('payloadss', payload)
+    if (creditMemoData) {
+      payload.transactionType = 2;
+    }
+    convertInvoice(payload);
+  }
 
+  const convertInvoice = (payload: any) => {
     axios.put(getUpdateCreditMemoUrl(id), payload, {
       headers: getHeaders(tempToken, cid, "false"),
     }).then((resp: any) => {
       if (resp) {
-        setMissTransType(transId);
+        setMissTransType(2);
         getTransactionLabel();
         setApprovalMsg("Invoice Converted Into Miscellineous");
         setTimeout(() => {
@@ -1206,16 +1211,16 @@ export default function InvoiceDetails() {
 
             {status === "Approved" && missTransType === 3 &&
               <Button
+                data-testid="convert-button"
                 label="Change to Miscellaneous"
                 className="secondary-btn small change-miss"
                 handleOnClick={() => {
-                  migrationInvoice(2);
+                  migrationInvoice();
                 }}
               />
             }
 
             {status === "Open" &&
-              missTransType !== 1 &&
               permission?.InvoiceDetails.includes("Send") && (
                 <Button
                   data-testid="review-button"
