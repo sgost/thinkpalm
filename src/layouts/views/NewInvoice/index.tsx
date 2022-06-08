@@ -523,12 +523,8 @@ const NewInvoice = () => {
 
   useEffect(() => {
 
-    const headers = {
-      headers: getHeaders(tempToken, cid, "false"),
-    };
-
     axios
-      .get(urls.countries, headers)
+      .get(urls.countries)
       .then((countryRes: any) => {
         setCountriesData(countryRes.data);
       })
