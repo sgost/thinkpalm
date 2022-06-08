@@ -5,6 +5,10 @@
   .invoiceDetailsContainer {
     padding-bottom: 2.222rem;
 
+    .change-miss {
+      background-color: white !important;
+    }
+
     .invoiceDetailsHeaderRow {
       display: flex;
       justify-content: space-between;

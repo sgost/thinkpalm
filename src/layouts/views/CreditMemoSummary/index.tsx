@@ -55,9 +55,9 @@ export default function CreditMemoSummary(props: any) {
   useEffect(() => {
     reCalculateTotal();
   }, [creditMemoData]);
-  useEffect(()=>{
+  useEffect(() => {
     updateDropdowns();
-  },[fieldValues])
+  }, [fieldValues])
   useEffect(() => {
     axios
       .get(productInvoice())
@@ -204,6 +204,7 @@ export default function CreditMemoSummary(props: any) {
         headers: headers,
       })
       .then((resp) => {
+        console.log('resp', resp)
         if ((resp.status == 200 || resp.status == 201) && resp.data) {
           setAddSectionCheck(false);
           setEditCheck(creditMemoData.invoiceItems.length + 1);
@@ -252,16 +253,16 @@ export default function CreditMemoSummary(props: any) {
     setSubTotalAmount(subtotal);
     setVatAmount(subtotal * (vatValue / 100));
     payload.totalAmount = subtotal + subtotal * (vatValue / 100);
-    if(creditMemoData.status != 9 ){
+    if (creditMemoData.status != 9) {
       payload.invoiceBalance = subtotal + subtotal * (vatValue / 100);
-    }else{
+    } else {
       payload.invoiceBalance = 0
     }
   };
   /* istanbul ignore next */
   const updateDropdowns = () => {
     let countryArr: any = []
-    if(serviceCountries){
+    if (serviceCountries) {
       fieldValues.forEach((item: any) => {
         countryArr.push(
           serviceCountries.map((x: any) => {
@@ -273,11 +274,11 @@ export default function CreditMemoSummary(props: any) {
           })
         );
       });
-      setMultipleCountryArr(countryArr);  
+      setMultipleCountryArr(countryArr);
     }
-    
+
     let arr: any = [];
-    if(rawProducts){
+    if (rawProducts) {
       for (let i of fieldValues) {
         arr.push(
           rawProducts.map((x: any) => {
@@ -291,7 +292,7 @@ export default function CreditMemoSummary(props: any) {
       }
       setMultipleProductArr(arr);
     }
-    
+
   };
   /* istanbul ignore next */
   const setEditDescription = (index: number, value: any) => {
@@ -391,20 +392,20 @@ export default function CreditMemoSummary(props: any) {
                           creditMemoData?.transactionType,
                           "Edit"
                         ) && (
-                          <Button
-                            data-testid="edit-summary-button"
-                            className="primary-blue medium edit"
-                            icon={{
-                              color: "#fff",
-                              icon: "edit",
-                              size: "medium",
-                            }}
-                            label="Edit"
-                            handleOnClick={() => {
-                              setEditCheck(index);
-                            }}
-                          />
-                        )}
+                            <Button
+                              data-testid="edit-summary-button"
+                              className="primary-blue medium edit"
+                              icon={{
+                                color: "#fff",
+                                icon: "edit",
+                                size: "medium",
+                              }}
+                              label="Edit"
+                              handleOnClick={() => {
+                                setEditCheck(index);
+                              }}
+                            />
+                          )}
                       </>
                     )}
                   {editCheck == index && (
@@ -765,7 +766,7 @@ export default function CreditMemoSummary(props: any) {
           handleUpDown={() => {
             setOpenLogs(!openLogs);
           }}
-          handleViewMore={function noRefCheck() {}}
+          handleViewMore={function noRefCheck() { }}
           name="View-change-log"
           title="View Change Log"
         />

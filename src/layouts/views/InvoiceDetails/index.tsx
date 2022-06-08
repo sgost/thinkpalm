@@ -21,6 +21,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import BillsTable, { getFlagURL } from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
   getExcelUrl,
@@ -44,6 +45,7 @@ import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
+import { format } from "date-fns";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -63,6 +65,7 @@ export default function InvoiceDetails() {
     open: "",
   };
   const permission: any = getDecodedToken();
+  const [missTransType, setMissTransType] = useState(state.transactionType);  //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -179,10 +182,10 @@ export default function InvoiceDetails() {
         setCountriesData(countryRes);
 
         if (
-          state.transactionType != 7 &&
-          state.transactionType != 4 &&
-          state.transactionType != 3 &&
-          state.transactionType != 2
+          missTransType != 7 &&
+          missTransType != 4 &&
+          missTransType != 3 &&
+          missTransType != 2
         ) {
           axios
             .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
@@ -377,9 +380,9 @@ export default function InvoiceDetails() {
               setIsErr(true);
             });
         } else if (
-          state.transactionType == 4 ||
-          state.transactionType == 3 ||
-          state.transactionType == 2
+          missTransType == 4 ||
+          missTransType == 3 ||
+          missTransType == 2
         ) {
           axios
             .get(getRelatedInvoiceUrl(id), headers)
@@ -457,7 +460,7 @@ export default function InvoiceDetails() {
         console.log("error", e);
       });
 
-    if (state.transactionType == 7) {
+    if (missTransType == 7) {
       let URL = baseBillApi + state.InvoiceId;
       axios
         .get(URL, {
@@ -484,9 +487,9 @@ export default function InvoiceDetails() {
         });
     }
     if (
-      state.transactionType != 4 &&
-      state.transactionType != 3 &&
-      state.transactionType != 2
+      missTransType != 4 &&
+      missTransType != 3 &&
+      missTransType != 2
     ) {
       axios
         .get(notesApi, headers)
@@ -757,9 +760,9 @@ export default function InvoiceDetails() {
 
   const handleApproveInvoice = (no: any) => {
     const approveApi =
-      state.transactionType == 2 ||
-        state.transactionType == 3 ||
-        state.transactionType == 4
+      missTransType == 2 ||
+        missTransType == 3 ||
+        missTransType == 4
         ? getApproveUrlNo(id, no)
         : getApproveUrl(id);
 
@@ -928,7 +931,7 @@ export default function InvoiceDetails() {
       });
 
     let currDate = new Date();
-  
+
     await axios
       .post(
         urls.voidInvoice,
@@ -946,7 +949,7 @@ export default function InvoiceDetails() {
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
-              setTopPanel({...topPanel, open : 0.00})
+              setTopPanel({ ...topPanel, open: 0.00 })
             }
           });
           setVoidFileData({});
@@ -967,9 +970,9 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     };
     const deleteApi = getDeleteInvoiceUrl(
-      state.transactionType == 4 ||
-        state.transactionType == 3 ||
-        state.transactionType == 2
+      missTransType == 4 ||
+        missTransType == 3 ||
+        missTransType == 2
         ? id
         : apiData?.data?.invoice?.id
     );
@@ -1003,7 +1006,7 @@ export default function InvoiceDetails() {
   }
 
   const getTransactionLabel = () => {
-    switch (state.transactionType) {
+    switch (missTransType) {
       case 7:
         return "Contractor Invoice No. " + apiData?.data?.invoice?.invoiceNo;
       case 4:
@@ -1018,8 +1021,8 @@ export default function InvoiceDetails() {
   };
 
   if (
-    state.transactionType != 1 &&
-    !getPermissions(state.transactionType, "View")
+    missTransType != 1 &&
+    !getPermissions(missTransType, "View")
   ) {
     return <p>You do not have permission to view this page.</p>;
   }
@@ -1032,6 +1035,30 @@ export default function InvoiceDetails() {
     }
   };
 
+
+
+  // To change the the invoice into Miscellineous
+
+  const migrationInvoice = (transId: any) => {
+    let payload: any = creditMemoData;
+    payload.transactionType = transId;
+    console.log('payloadss', payload)
+
+    axios.put(getUpdateCreditMemoUrl(id), payload, {
+      headers: getHeaders(tempToken, cid, "false"),
+    }).then((resp: any) => {
+      if (resp) {
+        setMissTransType(transId);
+        getTransactionLabel();
+        setApprovalMsg("Invoice Converted Into Miscellineous");
+        setTimeout(() => {
+          setApprovalMsg("");
+        }, 3000);
+      }
+    }).catch((error: any) => {
+      console.log(error)
+    })
+  }
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1057,9 +1084,9 @@ export default function InvoiceDetails() {
         </div>
         <div className="buttons">
           {(status === "AR Review" ||
-            (status === "Open" && state.transactionType !== 1)) &&
-            (getPermissions(state.transactionType, "Delete") ||
-              getPermissions(state.transactionType, "DeleteInvoice")) && (
+            (status === "Open" && missTransType !== 1)) &&
+            (getPermissions(missTransType, "Delete") ||
+              getPermissions(missTransType, "DeleteInvoice")) && (
               <div className="upper-delete-button">
                 <div
                   className="delete-invoice"
@@ -1071,7 +1098,7 @@ export default function InvoiceDetails() {
               </div>
             )}
           {status === "Approved" &&
-            getPermissions(state.transactionType, "Void") && (
+            getPermissions(missTransType, "Void") && (
               <div className="void-button">
                 <Button
                   className="secondary-btn small"
@@ -1084,14 +1111,14 @@ export default function InvoiceDetails() {
             )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
-              state.transactionType != 1) && (
+              missTransType != 1) && (
                 <div
                   onClick={() =>
-                    state.transactionType != 7
+                    missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
                       : function noRefCheck() { }
                   }
-                  className={`${state.transactionType == 7 || deleteDisableButtons === true
+                  className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
                     }`}
@@ -1111,7 +1138,7 @@ export default function InvoiceDetails() {
               <div className="openDownloadDropdown">
                 <p onClick={() => downloadFunction()}>Invoice as PDF</p>
                 <p onClick={() => downloadExcelFunction()}>Invoice as Excel</p>
-                {state.transactionType == 1 && (
+                {missTransType == 1 && (
                   <p onClick={() => downloadEmployeeBreakdownFunction()}>
                     Employee Breakdown
                   </p>
@@ -1121,8 +1148,8 @@ export default function InvoiceDetails() {
           </div>
           <div className="decline-invoice">
             {(status === "Pending Approval" ||
-              (status === "AR Review" && state.transactionType !== 1)) &&
-              getPermissions(state.transactionType, "Reject") && (
+              (status === "AR Review" && missTransType !== 1)) &&
+              getPermissions(missTransType, "Reject") && (
                 <Button
                   data-testid="decline-button"
                   disabled={deleteDisableButtons === true}
@@ -1140,8 +1167,8 @@ export default function InvoiceDetails() {
 
           <div>
             {status === "AR Review" &&
-              state.transactionType == 1 &&
-              getPermissions(state.transactionType, "Send") && (
+              missTransType == 1 &&
+              getPermissions(missTransType, "Send") && (
                 <Button
                   className="primary-blue small"
                   icon={{
@@ -1155,13 +1182,14 @@ export default function InvoiceDetails() {
                   }}
                 />
               )}
+
             {(status === "Pending Approval" ||
-              (status === "AR Review" && state.transactionType != 1)) &&
-              getPermissions(state.transactionType, "Approve") && (
+              (status === "AR Review" && missTransType != 1)) &&
+              getPermissions(missTransType, "Approve") && (
                 <Button
                   data-testid="approve-button"
                   disabled={
-                    state.transactionType == 7 || deleteDisableButtons === true
+                    missTransType == 7 || deleteDisableButtons === true
                   }
                   handleOnClick={() => {
                     handleApproveInvoice(4);
@@ -1176,8 +1204,18 @@ export default function InvoiceDetails() {
                 />
               )}
 
+            {status === "Approved" && missTransType === 3 &&
+              <Button
+                label="Change to Miscellaneous"
+                className="secondary-btn small change-miss"
+                handleOnClick={() => {
+                  migrationInvoice(2);
+                }}
+              />
+            }
+
             {status === "Open" &&
-              state.transactionType !== 1 &&
+              missTransType !== 1 &&
               permission?.InvoiceDetails.includes("Send") && (
                 <Button
                   data-testid="review-button"
@@ -1208,7 +1246,7 @@ export default function InvoiceDetails() {
               <p>{getTransactionLabel()}</p>
             </div>
             <div className="amount">
-              {state.transactionType != 7 && (
+              {missTransType != 7 && (
                 <p>
                   Open{" "}
                   <span>
@@ -1262,7 +1300,7 @@ export default function InvoiceDetails() {
             <p className="address">
               {addressData?.data?.billingAddress?.country}
             </p>
-            {state.transactionType != 7 && (
+            {missTransType != 7 && (
               <>
                 <p>PO Number</p>
                 <p className="poNo">{topPanel.poNumber}</p>
@@ -1273,9 +1311,9 @@ export default function InvoiceDetails() {
             <p className="heading">Invoice Date</p>
             <p className="value">{topPanel.invoiceDate}</p>
 
-            {state.transactionType != 7 && (
+            {missTransType != 7 && (
               <>
-                {state.transactionType === 1 && (
+                {missTransType === 1 && (
                   <>
                     {status !== "Open" && (
                       <>
@@ -1355,9 +1393,9 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
-      {(state.transactionType == 4 ||
-        state.transactionType == 3 ||
-        state.transactionType == 2) && (
+      {(missTransType == 4 ||
+        missTransType == 3 ||
+        missTransType == 2) && (
           <CreditMemoSummary
             notes={notes}
             setNotes={setNotes}
@@ -1374,10 +1412,10 @@ export default function InvoiceDetails() {
           ></CreditMemoSummary>
         )}
 
-      {state.transactionType != 7 &&
-        state.transactionType != 4 &&
-        state.transactionType != 3 &&
-        state.transactionType != 2 && (
+      {missTransType != 7 &&
+        missTransType != 4 &&
+        missTransType != 3 &&
+        missTransType != 2 && (
           <div className="tab">
             <p
               onClick={() => setActiveTab("payroll")}
@@ -1407,10 +1445,10 @@ export default function InvoiceDetails() {
         )}
 
       {activeTab === "master" &&
-        state.transactionType != 4 &&
-        state.transactionType != 3 &&
-        state.transactionType != 7 &&
-        state.transactionType != 2 && (
+        missTransType != 4 &&
+        missTransType != 3 &&
+        missTransType != 7 &&
+        missTransType != 2 && (
           <div className="master">
             <h3 className="tableHeader">Country Summary</h3>
             <Table
@@ -1457,10 +1495,10 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "payroll" &&
-        state.transactionType != 4 &&
-        state.transactionType != 3 &&
-        state.transactionType != 7 &&
-        state.transactionType != 2 && (
+        missTransType != 4 &&
+        missTransType != 3 &&
+        missTransType != 7 &&
+        missTransType != 2 && (
           <div className="payroll">
             {payrollTables.map((item: any) => {
               return (
@@ -1596,10 +1634,10 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "files" &&
-        state.transactionType != 4 &&
-        state.transactionType != 3 &&
-        state.transactionType != 7 &&
-        state.transactionType != 2 && (
+        missTransType != 4 &&
+        missTransType != 3 &&
+        missTransType != 7 &&
+        missTransType != 2 && (
           <>
             <div className="filesNotes">
               <NotesWidget
@@ -1608,7 +1646,7 @@ export default function InvoiceDetails() {
                 isClient={isClient}
                 cid={cid}
                 id={id}
-                transactionType={state.transactionType}
+                transactionType={missTransType}
               ></NotesWidget>
 
               <FileUploadWidget
@@ -1617,7 +1655,7 @@ export default function InvoiceDetails() {
                 isClient={isClient}
                 cid={cid}
                 id={id}
-                transactionType={state.transactionType}
+                transactionType={missTransType}
               ></FileUploadWidget>
             </div>
             <Cards className="invoice-logs">
@@ -1694,7 +1732,7 @@ export default function InvoiceDetails() {
             </Cards>
           </>
         )}
-      {state.transactionType == 7 && (
+      {missTransType == 7 && (
         <BillsTable
           currency={getBillingCurrency()}
           tableData={billTableData?.data}
