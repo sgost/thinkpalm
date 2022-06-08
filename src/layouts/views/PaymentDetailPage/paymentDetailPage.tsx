@@ -310,7 +310,7 @@ const PaymentDetailPage = () => {
                   style={{ margin: `0 4px 0 0` }}
                 />
               </span>
-              Add Payment Installment
+              Add payment Installment
             </div>
           </div>
         </div>
