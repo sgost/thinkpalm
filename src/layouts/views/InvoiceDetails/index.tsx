@@ -1072,12 +1072,6 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          <div className="saveBtnContainer">
-            {(status === "AR Review" || status === "Open") && (
-              <Button className="secondary-btn small" label="Save" />
-            )}
-          </div>
-
           {status === "Approved" &&
             getPermissions(state.transactionType, "Void") && (
               <div className="void-button">
@@ -1128,10 +1122,18 @@ export default function InvoiceDetails() {
               </div>
             )}
           </div>
-          <div className="decline-invoice">
-            {(status === "Pending Approval" ||
-              (status === "AR Review" && state.transactionType !== 1)) &&
-              getPermissions(state.transactionType, "Reject") && (
+
+          <div className="saveBtnContainer">
+            {(status === "AR Review" || status === "Open") &&
+              getPermissions(state.transactionType, "Edit") && (
+                <Button className="secondary-btn small" label="Save" />
+              )}
+          </div>
+
+          {(status === "Pending Approval" ||
+            (status === "AR Review" && state.transactionType !== 1)) &&
+            getPermissions(state.transactionType, "Reject") && (
+              <div className="decline-invoice">
                 <Button
                   data-testid="decline-button"
                   disabled={deleteDisableButtons === true}
@@ -1144,8 +1146,8 @@ export default function InvoiceDetails() {
                   }}
                   handleOnClick={() => setIsOpen(true)}
                 />
-              )}
-          </div>
+              </div>
+            )}
 
           <div>
             {status === "AR Review" &&
@@ -1284,10 +1286,17 @@ export default function InvoiceDetails() {
           </div>
           <div className="divContainer">
             <p className="heading">Invoice Date</p>
-            {/* <p className="value">{topPanel.invoiceDate}</p> */}
-            <div>
-              <DatePicker />
-            </div>
+            {status === "AR Review" || status === "Open" ? (
+              <div className="dpContainer">
+                <DatePicker
+                  placeholderText={moment(topPanel.invoiceDate).format(
+                    "DD/MMM/YYYY"
+                  )}
+                />
+              </div>
+            ) : (
+              <p className="value">{topPanel.invoiceDate}</p>
+            )}
 
             {state.transactionType != 7 && (
               <>
@@ -1297,7 +1306,13 @@ export default function InvoiceDetails() {
                       <>
                         <p className="heading">Invoice Changes</p>
                         {status === "AR Review" || status === "Open" ? (
-                          <DatePicker label="" />
+                          <div className="dpContainer dpMidMargin">
+                            <DatePicker
+                              placeholderText={moment(
+                                topPanel.invoiceApproval
+                              ).format("DD/MMM/YYYY")}
+                            />
+                          </div>
                         ) : (
                           <p className="value">{topPanel.invoiceApproval}</p>
                         )}
@@ -1345,7 +1360,13 @@ export default function InvoiceDetails() {
 
                 <p className="heading">Payment Due</p>
                 {status === "AR Review" || status === "Open" ? (
-                  <DatePicker />
+                  <div className="dpContainer">
+                    <DatePicker
+                      placeholderText={moment(topPanel.paymentDue).format(
+                        "DD/MMM/YYYY"
+                      )}
+                    />
+                  </div>
                 ) : (
                   <p className="value">{topPanel.paymentDue}</p>
                 )}

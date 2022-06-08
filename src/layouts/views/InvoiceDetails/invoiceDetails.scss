@@ -136,6 +136,9 @@
         button.a-button.secondary-btn {
           background-color: $white;
         }
+        button.a-button.small {
+          width: 9.31rem;
+        }
       }
 
       button.a-button.small {
@@ -236,6 +239,19 @@
           border-right-width: 1px;
           border-color: #ebebed;
           padding: 0rem 4rem;
+
+          .dpContainer {
+            .a-dpicker__container {
+              width: 14rem;
+            }
+            .a-dpicker .react-datepicker__input-container input {
+              width: 10.778rem;
+            }
+          }
+
+          .dpMidMargin {
+            margin-bottom: 1rem;
+          }
         }
 
         .autoapproveContainer {
