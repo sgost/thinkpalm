@@ -7,16 +7,11 @@ import axios from "axios";
 import { getHeaders, urls } from "../../../urls/urls";
 
 const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
-  const tempToken = localStorage.getItem("accessToken");
-  const cid = localStorage.getItem("current-org-id");
 
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
 
   useEffect(() => {
-    const headers = {
-      headers: getHeaders(tempToken, cid, "false"),
-    };
     getCreditMemoStep4Data(invoiceId)
       .then((res: any) => {
         setInvoiceData(res?.data);
@@ -26,7 +21,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
       });
 
     axios
-      .get(urls.countries, headers)
+      .get(urls.countries)
       .then((countryRes: any) => {
         setCountriesData(countryRes);
       })
