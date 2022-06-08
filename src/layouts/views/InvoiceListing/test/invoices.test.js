@@ -396,11 +396,9 @@ describe("checkbox and download", () => {
       ".a-dropdown__option__item__check-box"
     );
     // const chkbx = container.querySelector(".table__row__default");
-    screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     screen.logTestingPlaygroundURL();
     fireEvent.click(download);
 
@@ -431,11 +429,9 @@ describe("checkbox and download", () => {
     const chkbx = container.querySelector(
       ".a-dropdown__option__item__check-box"
     );
-    screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
 
     fireEvent.click(chkbx);
@@ -465,11 +461,9 @@ describe("checkbox and download", () => {
     const chkbx = container.querySelector(
       ".a-dropdown__option__item__check-box"
     );
-    screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
     fireEvent.click(getByTestId("invoice-list-cell-1"));
     fireEvent.click(getByTestId("confirm-modal-button"));
@@ -513,11 +507,9 @@ describe("Internal View Download click and checkbox Click", () => {
     const row = await screen.findByText("100329");
     expect(row).toBeInTheDocument();
     const labelText = await screen.findAllByLabelText("");
-    screen.debug(labelText);
     fireEvent.click(labelText[0]);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
 
     const toast = await screen.findByText(/Downloaded.../);
@@ -535,7 +527,6 @@ describe("Internal View Download click and checkbox Click", () => {
     const downloadsingle = await waitFor(() =>
       container.querySelector(".download")
     );
-    screen.debug(downloadsingle);
     fireEvent.click(downloadsingle);
   });
 });
@@ -569,11 +560,9 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     const row = await screen.findByText("100329");
     expect(row).toBeInTheDocument();
     const labelText = await screen.findAllByLabelText("");
-    screen.debug(labelText);
     fireEvent.click(labelText[0]);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
 
     const toast = await screen.findByText("Downloaded...");
@@ -591,7 +580,6 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     const downloadsingle = await waitFor(() =>
       container.querySelector(".download")
     );
-    screen.debug(downloadsingle);
     fireEvent.click(downloadsingle);
   });
 });

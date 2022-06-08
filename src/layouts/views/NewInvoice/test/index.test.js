@@ -81,7 +81,6 @@ describe("New Invoice", () => {
 
     let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
-    screen.debug(pleaseSelectDropDown);
 
     const typeDropDownValue = await screen.findByText(/Payroll/);
     expect(typeDropDownValue).toBeInTheDocument();

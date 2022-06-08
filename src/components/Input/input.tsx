@@ -9,8 +9,7 @@ export default function Input(props: any){
         if(type == "amount"){
             pattern = /[0-9]|\./;        
         }else if(type == "number"){
-            // pattern = /[0-9]/;
-            pattern = /[+-]?\d+(?:[.,]\d+)?/;
+            pattern = /[0-9]/;
         }
 
         if(pattern && !pattern.test(e.key)){
@@ -31,7 +30,14 @@ export default function Input(props: any){
                 className={className + (disable ? " disable-input": '') }
                 placeholder ={placeholder}
                 disabled={disable}
-                onChange={(e)=>{setValue(e.target.value)}}
+                onChange={(e)=>{
+                    if (e.target.value.split(".")[1]?.length >= 2)
+                    e.target.value = parseFloat(e.target.value).toFixed(
+                      2
+                    );
+                    setValue(e.target.value)
+                
+                }}
                 onKeyPress={(e)=>{masking(e)}}
             />
         </div>

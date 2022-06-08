@@ -50,7 +50,7 @@ const PaymentDetailPage = () => {
       paymentDate: "",
       currency: "",
       location: "",
-      class: "",
+      referenceNo: "",
       depositedBank: "",
       paymentMethod: "",
       amount: "",
@@ -71,12 +71,16 @@ const PaymentDetailPage = () => {
         paymentDate: "",
         currency: "",
         location: "",
-        class: "",
+        referenceNo: "",
         depositedBank: "",
         paymentMethod: "",
         amount: "",
       },
     ]);
+  };
+
+  const removePaymentBlock = (item: any) => {
+    setMultiPaymentBlocks(multiPaymentBlocks.filter((todo: any) => todo.id !== item.id));
   };
 
   return (
@@ -110,11 +114,6 @@ const PaymentDetailPage = () => {
         <div className="paymentSaveButton">
           <Button
             className="primary-blue medium"
-            // icon={{
-            //   color: "#fff",
-            //   icon: "dollar",
-            //   size: "medium",
-            // }}
             label="Save"
           />
         </div>
@@ -177,6 +176,7 @@ const PaymentDetailPage = () => {
                           size: "medium",
                         }}
                         label="Delete Item"
+                        handleOnClick={() => removePaymentBlock(item)}
                       />
                     </div>
                   )}
@@ -276,7 +276,7 @@ const PaymentDetailPage = () => {
                   <div className="PaymentPageTotalAmount">
                     <p>Amount</p>
                     <div className="amountPaymentPage">USD 300,523.15</div>
-                    {i == 0 && (multiPaymentBlocks.length = 1) ? (
+                    {i == 0 && (multiPaymentBlocks.length == 1) ? (
                       <div className="fullAmountPaymentCheckbox">
                         <Checkbox
                           checked={isFullAmountChecked}

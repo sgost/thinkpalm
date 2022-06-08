@@ -288,7 +288,6 @@ describe("Invoice details", () => {
     fireEvent.click(download);
     const excel = await waitFor(() => screen.getByText(/Invoice as Excel/));
     fireEvent.click(excel);
-    screen.debug();
     fireEvent.click(download);
     const BreakDown = await waitFor(() =>
       screen.getByText(/Employee Breakdown/)
