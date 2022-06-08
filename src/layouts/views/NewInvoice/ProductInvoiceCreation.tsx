@@ -8,6 +8,7 @@ import {
   urls,
   productInvoice,
   CountryApi,
+  getHeaders,
 } from "../../../urls/urls";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { loadavg } from "os";
@@ -35,6 +36,13 @@ const ProductInvoiceCreation = ({
   tempDataCountry,
   setTempDataCountry,
 }: any) => {
+  const tempToken = localStorage.getItem("accessToken");
+  const cid = localStorage.getItem("current-org-id");
+
+  const headers = {
+    headers: getHeaders(tempToken, cid, "false"),
+  };
+
   //Product API
   let productApi = productInvoice();
   const [toggleState, setToggleState] = useState(0);
@@ -53,7 +61,7 @@ const ProductInvoiceCreation = ({
 
   const productFun = (productApi: any) => {
     axios
-      .get(productApi)
+      .get(productApi, headers)
       .then((response: any) => {
         const temp: any = [];
         response?.data.map((item: any) =>
@@ -75,7 +83,7 @@ const ProductInvoiceCreation = ({
 
   const countryFun = (countryApi: any) => {
     axios
-      .get(countryApi)
+      .get(countryApi, headers)
       .then((response: any) => {
         const temp: any = [];
         response?.data.serviceCountries.map((item: any) =>
