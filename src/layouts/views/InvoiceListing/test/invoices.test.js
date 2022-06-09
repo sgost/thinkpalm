@@ -396,11 +396,9 @@ describe("checkbox and download", () => {
       ".a-dropdown__option__item__check-box"
     );
     // const chkbx = container.querySelector(".table__row__default");
-    screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     screen.logTestingPlaygroundURL();
     fireEvent.click(download);
 
@@ -431,11 +429,9 @@ describe("checkbox and download", () => {
     const chkbx = container.querySelector(
       ".a-dropdown__option__item__check-box"
     );
-    screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
 
     fireEvent.click(chkbx);
@@ -465,11 +461,9 @@ describe("checkbox and download", () => {
     const chkbx = container.querySelector(
       ".a-dropdown__option__item__check-box"
     );
-    screen.debug(chkbx);
     fireEvent.click(chkbx);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
     fireEvent.click(getByTestId("invoice-list-cell-1"));
     fireEvent.click(getByTestId("confirm-modal-button"));
@@ -497,18 +491,12 @@ describe("Internal View Download click and checkbox Click", () => {
       .onGet(getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3"))
       .reply(200, resDownloadSinlgeApiData);
 
-    mock
-      .onGet(
-        getGenerateMultiplePdfUrl(
-          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7"
-        )
-      )
-      .reply(200, {
-        id: "00000000-0000-0000-0000-000000000000",
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
-        name: "Invoices.zip",
-        regionItemCode: "emea",
-      });
+    mock.onPost(getGenerateMultiplePdfUrl()).reply(200, {
+      id: "00000000-0000-0000-0000-000000000000",
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+      name: "Invoices.zip",
+      regionItemCode: "emea",
+    });
 
     const { container } = render(
       <HashRouter>
@@ -519,11 +507,9 @@ describe("Internal View Download click and checkbox Click", () => {
     const row = await screen.findByText("100329");
     expect(row).toBeInTheDocument();
     const labelText = await screen.findAllByLabelText("");
-    screen.debug(labelText);
     fireEvent.click(labelText[0]);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
 
     const toast = await screen.findByText(/Downloaded.../);
@@ -541,7 +527,6 @@ describe("Internal View Download click and checkbox Click", () => {
     const downloadsingle = await waitFor(() =>
       container.querySelector(".download")
     );
-    screen.debug(downloadsingle);
     fireEvent.click(downloadsingle);
   });
 });
@@ -559,18 +544,12 @@ describe("Internal View Download click for single invoice  api fail Click", () =
       .onGet(getGenerateSinglePdfUrl("70961bfc-8d6e-44fc-88ad-61f9c86db9a3"))
       .reply(400, resDownloadSinlgeApiData);
 
-    mock
-      .onGet(
-        getGenerateMultiplePdfUrl(
-          "70961bfc-8d6e-44fc-88ad-61f9c86db9a3,ab327a85-81cb-40a4-8fe4-16b74912d1a7"
-        )
-      )
-      .reply(200, {
-        id: "00000000-0000-0000-0000-000000000000",
-        url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
-        name: "Invoices.zip",
-        regionItemCode: "emea",
-      });
+    mock.onPost(getGenerateMultiplePdfUrl()).reply(200, {
+      id: "00000000-0000-0000-0000-000000000000",
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/7d8a73de-aa5d-4ef7-a6b2-d0784b068a21.zip?sv=2019-02-02&sr=b&sig=HSBga2dlkl5SwD%2B28xiMtq682MhzYBB94wbFWvoFKvM%3D&se=2023-05-07T10%3A34%3A38Z&sp=rl",
+      name: "Invoices.zip",
+      regionItemCode: "emea",
+    });
 
     const { container } = render(
       <HashRouter>
@@ -581,11 +560,9 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     const row = await screen.findByText("100329");
     expect(row).toBeInTheDocument();
     const labelText = await screen.findAllByLabelText("");
-    screen.debug(labelText);
     fireEvent.click(labelText[0]);
 
     const download = await waitFor(() => container.querySelector(".download"));
-    screen.debug(download);
     fireEvent.click(download);
 
     const toast = await screen.findByText("Downloaded...");
@@ -603,7 +580,6 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     const downloadsingle = await waitFor(() =>
       container.querySelector(".download")
     );
-    screen.debug(downloadsingle);
     fireEvent.click(downloadsingle);
   });
 });

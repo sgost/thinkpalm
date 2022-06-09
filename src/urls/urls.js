@@ -24,7 +24,7 @@ const validateIsRegionValid = () => {
 /* istanbul ignore next */
 
 const baseURL = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.atlasbyelements.com`;
-const metaDataUrl = `https://apigw-uat-emea.apnextgen.com`;
+const metaDataUrl = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.atlasbyelements.com`;
 
 const services = {
   atlasInvoiceService: "/atlas-invoiceservice/api",
@@ -74,8 +74,10 @@ export const urls = {
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
 
-  allPayrollCustomerSubscriptionapi: baseURL + services.atlasSubscriptionService + "/Subscription/GetCustomerWithSubscription"
-
+  allPayrollCustomerSubscriptionapi:
+    baseURL +
+    services.atlasSubscriptionService +
+    "/Subscription/GetCustomerWithSubscription",
 };
 
 export const getClientListingUrl = (
@@ -117,12 +119,8 @@ export const getGenerateSinglePdfUrl = (singleInvoiceId) => {
   );
 };
 
-export const getGenerateMultiplePdfUrl = (multiDownloadInvoiceId) => {
-  return (
-    baseURL +
-    services.atlasInvoiceService +
-    `/invoices/GeneratePDFMultiple/${multiDownloadInvoiceId}`
-  );
+export const getGenerateMultiplePdfUrl = () => {
+  return baseURL + services.atlasInvoiceService + `/invoices/DownloadInvoices`;
 };
 
 export const getInvoiceDetailsUrl = (id) => {
@@ -234,7 +232,11 @@ export const updateInvoiceStatus = (invoiceId) => {
 };
 
 export const productInvoice = () => {
-  return metaDataUrl + services.apngMetaDataService + `/Products?orderBy=GLDescription`;
+  return (
+    metaDataUrl +
+    services.apngMetaDataService +
+    `/Products?sort=1&orderBy=GLDescription`
+  );
 };
 
 export const CountryApi = () => {

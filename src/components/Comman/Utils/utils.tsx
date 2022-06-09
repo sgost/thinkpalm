@@ -63,14 +63,16 @@ export const ToastContainer = ({
   showToast,
   setShowToast,
   message,
+  duration=4
 }: {
   showToast: boolean;
   setShowToast: (arg: boolean) => any;
   message: any;
+  duration?: number;
 }) => {
   useEffect(() => {
     if (showToast) {
-      setTimeout(() => setShowToast(false), 4000);
+      setTimeout(() => setShowToast(false), duration * 1000);
     }
   }, [showToast]);
 

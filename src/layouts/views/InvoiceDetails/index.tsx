@@ -8,6 +8,7 @@ import {
   Modal,
   Cards,
   Logs,
+  DatePicker,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -954,8 +955,7 @@ export default function InvoiceDetails() {
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
-              console.log('status5', e.text)
-              setTopPanel({ ...topPanel, open: 0.00 })
+              setTopPanel({ ...topPanel, open: 0.0 });
             }
           });
           setVoidFileData({});
@@ -1107,6 +1107,7 @@ export default function InvoiceDetails() {
                 </div>
               </div>
             )}
+
           {status === "Approved" &&
             getPermissions(missTransType, "Void") && (
               <div className="void-button">
@@ -1156,10 +1157,54 @@ export default function InvoiceDetails() {
               </div>
             )}
           </div>
-          <div className="decline-invoice">
-            {(status === "Pending Approval" ||
-              (status === "AR Review" && missTransType !== 1)) &&
-              getPermissions(missTransType, "Reject") && (
+
+          <div className="saveBtnContainer">
+            {(status === "AR Review" || status === "Open") &&
+              getPermissions(missTransType, "Edit") && (
+                <Button className="secondary-btn small" label="Save" />
+              )}
+          </div>
+
+          {(status === "Approved" &&
+            missTransType !== 4 &&
+            missTransType !== 7) ||
+            (status === "Invoiced" && missTransType === 7) ? (
+            <div className="addPaymentButton">
+              <Button
+                className="primary-blue medium"
+                icon={{
+                  color: "#fff",
+                  icon: "dollar",
+                  size: "medium",
+                }}
+                label="Add Payment"
+                handleOnClick={() => {
+                  navigate(
+                    "/pay/invoicedetails" +
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
+                    {
+                      state: {
+                        InvoiceId: apiData?.data?.invoice?.invoiceNo,
+                        transactionType: missTransType,
+                      },
+                    }
+                  );
+                }}
+              />
+            </div>
+          ) : (
+            <></>
+          )}
+
+          {(status === "Pending Approval" ||
+            (status === "AR Review" && missTransType !== 1)) &&
+            getPermissions(missTransType, "Reject") && (
+              <div className="decline-invoice">
                 <Button
                   data-testid="decline-button"
                   disabled={deleteDisableButtons === true}
@@ -1172,8 +1217,8 @@ export default function InvoiceDetails() {
                   }}
                   handleOnClick={() => setIsOpen(true)}
                 />
-              )}
-          </div>
+              </div>
+            )}
 
           <div>
             {status === "AR Review" &&
@@ -1293,11 +1338,11 @@ export default function InvoiceDetails() {
         </div>
 
         <div className="infoDetails">
-          <div className="column1">
+          <div className="column1 divContainer">
             <p className="heading">From</p>
             <p className="value">{topPanel.from}</p>
           </div>
-          <div>
+          <div className="divContainer">
             <p className="heading">To</p>
             <p className="value">{topPanel.to}</p>
             <p className="address">
@@ -1313,13 +1358,27 @@ export default function InvoiceDetails() {
             {missTransType != 7 && (
               <>
                 <p>PO Number</p>
-                <p className="poNo">{topPanel.poNumber}</p>
+                {status === "AR Review" || status === "Open" ? (
+                  <input type="number" className="poNoInput" />
+                ) : (
+                  <p className="value">{topPanel.poNumber} 009</p>
+                )}
               </>
             )}
           </div>
-          <div>
+          <div className="divContainer">
             <p className="heading">Invoice Date</p>
-            <p className="value">{topPanel.invoiceDate}</p>
+            {status === "AR Review" || status === "Open" ? (
+              <div className="dpContainer">
+                <DatePicker
+                  placeholderText={moment(topPanel.invoiceDate).format(
+                    "DD/MMM/YYYY"
+                  )}
+                />
+              </div>
+            ) : (
+              <p className="value">{topPanel.invoiceDate}</p>
+            )}
 
             {missTransType != 7 && (
               <>
@@ -1328,7 +1387,17 @@ export default function InvoiceDetails() {
                     {status !== "Open" && (
                       <>
                         <p className="heading">Invoice Changes</p>
-                        <p className="value">{topPanel.invoiceApproval}</p>
+                        {status === "AR Review" || status === "Open" ? (
+                          <div className="dpContainer dpMidMargin">
+                            <DatePicker
+                              placeholderText={moment(
+                                topPanel.invoiceApproval
+                              ).format("DD/MMM/YYYY")}
+                            />
+                          </div>
+                        ) : (
+                          <p className="value">{topPanel.invoiceApproval}</p>
+                        )}
 
                         {isClient == "false" && (
                           <>
@@ -1343,7 +1412,11 @@ export default function InvoiceDetails() {
                                         e.target.checked
                                       ),
                                       method: "POST",
-                                      headers: getHeaders(tempToken, cid, isClient),
+                                      headers: getHeaders(
+                                        tempToken,
+                                        cid,
+                                        isClient
+                                      ),
                                     })
                                       .then((res: any) => {
                                         if (res.status === 200) {
@@ -1366,12 +1439,23 @@ export default function InvoiceDetails() {
                     )}
                   </>
                 )}
+
                 <p className="heading">Payment Due</p>
-                <p className="value">{topPanel.paymentDue}</p>
+                {status === "AR Review" || status === "Open" ? (
+                  <div className="dpContainer">
+                    <DatePicker
+                      placeholderText={moment(topPanel.paymentDue).format(
+                        "DD/MMM/YYYY"
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <p className="value">{topPanel.paymentDue}</p>
+                )}
               </>
             )}
           </div>
-          <div className="lastCloumn">
+          <div className="lastCloumn divContainer">
             <p className="heading">Location</p>
             <p className="value">{topPanel.location}</p>
             <p className="heading">Region</p>
@@ -1751,6 +1835,7 @@ export default function InvoiceDetails() {
           invoiceId={state.InvoiceId}
           navigate={navigate}
           totalAmount={apiData.data?.invoice?.totalAmount}
+          state={state}
         ></BillsTable>
       )}
 
