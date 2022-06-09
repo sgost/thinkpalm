@@ -192,17 +192,6 @@ export default function CreditMemoSummary(props: any) {
   };
 
   const editInvoiceItems = (index: number) => {
-    // let tempFieldValues = [...fieldValues];
-
-    // tempFieldValues[index].totalAmount =
-    //   tempFieldValues[index].quantity * tempFieldValues[index].amount;
-
-    // setFieldValues(tempFieldValues);
-
-    // let tempPayload = payload;
-    // tempPayload.invoiceItems[index] = fieldValues[index];
-    // setPayload(tempPayload);
-
     fieldValues[index].totalAmount =
       fieldValues[index].quantity * fieldValues[index].amount;
     payload.invoiceItems[index] = fieldValues[index];
