@@ -46,7 +46,7 @@ describe("Credit Memo Summary", () => {
     })
     test("Render CM with status = 2", () => {
         mockCreditMemoData.status = 2;
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -69,7 +69,7 @@ describe("Credit Memo Summary", () => {
 
     })
     test("Render CM => delete a summary", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -91,7 +91,7 @@ describe("Credit Memo Summary", () => {
 
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -115,7 +115,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(editButton);
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -138,7 +138,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(saveEditButton);
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -161,7 +161,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(productDD);
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
