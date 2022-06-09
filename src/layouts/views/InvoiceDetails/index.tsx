@@ -513,6 +513,7 @@ export default function InvoiceDetails() {
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
+          console.log('status1', e.text)
         }
       });
     }
@@ -522,6 +523,7 @@ export default function InvoiceDetails() {
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === creditMemoData.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
+          console.log('status2', e.text)
         }
       });
     }
@@ -772,9 +774,10 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        console.log(getApproveUrlNo, res)
+        console.log("getApproveUrlNo", res)
         if (res.status === 201) {
           setStatus(res.data.status === 2 ? "AR Review" : "Approved");
+          console.log('status1', res.data.status)
           setApprovalMsg(
             res.data.status === 4 ? "Invoice approve successfully" : ""
           );
@@ -832,6 +835,7 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         setStatus("Pending Approval");
+        console.log('status4', status)
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -950,6 +954,7 @@ export default function InvoiceDetails() {
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
+              console.log('status5', e.text)
               setTopPanel({ ...topPanel, open: 0.00 })
             }
           });
@@ -1210,7 +1215,7 @@ export default function InvoiceDetails() {
               )}
 
             {status === "Approved" && missTransType === 3 &&
-              <Button
+              < Button
                 data-testid="convert-button"
                 label="Change to Miscellaneous"
                 className="secondary-btn small change-miss"
@@ -1819,6 +1824,7 @@ export default function InvoiceDetails() {
                             setStatus(
                               e.text === "In Review" ? "AR Review" : e.text
                             );
+                            console.log('status6', e.text)
                           }
                         });
                         setInputValue("");
