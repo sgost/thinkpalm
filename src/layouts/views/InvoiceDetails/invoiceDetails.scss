@@ -55,6 +55,8 @@
         }
 
         .addPaymentButton {
+          margin: 0 3.2rem 0 0;
+
           button.a-button.medium {
             margin-right: -2rem;
           }
@@ -146,6 +148,7 @@
         button.a-button.secondary-btn {
           background-color: $white;
         }
+
         button.a-button.small {
           width: 9.31rem;
         }
@@ -254,6 +257,7 @@
             .a-dpicker__container {
               width: 14rem;
             }
+
             .a-dpicker .react-datepicker__input-container input {
               width: 10.778rem;
             }
@@ -351,6 +355,7 @@
     }
 
     .payroll {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -361,6 +366,7 @@
     }
 
     .invoice_bill_table {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -370,6 +376,7 @@
     }
 
     .master {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -1015,9 +1022,9 @@
   padding: 1rem;
 
   &__action {
-      background: #526FD6;
-      border-radius: 100%;
-      display: flex;
-      cursor: pointer;
+    background: #526FD6;
+    border-radius: 100%;
+    display: flex;
+    cursor: pointer;
   }
 }
