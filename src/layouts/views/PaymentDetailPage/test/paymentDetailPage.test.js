@@ -40,8 +40,8 @@ describe("Payment details page", () => {
     const locationText = await screen.findByText("Location");
     fireEvent.click(locationText)
 
-    const classText = await screen.findByText("Class");
-    fireEvent.click(classText)
+    const referenceText = await screen.findByText("Reference No");
+    fireEvent.click(referenceText)
 
     const depositBankText = await screen.findByText("Deposited to bank");
     fireEvent.click(depositBankText)
@@ -54,6 +54,8 @@ describe("Payment details page", () => {
 
     const addPaymentInstallmentButton = await screen.findByText("Add payment Installment");
     fireEvent.click(addPaymentInstallmentButton)
-    
+
+    const deleteButton = await screen.findByText("Delete Item");
+    fireEvent.click(deleteButton)
   });
 });

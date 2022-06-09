@@ -18,6 +18,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../..//components/getDecodedToken";
 
 import { WeAreSorryModal } from "./weAreSorryModal";
+import { ToastContainer } from "../../../components/Comman/Utils/utils";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -233,6 +234,8 @@ export default function InvoiceListing() {
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [searchText, setSearchText] = useState<any>("");
   const [searchedTableData, setSearchedTableData] = useState<any>(null);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
 
   let api = ``;
 
@@ -303,6 +306,43 @@ export default function InvoiceListing() {
       localStorage.removeItem("contractorInvoiceState");
     };
   }, []);
+
+  useEffect(() => {
+    if(!clientTableData || clientTableData?.data?.length === 0) return;
+    if (localStorage.redirectingInvoiceState) {
+      const {invoiceId, referenceNumber, isMoveBills } = JSON.parse(localStorage.redirectingInvoiceState);
+      const matchingData:any = clientTableData.data.find((d: any) => d.invoiceNo === invoiceId);
+      const { id, invoiceNo, transactionType } = matchingData;
+      navigate(
+        "/pay/invoicedetails" + id + "/" + matchingData?.customerId + "/" + true,
+        {
+          state: {
+            InvoiceId: invoiceNo,
+            transactionType,
+            rowDetails: matchingData,
+            referenceNumber,
+            isMoveBills
+          },
+        }
+      );
+    }
+    if (!localStorage.redirectingInvoiceState && localStorage.redirectingReferenceNumber) {
+      const { invoiceId, isMoveBills } = JSON.parse(localStorage.voidedInvoice);
+      let message = `Bill Reference No. ${localStorage.redirectingReferenceNumber} Has Been Rejected and Invoice No. ${invoiceId} Has Been Voided`;
+      if(isMoveBills) {
+        message = `Bill Reference No. ${localStorage.redirectingReferenceNumber} Has Been Moved To A New Invoice and Invoice No. ${invoiceId} Has Been Voided.`;
+      }
+      setShowToast(true);
+      setToastMessage(message);
+      localStorage.removeItem("redirectingReferenceNumber");
+      localStorage.removeItem("voidedInvoice");
+    }
+
+    return () => {
+      localStorage.removeItem("redirectingInvoiceState");
+    };
+
+  }, [clientTableData]);
 
   useEffect(() => {
     if (apiData?.data?.results) {
@@ -578,7 +618,7 @@ export default function InvoiceListing() {
             )}
           </div>
         </div>
-        <div className="dropdowns">
+        {!localStorage.redirectingInvoiceState && <div className="dropdowns">
           <div className="inputContainer">
             <Icon icon="search" size="medium" />
             <input
@@ -824,7 +864,7 @@ export default function InvoiceListing() {
               "Edit" && <img src={dots} />}
             {/* <FaEllipsisH className="icon" /> */}
           </div>
-        </div>
+        </div>}
 
         {isClearFilter && (
           <div
@@ -903,7 +943,7 @@ export default function InvoiceListing() {
             </ul>
           </div>
         ) : (
-          <Table
+          <>{!localStorage.redirectingInvoiceState && <Table
             options={
               searchText
                 ? {
@@ -950,9 +990,11 @@ export default function InvoiceListing() {
                 );
               }
             }}
-          />
+          />}
+          </>
         )}
       </div>
+      <ToastContainer showToast={showToast} setShowToast={setShowToast} message={toastMessage} duration={10} />
       <WeAreSorryModal
         isOpen={weAreSorryModalAction}
         onClose={() => setWeAreSorryModalAction(false)}

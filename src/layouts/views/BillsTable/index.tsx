@@ -46,7 +46,20 @@ export default function BillsTable(props: any) {
     const [rawData, setRawData] = useState<any>([]);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
+    const { state }: any = props;
+    localStorage.removeItem("redirectingReferenceNumber");
+    localStorage.removeItem("voidedInvoice");
 
+    /* istanbul ignore next */
+    useEffect(() => {
+        if (state?.referenceNumber) {
+            setShowToast(true);
+            const message = state.isMoveBills ? `Bill No. ${state.referenceNumber} Has Been Moved To The Next Invoice.` : `Bill No. ${state.referenceNumber} Has Been Rejected and Removed From The Invoice.`
+            setToastMessage(message);
+        }
+    }, [state?.referenceNumber, state?.isMoveBills]);
+
+    /* istanbul ignore next */
     useEffect(() => {
         let data: any = [];
         let paysConverted = 0;
@@ -63,15 +76,16 @@ export default function BillsTable(props: any) {
                     img: { src: item.countryCode ? getFlagURL(item.countryCode) : null }
                 },
                 payAmount: (item.billingCurrencyCode || '-') + ' ' + toCurrencyFormat(item.payAmount),
-                exchangeRate: item.exchangeRate.toFixed(2),
-                payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate.toFixed(2)),
-                total: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate.toFixed(2))
+                exchangeRate: item.exchangeRate?.toFixed(2),
+                payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate?.toFixed(2)),
+                total: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate?.toFixed(2))
             })
-            paysConverted = paysConverted + (item.payAmount * item.exchangeRate.toFixed(2));
-        })
+            paysConverted = paysConverted + (item.payAmount * item.exchangeRate?.toFixed(2));
+        });
         setTableData(data);
     }, [rawData])
 
+    /* istanbul ignore next */
     useEffect(() => {
         if (props?.tableData?.data) {
             setRawData(props?.tableData?.data || []);
@@ -112,6 +126,25 @@ export default function BillsTable(props: any) {
 
     }
     /* istanbul ignore next */
+    const handleInvoiceRedirect = (_invoiceId: string, isMoveBills: boolean) => {
+        const data = rawData.filter((x: any) => x.billReferenceNo !== clickedApiData.referenceNumber);
+        if (data.length === 0) {
+            localStorage.removeItem("redirectingInvoiceState");
+            localStorage.setItem("redirectingReferenceNumber", clickedApiData?.referenceNumber);
+            localStorage.setItem("voidedInvoice", JSON.stringify({
+                invoiceId: _invoiceId,
+                isMoveBills
+            }));
+        }
+        else localStorage.setItem("redirectingInvoiceState", JSON.stringify({
+            invoiceId,
+            referenceNumber: clickedApiData?.referenceNumber,
+            isMoveBills
+        }));
+        props.navigate("/pay");
+    };
+
+    /* istanbul ignore next */
     const rejectBillCall = () => {
         let payload: any = [{
             id: clickedApiData?.id,
@@ -126,14 +159,8 @@ export default function BillsTable(props: any) {
             })
             .then((response: any) => {
 
-                if (response.status == 200 && response.data.responseCode == 200) {
-                    setRejectBanner(false);
-                    setOpenRejectReason(false);
-                    setRejectReason('');
-                    setOpenModal(false);
-                    setRawData(rawData.filter((x: any) => x.billReferenceNo != clickedApiData.referenceNumber));
-                    setShowToast(true);
-                    setToastMessage(`${clickedApiData?.referenceNumber} has been rejected.`);
+                if (response.status === 200 && response.data.responseCode === 200) {
+                    handleInvoiceRedirect(props.invoiceId, false);
                 } else {
                     console.log("Bill reject API failing on contractor service");
                 }
@@ -166,16 +193,9 @@ export default function BillsTable(props: any) {
                 }
             })
             .then((response: any) => {
-                if (response.status == 200 && response.data.responseCode == 200) {
+                if (response.status === 200 && response.data.responseCode === 200) {
                     if (moveNextBanner) {
-                        setMoveNextBanner(false);
-                        setRejectReason('');
-                        setOpenModal(false);
-                        setShowToast(true);
-                        setToastMessage(`Bill Reference No. ${clickedApiData?.referenceNumber} has been moved to a new invoice and Invoice No. ${invoiceId} has been Voided.`);
-                        setTimeout(() => {
-                            props.navigate("/pay");
-                        }, 1000);
+                        handleInvoiceRedirect(props.invoiceId, true);
                     }
                 } else { APIFails() }
             })
@@ -204,6 +224,7 @@ export default function BillsTable(props: any) {
             });
     };
 
+    /* istanbul ignore next */
     const handleClose = () => {
         setRejectBanner(false);
         setOpenRejectReason(false);
@@ -371,7 +392,7 @@ export default function BillsTable(props: any) {
                                     />
                                     {tableData.length === 1 ? (
                                         <span className='info-banner'>
-                                            <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. If you reject or remove the last bill, 
+                                            <strong>Heads up!</strong> This bill was approved and added to <strong>Invoice {invoiceId}</strong>. If you reject or remove the last bill,
                                             then the invoice will be automatically voided. Are you sure you want to reject it and remove it from this invoice?
                                         </span>
                                     ) : (
@@ -419,7 +440,7 @@ export default function BillsTable(props: any) {
                                     className="secondary-btn medium secondary-button reject-button"
                                     handleOnClick={() => { setRejectBanner(true) }}
                                 />
-                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && (
+                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.length > 1 && (
                                         <Button
                                             className="primary-blue medium primary next-invoice-button"
                                             label="Move To Next Invoice"
@@ -508,7 +529,7 @@ export default function BillsTable(props: any) {
                     </div>}
                 </Modal>
             </div>
-            <ToastContainer showToast={showToast} setShowToast={setShowToast} message={toastMessage} />
+            <ToastContainer showToast={showToast} setShowToast={setShowToast} message={toastMessage} duration={10} />
         </div>
 
     );

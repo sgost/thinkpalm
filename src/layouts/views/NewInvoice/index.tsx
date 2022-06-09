@@ -26,6 +26,10 @@ import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
+
+  const tempToken = localStorage.getItem("accessToken");
+  const cid = localStorage.getItem("current-org-id");
+  
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
   const [tempData, setTempData] = useState<any>([]);
@@ -64,7 +68,6 @@ const NewInvoice = () => {
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
-  const permission: any = getDecodedToken();
 
   var CurrentYear = new Date().getFullYear();
 
@@ -519,6 +522,7 @@ const NewInvoice = () => {
   }, [hideTopCheck]);
 
   useEffect(() => {
+
     axios
       .get(urls.countries)
       .then((countryRes: any) => {
