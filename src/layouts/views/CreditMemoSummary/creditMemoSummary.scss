@@ -8,13 +8,17 @@
 
     .summary-card {
       padding: 2.813rem 4rem 5.315rem 4rem;
-      .ui-dropdown-req{
+      .ui-dropdown-req {
         span.a-dropdown__title:after {
           content: "*";
           color: red;
         }
+
+        .a-dropdown__search {
+          width: 74%;
+        }
       }
-      .ui-datepicker-req{
+      .ui-datepicker-req {
         span.react-datepicker__label:after {
           content: "*";
           color: red;
@@ -113,7 +117,7 @@
 
       .line-between {
         width: -webkit-fill-available;
-        border-bottom: 1px solid #B4B3BB !important;
+        border-bottom: 1px solid #b4b3bb !important;
         margin-top: 3.6rem !important;
         margin-bottom: 2.063rem;
       }
@@ -128,8 +132,8 @@
         .spacerclass {
           width: 70%;
         }
-        .rowBox{
-          width:30%
+        .rowBox {
+          width: 30%;
         }
         .rowFee {
           display: flex;
@@ -234,7 +238,7 @@
         height: 3.125rem !important;
         font-size: 1.25rem;
         line-height: 1.3333rem;
-        svg{
+        svg {
           width: 1.3333rem;
           height: 1.3333rem;
         }
@@ -246,7 +250,7 @@
         height: 3.125rem !important;
         font-size: 1.25rem;
         line-height: 1.3333rem;
-        svg{
+        svg {
           width: 1.6667rem;
           height: 1.6667rem;
         }
