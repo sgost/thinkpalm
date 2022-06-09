@@ -2,7 +2,11 @@ import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { getHeaders, productInvoice, updateCreditMemoUrl } from "../../../urls/urls";
+import {
+  getHeaders,
+  productInvoice,
+  updateCreditMemoUrl,
+} from "../../../urls/urls";
 import FileUploadWidget from "../../../components/FileUpload";
 import Input from "../../../components/Input/input";
 import NotesWidget from "../../../components/Notes";
@@ -55,9 +59,9 @@ export default function CreditMemoSummary(props: any) {
   useEffect(() => {
     reCalculateTotal();
   }, [creditMemoData]);
-  useEffect(()=>{
+  useEffect(() => {
     updateDropdowns();
-  },[fieldValues])
+  }, [fieldValues]);
   useEffect(() => {
     axios
       .get(productInvoice())
@@ -91,13 +95,10 @@ export default function CreditMemoSummary(props: any) {
       .catch((err) => {
         console.log(err);
       });
-      
-  
   }, []);
 
   useEffect(() => {
-
-    if(serviceCountries){
+    if (serviceCountries) {
       setCountryOptions(
         serviceCountries.map((x: any) => {
           return {
@@ -121,9 +122,7 @@ export default function CreditMemoSummary(props: any) {
       });
       setMultipleCountryArr(countryArr);
     }
-   
-  },[serviceCountries] )
-
+  }, [serviceCountries]);
 
   const toCurrencyFormat = (amount: any) => {
     const cFormat = new Intl.NumberFormat("en-US", {
@@ -209,6 +208,8 @@ export default function CreditMemoSummary(props: any) {
     reCalculateTotal();
     const tempToken = localStorage.getItem("accessToken");
     var headers = getHeaders(tempToken, cid, isClient);
+    console.log(payload);
+    // return;
     axios
       .put(updateCreditMemoUrl(creditMemoData?.id), payload, {
         headers: headers,
@@ -219,6 +220,7 @@ export default function CreditMemoSummary(props: any) {
           setEditCheck(creditMemoData.invoiceItems.length + 1);
           setFieldValues(resp.data.invoiceItems);
           setCreditMemoData(resp.data);
+          setPayload(resp.data);
         }
       })
       .catch(() => {
@@ -264,16 +266,16 @@ export default function CreditMemoSummary(props: any) {
     setSubTotalAmount(subtotal);
     setVatAmount(subtotal * (vatValue / 100));
     payload.totalAmount = subtotal + subtotal * (vatValue / 100);
-    if(creditMemoData.status != 9 ){
+    if (creditMemoData.status != 9) {
       payload.invoiceBalance = subtotal + subtotal * (vatValue / 100);
-    }else{
-      payload.invoiceBalance = 0
+    } else {
+      payload.invoiceBalance = 0;
     }
   };
   /* istanbul ignore next */
   const updateDropdowns = () => {
-    let countryArr: any = []
-    if(serviceCountries){
+    let countryArr: any = [];
+    if (serviceCountries) {
       fieldValues.forEach((item: any) => {
         countryArr.push(
           serviceCountries.map((x: any) => {
@@ -285,11 +287,11 @@ export default function CreditMemoSummary(props: any) {
           })
         );
       });
-      setMultipleCountryArr(countryArr);  
+      setMultipleCountryArr(countryArr);
     }
-    
+
     let arr: any = [];
-    if(rawProducts){
+    if (rawProducts) {
       for (let i of fieldValues) {
         arr.push(
           rawProducts.map((x: any) => {
@@ -303,7 +305,6 @@ export default function CreditMemoSummary(props: any) {
       }
       setMultipleProductArr(arr);
     }
-    
   };
   /* istanbul ignore next */
   const setEditDescription = (index: number, value: any) => {
@@ -474,6 +475,7 @@ export default function CreditMemoSummary(props: any) {
                     isDisabled={editCheck != index}
                     options={multipleProductArr[index] || []}
                     title="Product Service"
+                    search
                   />
                 </div>
                 <div className="UI-line-text-box">
@@ -509,6 +511,7 @@ export default function CreditMemoSummary(props: any) {
                     isDisabled={editCheck != index}
                     options={multipleCountryArr[index] || []}
                     title="Service Country"
+                    search
                   />
                 </div>
               </div>
@@ -608,6 +611,7 @@ export default function CreditMemoSummary(props: any) {
               </div>
               <div className="UI-line-text-box ui-dropdown-req">
                 <Dropdown
+                  search
                   handleDropOptionClick={productDropOptionClick}
                   handleDropdownClick={setOpenProductService}
                   isOpen={openProductService}
@@ -628,6 +632,7 @@ export default function CreditMemoSummary(props: any) {
               </div>
               <div className="UI-line-text-box ui-dropdown-req">
                 <Dropdown
+                  search
                   handleDropOptionClick={CountryDropOptionClick}
                   handleDropdownClick={setOpenCountryService}
                   isOpen={openCountryService}
