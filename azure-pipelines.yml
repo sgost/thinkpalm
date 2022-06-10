@@ -559,7 +559,7 @@ stages:
             displayName: 'upload to Azure Storage static website hosting and purge Azure CDN endpoint'
 
 - stage: Build_DEMO
-  condition: and(succeeded(),or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/*')))
+  condition: and(succeeded(),or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/demoBugFixes')))
   variables:
   - name: system.debug
     value: true
@@ -663,7 +663,7 @@ stages:
         organization: 'technology-internal'    
         
 - stage: Deploy_DEMO
-  condition: and(succeeded(),or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/*')))
+  condition: and(succeeded(),or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/demoBugFixes')))
   variables:
   - name: system.debug
     value: true

@@ -308,28 +308,40 @@ export default function InvoiceListing() {
   }, []);
 
   useEffect(() => {
-    if(!clientTableData || clientTableData?.data?.length === 0) return;
+    if (!clientTableData || clientTableData?.data?.length === 0) return;
     if (localStorage.redirectingInvoiceState) {
-      const {invoiceId, referenceNumber, isMoveBills } = JSON.parse(localStorage.redirectingInvoiceState);
-      const matchingData:any = clientTableData.data.find((d: any) => d.invoiceNo === invoiceId);
+      const { invoiceId, referenceNumber, isMoveBills } = JSON.parse(
+        localStorage.redirectingInvoiceState
+      );
+      const matchingData: any = clientTableData.data.find(
+        (d: any) => d.invoiceNo === invoiceId
+      );
       const { id, invoiceNo, transactionType } = matchingData;
       navigate(
-        "/pay/invoicedetails" + id + "/" + matchingData?.customerId + "/" + true,
+        "/pay/invoicedetails" +
+          id +
+          "/" +
+          matchingData?.customerId +
+          "/" +
+          true,
         {
           state: {
             InvoiceId: invoiceNo,
             transactionType,
             rowDetails: matchingData,
             referenceNumber,
-            isMoveBills
+            isMoveBills,
           },
         }
       );
     }
-    if (!localStorage.redirectingInvoiceState && localStorage.redirectingReferenceNumber) {
+    if (
+      !localStorage.redirectingInvoiceState &&
+      localStorage.redirectingReferenceNumber
+    ) {
       const { invoiceId, isMoveBills } = JSON.parse(localStorage.voidedInvoice);
       let message = `Bill Reference No. ${localStorage.redirectingReferenceNumber} Has Been Rejected and Invoice No. ${invoiceId} Has Been Voided`;
-      if(isMoveBills) {
+      if (isMoveBills) {
         message = `Bill Reference No. ${localStorage.redirectingReferenceNumber} Has Been Moved To A New Invoice and Invoice No. ${invoiceId} Has Been Voided.`;
       }
       setShowToast(true);
@@ -341,7 +353,6 @@ export default function InvoiceListing() {
     return () => {
       localStorage.removeItem("redirectingInvoiceState");
     };
-
   }, [clientTableData]);
 
   useEffect(() => {
@@ -363,9 +374,14 @@ export default function InvoiceListing() {
           transactionTypeLabel: item.transactionTypeLabel || "",
           createdDate: format(new Date(item.createdDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
-          totalAmount: item.currency.code + " " + cFormat.format(item.totalAmount).slice(1) || "",
+          totalAmount:
+            item?.currency?.code +
+              " " +
+              cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
-            item.currency.code + " " + cFormat.format(item.invoiceBalance).slice(1) || "",
+            item?.currency?.code +
+              " " +
+              cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
             value: "Not Exported",
             color: "#767676",
@@ -618,253 +634,256 @@ export default function InvoiceListing() {
             )}
           </div>
         </div>
-        {!localStorage.redirectingInvoiceState && <div className="dropdowns">
-          <div className="inputContainer">
-            <Icon icon="search" size="medium" />
-            <input
-              className="input"
-              placeholder={
-                isClient ? "Search Invoices" : "Search by Invoice, Customer"
-              }
-              onChange={(e: any) => setSearchText(e.target.value)}
-            />
-          </div>
-          <div className="pickers">
-            {permission?.InvoiceList?.find((str: any) => str === "Download") ===
-              "Download" && (
-              <div
-                onClick={downloadFunction}
-                data-testid="download"
-                className={downloadDisable ? "downloadpointer" : "download"}
-              >
-                <Icon
-                  className="download"
-                  color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                  icon="download"
-                  size="large"
-                />
-              </div>
-            )}
-
-            <DatepickerDropdown
-              title="Date"
-              isOpen={isDateOpen}
-              setIsOpen={setIsDateOpen}
-              setDateTo={setDateTo}
-              setDateFrom={setDateFrom}
-              selectedDate={selectedDate}
-              setSelectedDate={setSelectedDate}
-              handleDropOptionClick={(item: any) => {
-                let date = new Date();
-                switch (item) {
-                  case "Today":
-                    const todayDate = format(date, "yyyy-MM-dd");
-                    setDateFrom(todayDate);
-                    setDateTo(todayDate);
-                    break;
-
-                  case "Yesterday":
-                    const yesterdayDate = date.setDate(date.getDate() - 1);
-                    const yesterdayFormatDate = format(
-                      yesterdayDate,
-                      "yyyy-MM-dd"
-                    );
-                    setDateFrom(yesterdayFormatDate);
-                    setDateTo(yesterdayFormatDate);
-                    break;
-
-                  case "This Week":
-                    const thisWeekStartDate = new Date(
-                      date.getFullYear(),
-                      date.getMonth(),
-                      date.getDate() - 7
-                    );
-                    const thisWeekEndDate = date.setDate(date.getDate() - 1);
-                    const thisWeekStartFormatDate = format(
-                      thisWeekStartDate,
-                      "yyyy-MM-dd"
-                    );
-                    const thisWeekEndFormatDate = format(
-                      thisWeekEndDate,
-                      "yyyy-MM-dd"
-                    );
-                    setDateFrom(thisWeekStartFormatDate);
-                    setDateTo(thisWeekEndFormatDate);
-                    break;
-
-                  case "This Month":
-                    const thisMonthStartDate = new Date(
-                      date.getFullYear(),
-                      date.getMonth(),
-                      1
-                    );
-                    const thisMonthEndDate = new Date(
-                      date.getFullYear(),
-                      date.getMonth() + 1,
-                      0
-                    );
-                    const thisMonthStartFormatDate = format(
-                      thisMonthStartDate,
-                      "yyyy-MM-dd"
-                    );
-                    const thisMonthEndFormatDate = format(
-                      thisMonthEndDate,
-                      "yyyy-MM-dd"
-                    );
-                    setDateFrom(thisMonthStartFormatDate);
-                    setDateTo(thisMonthEndFormatDate);
-                    break;
-
-                  case "This Quarter":
-                    const quarter = Math.floor(date.getMonth() / 3);
-                    const thisQuarterStartDate = new Date(
-                      date.getFullYear(),
-                      quarter * 3,
-                      1
-                    );
-                    const thisQuarterEndDate = new Date(
-                      thisQuarterStartDate.getFullYear(),
-                      thisQuarterStartDate.getMonth() + 3,
-                      0
-                    );
-                    const thisQuarterStartFormatDate = format(
-                      thisQuarterStartDate,
-                      "yyyy-MM-dd"
-                    );
-                    const thisQuarterEndFormatDate = format(
-                      thisQuarterEndDate,
-                      "yyyy-MM-dd"
-                    );
-                    setDateFrom(thisQuarterStartFormatDate);
-                    setDateTo(thisQuarterEndFormatDate);
-                    break;
-
-                  case "This Year":
-                    const thisYearStartDate = new Date(
-                      date.getFullYear(),
-                      0,
-                      1
-                    );
-                    const thisYearEndDate = new Date(
-                      date.getFullYear(),
-                      11,
-                      31
-                    );
-                    const thisYearStartFormatDate = format(
-                      thisYearStartDate,
-                      "yyyy-MM-dd"
-                    );
-                    const thisYearEndFormatDate = format(
-                      thisYearEndDate,
-                      "yyyy-MM-dd"
-                    );
-                    setDateFrom(thisYearStartFormatDate);
-                    setDateTo(thisYearEndFormatDate);
-                    break;
+        {!localStorage.redirectingInvoiceState && (
+          <div className="dropdowns">
+            <div className="inputContainer">
+              <Icon icon="search" size="medium" />
+              <input
+                className="input"
+                placeholder={
+                  isClient ? "Search Invoices" : "Search by Invoice, Customer"
                 }
-                setIsDateOpen(!isDateOpen);
-              }}
-              handleDropdownClick={() => {
-                setIsDateOpen(!isDateOpen);
-              }}
-            />
+                onChange={(e: any) => setSearchText(e.target.value)}
+              />
+            </div>
+            <div className="pickers">
+              {permission?.InvoiceList?.find(
+                (str: any) => str === "Download"
+              ) === "Download" && (
+                <div
+                  onClick={downloadFunction}
+                  data-testid="download"
+                  className={downloadDisable ? "downloadpointer" : "download"}
+                >
+                  <Icon
+                    className="download"
+                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                    icon="download"
+                    size="large"
+                  />
+                </div>
+              )}
 
-            <Dropdown
-              title="Type"
-              multiple
-              isOpen={isTypeOpen}
-              handleDropdownClick={(bool: any) => {
-                setIsTypeOpen(bool);
-                if (bool) {
+              <DatepickerDropdown
+                title="Date"
+                isOpen={isDateOpen}
+                setIsOpen={setIsDateOpen}
+                setDateTo={setDateTo}
+                setDateFrom={setDateFrom}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                handleDropOptionClick={(item: any) => {
+                  let date = new Date();
+                  switch (item) {
+                    case "Today":
+                      const todayDate = format(date, "yyyy-MM-dd");
+                      setDateFrom(todayDate);
+                      setDateTo(todayDate);
+                      break;
+
+                    case "Yesterday":
+                      const yesterdayDate = date.setDate(date.getDate() - 1);
+                      const yesterdayFormatDate = format(
+                        yesterdayDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(yesterdayFormatDate);
+                      setDateTo(yesterdayFormatDate);
+                      break;
+
+                    case "This Week":
+                      const thisWeekStartDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        date.getDate() - 7
+                      );
+                      const thisWeekEndDate = date.setDate(date.getDate() - 1);
+                      const thisWeekStartFormatDate = format(
+                        thisWeekStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const thisWeekEndFormatDate = format(
+                        thisWeekEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(thisWeekStartFormatDate);
+                      setDateTo(thisWeekEndFormatDate);
+                      break;
+
+                    case "This Month":
+                      const thisMonthStartDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        1
+                      );
+                      const thisMonthEndDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth() + 1,
+                        0
+                      );
+                      const thisMonthStartFormatDate = format(
+                        thisMonthStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const thisMonthEndFormatDate = format(
+                        thisMonthEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(thisMonthStartFormatDate);
+                      setDateTo(thisMonthEndFormatDate);
+                      break;
+
+                    case "This Quarter":
+                      const quarter = Math.floor(date.getMonth() / 3);
+                      const thisQuarterStartDate = new Date(
+                        date.getFullYear(),
+                        quarter * 3,
+                        1
+                      );
+                      const thisQuarterEndDate = new Date(
+                        thisQuarterStartDate.getFullYear(),
+                        thisQuarterStartDate.getMonth() + 3,
+                        0
+                      );
+                      const thisQuarterStartFormatDate = format(
+                        thisQuarterStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const thisQuarterEndFormatDate = format(
+                        thisQuarterEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(thisQuarterStartFormatDate);
+                      setDateTo(thisQuarterEndFormatDate);
+                      break;
+
+                    case "This Year":
+                      const thisYearStartDate = new Date(
+                        date.getFullYear(),
+                        0,
+                        1
+                      );
+                      const thisYearEndDate = new Date(
+                        date.getFullYear(),
+                        11,
+                        31
+                      );
+                      const thisYearStartFormatDate = format(
+                        thisYearStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const thisYearEndFormatDate = format(
+                        thisYearEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(thisYearStartFormatDate);
+                      setDateTo(thisYearEndFormatDate);
+                      break;
+                  }
+                  setIsDateOpen(!isDateOpen);
+                }}
+                handleDropdownClick={() => {
+                  setIsDateOpen(!isDateOpen);
+                }}
+              />
+
+              <Dropdown
+                title="Type"
+                multiple
+                isOpen={isTypeOpen}
+                handleDropdownClick={(bool: any) => {
+                  setIsTypeOpen(bool);
+                  if (bool) {
+                    setIsStatusOpen(false);
+                  }
+                }}
+                handleDropOptionClick={(opt: any) => {
+                  let index = types.findIndex((e) => e.value === opt.value);
+
+                  let copy = [...types];
+
+                  copy.forEach((e, i) => {
+                    if (i === index) {
+                      if (copy[index].isSelected) {
+                        copy[index] = { ...opt, isSelected: false };
+                      } else {
+                        copy[index] = { ...opt, isSelected: true };
+                      }
+                    }
+                  });
+
+                  let typesValue = "";
+
+                  copy.forEach((e) => {
+                    if (e.isSelected) {
+                      if (typesValue) {
+                        typesValue += "," + e.value.toString();
+                      } else {
+                        typesValue = e.value.toString();
+                      }
+                    }
+                  });
+
+                  setTypes(copy);
+                  setTransactionTypes(typesValue);
+                  setDropdownLabel({
+                    ...dropdownLabel,
+                    types: copy[index]?.label,
+                  });
+                }}
+                options={types}
+              />
+
+              <Dropdown
+                title="Status"
+                multiple
+                isOpen={isStatusOpen}
+                handleDropdownClick={(bool: any) => {
+                  setIsStatusOpen(bool);
+                  if (bool) {
+                    setIsTypeOpen(false);
+                  }
+                }}
+                handleDropOptionClick={(opt: any) => {
+                  let copy = [...status];
+                  let index = status.findIndex((e) => e.value === opt.value);
+                  copy.forEach((e, ind) => {
+                    if (ind === index) {
+                      if (copy[index].isSelected) {
+                        copy[index] = { ...opt, isSelected: false };
+                      } else {
+                        copy[index] = { ...opt, isSelected: true };
+                      }
+                    }
+                  });
+
+                  let statusValue = "";
+                  copy.forEach((e) => {
+                    if (e.isSelected) {
+                      if (statusValue) {
+                        statusValue += "," + e.value.toString();
+                      } else {
+                        statusValue = e.value.toString();
+                      }
+                    }
+                  });
+
+                  setStatus(copy);
                   setIsStatusOpen(false);
-                }
-              }}
-              handleDropOptionClick={(opt: any) => {
-                let index = types.findIndex((e) => e.value === opt.value);
-
-                let copy = [...types];
-
-                copy.forEach((e, i) => {
-                  if (i === index) {
-                    if (copy[index].isSelected) {
-                      copy[index] = { ...opt, isSelected: false };
-                    } else {
-                      copy[index] = { ...opt, isSelected: true };
-                    }
-                  }
-                });
-
-                let typesValue = "";
-
-                copy.forEach((e) => {
-                  if (e.isSelected) {
-                    if (typesValue) {
-                      typesValue += "," + e.value.toString();
-                    } else {
-                      typesValue = e.value.toString();
-                    }
-                  }
-                });
-
-                setTypes(copy);
-                setTransactionTypes(typesValue);
-                setDropdownLabel({
-                  ...dropdownLabel,
-                  types: copy[index]?.label,
-                });
-              }}
-              options={types}
-            />
-
-            <Dropdown
-              title="Status"
-              multiple
-              isOpen={isStatusOpen}
-              handleDropdownClick={(bool: any) => {
-                setIsStatusOpen(bool);
-                if (bool) {
-                  setIsTypeOpen(false);
-                }
-              }}
-              handleDropOptionClick={(opt: any) => {
-                let copy = [...status];
-                let index = status.findIndex((e) => e.value === opt.value);
-                copy.forEach((e, ind) => {
-                  if (ind === index) {
-                    if (copy[index].isSelected) {
-                      copy[index] = { ...opt, isSelected: false };
-                    } else {
-                      copy[index] = { ...opt, isSelected: true };
-                    }
-                  }
-                });
-
-                let statusValue = "";
-                copy.forEach((e) => {
-                  if (e.isSelected) {
-                    if (statusValue) {
-                      statusValue += "," + e.value.toString();
-                    } else {
-                      statusValue = e.value.toString();
-                    }
-                  }
-                });
-
-                setStatus(copy);
-                setIsStatusOpen(false);
-                setStatusType(statusValue);
-                setDropdownLabel({
-                  ...dropdownLabel,
-                  status: copy[index]?.label,
-                });
-              }}
-              options={status}
-            />
-            {permission?.InvoiceList?.find((str: any) => str === "Edit") ===
-              "Edit" && <img src={dots} />}
-            {/* <FaEllipsisH className="icon" /> */}
+                  setStatusType(statusValue);
+                  setDropdownLabel({
+                    ...dropdownLabel,
+                    status: copy[index]?.label,
+                  });
+                }}
+                options={status}
+              />
+              {permission?.InvoiceList?.find((str: any) => str === "Edit") ===
+                "Edit" && <img src={dots} />}
+              {/* <FaEllipsisH className="icon" /> */}
+            </div>
           </div>
-        </div>}
+        )}
 
         {isClearFilter && (
           <div
@@ -943,58 +962,66 @@ export default function InvoiceListing() {
             </ul>
           </div>
         ) : (
-          <>{!localStorage.redirectingInvoiceState && <Table
-            options={
-              searchText
-                ? {
-                    ...searchedTableData,
-                    enableMultiSelect: true,
-                    onRowCheckboxChange: onRowCheckboxChange,
+          <>
+            {!localStorage.redirectingInvoiceState && (
+              <Table
+                options={
+                  searchText
+                    ? {
+                        ...searchedTableData,
+                        enableMultiSelect: true,
+                        onRowCheckboxChange: onRowCheckboxChange,
+                      }
+                    : isClient
+                    ? {
+                        ...clientTableData,
+                        enableMultiSelect: true,
+                        onRowCheckboxChange: onRowCheckboxChange,
+                      }
+                    : {
+                        ...internalTabledata,
+                        enableMultiSelect: true,
+                        onRowCheckboxChange: onRowCheckboxChange,
+                      }
+                }
+                colSort
+                className="table"
+                pagination
+                pagingOptions={[15, 30, 50, 100]}
+                testRowClick="invoice-list-cell"
+                handleRowClick={(row: any) => {
+                  let isClientStr = isClient ? "true" : "false";
+                  if (row?.transactionType === 7 && row?.status === 9) {
+                    setWeAreSorryModalAction(true);
+                  } else {
+                    navigate(
+                      "/pay/invoicedetails" +
+                        row.id +
+                        "/" +
+                        row.customerId +
+                        "/" +
+                        isClientStr,
+                      {
+                        state: {
+                          InvoiceId: row.invoiceNo,
+                          transactionType: row.transactionType,
+                          rowDetails: row,
+                        },
+                      }
+                    );
                   }
-                : isClient
-                ? {
-                    ...clientTableData,
-                    enableMultiSelect: true,
-                    onRowCheckboxChange: onRowCheckboxChange,
-                  }
-                : {
-                    ...internalTabledata,
-                    enableMultiSelect: true,
-                    onRowCheckboxChange: onRowCheckboxChange,
-                  }
-            }
-            colSort
-            className="table"
-            pagination
-            pagingOptions={[15, 30, 50, 100]}
-            testRowClick="invoice-list-cell"
-            handleRowClick={(row: any) => {
-              let isClientStr = isClient ? "true" : "false";
-              if (row?.transactionType === 7 && row?.status === 9) {
-                setWeAreSorryModalAction(true);
-              } else {
-                navigate(
-                  "/pay/invoicedetails" +
-                    row.id +
-                    "/" +
-                    row.customerId +
-                    "/" +
-                    isClientStr,
-                  {
-                    state: {
-                      InvoiceId: row.invoiceNo,
-                      transactionType: row.transactionType,
-                      rowDetails: row,
-                    },
-                  }
-                );
-              }
-            }}
-          />}
+                }}
+              />
+            )}
           </>
         )}
       </div>
-      <ToastContainer showToast={showToast} setShowToast={setShowToast} message={toastMessage} duration={10} />
+      <ToastContainer
+        showToast={showToast}
+        setShowToast={setShowToast}
+        message={toastMessage}
+        duration={10}
+      />
       <WeAreSorryModal
         isOpen={weAreSorryModalAction}
         onClose={() => setWeAreSorryModalAction(false)}
