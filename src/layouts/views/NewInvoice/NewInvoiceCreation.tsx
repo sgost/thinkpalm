@@ -296,6 +296,153 @@ const NewInvoiceCreation = ({
               </div>
             )}
 
+            <div className="dropdownRow">
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="dropdown">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        CustomerOptions,
+                        setCustomerOption,
+                        setIsCustomerOpen
+                      );
+                      setCountryOptions([]);
+
+                      setStepperOneData({
+                        ...stepperOneData,
+                        customer: item.label,
+                        customerId: item.value,
+                        countryId: "",
+                        country: "",
+                      });
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsCustomerOpen(b);
+                      setIstypeOpen(false);
+                      setIsCountryOpen(false);
+                      setIsMonthOpen(false);
+                      setIsYearOpen(false);
+                    }}
+                    isOpen={isCustomerOpen}
+                    options={CustomerOptions}
+                    title={`Invoicer`}
+                    search
+                  />
+                </div>
+              )}
+
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="dropdown">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        CustomerOptions,
+                        setCustomerOption,
+                        setIsCustomerOpen
+                      );
+                      setCountryOptions([]);
+
+                      setStepperOneData({
+                        ...stepperOneData,
+                        customer: item.label,
+                        customerId: item.value,
+                        countryId: "",
+                        country: "",
+                      });
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsCustomerOpen(b);
+                      setIstypeOpen(false);
+                      setIsCountryOpen(false);
+                      setIsMonthOpen(false);
+                      setIsYearOpen(false);
+                    }}
+                    isOpen={isCustomerOpen}
+                    options={CustomerOptions}
+                    title={`Receivable Account`}
+                    search
+                  />
+                </div>
+              )}
+            </div>
+
+            <div className="dropdownRow">
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="lastDropdown">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        CustomerOptions,
+                        setCustomerOption,
+                        setIsCustomerOpen
+                      );
+                      setCountryOptions([]);
+
+                      setStepperOneData({
+                        ...stepperOneData,
+                        customer: item.label,
+                        customerId: item.value,
+                        countryId: "",
+                        country: "",
+                      });
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsCustomerOpen(b);
+                      setIstypeOpen(false);
+                      setIsCountryOpen(false);
+                      setIsMonthOpen(false);
+                      setIsYearOpen(false);
+                    }}
+                    isOpen={isCustomerOpen}
+                    options={CustomerOptions}
+                    title={`Currancy`}
+                    search
+                  />
+                </div>
+              )}
+
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="lastDropdown">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        CustomerOptions,
+                        setCustomerOption,
+                        setIsCustomerOpen
+                      );
+                      setCountryOptions([]);
+
+                      setStepperOneData({
+                        ...stepperOneData,
+                        customer: item.label,
+                        customerId: item.value,
+                        countryId: "",
+                        country: "",
+                      });
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsCustomerOpen(b);
+                      setIstypeOpen(false);
+                      setIsCountryOpen(false);
+                      setIsMonthOpen(false);
+                      setIsYearOpen(false);
+                    }}
+                    isOpen={isCustomerOpen}
+                    options={CustomerOptions}
+                    title={`Quickbook ID`}
+                    search
+                  />
+                </div>
+              )}
+            </div>
             {stepperOneData?.type === "Payroll" && (
               <div className="dropdownC">
                 <Dropdown
