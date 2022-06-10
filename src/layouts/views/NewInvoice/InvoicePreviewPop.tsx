@@ -6,6 +6,7 @@ import moment from "moment";
 import axios from "axios";
 import { getHeaders, urls } from "../../../urls/urls";
 
+/* istanbul ignore next */
 const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
 
   const [invoiceData, setInvoiceData] = useState<any>(null);

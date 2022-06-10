@@ -24,12 +24,10 @@ import {
 } from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
-// import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
-
   const tempToken = localStorage.getItem("accessToken");
   const cid = localStorage.getItem("current-org-id");
-  
+
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
   const [tempData, setTempData] = useState<any>([]);
@@ -294,6 +292,7 @@ const NewInvoice = () => {
     setSelectedRowPostData,
     loading,
     setLoading,
+    selectedRowPostData,
   };
 
   //stepper three payroll props
@@ -366,7 +365,7 @@ const NewInvoice = () => {
       );
     }
     if (stepsCount == 2 && stepperOneData.type === "Payroll") {
-      return selectedRowPostData?.length > 0 ? false : true;
+      return Object.keys(selectedRowPostData).length === 0 ? true : false;
     }
   };
 
@@ -404,34 +403,24 @@ const NewInvoice = () => {
     }
   };
 
-  const disableFunForStepOneProforma = () => {
-    if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        invoiceDate !== ""
-      );
-    }
-  };
-
-  const disableFunForStepOneMiscellaneous = () => {
-    if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        invoiceDate !== ""
-      );
-    }
-  };
-
   const handleNextButtonClick = () => {
     if (stepsCount != 2 && stepperOneData.type == "Payroll") {
       setStepsCount(stepsCount + 1);
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
       setLoading(true);
-      const PrepareData = employeeRowData;
-      PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
+      const apiData = employeeApiData;
+
+      let payLoadData = [];
+      for (const [key, value] of Object.entries(selectedRowPostData)) {
+        const newPreapredData = apiData[key];
+
+        newPreapredData.employeeDetail.compensation.payItems =
+          selectedRowPostData[key];
+
+        payLoadData.push(newPreapredData);
+      }
+
       const data = {
         customerId: stepperOneData?.customerId,
         userId: stepperOneData?.customerId,
@@ -441,7 +430,7 @@ const NewInvoice = () => {
         month: stepperOneData?.monthId,
         year: stepperOneData?.yearId,
         employeeDetail: {
-          employees: [PrepareData.employeeDetail],
+          employees: payLoadData,
         },
       };
       axios({
@@ -505,14 +494,7 @@ const NewInvoice = () => {
       setStepsCount(4);
     }
 
-    // if (stepsCount == 1 && stepperOneData?.type === "Miscellaneous") {
-    //   setStepsCount(stepsCount + 1);
-    // }
 
-    // if (stepsCount == 2 && stepperOneData?.type === "Miscellaneous") {
-    //   //API integration here
-    //   setStepsCount(3);
-    // }
   };
 
   useEffect(() => {
@@ -522,7 +504,6 @@ const NewInvoice = () => {
   }, [hideTopCheck]);
 
   useEffect(() => {
-
     axios
       .get(urls.countries)
       .then((countryRes: any) => {
@@ -583,12 +564,6 @@ const NewInvoice = () => {
 
     const currencyId = countriesData.find(
       (c: any) => c.currency.code === customer?.billingCurrency
-    );
-    console.log(
-      "CustomerOptions",
-      customer?.billingAddress?.country,
-      stepperOneData?.customerId,
-      currencyId?.currency?.id
     );
 
     let data = {

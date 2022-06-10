@@ -1444,10 +1444,16 @@ export default function InvoiceDetails() {
       )}
 
       {/* istanbul ignore next */}
-      <div className="paymentCompnent">
-        <PaymentDetailContainer />
-      </div>
-
+      {(status === "Paid" || status === "Partial Paid") &&
+      (state.transactionType === 1 ||
+        state.transactionType === 2 ||
+        state.transactionType === 3) ? (
+        <div className="paymentCompnent">
+          <PaymentDetailContainer status={status} />
+        </div>
+      ) : (
+        <></>
+      )}
 
       {(state.transactionType == 4 ||
         state.transactionType == 3 ||
