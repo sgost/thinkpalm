@@ -38,6 +38,7 @@ import {
   getVatValue,
   getEmployeeBreakdownUrl,
   getAutoApproveCheckUrl,
+  getUpdateInvoiceCalanderPoNoUrl,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -46,6 +47,7 @@ import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
+import format from "date-fns/format";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -134,6 +136,11 @@ export default function InvoiceDetails() {
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
+
+  const [poNumber, setPoNumber] = useState("");
+  const [invoiceDate, setInvoiceDate] = useState<any>("");
+  const [paymentDue, setPaymentDue] = useState<any>("");
+  const [invoiceChanges, setInvoiceChanges] = useState<any>("");
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -561,11 +568,11 @@ export default function InvoiceDetails() {
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(apiData?.data?.invoice?.createdDate).format(
+      model.invoiceDate = moment(apiData?.data?.invoice?.submissionDate).format(
         "DD MMM YYYY"
       );
       model.invoiceApproval = moment(
-        apiData?.data?.invoice?.createdDate
+        apiData?.data?.invoice?.approvalDate
       ).format("DD MMM YYYY");
       model.paymentDue = moment(apiData?.data?.invoice?.dueDate).format(
         "DD MMM YYYY"
@@ -1034,6 +1041,28 @@ export default function InvoiceDetails() {
     }
   };
 
+  const handleEditSave = () => {
+    axios({
+      method: "PUT",
+      url: getUpdateInvoiceCalanderPoNoUrl(id),
+      headers: getHeaders(tempToken, cid, isClient),
+      data: {
+        submissionDate: invoiceDate
+          ? format(invoiceDate, "yyyy-MM-dd")
+          : topPanel.invoiceDate,
+        approvalDate: invoiceChanges
+          ? format(invoiceChanges, "yyyy-MM-dd")
+          : topPanel.invoiceApproval,
+        dueDate: paymentDue
+          ? format(paymentDue, "yyyy-MM-dd")
+          : topPanel.paymentDue,
+        poNumber: poNumber ? poNumber : topPanel.poNumber,
+      },
+    }).catch((err: any) => {
+      console.log(err);
+    });
+  };
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1124,12 +1153,16 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          <div className="saveBtnContainer">
-            {(status === "AR Review" || status === "Open") &&
-              getPermissions(state.transactionType, "Edit") && (
-                <Button className="secondary-btn small" label="Save" />
-              )}
-          </div>
+          {(status === "AR Review" || status === "Open") &&
+            getPermissions(state.transactionType, "Edit") && (
+              <div className="saveBtnContainer">
+                <Button
+                  className="secondary-btn small"
+                  label="Save"
+                  handleOnClick={handleEditSave}
+                />
+              </div>
+            )}
 
           {(status === "Approved" &&
             state.transactionType !== 4 &&
@@ -1186,62 +1219,60 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          <div>
-            {status === "AR Review" &&
-              state.transactionType == 1 &&
-              getPermissions(state.transactionType, "Send") && (
-                <Button
-                  className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
-                  label="Submit to Customer"
-                  handleOnClick={() => {
-                    handleApproveAR();
-                  }}
-                />
-              )}
-            {(status === "Pending Approval" ||
-              (status === "AR Review" && state.transactionType != 1)) &&
-              getPermissions(state.transactionType, "Approve") && (
-                <Button
-                  data-testid="approve-button"
-                  disabled={
-                    state.transactionType == 7 || deleteDisableButtons === true
-                  }
-                  handleOnClick={() => {
-                    handleApproveInvoice(4);
-                  }}
-                  className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
-                  label="Approve Invoice"
-                />
-              )}
+          {status === "AR Review" &&
+            state.transactionType == 1 &&
+            getPermissions(state.transactionType, "Send") && (
+              <Button
+                className="primary-blue small"
+                icon={{
+                  color: "#fff",
+                  icon: "checkMark",
+                  size: "medium",
+                }}
+                label="Submit to Customer"
+                handleOnClick={() => {
+                  handleApproveAR();
+                }}
+              />
+            )}
+          {(status === "Pending Approval" ||
+            (status === "AR Review" && state.transactionType != 1)) &&
+            getPermissions(state.transactionType, "Approve") && (
+              <Button
+                data-testid="approve-button"
+                disabled={
+                  state.transactionType == 7 || deleteDisableButtons === true
+                }
+                handleOnClick={() => {
+                  handleApproveInvoice(4);
+                }}
+                className="primary-blue small"
+                icon={{
+                  color: "#fff",
+                  icon: "checkMark",
+                  size: "medium",
+                }}
+                label="Approve Invoice"
+              />
+            )}
 
-            {status === "Open" &&
-              state.transactionType !== 1 &&
-              permission?.InvoiceDetails.includes("Send") && (
-                <Button
-                  data-testid="review-button"
-                  className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
-                  label="Send for Review"
-                  handleOnClick={() => {
-                    handleApproveInvoice(2);
-                  }}
-                />
-              )}
-          </div>
+          {status === "Open" &&
+            state.transactionType !== 1 &&
+            permission?.InvoiceDetails.includes("Send") && (
+              <Button
+                data-testid="review-button"
+                className="primary-blue small"
+                icon={{
+                  color: "#fff",
+                  icon: "checkMark",
+                  size: "medium",
+                }}
+                label="Send for Review"
+                handleOnClick={() => {
+                  handleApproveInvoice(2);
+                }}
+              />
+            )}
         </div>
       </div>
 
@@ -1314,9 +1345,16 @@ export default function InvoiceDetails() {
               <>
                 <p>PO Number</p>
                 {status === "AR Review" || status === "Open" ? (
-                  <input type="number" className="poNoInput" />
+                  <input
+                    onChange={(e: any) =>
+                      setPoNumber(Math.abs(parseInt(e.target.value)).toString())
+                    }
+                    value={poNumber ? poNumber : topPanel.poNumber}
+                    type="number"
+                    className="poNoInput"
+                  />
                 ) : (
-                  <p className="value">{topPanel.poNumber} 009</p>
+                  <p className="value">{topPanel.poNumber} </p>
                 )}
               </>
             )}
@@ -1329,6 +1367,7 @@ export default function InvoiceDetails() {
                   placeholderText={moment(topPanel.invoiceDate).format(
                     "DD/MMM/YYYY"
                   )}
+                  handleDateChange={(date: any) => setInvoiceDate(date)}
                 />
               </div>
             ) : (
@@ -1348,6 +1387,9 @@ export default function InvoiceDetails() {
                               placeholderText={moment(
                                 topPanel.invoiceApproval
                               ).format("DD/MMM/YYYY")}
+                              handleDateChange={(date: any) =>
+                                setInvoiceChanges(date)
+                              }
                             />
                           </div>
                         ) : (
@@ -1402,6 +1444,7 @@ export default function InvoiceDetails() {
                       placeholderText={moment(topPanel.paymentDue).format(
                         "DD/MMM/YYYY"
                       )}
+                      handleDateChange={(date: any) => setPaymentDue(date)}
                     />
                   </div>
                 ) : (
@@ -1447,7 +1490,6 @@ export default function InvoiceDetails() {
       <div className="paymentCompnent">
         <PaymentDetailContainer />
       </div>
-
 
       {(state.transactionType == 4 ||
         state.transactionType == 3 ||

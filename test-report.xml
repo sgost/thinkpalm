@@ -1,107 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="680"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js">
-    <testCase name="Payment details page payment page breadcrumbs click" duration="938"/>
-    <testCase name="Payment details page payment page" duration="747"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="387"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="client view Datepicker dropdowns clickoutside clickable" duration="1138"/>
-    <testCase name="client view Datepicker dropdowns today clickable" duration="446"/>
-    <testCase name="client view Datepicker dropdowns Yesterday clickable" duration="366"/>
-    <testCase name="client view Datepicker dropdowns This Week clickable" duration="268"/>
-    <testCase name="client view Datepicker dropdowns This Month clickable" duration="275"/>
-    <testCase name="client view Datepicker dropdowns This Quarter clickable" duration="264"/>
-    <testCase name="client view Datepicker dropdowns This Year clickable" duration="272"/>
-    <testCase name="client view table row clickable" duration="204"/>
-    <testCase name="client view Status clickable" duration="267"/>
-    <testCase name="client view Type clickable" duration="283"/>
-    <testCase name="client view Clear filters clickable" duration="350"/>
-    <testCase name="client view search" duration="246"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view" duration="527"/>
-    <testCase name="checkbox and download checkbox and download are clickable in internal view" duration="165"/>
-    <testCase name="checkbox and download checkbox and download are clickable in client view and searched view" duration="451"/>
-    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="509"/>
-    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="404"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
-    <testCase name="Credit Memo Summary Render CM" duration="1076"/>
-    <testCase name="Credit Memo Summary Render CM with status = 2" duration="1269"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; delete a summary" duration="774"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="1015"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="829"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="873"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="1767"/>
-    <testCase name="Notes fail Render CM" duration="160"/>
-  </file>
   <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1922"/>
-    <testCase name="Invoice details download clickable " duration="875"/>
-    <testCase name="Invoice details approve invoice clickable " duration="338"/>
-    <testCase name="Invoice details publish notes" duration="479"/>
-    <testCase name="Invoice details download file" duration="581"/>
-    <testCase name="Invoice details delete file" duration="430"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="329"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="321"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="397"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="302"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="375"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="474"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="833"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="696"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="472"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="484"/>
-    <testCase name="api fail tabs are working" duration="33"/>
-    <testCase name="delete test cases on AR Reveiew on true tabs are working" duration="332"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="285"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="277"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="297"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="241"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="221"/>
-    <testCase name="Invoice details fee api fail tabs are working" duration="33"/>
-    <testCase name="Invoice details invoice detail api fail tabs are working" duration="20"/>
-    <testCase name="Invoice details lookup api fail tabs are working" duration="24"/>
-    <testCase name="Invoice details countries api fail tabs are working" duration="17"/>
-    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="331"/>
-    <testCase name="Invoice details view change log click publish notes" duration="20"/>
-  </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="693"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="702"/>
-    <testCase name="step one getCustomerSubscription api fail  dropDown Value change" duration="207"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="300"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="797"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="1161"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="394"/>
-    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="453"/>
-    <testCase name="Stepper 2 getEmployee exceptional error api fail   dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="352"/>
-    <testCase name="Stepper 2 getEmployee No Emplyee Error api fail   dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="293"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="304"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="391"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="1035"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="446"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="430"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="542"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="277"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="345"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="226"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="308"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="307"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="195"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="250"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish " duration="253"/>
-    <testCase name="New Invoice for Proforma  breadcumbs are working" duration="51"/>
-    <testCase name="New Invoice for Proforma  dropDown Value change stepper 1" duration="4429"/>
-    <testCase name="step one Proforma getCustomer api fail  dropDown Value change" duration="55"/>
-    <testCase name="New Invoice for Miscellaneous  breadcumbs are working" duration="31"/>
-    <testCase name="New Invoice for Miscellaneous  dropDown Value change stepper 1" duration="8136"/>
-    <testCase name="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" duration="7793"/>
-    <testCase name="final stepper final stepper" duration="51"/>
-    <testCase name="final stepper with 201 status code final stepper" duration="17"/>
+    <testCase name="Invoice details tabs are working" duration="0"/>
+    <testCase name="Invoice details download clickable " duration="0"/>
+    <testCase name="Invoice details approve invoice clickable " duration="0"/>
+    <testCase name="Invoice details publish notes" duration="0"/>
+    <testCase name="Invoice details download file" duration="0"/>
+    <testCase name="Invoice details delete file" duration="0"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="0"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="0"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="0"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="0"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="0"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="0"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="0"/>
+    <testCase name="api fail tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po save invoice calander and po" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po save invoice with value change" duration="1545"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="0"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="0"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="0"/>
+    <testCase name="Invoice details fee api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details invoice detail api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details lookup api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details countries api fail tabs are working" duration="0"/>
+    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="0"/>
+    <testCase name="Invoice details view change log click publish notes" duration="0"/>
   </file>
 </testExecutions>
