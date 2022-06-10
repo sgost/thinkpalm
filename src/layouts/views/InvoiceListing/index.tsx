@@ -375,11 +375,11 @@ export default function InvoiceListing() {
           createdDate: format(new Date(item.createdDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
-            item.currency.code +
+            item?.currency?.code +
               " " +
               cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
-            item.currency.code +
+            item?.currency?.code +
               " " +
               cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
@@ -569,7 +569,7 @@ export default function InvoiceListing() {
     <>
       <div className="container">
         <div className="listingBtnContainer">
-          {/* <div> // commenting for demo
+          <div>
             {permission.Role === "FinanceAR" && (
               <>
                 {handleAddNewPaymentDisable() ? (
@@ -617,7 +617,7 @@ export default function InvoiceListing() {
                 )}
               </>
             )}
-          </div> */}
+          </div>
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
               "Add" && (
