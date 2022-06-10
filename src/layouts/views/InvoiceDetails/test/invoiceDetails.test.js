@@ -1271,7 +1271,7 @@ describe("api fail", () => {
   });
 });
 
-describe("delete test cases on AR Reveiew on true  , and save invoice calander and po", () => {
+describe.only("delete test cases on AR Reveiew on true  , and save invoice calander and po", () => {
   beforeAll(() => {
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
 
@@ -1376,12 +1376,12 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     );
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
 
-    // const dp = await waitFor(() => screen.getAllByRole("textbox"));
-    // fireEvent.click(dp[0]);
+    const dp = await waitFor(() => screen.getAllByRole("textbox"));
+    fireEvent.click(dp[0]);
 
-    const selDate = await waitFor(() => screen.getByText(/15/));
-    fireEvent.click(selDate);
-
+    const selDate = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDate[0]);
+  
     const savebtn = await waitFor(() => screen.getByText(/save/i));
     fireEvent.click(savebtn);
     // fireEvent.change(input, { target: { value: "Pending" } });
