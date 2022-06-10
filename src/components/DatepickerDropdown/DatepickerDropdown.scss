@@ -22,7 +22,7 @@
     z-index: 998;
 
     .title {
-      color: #3e3e3e !important;
+      color: #3e3e3e;
       font-size: 0.889rem;
       left: 0;
       position: absolute;
@@ -33,13 +33,13 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      padding: 0px 5px 0px 20px;
+      padding: 0px 0.78rem 0px 0rem;
       color: grey;
       justify-content: space-between;
-      width: 272px;
+      width: 15.1111rem;
 
       .text {
-        color: #3e3e3e !important;
+        color: #767676 !important;
         display: inline-block;
         font-size: 1rem;
         overflow: hidden;
@@ -49,11 +49,18 @@
         white-space: nowrap;
         width: fit-content;
       }
-
+      
       .icon {
         position: absolute;
         right: 0px;
         top: 2px;
+        svg{
+          width: 2.2222rem;
+          height: 2.2222rem;
+          path{
+            fill: #7e7e7e;
+          }
+        }
       }
     }
 
