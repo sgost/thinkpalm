@@ -254,3 +254,12 @@ export const getEmployeeBreakdownUrl = (id) => {
 export const getUpdateCreditMemoUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;
 };
+
+export const getUpdateInvoiceCalanderPoNoUrl = (invoiceId) => {
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    "/Invoices/UpdateInvoiceCalendar/" +
+    invoiceId
+  );
+};
