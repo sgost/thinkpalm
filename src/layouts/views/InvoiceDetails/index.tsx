@@ -45,6 +45,7 @@ import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
+import PaymentDetailContainer from "./paymentDetailContainer";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -1441,6 +1442,13 @@ export default function InvoiceDetails() {
           </span>
         </div>
       )}
+
+      {/* istanbul ignore next */}
+      <div className="paymentCompnent">
+        <PaymentDetailContainer />
+      </div>
+
+
       {(state.transactionType == 4 ||
         state.transactionType == 3 ||
         state.transactionType == 2) && (

@@ -322,6 +322,263 @@
       }
     }
 
+    .paymentDisplayContainer {
+      background-color: $white;
+      border-radius: 0.4444rem;
+
+      .border-line {
+        border-top: 0.1rem solid #000000;
+      }
+
+      .paymentInstallmentContainer {
+        display: flex;
+        flex-direction: column;
+        margin: 0rem 3rem 1rem;
+        padding-top: 2rem;
+
+        .paymentPageTitleHeader {
+          display: flex;
+          justify-content: space-between;
+          padding: 0rem 1rem 2rem;
+          p {
+            color: #17224e;
+            font-size: 1.4rem;
+          }
+          .topButtonActions {
+            display: flex;
+            flex-direction: row;
+            .paymentDetailEdit {
+              button.a-button.medium {
+                font-size: 1.2rem;
+                width: 7.13rem;
+              }
+              svg {
+                height: 1.3rem;
+                width: 1.3rem;
+              }
+            }
+            .paymentPageCancelSave {
+              display: flex;
+              width: 18rem;
+              justify-content: space-between;
+              align-items: center;
+              .paymentDetailCancel {
+                button.a-button.secondary-btn {
+                  border: 0px;
+                  font-size: 1.2rem;
+                }
+              }
+              .paymentDetailSave {
+                button.a-button.medium {
+                  width: 10.13rem;
+                  font-size: 1.1rem;
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+
+        .paymentPageTitleHeaderNoTitle {
+          display: flex;
+          justify-content: flex-end;
+          padding: 0rem 1rem 3rem;
+          .topButtonActions {
+            display: flex;
+            flex-direction: row;
+            .paymentDetailEdit {
+              button.a-button.medium {
+                font-size: 1.2rem;
+                width: 7.13rem;
+              }
+              svg {
+                height: 1.3rem;
+                width: 1.3rem;
+              }
+            }
+            .paymentPageCancelSave {
+              display: flex;
+              width: 18rem;
+              justify-content: space-between;
+              align-items: center;
+              .paymentDetailCancel {
+                button.a-button.secondary-btn {
+                  border: 0px;
+                  font-size: 1.2rem;
+                }
+              }
+              .paymentDetailSave {
+                button.a-button.medium {
+                  width: 10.13rem;
+                  font-size: 1.1rem;
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+
+        .paymentInstallmentUpperBlock {
+          display: flex;
+          margin-bottom: 5rem;
+          justify-content: space-between;
+          .paymentInstallmentDatepicker {
+            margin-left: 1rem;
+            span.react-datepicker__label:after {
+              content: "*";
+              color: red;
+            }
+          }
+
+          .paymentInstallmentContainerDropdowns {
+            margin-left: 1rem;
+            span.a-dropdown__label.Currency::before {
+              content: "Select currency";
+              font-size: 1rem;
+            }
+            span.a-dropdown__label.Location::before {
+              content: "Select Location";
+              font-size: 1rem;
+            }
+            span.a-dropdown__label.Reference.No::before {
+              content: "Enter reference no";
+              font-size: 1rem;
+            }
+            .a-dropdown__label {
+              font-size: 0rem;
+            }
+            .a-dropdown {
+              z-index: inherit;
+            }
+            span.a-dropdown__title:after {
+              content: "*";
+              color: red;
+            }
+          }
+        }
+
+        .paymentInstallmentLowerBlock {
+          display: flex;
+          margin-bottom: 3rem;
+          justify-content: space-between;
+          .paymentInnerLowerBlock {
+            display: flex;
+            width: 68.3rem;
+            justify-content: space-between;
+            .paymentInstallmentContainerDropdowns {
+              margin-left: 1rem;
+              .a-dropdown__label {
+                font-size: 0rem;
+              }
+              span.a-dropdown__label.Deposited.to.bank::before {
+                content: "Select bank options";
+                font-size: 1rem;
+              }
+              span.a-dropdown__label.Payment.Method::before {
+                content: "Select payment method";
+                font-size: 1rem;
+              }
+              .a-dropdown {
+                z-index: inherit;
+              }
+              span.a-dropdown__title:after {
+                content: "*";
+                color: red;
+              }
+            }
+            .PaymentPageTotalAmountInput {
+              margin-top: -1.2rem;
+              .amountPaymentPageInput {
+                .disable-input-color {
+                  background: #f5f5f6 !important;
+                }
+                span {
+                  font-size: 0.889rem;
+                  margin-left: 0.2rem;
+                  color: #767676;
+                }
+                span::after {
+                  content: "*";
+                  color: red;
+                }
+                input {
+                  padding: 0.8rem;
+                  background: #fff !important;
+                  border: 0.056rem solid #ced4da;
+                  border-radius: 0.222rem;
+                  cursor: text;
+                  display: flex;
+                  font-size: 1rem;
+                  position: relative;
+                  width: 17.5rem;
+                }
+              }
+              .fullAmountPaymentNoInput {
+                color: #767676;
+                font-size: 0.7rem;
+                margin-top: 0.5rem;
+                margin-left: 0.1rem;
+              }
+            }
+          }
+          .PaymentPageTotalAmount {
+            margin-top: -3rem;
+            margin-left: 1rem;
+            p {
+              color: $primary-blue;
+              margin-bottom: 0rem;
+              font-weight: 600;
+            }
+            .amountPaymentPage {
+              color: $primary-blue;
+              background-color: $active;
+              padding: 1rem 1rem;
+              border-radius: 8px;
+              font-size: 1.5rem;
+              font-weight: 500;
+            }
+            .fullAmountPaymentCheckbox {
+              margin-top: 0.7rem;
+              margin-left: 0.5rem;
+              .a-checkbox-wrapper input[type="checkbox"] {
+                height: 0.8rem;
+                width: 0.8rem;
+              }
+              .a-checkbox-wrapper label {
+                font-weight: 500;
+                top: 0rem;
+              }
+            }
+          }
+        }
+      }
+
+      .addPaymentInstallmentButton {
+        border-top: 1rem solid #eff1f4;
+        .addPaymentInstallmentIcon {
+          display: flex;
+          align-items: center;
+          color: #526fd6;
+          cursor: pointer;
+          padding: 2rem 3rem;
+          font-weight: 500;
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #526fd6;
+            padding: 3px 1px 2px 4px;
+            border-radius: 1.8rem;
+            margin: 0 0.5rem 0 0;
+
+            svg {
+              margin: 0 !important;
+            }
+          }
+        }
+      }
+    }
+
     .tab {
       display: flex;
       padding: 0.6667rem 0px;
@@ -1011,9 +1268,9 @@
   padding: 1rem;
 
   &__action {
-      background: #526FD6;
-      border-radius: 100%;
-      display: flex;
-      cursor: pointer;
+    background: #526fd6;
+    border-radius: 100%;
+    display: flex;
+    cursor: pointer;
   }
 }
