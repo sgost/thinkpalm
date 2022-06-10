@@ -3,6 +3,8 @@ import { Icon } from "atlasuikit";
 import { useEffect } from "react";
 import "./utils.scss";
 import { getDecodedToken } from "../../getDecodedToken";
+import AtlasLoader from "../../Loader/AtlasLoader";
+
 /* istanbul ignore next */
 export const amountWithCommas = (amount: number, decimalDigits: number = 2) => {
   const roundedValue =
@@ -63,7 +65,7 @@ export const ToastContainer = ({
   showToast,
   setShowToast,
   message,
-  duration=4
+  duration = 4,
 }: {
   showToast: boolean;
   setShowToast: (arg: boolean) => any;
@@ -87,20 +89,7 @@ export const ToastContainer = ({
 };
 
 export const Loader = () => {
-  return (
-    <div className="table-loader">
-      <div className="lds-roller">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </div>
-  );
+  return <AtlasLoader />;
 };
 
 export const getPermissions = (transactionType: any, permission: string) => {

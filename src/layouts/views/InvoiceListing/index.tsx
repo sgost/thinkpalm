@@ -18,7 +18,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../..//components/getDecodedToken";
 
 import { WeAreSorryModal } from "./weAreSorryModal";
-import { ToastContainer } from "../../../components/Comman/Utils/utils";
+import { Loader, ToastContainer } from "../../../components/Comman/Utils/utils";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
