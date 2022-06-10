@@ -241,7 +241,7 @@
 }
 
 .invoiceDetailsContainer .tableHeader {
-  margin-left: 16px;
+  margin-left: 0.8889rem;
 }
 
 .invoiceDetailsContainer .table__row__data img,
@@ -274,8 +274,8 @@
 .invoiceDetailsContainer .countrySummaryCalc h3 {
   color: #526fd6 !important;
   background-color: #eef1fb !important;
-  padding: 16px;
-  border-radius: 8px;
+  padding: 0.8889rem;
+  border-radius: 0.4444rem;
 }
 
 .invoiceDetailsContainer .feeSummaryCalc {
@@ -350,8 +350,8 @@
 .invoiceDetailsContainer .feeSummaryCalc .totalRow h3 {
   color: #526fd6 !important;
   background-color: #eef1fb !important;
-  padding: 16px;
-  border-radius: 8px;
+  padding: 0.8889rem;
+  border-radius: 0.4444rem;
 }
 
 .invoiceDetailsContainer .countryHeader {

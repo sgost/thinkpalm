@@ -18,10 +18,29 @@
           font-size: 1rem;
           height: 3.13rem;
           width: 11.13rem;
+          svg{
+            width: 1.3333rem;
+            height: 1.3333rem;
+          }
+        }
+      }
+      .add_payment_invoice{
+        button{
+          svg{
+            width: 1.2222rem;
+            height: 1.2222rem;
+          }
         }
       }
     }
-
+    .table__row__header .sort-down, .table__row__header .sort-up{
+      width: 0.4444rem;
+      height: 0.7222rem;
+    }
+    .table__row__header .sort-down{
+      right: 0.4444rem;
+      top: 0.4444rem;
+    }
     .dropdowns {
       display: flex;
       justify-content: space-between;
@@ -41,11 +60,14 @@
         position: relative;
         width: 15.1111rem;
         z-index: 998;
-
+        svg{
+          width: 1.3333rem;
+          height: 1.3333rem;
+        }
         textarea:focus,
         .input {
           border-style: hidden;
-          font-style: normal;
+          font-size: 1rem;
           font-weight: 400;
           line-height: 140%;
           display: flex;
@@ -69,7 +91,10 @@
         .a-dropdown {
           width: 15rem;
         }
-
+        img{
+          width: 1.4444rem;
+          height: 2.8889rem;
+        }
         .download {
           color: $primary-blue;
           margin-top: 0.2rem;
@@ -162,7 +187,7 @@
     @media (max-width: 1200px) {
       .dropdowns .inputContainer {
         max-width: 15.0556rem;
-        padding: 0px 2px 0px 2px;
+        padding: 0px 0.1111rem 0px 0.1111rem;
       }
 
       .table__row__header {
