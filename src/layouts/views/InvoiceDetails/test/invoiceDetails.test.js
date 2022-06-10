@@ -1382,7 +1382,6 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     const selDate = await waitFor(() => screen.getByText(/15/));
     fireEvent.click(selDate);
 
-    screen.logTestingPlaygroundURL();
     const savebtn = await waitFor(() => screen.getByText(/save/i));
     fireEvent.click(savebtn);
     // fireEvent.change(input, { target: { value: "Pending" } });
