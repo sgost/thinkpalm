@@ -1124,12 +1124,12 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          {/* <div className="saveBtnContainer"> //commenting for demo
+          <div className="saveBtnContainer">
             {(status === "AR Review" || status === "Open") &&
               getPermissions(state.transactionType, "Edit") && (
                 <Button className="secondary-btn small" label="Save" />
               )}
-          </div> */}
+          </div>
 
           {(status === "Approved" &&
             state.transactionType !== 4 &&
