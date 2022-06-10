@@ -1,5 +1,5 @@
 
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, getByPlaceholderText, render, screen, waitFor } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import CreditMemoSummary from "..";
 import MockAdapter from "axios-mock-adapter";
@@ -161,6 +161,71 @@ describe("Credit Memo Summary", () => {
         var productDD = getByText("Service Date");
         userEvent.click(productDD);
     })
+    test("Product Service", () => {
+        const { getByTestId, getByText } = render(
+            <HashRouter>
+                <CreditMemoSummary
+                    notes={mockapidata.notes}
+                    documents={mockapidata.resData.invoice.invoiceDocuments}
+                    id={id}
+                    cid={cid}
+                    isClient={"true"}
+                    setNotes={() => { }}
+                    setDocuments={() => { }}
+                    creditMemoData={mockCreditMemoData}
+                    serviceCountries={mockServiceCountries}
+                    currency={"USD"}
+                    vatValue={10}
+                ></CreditMemoSummary>
+            </HashRouter>
+        );
+        var ProductService = getByText("Product Service");
+        expect(ProductService).toBeInTheDocument();
+    })
+    test("Enter description", () => {
+        const { getByPlaceholderText } = render(
+            <HashRouter>
+                <CreditMemoSummary
+                    notes={mockapidata.notes}
+                    documents={mockapidata.resData.invoice.invoiceDocuments}
+                    id={id}
+                    cid={cid}
+                    isClient={"true"}
+                    setNotes={() => { }}
+                    setDocuments={() => { }}
+                    creditMemoData={mockCreditMemoData}
+                    serviceCountries={mockServiceCountries}
+                    currency={"USD"}
+                    vatValue={10}
+                ></CreditMemoSummary>
+            </HashRouter>
+        );
+        var description = getByPlaceholderText("Enter description");
+        expect(description).toBeInTheDocument();
+        fireEvent.change(description, { target: { value: "test" } });
+    })
+    test("Service Country", () => {
+        const { getByTestId, getByText } = render(
+            <HashRouter>
+                <CreditMemoSummary
+                    notes={mockapidata.notes}
+                    documents={mockapidata.resData.invoice.invoiceDocuments}
+                    id={id}
+                    cid={cid}
+                    isClient={"true"}
+                    setNotes={() => { }}
+                    setDocuments={() => { }}
+                    creditMemoData={mockCreditMemoData}
+                    serviceCountries={mockServiceCountries}
+                    currency={"USD"}
+                    vatValue={10}
+                ></CreditMemoSummary>
+            </HashRouter>
+        );
+        var ServiceService = getByText("Service Country");
+        expect(ServiceService).toBeInTheDocument();
+    })
+
     test("Render CM => edit a summary", () => {
         const { getByTestId, getByText } = render(
             <HashRouter>
