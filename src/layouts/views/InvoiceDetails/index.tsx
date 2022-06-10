@@ -610,26 +610,6 @@ export default function InvoiceDetails() {
     }
   }, [showAutoApprovedToast]);
 
-  // useEffect(() => {
-  //   console.log("pay", payrollTables);
-
-  //   if (countriesData?.data && payrollTables.length) {
-  //     let arr: any = [];
-  //     console.log("pay", payrollTables);
-
-  //     payrollTables.forEach
-
-  //     payrollTables.data.forEach((e: any) => {
-  //       arr.push({
-  //         ...e,
-  //         adminFees: getBillingCurrency() + e.adminFees,
-  //         healthcareBenefits: getBillingCurrency() + e.healthcareBenefits,
-  //       });
-  //     });
-  //     setPayrollTables({ ...payrollTables, data: arr });
-  //   }
-  // }, [countriesData, payrollTables]);
-
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
       let currency = countriesData.data.find(
@@ -717,16 +697,6 @@ export default function InvoiceDetails() {
     return cFormat.format(amount).slice(1);
   };
 
-  // const getInCountryProcessingFee = () => {
-  //   feeData.data.forEach((e: any) => {
-  //     if (e.name === "In Country Processing Fee") {
-  //       return e.payrollFees || 0;
-  //     }
-  //   });
-
-  //   return 0;
-  // };
-
   const downloadFunction = () => {
     const headers = {
       headers: {
@@ -793,28 +763,6 @@ export default function InvoiceDetails() {
           setApprovalMsg("");
         }, 3000);
       });
-
-    // axios
-    //   .put(approveApi, headers)
-    //   .then((res: any) => {
-    //     console.log(res);
-    //     if (res.status === 201) {
-    //       setStatus("Approved");
-    //       setApprovalMsg("Invoice approve successfully");
-    //       setTimeout(() => {
-    //         setApprovalMsg("");
-    //       }, 3000);
-    //     } else {
-    //       setApprovalMsg("Invoice approve failed");
-    //     }
-    //   })
-    //   .catch((e: any) => {
-    //     console.log("error", e);
-    //     setApprovalMsg("Invoice approve failed");
-    //     setTimeout(() => {
-    //       setApprovalMsg("");
-    //     }, 3000);
-    //   });
   };
 
   const handleApproveAR = () => {
@@ -1290,14 +1238,6 @@ export default function InvoiceDetails() {
                     {getBillingCurrency()}{" "}
                     {
                       toCurrencyFormat(topPanel.open)
-
-                      // Intl.NumberFormat().format(
-                      //   apiData?.data?.invoice?.invoiceBalance.toLocaleString('en-US')
-                      // )
-
-                      // apiData?.data?.invoice?.invoiceBalance
-                      //   .toFixed(2)
-                      //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                     }
                   </span>
                 </p>
@@ -1308,10 +1248,6 @@ export default function InvoiceDetails() {
                   {getBillingCurrency()}{" "}
                   {
                     toCurrencyFormat(topPanel.total)
-
-                    // apiData?.data?.invoice?.totalAmount
-                    //   .toFixed(2)
-                    //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                   }
                 </span>
               </p>
@@ -1605,7 +1541,6 @@ export default function InvoiceDetails() {
               return (
                 <div>
                   <div className="countryHeader">
-                    {/* <img src={spainFlag} alt="flag" /> */}
                     <GetFlag code={item.countryCode} />
                     <h3>{item.country}</h3>
                   </div>
@@ -1625,10 +1560,6 @@ export default function InvoiceDetails() {
                             item.currencyCode +
                               " " +
                               toCurrencyFormat(item.feeSummary.subTotalDue)
-
-                            // item.feeSummary.subTotalDue
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </p>
                       </div>
@@ -1637,10 +1568,6 @@ export default function InvoiceDetails() {
                           Country EXC Rate{" "}
                           {
                             item.exchangeRate
-
-                            // item.exchangeRate
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </p>
                         <p className="amount">
@@ -1650,9 +1577,6 @@ export default function InvoiceDetails() {
                               toCurrencyFormat(
                                 item.feeSummary.subTotalDue * item.exchangeRate
                               )
-                            // (item.feeSummary.subTotalDue * item.exchangeRate)
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </p>
                       </div>
@@ -1665,10 +1589,6 @@ export default function InvoiceDetails() {
                               toCurrencyFormat(
                                 item.feeSummary.inCountryProcessingFee
                               )
-
-                            // getInCountryProcessingFee()
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </p>
                       </div>
@@ -1679,10 +1599,6 @@ export default function InvoiceDetails() {
                             getBillingCurrency() +
                               " " +
                               toCurrencyFormat(item.feeSummary.fxBill)
-
-                            // item.feeSummary.fxBill
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </p>
                       </div>
@@ -1693,10 +1609,6 @@ export default function InvoiceDetails() {
                             getBillingCurrency() +
                               " " +
                               toCurrencyFormat(item.feeSummary.totalCountryVat)
-
-                            // item.feeSummary.totalCountryVat
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </p>
                       </div>
@@ -1707,10 +1619,6 @@ export default function InvoiceDetails() {
                             getBillingCurrency() +
                               " " +
                               toCurrencyFormat(item.countryTotalDue)
-
-                            // item.feeSummary.total
-                            //   .toFixed(2)
-                            //   .replace(/\d(?=(\d{3})+\.)/g, "$&,")
                           }
                         </h3>
                       </div>
@@ -1727,7 +1635,6 @@ export default function InvoiceDetails() {
                   {getBillingCurrency()}{" "}
                   {
                     toCurrencyFormat(total)
-                    // total.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
                   }
                 </h3>
               </div>
