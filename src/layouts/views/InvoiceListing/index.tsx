@@ -7,6 +7,7 @@ import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
 import dots from "./dots.svg";
+import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
   getClientListingUrl,
   getGenerateMultiplePdfUrl,
@@ -574,7 +575,7 @@ export default function InvoiceListing() {
     <>
       <div className="container">
         <div className="listingBtnContainer">
-          <div>
+          <div className="add_payment_invoice">
             {permission.Role === "FinanceAR" && (
               <>
                 {handleAddNewPaymentDisable() ? (
@@ -884,8 +885,8 @@ export default function InvoiceListing() {
                 options={status}
               />
               {permission?.InvoiceList?.find((str: any) => str === "Edit") ===
-                "Edit" && <img src={dots} />}
-              {/* <FaEllipsisH className="icon" /> */}
+                "Edit" && <img src={disabled} className="disabled_dots" />}
+              {/* <FaEllipsisH className="icon" /> dots*/}
             </div>
           </div>
         )}

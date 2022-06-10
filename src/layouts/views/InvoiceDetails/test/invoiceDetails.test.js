@@ -1271,8 +1271,10 @@ describe("api fail", () => {
   });
 });
 
-describe("delete test cases on AR Reveiew on true", () => {
+describe("delete test cases on AR Reveiew on true  , and save invoice calander and po", () => {
   beforeAll(() => {
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
     useParams.mockImplementation(() => ({
       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
@@ -1353,6 +1355,36 @@ describe("delete test cases on AR Reveiew on true", () => {
     const deleteConfirm = await screen.findByTestId("delete-button-submit");
     expect(deleteConfirm).toBeInTheDocument();
     fireEvent.click(deleteConfirm);
+  });
+
+  test("save invoice calander and po", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const savebtn = await waitFor(() => screen.getByText(/save/i));
+    fireEvent.click(savebtn);
+  });
+
+  test("save invoice with value change", async () => {
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    // const dp = await waitFor(() => screen.getAllByRole("textbox"));
+    // fireEvent.click(dp[0]);
+
+    const selDate = await waitFor(() => screen.getByText(/15/));
+    fireEvent.click(selDate);
+
+    const savebtn = await waitFor(() => screen.getByText(/save/i));
+    fireEvent.click(savebtn);
+    // fireEvent.change(input, { target: { value: "Pending" } });
   });
 });
 describe("delete test cases on AR Reveiew click on cancel button", () => {
@@ -2293,7 +2325,7 @@ describe("Invoice details view change log click", () => {
         <InvoiceDetails />
       </HashRouter>
     );
-      return
+    return;
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
