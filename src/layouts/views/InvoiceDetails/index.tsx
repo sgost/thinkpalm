@@ -836,7 +836,6 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         setStatus("Pending Approval");
-        console.log('status4', status)
       })
       .catch((e: any) => {
         console.log("error", e);

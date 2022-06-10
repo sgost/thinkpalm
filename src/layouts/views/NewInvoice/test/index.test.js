@@ -742,6 +742,7 @@ describe("Stepper 3", () => {
     mock
       .onGet(getInvoiceDetailsUrl("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
       .reply(200, mockapidata.resForInvoiceDetail);
+
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -971,6 +972,9 @@ describe("Stepper 3 invoice detail api fail", () => {
     mock
       .onGet(getInvoiceDetailsUrl("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
       .reply(500, mockapidata.resForInvoiceDetail);
+    mock
+      .onGet(updateInvoiceStatus("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
+      .reply(201, {});
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -1933,11 +1937,22 @@ describe("New Invoice for Miscellaneous ", () => {
     );
     fireEvent.click(pleaseSelectDropDownStepper2[0]);
 
+    const DatePicket = await screen.getByTestId(
+      "Country_open"
+    );
+    expect(DatePicket).toBeInTheDocument();
+
     const productServiceDropDownValue = await screen.findAllByText(
       /Contract Termination Fee/
     );
     expect(productServiceDropDownValue[0]).toBeInTheDocument();
     fireEvent.click(productServiceDropDownValue[0]);
+
+    const Country = await screen.findAllByText(
+      /Service Date/
+    );
+    expect(Country[0]).toBeInTheDocument();
+    fireEvent.click(Country[0]);
 
     fireEvent.click(pleaseSelectDropDownStepper2[1]);
     const countryServiceDropDownValue = await screen.findAllByText(
@@ -1955,6 +1970,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const QuantityInputField = await screen.findByTestId(/Quantity/);
     expect(QuantityInputField).toBeInTheDocument();
     fireEvent.change(QuantityInputField, { target: { value: 30 } });
+    fireEvent.keyDown(QuantityInputField);
 
     const AmountInputField = await screen.findByTestId(/Amount/);
     expect(AmountInputField).toBeInTheDocument();

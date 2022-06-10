@@ -2302,7 +2302,7 @@ describe("Invoice details view change log click", () => {
         <InvoiceDetails />
       </HashRouter>
     );
-      return
+    return
     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
