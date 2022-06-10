@@ -33,9 +33,9 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const getCustlBillingCurrency = () => {
     if (countriesData?.data && invoiceData) {
       let currency = countriesData.data.find(
-        (e: any) => e.currencyId === invoiceData.currencyId
+        (e: any) => e?.currencyId === invoiceData?.currencyId
       );
-      return currency.currency.code;
+      return currency?.currency?.code;
     } else {
       return "";
     }

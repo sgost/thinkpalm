@@ -9,6 +9,7 @@ import {
   Cards,
   Logs,
   DatePicker,
+  UserProfile,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -72,6 +73,7 @@ export default function InvoiceDetails() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVoidOpen, setIsVoidOpen] = useState(false);
   const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
+  const [isCompensatioModalOpen, setIsCompensatioModalOpen] = useState(false);
   const { id, cid, isClient } = useParams();
 
   const baseBillApi = urls.billsPerInvoice;
@@ -1551,6 +1553,9 @@ export default function InvoiceDetails() {
                         ...{ data: item.data },
                       }}
                       colSort
+                      handleRowClick={() => {
+                        setIsCompensatioModalOpen(true);
+                      }}
                     />
                     <div className="feeSummaryCalc">
                       <div className="rowFee">
@@ -1944,6 +1949,80 @@ export default function InvoiceDetails() {
                 className="primary-blue medium delete-button"
                 handleOnClick={() => handleDeleteInvoice()}
               />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      <div className="compensation-full-container">
+        <Modal
+          isOpen={isCompensatioModalOpen}
+          handleClose={() => {
+            setIsCompensatioModalOpen(false);
+          }}
+        >
+          <div className="compensation-container">
+            <div className="compensation-top-container">
+              <div className="conpensation-inner-container">
+                <div className="conpensation-user-profile">
+                  {/* <UserProfile userProfilePosition="right" /> */}
+                  <img src={avatar} />
+                </div>
+                <div className="header-detail">
+                  <div className="conpensation-user-detail">
+                    <div className="conpensation-user">
+                      <div className="conpensation-user-name">Camila Lopez</div>
+                      <div className="conpensation-user-work">
+                        Social Media Specialist
+                      </div>
+                    </div>
+                    <div className="conpensation-user-contact">
+                      <div className="conpensation-user-number">
+                        <div className="conpensation-mobile-icon">
+                          <Icon color="#fff" icon="mobile" size="large" />
+                        </div>
+                        <p>+234 123 432 1987</p>
+                      </div>
+                      <div className="conpensation-user-email">
+                        <div className="conpensation-email-icon">
+                          <Icon color="#fff" icon="email" size="large" />
+                        </div>
+                        <p>c.lopez@gmail.com</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="compensation-invoice-container">
+                <div className="inner-compensation-container">
+                  <div className="compensation-invoice-detail">
+                    <div className="compensation-invoice-id">
+                      <div className="compensation-invoice-icon">
+                        <Icon color="#767676" icon="pound" size="medium" />
+                      </div>
+                      <p>C928422111</p>
+                    </div>
+                    <div className="compensation-invoice-date">
+                      <div className="compensation-invoice-calender">
+                        <Icon color="#767676" icon="calendar" size="medium" />
+                      </div>
+                      <p>Effective Start Date: 8 Jan 2021</p>
+                    </div>
+                  </div>
+                  <div className="compensation-invoice-location">
+                    <div className="compensation-location-icon">
+                      <Icon color="#767676" icon="location" size="large" />
+                    </div>
+                    <p>Australia-Sydney</p>
+                  </div>
+                </div>
+              </div>
+              <div className="compensation-invoice-status">
+                <p>Active</p>
+              </div>
+            </div>
+            <div className="compensation-text">
+              Compensation
             </div>
           </div>
         </Modal>

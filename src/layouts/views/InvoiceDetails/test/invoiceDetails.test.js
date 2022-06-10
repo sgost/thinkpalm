@@ -1271,7 +1271,7 @@ describe("api fail", () => {
   });
 });
 
-describe.only("delete test cases on AR Reveiew on true  , and save invoice calander and po", () => {
+describe("delete test cases on AR Reveiew on true  , and save invoice calander and po", () => {
   beforeAll(() => {
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
 
