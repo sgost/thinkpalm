@@ -3,9 +3,9 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { HashRouter } from "react-router-dom";
 import CreditMemoSummary from "..";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata, mockCreditMemoData, mockProductData, mockServiceCountries } from "../../InvoiceDetails/test/mockdata";
+import { mockapidata, mockCreditMemoData, mockProductData, mockServiceCountries, productInvoiceMock } from "../../InvoiceDetails/test/mockdata";
 import axios from "axios";
-import { getHeaders, updateCreditMemoUrl, urls } from '../../../../urls/urls'
+import { getHeaders, updateCreditMemoUrl, urls, productInvoice } from '../../../../urls/urls'
 import { BillsTable } from '../../BillsTable/index'
 import userEvent from "@testing-library/user-event";
 import { url } from "inspector";
@@ -19,6 +19,7 @@ describe("Credit Memo Summary", () => {
     beforeAll(() => {
         var temp = localStorage.getItem('accessToken');
         const mock = new MockAdapter(axios);
+        mock.onGet(productInvoice()).reply(200, productInvoiceMock);
         mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
         mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
         mock.onPut(updateCreditMemoUrl(mockCreditMemoData.id), mockCreditMemoData, getHeaders(temp, cid, id)).reply(200, mockCreditMemoData);
@@ -46,7 +47,7 @@ describe("Credit Memo Summary", () => {
     })
     test("Render CM with status = 2", () => {
         mockCreditMemoData.status = 2;
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -69,7 +70,7 @@ describe("Credit Memo Summary", () => {
 
     })
     test("Render CM => delete a summary", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -91,7 +92,7 @@ describe("Credit Memo Summary", () => {
 
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -115,7 +116,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(editButton);
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -138,7 +139,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(saveEditButton);
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -161,7 +162,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(productDD);
     })
     test("Render CM => edit a summary", () => {
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}

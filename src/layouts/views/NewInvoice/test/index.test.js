@@ -27,6 +27,7 @@ import {
   getRelatedInvoiceUrl,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
+import InvoicePreviewPop from "../InvoicePreviewPop";
 import { mockLogsdata } from "../../InvoiceDetails/mockData";
 
 localStorage.setItem(
@@ -40,6 +41,33 @@ const customerId = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
 const countryId = "7defc4f9-906d-437f-a6d9-c822ca2ecfd7";
 const monthId = 1;
 const yearId = 2022;
+
+const stepperOneData = {
+  "customer": "DSM Nutritional Products AG",
+  "type": "Credit Memo",
+  "country": "",
+  "month": "",
+  "year": "",
+  "customerId": "A9BBEE6D-797A-4724-A86A-5B1A2E28763F",
+  "countryId": "",
+  "typeId": 4,
+  "yearId": "",
+  "monthId": ""
+}
+
+const todos = [
+  {
+    "id": 0.4633734736448569,
+    "date": "17 Jun 2022",
+    "product": "Advisory Services",
+    "description": "Desc2",
+    "country": "ABW -- Aruba",
+    "quantity": "1",
+    "amount": "2"
+  }
+]
+
+const invoiceId = "cbb51dc8-8529-4afa-bf72-d2615163a9a6"
 
 describe("New Invoice", () => {
   beforeAll(() => {
@@ -2060,10 +2088,49 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     // expect(openModal[0]).toBeInTheDocument();
     // fireEvent.click(openModal[0]);
 
-     // const closeButton = container.querySelector(".close");
+    // const closeButton = container.querySelector(".close");
     // fireEvent.click(closeButton);
   }, 30000);
 });
+
+describe("Invoice preview Pop", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    mock
+      .onGet(getRelatedInvoiceUrl(invoiceId))
+      .reply(200, mockapidata.resFinalStepper);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+  });
+  test("final stepper", async () => {
+    render(
+      <HashRouter>
+        <InvoicePreviewPop
+          stepperOneData={stepperOneData}
+          todos={todos}
+          invoiceId={invoiceId}
+        />
+      </HashRouter>
+    );
+    const payrollTabs = await screen.findAllByText(/Invoice Preview/);
+    expect(payrollTabs[0]).toBeInTheDocument();
+  });
+
+  test("Preview Invoice", async () => {
+    render(
+      <HashRouter>
+        <InvoicePreviewPop
+          stepperOneData={stepperOneData}
+          todos={todos}
+          invoiceId={invoiceId}
+        />
+      </HashRouter>
+    );
+    const PreviewButton = await screen.findByTestId("preview-button");
+    fireEvent.click(PreviewButton);
+  });
+});
+
 
 describe("final stepper", () => {
   beforeAll(() => {
@@ -2102,3 +2169,7 @@ describe("final stepper with 201 status code", () => {
     fireEvent.click(goto);
   }, 30000);
 });
+
+
+
+
