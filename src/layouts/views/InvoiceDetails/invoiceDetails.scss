@@ -233,6 +233,7 @@
       .infoDetails {
         display: flex;
         padding: 1.6667rem;
+        margin-bottom: 3rem;
 
         @mixin heading {
           color: $primary-blue;

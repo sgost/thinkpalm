@@ -135,6 +135,11 @@ export default function InvoiceListing() {
       label: "Invoiced",
       value: 10,
     },
+    {
+      isSelected: false,
+      label: "Declined",
+      value: 10,
+    },
   ];
   const [status, setStatus] = useState(statusOptions);
   const [internalTabledata, setInternalTabletData] = useState({
