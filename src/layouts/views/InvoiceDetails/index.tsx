@@ -69,7 +69,7 @@ export default function InvoiceDetails() {
     open: "",
   };
   const permission: any = getDecodedToken();
-  const [missTransType, setMissTransType] = useState(state.transactionType);  //To change the the invoice transictionType number
+  const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -492,11 +492,7 @@ export default function InvoiceDetails() {
           console.log("error", e);
         });
     }
-    if (
-      missTransType != 4 &&
-      missTransType != 3 &&
-      missTransType != 2
-    ) {
+    if (missTransType != 4 && missTransType != 3 && missTransType != 2) {
       axios
         .get(notesApi, headers)
         .then((res: any) => {
@@ -519,7 +515,7 @@ export default function InvoiceDetails() {
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
-          console.log('status1', e.text)
+          console.log("status1", e.text);
         }
       });
     }
@@ -529,7 +525,7 @@ export default function InvoiceDetails() {
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === creditMemoData.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
-          console.log('status2', e.text)
+          console.log("status2", e.text);
         }
       });
     }
@@ -738,9 +734,7 @@ export default function InvoiceDetails() {
 
   const handleApproveInvoice = (no: any) => {
     const approveApi =
-      missTransType == 2 ||
-        missTransType == 3 ||
-        missTransType == 4
+      missTransType == 2 || missTransType == 3 || missTransType == 4
         ? getApproveUrlNo(id, no)
         : getApproveUrl(id);
 
@@ -750,10 +744,10 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        console.log("getApproveUrlNo", res)
+        console.log("getApproveUrlNo", res);
         if (res.status === 201) {
           setStatus(res.data.status === 2 ? "AR Review" : "Approved");
-          console.log('status1', res.data.status)
+          console.log("status1", res.data.status);
           setApprovalMsg(
             res.data.status === 4 ? "Invoice approve successfully" : ""
           );
@@ -928,9 +922,7 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     };
     const deleteApi = getDeleteInvoiceUrl(
-      missTransType == 4 ||
-        missTransType == 3 ||
-        missTransType == 2
+      missTransType == 4 || missTransType == 3 || missTransType == 2
         ? id
         : apiData?.data?.invoice?.id
     );
@@ -978,10 +970,7 @@ export default function InvoiceDetails() {
     }
   };
 
-  if (
-    missTransType != 1 &&
-    !getPermissions(missTransType, "View")
-  ) {
+  if (missTransType != 1 && !getPermissions(missTransType, "View")) {
     return <p>You do not have permission to view this page.</p>;
   }
 
@@ -993,8 +982,6 @@ export default function InvoiceDetails() {
     }
   };
 
-
-
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
@@ -1003,24 +990,27 @@ export default function InvoiceDetails() {
       payload.transactionType = 2;
     }
     convertInvoice(payload);
-  }
+  };
 
   const convertInvoice = (payload: any) => {
-    axios.put(getUpdateCreditMemoUrl(id), payload, {
-      headers: getHeaders(tempToken, cid, "false"),
-    }).then((resp: any) => {
-      if (resp) {
-        setMissTransType(2);
-        getTransactionLabel();
-        setApprovalMsg("Invoice Converted Into Miscellineous");
-        setTimeout(() => {
-          setApprovalMsg("");
-        }, 3000);
-      }
-    }).catch((error: any) => {
-      console.log(error)
-    })
-  }
+    axios
+      .put(getUpdateCreditMemoUrl(id), payload, {
+        headers: getHeaders(tempToken, cid, "false"),
+      })
+      .then((resp: any) => {
+        if (resp) {
+          setMissTransType(2);
+          getTransactionLabel();
+          setApprovalMsg("Invoice Converted Into Miscellineous");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
   const handleEditSave = () => {
     axios({
       method: "PUT",
@@ -1082,42 +1072,42 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {status === "Approved" &&
-            getPermissions(missTransType, "Void") && (
-              <div className="void-button">
-                <Button
-                  className="secondary-btn small"
-                  label="Void Invoice"
-                  handleOnClick={() => {
-                    setIsVoidOpen(true);
-                  }}
-                />
-              </div>
-            )}
+          {status === "Approved" && getPermissions(missTransType, "Void") && (
+            <div className="void-button">
+              <Button
+                className="secondary-btn small"
+                label="Void Invoice"
+                handleOnClick={() => {
+                  setIsVoidOpen(true);
+                }}
+              />
+            </div>
+          )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               missTransType != 1) && (
-                <div
-                  onClick={() =>
-                    missTransType != 7
-                      ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
-                  }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
+              <div
+                onClick={() =>
+                  missTransType != 7
+                    ? setIsDownloadOpen(!isDownloadOpen)
+                    : function noRefCheck() {}
+                }
+                className={`${
+                  missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                    }`}
+                }`}
                 // className="download"
-                >
-                  <p className="text">Download</p>
-                  <Icon
-                    className="icon"
-                    color="#526fd6"
-                    icon="chevronDown"
-                    size="medium"
-                  />
-                </div>
-              )}
+              >
+                <p className="text">Download</p>
+                <Icon
+                  className="icon"
+                  color="#526fd6"
+                  icon="chevronDown"
+                  size="medium"
+                />
+              </div>
+            )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1146,7 +1136,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-            (status === "Invoiced" && missTransType === 7) ? (
+          (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1159,12 +1149,12 @@ export default function InvoiceDetails() {
                 handleOnClick={() => {
                   navigate(
                     "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
                     {
                       state: {
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
@@ -1219,9 +1209,7 @@ export default function InvoiceDetails() {
             getPermissions(missTransType, "Approve") && (
               <Button
                 data-testid="approve-button"
-                disabled={
-                  missTransType == 7 || deleteDisableButtons === true
-                }
+                disabled={missTransType == 7 || deleteDisableButtons === true}
                 handleOnClick={() => {
                   handleApproveInvoice(4);
                 }}
@@ -1235,8 +1223,8 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {status === "Approved" && missTransType === 3 &&
-            < Button
+          {status === "Approved" && missTransType === 3 && (
+            <Button
               data-testid="convert-button"
               label="Change to Miscellaneous"
               className="secondary-btn small change-miss"
@@ -1244,7 +1232,7 @@ export default function InvoiceDetails() {
                 migrationInvoice();
               }}
             />
-          }
+          )}
 
           {status === "Open" &&
             missTransType !== 1 &&
@@ -1281,20 +1269,14 @@ export default function InvoiceDetails() {
                 <p>
                   Open{" "}
                   <span>
-                    {getBillingCurrency()}{" "}
-                    {
-                      toCurrencyFormat(topPanel.open)
-                    }
+                    {getBillingCurrency()} {toCurrencyFormat(topPanel.open)}
                   </span>
                 </p>
               )}
               <p>
                 Total{" "}
                 <span>
-                  {getBillingCurrency()}{" "}
-                  {
-                    toCurrencyFormat(topPanel.total)
-                  }
+                  {getBillingCurrency()} {toCurrencyFormat(topPanel.total)}
                 </span>
               </p>
             </div>
@@ -1358,7 +1340,7 @@ export default function InvoiceDetails() {
                   <>
                     {status !== "Open" && (
                       <>
-                        <p className="heading">Invoice Changes</p>
+                        <p className="heading">Invoice Approval</p>
                         {status === "AR Review" || status === "Open" ? (
                           <div className="dpContainer dpMidMargin">
                             <DatePicker
@@ -1466,9 +1448,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 ||
-          missTransType === 2 ||
-          missTransType === 3) ? (
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer status={status} />
         </div>
@@ -1476,24 +1456,22 @@ export default function InvoiceDetails() {
         <></>
       )}
 
-      {(missTransType == 4 ||
-        missTransType == 3 ||
-        missTransType == 2) && (
-          <CreditMemoSummary
-            notes={notes}
-            setNotes={setNotes}
-            documents={documents}
-            setDocuments={setDocuments}
-            isClient={isClient}
-            cid={cid}
-            id={id}
-            creditMemoData={creditMemoData}
-            serviceCountries={lookupData?.data.serviceCountries}
-            currency={getBillingCurrency()}
-            vatValue={vatValue}
-            setCreditMemoData={setCreditMemoData}
-          ></CreditMemoSummary>
-        )}
+      {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (
+        <CreditMemoSummary
+          notes={notes}
+          setNotes={setNotes}
+          documents={documents}
+          setDocuments={setDocuments}
+          isClient={isClient}
+          cid={cid}
+          id={id}
+          creditMemoData={creditMemoData}
+          serviceCountries={lookupData?.data.serviceCountries}
+          currency={getBillingCurrency()}
+          vatValue={vatValue}
+          setCreditMemoData={setCreditMemoData}
+        ></CreditMemoSummary>
+      )}
 
       {missTransType != 7 &&
         missTransType != 4 &&
@@ -1605,70 +1583,55 @@ export default function InvoiceDetails() {
                       <div className="rowFee">
                         <p className="title">Country Subtotal Due</p>
                         <p className="amount">
-                          {
-                            item.currencyCode +
+                          {item.currencyCode +
                             " " +
-                            toCurrencyFormat(item.feeSummary.subTotalDue)
-                          }
+                            toCurrencyFormat(item.feeSummary.subTotalDue)}
                         </p>
                       </div>
                       <div className="rowFee">
                         <p className="title">
-                          Country EXC Rate{" "}
-                          {
-                            item.exchangeRate
-                          }
+                          Country EXC Rate {item.exchangeRate}
                         </p>
                         <p className="amount">
-                          {
-                            getBillingCurrency() +
+                          {getBillingCurrency() +
                             " " +
                             toCurrencyFormat(
                               item.feeSummary.subTotalDue * item.exchangeRate
-                            )
-                          }
+                            )}
                         </p>
                       </div>
                       <div className="rowFee">
                         <p className="title">In Country Processing Fee</p>
                         <p className="amount">
-                          {
-                            getBillingCurrency() +
+                          {getBillingCurrency() +
                             " " +
                             toCurrencyFormat(
                               item.feeSummary.inCountryProcessingFee
-                            )
-                          }
+                            )}
                         </p>
                       </div>
                       <div className="rowFee">
                         <p className="title">FX Bill</p>
                         <p className="amount">
-                          {
-                            getBillingCurrency() +
+                          {getBillingCurrency() +
                             " " +
-                            toCurrencyFormat(item.feeSummary.fxBill)
-                          }
+                            toCurrencyFormat(item.feeSummary.fxBill)}
                         </p>
                       </div>
                       <div className="row2">
                         <p className="title">Total Country VAT</p>
                         <p className="amount">
-                          {
-                            getBillingCurrency() +
+                          {getBillingCurrency() +
                             " " +
-                            toCurrencyFormat(item.feeSummary.totalCountryVat)
-                          }
+                            toCurrencyFormat(item.feeSummary.totalCountryVat)}
                         </p>
                       </div>
                       <div className="totalRow">
                         <p>Country Total Due</p>
                         <h3>
-                          {
-                            getBillingCurrency() +
+                          {getBillingCurrency() +
                             " " +
-                            toCurrencyFormat(item.countryTotalDue)
-                          }
+                            toCurrencyFormat(item.countryTotalDue)}
                         </h3>
                       </div>
                     </div>
@@ -1681,10 +1644,7 @@ export default function InvoiceDetails() {
               <div>
                 <p>Total</p>
                 <h3>
-                  {getBillingCurrency()}{" "}
-                  {
-                    toCurrencyFormat(total)
-                  }
+                  {getBillingCurrency()} {toCurrencyFormat(total)}
                 </h3>
               </div>
             </div>
@@ -1872,7 +1832,7 @@ export default function InvoiceDetails() {
                             setStatus(
                               e.text === "In Review" ? "AR Review" : e.text
                             );
-                            console.log('status6', e.text)
+                            console.log("status6", e.text);
                           }
                         });
                         setInputValue("");

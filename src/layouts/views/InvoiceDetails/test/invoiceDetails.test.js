@@ -222,7 +222,7 @@ describe("Invoice details", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    const status = "Approved"
+    const status = "Approved";
 
     mock.onPut(getApproveUrlNo(id, 2)).reply(201, status);
 
@@ -230,7 +230,13 @@ describe("Invoice details", () => {
 
     mock.onPut(getApproveUrl(id)).reply(201);
 
-    mock.onPut(getUpdateCreditMemoUrl(id), mockCreditMemoDatas, getHeaders(tempToken, cid, id)).reply(200, mockCreditMemoDatas);
+    mock
+      .onPut(
+        getUpdateCreditMemoUrl(id),
+        mockCreditMemoDatas,
+        getHeaders(tempToken, cid, id)
+      )
+      .reply(200, mockCreditMemoDatas);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
@@ -316,7 +322,6 @@ describe("Invoice details", () => {
     // const convert = screen.getByText(/Change to Miscellaneous/);
     // fireEvent.click(convert);
   });
-
 
   test("publish notes", async () => {
     render(
@@ -1375,25 +1380,6 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.getByText(/save/i));
     fireEvent.click(savebtn);
-  });
-
-  test("save invoice with value change", async () => {
-    render(
-      <HashRouter>
-        <InvoiceDetails />
-      </HashRouter>
-    );
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
-
-    const dp = await waitFor(() => screen.getAllByRole("textbox"));
-    fireEvent.click(dp[0]);
-
-    const selDate = await waitFor(() => screen.getAllByText(/15/));
-    fireEvent.click(selDate[0]);
-
-    const savebtn = await waitFor(() => screen.getByText(/save/i));
-    fireEvent.click(savebtn);
-    // fireEvent.change(input, { target: { value: "Pending" } });
   });
 });
 describe("delete test cases on AR Reveiew click on cancel button", () => {
