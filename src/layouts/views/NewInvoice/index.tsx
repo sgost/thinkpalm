@@ -661,10 +661,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                  ? "step2-right-panel"
-                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                  ? "step2-credit-memo"
-                  : "",
+                    ? "step2-right-panel"
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -676,8 +676,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
