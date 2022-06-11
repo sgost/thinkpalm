@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Dropdown, Icon, DatePicker } from "atlasuikit";
 import axios from "axios";
 import "./NewInvoiceCreation.scss";
-import { getCountryByCustomer, urls } from "../../../urls/urls";
+import { getCountryByCustomer, getHeaders, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
 
@@ -24,6 +24,16 @@ const NewInvoiceCreation = ({
   setLoading,
   invoiceDate,
   setInvoiceDate,
+  invoicerOptions,
+  setInvoicerOptions,
+  receivableAccountOptions,
+  setReceivableAccountOptions,
+  currencyOptions,
+  setCurrencyOptions,
+  qbIdOptions,
+  setQbIdOptions,
+  paymentTermsOptions,
+  setPaymentTermsOptions,
 }: any) => {
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
@@ -31,6 +41,33 @@ const NewInvoiceCreation = ({
   const [isCountryOpen, setIsCountryOpen] = useState(false);
   const [isMonthOpen, setIsMonthOpen] = useState(false);
   const [isYearOpen, setIsYearOpen] = useState(false);
+
+  const [isInvoicer, setIsInvoicer] = useState(false);
+  const [isRecAcc, setIsRecAcc] = useState(false);
+  const [isCurrency, setIsCurrency] = useState(false);
+  const [isQbId, setIsQbId] = useState(false);
+  const [isPaymentTerms, setIsPaymentTerms] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    axios
+      .get(urls.subscriptionLookup, {
+        headers: getHeaders(token, stepperOneData.customerId, "false"),
+      })
+      .then((res: any) => {
+        setInvoicerOptions(
+          res.data.invoicers.map((invoicer: any) => {
+            return {
+              ...invoicer,
+              isSelected: false,
+              label: invoicer.text,
+              value: invoicer.value,
+              receivableAccounts: invoicer.receivableAccounts,
+            };
+          })
+        );
+      });
+  }, []);
 
   const preparedCustomerData = (data: any) => {
     const newData = data?.map((item: any) => {
@@ -304,29 +341,27 @@ const NewInvoiceCreation = ({
                     handleDropOptionClick={(item: any) => {
                       handleDropOption(
                         item,
-                        CustomerOptions,
-                        setCustomerOption,
-                        setIsCustomerOpen
+                        invoicerOptions,
+                        setInvoicerOptions,
+                        setIsInvoicer
                       );
-                      setCountryOptions([]);
 
-                      setStepperOneData({
-                        ...stepperOneData,
-                        customer: item.label,
-                        customerId: item.value,
-                        countryId: "",
-                        country: "",
+                      let tempRecAccOptions: Array<any> = [];
+                      item.receivableAccounts?.forEach((recAcc: any) => {
+                        tempRecAccOptions.push({
+                          ...recAcc,
+                          isSelected: false,
+                          label: recAcc.text,
+                          value: recAcc.value,
+                        });
                       });
+                      setReceivableAccountOptions(tempRecAccOptions);
                     }}
                     handleDropdownClick={(b: boolean) => {
-                      setIsCustomerOpen(b);
-                      setIstypeOpen(false);
-                      setIsCountryOpen(false);
-                      setIsMonthOpen(false);
-                      setIsYearOpen(false);
+                      setIsInvoicer(b);
                     }}
-                    isOpen={isCustomerOpen}
-                    options={CustomerOptions}
+                    isOpen={isInvoicer}
+                    options={invoicerOptions}
                     title={`Invoicer`}
                     search
                   />
@@ -340,29 +375,16 @@ const NewInvoiceCreation = ({
                     handleDropOptionClick={(item: any) => {
                       handleDropOption(
                         item,
-                        CustomerOptions,
-                        setCustomerOption,
-                        setIsCustomerOpen
+                        receivableAccountOptions,
+                        setReceivableAccountOptions,
+                        setIsRecAcc
                       );
-                      setCountryOptions([]);
-
-                      setStepperOneData({
-                        ...stepperOneData,
-                        customer: item.label,
-                        customerId: item.value,
-                        countryId: "",
-                        country: "",
-                      });
                     }}
                     handleDropdownClick={(b: boolean) => {
-                      setIsCustomerOpen(b);
-                      setIstypeOpen(false);
-                      setIsCountryOpen(false);
-                      setIsMonthOpen(false);
-                      setIsYearOpen(false);
+                      setIsRecAcc(b);
                     }}
-                    isOpen={isCustomerOpen}
-                    options={CustomerOptions}
+                    isOpen={isRecAcc}
+                    options={receivableAccountOptions}
                     title={`Receivable Account`}
                     search
                   />
@@ -393,15 +415,15 @@ const NewInvoiceCreation = ({
                       });
                     }}
                     handleDropdownClick={(b: boolean) => {
-                      setIsCustomerOpen(b);
+                      setIsCurrency(b);
                       setIstypeOpen(false);
                       setIsCountryOpen(false);
                       setIsMonthOpen(false);
                       setIsYearOpen(false);
                     }}
-                    isOpen={isCustomerOpen}
+                    isOpen={isCurrency}
                     options={CustomerOptions}
-                    title={`Currancy`}
+                    title={`Currency`}
                     search
                   />
                 </div>
@@ -429,13 +451,9 @@ const NewInvoiceCreation = ({
                       });
                     }}
                     handleDropdownClick={(b: boolean) => {
-                      setIsCustomerOpen(b);
-                      setIstypeOpen(false);
-                      setIsCountryOpen(false);
-                      setIsMonthOpen(false);
-                      setIsYearOpen(false);
+                      setIsQbId(b);
                     }}
-                    isOpen={isCustomerOpen}
+                    isOpen={isQbId}
                     options={CustomerOptions}
                     title={`Quickbook ID`}
                     search
@@ -443,6 +461,38 @@ const NewInvoiceCreation = ({
                 </div>
               )}
             </div>
+
+            {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+              <div className="dropdown">
+                <Dropdown
+                  isDisabled={!stepperOneData?.type}
+                  handleDropOptionClick={(item: any) => {
+                    handleDropOption(
+                      item,
+                      CustomerOptions,
+                      setCustomerOption,
+                      setIsCustomerOpen
+                    );
+                    setCountryOptions([]);
+
+                    setStepperOneData({
+                      ...stepperOneData,
+                      customer: item.label,
+                      customerId: item.value,
+                      countryId: "",
+                      country: "",
+                    });
+                  }}
+                  handleDropdownClick={(b: boolean) => {
+                    setIsPaymentTerms(b);
+                  }}
+                  isOpen={isPaymentTerms}
+                  options={CustomerOptions}
+                  title={`Payment Terms`}
+                  search
+                />
+              </div>
+            )}
             {stepperOneData?.type === "Payroll" && (
               <div className="dropdownC">
                 <Dropdown

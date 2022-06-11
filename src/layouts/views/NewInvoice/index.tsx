@@ -26,10 +26,9 @@ import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
 // import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
-
   const tempToken = localStorage.getItem("accessToken");
   const cid = localStorage.getItem("current-org-id");
-  
+
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
   const [tempData, setTempData] = useState<any>([]);
@@ -142,6 +141,14 @@ const NewInvoice = () => {
   ]);
 
   const [invoiceDate, setInvoiceDate] = useState<any>("");
+
+  const [invoicerOptions, setInvoicerOptions] = useState<any>([]);
+  const [receivableAccountOptions, setReceivableAccountOptions] = useState<any>(
+    []
+  );
+  const [currencyOptions, setCurrencyOptions] = useState<any>([]);
+  const [qbIdOptions, setQbIdOptions] = useState<any>([]);
+  const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
 
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
@@ -279,6 +286,16 @@ const NewInvoice = () => {
     setLoading,
     invoiceDate,
     setInvoiceDate,
+    invoicerOptions,
+    setInvoicerOptions,
+    receivableAccountOptions,
+    setReceivableAccountOptions,
+    currencyOptions,
+    setCurrencyOptions,
+    qbIdOptions,
+    setQbIdOptions,
+    paymentTermsOptions,
+    setPaymentTermsOptions,
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -522,7 +539,6 @@ const NewInvoice = () => {
   }, [hideTopCheck]);
 
   useEffect(() => {
-
     axios
       .get(urls.countries)
       .then((countryRes: any) => {
