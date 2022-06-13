@@ -27,6 +27,7 @@ import {
   getRelatedInvoiceUrl,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
+import InvoicePreviewPop from "../InvoicePreviewPop";
 import { mockLogsdata } from "../../InvoiceDetails/mockData";
 
 localStorage.setItem(
@@ -40,6 +41,33 @@ const customerId = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
 const countryId = "7defc4f9-906d-437f-a6d9-c822ca2ecfd7";
 const monthId = 1;
 const yearId = 2022;
+
+const stepperOneData = {
+  "customer": "DSM Nutritional Products AG",
+  "type": "Credit Memo",
+  "country": "",
+  "month": "",
+  "year": "",
+  "customerId": "A9BBEE6D-797A-4724-A86A-5B1A2E28763F",
+  "countryId": "",
+  "typeId": 4,
+  "yearId": "",
+  "monthId": ""
+}
+
+const todos = [
+  {
+    "id": 0.4633734736448569,
+    "date": "17 Jun 2022",
+    "product": "Advisory Services",
+    "description": "Desc2",
+    "country": "ABW -- Aruba",
+    "quantity": "1",
+    "amount": "2"
+  }
+]
+
+const invoiceId = "cbb51dc8-8529-4afa-bf72-d2615163a9a6"
 
 describe("New Invoice", () => {
   beforeAll(() => {
@@ -714,6 +742,7 @@ describe("Stepper 3", () => {
     mock
       .onGet(getInvoiceDetailsUrl("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
       .reply(200, mockapidata.resForInvoiceDetail);
+
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -943,6 +972,9 @@ describe("Stepper 3 invoice detail api fail", () => {
     mock
       .onGet(getInvoiceDetailsUrl("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
       .reply(500, mockapidata.resForInvoiceDetail);
+    mock
+      .onGet(updateInvoiceStatus("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
+      .reply(201, {});
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -1905,11 +1937,22 @@ describe("New Invoice for Miscellaneous ", () => {
     );
     fireEvent.click(pleaseSelectDropDownStepper2[0]);
 
+    const DatePicket = await screen.getByTestId(
+      "Country_open"
+    );
+    expect(DatePicket).toBeInTheDocument();
+
     const productServiceDropDownValue = await screen.findAllByText(
       /Contract Termination Fee/
     );
     expect(productServiceDropDownValue[0]).toBeInTheDocument();
     fireEvent.click(productServiceDropDownValue[0]);
+
+    const Country = await screen.findAllByText(
+      /Service Date/
+    );
+    expect(Country[0]).toBeInTheDocument();
+    fireEvent.click(Country[0]);
 
     fireEvent.click(pleaseSelectDropDownStepper2[1]);
     const countryServiceDropDownValue = await screen.findAllByText(
@@ -1927,6 +1970,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const QuantityInputField = await screen.findByTestId(/Quantity/);
     expect(QuantityInputField).toBeInTheDocument();
     fireEvent.change(QuantityInputField, { target: { value: 30 } });
+    fireEvent.keyDown(QuantityInputField);
 
     const AmountInputField = await screen.findByTestId(/Amount/);
     expect(AmountInputField).toBeInTheDocument();
@@ -1998,17 +2042,16 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-    const SelectEmployeeText = await screen.findAllByText(/Add New Item/);
-    expect(SelectEmployeeText[0]).toBeInTheDocument();
 
     const summaryText = await screen.findAllByText(/Summary/);
     expect(summaryText[0]).toBeInTheDocument();
 
-    const dp2 = await screen.findAllByRole("textbox");
-    fireEvent.click(dp2[0]);
+    const dpp = await waitFor(() => screen.getAllByRole("textbox"));
+    fireEvent.click(dpp[0]);
 
-    const serviceDate = await screen.findAllByText(/27/);
-    fireEvent.click(serviceDate[1]);
+
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
 
     const pleaseSelectDropDownStepper2 = await screen.findAllByText(
       /Please Select/
@@ -2056,14 +2099,161 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const InvoiceTab = await screen.findAllByText(/Invoice Preview/);
     expect(InvoiceTab[0]).toBeInTheDocument();
 
-    // const openModal = await screen.findAllByText(/Preview Invoice/);
-    // expect(openModal[0]).toBeInTheDocument();
-    // fireEvent.click(openModal[0]);
+    const openModal = await screen.findAllByText(/Preview Invoice/);
+    expect(openModal[0]).toBeInTheDocument();
+    fireEvent.click(openModal[0]);
 
-     // const closeButton = container.querySelector(".close");
-    // fireEvent.click(closeButton);
+    const closeButton = container.querySelector(".close");
+    fireEvent.click(closeButton);
   }, 30000);
 });
+
+describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    mock.onGet(urls.countries).reply(500, mockapidata.resCountriesData);
+
+    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
+    mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
+    mock
+      .onPost(urls.createCreditMemo)
+      .reply(200, mockapidata.resCreateCreditMemo);
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("dropDown Value change stepper 1 then stepper 2 country api fail", async () => {
+    const { container } = render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const typeDropDownValue = await screen.findByText(/Credit Memo/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    const dp = await waitFor(() => screen.getByRole("textbox"));
+    fireEvent.click(dp);
+
+    const selDate = await waitFor(() => screen.getByText(/15/));
+    fireEvent.click(selDate);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+
+    const summaryText = await screen.findAllByText(/Summary/);
+    expect(summaryText[0]).toBeInTheDocument();
+
+    const dpp = await waitFor(() => screen.getAllByRole("textbox"));
+    fireEvent.click(dpp[0]);
+
+
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const pleaseSelectDropDownStepper2 = await screen.findAllByText(
+      /Please Select/
+    );
+    fireEvent.click(pleaseSelectDropDownStepper2[0]);
+
+    const productServiceDropDownValue = await screen.findAllByText(
+      /Contract Termination Fee/
+    );
+    expect(productServiceDropDownValue[0]).toBeInTheDocument();
+    fireEvent.click(productServiceDropDownValue[0]);
+
+    fireEvent.click(pleaseSelectDropDownStepper2[1]);
+    const countryServiceDropDownValue = await screen.findAllByText(
+      /AFG -- Afghanistan/
+    );
+    expect(countryServiceDropDownValue[0]).toBeInTheDocument();
+    fireEvent.click(countryServiceDropDownValue[0]);
+
+    const DescriptionInputField = await screen.findByPlaceholderText(
+      /Enter description/
+    );
+    expect(DescriptionInputField).toBeInTheDocument();
+    fireEvent.change(DescriptionInputField, { target: { value: "test" } });
+
+    const QuantityInputField = await screen.findByTestId(/Quantity/);
+    expect(QuantityInputField).toBeInTheDocument();
+    fireEvent.change(QuantityInputField, { target: { value: 30 } });
+
+    const AmountInputField = await screen.findByTestId(/Amount/);
+    expect(AmountInputField).toBeInTheDocument();
+    fireEvent.change(AmountInputField, { target: { value: 1 } });
+    const addNewText = await screen.findAllByText(/Add New Item/);
+    expect(addNewText[0]).toBeInTheDocument();
+    fireEvent.click(addNewText[0]);
+
+    const DeleteText = await screen.findAllByText(/Delete/);
+    screen.debug(DeleteText)
+    expect(DeleteText[0]).toBeInTheDocument();
+    fireEvent.click(DeleteText[0]);
+
+    const nextPreview = await screen.findByTestId("next-button");
+    expect(nextPreview).toBeInTheDocument();
+    fireEvent.click(nextPreview);
+
+  }, 30000);
+});
+
+describe("Invoice preview Pop", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    mock
+      .onGet(getRelatedInvoiceUrl(invoiceId))
+      .reply(200, mockapidata.resFinalStepper);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+  });
+  test("final stepper", async () => {
+    render(
+      <HashRouter>
+        <InvoicePreviewPop
+          stepperOneData={stepperOneData}
+          todos={todos}
+          invoiceId={invoiceId}
+        />
+      </HashRouter>
+    );
+    const payrollTabs = await screen.findAllByText(/Invoice Preview/);
+    expect(payrollTabs[0]).toBeInTheDocument();
+  });
+
+  test("Preview Invoice", async () => {
+    render(
+      <HashRouter>
+        <InvoicePreviewPop
+          stepperOneData={stepperOneData}
+          todos={todos}
+          invoiceId={invoiceId}
+        />
+      </HashRouter>
+    );
+    const PreviewButton = await screen.findByTestId("preview-button");
+    fireEvent.click(PreviewButton);
+  });
+});
+
 
 describe("final stepper", () => {
   beforeAll(() => {
@@ -2102,3 +2292,7 @@ describe("final stepper with 201 status code", () => {
     fireEvent.click(goto);
   }, 30000);
 });
+
+
+
+

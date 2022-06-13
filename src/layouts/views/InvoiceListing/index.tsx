@@ -135,6 +135,11 @@ export default function InvoiceListing() {
       label: "Invoiced",
       value: 10,
     },
+    {
+      isSelected: false,
+      label: "Declined",
+      value: 10,
+    },
   ];
   const [status, setStatus] = useState(statusOptions);
   const [internalTabledata, setInternalTabletData] = useState({
@@ -525,36 +530,56 @@ export default function InvoiceListing() {
       return true;
     }
 
+    /* istanbul ignore next */
     checkedInvoices.forEach((e: any) => {
       if (e.status != 4 && e.status != 10) {
         bool = true;
+      }
+
+      if (e.transactionType == 4) {
+        checkedInvoices.forEach((i: any) => {
+          if (i.transactionType != 4) {
+            bool = true;
+          }
+        });
       }
     });
 
     return bool;
   };
 
+  /* istanbul ignore next */
   const handleAddPaymentNavigation = (e: any) => {
     let isClientString = isClient ? "true" : "false";
-    if (e.value === "invoicePayment") {
-      if (checkedInvoices.length === 1) {
-        navigate(
-          "/pay/invoicedetails" +
-            checkedInvoices[0].id +
-            "/" +
-            checkedInvoices[0].customerId +
-            "/" +
-            isClientString +
-            "/payments",
-          {
-            state: {
-              InvoiceId: checkedInvoices[0].invoiceNo,
-              transactionType: checkedInvoices[0].transactionType,
-              rowDetails: checkedInvoices[0],
-            },
-          }
-        );
-      }
+    let isCreditRefund = checkedInvoices.findIndex(
+      (c: any) => c.transactionType == 4
+    );
+
+    const nav = () => {
+      navigate(
+        "/pay/invoicedetails" +
+          checkedInvoices[0].id +
+          "/" +
+          checkedInvoices[0].customerId +
+          "/" +
+          isClientString +
+          "/payments",
+        {
+          state: {
+            InvoiceId: checkedInvoices[0].invoiceNo,
+            transactionType: checkedInvoices[0].transactionType,
+            rowDetails: checkedInvoices[0],
+            inveoicesData: checkedInvoices,
+          },
+        }
+      );
+    };
+
+    if (e.value === "invoicePayment" && isCreditRefund == -1) {
+      nav();
+    }
+    if (e.value === "creditRefund" && isCreditRefund != -1) {
+      nav();
     }
   };
 
@@ -603,8 +628,6 @@ export default function InvoiceListing() {
                       ],
                     }}
                     onChange={handleAddPaymentNavigation}
-                    testIdButton="test-drop-down-button"
-                    testIdOptions="test-drop-down-button-option"
                   >
                     <Icon
                       color="#ffff"

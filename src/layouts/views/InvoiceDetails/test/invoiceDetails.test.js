@@ -7,21 +7,18 @@ import {
 } from "@testing-library/react";
 import {
   HashRouter,
-  Route,
-  Routes,
   useParams,
-  MemoryRouter,
   useLocation,
 } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata } from "./mockdata";
+import { mockapidata, mockCreditMemoDatas, approveMock } from "./mockdata";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 import {
+  getUpdateCreditMemoUrl,
   getApproveUrl,
   getRelatedInvoiceUrl,
   getApproveUrlNo,
@@ -33,6 +30,7 @@ import {
   getExcelUrl,
   getNotesUrl,
   urls,
+  getHeaders,
 } from "../../../../urls/urls";
 // describe("Invoice detail", () => {
 //   let mock;
@@ -172,6 +170,7 @@ const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
 const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
+const employeeId = "1000085"
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
@@ -200,6 +199,7 @@ describe("Invoice details", () => {
     }));
 
     const mock = new MockAdapter(axios);
+    const tempToken = localStorage.getItem("accessToken");
 
     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
     mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
@@ -219,11 +219,21 @@ describe("Invoice details", () => {
 
     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
 
-    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+    const status = "Approved";
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201, status);
 
     mock.onPut(getApproveUrlNo(id, 4)).reply(201);
 
     mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock
+      .onPut(
+        getUpdateCreditMemoUrl(id),
+        mockCreditMemoDatas,
+        getHeaders(tempToken, cid, id)
+      )
+      .reply(200, mockCreditMemoDatas);
 
     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
@@ -306,12 +316,13 @@ describe("Invoice details", () => {
 
     const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
+    // const convert = screen.getByText(/Change to Miscellaneous/);
+    // fireEvent.click(convert);
   });
 
   test("publish notes", async () => {
     render(
       <HashRouter>
-        ``
         <InvoiceDetails />
       </HashRouter>
     );
@@ -1366,25 +1377,6 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.getByText(/save/i));
     fireEvent.click(savebtn);
-  });
-
-  test("save invoice with value change", async () => {
-    render(
-      <HashRouter>
-        <InvoiceDetails />
-      </HashRouter>
-    );
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
-
-    // const dp = await waitFor(() => screen.getAllByRole("textbox"));
-    // fireEvent.click(dp[0]);
-
-    const selDate = await waitFor(() => screen.getByText(/15/));
-    fireEvent.click(selDate);
-
-    const savebtn = await waitFor(() => screen.getByText(/save/i));
-    fireEvent.click(savebtn);
-    // fireEvent.change(input, { target: { value: "Pending" } });
   });
 });
 describe("delete test cases on AR Reveiew click on cancel button", () => {

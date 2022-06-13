@@ -34,6 +34,9 @@ describe("Payment details page", () => {
       </HashRouter>
     );
 
+    const openIcon = await screen.findByTestId("open-payment-block");
+    fireEvent.click(openIcon)
+
     const currencyText = await screen.findByText("Currency");
     fireEvent.click(currencyText)
 

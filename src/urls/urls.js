@@ -33,6 +33,7 @@ const services = {
   atlasCustomerService: "/cs/api",
   contractorPayBillingService: "/billingservice/api",
   atlasSubscriptionService: "/atlas-subscriptionservice/api",
+  employeeCompensation: "/employee/employee/api"
 };
 
 export const urls = {
@@ -267,4 +268,8 @@ export const getUpdateInvoiceCalanderPoNoUrl = (invoiceId) => {
     "/Invoices/UpdateInvoiceCalendar/" +
     invoiceId
   );
+};
+
+export const getEmployeeCompensationData = (employeeId) => {
+  return baseURL + services.employeeCompensation + `/PostOnboardInternal/PostOnboardEmployeeDetails?employeeId=${employeeId}`;
 };
