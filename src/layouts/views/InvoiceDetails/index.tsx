@@ -1217,11 +1217,20 @@ export default function InvoiceDetails() {
                   const checkedInvoice = [
                     {
                       customerId: cid,
-                      customerName: topPanel.to || apiData?.data?.invoice?.customerName,
-                      customerLocation: topPanel.location || apiData?.data?.invoice?.customerLocation,
-                      currencyId: creditMemoData?.currencyId || apiData?.data?.invoice?.currencyId,
-                      qbInvoiceNo: creditMemoData?.qbInvoiceNo ||apiData?.data?.invoice?.qbInvoiceNo,
-                      invoiceNo: creditMemoData?.invoiceNo || apiData?.data?.invoice?.invoiceNo,
+                      customerName:
+                        topPanel.to || apiData?.data?.invoice?.customerName,
+                      customerLocation:
+                        topPanel.location ||
+                        apiData?.data?.invoice?.customerLocation,
+                      currencyId:
+                        creditMemoData?.currencyId ||
+                        apiData?.data?.invoice?.currencyId,
+                      qbInvoiceNo:
+                        creditMemoData?.qbInvoiceNo ||
+                        apiData?.data?.invoice?.qbInvoiceNo,
+                      invoiceNo:
+                        creditMemoData?.invoiceNo ||
+                        apiData?.data?.invoice?.invoiceNo,
                       status: 4,
                       statusLabel: "Approved",
                       transactionType: 2,
@@ -1229,35 +1238,85 @@ export default function InvoiceDetails() {
                       createdDate: moment(topPanel.invoiceDate).format(
                         "DD/MMM/YYYY"
                       ),
-                      paymentDate: creditMemoData?.paymentDate || apiData?.data?.invoice?.paymentDate,
-                      approvalDate: creditMemoData?.approvalDate || apiData?.data?.invoice?.approvalDate,
-                      submissionDate: creditMemoData?.submissionDate || apiData?.data?.invoice?.submissionDate,
+                      paymentDate:
+                        creditMemoData?.paymentDate ||
+                        apiData?.data?.invoice?.paymentDate,
+                      approvalDate:
+                        creditMemoData?.approvalDate ||
+                        apiData?.data?.invoice?.approvalDate,
+                      submissionDate:
+                        creditMemoData?.submissionDate ||
+                        apiData?.data?.invoice?.submissionDate,
                       dueDate: moment(topPanel.paymentDue).format(
                         "DD/MMM/YYYY"
                       ),
-                      exchangeRate: creditMemoData?.exchangeRate || apiData?.data?.invoice?.exchangeRate,
-                      totalAmount: topPanel.total || apiData?.data?.invoice?.totalAmount,
-                      invoiceBalance: topPanel.open || apiData?.data?.invoice?.invoiceBalance,
-                      invoiceFrom: creditMemoData?.invoiceFrom || apiData?.data?.invoice?.invoiceFrom,
-                      regionItemCode: creditMemoData?.regionItemCode || apiData?.data?.regionItemCode,
-                      isClientVisible: creditMemoData?.isClientVisible || apiData?.data?.invoice?.isClientVisible,
-                      depositTo: creditMemoData?.depositTo || apiData?.data?.invoice?.depositTo,
-                      createdBy: creditMemoData?.createdBy || apiData?.data?.invoice?.createdBy,
-                      modifiedBy: creditMemoData?.modifiedBy || apiData?.data?.invoice?.modifiedBy,
-                      eorSubscriptionId: creditMemoData?.eorSubscriptionId || apiData?.data?.invoice?.eorSubscriptionId,
-                      invoicerId: creditMemoData?.invoicerId || apiData?.data?.invoice?.invoicerId,
-                      bankingDetailId: creditMemoData?.bankingDetailId || apiData?.data?.invoice?.bankingDetailId,
-                      paymentMethod: creditMemoData?.paymentMethod || apiData?.data?.invoice?.paymentMethod,
-                      poNumber: creditMemoData?.poNumber || apiData?.data?.invoice?.invoiceFrom,
-                      ageingNotPaid: creditMemoData?.ageingNotPaid || apiData?.data?.invoice?.ageingNotPaid,
-                      ageingPaid: creditMemoData?.ageingPaid || apiData?.data?.invoice?.ageingPaid,
-                      invoiceDocuments: creditMemoData?.invoiceDocuments|| apiData?.data?.invoice?.invoiceDocuments,
-                      invoiceItems: creditMemoData?.invoiceItems || apiData?.data?.invoice?.invoiceItems,
-                      invoiceNotes: creditMemoData?.invoiceNotes || apiData?.data?.invoice?.invoiceNotes,
-                      invoiceRelatedInvoices: creditMemoData?.invoiceRelatedInvoices || apiData?.data?.invoice?.invoiceRelatedInvoices,
-                      invoiceRelatedRelatedInvoices: creditMemoData?.invoiceRelatedRelatedInvoices || apiData?.data?.invoice?.invoiceRelatedRelatedInvoices,
-                      payrolls: creditMemoData?.payrolls || apiData?.data?.invoice?.payrolls,
-                      customer: creditMemoData?.customer || apiData?.data?.invoice?.customer,
+                      exchangeRate:
+                        creditMemoData?.exchangeRate ||
+                        apiData?.data?.invoice?.exchangeRate,
+                      totalAmount:
+                        topPanel.total || apiData?.data?.invoice?.totalAmount,
+                      invoiceBalance:
+                        topPanel.open || apiData?.data?.invoice?.invoiceBalance,
+                      invoiceFrom:
+                        creditMemoData?.invoiceFrom ||
+                        apiData?.data?.invoice?.invoiceFrom,
+                      regionItemCode:
+                        creditMemoData?.regionItemCode ||
+                        apiData?.data?.regionItemCode,
+                      isClientVisible:
+                        creditMemoData?.isClientVisible ||
+                        apiData?.data?.invoice?.isClientVisible,
+                      depositTo:
+                        creditMemoData?.depositTo ||
+                        apiData?.data?.invoice?.depositTo,
+                      createdBy:
+                        creditMemoData?.createdBy ||
+                        apiData?.data?.invoice?.createdBy,
+                      modifiedBy:
+                        creditMemoData?.modifiedBy ||
+                        apiData?.data?.invoice?.modifiedBy,
+                      eorSubscriptionId:
+                        creditMemoData?.eorSubscriptionId ||
+                        apiData?.data?.invoice?.eorSubscriptionId,
+                      invoicerId:
+                        creditMemoData?.invoicerId ||
+                        apiData?.data?.invoice?.invoicerId,
+                      bankingDetailId:
+                        creditMemoData?.bankingDetailId ||
+                        apiData?.data?.invoice?.bankingDetailId,
+                      paymentMethod:
+                        creditMemoData?.paymentMethod ||
+                        apiData?.data?.invoice?.paymentMethod,
+                      poNumber:
+                        creditMemoData?.poNumber ||
+                        apiData?.data?.invoice?.invoiceFrom,
+                      ageingNotPaid:
+                        creditMemoData?.ageingNotPaid ||
+                        apiData?.data?.invoice?.ageingNotPaid,
+                      ageingPaid:
+                        creditMemoData?.ageingPaid ||
+                        apiData?.data?.invoice?.ageingPaid,
+                      invoiceDocuments:
+                        creditMemoData?.invoiceDocuments ||
+                        apiData?.data?.invoice?.invoiceDocuments,
+                      invoiceItems:
+                        creditMemoData?.invoiceItems ||
+                        apiData?.data?.invoice?.invoiceItems,
+                      invoiceNotes:
+                        creditMemoData?.invoiceNotes ||
+                        apiData?.data?.invoice?.invoiceNotes,
+                      invoiceRelatedInvoices:
+                        creditMemoData?.invoiceRelatedInvoices ||
+                        apiData?.data?.invoice?.invoiceRelatedInvoices,
+                      invoiceRelatedRelatedInvoices:
+                        creditMemoData?.invoiceRelatedRelatedInvoices ||
+                        apiData?.data?.invoice?.invoiceRelatedRelatedInvoices,
+                      payrolls:
+                        creditMemoData?.payrolls ||
+                        apiData?.data?.invoice?.payrolls,
+                      customer:
+                        creditMemoData?.customer ||
+                        apiData?.data?.invoice?.customer,
                       currency: {
                         code: "USD",
                         description: "US Dollar",
@@ -1582,6 +1641,7 @@ export default function InvoiceDetails() {
 
       {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (
         <CreditMemoSummary
+          status={status}
           notes={notes}
           setNotes={setNotes}
           documents={documents}

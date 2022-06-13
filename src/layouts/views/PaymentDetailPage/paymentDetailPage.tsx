@@ -99,7 +99,7 @@ const PaymentDetailPage = () => {
   };
 
   const prepareCurrencyDropdownOption = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       return {
         ...item,
         isSelected: false,
@@ -107,11 +107,10 @@ const PaymentDetailPage = () => {
         value: item.text,
       };
     });
-    return newData;
   };
 
   const prepareDepositToBankDropdownOption = (data: any) => {
-    const newData = data?.map((item: any) => {
+   return data?.map((item: any) => {
       return {
         ...item,
         isSelected: false,
@@ -119,11 +118,10 @@ const PaymentDetailPage = () => {
         value: item.text,
       };
     });
-    return newData;
   };
 
   const preparelocationDropdownOption = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       return {
         ...item,
         isSelected: false,
@@ -131,11 +129,10 @@ const PaymentDetailPage = () => {
         value: item.text,
       };
     });
-    return newData;
   };
 
   const preparePaymentMethodDropdownOption = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       return {
         ...item,
         isSelected: false,
@@ -143,10 +140,9 @@ const PaymentDetailPage = () => {
         value: item.text,
       };
     });
-    return newData;
   };
 
-  const handleDropOption = (
+  const handlePaymentDropOption = (
     item: any,
     options: any,
     set: any,
@@ -352,7 +348,7 @@ const PaymentDetailPage = () => {
                               setToggleState(i);
                             }}
                             handleDropOptionClick={(item: any) => {
-                              handleDropOption(
+                              handlePaymentDropOption(
                                 item,
                                 currencyOptions,
                                 setCurrencyOption,
@@ -377,7 +373,7 @@ const PaymentDetailPage = () => {
                               setToggleState(i);
                             }}
                             handleDropOptionClick={(item: any) => {
-                              handleDropOption(
+                              handlePaymentDropOption(
                                 item,
                                 locationOptions,
                                 setLocationOption,
@@ -420,7 +416,7 @@ const PaymentDetailPage = () => {
                                 setToggleState(i);
                               }}
                               handleDropOptionClick={(item: any) => {
-                                handleDropOption(
+                                handlePaymentDropOption(
                                   item,
                                   bankToDepositOptions,
                                   setBankToDepositOption,
@@ -444,7 +440,7 @@ const PaymentDetailPage = () => {
                                 setToggleState(i);
                               }}
                               handleDropOptionClick={(item: any) => {
-                                handleDropOption(
+                                handlePaymentDropOption(
                                   item,
                                   paymentMethodOptions,
                                   setPaymentMethodOption,

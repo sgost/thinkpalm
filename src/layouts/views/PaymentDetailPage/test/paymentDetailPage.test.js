@@ -257,3 +257,26 @@ describe("Payment details page", () => {
     fireEvent.click(deleteButton);
   });
 });
+
+describe("Payment details page lookup and subscription lookup api fail", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+    
+
+    mock.onGet(urls.lookup).reply(500, mockapidata.resForLookupCurrencyData);
+
+    mock.onGet(subscriptionLookup()).reply(500, mockapidata.resForPaymentMethodData);
+
+  });
+
+  test("payment page", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+
+    const openIcon = await screen.findAllByTestId("open-payment-block");
+    fireEvent.click(openIcon[0]);
+  });
+});
