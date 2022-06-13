@@ -2043,22 +2043,14 @@ export default function InvoiceDetails() {
                     style={{
                       "background-color": "#FFFFF",
                     }}
-                    // iconProps={{
-                    //   width: "20",
-                    //   height: "20",
-                    //   viewBox: "-3 -10 24 36.5",
-                    // }}
                   />
                 </div>
                 <div className="col-6">
                   <div className="header">
                     {isCompensatioModalOpen?.data?.fullName}
-                    {/* Camila Lopez */}
                   </div>
                   <div className="sub-header">
-                    {/* {user.customerContract?.jobTitle} */}
                     {isCompensatioModalOpen?.data?.jobTitle}
-                    {/* Social Media Specialist */}
                   </div>
                 </div>
                 <div className="col-3 info-text-container">
@@ -2068,17 +2060,12 @@ export default function InvoiceDetails() {
                     <span>
                       {isCompensatioModalOpen?.data?.phone?.countryCode}
                       {isCompensatioModalOpen?.data?.phone?.number}
-                      {/* {user.workPhoneCountryCode}  */}
-                      {/* {user.workPhone} */}
-                      {/* +234 123 432 1987 */}
                     </span>
                   </div>
                   <div className="info-text">
                     <Icon color="#E0E5F8" icon="email" size="large" />
                     &nbsp;
                     <span>
-                      {/* {user.workEmail} */}
-                      {/* c.lopez@gmail.com */}
                       {isCompensatioModalOpen?.data?.email}
                     </span>
                   </div>
@@ -2092,7 +2079,6 @@ export default function InvoiceDetails() {
                       <Icon color="#767676" icon="pound" size="medium" />
                       &nbsp;
                       <span>
-                        {/* {user.contractorId} */}
                         C928422111
                       </span>
                     </div>
@@ -2101,10 +2087,6 @@ export default function InvoiceDetails() {
                       &nbsp;
                       <span>
                         {"Effective Start Date: "}
-                        {console.log(
-                          "start date",
-                          isCompensatioModalOpen?.data?.startDate
-                        )}
                         {isCompensatioModalOpen &&
                         isCompensatioModalOpen.data &&
                         isCompensatioModalOpen?.data?.startDate
@@ -2120,22 +2102,7 @@ export default function InvoiceDetails() {
                       <Icon color="#767676" icon="location" size="medium" />
                       &nbsp;
                       <span>
-                        Australia-Sydney
                         {isCompensatioModalOpen?.data?.location}
-                        {/* 
-                        {`${
-                          isCompensatioModalOpen?.data?.data?.personalDetails
-                            ?.homeAddress?.country || ""
-                        } ${
-                          isCompensatioModalOpen?.data?.data?.personalDetails
-                            ?.homeAddress?.city &&
-                          isCompensatioModalOpen?.data?.data?.personalDetails
-                            ?.homeAddress?.city != ""
-                            ? " - " +
-                              isCompensatioModalOpen?.data?.data
-                                ?.personalDetails?.homeAddress?.city
-                            : ""
-                        }`} */}
                       </span>
                     </div>
                   </div>
