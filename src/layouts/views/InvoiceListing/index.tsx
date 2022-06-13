@@ -915,6 +915,7 @@ export default function InvoiceListing() {
                   setIsTypeOpen(bool);
                   if (bool) {
                     setIsStatusOpen(false);
+                    setCustomerOpen(false)
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
@@ -962,6 +963,7 @@ export default function InvoiceListing() {
                   setIsStatusOpen(bool);
                   if (bool) {
                     setIsTypeOpen(false);
+                    setCustomerOpen(false);
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
