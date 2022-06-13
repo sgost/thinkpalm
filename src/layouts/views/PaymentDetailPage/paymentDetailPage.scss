@@ -46,18 +46,34 @@
             }
           }
 
-          .paymentDetailPageamount {
+          .payment-header-two {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            p {
-              color: #cbd4f3;
-              margin: 0px;
-              font-size: 1.111rem;
-
-              span {
-                color: $white;
+            width: 18rem;
+            justify-content: space-around;
+            .paymentDetailPageamount {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              p {
+                color: #cbd4f3;
+                margin: 0px;
                 font-size: 1.111rem;
+
+                span {
+                  color: $white;
+                  font-size: 1.111rem;
+                }
+              }
+            }
+            .header-chevron-icon {
+              height: 3rem;
+              width: 2rem;
+              display: flex;
+              align-items: end;
+              cursor: pointer;
+              svg {
+                width: 2rem !important;
+                height: 2rem;
               }
             }
           }

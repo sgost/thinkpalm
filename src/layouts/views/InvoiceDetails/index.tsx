@@ -9,7 +9,7 @@ import {
   Cards,
   Logs,
   DatePicker,
-  UserProfile,
+  AvatarHandler,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -19,8 +19,7 @@ import GetFlag, { getFlagPath } from "./getFlag";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import avatar from "./avatar.png";
-import { Scrollbars } from "react-custom-scrollbars";
-import BillsTable, { getFlagURL } from "../BillsTable";
+import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
   getUpdateCreditMemoUrl,
@@ -35,12 +34,12 @@ import {
   urls,
   getNotesUrl,
   getHeaders,
-  getDownloadFileUrl,
   getRelatedInvoiceUrl,
   getVatValue,
   getEmployeeBreakdownUrl,
   getAutoApproveCheckUrl,
   getUpdateInvoiceCalanderPoNoUrl,
+  getEmployeeCompensationData,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -75,7 +74,11 @@ export default function InvoiceDetails() {
   const [isOpen, setIsOpen] = useState(false);
   const [isVoidOpen, setIsVoidOpen] = useState(false);
   const [isVoidConfirmOptionOpen, setIsVoidConfirmOptionOpen] = useState(false);
-  const [isCompensatioModalOpen, setIsCompensatioModalOpen] = useState(false);
+  const [isCompensatioModalOpen, setIsCompensatioModalOpen] = useState<any>({
+    modalOpen: false,
+    data: [],
+  });
+
   const { id, cid, isClient } = useParams();
 
   const baseBillApi = urls.billsPerInvoice;
@@ -93,7 +96,6 @@ export default function InvoiceDetails() {
   const notesApi = getNotesUrl(id);
 
   const tempToken = localStorage.getItem("accessToken");
-  const currentOrgToken = JSON.parse(localStorage.getItem("current-org") || "");
 
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
@@ -141,6 +143,18 @@ export default function InvoiceDetails() {
   const [invoiceDate, setInvoiceDate] = useState<any>("");
   const [paymentDue, setPaymentDue] = useState<any>("");
   const [invoiceChanges, setInvoiceChanges] = useState<any>("");
+  const [compensationTableOptions, setCompensationTableOptions] = useState({
+    columns: [
+      tableSharedColumns.payItemName,
+      tableSharedColumns.amount,
+      tableSharedColumns.currency,
+      tableSharedColumns.effectiveDate,
+      tableSharedColumns.endDate,
+      tableSharedColumns.scopesName,
+      tableSharedColumns.payItemFrequencyName,
+    ],
+    data: [],
+  });
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -370,7 +384,6 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              console.log("setApiData", apiData);
               // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
@@ -944,6 +957,50 @@ export default function InvoiceDetails() {
       });
   };
 
+  /* istanbul ignore next */
+  const handleCompensationModal = (data: any) => {
+    if (data?.employeeID) {
+      const headers: any = {
+        headers: {
+          authorization: `Bearer ${tempToken}`,
+          "x-apng-base-region": "EMEA",
+          "x-apng-customer-id": cid || "",
+          "x-apng-external": isClient,
+          "x-apng-inter-region": "0",
+          "x-apng-target-region": "EMEA",
+          customerId: cid || "",
+        },
+      };
+
+      const compensationApi = getEmployeeCompensationData(data?.employeeID);
+
+      axios
+        .get(compensationApi, headers)
+        .then((res: any) => {
+          console.log("resresres", res);
+          setIsCompensatioModalOpen({ modalOpen: true, data: res.data });
+          const newData = res.data.compensation.payItems.map((item: any) => {
+            if (item.effectiveDate) {
+              item.effectiveDate = moment(item.effectiveDate).format(
+                "D MMM YYYY"
+              );
+            }
+            if (item.endDate === null) {
+              item.endDate = "";
+            }
+            return item;
+          });
+          setCompensationTableOptions({
+            ...compensationTableOptions,
+            data: newData,
+          });
+        })
+        .catch((e: any) => {
+          console.log("error", e);
+        });
+    }
+  };
+
   if (!apiData?.data && !isErr && !creditMemoData && !isErr) {
     return <p>Loading...</p>;
   }
@@ -1142,7 +1199,7 @@ export default function InvoiceDetails() {
                 className="primary-blue medium"
                 icon={{
                   color: "#fff",
-                  icon: "dollar",
+                  icon: "add",
                   size: "medium",
                 }}
                 label="Add Payment"
@@ -1575,8 +1632,8 @@ export default function InvoiceDetails() {
                         ...{ data: item.data },
                       }}
                       colSort
-                      handleRowClick={() => {
-                        setIsCompensatioModalOpen(true);
+                      handleRowClick={(rowData: any) => {
+                        handleCompensationModal(rowData);
                       }}
                     />
                     <div className="feeSummaryCalc">
@@ -1954,6 +2011,144 @@ export default function InvoiceDetails() {
                 className="primary-blue medium delete-button"
                 handleOnClick={() => handleDeleteInvoice()}
               />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      {/* istanbul ignore next */}
+      <div className="compensation-full-container">
+        <Modal
+          isOpen={isCompensatioModalOpen.modalOpen}
+          handleClose={() => {
+            setIsCompensatioModalOpen({
+              ...isCompensatioModalOpen,
+              modalOpen: false,
+            });
+          }}
+        >
+          <div className="compensation-inner-container">
+            <Cards className={`profile-header-container`}>
+              <div className="section-1">
+                <div className="img-container">
+                  <AvatarHandler
+                    // handleClick={handleAvatarClick}
+                    // initials={user.initials}
+                    source={
+                      isCompensatioModalOpen?.data?.personalDetails?.photoUrl
+                        ? isCompensatioModalOpen?.data?.personalDetails
+                            ?.photoUrl
+                        : ""
+                    }
+                    style={{
+                      "background-color": "#FFFFF",
+                    }}
+                    // iconProps={{
+                    //   width: "20",
+                    //   height: "20",
+                    //   viewBox: "-3 -10 24 36.5",
+                    // }}
+                  />
+                </div>
+                <div className="col-6">
+                  <div className="header">
+                    {isCompensatioModalOpen?.data?.fullName}
+                    {/* Camila Lopez */}
+                  </div>
+                  <div className="sub-header">
+                    {/* {user.customerContract?.jobTitle} */}
+                    {isCompensatioModalOpen?.data?.jobTitle}
+                    {/* Social Media Specialist */}
+                  </div>
+                </div>
+                <div className="col-3 info-text-container">
+                  <div className="info-text" id="work-phone">
+                    <Icon color="#fff" icon="mobile" size="large" />
+                    &nbsp;
+                    <span>
+                      {isCompensatioModalOpen?.data?.phone?.countryCode}
+                      {isCompensatioModalOpen?.data?.phone?.number}
+                      {/* {user.workPhoneCountryCode}  */}
+                      {/* {user.workPhone} */}
+                      {/* +234 123 432 1987 */}
+                    </span>
+                  </div>
+                  <div className="info-text">
+                    <Icon color="#E0E5F8" icon="email" size="large" />
+                    &nbsp;
+                    <span>
+                      {/* {user.workEmail} */}
+                      {/* c.lopez@gmail.com */}
+                      {isCompensatioModalOpen?.data?.email}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="section-2">
+                <div className="col-3"></div>
+                <div className="col-9 misc-info">
+                  <div className="col-4">
+                    <div className="misc-info__item">
+                      <Icon color="#767676" icon="pound" size="medium" />
+                      &nbsp;
+                      <span>
+                        {/* {user.contractorId} */}
+                        C928422111
+                      </span>
+                    </div>
+                    <div className="misc-info__item">
+                      <Icon color="#767676" icon="calendar" size="medium" />
+                      &nbsp;
+                      <span>
+                        {"Effective Start Date: "}
+                        {console.log(
+                          "start date",
+                          isCompensatioModalOpen?.data?.startDate
+                        )}
+                        {isCompensatioModalOpen &&
+                        isCompensatioModalOpen.data &&
+                        isCompensatioModalOpen?.data?.startDate
+                          ? moment(
+                              isCompensatioModalOpen?.data?.startDate
+                            ).format("D MMM YYYY")
+                          : ""}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4">
+                    <div className="misc-info__item misc-info__item__2">
+                      <Icon color="#767676" icon="location" size="medium" />
+                      &nbsp;
+                      <span>
+                        Australia-Sydney
+                        {isCompensatioModalOpen?.data?.location}
+                        {/* 
+                        {`${
+                          isCompensatioModalOpen?.data?.data?.personalDetails
+                            ?.homeAddress?.country || ""
+                        } ${
+                          isCompensatioModalOpen?.data?.data?.personalDetails
+                            ?.homeAddress?.city &&
+                          isCompensatioModalOpen?.data?.data?.personalDetails
+                            ?.homeAddress?.city != ""
+                            ? " - " +
+                              isCompensatioModalOpen?.data?.data
+                                ?.personalDetails?.homeAddress?.city
+                            : ""
+                        }`} */}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-4"></div>
+                </div>
+                <div className="compensation-invoice-status">
+                  <p>Active</p>
+                </div>
+              </div>
+            </Cards>
+            <div className="compensation-text">Compensation</div>
+            <div className="compensation-table">
+              <Table options={compensationTableOptions} colSort />
             </div>
           </div>
         </Modal>
