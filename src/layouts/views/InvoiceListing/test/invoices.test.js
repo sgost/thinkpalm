@@ -316,15 +316,14 @@ describe("client view", () => {
   //   const dd = await waitFor(() => screen.getAllByText(/Please Select/));
   //   fireEvent.click(dd[0]);
 
-  //   // let dr = await waitFor(() =>
-  //   //   screen.getAllByPlaceholderText(/Please Select/)
-  //   // );
-  //   // screen.debug(x);
-  //   // fireEvent.click(dr[0]);
+  //   let dr = await screen.getAllByPlaceholderText(/Please Select/)
+
+  //   screen.debug(x);
+  //   fireEvent.click(dr[0]);
   //   let date = await waitFor(() => screen.getAllByText(/15/));
-  //   // screen.debug(date);
+  //   screen.debug(date);
   //   fireEvent.click(date[2]);
-  //   // fireEvent.click(dr[1]);
+  //   fireEvent.click(dr[1]);
   //   let date2 = await waitFor(() => screen.getAllByText(/15/));
   //   fireEvent.click(date2[2]);
   // });
@@ -387,6 +386,8 @@ describe("client view", () => {
   //   // screen.logTestingPlaygroundURL();
   // });
 });
+
+
 describe("checkbox and download", () => {
   localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   test("checkbox and download are clickable in client view", async () => {
@@ -514,8 +515,8 @@ describe("Internal View Download click and checkbox Click", () => {
       </HashRouter>
     );
 
-    // const row = await screen.findByText("100329");
-    // expect(row).toBeInTheDocument();
+    const row = await screen.findByText("100329");
+    expect(row).toBeInTheDocument();
     const labelText = await screen.findAllByLabelText("");
     fireEvent.click(labelText[0]);
 

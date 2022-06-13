@@ -755,7 +755,7 @@ export default function InvoiceListing() {
 
                     let copy = [...customerData];
 
-                    copy.forEach((e, i) => {
+                    copy.forEach((_e, i) => {
                       if (i === index) {
                         if (copy[index].isSelected) {
                           copy[index] = { ...opt, isSelected: false };
@@ -767,12 +767,12 @@ export default function InvoiceListing() {
 
                     let typesValue = "";
 
-                    copy.forEach((e) => {
-                      if (e.isSelected) {
+                    copy.forEach((item) => {
+                      if (item.isSelected) {
                         if (typesValue) {
-                          typesValue += "," + e.value.toString();
+                          typesValue += "," + item.value.toString();
                         } else {
-                          typesValue = e.value.toString();
+                          typesValue = item.value.toString();
                         }
                       }
                     });
@@ -922,7 +922,7 @@ export default function InvoiceListing() {
 
                   let copy = [...types];
 
-                  copy.forEach((e, i) => {
+                  copy.forEach((_item, i) => {
                     if (i === index) {
                       if (copy[index].isSelected) {
                         copy[index] = { ...opt, isSelected: false };
@@ -934,7 +934,7 @@ export default function InvoiceListing() {
 
                   let typesValue = "";
 
-                  copy.forEach((e) => {
+                  copy.forEach((e: any) => {
                     if (e.isSelected) {
                       if (typesValue) {
                         typesValue += "," + e.value.toString();
