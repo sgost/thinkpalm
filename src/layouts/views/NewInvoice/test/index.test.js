@@ -28,7 +28,6 @@ import {
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
 import InvoicePreviewPop from "../InvoicePreviewPop";
-import { mockLogsdata } from "../../InvoiceDetails/mockData";
 
 localStorage.setItem(
   "accessToken",

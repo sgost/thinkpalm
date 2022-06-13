@@ -220,7 +220,6 @@ export default function CreditMemoSummary(props: any) {
         headers: headers,
       })
       .then((resp) => {
-        console.log('resp', resp)
         if ((resp.status == 200 || resp.status == 201) && resp.data) {
           setAddSectionCheck(false);
           setEditCheck(creditMemoData.invoiceItems.length + 1);
