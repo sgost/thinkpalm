@@ -373,190 +373,6 @@ stages:
                 echo '##vso[task.setvariable variable=azureCndEndpointHost]'$AZURE_CDN_ENDPOINT_HOSTNAME
               addSpnToEnvironment: true
             displayName: 'upload to Azure Storage static website hosting and purge Azure CDN endpoint'
-- stage: Build_UAT
-  variables:
-  - name: system.debug
-    value: true
-  - name: APNG_REGION
-    value: EU
-  - name: ATLAS_REGION
-    value: eu
-  - name: ATLAS_ENVIRONMENT
-    value: uat
-  - name: ENV_FILE
-    value: env.devops
-  jobs:
-  - job: 'Build'
-    #variables:
-     # - group: ATLAS-UAT-EU
-    pool:
-      name: atlas-agent-uat
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: 14.x
-      displayName: 'Install Node '
-    - task: SonarCloudPrepare@1
-      condition: and(succeeded(), eq('UAT', 'UAT'))
-      inputs:
-        SonarCloud: 'SonarCloud'
-        organization: 'technology-internal'
-        scannerMode: 'CLI'
-        configMode: 'manual'
-        cliProjectKey: 'Technology-Internal_$(Build.Repository.Name)'
-        cliProjectName: '$(Build.Repository.Name)'
-        cliSources: '.'
-        extraProperties: |
-          # Source
-          sonar.sources=src
-          # Where to find tests file, also src
-          sonar.tests=src
-          # But we get specific here
-          # We don't need to exclude it in sonar.sources because it is automatically taken care of
-          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js,src/layouts/views/NewInvoice/**/mockData.js
-          sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
-          # Path to report coverage and unit tests
-          sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
-          sonar.testExecutionReportPaths.reportsPath=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
-          # Log
-          sonar.log.level=DEBUG
-          sonar.verbose=true
-    - task: npmAuthenticate@0
-      condition: eq('True', 'true')
-      inputs:
-        workingFile: '.npmrc'
-      displayName: Connecting to NPM Feed
-    - task: CmdLine@2
-      displayName: 'yarn install and build'
-      condition: and(succeeded(), eq('yarn', 'yarn'))
-      inputs:
-        script: |
-          #envsubst < $(ENV_FILE) > src/environments/environment.ts
-          #cat src/environments/environment.ts
-          npm i -g yarn
-          yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
-          yarn install
-          yarn build
-    - task: CmdLine@2
-      displayName: 'FrontEndApp Unit Test'
-      condition: and(succeeded(), eq('yarn', 'yarn'), eq('true', 'true'))
-      inputs:
-        script: |
-          yarn test
-    - task: PublishTestResults@2
-      condition: and(succeeded(), eq('true', 'true'))
-      inputs:
-        testResultsFormat: 'JUnit'
-        testResultsFiles: '**/TEST-RESULTS.xml'
-      displayName: Publish Unit Test Results
-    - task: PublishCodeCoverageResults@1
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
-
-    - task: SonarCloudAnalyze@1
-      condition: and(succeeded(), eq('UAT', 'UAT'))
-    - task: SonarCloudPublish@1
-      condition: and(succeeded(), eq('UAT', 'UAT'))
-      inputs:
-        pollingTimeoutSec: '300'
-    - task: CopyFiles@2
-      inputs:
-        Contents: 'dist/**'
-        TargetFolder: $(Build.ArtifactStagingDirectory)
-        cleanTargetFolder: true
-      displayName: 'Copy dist folder to Artifacts'
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Build Artifacts'
-      inputs:
-        PathtoPublish: $(Build.ArtifactStagingDirectory)
-        artifactName: UAT
-    - task: sonarcloud-buildbreaker@2
-      inputs:
-        SonarCloud: 'SonarCloud'
-        organization: 'technology-internal'    
-        
-- stage: Deploy_UAT
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
-  variables:
-  - name: system.debug
-    value: true
-  jobs:
-  - deployment: Deploy
-    pool:
-      name: atlas-agent-uat
-    variables:
-    - name: SERVICE_NAME
-      value: $(Build.Repository.Name)
-    - name: APNG_ENVIRONMENT
-      value: UAT
-    - name: APNG_REGION
-      value: eu
-    - name: ATLAS_REGION
-      value: eu
-    - name: ATLAS_ENVIRONMENT
-      value: uat
-    environment:
-      name: ATLAS_FRONTEND_UAT
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: sonarcloud-buildbreaker@2
-            inputs:
-              SonarCloud: 'SonarCloud'
-              organization: 'technology-internal'    
-          - task: 30f35852-3f7e-4c0c-9a88-e127b4f97211@1
-            condition: false
-            inputs:
-              alias: none
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifactName: UAT
-              downloadPath: $(Pipeline.Workspace)/UAT
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'APNG Azure subscription (54fe0f26-b221-437b-b887-0b417725f038)'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                set -xe
-                if [ $(SERVICE_NAME) = "Atlas-Payments-UI" ]; then
-                SERVICE_NAME='pui'
-                elif [ $(SERVICE_NAME) = "InvoiceWebApp" ]; then
-                SERVICE_NAME='invoice'
-                fi
-                ######
-                azureResourceGroup="egsatl-$(APNG_ENVIRONMENT)-$(APNG_REGION)-rg"
-                azureResourceGroup=$(echo "$azureResourceGroup" | tr '[:upper:]' '[:lower:]')
-                azureCdnName="egsatl-$(APNG_ENVIRONMENT)-$(APNG_REGION)-$SERVICE_NAME-cdn-endpoint"
-                azureCdnName=$(echo "$azureCdnName" | tr '[:upper:]' '[:lower:]')
-                azureCdnprofileName="egsatl-$(APNG_ENVIRONMENT)-$(APNG_REGION)-cdn-profile"
-                azureCdnprofileName=$(echo "$azureCdnprofileName" | tr '[:upper:]' '[:lower:]')
-                azureStorageAccountName="egsatl$(APNG_ENVIRONMENT)$(APNG_REGION)$SERVICE_NAME"
-                azureStorageAccountName=$(echo "$azureStorageAccountName" | tr '[:upper:]' '[:lower:]')
-                ######
-                az storage blob delete-batch --source "\$web" --account-name $azureStorageAccountName
-                ######
-                # upload content to container versioned folder
-                cd $(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist
-                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName
-                # for d in $(find . -type d) ; do
-                # echo "$d"
-                # az storage blob upload-batch -s "$d" --destination "\$web\$d" --account-name $azureStorageAccountName
-                # done
-                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.html" --content-type "text/html"
-                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.js" --content-type "application/javascript"
-                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.js.map" --content-type "application/octet-stream"
-                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.json" --content-type "application/json"
-                # target new version
-                az cdn endpoint purge --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --no-wait --name $azureCdnName --content-paths '/*'
-                # ##az cdn endpoint update --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --name $azureCdnName --origin-path '/$(Build.BuildID)'
-                # AZURE_CDN_ENDPOINT_HOSTNAME=$(az cdn endpoint show --resource-group $azureResourceGroup --name $azureCdnName --profile-name $azureCdnprofileName --query hostName -o tsv)
-                echo "Azure CDN endpoint host ${AZURE_CDN_ENDPOINT_HOSTNAME}"
-                echo '##vso[task.setvariable variable=azureCndEndpointHost]'$AZURE_CDN_ENDPOINT_HOSTNAME
-              addSpnToEnvironment: true
-            displayName: 'upload to Azure Storage static website hosting and purge Azure CDN endpoint'
 
 - stage: Build_DEMO
   condition: and(succeeded(),or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/demoBugFixes')))
@@ -743,3 +559,189 @@ stages:
                 echo '##vso[task.setvariable variable=azureCndEndpointHost]'$AZURE_CDN_ENDPOINT_HOSTNAME
               addSpnToEnvironment: true
             displayName: 'upload to Azure Storage static website hosting and purge Azure CDN endpoint'
+
+- stage: Build_UAT
+  variables:
+  - name: system.debug
+    value: true
+  - name: APNG_REGION
+    value: EU
+  - name: ATLAS_REGION
+    value: eu
+  - name: ATLAS_ENVIRONMENT
+    value: uat
+  - name: ENV_FILE
+    value: env.devops
+  jobs:
+  - job: 'Build'
+    #variables:
+     # - group: ATLAS-UAT-EU
+    pool:
+      name: atlas-agent-uat
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: 14.x
+      displayName: 'Install Node '
+    - task: SonarCloudPrepare@1
+      condition: and(succeeded(), eq('UAT', 'UAT'))
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'technology-internal'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'Technology-Internal_$(Build.Repository.Name)'
+        cliProjectName: '$(Build.Repository.Name)'
+        cliSources: '.'
+        extraProperties: |
+          # Source
+          sonar.sources=src
+          # Where to find tests file, also src
+          sonar.tests=src
+          # But we get specific here
+          # We don't need to exclude it in sonar.sources because it is automatically taken care of
+          sonar.exclusions=src/layouts/views/InvoiceDetails/**/mockData.js,src/layouts/views/InvoiceDetails/**/mockdata.js,src/layouts/views/NewInvoice/**/mockData.js
+          sonar.test.inclusions=src/**/*.spec.js,src/**/*.spec.jsx,src/**/*.test.js,src/**/*.test.jsx
+          # Path to report coverage and unit tests
+          sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
+          sonar.testExecutionReportPaths.reportsPath=$(System.DefaultWorkingDirectory)/code-coverage/lcov.info
+          # Log
+          sonar.log.level=DEBUG
+          sonar.verbose=true
+    - task: npmAuthenticate@0
+      condition: eq('True', 'true')
+      inputs:
+        workingFile: '.npmrc'
+      displayName: Connecting to NPM Feed
+    - task: CmdLine@2
+      displayName: 'yarn install and build'
+      condition: and(succeeded(), eq('yarn', 'yarn'))
+      inputs:
+        script: |
+          #envsubst < $(ENV_FILE) > src/environments/environment.ts
+          #cat src/environments/environment.ts
+          npm i -g yarn
+          yarn config set registry https://pkgs.dev.azure.com/Technology-Internal/_packaging/AtlasUIKitLib/npm/registry/
+          yarn install
+          yarn build
+    - task: CmdLine@2
+      displayName: 'FrontEndApp Unit Test'
+      condition: and(succeeded(), eq('yarn', 'yarn'), eq('true', 'true'))
+      inputs:
+        script: |
+          yarn test
+    - task: PublishTestResults@2
+      condition: and(succeeded(), eq('true', 'true'))
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-RESULTS.xml'
+      displayName: Publish Unit Test Results
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
+
+    - task: SonarCloudAnalyze@1
+      condition: and(succeeded(), eq('UAT', 'UAT'))
+    - task: SonarCloudPublish@1
+      condition: and(succeeded(), eq('UAT', 'UAT'))
+      inputs:
+        pollingTimeoutSec: '300'
+    - task: CopyFiles@2
+      inputs:
+        Contents: 'dist/**'
+        TargetFolder: $(Build.ArtifactStagingDirectory)
+        cleanTargetFolder: true
+      displayName: 'Copy dist folder to Artifacts'
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Build Artifacts'
+      inputs:
+        PathtoPublish: $(Build.ArtifactStagingDirectory)
+        artifactName: UAT
+    - task: sonarcloud-buildbreaker@2
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'technology-internal'    
+        
+- stage: Deploy_UAT
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  variables:
+  - name: system.debug
+    value: true
+  jobs:
+  - deployment: Deploy
+    pool:
+      name: atlas-agent-uat
+    variables:
+    - name: SERVICE_NAME
+      value: $(Build.Repository.Name)
+    - name: APNG_ENVIRONMENT
+      value: UAT
+    - name: APNG_REGION
+      value: eu
+    - name: ATLAS_REGION
+      value: eu
+    - name: ATLAS_ENVIRONMENT
+      value: uat
+    environment:
+      name: ATLAS_FRONTEND_UAT
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: sonarcloud-buildbreaker@2
+            inputs:
+              SonarCloud: 'SonarCloud'
+              organization: 'technology-internal'    
+          - task: 30f35852-3f7e-4c0c-9a88-e127b4f97211@1
+            condition: false
+            inputs:
+              alias: none
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifactName: UAT
+              downloadPath: $(Pipeline.Workspace)/UAT
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'APNG Azure subscription (54fe0f26-b221-437b-b887-0b417725f038)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                set -xe
+                if [ $(SERVICE_NAME) = "Atlas-Payments-UI" ]; then
+                SERVICE_NAME='pui'
+                elif [ $(SERVICE_NAME) = "InvoiceWebApp" ]; then
+                SERVICE_NAME='invoice'
+                fi
+                ######
+                azureResourceGroup="egsatl-$(APNG_ENVIRONMENT)-$(APNG_REGION)-rg"
+                azureResourceGroup=$(echo "$azureResourceGroup" | tr '[:upper:]' '[:lower:]')
+                azureCdnName="egsatl-$(APNG_ENVIRONMENT)-$(APNG_REGION)-$SERVICE_NAME-cdn-endpoint"
+                azureCdnName=$(echo "$azureCdnName" | tr '[:upper:]' '[:lower:]')
+                azureCdnprofileName="egsatl-$(APNG_ENVIRONMENT)-$(APNG_REGION)-cdn-profile"
+                azureCdnprofileName=$(echo "$azureCdnprofileName" | tr '[:upper:]' '[:lower:]')
+                azureStorageAccountName="egsatl$(APNG_ENVIRONMENT)$(APNG_REGION)$SERVICE_NAME"
+                azureStorageAccountName=$(echo "$azureStorageAccountName" | tr '[:upper:]' '[:lower:]')
+                ######
+                az storage blob delete-batch --source "\$web" --account-name $azureStorageAccountName
+                ######
+                # upload content to container versioned folder
+                cd $(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist
+                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName
+                # for d in $(find . -type d) ; do
+                # echo "$d"
+                # az storage blob upload-batch -s "$d" --destination "\$web\$d" --account-name $azureStorageAccountName
+                # done
+                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.html" --content-type "text/html"
+                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.js" --content-type "application/javascript"
+                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.js.map" --content-type "application/octet-stream"
+                az storage blob upload-batch -s "$(Pipeline.Workspace)/$(APNG_ENVIRONMENT)/dist" --destination "\$web" --account-name $azureStorageAccountName --pattern "*.json" --content-type "application/json"
+                # target new version
+                az cdn endpoint purge --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --no-wait --name $azureCdnName --content-paths '/*'
+                # ##az cdn endpoint update --resource-group $azureResourceGroup --profile-name $azureCdnprofileName --name $azureCdnName --origin-path '/$(Build.BuildID)'
+                # AZURE_CDN_ENDPOINT_HOSTNAME=$(az cdn endpoint show --resource-group $azureResourceGroup --name $azureCdnName --profile-name $azureCdnprofileName --query hostName -o tsv)
+                echo "Azure CDN endpoint host ${AZURE_CDN_ENDPOINT_HOSTNAME}"
+                echo '##vso[task.setvariable variable=azureCndEndpointHost]'$AZURE_CDN_ENDPOINT_HOSTNAME
+              addSpnToEnvironment: true
+            displayName: 'upload to Azure Storage static website hosting and purge Azure CDN endpoint'
+
