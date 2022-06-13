@@ -144,37 +144,13 @@ const NewInvoice = () => {
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
     columns: [
-      {
-        header: "Pay Item",
-        isDefault: true,
-        key: "payItemName",
-      },
-      {
-        header: "Amount",
-        isDefault: true,
-        key: "amount",
-      },
+      tableSharedColumns.payItemName,
+      tableSharedColumns.amount,
       tableSharedColumns.currencyCode,
-      {
-        header: "Effective Date",
-        isDefault: true,
-        key: "effectiveDate",
-      },
-      {
-        header: "End Date",
-        isDefault: true,
-        key: "endDate",
-      },
-      {
-        header: "Scope",
-        isDefault: true,
-        key: "scopesName",
-      },
-      {
-        header: "Frequency",
-        isDefault: true,
-        key: "payItemFrequencyName",
-      },
+      tableSharedColumns.effectiveDate,
+      tableSharedColumns.endDate,
+      tableSharedColumns.scopesName,
+      tableSharedColumns.payItemFrequencyName,
     ],
     data: [],
   });
@@ -493,8 +469,6 @@ const NewInvoice = () => {
     ) {
       setStepsCount(4);
     }
-
-
   };
 
   useEffect(() => {

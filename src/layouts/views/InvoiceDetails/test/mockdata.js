@@ -10540,7 +10540,257 @@ export const mockapidata = {
         "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
         "id": 40136
     }
-]
+],
+getEmployeeCompensationDatares: {
+    "atlasID": null,
+    "employeeID": "1000085",
+    "state": null,
+    "fullName": "Smriti Saini",
+    "jobTitle": "",
+    "phone": {
+        "countryCode": "",
+        "number": ""
+    },
+    "email": "smriti@atlas.com",
+    "location": "Asia & Pacific-India",
+    "locationName": "Asia & Pacific",
+    "managerName": "",
+    "startDate": "2022-06-10T06:01:51.122Z",
+    "personalDetails": {
+        "linkedinUrl": null,
+        "website": null,
+        "workExperience": null,
+        "firstName": "Smriti",
+        "additionalGivenName": "",
+        "lastName": "Saini",
+        "preferredName": null,
+        "suffix": null,
+        "title": null,
+        "taxId": "",
+        "gender": null,
+        "birthday": null,
+        "maritalStatus": null,
+        "homeAddress": {
+            "street1": "",
+            "street2": "",
+            "city": "",
+            "state": "",
+            "postalCode": "",
+            "country": "India",
+            "countryCode": null,
+            "countryID": "a840aa13-04b8-4ce4-bc03-c6ae3e60d765"
+        },
+        "isDualCitizen": null,
+        "citizenship": [],
+        "photoUrl": null,
+        "wseClassification": 0
+    },
+    "jobDetails": {
+        "jobTitle": "",
+        "reportsTo": {
+            "employeeId": null,
+            "name": null,
+            "jobTitle": "",
+            "email": "",
+            "probationPeriod": 0,
+            "probationStartDate": "0001-01-01T00:00:00Z",
+            "probationEndDate": "0001-01-01T00:00:00Z"
+        },
+        "employmentType": 0,
+        "employmentDetails": [
+            {
+                "jobTitle": "",
+                "employmentStatus": 0,
+                "reportsTo": {
+                    "employeeId": null,
+                    "name": null,
+                    "jobTitle": "",
+                    "email": "",
+                    "probationPeriod": 0,
+                    "probationStartDate": "0001-01-01T00:00:00Z",
+                    "probationEndDate": "0001-01-01T00:00:00Z"
+                },
+                "effectiveStartDate": "2022-06-10T06:01:40.882Z",
+                "effectiveEndDate": null,
+                "employmentType": 0,
+                "workingHoursPerWeek": 0,
+                "salary": null,
+                "employmentTerm": null
+            }
+        ],
+        "employmentStatusDetails": [
+            {
+                "effectiveStartDate": "2022-06-10T06:01:51.122Z",
+                "effectiveEndDate": null,
+                "status": 5,
+                "statusChangeReason": 0,
+                "rehireEligibility": 0,
+                "comments": "",
+                "inactiveType": 0,
+                "createDate": "0001-01-01T00:00:00Z"
+            },
+            {
+                "effectiveStartDate": "2022-06-10T06:01:12.677Z",
+                "effectiveEndDate": "2022-06-17T05:01:40.979Z",
+                "status": 3,
+                "statusChangeReason": 0,
+                "rehireEligibility": 0,
+                "comments": null,
+                "inactiveType": 0,
+                "createDate": "2022-06-10T06:01:12.677Z"
+            },
+            {
+                "effectiveStartDate": "2022-06-10T06:00:42.755Z",
+                "effectiveEndDate": "2022-06-17T05:01:07.711Z",
+                "status": 2,
+                "statusChangeReason": 0,
+                "rehireEligibility": 0,
+                "comments": null,
+                "inactiveType": 0,
+                "createDate": "2022-06-10T06:00:42.755Z"
+            }
+        ],
+        "department": {
+            "name": "",
+            "email": ""
+        },
+        "division": "",
+        "workAddress": {
+            "street1": "",
+            "street2": "",
+            "city": "",
+            "state": "",
+            "postalCode": "",
+            "country": "India",
+            "countryCode": null,
+            "countryID": "a840aa13-04b8-4ce4-bc03-c6ae3e60d765"
+        },
+        "clientId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "customerDetails": {
+            "id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "name": "DSM Nutritional Products AG",
+            "region": null,
+            "statusLabel": null
+        },
+        "egsStartDate": null,
+        "targetStartDate": null,
+        "termEndDate": null,
+        "isProbationApplicable": null,
+        "probationPeriodType": 0,
+        "probationPeriod": 0,
+        "probationEndDate": null,
+        "retirementAge": 0,
+        "jobDescription": "",
+        "jobDescriptionUrl": null,
+        "compensationDetails": {
+            "currency": "356",
+            "payType": 1,
+            "paymentSchedule": 0,
+            "installmentsPaidAnnually": 0,
+            "amount": 0,
+            "isAdditionalMonthlyPayApplicable": false,
+            "noOfAdditionalMonthlyPayments": 0,
+            "isOvertimeApplicable": null,
+            "totalHours": 0
+        },
+        "isNonCompeteRequired": null,
+        "isCollectiveAgreementRequired": null,
+        "seniorityDate": null,
+        "employerNoticePeriod": 0,
+        "employeeNoticePeriod": 0,
+        "employerNoticePeriodType": 0,
+        "employeeNoticePeriodType": 0,
+        "employmentTerm": 2,
+        "workingHrsPerWeek": 0,
+        "region": "string",
+        "countryName": "India",
+        "countryID": "a840aa13-04b8-4ce4-bc03-c6ae3e60d765",
+        "workSameAsHomeAddress": false
+    },
+    "contactDetails": {
+        "officeLandline": {
+            "countryCode": "",
+            "number": "",
+            "extension": ""
+        },
+        "homeLandline": {
+            "countryCode": "",
+            "number": "",
+            "extension": ""
+        },
+        "homeMobile": {
+            "countryCode": "",
+            "number": ""
+        },
+        "officeEmail": "",
+        "homeEmail": "smriti@atlas.com"
+    },
+    "employmentStatus": 2,
+    "bankingDetails": {
+        "countryCode": "",
+        "currencyCode": "",
+        "accountHolderDetail": null,
+        "bankDetails": null,
+        "bankInformation": "{ }"
+    },
+    "educationDetails": null,
+    "emergencyContact": null,
+    "visaMobility": null,
+    "clientHRAdditionalNotes": null,
+    "timeOff": null,
+    "requiredDocumentTypeIds": [],
+    "onboardingState": 6,
+    "compensation": {
+        "payItems": [
+            {
+                "payItemId": 2,
+                "payItemName": "Admin Cost NOT ADMIN FEE",
+                "employeePayItemId": "9b465042-4d4c-46b1-93a7-9e62c3acc7f6",
+                "payItemFrequencyId": 2,
+                "payItemFrequencyName": "Recurring",
+                "effectiveDate": "2022-06-08T00:00:00Z",
+                "endDate": null,
+                "amount": 765432,
+                "currency": "INR",
+                "isNotTaxable": false,
+                "scopes": [
+                    1,
+                    2
+                ],
+                "scopesName": "AR,AP",
+                "createDate": "2022-06-10T06:03:20.289Z",
+                "comments": "",
+                "blocked": false
+            },
+            {
+                "payItemId": 8,
+                "payItemName": "Allowance Education ",
+                "employeePayItemId": "5160a749-f509-4c1c-8f34-6781610d940e",
+                "payItemFrequencyId": 2,
+                "payItemFrequencyName": "Recurring",
+                "effectiveDate": "2022-06-02T00:00:00Z",
+                "endDate": null,
+                "amount": 7843674389367,
+                "currency": "INR",
+                "isNotTaxable": false,
+                "scopes": [
+                    1,
+                    3
+                ],
+                "scopesName": "AR,Payroll",
+                "createDate": "2022-06-10T06:03:08.677Z",
+                "comments": "",
+                "blocked": false
+            }
+        ],
+        "payslips": [],
+        "invoiceGenerationDate": null,
+        "blocked": false,
+        "blockedScopes": null,
+        "effectiveDate": null
+    },
+    "documents": null
+}
 };
 export const mockCreditMemoData = {
   "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",

@@ -7,10 +7,7 @@ import {
 } from "@testing-library/react";
 import {
   HashRouter,
-  Route,
-  Routes,
   useParams,
-  MemoryRouter,
   useLocation,
 } from "react-router-dom";
 import InvoiceDetails from "..";
@@ -18,7 +15,6 @@ import InvoiceDetails from "..";
 import MockAdapter from "axios-mock-adapter";
 import { mockapidata } from "./mockdata";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
 import {
@@ -33,6 +29,7 @@ import {
   getExcelUrl,
   getNotesUrl,
   urls,
+  getEmployeeCompensationData,
 } from "../../../../urls/urls";
 // describe("Invoice detail", () => {
 //   let mock;
@@ -172,6 +169,7 @@ const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
 const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
+const employeeId = "1000085"
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
