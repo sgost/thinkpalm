@@ -1221,7 +1221,7 @@ export default function InvoiceDetails() {
                       customerLocation: topPanel.location || apiData?.data?.invoice?.customerLocation,
                       currencyId: creditMemoData?.currencyId || apiData?.data?.invoice?.currencyId,
                       qbInvoiceNo: creditMemoData?.qbInvoiceNo ||apiData?.data?.invoice?.qbInvoiceNo,
-                      invoiceNo: apiData?.data?.invoice?.invoiceNo || apiData?.data?.invoice?.invoiceNo,
+                      invoiceNo: creditMemoData?.invoiceNo || apiData?.data?.invoice?.invoiceNo,
                       status: 4,
                       statusLabel: "Approved",
                       transactionType: 2,

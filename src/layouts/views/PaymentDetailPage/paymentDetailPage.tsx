@@ -10,8 +10,6 @@ import {
 import { useNavigate, useLocation } from "react-router-dom";
 import "./paymentDetailPage.scss";
 import NotesWidget from "../../../components/Notes";
-import FileUploadWidget from "../../../components/FileUpload";
-import Input from "../../../components/Input/input";
 import { urls, getHeaders, subscriptionLookup } from "../../../urls/urls";
 import axios from "axios";
 
