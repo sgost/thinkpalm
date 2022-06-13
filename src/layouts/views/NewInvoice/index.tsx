@@ -148,6 +148,7 @@ const NewInvoice = () => {
   const [currencyOptions, setCurrencyOptions] = useState<any>([]);
   const [qbIdOptions, setQbIdOptions] = useState<any>([]);
   const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
+  const [paymentMethodOptions, setPaymentMethodOptions] = useState<any>([]);
 
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
@@ -271,6 +272,8 @@ const NewInvoice = () => {
     setQbIdOptions,
     paymentTermsOptions,
     setPaymentTermsOptions,
+    paymentMethodOptions,
+    setPaymentMethodOptions,
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -364,12 +367,21 @@ const NewInvoice = () => {
   };
 
   const disableFunForStepOneCreditMemo = () => {
-    if (stepsCount == 1) {
+    if (stepsCount == 1 && stepperOneData.type !== "Credit Memo") {
       return !(
         stepperOneData?.customer !== "" &&
         stepperOneData?.type !== "" &&
-        invoiceDate !== ""
+        invoiceDate !== "" &&
+        invoicerOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        receivableAccountOptions.findIndex(
+          (e: any) => e.isSelected === true
+        ) !== -1 &&
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        paymentMethodOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
+    }
+    if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
+      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
     }
     if (stepsCount == 2) {
       let condition: any = [];
@@ -527,9 +539,19 @@ const NewInvoice = () => {
       balance += parseFloat(item.amount) * parseFloat(item.quantity);
     });
 
+    const payTerms =
+      stepperOneData.type === "Credit Memo"
+        ? 7
+        : parseInt(
+            paymentTermsOptions
+              .find((e: any) => e.isSelected)
+              ?.text.split(" ")[0]
+          );
+
     // const currDate = new Date();
     const dueDate = new Date();
-    dueDate.setDate(invoiceDate.getDate() + 7);
+    // dueDate.setDate(invoiceDate.getDate() + 7);
+    dueDate.setDate(invoiceDate.getDate() + payTerms);
     dueDate.setMonth(invoiceDate.getMonth());
     dueDate.setFullYear(invoiceDate.getFullYear());
 
@@ -562,7 +584,7 @@ const NewInvoice = () => {
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
       CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
-      CurrencyId: currencyId?.currency?.id, // backend will provide it
+      // CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
       TransactionType: transactionType, //
       // CreatedDate: currDate, // ? current date
@@ -580,6 +602,13 @@ const NewInvoice = () => {
       InvoiceNotes: [],
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
+      PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
+      InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
+      BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
+      CurrencyId:
+        stepperOneData.type === "Credit Memo"
+          ? currencyId?.currency?.id
+          : currencyOptions.find((e: any) => e.isSelected)?.value,
     };
 
     if (!isInvoiceCreated) {
@@ -653,10 +682,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                    ? "step2-right-panel"
-                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                      ? "step2-credit-memo"
-                      : "",
+                  ? "step2-right-panel"
+                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                  ? "step2-credit-memo"
+                  : "",
             },
           }}
           leftPanel={
@@ -668,8 +697,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                    ? creditMemoSteps
-                    : stepsInitial
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />

@@ -34,6 +34,8 @@ const NewInvoiceCreation = ({
   setQbIdOptions,
   paymentTermsOptions,
   setPaymentTermsOptions,
+  paymentMethodOptions,
+  setPaymentMethodOptions,
 }: any) => {
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
@@ -47,6 +49,7 @@ const NewInvoiceCreation = ({
   const [isCurrency, setIsCurrency] = useState(false);
   const [isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
+  const [isPaymentMethod, setIsPaymentMethod] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -66,7 +69,55 @@ const NewInvoiceCreation = ({
             };
           })
         );
-      });
+        setPaymentMethodOptions(
+          res.data.paymentMethods.map((pm: any) => {
+            return {
+              ...pm,
+              isSelected: false,
+              label: pm.text,
+              value: pm.value,
+            };
+          })
+        );
+
+        setCurrencyOptions(
+          res.data.billingCurrencies.map((bc: any) => {
+            return {
+              ...bc,
+              isSelected: false,
+              label: bc.text,
+              value: bc.value,
+            };
+          })
+        );
+      })
+      .catch((err: any) => console.log(err));
+
+    axios
+      .get(urls.lookup, {
+        headers: getHeaders(token, stepperOneData.customerId, "false"),
+      })
+      .then((res: any) => {
+        setPaymentTermsOptions(
+          res.data.otherDueTypes.map((od: any) => {
+            return {
+              ...od,
+              isSelected: false,
+              label: od.text,
+              value: od.value,
+            };
+          })
+        );
+      })
+      .catch((err: any) => console.log(err));
+
+    setQbIdOptions([
+      {
+        isSelected: false,
+        label: "test 1",
+        value: "test1",
+      },
+    ]);
   }, []);
 
   const preparedCustomerData = (data: any) => {
@@ -334,165 +385,166 @@ const NewInvoiceCreation = ({
             )}
 
             <div className="dropdownRow">
-              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
-                <div className="dropdown">
-                  <Dropdown
-                    isDisabled={!stepperOneData?.type}
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        invoicerOptions,
-                        setInvoicerOptions,
-                        setIsInvoicer
-                      );
+              {stepperOneData?.type &&
+                stepperOneData?.type !== "Payroll" &&
+                stepperOneData?.type !== "Credit Memo" && (
+                  <div className="dropdown">
+                    <Dropdown
+                      isDisabled={!stepperOneData?.type}
+                      handleDropOptionClick={(item: any) => {
+                        handleDropOption(
+                          item,
+                          invoicerOptions,
+                          setInvoicerOptions,
+                          setIsInvoicer
+                        );
 
-                      let tempRecAccOptions: Array<any> = [];
-                      item.receivableAccounts?.forEach((recAcc: any) => {
-                        tempRecAccOptions.push({
-                          ...recAcc,
-                          isSelected: false,
-                          label: recAcc.text,
-                          value: recAcc.value,
+                        let tempRecAccOptions: Array<any> = [];
+                        item.receivableAccounts?.forEach((recAcc: any) => {
+                          tempRecAccOptions.push({
+                            ...recAcc,
+                            isSelected: false,
+                            label: recAcc.text,
+                            value: recAcc.value,
+                          });
                         });
-                      });
-                      setReceivableAccountOptions(tempRecAccOptions);
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      setIsInvoicer(b);
-                    }}
-                    isOpen={isInvoicer}
-                    options={invoicerOptions}
-                    title={`Invoicer`}
-                    search
-                  />
-                </div>
-              )}
+                        setReceivableAccountOptions(tempRecAccOptions);
+                      }}
+                      handleDropdownClick={(b: boolean) => {
+                        setIsInvoicer(b);
+                      }}
+                      isOpen={isInvoicer}
+                      options={invoicerOptions}
+                      title={`Invoicer`}
+                      search
+                    />
+                  </div>
+                )}
 
-              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
-                <div className="dropdown">
-                  <Dropdown
-                    isDisabled={!stepperOneData?.type}
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        receivableAccountOptions,
-                        setReceivableAccountOptions,
-                        setIsRecAcc
-                      );
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      setIsRecAcc(b);
-                    }}
-                    isOpen={isRecAcc}
-                    options={receivableAccountOptions}
-                    title={`Receivable Account`}
-                    search
-                  />
-                </div>
-              )}
+              {stepperOneData?.type &&
+                stepperOneData?.type !== "Payroll" &&
+                stepperOneData?.type !== "Credit Memo" && (
+                  <div className="dropdown">
+                    <Dropdown
+                      isDisabled={!stepperOneData?.type}
+                      handleDropOptionClick={(item: any) => {
+                        handleDropOption(
+                          item,
+                          receivableAccountOptions,
+                          setReceivableAccountOptions,
+                          setIsRecAcc
+                        );
+                      }}
+                      handleDropdownClick={(b: boolean) => {
+                        setIsRecAcc(b);
+                      }}
+                      isOpen={isRecAcc}
+                      options={receivableAccountOptions}
+                      title={`Receivable Account`}
+                      search
+                    />
+                  </div>
+                )}
             </div>
 
             <div className="dropdownRow">
-              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
-                <div className="lastDropdown">
-                  <Dropdown
-                    isDisabled={!stepperOneData?.type}
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        CustomerOptions,
-                        setCustomerOption,
-                        setIsCustomerOpen
-                      );
-                      setCountryOptions([]);
+              {stepperOneData?.type &&
+                stepperOneData?.type !== "Payroll" &&
+                stepperOneData?.type !== "Credit Memo" && (
+                  <div className="lastDropdown">
+                    <Dropdown
+                      isDisabled={!stepperOneData?.type}
+                      handleDropOptionClick={(item: any) => {
+                        handleDropOption(
+                          item,
+                          currencyOptions,
+                          setCurrencyOptions,
+                          setIsCurrency
+                        );
+                      }}
+                      handleDropdownClick={(b: boolean) => {
+                        setIsCurrency(b);
+                      }}
+                      isOpen={isCurrency}
+                      options={currencyOptions}
+                      title={`Currency`}
+                      search
+                    />
+                  </div>
+                )}
 
-                      setStepperOneData({
-                        ...stepperOneData,
-                        customer: item.label,
-                        customerId: item.value,
-                        countryId: "",
-                        country: "",
-                      });
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      setIsCurrency(b);
-                      setIstypeOpen(false);
-                      setIsCountryOpen(false);
-                      setIsMonthOpen(false);
-                      setIsYearOpen(false);
-                    }}
-                    isOpen={isCurrency}
-                    options={CustomerOptions}
-                    title={`Currency`}
-                    search
-                  />
-                </div>
-              )}
-
-              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
-                <div className="lastDropdown">
-                  <Dropdown
-                    isDisabled={!stepperOneData?.type}
-                    handleDropOptionClick={(item: any) => {
-                      handleDropOption(
-                        item,
-                        CustomerOptions,
-                        setCustomerOption,
-                        setIsCustomerOpen
-                      );
-                      setCountryOptions([]);
-
-                      setStepperOneData({
-                        ...stepperOneData,
-                        customer: item.label,
-                        customerId: item.value,
-                        countryId: "",
-                        country: "",
-                      });
-                    }}
-                    handleDropdownClick={(b: boolean) => {
-                      setIsQbId(b);
-                    }}
-                    isOpen={isQbId}
-                    options={CustomerOptions}
-                    title={`Quickbook ID`}
-                    search
-                  />
-                </div>
-              )}
+              {stepperOneData?.type &&
+                stepperOneData?.type !== "Payroll" &&
+                stepperOneData?.type !== "Credit Memo" && (
+                  <div className="lastDropdown">
+                    <Dropdown
+                      isDisabled={!stepperOneData?.type}
+                      handleDropOptionClick={(item: any) => {
+                        handleDropOption(
+                          item,
+                          qbIdOptions,
+                          setQbIdOptions,
+                          setIsQbId
+                        );
+                      }}
+                      handleDropdownClick={(b: boolean) => {
+                        setIsQbId(b);
+                      }}
+                      isOpen={isQbId}
+                      options={qbIdOptions}
+                      title={`Quickbook ID`}
+                      search
+                    />
+                  </div>
+                )}
             </div>
 
-            {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
-              <div className="dropdown">
-                <Dropdown
-                  isDisabled={!stepperOneData?.type}
-                  handleDropOptionClick={(item: any) => {
-                    handleDropOption(
-                      item,
-                      CustomerOptions,
-                      setCustomerOption,
-                      setIsCustomerOpen
-                    );
-                    setCountryOptions([]);
-
-                    setStepperOneData({
-                      ...stepperOneData,
-                      customer: item.label,
-                      customerId: item.value,
-                      countryId: "",
-                      country: "",
-                    });
-                  }}
-                  handleDropdownClick={(b: boolean) => {
-                    setIsPaymentTerms(b);
-                  }}
-                  isOpen={isPaymentTerms}
-                  options={CustomerOptions}
-                  title={`Payment Terms`}
-                  search
-                />
-              </div>
-            )}
+            {stepperOneData?.type &&
+              stepperOneData?.type !== "Payroll" &&
+              stepperOneData?.type !== "Credit Memo" && (
+                <div className="dropdownRow">
+                  <div className="dropdown">
+                    <Dropdown
+                      isDisabled={!stepperOneData?.type}
+                      handleDropOptionClick={(item: any) => {
+                        handleDropOption(
+                          item,
+                          paymentTermsOptions,
+                          setPaymentTermsOptions,
+                          setIsPaymentTerms
+                        );
+                      }}
+                      handleDropdownClick={(b: boolean) => {
+                        setIsPaymentTerms(b);
+                      }}
+                      isOpen={isPaymentTerms}
+                      options={paymentTermsOptions}
+                      title={`Payment Terms`}
+                      search
+                    />
+                  </div>
+                  <div className="dropdown">
+                    <Dropdown
+                      isDisabled={!stepperOneData?.type}
+                      handleDropOptionClick={(item: any) => {
+                        handleDropOption(
+                          item,
+                          paymentMethodOptions,
+                          setPaymentMethodOptions,
+                          setIsPaymentMethod
+                        );
+                      }}
+                      handleDropdownClick={(b: boolean) => {
+                        setIsPaymentMethod(b);
+                      }}
+                      isOpen={isPaymentMethod}
+                      options={paymentMethodOptions}
+                      title={`Payment Method`}
+                      search
+                    />
+                  </div>
+                </div>
+              )}
             {stepperOneData?.type === "Payroll" && (
               <div className="dropdownC">
                 <Dropdown
