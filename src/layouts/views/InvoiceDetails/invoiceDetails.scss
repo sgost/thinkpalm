@@ -1309,15 +1309,17 @@
     }
 
     .compensation-full-container {
-      // height: 60vh;
-      // width: 50%;
+
       .a-modal__body {
         height: 80vh;
         width: 57%;
+        display: block;
+        padding: 0;
       }
       .compensation-inner-container {
         .profile-header-container {
           margin-bottom: 1.7rem;
+          margin-top:0;
           padding: 0;
           display: flex;
           flex-direction: column;
@@ -1329,7 +1331,7 @@
 
           .section-1 {
             background-color: #041e42;
-            width: 65.6rem;
+            width: 100%;
             height: 10rem;
             border-radius: 10px 10px 0 0;
             position: relative;
@@ -1339,17 +1341,6 @@
               align-items: center;
               justify-content: center;
               position: relative;
-
-              // .profile-action {
-              //   font-family: "CircularXX", Arial, Helvetica, sans-serif;
-              //   font-weight: 400;
-              //   // font-size: 1.111rem;
-              //   // line-height: 1.667rem;
-              //   // color: #526fd6;
-              //   // position: absolute;
-              //   bottom: -7.111rem;
-              //   cursor: pointer;
-              // }
 
               .a-iupload {
                 width: 10.333rem;
@@ -1462,7 +1453,7 @@
               p {
                 color: green;
                 border: 1px solid;
-                font-size: 1.2rem;
+                font-size: 1rem;
                 padding: 0.5rem 1.7rem;
                 border-radius: 2rem;
                 margin-right: 3rem;
@@ -1481,7 +1472,7 @@
         }
         .compensation-table {
           display: flex;
-          width: 65.6rem;
+          width: 100%;
           justify-content: center;
           margin-bottom: 4.3rem;
           .table {
