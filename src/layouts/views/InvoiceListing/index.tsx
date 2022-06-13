@@ -9,6 +9,7 @@ import getRequest from "../../../components/Comman/api";
 import dots from "./dots.svg";
 import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
+  urls,
   getClientListingUrl,
   getGenerateMultiplePdfUrl,
   getGenerateSinglePdfUrl,
@@ -35,6 +36,7 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
+  const [customerType, setCustomerType] = useState("");
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
     useState<boolean>(false);
 
@@ -251,6 +253,7 @@ export default function InvoiceListing() {
       return api;
     } else if (isClient !== null && isClient === false) {
       api = getInternalListingUrl(
+        customerType,
         transactionTypes,
         statusType,
         dateFrom,
@@ -325,11 +328,11 @@ export default function InvoiceListing() {
       const { id, invoiceNo, transactionType } = matchingData;
       navigate(
         "/pay/invoicedetails" +
-          id +
-          "/" +
-          matchingData?.customerId +
-          "/" +
-          true,
+        id +
+        "/" +
+        matchingData?.customerId +
+        "/" +
+        true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -382,12 +385,12 @@ export default function InvoiceListing() {
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
-              " " +
-              cFormat.format(item.totalAmount).slice(1) || "",
+            " " +
+            cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
             item?.currency?.code +
-              " " +
-              cFormat.format(item.invoiceBalance).slice(1) || "",
+            " " +
+            cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
             value: "Not Exported",
             color: "#767676",
@@ -558,12 +561,12 @@ export default function InvoiceListing() {
     const nav = () => {
       navigate(
         "/pay/invoicedetails" +
-          checkedInvoices[0].id +
-          "/" +
-          checkedInvoices[0].customerId +
-          "/" +
-          isClientString +
-          "/payments",
+        checkedInvoices[0].id +
+        "/" +
+        checkedInvoices[0].customerId +
+        "/" +
+        isClientString +
+        "/payments",
         {
           state: {
             InvoiceId: checkedInvoices[0].invoiceNo,
@@ -590,6 +593,47 @@ export default function InvoiceListing() {
       </p>
     );
   }
+
+
+  //Customer filter 
+  useEffect(() => {
+    getCustomerDropdownOptions();
+  }, [])
+
+  const [customerData, setCustomerData] = useState([
+    {
+      isSelected: false,
+      label: "",
+      value: "",
+    }
+  ]);
+  const [customerOpen, setCustomerOpen] = useState(false);
+
+  const getCustomerDropdownOptions = () => {
+    let allCustomerapi = urls.customers;
+    const headers = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    axios
+      .get(allCustomerapi, headers)
+      .then((response: any) => {
+        const temp: any = [];
+        response?.data.map((item: any) =>
+          temp.push({
+            isSelected: false,
+            label: item.name,
+            value: item.customerId,
+          })
+        );
+        setCustomerData(temp);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
 
   return (
     <>
@@ -645,19 +689,20 @@ export default function InvoiceListing() {
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
               "Add" && (
-              <Button
-                label="New Invoice"
-                className="primary-blue medium"
-                icon={{
-                  icon: "add",
-                  size: "medium",
-                  color: "#fff",
-                }}
-                handleOnClick={() => navigate("/pay/newinvoice")}
-              />
-            )}
+                <Button
+                  label="New Invoice"
+                  className="primary-blue medium"
+                  icon={{
+                    icon: "add",
+                    size: "medium",
+                    color: "#fff",
+                  }}
+                  handleOnClick={() => navigate("/pay/newinvoice")}
+                />
+              )}
           </div>
         </div>
+
         {!localStorage.redirectingInvoiceState && (
           <div className="dropdowns">
             <div className="inputContainer">
@@ -674,19 +719,70 @@ export default function InvoiceListing() {
               {permission?.InvoiceList?.find(
                 (str: any) => str === "Download"
               ) === "Download" && (
-                <div
-                  onClick={downloadFunction}
-                  data-testid="download"
-                  className={downloadDisable ? "downloadpointer" : "download"}
-                >
-                  <Icon
-                    className="download"
-                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                    icon="download"
-                    size="large"
-                  />
-                </div>
-              )}
+                  <div
+                    onClick={downloadFunction}
+                    data-testid="download"
+                    className={downloadDisable ? "downloadpointer" : "download"}
+                  >
+                    <Icon
+                      className="download"
+                      color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                      icon="download"
+                      size="large"
+                    />
+                  </div>
+                )}
+
+
+
+              <div className="customerSelection">
+                <Dropdown
+                  data-testid="customer-type"
+                  title="Customer"
+                  multiple
+                  search
+                  isOpen={customerOpen}
+                  handleDropdownClick={(bool: any) => {
+                    setCustomerOpen(bool);
+                    if (bool) {
+                      setIsStatusOpen(false);
+                    }
+                  }}
+
+                  handleDropOptionClick={(opt: any) => {
+                    setCustomerOpen(true)
+                    let index = customerData.findIndex((e) => e.value === opt.value);
+
+                    let copy = [...customerData];
+
+                    copy.forEach((_e, i) => {
+                      if (i === index) {
+                        if (copy[index].isSelected) {
+                          copy[index] = { ...opt, isSelected: false };
+                        } else {
+                          copy[index] = { ...opt, isSelected: true };
+                        }
+                      }
+                    });
+
+                    let typesValue = "";
+
+                    copy.forEach((item) => {
+                      if (item.isSelected) {
+                        if (typesValue) {
+                          typesValue += "," + item.value.toString();
+                        } else {
+                          typesValue = item.value.toString();
+                        }
+                      }
+                    });
+
+                    setCustomerData(copy);
+                    setCustomerType(typesValue)
+                  }}
+                  options={customerData}
+                />
+              </div>
 
               <DatepickerDropdown
                 title="Date"
@@ -819,6 +915,7 @@ export default function InvoiceListing() {
                   setIsTypeOpen(bool);
                   if (bool) {
                     setIsStatusOpen(false);
+                    setCustomerOpen(false)
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
@@ -826,7 +923,7 @@ export default function InvoiceListing() {
 
                   let copy = [...types];
 
-                  copy.forEach((e, i) => {
+                  copy.forEach((_item, i) => {
                     if (i === index) {
                       if (copy[index].isSelected) {
                         copy[index] = { ...opt, isSelected: false };
@@ -838,7 +935,7 @@ export default function InvoiceListing() {
 
                   let typesValue = "";
 
-                  copy.forEach((e) => {
+                  copy.forEach((e: any) => {
                     if (e.isSelected) {
                       if (typesValue) {
                         typesValue += "," + e.value.toString();
@@ -866,6 +963,7 @@ export default function InvoiceListing() {
                   setIsStatusOpen(bool);
                   if (bool) {
                     setIsTypeOpen(false);
+                    setCustomerOpen(false);
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
@@ -992,17 +1090,17 @@ export default function InvoiceListing() {
                 options={
                   searchText
                     ? {
-                        ...searchedTableData,
-                        enableMultiSelect: true,
-                        onRowCheckboxChange: onRowCheckboxChange,
-                      }
+                      ...searchedTableData,
+                      enableMultiSelect: true,
+                      onRowCheckboxChange: onRowCheckboxChange,
+                    }
                     : isClient
-                    ? {
+                      ? {
                         ...clientTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
                       }
-                    : {
+                      : {
                         ...internalTabledata,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
@@ -1020,11 +1118,11 @@ export default function InvoiceListing() {
                   } else {
                     navigate(
                       "/pay/invoicedetails" +
-                        row.id +
-                        "/" +
-                        row.customerId +
-                        "/" +
-                        isClientStr,
+                      row.id +
+                      "/" +
+                      row.customerId +
+                      "/" +
+                      isClientStr,
                       {
                         state: {
                           InvoiceId: row.invoiceNo,

@@ -208,19 +208,52 @@ export default function BillsTable(props: any) {
         const endDate = customDate(clickedApiData.endDate, format);
         return formatTimePeriod(startDate, endDate);
     };
+
     /* istanbul ignore next */
-    const getSignedDownloadURL = async (payload: any = {}) => {
-        axios
-            .get(documentDownloadApi + payload.fileID, { headers: { accept: "*/*" } })
+    function blobToBase64(blob: any) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                resolve(reader.result);
+            };
+        });
+    }
+
+    /* istanbul ignore next */
+    function fetchImageAsBase64(req: any) {
+        const url = `${basecontractorURL}${req}`;
+        return new Promise((resolve) => {
+            const headers = new Headers({
+                authorization: `Bearer ${localStorage.accessToken}`,
+                "customerid": customerId
+            });
+            fetch(url, { headers })
+                .then((response) => response.blob())
+                .then((blob) => blobToBase64(blob))
+                .then((base64) => resolve(base64));
+        });
+    }
+    /* istanbul ignore next */
+    const downloadFile = (fileUrl: string | null, fileName: string) => {
+        if (!fileUrl) return;
+
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    /* istanbul ignore next */
+    const downloadBills = async (payload: any = {}) => {
+        return fetchImageAsBase64(`download?documentId=${payload.fileId}`)
             .then((response: any) => {
-                if (response.status == 200) {
-                    return response.data;
-                } else {
-                    console.log("Document Download API failing on contractor service");
-                }
+                return response;
             })
-            .catch((e: any) => {
-                console.log("error", e);
+            .catch((e) => {
+                console.log("error in document download", e);
             });
     };
 
@@ -338,9 +371,9 @@ export default function BillsTable(props: any) {
                                                     icon: 'download',
                                                     width: '35',
                                                     handleOnClick: /* istanbul ignore next */ async () => {
-                                                        getSignedDownloadURL({ fileID: clickedApiData.documents[0]?.documentId }).then((data: any) => {
-                                                            window.open(data?.url, '_blank');
-                                                        });
+                                                        downloadBills({
+                                                            fileId: clickedApiData.documents[0]?.documentId
+                                                        }).then((blobUrl: any) => downloadFile(blobUrl, clickedApiData.documents[0] && clickedApiData.documents[0].fileName));
                                                     },
                                                     disabled: !(clickedApiData?.documents
                                                         && clickedApiData.documents?.length > 0)

@@ -42,31 +42,31 @@ const monthId = 1;
 const yearId = 2022;
 
 const stepperOneData = {
-  "customer": "DSM Nutritional Products AG",
-  "type": "Credit Memo",
-  "country": "",
-  "month": "",
-  "year": "",
-  "customerId": "A9BBEE6D-797A-4724-A86A-5B1A2E28763F",
-  "countryId": "",
-  "typeId": 4,
-  "yearId": "",
-  "monthId": ""
-}
+  customer: "DSM Nutritional Products AG",
+  type: "Credit Memo",
+  country: "",
+  month: "",
+  year: "",
+  customerId: "A9BBEE6D-797A-4724-A86A-5B1A2E28763F",
+  countryId: "",
+  typeId: 4,
+  yearId: "",
+  monthId: "",
+};
 
 const todos = [
   {
-    "id": 0.4633734736448569,
-    "date": "17 Jun 2022",
-    "product": "Advisory Services",
-    "description": "Desc2",
-    "country": "ABW -- Aruba",
-    "quantity": "1",
-    "amount": "2"
-  }
-]
+    id: 0.4633734736448569,
+    date: "17 Jun 2022",
+    product: "Advisory Services",
+    description: "Desc2",
+    country: "ABW -- Aruba",
+    quantity: "1",
+    amount: "2",
+  },
+];
 
-const invoiceId = "cbb51dc8-8529-4afa-bf72-d2615163a9a6"
+const invoiceId = "cbb51dc8-8529-4afa-bf72-d2615163a9a6";
 
 describe("New Invoice", () => {
   beforeAll(() => {
@@ -741,7 +741,6 @@ describe("Stepper 3", () => {
     mock
       .onGet(getInvoiceDetailsUrl("e9a959b9-a1a2-486e-938c-de1b8bac4b03"))
       .reply(200, mockapidata.resForInvoiceDetail);
-
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button", async () => {
@@ -1769,6 +1768,10 @@ describe("New Invoice for Proforma ", () => {
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
 
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -1796,17 +1799,19 @@ describe("New Invoice for Proforma ", () => {
     const newInvoice = await screen.findAllByText(/New Invoice/);
 
     expect(newInvoice[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Proforma/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    fireEvent.click(pleaseSelectDropDown[1]);
+    await screen.findByText(/Invoicer/);
+    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
 
+    fireEvent.click(pleaseSelectDropDown[0]);
     const customerDropValue = await screen.findByText(
-      /DSM Nutritional Products AG/
+      /"dsm nutritional products ag"/i
     );
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
@@ -1814,8 +1819,8 @@ describe("New Invoice for Proforma ", () => {
     const dp = await waitFor(() => screen.getByRole("textbox"));
     fireEvent.click(dp);
 
-    const selDate = await waitFor(() => screen.getByText(/15/));
-    fireEvent.click(selDate);
+    const selDate = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDate[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1862,6 +1867,12 @@ describe("New Invoice for Miscellaneous ", () => {
       .onPost(urls.createCreditMemo)
       .reply(201, mockapidata.resCreateCreditMemo);
 
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -1894,7 +1905,7 @@ describe("New Invoice for Miscellaneous ", () => {
     const newInvoice = await screen.findAllByText(/New Invoice/);
 
     expect(newInvoice[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Miscellaneous/);
@@ -1912,8 +1923,37 @@ describe("New Invoice for Miscellaneous ", () => {
     const dp = await waitFor(() => screen.getByRole("textbox"));
     fireEvent.click(dp);
 
-    const selDate = await waitFor(() => screen.getByText(/15/));
-    fireEvent.click(selDate);
+    const selDate = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDate[0]);
+
+    //select all drpdowns
+    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    screen.debug(pleaseSelectDropDown);
+
+    fireEvent.click(pleaseSelectDropDown[0]);
+    const invoiceDropDownValue = await screen.findByText(
+      /usa\-\-unitedstatesofamerica/i
+    );
+    fireEvent.click(invoiceDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+    const raDropDownValue = await screen.findByText(/hsbc\(usa\)3371\-usd/i);
+    fireEvent.click(raDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[2]);
+    const currencyDropDownValue = await screen.findByText(/eur/i);
+    fireEvent.click(currencyDropDownValue);
+
+    //add quickbook here in future
+
+    fireEvent.click(pleaseSelectDropDown[4]);
+    screen.logTestingPlaygroundURL();
+    const paymentTerm = await screen.findByText(/10 days/i);
+    fireEvent.click(paymentTerm);
+
+    fireEvent.click(pleaseSelectDropDown[4]);
+    const paymentMethod = await screen.findByText(/achcredit/i);
+    fireEvent.click(paymentMethod);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1936,9 +1976,7 @@ describe("New Invoice for Miscellaneous ", () => {
     );
     fireEvent.click(pleaseSelectDropDownStepper2[0]);
 
-    const DatePicket = await screen.getByTestId(
-      "Country_open"
-    );
+    const DatePicket = await screen.getByTestId("Country_open");
     expect(DatePicket).toBeInTheDocument();
 
     const productServiceDropDownValue = await screen.findAllByText(
@@ -1947,9 +1985,7 @@ describe("New Invoice for Miscellaneous ", () => {
     expect(productServiceDropDownValue[0]).toBeInTheDocument();
     fireEvent.click(productServiceDropDownValue[0]);
 
-    const Country = await screen.findAllByText(
-      /Service Date/
-    );
+    const Country = await screen.findAllByText(/Service Date/);
     expect(Country[0]).toBeInTheDocument();
     fireEvent.click(Country[0]);
 
@@ -2041,13 +2077,11 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-
     const summaryText = await screen.findAllByText(/Summary/);
     expect(summaryText[0]).toBeInTheDocument();
 
     const dpp = await waitFor(() => screen.getAllByRole("textbox"));
     fireEvent.click(dpp[0]);
-
 
     const selDates = await waitFor(() => screen.getAllByText(/15/));
     fireEvent.click(selDates[2]);
@@ -2157,13 +2191,11 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
     expect(nextButton).toBeInTheDocument();
     fireEvent.click(nextButton);
 
-
     const summaryText = await screen.findAllByText(/Summary/);
     expect(summaryText[0]).toBeInTheDocument();
 
     const dpp = await waitFor(() => screen.getAllByRole("textbox"));
     fireEvent.click(dpp[0]);
-
 
     const selDates = await waitFor(() => screen.getAllByText(/15/));
     fireEvent.click(selDates[2]);
@@ -2204,14 +2236,13 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
     fireEvent.click(addNewText[0]);
 
     const DeleteText = await screen.findAllByText(/Delete/);
-    screen.debug(DeleteText)
+    screen.debug(DeleteText);
     expect(DeleteText[0]).toBeInTheDocument();
     fireEvent.click(DeleteText[0]);
 
     const nextPreview = await screen.findByTestId("next-button");
     expect(nextPreview).toBeInTheDocument();
     fireEvent.click(nextPreview);
-
   }, 30000);
 });
 
@@ -2253,7 +2284,6 @@ describe("Invoice preview Pop", () => {
   });
 });
 
-
 describe("final stepper", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
@@ -2291,7 +2321,3 @@ describe("final stepper with 201 status code", () => {
     fireEvent.click(goto);
   }, 30000);
 });
-
-
-
-

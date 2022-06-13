@@ -79,6 +79,11 @@ export const urls = {
     baseURL +
     services.atlasSubscriptionService +
     "/Subscription/GetCustomerWithSubscription",
+
+  subscriptionLookup:
+    baseURL +
+    services.atlasSubscriptionService +
+    `/Lookup/GetSubscriptionLookup`,
 };
 
 export const getClientListingUrl = (
@@ -95,6 +100,7 @@ export const getClientListingUrl = (
 };
 
 export const getInternalListingUrl = (
+  customerType,
   transactionTypes,
   statusType,
   dateFrom,
@@ -103,7 +109,7 @@ export const getInternalListingUrl = (
   return (
     baseURL +
     services.atlasInvoiceService +
-    `/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+    `/invoices/filter?page=1&pageSize=10000&customerIds=${customerType}&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
   );
 };
 export const getVatValue = (cid) => {

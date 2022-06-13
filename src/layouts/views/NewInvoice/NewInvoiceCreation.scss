@@ -19,12 +19,27 @@
     .dropdownRow {
       display: flex;
       gap: 4rem;
+
+      .a-dropdown {
+        z-index: unset;
+      }
     }
 
     .dropdown {
       margin-top: 3rem;
       margin-bottom: 3rem;
 
+      span.a-dropdown__title:after {
+        content: "*";
+        color: red;
+      }
+
+      .a-dropdown__search {
+        box-sizing: border-box !important;
+      }
+    }
+
+    .lastDropdown {
       span.a-dropdown__title:after {
         content: "*";
         color: red;
