@@ -196,9 +196,9 @@ const PaymentDetailContainer = (status: any) => {
                       className="disable-input-color"
                       placeholder="Please enter"
                       disabled={true}
-                      // disabled={disable}
-                      // onChange={(e)=>{setValue(e.target.value)}}
-                      // onKeyPress={(e)=>{masking(e)}}
+                    // disabled={disable}
+                    // onChange={(e)=>{setValue(e.target.value)}}
+                    // onKeyPress={(e)=>{masking(e)}}
                     />
                   </div>
                   <div className="fullAmountPaymentNoInput">
@@ -337,9 +337,9 @@ const PaymentDetailContainer = (status: any) => {
                     className="disable-input-color"
                     placeholder="Please enter"
                     disabled={true}
-                    // disabled={disable}
-                    // onChange={(e)=>{setValue(e.target.value)}}
-                    // onKeyPress={(e)=>{masking(e)}}
+                  // disabled={disable}
+                  // onChange={(e)=>{setValue(e.target.value)}}
+                  // onKeyPress={(e)=>{masking(e)}}
                   />
                 </div>
                 <div className="fullAmountPaymentNoInput">Payment #765248</div>
@@ -357,29 +357,29 @@ const PaymentDetailContainer = (status: any) => {
 
       {permission?.InvoiceDetails.includes("Add") &&
         status.status === "Partial Paid" ? (
-          <div className="addPaymentInstallmentButton">
-            {console.log("status inside", status)}
-            <div
-              className="addPaymentInstallmentIcon"
-              onClick={() => addPaymentInstallmentBlocks()}
-              aria-disabled={addPaymentSectionCheck}
-            >
-              <span>
-                <Icon
-                  icon="add"
-                  size="small"
-                  width="20"
-                  height="20"
-                  color="white"
-                  style={{ margin: `0 4px 0 0` }}
-                />
-              </span>
-              Add payment Installment
-            </div>
+        <div className="addPaymentInstallmentButton">
+          {console.log("status inside", status)}
+          <div
+            className="addPaymentInstallmentIcon"
+            onClick={() => addPaymentInstallmentBlocks()}
+            aria-disabled={addPaymentSectionCheck}
+          >
+            <span>
+              <Icon
+                icon="add"
+                size="small"
+                width="20"
+                height="20"
+                color="white"
+                style={{ margin: `0 4px 0 0` }}
+              />
+            </span>
+            Add payment Installment
           </div>
-        )
-      : 
-      <></>}
+        </div>
+      )
+        :
+        <></>}
     </div>
   );
 };

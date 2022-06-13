@@ -20,12 +20,13 @@ import MockAdapter from "axios-mock-adapter";
 import InvoiceListing from "..";
 import { act } from "react-dom/test-utils";
 import {
+  urls,
   getClientListingUrl,
   getGenerateMultiplePdfUrl,
   getGenerateSinglePdfUrl,
   getInternalListingUrl,
 } from "../../../../urls/urls";
-import { currentOrgForListing } from "../../NewInvoice/test/mockData";
+import { currentOrgForListing, allCustomerapiMock } from "../../NewInvoice/test/mockData";
 
 let resDataInternal = {
   page: 1,
@@ -214,11 +215,15 @@ localStorage.setItem(
 );
 localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
 
+
+let accessToken = localStorage.getItem("accessToken");
+
 describe("client view", () => {
   localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   beforeEach(() => {
     const mock = new MockAdapter(axios);
     mock.onGet(getClientListingUrl("", "", "", "")).reply(200, resDataClient);
+    mock.onGet(urls.customers, accessToken).reply(200, allCustomerapiMock);
 
     act(() => {
       render(
@@ -237,8 +242,8 @@ describe("client view", () => {
   test("Datepicker dropdowns today clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-    // fireEvent.click(dd[1]);
-    // fireEvent.click(dd[2]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/Today/), {
       timeout: 5000,
@@ -250,8 +255,8 @@ describe("client view", () => {
   test("Datepicker dropdowns Yesterday clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-    // fireEvent.click(dd[1]);
-    // fireEvent.click(dd[2]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/Yesterday/), {
       timeout: 5000,
@@ -262,8 +267,8 @@ describe("client view", () => {
   test("Datepicker dropdowns This Week clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-    // fireEvent.click(dd[1]);
-    // fireEvent.click(dd[2]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/This Week/), {
       timeout: 5000,
@@ -274,8 +279,8 @@ describe("client view", () => {
   test("Datepicker dropdowns This Month clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-    // fireEvent.click(dd[1]);
-    // fireEvent.click(dd[2]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/This Month/), {
       timeout: 5000,
@@ -286,8 +291,8 @@ describe("client view", () => {
   test("Datepicker dropdowns This Quarter clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-    // fireEvent.click(dd[1]);
-    // fireEvent.click(dd[2]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/This Quarter/), {
       timeout: 5000,
@@ -298,8 +303,8 @@ describe("client view", () => {
   test("Datepicker dropdowns This Year clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
-    // fireEvent.click(dd[1]);
-    // fireEvent.click(dd[2]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/This Year/), {
       timeout: 5000,
@@ -311,13 +316,12 @@ describe("client view", () => {
   //   const dd = await waitFor(() => screen.getAllByText(/Please Select/));
   //   fireEvent.click(dd[0]);
 
-  //   let dr = await waitFor(() =>
-  //     screen.getAllByPlaceholderText(/Please Select/)
-  //   );
-  //   // screen.debug(x);
+  //   let dr = await screen.getAllByPlaceholderText(/Please Select/)
+
+  //   screen.debug(x);
   //   fireEvent.click(dr[0]);
   //   let date = await waitFor(() => screen.getAllByText(/15/));
-  //   // screen.debug(date);
+  //   screen.debug(date);
   //   fireEvent.click(date[2]);
   //   fireEvent.click(dr[1]);
   //   let date2 = await waitFor(() => screen.getAllByText(/15/));
@@ -327,6 +331,11 @@ describe("client view", () => {
   test("table row clickable", async () => {
     const row = await waitFor(() => screen.getByText("1000992"));
     fireEvent.click(row);
+  });
+
+  test("Customer Type clickable", async () => {
+    const customerType = await screen.getByText(/Customer/);
+    fireEvent.click(customerType);
   });
 
   test("Status clickable", async () => {
@@ -352,11 +361,11 @@ describe("client view", () => {
     fireEvent.click(clear);
   });
 
-  test("search", async () => {
-    const search = await waitFor(() => screen.getByPlaceholderText(/Search/));
-    fireEvent.change(search, { target: { value: "100" } });
-    fireEvent.change(search, { target: { value: "" } });
-  });
+  // test("search", async () => {
+  //   // const search = await waitFor(() => screen.getByPlaceholderText(/Search/));
+  //   // fireEvent.change(search, { target: { value: "100" } });
+  //   // fireEvent.change(search, { target: { value: "" } });
+  // });
 
   // test("tbl checkbox clickable", async () => {
   //   // const row = await waitFor(() => screen.getByText("1000992"));
@@ -377,6 +386,8 @@ describe("client view", () => {
   //   // screen.logTestingPlaygroundURL();
   // });
 });
+
+
 describe("checkbox and download", () => {
   localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
   test("checkbox and download are clickable in client view", async () => {
@@ -414,7 +425,7 @@ describe("checkbox and download", () => {
   test("checkbox and download are clickable in internal view", async () => {
     const mock = new MockAdapter(axios);
     mock
-      .onGet(getInternalListingUrl("", "", "", ""))
+      .onGet(getInternalListingUrl("", "", "", "", ""))
       .reply(200, resDataInternal);
     // const getById = queryByAttribute.bind(null, "id");
 
@@ -455,8 +466,8 @@ describe("checkbox and download", () => {
 
     await waitFor(() => screen.getByText(/Status/));
 
-    const search = await waitFor(() => screen.getByPlaceholderText(/Search/));
-    fireEvent.change(search, { target: { value: "100" } });
+    // const search = await waitFor(() => screen.getByPlaceholderText(/Search/));
+    // fireEvent.change(search, { target: { value: "100" } });
 
     const chkbx = container.querySelector(
       ".a-dropdown__option__item__check-box"
@@ -484,7 +495,7 @@ describe("Internal View Download click and checkbox Click", () => {
     localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
-      .onGet(getInternalListingUrl("", "", "", ""))
+      .onGet(getInternalListingUrl("", "", "", "", ""))
       .reply(200, resDataInternal);
 
     mock
@@ -537,7 +548,7 @@ describe("Internal View Download click for single invoice  api fail Click", () =
     localStorage.setItem("current-org", JSON.stringify(currentOrgForListing));
     const mock = new MockAdapter(axios);
     mock
-      .onGet(getInternalListingUrl("", "", "", ""))
+      .onGet(getInternalListingUrl("", "", "", "", ""))
       .reply(200, resDataInternal);
 
     mock
