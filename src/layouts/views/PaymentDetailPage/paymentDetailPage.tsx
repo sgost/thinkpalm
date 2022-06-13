@@ -12,6 +12,7 @@ import "./paymentDetailPage.scss";
 import NotesWidget from "../../../components/Notes";
 import { urls, getHeaders, subscriptionLookup } from "../../../urls/urls";
 import axios from "axios";
+import FileUploadWidget from "../../../components/FileUpload";
 
 const PaymentDetailPage = () => {
   const state: any = useLocation();
