@@ -41,15 +41,15 @@ export const mockapidata = {
   ],
   resGetAllCountry: [
     {
-        "id": "7defc4f9-906d-437f-a6d9-c822ca2ecfd7",
-        "currencyId": 404,
-        "location": 1,
-        "name": "Kenya",
-        "officialName": "The Republic of Kenya",
-        "code": "KE",
-        "colorCode": "#C9E554"
+      "id": "7defc4f9-906d-437f-a6d9-c822ca2ecfd7",
+      "currencyId": 404,
+      "location": 1,
+      "name": "Kenya",
+      "officialName": "The Republic of Kenya",
+      "code": "KE",
+      "colorCode": "#C9E554"
     }
-],
+  ],
   resForStepperTwo: [
     {
       employeeDetail: {
@@ -10474,59 +10474,59 @@ export const mockapidata = {
 
   resGetCustomerWithSuscription: {
     "customers": [
-        {
-            "id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-            "custId": 1585,
-            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-            "name": "DSM Nutritional Products AG",
-            "email": null,
-            "webSite": "http://www.dsm.com",
-            "billingAddressId": null,
-            "shippingAddressId": null,
-            "note": null,
-            "taxIdentifier": null,
-            "landPhone": null,
-            "mobilePhone": null,
-            "faxPhone": null,
-            "otherPhone": null,
-            "billingCurrency": 1,
-            "location": 1,
-            "class": 1,
-            "payrollDue": 1,
-            "otherDue": 1,
-            "preferredPayment": 1,
-            "status": 1,
-            "renewalEffectiveDate": "0001-01-01T00:00:00Z",
-            "hrisIncludedInAdmin": 1,
-            "qbClientId": null,
-            "poNumber": null,
-            "modifiedBy": "00000000-0000-0000-0000-000000000000",
-            "payrollApprovalRequired": null,
-            "billingAddress": {
-                "type": 0,
-                "street": null,
-                "city": "City",
-                "state": "State",
-                "postalCode": "123456",
-                "countryId": null,
-                "modifiedBy": "00000000-0000-0000-0000-000000000000",
-                "customerId": "00000000-0000-0000-0000-000000000000",
-                "employerId": "00000000-0000-0000-0000-000000000000",
-                "regionId": 0,
-                "country": null,
-                "customerBillingAddresses": [],
-                "customerShippingAddresses": [],
-                "id": "00000000-0000-0000-0000-000000000000"
-            },
-            "shippingAddress": null,
-            "customerNotes": null,
-            "customerDocuments": null,
-            "customerUsers": null,
-            "customerFees": null,
-            "customerCountries": null
-        }
+      {
+        "id": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "custId": 1585,
+        "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        "name": "DSM Nutritional Products AG",
+        "email": null,
+        "webSite": "http://www.dsm.com",
+        "billingAddressId": null,
+        "shippingAddressId": null,
+        "note": null,
+        "taxIdentifier": null,
+        "landPhone": null,
+        "mobilePhone": null,
+        "faxPhone": null,
+        "otherPhone": null,
+        "billingCurrency": 1,
+        "location": 1,
+        "class": 1,
+        "payrollDue": 1,
+        "otherDue": 1,
+        "preferredPayment": 1,
+        "status": 1,
+        "renewalEffectiveDate": "0001-01-01T00:00:00Z",
+        "hrisIncludedInAdmin": 1,
+        "qbClientId": null,
+        "poNumber": null,
+        "modifiedBy": "00000000-0000-0000-0000-000000000000",
+        "payrollApprovalRequired": null,
+        "billingAddress": {
+          "type": 0,
+          "street": null,
+          "city": "City",
+          "state": "State",
+          "postalCode": "123456",
+          "countryId": null,
+          "modifiedBy": "00000000-0000-0000-0000-000000000000",
+          "customerId": "00000000-0000-0000-0000-000000000000",
+          "employerId": "00000000-0000-0000-0000-000000000000",
+          "regionId": 0,
+          "country": null,
+          "customerBillingAddresses": [],
+          "customerShippingAddresses": [],
+          "id": "00000000-0000-0000-0000-000000000000"
+        },
+        "shippingAddress": null,
+        "customerNotes": null,
+        "customerDocuments": null,
+        "customerUsers": null,
+        "customerFees": null,
+        "customerCountries": null
+      }
     ]
-}
+  }
 };
 
 export const currentOrgTokenMock = {
@@ -15518,3 +15518,100 @@ export const productInvoiceMoc = {
     ],
   },
 };
+
+
+
+
+
+export const allCustomerapiMock = [
+  {
+    "processId": null,
+    "custId": 1760,
+    "customerId": "892B03DD-369F-41DF-824E-000E71FCADC8",
+    "name": "March edit JKS",
+    "website": "http://www.test.au",
+    "contactDetails": {
+      "officeLandline": {
+        "countryCode": null,
+        "number": "+145879111",
+        "extension": null
+      },
+      "additionalLandline": {
+        "countryCode": null,
+        "number": "+155879778",
+        "extension": null
+      },
+      "officeMobile": {
+        "countryCode": null,
+        "number": "+1458791234"
+      },
+      "additionalMobile": null,
+      "fax": {
+        "countryCode": null,
+        "number": "+165879555",
+        "extension": null
+      },
+      "email": "dino.ahmic@authoritypartners.com"
+    },
+    "billingAddress": null,
+    "billingCurrency": null,
+    "billingSystemId": null,
+    "region": null,
+    "shippingAddress": null,
+    "note": null,
+    "taxId": null,
+    "location": null,
+    "status": null,
+    "customers": [],
+    "purchaseOrders": [],
+    "renewalEffectiveDate": "0001-01-01T00:00:00Z",
+    "paymentInfo": null,
+    "accountReceivable": null,
+    "subscriptions": []
+  },
+  {
+    "processId": null,
+    "custId": 1328,
+    "customerId": "D42A64FD-34D1-4995-B665-00177DE6EF56",
+    "name": "Merkel Economic Group Ltd 2024",
+    "website": "https://www.totmaail1.com/",
+    "contactDetails": {
+      "officeLandline": {
+        "countryCode": null,
+        "number": "NULL",
+        "extension": null
+      },
+      "additionalLandline": {
+        "countryCode": null,
+        "number": "NULL",
+        "extension": null
+      },
+      "officeMobile": {
+        "countryCode": null,
+        "number": "111000"
+      },
+      "additionalMobile": null,
+      "fax": {
+        "countryCode": null,
+        "number": "NULL",
+        "extension": null
+      },
+      "email": "dino.ahmic@authoritypartners.com"
+    },
+    "billingAddress": null,
+    "billingCurrency": null,
+    "billingSystemId": null,
+    "region": null,
+    "shippingAddress": null,
+    "note": null,
+    "taxId": null,
+    "location": null,
+    "status": null,
+    "customers": [],
+    "purchaseOrders": [],
+    "renewalEffectiveDate": "0001-01-01T00:00:00Z",
+    "paymentInfo": null,
+    "accountReceivable": null,
+    "subscriptions": []
+  }
+]
