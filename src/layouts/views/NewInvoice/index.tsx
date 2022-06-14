@@ -507,16 +507,16 @@ const NewInvoice = () => {
     }
   }, [hideTopCheck]);
 
-  useEffect(() => {
-    axios
-      .get(urls.countries)
-      .then((countryRes: any) => {
-        setCountriesData(countryRes.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(urls.countries)
+  //     .then((countryRes: any) => {
+  //       setCountriesData(countryRes.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   const handleInvoiceCreation = () => {
     let invoiceItems = todos.map((e: any) => {
@@ -576,8 +576,8 @@ const NewInvoice = () => {
       (c: any) => c.customerId === stepperOneData?.customerId
     );
 
-    const currencyId = countriesData.find(
-      (c: any) => c.currency.code === customer?.billingCurrency
+    const currencyId = currencyOptions.find(
+      (c: any) => c.text === customer?.billingCurrency
     );
 
     let data = {
@@ -607,7 +607,7 @@ const NewInvoice = () => {
       BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
       CurrencyId:
         stepperOneData.type === "Credit Memo"
-          ? currencyId?.currency?.id
+          ? currencyId?.value
           : currencyOptions.find((e: any) => e.isSelected)?.value,
     };
 

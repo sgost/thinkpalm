@@ -630,12 +630,12 @@ export default function InvoiceDetails() {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
-      return currency.currency.code;
-    } else if (creditMemoData && countriesData?.data) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === creditMemoData.currencyId
+      return currency?.currency?.code;
+    } else if (creditMemoData && lookupData?.data) {
+      let currency = lookupData.data.billingCurrencies.find(
+        (e: any) => e.value === creditMemoData.currencyId
       );
-      return currency.currency.code;
+      return currency?.text;
     } else {
       return "";
     }
@@ -2065,9 +2065,7 @@ export default function InvoiceDetails() {
                   <div className="info-text">
                     <Icon color="#E0E5F8" icon="email" size="large" />
                     &nbsp;
-                    <span>
-                      {isCompensatioModalOpen?.data?.email}
-                    </span>
+                    <span>{isCompensatioModalOpen?.data?.email}</span>
                   </div>
                 </div>
               </div>
@@ -2078,9 +2076,7 @@ export default function InvoiceDetails() {
                     <div className="misc-info__item">
                       <Icon color="#767676" icon="pound" size="medium" />
                       &nbsp;
-                      <span>
-                        C928422111
-                      </span>
+                      <span>C928422111</span>
                     </div>
                     <div className="misc-info__item">
                       <Icon color="#767676" icon="calendar" size="medium" />
@@ -2101,9 +2097,7 @@ export default function InvoiceDetails() {
                     <div className="misc-info__item misc-info__item__2">
                       <Icon color="#767676" icon="location" size="medium" />
                       &nbsp;
-                      <span>
-                        {isCompensatioModalOpen?.data?.location}
-                      </span>
+                      <span>{isCompensatioModalOpen?.data?.location}</span>
                     </div>
                   </div>
                   <div className="col-4"></div>
