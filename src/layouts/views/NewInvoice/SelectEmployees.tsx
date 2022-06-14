@@ -200,7 +200,7 @@ const SelectEmployees = ({
 
                           <h5>
                             {
-                              item?.employeeDetail?.personalDetails?.homeAddress
+                              item?.employeeDetail?.jobDetails?.workAddress
                                 ?.country
                             }
                           </h5>

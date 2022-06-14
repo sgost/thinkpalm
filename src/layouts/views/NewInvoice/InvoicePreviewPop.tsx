@@ -7,8 +7,6 @@ import axios from "axios";
 import { getHeaders, urls } from "../../../urls/urls";
 
 const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
-
-
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
 
@@ -21,10 +19,18 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
         console.log(err);
       });
 
+    // axios
+    //   .get(urls.countries)
+    //   .then((countryRes: any) => {
+    //     setCountriesData(countryRes);
+    //   })
+    //   .catch((err: any) => {
+    //     console.log(err);
+    //   });
     axios
-      .get(urls.countries)
-      .then((countryRes: any) => {
-        setCountriesData(countryRes);
+      .get(urls.lookup)
+      .then((res: any) => {
+        setCountriesData(res.data.billingCurrencies);
       })
       .catch((err: any) => {
         console.log(err);
@@ -32,11 +38,19 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   }, []);
 
   const getCustlBillingCurrency = () => {
-    if (countriesData?.data && invoiceData) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === invoiceData.currencyId
+    // if (countriesData?.data && invoiceData) {
+    //   let currency = countriesData.data.find(
+    //     (e: any) => e.currencyId === invoiceData.currencyId
+    //   );
+    //   return currency?.currency?.code;
+    // }
+    if (countriesData?.length && invoiceData) {
+      let currency = countriesData.find(
+        (e: any) => e.value === invoiceData.currencyId
       );
-      return currency.currency.code;
+      console.log(invoiceData.currencyId);
+      // return currency?.currency?.code;
+      return currency?.text;
     } else {
       return "";
     }

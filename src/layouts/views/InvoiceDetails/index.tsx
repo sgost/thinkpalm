@@ -628,12 +628,12 @@ export default function InvoiceDetails() {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
-      return currency.currency.code;
-    } else if (creditMemoData && countriesData?.data) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === creditMemoData.currencyId
+      return currency?.currency?.code;
+    } else if (creditMemoData && lookupData?.data) {
+      let currency = lookupData.data.billingCurrencies.find(
+        (e: any) => e.value === creditMemoData.currencyId
       );
-      return currency.currency.code;
+      return currency?.text;
     } else {
       return "";
     }
