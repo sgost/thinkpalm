@@ -4,11 +4,20 @@ import "./InvoicePreviewPop.scss";
 import { getCreditMemoStep4Data } from "../../../apis/apis";
 import moment from "moment";
 import axios from "axios";
-import { getHeaders, urls } from "../../../urls/urls";
+import { getHeaders, urls, getBillingAddressUrl, } from "../../../urls/urls";
 
 const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [countriesData, setCountriesData] = useState<any>(null);
+  const [billingData, setBillingData] = useState<any>(null);
+
+  const addressApi = getBillingAddressUrl(stepperOneData.customerId); //Address api
+
+  const tempToken = localStorage.getItem("accessToken");  //Accesstoken
+
+  const headers = {
+    headers: getHeaders(tempToken, stepperOneData.customerId, false),  //Headers
+  };
 
   useEffect(() => {
     getCreditMemoStep4Data(invoiceId)
@@ -34,6 +43,15 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
       })
       .catch((err: any) => {
         console.log(err);
+      });
+
+    axios
+      .get(addressApi, headers)
+      .then((res: any) => {
+        setBillingData(res?.data)
+      })
+      .catch((e: any) => {
+        console.log("error", e);
       });
   }, []);
 
@@ -66,6 +84,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
     (partialSum: any, a: any) => partialSum + a,
     0
   );
+
 
   return (
     <div id="popover_main">
@@ -146,10 +165,10 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
                   <p className="creditMemoInvoiceValue">
                     {invoiceData?.customerName}
                   </p>
-                  <p className="creditMemoInvoiceAddress"></p>
-                  <p className="creditMemoInvoiceAddress"></p>
-                  <p className="creditMemoInvoiceAddress"></p>
-                  <p className="creditMemoInvoiceAddress"></p>
+                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.street1}</p>
+                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.street2}</p>
+                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.state}, {billingData?.shippingAddress?.city}</p>
+                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.country}, {billingData?.shippingAddress?.postalCode}</p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">Invoice Date</p>
