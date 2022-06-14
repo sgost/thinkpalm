@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Checkbox, Button, ProfileHeader, Table, Icon } from "atlasuikit";
+import { Checkbox, ProfileHeader, Table, Icon } from "atlasuikit";
 import axios from "axios";
 import "./SelectEmployees.scss";
 import { getEmployee, getHeaders } from "../../../urls/urls";

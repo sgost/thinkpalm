@@ -27,6 +27,7 @@ export default function CreditMemoSummary(props: any) {
     serviceCountries,
     vatValue,
     setCreditMemoData,
+    status
   } = props;
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
@@ -220,7 +221,6 @@ export default function CreditMemoSummary(props: any) {
         headers: headers,
       })
       .then((resp) => {
-        console.log('resp', resp)
         if ((resp.status == 200 || resp.status == 201) && resp.data) {
           setAddSectionCheck(false);
           setEditCheck(creditMemoData.invoiceItems.length + 1);
@@ -409,7 +409,7 @@ export default function CreditMemoSummary(props: any) {
                         {getPermissions(
                           creditMemoData?.transactionType,
                           "Edit"
-                        ) && (
+                        ) && status !== "Declined" &&(
                             <Button
                               data-testid="edit-summary-button"
                               className="primary-blue medium edit"
