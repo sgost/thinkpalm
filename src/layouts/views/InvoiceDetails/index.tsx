@@ -1153,28 +1153,27 @@ export default function InvoiceDetails() {
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               missTransType != 1) && (
-              <div
-                onClick={() =>
-                  missTransType != 7
-                    ? setIsDownloadOpen(!isDownloadOpen)
-                    : function noRefCheck() {}
-                }
-                className={`${
-                  missTransType == 7 || deleteDisableButtons === true
+                <div
+                  onClick={() =>
+                    missTransType != 7
+                      ? setIsDownloadOpen(!isDownloadOpen)
+                      : function noRefCheck() { }
+                  }
+                  className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                }`}
+                    }`}
                 // className="download"
-              >
-                <p className="text">Download</p>
-                <Icon
-                  className="icon"
-                  color="#526fd6"
-                  icon="chevronDown"
-                  size="medium"
-                />
-              </div>
-            )}
+                >
+                  <p className="text">Download</p>
+                  <Icon
+                    className="icon"
+                    color="#526fd6"
+                    icon="chevronDown"
+                    size="medium"
+                  />
+                </div>
+              )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1203,7 +1202,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-          (status === "Invoiced" && missTransType === 7) ? (
+            (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1331,12 +1330,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
@@ -1444,8 +1443,13 @@ export default function InvoiceDetails() {
           </div>
           <div className="topBarrow">
             <div className="invoiceNo">
-              <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-              <p>{getTransactionLabel()}</p>
+              <div className="qbo_wrapper">
+                <Icon color="#FFFFFF" icon="orderSummary" size="large" />
+                <p>{getTransactionLabel()}</p>
+              </div>
+              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 &&
+                <p className="qbo">QBO No. {creditMemoData?.qbInvoiceNo}</p>
+              }
             </div>
             <div className="amount">
               {missTransType != 7 && (
@@ -1631,7 +1635,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer status={status} />
         </div>
@@ -2163,7 +2167,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
+                          ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2210,11 +2214,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
