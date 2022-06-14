@@ -25,6 +25,7 @@ import {
   productInvoice,
   CountryApi,
   getRelatedInvoiceUrl,
+  getHeaders,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
 import InvoicePreviewPop from "../InvoicePreviewPop";
@@ -2249,6 +2250,17 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
 describe("Invoice preview Pop", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
+
+    const tempToken = localStorage.getItem("accessToken");  //Accesstoken
+
+    const headers = {
+      headers: getHeaders(tempToken, customerId, false),  //Headers
+    };
+
+    mock
+      .onGet(getBillingAddressUrl(customerId), headers)
+      .reply(200, mockapidata.resAddressData);
+
     mock
       .onGet(getRelatedInvoiceUrl(invoiceId))
       .reply(200, mockapidata.resFinalStepper);
