@@ -274,3 +274,7 @@ export const getUpdateInvoiceCalanderPoNoUrl = (invoiceId) => {
 export const getEmployeeCompensationData = (employeeId) => {
   return baseURL + services.employeeCompensation + `/PostOnboardInternal/PostOnboardEmployeeDetails?employeeId=${employeeId}`;
 };
+
+export const subscriptionLookup = () => {
+  return baseURL + services.atlasSubscriptionService + `/Lookup/GetSubscriptionLookup`;
+};

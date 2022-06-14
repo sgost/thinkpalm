@@ -7,43 +7,34 @@ import {
   Dropdown,
   Checkbox,
 } from "atlasuikit";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./paymentDetailPage.scss";
 import NotesWidget from "../../../components/Notes";
+import { urls, getHeaders, subscriptionLookup } from "../../../urls/urls";
+import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
 
 const PaymentDetailPage = () => {
+  const state: any = useLocation();
   const navigate = useNavigate();
 
-  const dropdownOptions = [
-    {
-      isSelected: false,
-      label: "Chocolate",
-      value: "chocolate",
-    },
-    {
-      isSelected: false,
-      label: "Strawberry",
-      value: "strawberry",
-    },
-    {
-      isSelected: false,
-      label: "Vanilla",
-      value: "vanilla",
-    },
-  ];
+  const tempToken = localStorage.getItem("accessToken");
 
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-  const [isClassDropdownOpen, setIsClassDropdownOpen] = useState(false);
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
   const [isPaymentMethodDropdownOpen, setIsPaymentMethodDropdownOpen] =
     useState(false);
   const [documents, setDocuments] = useState<any>([]);
   const [notes, setNotes] = useState<any>([]);
   const [toggleState, setToggleState] = useState(0);
-  const [showPaymentBlock, setShowPaymentBlock] = useState<any>(0);
+  const [currencyOptions, setCurrencyOption] = useState<any>([]);
+  const [bankToDepositOptions, setBankToDepositOption] = useState<any>([]);
+  const [locationOptions, setLocationOption] = useState<any>([]);
+  const [paymentMethodOptions, setPaymentMethodOption] = useState<any>([]);
+  const [referenceNo, setReferenceNo] = useState<any>([]);
+  const [multiplePaymentId, setMultiplePaymentId] = useState([]);
   const [multiPaymentBlocks, setMultiPaymentBlocks] = useState([
     {
       id: Math.random(),
@@ -62,6 +53,125 @@ const PaymentDetailPage = () => {
       navigate("/pay");
     }
   }, [hideTopCheck]);
+
+  const getCurrencyAndDepositBankAndLocationDropdownOption = () => {
+    const lookupApi = urls.lookup;
+    const headers = {
+      headers: getHeaders(tempToken, state?.state?.inveoicesData?.id, "false"),
+    };
+    axios
+      .get(lookupApi, headers)
+      .then((res: any) => {
+        const currencyData: any = prepareCurrencyDropdownOption(
+          res?.data?.billingCurrencies
+        );
+        const depositToBankData: any = prepareDepositToBankDropdownOption(
+          res?.data?.depositToOptions
+        );
+        const locationData: any = preparelocationDropdownOption(
+          res?.data?.locations
+        );
+        setCurrencyOption(currencyData);
+        setBankToDepositOption(depositToBankData);
+        setLocationOption(locationData);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
+  const getPaymentMethodDropdownOption = () => {
+    const getSubscriptionLookup = subscriptionLookup();
+    const headers = {
+      headers: getHeaders(tempToken, state?.state?.inveoicesData?.id, "false"),
+    };
+    axios
+      .get(getSubscriptionLookup, headers)
+      .then((res: any) => {
+        const paymentMethodData: any = preparePaymentMethodDropdownOption(
+          res?.data?.paymentMethods
+        );
+        setPaymentMethodOption(paymentMethodData);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
+  const prepareCurrencyDropdownOption = (data: any) => {
+    return data?.map((item: any) => {
+      return {
+        ...item,
+        isSelected: false,
+        label: item.text,
+        value: item.text,
+      };
+    });
+  };
+
+  const prepareDepositToBankDropdownOption = (data: any) => {
+   return data?.map((item: any) => {
+      return {
+        ...item,
+        isSelected: false,
+        label: item.text,
+        value: item.text,
+      };
+    });
+  };
+
+  const preparelocationDropdownOption = (data: any) => {
+    return data?.map((item: any) => {
+      return {
+        ...item,
+        isSelected: false,
+        label: item.text,
+        value: item.text,
+      };
+    });
+  };
+
+  const preparePaymentMethodDropdownOption = (data: any) => {
+    return data?.map((item: any) => {
+      return {
+        ...item,
+        isSelected: false,
+        label: item.text,
+        value: item.text,
+      };
+    });
+  };
+
+  const handlePaymentDropOption = (
+    item: any,
+    options: any,
+    set: any,
+    setIsOpen: any
+  ) => {
+    let arr = [...options];
+
+    arr.forEach((e, i) => {
+      if (e.value === item.value) {
+        arr[i] = {
+          ...arr[i],
+          isSelected: !arr[i].isSelected,
+        };
+      } else {
+        arr[i] = {
+          ...arr[i],
+          isSelected: false,
+        };
+      }
+    });
+
+    set(arr);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    getCurrencyAndDepositBankAndLocationDropdownOption();
+    getPaymentMethodDropdownOption();
+  }, []);
 
   const addPaymentBlocks = () => {
     setMultiPaymentBlocks([
@@ -85,8 +195,15 @@ const PaymentDetailPage = () => {
     );
   };
 
-  const onChevronClick = () => {
-    setShowPaymentBlock(!showPaymentBlock);
+
+  const onChevronClick = (id: any) => {
+    let newData: any = [...multiplePaymentId];
+    if (newData.includes(id)) {
+      newData = newData.filter((item: any) => item != id);
+    } else {
+      newData.push(id);
+    }
+    setMultiplePaymentId(newData);
   };
 
   return (
@@ -108,7 +225,7 @@ const PaymentDetailPage = () => {
               {
                 isActive: true,
                 key: "Invoices",
-                label: "Payroll Invoice Node. 791230",
+                label: "Payroll Invoice No. 791230",
               },
               {
                 key: "payments",
@@ -122,221 +239,266 @@ const PaymentDetailPage = () => {
         </div>
       </div>
 
-      <div className="paymentPageInvoiceInfo">
-        <div className="paymentPageTopBar">
-          {/* <div className="invoic-status">
-          <p className="status">{status}</p>
-        </div> */}
-          <div className="paymentHeaderContainer">
-            <div className="paymentTopBarrow">
-              <div className="paymentInvoivceNo">
-                <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-                <p>Payroll Invoice No. 791230 Payment</p>
-              </div>
+      {state?.state?.inveoicesData?.map((item: any) => {
+        return (
+          <div className="paymentPageInvoiceInfo">
+            <div className="paymentPageTopBar">
+              {/* <div className="invoic-status">
+            <p className="status">{status}</p>
+          </div> */}
+              <div className="paymentHeaderContainer">
+                <div className="paymentTopBarrow">
+                  <div className="paymentInvoivceNo">
+                    <Icon color="#FFFFFF" icon="orderSummary" size="large" />
+                    <p>
+                      {item.transactionTypeLabel} {" Invoice No. "}{" "}
+                      {item.invoiceNo} Payment
+                    </p>
+                  </div>
 
-              <div className="payment-header-two">
-                <div className="paymentDetailPageamount">
-                  <p>
-                    Open <span>USD 300,523.15</span>
-                  </p>
+                  <div className="payment-header-two">
+                    <div className="paymentDetailPageamount">
+                      <p>
+                        Open <span>{item.invoiceBalance}</span>
+                      </p>
 
-                  <p>
-                    Total <span>USD 300,523.15</span>
-                  </p>
+                      <p>
+                        Total <span>{item.totalAmount}</span>
+                      </p>
+                    </div>
+                    <div
+                      data-testid="open-payment-block"
+                      className="header-chevron-icon"
+                      onClick={() => {
+                        onChevronClick(item.id);
+                      }}
+                    >
+                      <Icon
+                        color="#fff"
+                        icon={
+                          multiplePaymentId.includes(item.id)
+                            ? "chevronUp"
+                            : "chevronDown"
+                        }
+                        size="large"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div
-                  data-testid="open-payment-block"
-                  className="header-chevron-icon"
-                  onClick={() => {
-                    onChevronClick();
-                  }}
-                >
-                  <Icon
-                    color="#fff"
-                    icon={
-                      showPaymentBlock === true ? "chevronUp" : "chevronDown"
-                    }
-                    size="large"
-                  />
-                </div>
+
+                <p>QBO No. 730</p>
               </div>
             </div>
 
-            <p>QBO No. 730</p>
-          </div>
-        </div>
-
-        {showPaymentBlock && (
-          <div className="paaymentInstallmetOuterContainer">
-            {multiPaymentBlocks?.map((item: any, i: any) => {
-              return (
-                <div
-                  className={
-                    i == 0
-                      ? "paymentInstallmentContainer"
-                      : "paymentInstallmentContainer border-line"
-                  }
-                >
-                  <div
-                    className={
-                      i == 0
-                        ? "paymentPageTitleHeader"
-                        : "paymentPageTitleHeaderNoTitle"
-                    }
-                  >
-                    {i == 0 ? <p>Payment Details</p> : <></>}
-                    {i == 0 ? (
-                      <></>
-                    ) : (
-                      <div className="paymentPageEdit">
-                        <Button
-                          className="secondary-btn medium"
-                          icon={{
-                            color: "#526FD6",
-                            icon: "trash",
-                            size: "medium",
-                          }}
-                          label="Delete Item"
-                          handleOnClick={() => removePaymentBlock(item)}
-                        />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="paymentInstallmentUpperBlock">
-                    <div className="paymentInstallmentDatepicker">
-                      <DatePicker label="Payment Date" required />
-                    </div>
-
-                    <div className="paymentInstallmentContainerDropdowns">
-                      <Dropdown
-                        handleDropdownClick={(b: boolean) => {
-                          setIsCurrencyDropdownOpen(b);
-                          setIsLocationDropdownOpen(false);
-                          setIsClassDropdownOpen(false);
-                          setIsBankDropdownOpen(false);
-                          setIsPaymentMethodDropdownOpen(false);
-                          setToggleState(i);
-                        }}
-                        isOpen={
-                          toggleState == i ? isCurrencyDropdownOpen : false
+            {multiplePaymentId.includes(item?.id) && (
+              <div className="paaymentInstallmetOuterContainer">
+                {multiPaymentBlocks?.map((item: any, i: any) => {
+                  return (
+                    <div
+                      className={
+                        i == 0
+                          ? "paymentInstallmentContainer"
+                          : "paymentInstallmentContainer border-line"
+                      }
+                    >
+                      <div
+                        className={
+                          i == 0
+                            ? "paymentPageTitleHeader"
+                            : "paymentPageTitleHeaderNoTitle"
                         }
-                        options={dropdownOptions}
-                        title="Currency"
-                      />
-                    </div>
-
-                    <div className="paymentInstallmentContainerDropdowns">
-                      <Dropdown
-                        handleDropdownClick={(b: boolean) => {
-                          setIsLocationDropdownOpen(b);
-                          setIsCurrencyDropdownOpen(false);
-                          setIsClassDropdownOpen(false);
-                          setIsBankDropdownOpen(false);
-                          setIsPaymentMethodDropdownOpen(false);
-                          setToggleState(i);
-                        }}
-                        isOpen={
-                          toggleState == i ? isLocationDropdownOpen : false
-                        }
-                        options={dropdownOptions}
-                        title="Location"
-                      />
-                    </div>
-
-                    <div className="paymentInstallmentContainerDropdowns">
-                      <Dropdown
-                        handleDropdownClick={(b: boolean) => {
-                          setIsClassDropdownOpen(b);
-                          setIsCurrencyDropdownOpen(false);
-                          setIsLocationDropdownOpen(false);
-                          setIsBankDropdownOpen(false);
-                          setIsPaymentMethodDropdownOpen(false);
-                          setToggleState(i);
-                        }}
-                        isOpen={toggleState == i ? isClassDropdownOpen : false}
-                        options={dropdownOptions}
-                        title="Reference No"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="paymentInstallmentLowerBlock">
-                    <div className="paymentInnerLowerBlock">
-                      <div className="paymentInstallmentContainerDropdowns">
-                        <Dropdown
-                          handleDropdownClick={(b: boolean) => {
-                            setIsBankDropdownOpen(b);
-                            setIsCurrencyDropdownOpen(false);
-                            setIsLocationDropdownOpen(false);
-                            setIsClassDropdownOpen(false);
-                            setIsPaymentMethodDropdownOpen(false);
-                            setToggleState(i);
-                          }}
-                          isOpen={toggleState == i ? isBankDropdownOpen : false}
-                          options={dropdownOptions}
-                          title="Deposited to bank"
-                        />
+                      >
+                        {i == 0 ? <p>Payment Details</p> : <></>}
+                        {i == 0 ? (
+                          <></>
+                        ) : (
+                          <div className="paymentPageEdit">
+                            <Button
+                              className="secondary-btn medium"
+                              icon={{
+                                color: "#526FD6",
+                                icon: "trash",
+                                size: "medium",
+                              }}
+                              label="Delete Item"
+                              handleOnClick={() => removePaymentBlock(item)}
+                            />
+                          </div>
+                        )}
                       </div>
 
-                      <div className="paymentInstallmentContainerDropdowns">
-                        <Dropdown
-                          handleDropdownClick={(b: boolean) => {
-                            setIsPaymentMethodDropdownOpen(b);
-                            setIsCurrencyDropdownOpen(false);
-                            setIsLocationDropdownOpen(false);
-                            setIsClassDropdownOpen(false);
-                            setIsBankDropdownOpen(false);
-                            setToggleState(i);
-                          }}
-                          isOpen={
-                            toggleState == i
-                              ? isPaymentMethodDropdownOpen
-                              : false
-                          }
-                          options={dropdownOptions}
-                          title="Payment Method"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="PaymentPageTotalAmount">
-                      <p>Amount</p>
-                      <div className="amountPaymentPage">USD 300,523.15</div>
-                      {i == 0 && multiPaymentBlocks.length == 1 ? (
-                        <div className="fullAmountPaymentCheckbox">
-                          <Checkbox checked={true} label="Full Amount" />
+                      <div className="paymentInstallmentUpperBlock">
+                        <div className="paymentInstallmentDatepicker">
+                          <DatePicker
+                            label="Payment Date"
+                            handleDateChange={function (date: any) {
+                              console.log("date", date);
+                            }}
+                            required
+                          />
                         </div>
-                      ) : (
-                        <></>
-                      )}
+
+                        <div className="paymentInstallmentContainerDropdowns">
+                          <Dropdown
+                            handleDropdownClick={(b: boolean) => {
+                              setIsCurrencyDropdownOpen(b);
+                              setIsLocationDropdownOpen(false);
+                              setIsBankDropdownOpen(false);
+                              setIsPaymentMethodDropdownOpen(false);
+                              setToggleState(i);
+                            }}
+                            handleDropOptionClick={(item: any) => {
+                              handlePaymentDropOption(
+                                item,
+                                currencyOptions,
+                                setCurrencyOption,
+                                setIsCurrencyDropdownOpen
+                              );
+                            }}
+                            isOpen={
+                              toggleState == i ? isCurrencyDropdownOpen : false
+                            }
+                            options={currencyOptions}
+                            title="Currency"
+                          />
+                        </div>
+
+                        <div className="paymentInstallmentContainerDropdowns">
+                          <Dropdown
+                            handleDropdownClick={(b: boolean) => {
+                              setIsLocationDropdownOpen(b);
+                              setIsCurrencyDropdownOpen(false);
+                              setIsBankDropdownOpen(false);
+                              setIsPaymentMethodDropdownOpen(false);
+                              setToggleState(i);
+                            }}
+                            handleDropOptionClick={(item: any) => {
+                              handlePaymentDropOption(
+                                item,
+                                locationOptions,
+                                setLocationOption,
+                                setIsLocationDropdownOpen
+                              );
+                            }}
+                            isOpen={
+                              toggleState == i ? isLocationDropdownOpen : false
+                            }
+                            options={locationOptions}
+                            title="Location"
+                          />
+                        </div>
+
+                        <div className="paymentInstallmentContainerDropdowns">
+                          <div className="referenceNoInput">
+                            <span>Reference No</span>
+                            <input
+                              value={referenceNo}
+                              name="Reference No"
+                              type="text"
+                              placeholder="Enter reference No"
+                              onChange={(e) => {
+                                setReferenceNo(e.target.value);
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="paymentInstallmentLowerBlock">
+                        <div className="paymentInnerLowerBlock">
+                          <div className="paymentInstallmentContainerDropdowns">
+                            <Dropdown
+                              handleDropdownClick={(b: boolean) => {
+                                setIsBankDropdownOpen(b);
+                                setIsCurrencyDropdownOpen(false);
+                                setIsLocationDropdownOpen(false);
+                                setIsPaymentMethodDropdownOpen(false);
+                                setToggleState(i);
+                              }}
+                              handleDropOptionClick={(item: any) => {
+                                handlePaymentDropOption(
+                                  item,
+                                  bankToDepositOptions,
+                                  setBankToDepositOption,
+                                  setIsBankDropdownOpen
+                                );
+                              }}
+                              isOpen={
+                                toggleState == i ? isBankDropdownOpen : false
+                              }
+                              options={bankToDepositOptions}
+                              title="Deposited to bank"
+                            />
+                          </div>
+                          <div className="paymentInstallmentContainerDropdowns">
+                            <Dropdown
+                              handleDropdownClick={(b: boolean) => {
+                                setIsPaymentMethodDropdownOpen(b);
+                                setIsCurrencyDropdownOpen(false);
+                                setIsLocationDropdownOpen(false);
+                                setIsBankDropdownOpen(false);
+                                setToggleState(i);
+                              }}
+                              handleDropOptionClick={(item: any) => {
+                                handlePaymentDropOption(
+                                  item,
+                                  paymentMethodOptions,
+                                  setPaymentMethodOption,
+                                  setIsPaymentMethodDropdownOpen
+                                );
+                              }}
+                              isOpen={
+                                toggleState == i
+                                  ? isPaymentMethodDropdownOpen
+                                  : false
+                              }
+                              options={paymentMethodOptions}
+                              title="Payment Method"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="PaymentPageTotalAmount">
+                          <p>Amount</p>
+                          <div className="amountPaymentPage">
+                            USD 300,523.15
+                          </div>
+                          {i == 0 && multiPaymentBlocks.length == 1 ? (
+                            <div className="fullAmountPaymentCheckbox">
+                              <Checkbox checked={true} label="Full Amount" />
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </div>
+                      </div>
                     </div>
+                  );
+                })}
+
+                <div className="addPaymentInstallmentButton">
+                  <div
+                    className="addPaymentInstallmentIcon"
+                    onClick={() => addPaymentBlocks()}
+                  >
+                    <span>
+                      <Icon
+                        icon="add"
+                        size="small"
+                        width="20"
+                        height="20"
+                        color="white"
+                        style={{ margin: `0 4px 0 0` }}
+                      />
+                    </span>
+                    Add payment Installment
                   </div>
                 </div>
-              );
-            })}
-
-            <div className="addPaymentInstallmentButton">
-              <div
-                className="addPaymentInstallmentIcon"
-                onClick={() => addPaymentBlocks()}
-              >
-                <span>
-                  <Icon
-                    icon="add"
-                    size="small"
-                    width="20"
-                    height="20"
-                    color="white"
-                    style={{ margin: `0 4px 0 0` }}
-                  />
-                </span>
-                Add payment Installment
               </div>
-            </div>
+            )}
           </div>
-        )}
-      </div>
+        );
+      })}
 
       <div className="filesNotes">
         <NotesWidget
