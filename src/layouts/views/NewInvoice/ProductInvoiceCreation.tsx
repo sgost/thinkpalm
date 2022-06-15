@@ -185,7 +185,7 @@ const ProductInvoiceCreation = ({
               <div id="container_main1" className="row">
                 {/* Customer */}
                 <div
-                  className=" col-md-4 input-component"
+                  className=" col-md-3 input-component"
                   data-testid="Date-picker"
                   onClick={() => localStorage.setItem("name_value", "date")}
                 >
@@ -204,7 +204,7 @@ const ProductInvoiceCreation = ({
                 {/* Product Service */}
 
                 <div
-                  className=" mandotary-field textcolor col-md-4 select-component"
+                  className=" mandotary-field textcolor col-md-3 select-component"
                   onClick={() => {
                     localStorage.setItem("name_value", "product");
                     setOpen(true);
@@ -264,7 +264,7 @@ const ProductInvoiceCreation = ({
 
                 {/* Description */}
 
-                <div className=" col-md-4 input-component">
+                <div className=" col-md-3 input-component">
                   <span id="desc_label">Description</span>
                   <input
                     type="text"
@@ -282,7 +282,7 @@ const ProductInvoiceCreation = ({
               <div id="container_main2" className="row">
                 {/* Country Service */}
                 <div
-                  className="dropdownP mandotary-field textcolor col-md-4 input-component"
+                  className=" mandotary-field textcolor col-md-3 input-component"
                   data-testid="Country_name"
                   onClick={() => {
                     localStorage.setItem("name_value", "country");
@@ -337,7 +337,7 @@ const ProductInvoiceCreation = ({
                     }
                   />
                 </div>
-                <div className="dropdownCount col-md-4 input-component">
+                <div className=" col-md-3 input-component uantity_mount">
                   <div id="count_tags">
                     <span>
                       Quantity <span style={{ color: "red" }}>*</span>

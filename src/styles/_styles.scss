@@ -124,8 +124,10 @@
   }
   .new_Invoice_itme_summary{
     #container_main1{
-      .input-component,.select-component{
-        padding: 0;
+      .a-dpicker__container{
+        input{
+          width: -webkit-fill-available;
+        }
       }
     }
   }
