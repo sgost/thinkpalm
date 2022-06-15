@@ -140,7 +140,7 @@ export default function InvoiceListing() {
     {
       isSelected: false,
       label: "Declined",
-      value: 10,
+      value: 12,
     },
   ];
   const [status, setStatus] = useState(statusOptions);
