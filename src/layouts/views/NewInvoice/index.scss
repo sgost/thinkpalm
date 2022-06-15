@@ -26,13 +26,16 @@
         }
 
         .dropdown {
-            .a-dropdown.isOpen {
+            .a-dropdown{
+                &.isOpen {
                 svg {
                     width: 2.2222rem;
                     height: 2.2222rem;
                     top: 0.833rem;
                 }
             }
+        }
+
         }
 
         .Stepper-buttons {
@@ -93,7 +96,9 @@
     .newinvoice-container .dropdowns {
         z-index: 1;
     }
-
+    .a-dropdown{
+        z-index: unset;
+    }
     .a-dropdown__option.open,
     .a-dropdown__option__container {
         z-index: 9999999 !important;

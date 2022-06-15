@@ -298,11 +298,11 @@ const NewInvoiceCreation = ({
         <Loader />
       ) : (
         <div>
-          <div className="newinvoice-container">
+          <div className="newinvoice-container new_Invoice_itme">
             <h3>New Invoice</h3>
 
-            <div className="dropdownRow">
-              <div className="dropdown">
+            <div className="row">
+              <div className="col-md-4 select-component">
                 <Dropdown
                   handleDropOptionClick={(item: any) => {
                     handleDropOption(
@@ -330,7 +330,7 @@ const NewInvoiceCreation = ({
                 />
               </div>
 
-              <div className="dropdown">
+              <div className=" col-md-4 select-component">
                 <Dropdown
                   isDisabled={!stepperOneData?.type}
                   handleDropOptionClick={(item: any) => {
@@ -366,29 +366,32 @@ const NewInvoiceCreation = ({
             </div>
 
             {stepperOneData?.type !== "Payroll" && (
-              <div className="dpStepContainer">
-                <DatePicker
-                  handleDateChange={function (date: any) {
-                    console.log("date", date);
-                    setInvoiceDate(date);
-                  }}
-                  label="Invoice Date"
-                  minDate={new Date()}
-                  required={true}
-                  placeholderText={
-                    invoiceDate
-                      ? moment(invoiceDate).format("DD/MMM/YYYY")
-                      : "Please Select"
-                  }
-                />
+              <div className="dpStepContainer row">
+                <div className="col-md-4 input-component">
+                  <DatePicker
+                    handleDateChange={function (date: any) {
+                      console.log("date", date);
+                      setInvoiceDate(date);
+                    }}
+                    label="Invoice Date"
+                    minDate={new Date()}
+                    required={true}
+                    placeholderText={
+                      invoiceDate
+                        ? moment(invoiceDate).format("DD/MMM/YYYY")
+                        : "Please Select"
+                    }
+                  
+                  />
+                </div>
               </div>
             )}
 
-            <div className="dropdownRow">
+            <div className="row">
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
-                  <div className="dropdown">
+                  <div className="dropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -424,7 +427,7 @@ const NewInvoiceCreation = ({
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
-                  <div className="dropdown">
+                  <div className="dropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -447,11 +450,11 @@ const NewInvoiceCreation = ({
                 )}
             </div>
 
-            <div className="dropdownRow">
+            <div className="row">
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
-                  <div className="lastDropdown">
+                  <div className="lastDropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -476,7 +479,7 @@ const NewInvoiceCreation = ({
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
-                  <div className="lastDropdown">
+                  <div className="lastDropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -502,8 +505,8 @@ const NewInvoiceCreation = ({
             {stepperOneData?.type &&
               stepperOneData?.type !== "Payroll" &&
               stepperOneData?.type !== "Credit Memo" && (
-                <div className="dropdownRow">
-                  <div className="dropdown">
+                <div className="row">
+                  <div className="dropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -523,7 +526,7 @@ const NewInvoiceCreation = ({
                       search
                     />
                   </div>
-                  <div className="dropdown">
+                  <div className="dropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -546,39 +549,41 @@ const NewInvoiceCreation = ({
                 </div>
               )}
             {stepperOneData?.type === "Payroll" && (
-              <div className="dropdownC">
-                <Dropdown
-                  handleDropOptionClick={(item: any) => {
-                    handleDropOption(
-                      item,
-                      CountryOptions,
-                      setCountryOptions,
-                      setIsCountryOpen
-                    );
-                    setStepperOneData({
-                      ...stepperOneData,
-                      country: item.label,
-                      countryId: item.value,
-                    });
-                  }}
-                  handleDropdownClick={(b: boolean) => {
-                    setIsCountryOpen(b);
-                    setIsCustomerOpen(false);
-                    setIstypeOpen(false);
-                    setIsMonthOpen(false);
-                    setIsYearOpen(false);
-                  }}
-                  isOpen={isCountryOpen}
-                  options={CountryOptions}
-                  title={`Countries`}
-                />
+              <div className="row">
+                <div className="col-md-4 select-component">
+                  <Dropdown
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        CountryOptions,
+                        setCountryOptions,
+                        setIsCountryOpen
+                      );
+                      setStepperOneData({
+                        ...stepperOneData,
+                        country: item.label,
+                        countryId: item.value,
+                      });
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsCountryOpen(b);
+                      setIsCustomerOpen(false);
+                      setIstypeOpen(false);
+                      setIsMonthOpen(false);
+                      setIsYearOpen(false);
+                    }}
+                    isOpen={isCountryOpen}
+                    options={CountryOptions}
+                    title={`Countries`}
+                  />
+                </div>
               </div>
             )}
 
             {stepperOneData?.type === "Payroll" && (
-              <div className="monthYearContainer">
+              <div className="monthYearContainer row">
                 <div
-                  className="dropdown-margin"
+                  className="dropdown-margin col-lg-4 input-component"
                   onClick={() => {
                     setIsMonthOpen(!isMonthOpen);
                     setIsCustomerOpen(false);
@@ -619,7 +624,7 @@ const NewInvoiceCreation = ({
                 </div>
 
                 <div
-                  className="year-dropdown"
+                  className="year-dropdown col-lg-4 input-component"
                   onClick={() => {
                     setIsYearOpen(!isYearOpen);
                     setIsCustomerOpen(false);
