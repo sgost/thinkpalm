@@ -44,7 +44,12 @@
       }
     }
   }
-
+  .new_Invoice_itme{
+    .a-dropdown {
+      width: auto !important;
+    }
+  
+  }
   .a-dropdown {
     width: 17vw !important;
   }
@@ -230,7 +235,7 @@
   }
 
   .dropdown-margin {
-    margin-right: 2.5rem;
+    margin-right: 0;
     position: relative;
     cursor: pointer;
   }
@@ -238,7 +243,6 @@
   .year-dropdown {
     position: relative;
     cursor: pointer;
-    width: fit-content;
 
     .a-dpicker .react-datepicker__input-container input {
       width: 14vw;
