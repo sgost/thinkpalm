@@ -17,7 +17,7 @@ import { getDecodedToken } from "../getDecodedToken";
 import { getPermissions } from "../Comman/Utils/utils";
 
 export default function NotesWidget(props: any) {
-    const { notes, isClient, cid, id, setNotes, transactionType } = props;
+    const { notes, isClient, cid, id, setNotes, transactionType, status } = props;
     const [noteText, setNoteText] = useState("");
     const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
     const [isExportToQb, setIsExportToQb] = useState(false);
@@ -142,6 +142,7 @@ export default function NotesWidget(props: any) {
             {getPermissions(transactionType, "Publish") && <>
                 <div className="inpContinaer">
                     <textarea
+                        disabled={status === "Declined"}
                         maxLength={400}
                         value={noteText}
                         onChange={(e: any) => setNoteText(e.target.value)}

@@ -1842,6 +1842,7 @@ export default function InvoiceDetails() {
           <>
             <div className="filesNotes">
               <NotesWidget
+                status={status}
                 notes={notes}
                 setNotes={setNotes}
                 isClient={isClient}
@@ -1851,6 +1852,7 @@ export default function InvoiceDetails() {
               ></NotesWidget>
 
               <FileUploadWidget
+                status={status}
                 documents={documents}
                 setDocuments={setDocuments}
                 isClient={isClient}

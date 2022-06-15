@@ -729,6 +729,7 @@ export default function CreditMemoSummary(props: any) {
         )}
       <div className="filesNotes">
         <NotesWidget
+          status={status}
           notes={notes}
           setNotes={setNotes}
           isClient={isClient}
@@ -737,6 +738,7 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></NotesWidget>
         <FileUploadWidget
+          status={status}
           documents={documents}
           setDocuments={setDocuments}
           isClient={isClient}
