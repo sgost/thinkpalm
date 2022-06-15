@@ -577,7 +577,7 @@ export default function InvoiceDetails() {
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(apiData?.data?.invoice?.submissionDate).format(
+      model.invoiceDate = moment( state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
         "DD MMM YYYY"
       );
       model.invoiceApproval = moment(
@@ -1846,6 +1846,7 @@ export default function InvoiceDetails() {
           <>
             <div className="filesNotes">
               <NotesWidget
+                status={status}
                 notes={notes}
                 setNotes={setNotes}
                 isClient={isClient}
@@ -1855,6 +1856,7 @@ export default function InvoiceDetails() {
               ></NotesWidget>
 
               <FileUploadWidget
+                status={status}
                 documents={documents}
                 setDocuments={setDocuments}
                 isClient={isClient}
