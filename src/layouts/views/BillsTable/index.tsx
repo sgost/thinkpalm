@@ -1,5 +1,6 @@
 import { Table, Modal, Cards, Icon, FileHandler, Button, Banner } from 'atlasuikit';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { amountWithCommas, customDate, formatFileSize, formatTimePeriod, ToastContainer } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
@@ -15,6 +16,10 @@ export const getFlagURL = (code: string, size?: string) => {
 };
 
 export default function BillsTable(props: any) {
+    const currentOrgId: any = localStorage.getItem("current-org-id");
+    const accessToken: any = localStorage.getItem("accessToken"); 
+    const decoded: any = jwt_decode(accessToken);
+    var listingRole = decoded.Permissions[currentOrgId].ContractorPay.Bill.includes("ElementsGeneralList");
     const customerId = props.customerId;
     const invoiceId = props.invoiceId;
     const total = props.totalAmount;
@@ -22,7 +27,8 @@ export default function BillsTable(props: any) {
     const rejectEndPoint = "bill/reject"
     const moveToNextEndPoint = "bill/removeinvoice"
     const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID="
-    const endpoint = "customer/bills?"
+    const customerEndpoint = "customer/bills?";
+    const elementsEndpoint = "elements/bills?";
     const TableColumns = {
         columns: [
             { header: "Bill Reference No.", isDefault: true, key: "referenceNo" },
@@ -105,10 +111,10 @@ export default function BillsTable(props: any) {
     const openBillDetailModal = (rowData: any) => {
         setOpenModal(!openModal);
         axios
-            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, {
+            .get(basecontractorURL + (listingRole ? elementsEndpoint : customerEndpoint) + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, {
                 headers: {
                     accept: "text/plain",
-                    customerid: customerId,
+                    customerid: currentOrgId || "" ,
                     authorization: `Bearer ${localStorage.accessToken}`
                 }
             })
