@@ -121,6 +121,17 @@
       }
     }
   }
+  .new_Invoice_itme_summary{
+    .a-dpicker__container {
+      width: 100%;
+    }
+    .a-dropdown{
+      width: 100% !important;
+    }
+    #description_input{
+      width: 100% !important;
+    }
+  }
   .dpStepContainer {
     .a-dpicker .react-datepicker__input-container input {
       width: 15.2rem;
