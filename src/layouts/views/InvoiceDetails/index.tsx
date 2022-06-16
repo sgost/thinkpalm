@@ -1423,9 +1423,9 @@ export default function InvoiceDetails() {
             />
           )}
 
-          {status === "Open" &&
-            missTransType !== 1 &&
-            permission?.InvoiceDetails.includes("Send") && (
+          {((status === "Declined") || (status === "Open") &&
+            (missTransType !== 1) &&
+            (permission?.InvoiceDetails.includes("Send"))) && (
               <Button
                 data-testid="review-button"
                 className="primary-blue small"
