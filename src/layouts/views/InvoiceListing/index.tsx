@@ -200,6 +200,11 @@ export default function InvoiceListing() {
         isDefault: true,
         key: "exportToQB",
       },
+      // {
+      //   header: "Action",
+      //   isDefault: true,
+      //   key: "action",
+      // },
     ],
     data: [],
   });
@@ -411,6 +416,13 @@ export default function InvoiceListing() {
             value: "Not Exported",
             color: "#767676",
           },
+          // action: {
+          //   icon: {
+          //     icon: 'trash',
+          //     color: '#E32C15',
+          //     size: 'large',
+          //   }
+          // }
         });
       });
 
@@ -444,7 +456,7 @@ export default function InvoiceListing() {
           e.invoiceNo.includes(searchText)
         ),
       };
-      if (searchText && filteredData.data.length) {
+      if ((searchText) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -458,7 +470,7 @@ export default function InvoiceListing() {
             e.customerName.toLowerCase().includes(searchText.toLowerCase())
         ),
       };
-      if (searchText && filteredData.data.length) {
+      if ((searchText) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -641,6 +653,10 @@ export default function InvoiceListing() {
         console.log("error", e);
       });
   };
+
+
+  console.log('searchedTableData', searchedTableData)
+  console.log('customerType', customerType)
 
   return (
     <>

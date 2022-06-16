@@ -416,41 +416,41 @@ describe("Invoice details", () => {
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
 
-    const check1 = screen.getByTestId("check1");
-    fireEvent.click(check1);
+    // const check1 = screen.getByTestId("check1");
+    // fireEvent.click(check1);
 
-    const text1 = screen.getByText(/Employee Salary is not correct/);
-    fireEvent.click(text1);
+    // const text1 = screen.getByText(/Employee Salary is not correct/);
+    // fireEvent.click(text1);
 
-    const check2 = screen.getByTestId("check2");
-    fireEvent.click(check2);
+    // const check2 = screen.getByTestId("check2");
+    // fireEvent.click(check2);
 
-    const text2 = screen.getByText(/Benefit Amount is not correct/);
-    fireEvent.click(text2);
+    // const text2 = screen.getByText(/Benefit Amount is not correct/);
+    // fireEvent.click(text2);
 
-    const check3 = screen.getByTestId("check3");
-    fireEvent.click(check3);
+    // const check3 = screen.getByTestId("check3");
+    // fireEvent.click(check3);
 
-    const text3 = screen.getByText(/One-off pay items amount to be updated/);
-    fireEvent.click(text3);
+    // const text3 = screen.getByText(/One-off pay items amount to be updated/);
+    // fireEvent.click(text3);
 
-    const check4 = screen.getByTestId("check4");
-    fireEvent.click(check4);
+    // const check4 = screen.getByTestId("check4");
+    // fireEvent.click(check4);
 
-    const text4 = screen.getByText(/Termination/);
-    fireEvent.click(text4);
+    // const text4 = screen.getByText(/Termination/);
+    // fireEvent.click(text4);
 
-    const check5 = screen.getByTestId("check5");
-    fireEvent.click(check5);
+    // const check5 = screen.getByTestId("check5");
+    // fireEvent.click(check5);
 
-    const text5 = screen.getByText(/Invoice Calculation Error/);
-    fireEvent.click(text5);
+    // const text5 = screen.getByText(/Invoice Calculation Error/);
+    // fireEvent.click(text5);
 
-    const check6 = screen.getByTestId("check6");
-    fireEvent.click(check6);
+    // const check6 = screen.getByTestId("check6");
+    // fireEvent.click(check6);
 
-    const text6 = screen.getByText(/Fee Issue/);
-    fireEvent.click(text6);
+    // const text6 = screen.getByText(/Fee Issue/);
+    // fireEvent.click(text6);
 
     const textarea = await waitFor(() =>
       screen.getByPlaceholderText("Please Enter a Reason")

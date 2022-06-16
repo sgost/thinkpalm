@@ -139,12 +139,12 @@ export default function InvoiceDetails() {
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
 
-  const [employeeSalary, setEmployeeSalary] = useState(false);
-  const [benefit, setBenefit] = useState(false);
-  const [amountUpdate, setAmountUpdate] = useState(false);
-  const [termination, setTermination] = useState(false);
-  const [invoiceCalc, setinvoiceCalc] = useState(false);
-  const [feeIssue, setfeeIssue] = useState(false);
+  // const [employeeSalary, setEmployeeSalary] = useState(false);
+  // const [benefit, setBenefit] = useState(false);
+  // const [amountUpdate, setAmountUpdate] = useState(false);
+  // const [termination, setTermination] = useState(false);
+  // const [invoiceCalc, setinvoiceCalc] = useState(false);
+  // const [feeIssue, setfeeIssue] = useState(false);
 
   const [poNumber, setPoNumber] = useState("");
   const [invoiceDate, setInvoiceDate] = useState<any>("");
@@ -1085,6 +1085,7 @@ export default function InvoiceDetails() {
         console.log(error);
       });
   };
+
   const handleEditSave = () => {
     axios({
       method: "PUT",
@@ -1195,19 +1196,21 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          <div className="saveBtnContainer">
-            <Button
-              handleOnClick={() => {
-              }}
-              className="secondary-btn small"
-              icon={{
-                color: "#526FD6",
-                icon: "autorenew",
-                size: "small",
-              }}
-              label="Re-Calculate"
-            />
-          </div>
+          {(((status === 'AR Review') || (status === 'Declined')) && missTransType === 1) &&
+            <div className="saveBtnContainer">
+              <Button
+                handleOnClick={() => {
+                }}
+                className="secondary-btn small"
+                icon={{
+                  color: "#526FD6",
+                  icon: "autorenew",
+                  size: "small",
+                }}
+                label="Re-Calculate"
+              />
+            </div>
+          }
 
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
@@ -1391,8 +1394,8 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {status === "AR Review" &&
-            missTransType == 1 &&
+          {((status === "AR Review") || (status === "Declined")) &&
+            missTransType === 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
                 className="primary-blue small"
@@ -1437,7 +1440,7 @@ export default function InvoiceDetails() {
             />
           )}
 
-          {((status === "Declined") || (status === "Open") &&
+          {(((status === "Declined") || (status === "Open")) &&
             (missTransType !== 1) &&
             (permission?.InvoiceDetails.includes("Send"))) && (
               <Button
@@ -2006,7 +2009,7 @@ export default function InvoiceDetails() {
               <p>{getTransactionLabel()}.</p>
             </div>
 
-            <div className="dec_check_main">
+            {/* <div className="dec_check_main">
               <div className="dec_check_wrapp">
                 <Checkbox
                   data-testid="check1"
@@ -2073,7 +2076,7 @@ export default function InvoiceDetails() {
                 />
                 <label className="dec_check_label" onClick={() => setfeeIssue(!feeIssue)}>Fee Issue</label>
               </div>
-            </div>
+            </div> */}
 
             <div className="text-invoice-comment">
               <label>
