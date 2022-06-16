@@ -22,6 +22,7 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  calculateFun,
   getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
@@ -1107,6 +1108,22 @@ export default function InvoiceDetails() {
     });
   };
 
+
+  const reCalculate = () => {
+    axios
+      .put(calculateFun(id), {
+        headers: getHeaders(tempToken, cid, "false"),
+      })
+      .then((resp: any) => {
+        console.log('respresp', resp)
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
+
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1198,6 +1215,7 @@ export default function InvoiceDetails() {
           <div className="saveBtnContainer">
             <Button
               handleOnClick={() => {
+                reCalculate()
               }}
               className="secondary-btn small"
               icon={{
