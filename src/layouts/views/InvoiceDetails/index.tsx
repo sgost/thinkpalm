@@ -139,6 +139,13 @@ export default function InvoiceDetails() {
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
 
+  const [employeeSalary, setEmployeeSalary] = useState(false);
+  const [benefit, setBenefit] = useState(false);
+  const [amountUpdate, setAmountUpdate] = useState(false);
+  const [termination, setTermination] = useState(false);
+  const [invoiceCalc, setinvoiceCalc] = useState(false);
+  const [feeIssue, setfeeIssue] = useState(false);
+
   const [poNumber, setPoNumber] = useState("");
   const [invoiceDate, setInvoiceDate] = useState<any>("");
   const [paymentDue, setPaymentDue] = useState<any>("");
@@ -577,7 +584,7 @@ export default function InvoiceDetails() {
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment( state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
+      model.invoiceDate = moment(state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
         "DD MMM YYYY"
       );
       model.invoiceApproval = moment(
@@ -1433,6 +1440,20 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
+
+          {/* <Button
+            data-testid="approve-button"
+            handleOnClick={() => {
+              handleApproveInvoice(4);
+            }}
+            className="primary-blue small"
+            icon={{
+              color: "#fff",
+              icon: "checkMark",
+              size: "medium",
+            }}
+            label="Approve Invoice"
+          /> */}
         </div>
       </div>
 
@@ -1968,7 +1989,76 @@ export default function InvoiceDetails() {
               <p>Please add a comment to indicate your reasons to decline</p>
             </div>
             <div className="text-invoive-no">
-              <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
+              <p>{getTransactionLabel()}.</p>
+            </div>
+
+            <div className="dec_check_main">
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check1"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setEmployeeSalary(e.target.checked);
+                  }}
+                  checked={employeeSalary}
+                />
+                <label className="dec_check_label" onClick={() => setEmployeeSalary(!employeeSalary)}>Employee Salary is not correct</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check2"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setBenefit(e.target.checked);
+                  }}
+                  checked={benefit}
+                />
+                <label className="dec_check_label" onClick={() => setBenefit(!benefit)}>Benefit Amount is not correct</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check3"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setAmountUpdate(e.target.checked);
+                  }}
+                  checked={amountUpdate}
+                />
+                <label className="dec_check_label" onClick={() => setAmountUpdate(!amountUpdate)}>One-off pay items amount to be updated</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check4"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setTermination(e.target.checked);
+                  }}
+                  checked={termination}
+                />
+                <label className="dec_check_label" onClick={() => setTermination(!termination)}>Termination</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check5"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setinvoiceCalc(e.target.checked);
+                  }}
+                  checked={invoiceCalc}
+                />
+                <label className="dec_check_label" onClick={() => setinvoiceCalc(!invoiceCalc)}>Invoice Calculation Error</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check6"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setfeeIssue(e.target.checked);
+                  }}
+                  checked={feeIssue}
+                />
+                <label className="dec_check_label" onClick={() => setfeeIssue(!feeIssue)}>Fee Issue</label>
+              </div>
             </div>
 
             <div className="text-invoice-comment">

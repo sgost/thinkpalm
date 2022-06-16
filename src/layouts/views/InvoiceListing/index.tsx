@@ -37,6 +37,14 @@ export default function InvoiceListing() {
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
   const [customerType, setCustomerType] = useState("");
+  const [customerData, setCustomerData] = useState([
+    {
+      isSelected: false,
+      label: "",
+      value: "",
+    }
+  ]);
+  const [customerOpen, setCustomerOpen] = useState(false);
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
     useState<boolean>(false);
 
@@ -271,6 +279,14 @@ export default function InvoiceListing() {
 
   const clearFilter = () => {
     setTransactionTypes("");
+    setCustomerType("");
+    setCustomerData([
+      {
+        isSelected: false,
+        label: "",
+        value: "",
+      }
+    ]);
     setStatusType("");
     setDateTo("");
     setDateFrom("");
@@ -284,8 +300,8 @@ export default function InvoiceListing() {
       status: "",
     });
     setStatus(statusOptions);
-
     setTypes(typeOptions);
+    getCustomerDropdownOptions();
   };
 
   useEffect(() => {
@@ -405,7 +421,7 @@ export default function InvoiceListing() {
       }
     }
 
-    if (transactionTypes || statusType || dateFrom || dateTo) {
+    if (customerType || transactionTypes || statusType || dateFrom || dateTo) {
       setIsClearFilter(true);
     } else {
       setIsClearFilter(false);
@@ -599,15 +615,6 @@ export default function InvoiceListing() {
   useEffect(() => {
     getCustomerDropdownOptions();
   }, [])
-
-  const [customerData, setCustomerData] = useState([
-    {
-      isSelected: false,
-      label: "",
-      value: "",
-    }
-  ]);
-  const [customerOpen, setCustomerOpen] = useState(false);
 
   const getCustomerDropdownOptions = () => {
     let allCustomerapi = urls.customers;

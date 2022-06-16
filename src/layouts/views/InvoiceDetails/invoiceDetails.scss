@@ -1055,6 +1055,33 @@
         margin-top: -0.722rem;
       }
 
+      .a-checkbox-wrapper label {
+        display: none;
+      }
+
+      .dec_check_main {
+        margin-top: 1.3rem;
+      }
+
+      .dec_check_wrapp {
+        display: flex;
+      }
+
+      #dec_check_wrapp #sampleCheckbox {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .dec_check_wrapp .dec_check_label {
+        display: flex;
+        margin: 0 0 0 1rem;
+        font-size: 1rem;
+        line-height: 1rem;
+        color: #3E3E3E;
+        cursor: pointer;
+        font-weight: 400;
+      }
+
       .text-invoice-comment {
         display: flex;
         flex-direction: column;
