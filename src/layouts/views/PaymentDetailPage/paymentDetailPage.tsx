@@ -52,18 +52,8 @@ const PaymentDetailPage = () => {
       parentId: e.id,
     }))
   );
-  // const [multiPaymentBlocks, setMultiPaymentBlocks] = useState([
-  //   {
-  //     id: Math.random(),
-  //     paymentDate: "",
-  //     currency: "",
-  //     location: "",
-  //     referenceNo: "",
-  //     depositedBank: "",
-  //     paymentMethod: "",
-  //     amount: "",
-  //   },
-  // ]);
+
+  const [invoiceDetails, setInvoiceDetails] = useState<Array<any>>([]);
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -535,7 +525,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div>
+                            <div className="paymentInstallmentContainerDropdowns">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
                                   setIsCurrencyDropdownOpen(b);
@@ -571,7 +561,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div>
+                            <div className="paymentInstallmentContainerDropdowns">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
                                   setIsLocationDropdownOpen(b);
@@ -637,7 +627,7 @@ const PaymentDetailPage = () => {
 
                           <div className="paymentInstallmentLowerBlock">
                             <div className="paymentInnerLowerBlock">
-                              <div>
+                              <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
                                     setIsBankDropdownOpen(b);
@@ -672,7 +662,7 @@ const PaymentDetailPage = () => {
                                   title="Deposited to bank"
                                 />
                               </div>
-                              <div>
+                              <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
                                     setIsPaymentMethodDropdownOpen(b);
@@ -712,7 +702,7 @@ const PaymentDetailPage = () => {
                             <div className="PaymentPageTotalAmount">
                               <p>Amount</p>
                               <div className="amountPaymentPage">
-                                USD 300,523.15
+                                {invoiceItem.totalAmount}
                               </div>
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
