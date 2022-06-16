@@ -1189,22 +1189,6 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          {(((status === 'AR Review') || (status === 'Declined')) && missTransType === 1) &&
-            <div className="saveBtnContainer">
-              <Button
-                handleOnClick={() => {
-                }}
-                className="secondary-btn small"
-                icon={{
-                  color: "#526FD6",
-                  icon: "autorenew",
-                  size: "small",
-                }}
-                label="Re-Calculate"
-              />
-            </div>
-          }
-
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
               <div className="saveBtnContainer">
