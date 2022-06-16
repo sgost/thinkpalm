@@ -1440,6 +1440,20 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
+
+          {/* <Button
+            data-testid="approve-button"
+            handleOnClick={() => {
+              handleApproveInvoice(4);
+            }}
+            className="primary-blue small"
+            icon={{
+              color: "#fff",
+              icon: "checkMark",
+              size: "medium",
+            }}
+            label="Approve Invoice"
+          /> */}
         </div>
       </div>
 
@@ -1981,6 +1995,7 @@ export default function InvoiceDetails() {
             <div className="dec_check_main">
               <div className="dec_check_wrapp">
                 <Checkbox
+                  data-testid="check1"
                   id="sampleCheckbox"
                   onChange={function noRefCheck(e: any) {
                     setEmployeeSalary(e.target.checked);
@@ -1991,6 +2006,7 @@ export default function InvoiceDetails() {
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
+                  data-testid="check2"
                   id="sampleCheckbox"
                   onChange={function noRefCheck(e: any) {
                     setBenefit(e.target.checked);
@@ -2001,6 +2017,7 @@ export default function InvoiceDetails() {
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
+                  data-testid="check3"
                   id="sampleCheckbox"
                   onChange={function noRefCheck(e: any) {
                     setAmountUpdate(e.target.checked);
@@ -2011,6 +2028,7 @@ export default function InvoiceDetails() {
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
+                  data-testid="check4"
                   id="sampleCheckbox"
                   onChange={function noRefCheck(e: any) {
                     setTermination(e.target.checked);
@@ -2021,6 +2039,7 @@ export default function InvoiceDetails() {
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
+                  data-testid="check5"
                   id="sampleCheckbox"
                   onChange={function noRefCheck(e: any) {
                     setinvoiceCalc(e.target.checked);
@@ -2031,6 +2050,7 @@ export default function InvoiceDetails() {
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
+                  data-testid="check6"
                   id="sampleCheckbox"
                   onChange={function noRefCheck(e: any) {
                     setfeeIssue(e.target.checked);
