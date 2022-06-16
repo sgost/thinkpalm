@@ -1214,7 +1214,7 @@ export default function InvoiceDetails() {
 
 
           {((status === "AR Review") || (status === "Declined")) &&
-            missTransType == 1 && (
+            missTransType == 1 && permission.Role == "FinanceAR" && (
               <div className="saveBtnContainer">
                 <Button
                   handleOnClick={() => {
