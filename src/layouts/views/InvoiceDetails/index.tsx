@@ -2203,8 +2203,8 @@ export default function InvoiceDetails() {
               </div>
               <div className="section-2">
                 <div className="col-3"></div>
-                <div className="col-9 misc-info">
-                  <div className="col-4">
+                <div className="col-6 misc-info">
+                  <div className="col-6">
                     <div className="misc-info__item">
                       <Icon color="#767676" icon="pound" size="medium" />
                       &nbsp;
@@ -2225,7 +2225,7 @@ export default function InvoiceDetails() {
                       </span>
                     </div>
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <div className="misc-info__item misc-info__item__2">
                       <Icon color="#767676" icon="location" size="medium" />
                       &nbsp;
