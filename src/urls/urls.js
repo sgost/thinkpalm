@@ -278,3 +278,10 @@ export const getEmployeeCompensationData = (employeeId) => {
 export const subscriptionLookup = () => {
   return baseURL + services.atlasSubscriptionService + `/Lookup/GetSubscriptionLookup`;
 };
+
+
+
+
+export const reCalculate = (invoiceId) => {
+  return baseURL + services.atlasIdgService + `/InvoiceData/recalculate/${invoiceId}`
+}

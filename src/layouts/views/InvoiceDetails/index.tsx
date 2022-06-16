@@ -1195,6 +1195,20 @@ export default function InvoiceDetails() {
             )}
           </div>
 
+          <div className="saveBtnContainer">
+            <Button
+              handleOnClick={() => {
+              }}
+              className="secondary-btn small"
+              icon={{
+                color: "#526FD6",
+                icon: "autorenew",
+                size: "small",
+              }}
+              label="Re-Calculate"
+            />
+          </div>
+
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
               <div className="saveBtnContainer">
@@ -2088,7 +2102,7 @@ export default function InvoiceDetails() {
               <Button
                 data-testid="decline-button-submit"
                 disabled={!inputValue}
-                label="Decline"
+                label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
                   const url = urls.declineInvoice;
