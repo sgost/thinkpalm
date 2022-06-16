@@ -499,7 +499,7 @@ export default function InvoiceDetails() {
         .then((response: any) => {
           if (response.status == 200) {
             const { data } = response.data;
-            if (data?.length > 0) {
+            if (data?.invoiceBills?.length > 0) {
               setBillTableData(response);
             } else {
               console.log("no data");
