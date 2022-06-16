@@ -302,7 +302,7 @@ const NewInvoiceCreation = ({
             <h3>New Invoice</h3>
 
             <div className="row">
-              <div className="col-md-4 select-component">
+              <div className="col-md-4 select-component type_dpStep">
                 <Dropdown
                   handleDropOptionClick={(item: any) => {
                     handleDropOption(
@@ -330,7 +330,7 @@ const NewInvoiceCreation = ({
                 />
               </div>
 
-              <div className=" col-md-4 select-component">
+              <div className=" col-md-4 select-component type_dpStep">
                 <Dropdown
                   isDisabled={!stepperOneData?.type}
                   handleDropOptionClick={(item: any) => {
