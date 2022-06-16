@@ -122,10 +122,19 @@
   .hide-text {
     @include d-none;
   }
+  .new_Invoice_itme_summary{
+    #container_main1{
+      .a-dpicker__container{
+        input{
+          width: -webkit-fill-available;
+        }
+      }
+    }
+  }
   .select-component, .input-component{
     margin-top: 1.1rem;
     margin-bottom: 1.5rem;
-    padding-right: 30px;
+    padding-right: 1.6667rem;
     position: relative;
   }
 }
