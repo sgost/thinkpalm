@@ -22,7 +22,7 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
-  calculateFun,
+  calculateInvoiceUrl,
   getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
@@ -1111,7 +1111,7 @@ export default function InvoiceDetails() {
 
   const reCalculate = () => {
     axios
-      .put(calculateFun(id), {
+      .post(calculateInvoiceUrl(id), {
         headers: getHeaders(tempToken, cid, "false"),
       })
       .then((resp: any) => {
@@ -1212,20 +1212,24 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          <div className="saveBtnContainer">
-            <Button
-              handleOnClick={() => {
-                reCalculate()
-              }}
-              className="secondary-btn small"
-              icon={{
-                color: "#526FD6",
-                icon: "autorenew",
-                size: "small",
-              }}
-              label="Re-Calculate"
-            />
-          </div>
+
+          {((status === "AR Review") || (status === "Declined")) &&
+            missTransType == 1 && (
+              <div className="saveBtnContainer">
+                <Button
+                  handleOnClick={() => {
+                    reCalculate()
+                  }}
+                  className="secondary-btn small"
+                  icon={{
+                    color: "#526FD6",
+                    icon: "autorenew",
+                    size: "small",
+                  }}
+                  label="Re-Calculate"
+                />
+              </div>
+            )}
 
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (

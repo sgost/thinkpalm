@@ -282,6 +282,6 @@ export const subscriptionLookup = () => {
 
 
 
-export const reCalculate = (invoiceId) => {
+export const calculateInvoiceUrl = (invoiceId) => {
   return baseURL + services.atlasIdgService + `/InvoiceData/recalculate/${invoiceId}`
 }
