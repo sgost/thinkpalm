@@ -1391,7 +1391,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {status === "AR Review" &&
+          {((status === "AR Review") || (status === "Declined")) &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
