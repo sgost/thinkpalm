@@ -10,6 +10,7 @@ import {
   Logs,
   DatePicker,
   AvatarHandler,
+  ToastNotification
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -162,7 +163,10 @@ export default function InvoiceDetails() {
     ],
     data: [],
   });
-
+//Vaidehi Changes starts
+const [invoiceSaved, setInvoiceSavedValue] = useState("");
+const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+//Vaidehi Changes Ends
   useEffect(() => {
     if (logsData.length === 0) return;
     const splicedData: any = [...logsData].splice(0, viewLimit);
@@ -418,7 +422,7 @@ export default function InvoiceDetails() {
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
               }
-            })
+           })
             .catch((res) => {
               console.log(res);
               setIsErr(true);
@@ -1102,14 +1106,33 @@ export default function InvoiceDetails() {
           : topPanel.paymentDue,
         poNumber: poNumber ? poNumber : topPanel.poNumber,
       },
-    }).catch((err: any) => {
+    })
+    //vaidehi changes starts
+    .then((resp: any) => {
+      if (resp) {
+        setInvoiceSavedValue("Saved");
+        setTimeout(() => {
+          setInvoiceSavedValue("");
+        }, 3000);
+      }
+    })
+    //vaidehi changes ends
+    .catch((err: any) => {
       console.log(err);
     });
+    setSaveButtonDisable(true);
   };
 
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
+
+      {(invoiceSaved === "Saved") && (<ToastNotification
+        showNotification
+        toastMessage="Your record has been saved successfully..!"
+        toastPosition="bottom-right"
+      />)}
+
         <div className="breadcrumbs">
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
@@ -1201,6 +1224,7 @@ export default function InvoiceDetails() {
                 <Button
                   className="secondary-btn small"
                   label="Save"
+                  disabled={saveButtonDisable}
                   handleOnClick={handleEditSave}
                 />
               </div>
@@ -1514,8 +1538,9 @@ export default function InvoiceDetails() {
                 <p>PO Number</p>
                 {status === "AR Review" || status === "Open" ? (
                   <input
-                    onChange={(e: any) =>
+                    onChange={(e: any) => {
                       setPoNumber(Math.abs(parseInt(e.target.value)).toString())
+                      setSaveButtonDisable(false)}
                     }
                     value={poNumber ? poNumber : topPanel.poNumber}
                     type="number"
@@ -1535,7 +1560,9 @@ export default function InvoiceDetails() {
                   placeholderText={moment(topPanel.invoiceDate).format(
                     "DD/MMM/YYYY"
                   )}
-                  handleDateChange={(date: any) => setInvoiceDate(date)}
+                  handleDateChange={(date: any) => {
+                    setInvoiceDate(date)
+                    setSaveButtonDisable(false)}}
                 />
               </div>
             ) : (
@@ -1612,7 +1639,10 @@ export default function InvoiceDetails() {
                       placeholderText={moment(topPanel.paymentDue).format(
                         "DD/MMM/YYYY"
                       )}
-                      handleDateChange={(date: any) => setPaymentDue(date)}
+                      handleDateChange={(date: any) => {
+                        setPaymentDue(date)
+                        setSaveButtonDisable(false)
+                      }}
                     />
                   </div>
                 ) : (
