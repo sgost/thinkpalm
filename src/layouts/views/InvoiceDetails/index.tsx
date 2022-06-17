@@ -22,6 +22,7 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  calculateInvoiceUrl,
   getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
@@ -138,6 +139,13 @@ export default function InvoiceDetails() {
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
+
+  const [employeeSalary, setEmployeeSalary] = useState(false);
+  const [benefit, setBenefit] = useState(false);
+  const [amountUpdate, setAmountUpdate] = useState(false);
+  const [termination, setTermination] = useState(false);
+  const [invoiceCalc, setinvoiceCalc] = useState(false);
+  const [feeIssue, setfeeIssue] = useState(false);
 
   const [poNumber, setPoNumber] = useState("");
   const [invoiceDate, setInvoiceDate] = useState<any>("");
@@ -492,7 +500,7 @@ export default function InvoiceDetails() {
         .then((response: any) => {
           if (response.status == 200) {
             const { data } = response.data;
-            if (data?.length > 0) {
+            if (data?.invoiceBills?.length > 0) {
               setBillTableData(response);
             } else {
               console.log("no data");
@@ -577,7 +585,7 @@ export default function InvoiceDetails() {
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(apiData?.data?.invoice?.submissionDate).format(
+      model.invoiceDate = moment(state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
         "DD MMM YYYY"
       );
       model.invoiceApproval = moment(
@@ -628,12 +636,12 @@ export default function InvoiceDetails() {
       let currency = countriesData.data.find(
         (e: any) => e.currencyId === apiData.data.invoice.currencyId
       );
-      return currency.currency.code;
-    } else if (creditMemoData && countriesData?.data) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === creditMemoData.currencyId
+      return currency?.currency?.code;
+    } else if (creditMemoData && lookupData?.data) {
+      let currency = lookupData.data.billingCurrencies.find(
+        (e: any) => e.value === creditMemoData.currencyId
       );
-      return currency.currency.code;
+      return currency?.text;
     } else {
       return "";
     }
@@ -1100,6 +1108,22 @@ export default function InvoiceDetails() {
     });
   };
 
+
+  const reCalculate = () => {
+    axios
+      .post(calculateInvoiceUrl(id), {
+        headers: getHeaders(tempToken, cid, "false"),
+      })
+      .then((resp: any) => {
+        console.log('respresp', resp)
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
+
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1153,28 +1177,27 @@ export default function InvoiceDetails() {
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               missTransType != 1) && (
-              <div
-                onClick={() =>
-                  missTransType != 7
-                    ? setIsDownloadOpen(!isDownloadOpen)
-                    : function noRefCheck() {}
-                }
-                className={`${
-                  missTransType == 7 || deleteDisableButtons === true
+                <div
+                  onClick={() =>
+                    missTransType != 7
+                      ? setIsDownloadOpen(!isDownloadOpen)
+                      : function noRefCheck() { }
+                  }
+                  className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                }`}
+                    }`}
                 // className="download"
-              >
-                <p className="text">Download</p>
-                <Icon
-                  className="icon"
-                  color="#526fd6"
-                  icon="chevronDown"
-                  size="medium"
-                />
-              </div>
-            )}
+                >
+                  <p className="text">Download</p>
+                  <Icon
+                    className="icon"
+                    color="#526fd6"
+                    icon="chevronDown"
+                    size="medium"
+                  />
+                </div>
+              )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1188,6 +1211,25 @@ export default function InvoiceDetails() {
               </div>
             )}
           </div>
+
+
+          {((status === "AR Review") || (status === "Declined")) &&
+            missTransType == 1 && permission.Role == "FinanceAR" && (
+              <div className="saveBtnContainer">
+                <Button
+                  handleOnClick={() => {
+                    reCalculate()
+                  }}
+                  className="secondary-btn small"
+                  icon={{
+                    color: "#526FD6",
+                    icon: "autorenew",
+                    size: "small",
+                  }}
+                  label="Re-Calculate"
+                />
+              </div>
+            )}
 
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
@@ -1203,7 +1245,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-          (status === "Invoiced" && missTransType === 7) ? (
+            (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1331,12 +1373,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
@@ -1371,7 +1413,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {status === "AR Review" &&
+          {((status === "AR Review") || (status === "Declined")) &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
@@ -1417,7 +1459,7 @@ export default function InvoiceDetails() {
             />
           )}
 
-          {status === "Open" &&
+          {((status === "Declined") || (status === "Open")) &&
             missTransType !== 1 &&
             permission?.InvoiceDetails.includes("Send") && (
               <Button
@@ -1434,6 +1476,20 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
+
+          {/* <Button
+            data-testid="approve-button"
+            handleOnClick={() => {
+              handleApproveInvoice(4);
+            }}
+            className="primary-blue small"
+            icon={{
+              color: "#fff",
+              icon: "checkMark",
+              size: "medium",
+            }}
+            label="Approve Invoice"
+          /> */}
         </div>
       </div>
 
@@ -1444,8 +1500,13 @@ export default function InvoiceDetails() {
           </div>
           <div className="topBarrow">
             <div className="invoiceNo">
-              <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-              <p>{getTransactionLabel()}</p>
+              <div className="qbo_wrapper">
+                <Icon color="#FFFFFF" icon="orderSummary" size="large" />
+                <p>{getTransactionLabel()}</p>
+              </div>
+              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 &&
+                <p className="qbo">QBO No. {creditMemoData?.qbInvoiceNo}</p>
+              }
             </div>
             <div className="amount">
               {missTransType != 7 && (
@@ -1631,7 +1692,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer status={status} />
         </div>
@@ -1842,6 +1903,7 @@ export default function InvoiceDetails() {
           <>
             <div className="filesNotes">
               <NotesWidget
+                status={status}
                 notes={notes}
                 setNotes={setNotes}
                 isClient={isClient}
@@ -1851,6 +1913,7 @@ export default function InvoiceDetails() {
               ></NotesWidget>
 
               <FileUploadWidget
+                status={status}
                 documents={documents}
                 setDocuments={setDocuments}
                 isClient={isClient}
@@ -1962,7 +2025,76 @@ export default function InvoiceDetails() {
               <p>Please add a comment to indicate your reasons to decline</p>
             </div>
             <div className="text-invoive-no">
-              <p>Payroll Invoice No. {apiData?.data?.invoice?.invoiceNo}.</p>
+              <p>{getTransactionLabel()}.</p>
+            </div>
+
+            <div className="dec_check_main">
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check1"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setEmployeeSalary(e.target.checked);
+                  }}
+                  checked={employeeSalary}
+                />
+                <label className="dec_check_label" onClick={() => setEmployeeSalary(!employeeSalary)}>Employee Salary is not correct</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check2"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setBenefit(e.target.checked);
+                  }}
+                  checked={benefit}
+                />
+                <label className="dec_check_label" onClick={() => setBenefit(!benefit)}>Benefit Amount is not correct</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check3"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setAmountUpdate(e.target.checked);
+                  }}
+                  checked={amountUpdate}
+                />
+                <label className="dec_check_label" onClick={() => setAmountUpdate(!amountUpdate)}>One-off pay items amount to be updated</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check4"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setTermination(e.target.checked);
+                  }}
+                  checked={termination}
+                />
+                <label className="dec_check_label" onClick={() => setTermination(!termination)}>Termination</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check5"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setinvoiceCalc(e.target.checked);
+                  }}
+                  checked={invoiceCalc}
+                />
+                <label className="dec_check_label" onClick={() => setinvoiceCalc(!invoiceCalc)}>Invoice Calculation Error</label>
+              </div>
+              <div className="dec_check_wrapp">
+                <Checkbox
+                  data-testid="check6"
+                  id="sampleCheckbox"
+                  onChange={function noRefCheck(e: any) {
+                    setfeeIssue(e.target.checked);
+                  }}
+                  checked={feeIssue}
+                />
+                <label className="dec_check_label" onClick={() => setfeeIssue(!feeIssue)}>Fee Issue</label>
+              </div>
             </div>
 
             <div className="text-invoice-comment">
@@ -1992,7 +2124,7 @@ export default function InvoiceDetails() {
               <Button
                 data-testid="decline-button-submit"
                 disabled={!inputValue}
-                label="Decline"
+                label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
                   const url = urls.declineInvoice;
@@ -2163,7 +2295,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
+                          ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2197,8 +2329,8 @@ export default function InvoiceDetails() {
               </div>
               <div className="section-2">
                 <div className="col-3"></div>
-                <div className="col-9 misc-info">
-                  <div className="col-4">
+                <div className="col-6 misc-info">
+                  <div className="col-6">
                     <div className="misc-info__item">
                       <Icon color="#767676" icon="pound" size="medium" />
                       &nbsp;
@@ -2210,16 +2342,16 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <div className="misc-info__item misc-info__item__2">
                       <Icon color="#767676" icon="location" size="medium" />
                       &nbsp;

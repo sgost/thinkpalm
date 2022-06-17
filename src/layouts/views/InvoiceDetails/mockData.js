@@ -464,7 +464,7 @@ export const apiInvoiceMockData = {
   periodDate: "2022-04-01T00:00:00",
   isModified: false,
   invoiceFrom: {
-    companyName: "Atlas",
+    companyName: "Atlas Holdings Group Ltd",
     vatOrGSTNumber: "GB270909295",
     addressLine1: "41 Corsham Street",
     addressLine2: "",

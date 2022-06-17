@@ -13,6 +13,7 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 1.333rem;
+      flex-direction: column-reverse;
 
       .breadcrumbs {
         display: flex;
@@ -38,6 +39,7 @@
         display: flex;
         gap: 1.111rem;
         position: relative;
+        margin: 0 0 2rem auto;
 
         .void-button {
           cursor: pointer;
@@ -114,6 +116,8 @@
         }
 
         .decline-invoice {
+          background-color: white;
+
           button.a-button.small {
             font-size: 0.889rem;
             height: 2.5rem;
@@ -204,8 +208,20 @@
 
           .invoiceNo {
             display: flex;
-            align-items: center;
-            gap: 0.333rem;
+            flex-direction: column;
+
+            .qbo_wrapper {
+              display: flex;
+              align-items: center;
+              gap: 0.333rem;
+            }
+
+            .qbo {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 1.2rem;
+              line-height: 3rem;
+            }
 
             p {
               color: $white;
@@ -1043,6 +1059,33 @@
         margin-top: -0.722rem;
       }
 
+      .a-checkbox-wrapper label {
+        display: none;
+      }
+
+      .dec_check_main {
+        margin-top: 1.3rem;
+      }
+
+      .dec_check_wrapp {
+        display: flex;
+      }
+
+      #dec_check_wrapp #sampleCheckbox {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .dec_check_wrapp .dec_check_label {
+        display: flex;
+        margin: 0 0 0 1rem;
+        font-size: 1rem;
+        line-height: 1rem;
+        color: #3E3E3E;
+        cursor: pointer;
+        font-weight: 400;
+      }
+
       .text-invoice-comment {
         display: flex;
         flex-direction: column;
@@ -1208,6 +1251,9 @@
 
     .upper-delete-button {
       display: flex;
+      position: absolute;
+      right: 0;
+      bottom: -3rem;
 
       .delete-invoice {
         display: flex;
@@ -1316,16 +1362,17 @@
         display: block;
         padding: 0;
       }
+
       .compensation-inner-container {
         .profile-header-container {
           margin-bottom: 1.7rem;
-          margin-top:0;
+          margin-top: 0;
           padding: 0;
           display: flex;
           flex-direction: column;
           border-radius: 10px;
 
-          > div {
+          >div {
             display: flex;
           }
 
@@ -1368,6 +1415,7 @@
                   height: 100%;
                   border-radius: 100%;
                 }
+
                 &__icon {
                   width: 3.5rem;
                   height: 3.5rem;
@@ -1394,6 +1442,7 @@
 
             .col-6 {
               margin-left: 1rem;
+
               .header {
                 font-style: normal;
                 font-weight: 500;
@@ -1423,7 +1472,6 @@
             .misc-info {
               height: 100%;
               display: flex;
-              margin-left: 14rem;
 
               &__item {
                 display: flex;
@@ -1445,11 +1493,13 @@
                 }
               }
             }
+
             .compensation-invoice-status {
               display: flex;
               justify-content: flex-end;
               width: 38%;
               align-items: center;
+
               p {
                 color: green;
                 border: 1px solid;
@@ -1463,6 +1513,7 @@
             }
           }
         }
+
         .compensation-text {
           font-size: 1.4rem;
           padding: 1rem 4rem;
@@ -1470,6 +1521,7 @@
           justify-content: flex-start;
           width: 90%;
         }
+
         .compensation-table {
           display: flex;
           width: 100%;
@@ -1477,6 +1529,7 @@
           margin-bottom: 4.3rem;
           max-height: 12.5rem;
           overflow-y: scroll;
+
           .table {
             width: 92%;
           }

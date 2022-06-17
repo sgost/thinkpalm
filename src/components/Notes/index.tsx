@@ -16,6 +16,7 @@ export default function NotesWidget(props: any) {
     id,
     setNotes,
     transactionType,
+    status,
     isPaymentPage,
     setPaymentNote,
   } = props;
@@ -160,6 +161,7 @@ export default function NotesWidget(props: any) {
               value={noteText}
               onChange={(e: any) => setNoteText(e.target.value)}
               placeholder="Add a note here..."
+              disabled={status === "Declined"}
             />
             <span>Characters left: {400 - noteText.length}</span>
           </div>

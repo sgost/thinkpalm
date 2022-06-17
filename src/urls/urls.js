@@ -289,3 +289,10 @@ export const subscriptionLookup = () => {
     `/Lookup/GetSubscriptionLookup`
   );
 };
+
+
+
+
+export const calculateInvoiceUrl = (invoiceId) => {
+  return baseURL + services.atlasIdgService + `/InvoiceData/recalculate/${invoiceId}`
+}

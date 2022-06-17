@@ -24,15 +24,15 @@
         z-index: unset;
       }
     }
-
-    .dropdown {
-      margin-top: 3rem;
-      margin-bottom: 3rem;
-
+    .type_dpStep{
       span.a-dropdown__title:after {
         content: "*";
         color: red;
       }
+    }
+    .dropdown {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
 
       .a-dropdown__search {
         box-sizing: border-box !important;
@@ -74,14 +74,13 @@
         content: "*";
         color: red;
       }
-
-      .a-dropdown__option__container {
-        height: 2.889rem;
+    }
+    .new_Invoice_itme{
+      .dropdown-margin {
+        margin-right: 0;
       }
     }
-
     .dropdown-margin {
-      margin-right: 40px;
       position: relative;
       cursor: pointer;
     }
@@ -111,7 +110,28 @@
   .year-dropdown svg.icon-up {
     display: none !important;
   }
-
+  .new_Invoice_itme{
+    .dpStepContainer {
+      .a-dpicker .react-datepicker__input-container input {
+        width: -webkit-fill-available;
+      }
+  
+      .a-dpicker__container {
+        width: 100%;
+      }
+    }
+  }
+  .new_Invoice_itme_summary{
+    .a-dpicker__container {
+      width: 100%;
+    }
+    .a-dropdown{
+      width: 100% !important;
+    }
+    #description_input{
+      width: 100% !important;
+    }
+  }
   .dpStepContainer {
     .a-dpicker .react-datepicker__input-container input {
       width: 15.2rem;
@@ -132,7 +152,7 @@
     z-index: 99999;
     position: absolute;
     top: 0.5556rem;
-    right: 0.5556rem;
+    right: 3rem;
   }
 
   .newinvoice-container .dropdown-margin .calendar {
@@ -141,7 +161,7 @@
     z-index: 99999;
     position: absolute;
     top: 0.5556rem;
-    right: 0.5556rem;
+    right: 3rem;
   }
 
   .stepper-one-buttons {

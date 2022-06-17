@@ -7,7 +7,7 @@ import { getDecodedToken } from "../getDecodedToken";
 import { getPermissions } from "../Comman/Utils/utils";
 
 export default function FileUploadWidget(props: any) {
-  const { documents, setDocuments, isClient, cid, id, transactionType } = props;
+  const { documents, setDocuments, isClient, cid, id, transactionType , status} = props;
   const tempToken = localStorage.getItem("accessToken");
   const [isFileError, setIsFileError] = useState<any>(null);
   /* istanbul ignore next */
@@ -103,7 +103,7 @@ export default function FileUploadWidget(props: any) {
           })}
         </div>
 
-        {getPermissions(transactionType, "Browse") && (
+        {getPermissions(transactionType, "Browse") && (status !== "Declined") && (
           <div className="uploadConatiner">
             <FileUpload
               fileList={[]}
