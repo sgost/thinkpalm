@@ -163,10 +163,9 @@ export default function InvoiceDetails() {
     ],
     data: [],
   });
-//Vaidehi Changes starts
 const [invoiceSaved, setInvoiceSavedValue] = useState("");
 const [saveButtonDisable, setSaveButtonDisable] = useState(true);
-//Vaidehi Changes Ends
+
   useEffect(() => {
     if (logsData.length === 0) return;
     const splicedData: any = [...logsData].splice(0, viewLimit);
@@ -1107,7 +1106,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         poNumber: poNumber ? poNumber : topPanel.poNumber,
       },
     })
-    //vaidehi changes starts
     .then((resp: any) => {
       if (resp) {
         setInvoiceSavedValue("Saved");
@@ -1116,7 +1114,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         }, 3000);
       }
     })
-    //vaidehi changes ends
     .catch((err: any) => {
       console.log(err);
     });
