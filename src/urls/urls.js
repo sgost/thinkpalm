@@ -84,6 +84,9 @@ export const urls = {
     baseURL +
     services.atlasSubscriptionService +
     `/Lookup/GetSubscriptionLookup`,
+
+  savePayments:
+    baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
 };
 
 export const getClientListingUrl = (

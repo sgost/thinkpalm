@@ -13,6 +13,8 @@ import NotesWidget from "../../../components/Notes";
 import { urls, getHeaders, subscriptionLookup } from "../../../urls/urls";
 import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
+import { format } from "date-fns";
+import { stat } from "fs";
 
 const PaymentDetailPage = () => {
   const state: any = useLocation();
@@ -22,12 +24,20 @@ const PaymentDetailPage = () => {
 
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
+  const [isMultiCurrencyDropdownOpen, setIsMultiCurrencyDropdownOpen] =
+    useState(false);
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [isMultiLocationDropdownOpen, setIsMultiLocationDropdownOpen] =
+    useState(false);
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false);
+  const [isMultiBankDropdownOpen, setIsMultiBankDropdownOpen] = useState(false);
   const [isPaymentMethodDropdownOpen, setIsPaymentMethodDropdownOpen] =
+    useState(false);
+  const [isMultiPaymentMethodOpen, setIsMultiPaymentMethodOpen] =
     useState(false);
   const [documents, setDocuments] = useState<any>([]);
   const [notes, setNotes] = useState<any>([]);
+  const [paymentNote, setPaymentNote] = useState<any>(null);
   const [toggleState, setToggleState] = useState<any>({
     index: null,
     invoiceIndex: null,
@@ -35,16 +45,24 @@ const PaymentDetailPage = () => {
 
   const [currencyOptionsDefault, setCurrencyOptionDefault] = useState<any>([]);
   const [currencyOptions, setCurrencyOption] = useState<any>([]);
+  const [multiCurrencyOptions, setMultiCurrencyOptions] = useState<any>([]);
   const [bankToDepositOptionsDefault, setBankToDepositOptionDefault] =
     useState<any>([]);
   const [bankToDepositOptions, setBankToDepositOption] = useState<any>([]);
+  const [multiBankToDepositOptions, setmultiBankToDepositOptions] =
+    useState<any>([]);
   const [locationOptionsDefault, setLocationOptionDefault] = useState<any>([]);
   const [locationOptions, setLocationOption] = useState<any>([]);
+  const [multiLocationOptions, setMultiLocationOptions] = useState<any>([]);
   const [paymentMethodOptionsDefault, setPaymentMethodOptionDefault] =
     useState<any>([]);
   const [paymentMethodOptions, setPaymentMethodOption] = useState<any>([]);
+  const [multiPaymentMethodOptions, setmultiPaymentMethodOptions] =
+    useState<any>([]);
   const [paymentDate, setpaymentDate] = useState<any>([]);
+  const [multiPaymentDate, setMultiPaymentDate] = useState<any>(null);
   const [referenceNo, setReferenceNo] = useState<any>([]);
+  const [multiRefNo, setMultiRefNo] = useState("");
   const [multiplePaymentId, setMultiplePaymentId] = useState([]);
   const [multiPaymentBlocks, setMultiPaymentBlocks] = useState(
     state.state.inveoicesData.map((e: any) => ({
@@ -52,8 +70,9 @@ const PaymentDetailPage = () => {
       parentId: e.id,
     }))
   );
-
-  const [invoiceDetails, setInvoiceDetails] = useState<Array<any>>([]);
+  const [isFullAmount, setIsFullAmount] = useState(true);
+  const [totals, setTotals] = useState<any>([]);
+  const [multiTotal, setMultiTotal] = useState<any>(0);
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -109,10 +128,13 @@ const PaymentDetailPage = () => {
 
         setCurrencyOptionDefault(currencyData);
         setCurrencyOption(tempCurrOpt);
+        setMultiCurrencyOptions(currencyData);
         setBankToDepositOptionDefault(depositToBankData);
         setBankToDepositOption(tempBankDepositOpt);
+        setmultiBankToDepositOptions(depositToBankData);
         setLocationOptionDefault(locationData);
         setLocationOption(tempLocationOpt);
+        setMultiLocationOptions(locationData);
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -146,6 +168,7 @@ const PaymentDetailPage = () => {
 
         setPaymentMethodOptionDefault(paymentMethodData);
         setPaymentMethodOption(tempPayMethodOpt);
+        setmultiPaymentMethodOptions(paymentMethodData);
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -158,7 +181,7 @@ const PaymentDetailPage = () => {
         ...item,
         isSelected: false,
         label: item.text,
-        value: item.text,
+        value: item.value,
       };
     });
   };
@@ -169,7 +192,7 @@ const PaymentDetailPage = () => {
         ...item,
         isSelected: false,
         label: item.text,
-        value: item.text,
+        value: item.value,
       };
     });
   };
@@ -180,7 +203,7 @@ const PaymentDetailPage = () => {
         ...item,
         isSelected: false,
         label: item.text,
-        value: item.text,
+        value: item.value,
       };
     });
   };
@@ -191,7 +214,7 @@ const PaymentDetailPage = () => {
         ...item,
         isSelected: false,
         label: item.text,
-        value: item.text,
+        value: item.value,
       };
     });
   };
@@ -239,6 +262,35 @@ const PaymentDetailPage = () => {
     setIsOpen(false);
   };
 
+  const handleMultiPaymentDropOption = (
+    item: any,
+    options: any,
+    set: any,
+    setIsOpen: any
+  ) => {
+    let arr = [...options];
+
+    arr.forEach((e: any, i: number) => {
+      if (e.value === item.value) {
+        arr[i] = {
+          ...arr[i],
+          isSelected: !arr[i].isSelected,
+        };
+      } else {
+        arr[i] = {
+          ...arr[i],
+          isSelected: false,
+        };
+      }
+    });
+
+    // console.log("arr", arr);
+
+    set([...arr]);
+
+    setIsOpen(false);
+  };
+
   const handleInputText = (
     value: any,
     sValue: any,
@@ -266,9 +318,70 @@ const PaymentDetailPage = () => {
     let index = arr.findIndex(
       (e: any) => e.invoiceKey === invoiceKey && e.blockKey === blockKey
     );
-    arr[index].date = date;
+    arr[index].date = format(date, "yyyy-MM-dd");
 
     set([...arr]);
+  };
+
+  const isSaveDisable = () => {
+    let isDisable = false;
+
+    if (state?.state?.inveoicesData?.length > 1) {
+      if (
+        !multiPaymentDate ||
+        !multiCurrencyOptions.find((e: any) => e.isSelected) ||
+        !multiLocationOptions.find((e: any) => e.isSelected) ||
+        !multiRefNo ||
+        !multiBankToDepositOptions.find((e: any) => e.isSelected) ||
+        !multiPaymentMethodOptions.find((e: any) => e.isSelected)
+      ) {
+        return true;
+      }
+    } else {
+      paymentDate.forEach((e: any) => {
+        if (!e.date) {
+          isDisable = true;
+        }
+      });
+      currencyOptions.forEach((e: any) => {
+        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+          isDisable = true;
+        }
+      });
+      locationOptions.forEach((e: any) => {
+        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+          isDisable = true;
+        }
+      });
+      referenceNo.forEach((e: any) => {
+        if (!e.text) {
+          isDisable = true;
+        }
+      });
+      bankToDepositOptions.forEach((e: any) => {
+        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+          isDisable = true;
+        }
+      });
+      paymentMethodOptions.forEach((e: any) => {
+        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+          isDisable = true;
+        }
+      });
+
+      if (
+        multiPaymentBlocks.length > 1 ||
+        (!isFullAmount && multiPaymentBlocks.length == 1)
+      ) {
+        totals.forEach((o: any) => {
+          if (!o.text) {
+            isDisable = true;
+          }
+        });
+      }
+    }
+
+    return isDisable;
   };
 
   useEffect(() => {
@@ -277,11 +390,33 @@ const PaymentDetailPage = () => {
 
     let tempRefNo: any = [];
     let tempPaymentDate: any = [];
+    let tempTotals: any = [];
 
     state?.state?.inveoicesData?.forEach(
       (invoiceItem: any, invoicesIndex: number) => {
+        if (state?.state?.inveoicesData?.length > 1) {
+          const total = state?.state?.inveoicesData?.reduce(
+            (a: any, b: any) => {
+              console.log("a b", a, parseFloat(b.invoiceBalance.split(" ")[1]));
+              return a + parseFloat(b.invoiceBalance.split(" ")[1]);
+            },
+            0
+          );
+
+          setMultiTotal(
+            state?.state?.inveoicesData[0].invoiceBalance.split(" ")[0] +
+              " " +
+              total.toFixed(2)
+          );
+        }
+
         multiPaymentBlocks.forEach((item: any, _index: number) => {
           tempRefNo.push({
+            invoiceKey: invoiceItem.id,
+            blockKey: item.id,
+            text: "",
+          });
+          tempTotals.push({
             invoiceKey: invoiceItem.id,
             blockKey: item.id,
             text: "",
@@ -297,6 +432,7 @@ const PaymentDetailPage = () => {
 
     setpaymentDate(tempPaymentDate);
     setReferenceNo(tempRefNo);
+    setTotals(tempTotals);
   }, []);
 
   const addPaymentBlocks = (invoiceKey: any) => {
@@ -359,6 +495,15 @@ const PaymentDetailPage = () => {
         date: null,
       },
     ]);
+
+    setTotals([
+      ...totals,
+      {
+        invoiceKey: invoiceKey,
+        blockKey: blockObj.id,
+        text: "",
+      },
+    ]);
   };
 
   const removePaymentBlock = (item: any) => {
@@ -378,7 +523,139 @@ const PaymentDetailPage = () => {
   };
 
   const handleSave = () => {
-    console.log("Save", state.state?.inveoicesData);
+    let data: any = null;
+    const invoiceIds = state.state?.inveoicesData.map((e: any) => {
+      return e.id;
+    });
+    let currDate = new Date();
+
+    if (state.state?.inveoicesData.length > 1) {
+      data = {
+        PaymentType: 2,
+        invoiceids: invoiceIds,
+        paymentnotes: [
+          {
+            noteType: "2",
+            note: paymentNote.note,
+            isCustomerVisible: paymentNote.isVisibleToCustomer,
+            exportToQuickbooks: paymentNote.isExportToQb,
+            createdDate: currDate,
+            modifiedBy: "00000000-0000-0000-0000-000000000000",
+            modifiedByUser: null,
+            displayInPDF: paymentNote.currDate,
+            customerId: state.state.inveoicesData[0].customerId,
+          },
+        ],
+        paymentdocuments: [],
+        Payments: [
+          {
+            totalAmount: parseFloat(multiTotal.split(" ")[1]),
+            paymentDate: format(multiPaymentDate, "yyyy-MM-dd"),
+            currencyId: multiCurrencyOptions.find((e: any) => e.isSelected)
+              ?.value,
+            location: multiLocationOptions.find((e: any) => e.isSelected)
+              ?.value,
+            referenceNo: multiRefNo,
+            depositedtoBank: multiBankToDepositOptions.find(
+              (e: any) => e.isSelected
+            )?.value,
+            paymentMethod: multiPaymentMethodOptions.find(
+              (e: any) => e.isSelected
+            )?.value,
+          },
+        ],
+      };
+
+      console.log(data);
+    } else {
+      console.log(currencyOptions, referenceNo);
+      let arrData: Array<any> = [];
+      for (let i = 0; i < currencyOptions.length; i++) {
+        arrData.push({
+          totalAmount:
+            multiPaymentBlocks.length === 1
+              ? isFullAmount
+                ? parseFloat(
+                    state?.state?.inveoicesData[0]?.invoiceBalance?.split(
+                      " "
+                    )[1]
+                  )
+                : parseFloat(totals[i].text)
+              : parseFloat(totals[i].text),
+          paymentDate: paymentDate[i]?.date,
+          currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
+            ?.value,
+          location: locationOptions[i].options.find((e: any) => e.isSelected)
+            ?.value,
+          referenceNo: referenceNo[i].text,
+          depositedtoBank: bankToDepositOptions[i].options.find(
+            (e: any) => e.isSelected
+          )?.value,
+          paymentMethod: paymentMethodOptions[i].options.find(
+            (e: any) => e.isSelected
+          )?.value,
+        });
+      }
+
+      data = {
+        PaymentType: 1,
+        invoiceids: invoiceIds,
+        paymentnotes: [
+          {
+            noteType: "2",
+            note: paymentNote.note,
+            isCustomerVisible: paymentNote.isVisibleToCustomer,
+            exportToQuickbooks: paymentNote.isExportToQb,
+            createdDate: currDate,
+            modifiedBy: "00000000-0000-0000-0000-000000000000",
+            modifiedByUser: null,
+            displayInPDF: paymentNote.currDate,
+            customerId: state.state.inveoicesData[0].customerId,
+          },
+        ],
+        paymentdocuments: [],
+        Payments: arrData,
+      };
+    }
+
+    // return;
+    axios({
+      method: "POST",
+      url: urls.savePayments,
+      headers: getHeaders(
+        tempToken,
+        state.state.inveoicesData[0].customerId,
+        "false"
+      ),
+      data: data,
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200) {
+          if (state.state.inveoicesData.length > 1) {
+            navigate("/pay");
+          } else {
+            navigate(
+              "/pay/invoicedetails" +
+                state.state.inveoicesData[0].id +
+                "/" +
+                state.state.inveoicesData[0].customerId +
+                "/" +
+                "false",
+              {
+                state: {
+                  InvoiceId: state.state.inveoicesData[0].invoiceNo,
+                  transactionType: state.state.inveoicesData[0].transactionType,
+                  rowDetails: state.state.inveoicesData[0],
+                },
+              }
+            );
+          }
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -414,6 +691,7 @@ const PaymentDetailPage = () => {
             className="primary-blue medium"
             label="Save"
             handleOnClick={handleSave}
+            disabled={isSaveDisable()}
           />
         </div>
       </div>
@@ -446,7 +724,7 @@ const PaymentDetailPage = () => {
                           Total <span>{invoiceItem.totalAmount}</span>
                         </p>
                       </div>
-                      <div
+                      {/* <div
                         data-testid="open-payment-block"
                         className="header-chevron-icon"
                         onClick={() => {
@@ -462,7 +740,7 @@ const PaymentDetailPage = () => {
                           }
                           size="large"
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
 
@@ -470,7 +748,7 @@ const PaymentDetailPage = () => {
                 </div>
               </div>
 
-              {multiplePaymentId.includes(invoiceItem?.id) && (
+              {state?.state?.inveoicesData?.length === 1 && (
                 <div className="paaymentInstallmetOuterContainer">
                   {multiPaymentBlocks?.map((item: any, i: any) => {
                     if (item.parentId === invoiceItem.id)
@@ -701,14 +979,44 @@ const PaymentDetailPage = () => {
 
                             <div className="PaymentPageTotalAmount">
                               <p>Amount</p>
-                              <div className="amountPaymentPage">
-                                {invoiceItem.totalAmount}
-                              </div>
+
+                              {isFullAmount &&
+                                multiPaymentBlocks.length === 1 && (
+                                  <div className="amountPaymentPage">
+                                    {invoiceItem.invoiceBalance}
+                                  </div>
+                                )}
+                              {(!isFullAmount ||
+                                multiPaymentBlocks.length > 1) && (
+                                <input
+                                  type="number"
+                                  value={
+                                    totals.find(
+                                      (e: any) =>
+                                        e.invoiceKey === invoiceItem.id &&
+                                        e.blockKey === item.id
+                                    )?.text || ""
+                                  }
+                                  onChange={(e) => {
+                                    handleInputText(
+                                      e.target.value,
+                                      totals,
+                                      setTotals,
+                                      invoiceItem.id,
+                                      item.id
+                                    );
+                                  }}
+                                />
+                              )}
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
-                                    checked={true}
+                                    id="fullAmt"
+                                    checked={isFullAmount}
                                     label="Full Amount"
+                                    onChange={(e: any) =>
+                                      setIsFullAmount(e.target.checked)
+                                    }
                                   />
                                 </div>
                               ) : (
@@ -745,26 +1053,151 @@ const PaymentDetailPage = () => {
         }
       )}
 
+      {state?.state?.inveoicesData?.length > 1 && (
+        <div className="paymentPageInvoiceInfo">
+          <div className="totalMultiContainer">
+            <div>
+              <p>Total Amount ({state.state.inveoicesData.length} invoices)</p>
+            </div>
+            <div>
+              <p>{multiTotal}</p>
+            </div>
+          </div>
+          <div className="paaymentInstallmetOuterContainer">
+            <div className="paymentInstallmentContainer">
+              <div className="paymentInstallmentUpperBlock">
+                <div className="paymentInstallmentDatepicker">
+                  <DatePicker
+                    label="Payment Date"
+                    handleDateChange={function (date: any) {
+                      setMultiPaymentDate(date);
+                    }}
+                    required
+                  />
+                </div>
+
+                <div className="paymentInstallmentContainerDropdowns">
+                  <Dropdown
+                    handleDropdownClick={(b: boolean) => {
+                      setIsMultiCurrencyDropdownOpen(b);
+                    }}
+                    handleDropOptionClick={(sel: any) => {
+                      handleMultiPaymentDropOption(
+                        sel,
+                        multiCurrencyOptions,
+                        setMultiCurrencyOptions,
+                        setIsMultiCurrencyDropdownOpen
+                      );
+                    }}
+                    isOpen={isMultiCurrencyDropdownOpen}
+                    options={multiCurrencyOptions}
+                    title="Currency"
+                  />
+                </div>
+
+                <div className="paymentInstallmentContainerDropdowns">
+                  <Dropdown
+                    handleDropdownClick={(b: boolean) => {
+                      setIsMultiLocationDropdownOpen(b);
+                    }}
+                    handleDropOptionClick={(sel: any) => {
+                      handleMultiPaymentDropOption(
+                        sel,
+                        multiLocationOptions,
+                        setMultiLocationOptions,
+                        setIsMultiLocationDropdownOpen
+                      );
+                    }}
+                    isOpen={isMultiLocationDropdownOpen}
+                    options={multiLocationOptions}
+                    title="Location"
+                  />
+                </div>
+
+                <div className="paymentInstallmentContainerDropdowns">
+                  <div className="referenceNoInput">
+                    <span>Reference No</span>
+                    <input
+                      value={multiRefNo}
+                      name="Reference No"
+                      type="number"
+                      placeholder="Enter reference No"
+                      onChange={(e: any) => {
+                        setMultiRefNo(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="paymentInstallmentLowerBlock">
+                <div className="paymentInnerLowerBlock">
+                  <div className="paymentInstallmentContainerDropdowns">
+                    <Dropdown
+                      handleDropdownClick={(b: boolean) => {
+                        setIsMultiBankDropdownOpen(b);
+                      }}
+                      handleDropOptionClick={(sel: any) => {
+                        handleMultiPaymentDropOption(
+                          sel,
+                          multiBankToDepositOptions,
+                          setmultiBankToDepositOptions,
+                          setIsMultiBankDropdownOpen
+                        );
+                      }}
+                      isOpen={isMultiBankDropdownOpen}
+                      options={multiBankToDepositOptions}
+                      title="Deposited to bank"
+                    />
+                  </div>
+                  <div className="paymentInstallmentContainerDropdowns">
+                    <Dropdown
+                      handleDropdownClick={(b: boolean) => {
+                        setIsMultiPaymentMethodOpen(b);
+                      }}
+                      handleDropOptionClick={(sel: any) => {
+                        handleMultiPaymentDropOption(
+                          sel,
+                          multiPaymentMethodOptions,
+                          setmultiPaymentMethodOptions,
+                          setIsMultiPaymentMethodOpen
+                        );
+                      }}
+                      isOpen={isMultiPaymentMethodOpen}
+                      options={multiPaymentMethodOptions}
+                      title="Payment Method"
+                    />
+                  </div>
+                </div>
+
+                <div className="PaymentPageTotalAmount">
+                  <p>Amount</p>
+                  <div className="amountPaymentPage">{multiTotal}</div>
+
+                  <div className="fullAmountPaymentCheckbox">
+                    <Checkbox disabled checked={true} label="Full Amount" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="filesNotes">
         <NotesWidget
-          notes={notes}
-          setNotes={setNotes}
+          notes={[]}
+          isPaymentPage={true}
           isClient="false"
-          // cid={cid}
-          cid="a9bbee6d-797a-4724-a86a-5b1a2e28763f"
-          id="32fbfee0-809d-4828-ab55-e4deebeb5157"
-          // id={id}
-          // transactionType={creditMemoData?.transactionType}
+          setPaymentNote={setPaymentNote}
         ></NotesWidget>
         <FileUploadWidget
           documents={documents}
           setDocuments={setDocuments}
           isClient="false"
-          // cid={cid}
           cid="a9bbee6d-797a-4724-a86a-5b1a2e28763f"
-          // id={id}
           id="32fbfee0-809d-4828-ab55-e4deebeb5157"
-          // transactionType={creditMemoData?.transactionType}
+          isPaymentPage={true}
         ></FileUploadWidget>
       </div>
     </div>

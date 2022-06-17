@@ -76,6 +76,7 @@ export default function FileUploadWidget(props: any) {
                               url: urls.deleteFile,
                               data: {
                                 invoiceId: id,
+                                customerId: cid,
                                 documentId: documents[index].documentId,
                               },
                               headers: headers,
