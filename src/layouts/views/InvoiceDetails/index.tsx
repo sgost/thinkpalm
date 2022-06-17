@@ -22,6 +22,7 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  calculateInvoiceUrl,
   getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
@@ -1107,6 +1108,22 @@ export default function InvoiceDetails() {
     });
   };
 
+
+  const reCalculate = () => {
+    axios
+      .post(calculateInvoiceUrl(id), {
+        headers: getHeaders(tempToken, cid, "false"),
+      })
+      .then((resp: any) => {
+        console.log('respresp', resp)
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
+
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1194,6 +1211,25 @@ export default function InvoiceDetails() {
               </div>
             )}
           </div>
+
+
+          {((status === "AR Review") || (status === "Declined")) &&
+            missTransType == 1 && permission.Role == "FinanceAR" && (
+              <div className="saveBtnContainer">
+                <Button
+                  handleOnClick={() => {
+                    reCalculate()
+                  }}
+                  className="secondary-btn small"
+                  icon={{
+                    color: "#526FD6",
+                    icon: "autorenew",
+                    size: "small",
+                  }}
+                  label="Re-Calculate"
+                />
+              </div>
+            )}
 
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
@@ -1377,7 +1413,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {status === "AR Review" &&
+          {((status === "AR Review") || (status === "Declined")) &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
@@ -1423,7 +1459,7 @@ export default function InvoiceDetails() {
             />
           )}
 
-          {status === "Open" &&
+          {((status === "Declined") || (status === "Open")) &&
             missTransType !== 1 &&
             permission?.InvoiceDetails.includes("Send") && (
               <Button
@@ -2088,7 +2124,7 @@ export default function InvoiceDetails() {
               <Button
                 data-testid="decline-button-submit"
                 disabled={!inputValue}
-                label="Decline"
+                label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
                   const url = urls.declineInvoice;

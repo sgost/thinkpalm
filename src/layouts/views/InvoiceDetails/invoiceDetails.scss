@@ -13,6 +13,7 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 1.333rem;
+      flex-direction: column-reverse;
 
       .breadcrumbs {
         display: flex;
@@ -38,6 +39,7 @@
         display: flex;
         gap: 1.111rem;
         position: relative;
+        margin: 0 0 2rem auto;
 
         .void-button {
           cursor: pointer;
@@ -114,6 +116,8 @@
         }
 
         .decline-invoice {
+          background-color: white;
+
           button.a-button.small {
             font-size: 0.889rem;
             height: 2.5rem;
@@ -1247,6 +1251,9 @@
 
     .upper-delete-button {
       display: flex;
+      position: absolute;
+      right: 0;
+      bottom: -3rem;
 
       .delete-invoice {
         display: flex;
