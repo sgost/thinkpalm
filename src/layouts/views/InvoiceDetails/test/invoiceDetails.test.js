@@ -257,7 +257,7 @@ describe("Invoice details", () => {
       name: "sample.pdf",
     });
 
-    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);    
   });
 
   test("tabs are working", async () => {
@@ -1378,7 +1378,22 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
     mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(200, true);
+    mock.onPut(urls.updateInvoiceCalendar).reply(200, mockapidata.updateInvoiceCalendar);
   });
+
+  //Vaidehi test 
+  test("save invoice calander and ponumber case", async () => {
+     render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+    fireEvent.click(savebtn);
+    expect(savebtn).toBeDisabled();
+  });
+  //Vaidehi test
 
   test("tabs are working", async () => {
     const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
@@ -2451,4 +2466,24 @@ describe("add payment button click test cases on Apprroved", () => {
     const addPaymentButton = await screen.findByText(/Add Payment/);
     fireEvent.click(addPaymentButton);
   });
+
+ /* test("Save button enabled when change the poNumber", async () => {
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const setPoNumber =  screen.findByTestId("PONUMBER");
+    const saveButton =   screen.findByTestId("SaveButton");
+
+    expect(setPoNumber).toBeInTheDocument();
+    await waitFor(() =>
+      fireEvent.change(setPoNumber, {target: { value: "123" } }));
+      expect(saveButton).not.toBeDisabled();
+  });*/
+
 });

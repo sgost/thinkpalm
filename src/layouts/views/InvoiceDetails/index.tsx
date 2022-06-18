@@ -1219,6 +1219,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             getPermissions(missTransType, "Edit") && (
               <div className="saveBtnContainer">
                 <Button
+                  data-testid="save-button"
                   className="secondary-btn small"
                   label="Save"
                   disabled={saveButtonDisable}
@@ -1535,6 +1536,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 <p>PO Number</p>
                 {status === "AR Review" || status === "Open" ? (
                   <input
+                  data-testid="PONUMBER"
                     onChange={(e: any) => {
                       setPoNumber(Math.abs(parseInt(e.target.value)).toString())
                       setSaveButtonDisable(false)}
