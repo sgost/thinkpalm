@@ -1382,17 +1382,40 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
   });
 
   //Vaidehi test 
-  test("save invoice calander and ponumber case", async () => {
-     render(
+  //test("vaidehi test", async () => {
+  ///  const component =  render(
+     // <HashRouter>
+       // <InvoiceDetails />
+      //</HashRouter>
+    //);
+ 
+   // waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    //const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+    //fireEvent.click(savebtn);
+   // const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
+    //const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
+    //const notification2 = await waitFor(() => screen.findByTestId("toast-notify"));
+    //console.log("noti" + notification);
+    //expect(notification).toBeVisible();
+    //expect(notification2).toBeVisible();
+  //});
+
+
+  test("vaidehi ponum", async () => {
+    const component =  render(
       <HashRouter>
         <InvoiceDetails />
       </HashRouter>
     );
+  
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
-    fireEvent.click(savebtn);
-    expect(savebtn).toBeDisabled();
+    const poInput = await waitFor(() => screen.findByTestId("PONUMBER"));
+    fireEvent.change(poInput, { target: { value: 1233 } });
+    
+    expect(savebtn).toBeEnabled();
   });
+  
   //Vaidehi test
 
   test("tabs are working", async () => {

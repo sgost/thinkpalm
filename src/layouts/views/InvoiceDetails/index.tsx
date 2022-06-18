@@ -1124,12 +1124,14 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
 
-      {(invoiceSaved === "Saved") && (<ToastNotification
+     {(invoiceSaved === "Saved") && 
+        <ToastNotification
+        data-testid="toast-notify"
         showNotification
         toastMessage="Your record has been saved successfully..!"
         toastPosition="bottom-right"
-      />)}
-
+      />
+     } 
         <div className="breadcrumbs">
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
@@ -1556,6 +1558,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             {status === "AR Review" || status === "Open" ? (
               <div className="dpContainer">
                 <DatePicker
+                  data-testid = "invoice-date"
                   placeholderText={moment(topPanel.invoiceDate).format(
                     "DD/MMM/YYYY"
                   )}
