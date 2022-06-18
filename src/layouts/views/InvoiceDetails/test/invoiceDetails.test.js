@@ -5,11 +5,7 @@ import {
   waitForElementToBeRemoved,
   waitFor,
 } from "@testing-library/react";
-import {
-  HashRouter,
-  useParams,
-  useLocation,
-} from "react-router-dom";
+import { HashRouter, useParams, useLocation } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -31,6 +27,8 @@ import {
   getNotesUrl,
   urls,
   getHeaders,
+  subscriptionLookup,
+  getVatValue,
 } from "../../../../urls/urls";
 // describe("Invoice detail", () => {
 //   let mock;
@@ -170,7 +168,7 @@ const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
 const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
-const employeeId = "1000085"
+const employeeId = "1000085";
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
@@ -2450,5 +2448,83 @@ describe("add payment button click test cases on Apprroved", () => {
 
     const addPaymentButton = await screen.findByText(/Add Payment/);
     fireEvent.click(addPaymentButton);
+  });
+});
+
+describe("payment detail on partial paid", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(getRelatedInvoiceUrl(relatedid))
+      .reply(200, mockapidata.RelatedMock);
+
+      // mock
+      // .onGet(getVatValue(cid))
+      // .reply(200, mockapidata.resForVatDetail);
+
+    // mock
+    //   .onGet(urls.lookup)
+    //   .reply(200, mockapidata.resForCurrencyData.billingCurrencies);
+    // mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData.locations);
+    // mock
+    //   .onGet(urls.lookup)
+    //   .reply(200, mockapidata.resLookupData.depositToOptions);
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resSuscriptionLookup.paymentMethods);
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    // const paymentText = await screen.findByText(/Payment Details/);
+    // expect(paymentText).toBeInTheDocument();
+
+    // const editText = await screen.findByText(/Edit/);
+    // expect(editText).toBeInTheDocument();
+    const editText = await screen.findByTestId("payment-edit-button");
+    fireEvent.click(editText)
+    screen.debug(editText)
+
+    // const cancelEditText = await screen.findByText(/Cancel Edit/);
+    // expect(cancelEditText).toBeInTheDocument();
+    // screen.debug(cancelEditText)
+
+    
   });
 });

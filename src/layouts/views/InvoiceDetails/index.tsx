@@ -1694,7 +1694,7 @@ export default function InvoiceDetails() {
       {(status === "Paid" || status === "Partial Paid") &&
         (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
-          <PaymentDetailContainer status={status} />
+          <PaymentDetailContainer status={status} cid={cid} lookupData={lookupData} />
         </div>
       ) : (
         <></>
