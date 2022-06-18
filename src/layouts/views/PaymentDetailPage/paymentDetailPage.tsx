@@ -512,15 +512,15 @@ const PaymentDetailPage = () => {
     );
   };
 
-  const onChevronClick = (id: any) => {
-    let newData: any = [...multiplePaymentId];
-    if (newData.includes(id)) {
-      newData = newData.filter((item: any) => item != id);
-    } else {
-      newData.push(id);
-    }
-    setMultiplePaymentId(newData);
-  };
+  // const onChevronClick = (id: any) => {
+  //   let newData: any = [...multiplePaymentId];
+  //   if (newData.includes(id)) {
+  //     newData = newData.filter((item: any) => item != id);
+  //   } else {
+  //     newData.push(id);
+  //   }
+  //   setMultiplePaymentId(newData);
+  // };
 
   const handleSave = () => {
     let data: any = null;

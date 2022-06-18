@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { mockapidata } from "./mockData";
-import { HashRouter } from "react-router-dom";
+import { mockapidata, mockStateData, mockStateSingleData } from "./mockData";
+import { HashRouter, useLocation } from "react-router-dom";
 import PaymentDetailPage from "../paymentDetailPage";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -179,7 +179,7 @@ localStorage.setItem(
 );
 localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
 
-describe("Payment details page", () => {
+describe("Payment details page multiple", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
@@ -188,6 +188,57 @@ describe("Payment details page", () => {
     mock
       .onGet(subscriptionLookup())
       .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+
+    useLocation.mockImplementation(() => ({
+      state: mockStateData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save multiple", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    screen.debug(dd);
+    fireEvent.click(dd[0]);
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const currencyText = screen.getByText("Currency");
+    fireEvent.click(currencyText);
+
+    const currencyValue = screen.getByText("USD");
+    fireEvent.click(currencyValue);
+
+    const locationText = screen.getByText("Location");
+    fireEvent.click(locationText);
+
+    const locationValue = screen.getByText("USA -- United States of America");
+    fireEvent.click(locationValue);
+
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
+    expect(referenceText).toBeInTheDocument();
+    fireEvent.change(referenceText, { target: { value: "1234" } });
+
+    const depositBankText = screen.getByText("Deposited to bank");
+    fireEvent.click(depositBankText);
+
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
+    fireEvent.click(depositBankValue);
+
+    const paymentText = screen.getByText("Payment Method");
+    fireEvent.click(paymentText);
+
+    const paymentValue = screen.getByText("ACHCredit");
+    fireEvent.click(paymentValue);
+
+    const saveBtn = screen.getByText(/save/i);
+    fireEvent.click(saveBtn);
   });
 
   // test("test payment detail ", async () => {
@@ -263,6 +314,77 @@ describe("Payment details page", () => {
     const invoiceText = await screen.findByText(/Invoices/);
     expect(invoiceText).toBeInTheDocument();
     fireEvent.click(invoiceText);
+  });
+});
+
+describe("single paymwnt", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    screen.debug(dd);
+    fireEvent.click(dd[0]);
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const currencyText = screen.getByText("Currency");
+    fireEvent.click(currencyText);
+
+    const currencyValue = screen.getByText("USD");
+    fireEvent.click(currencyValue);
+
+    const locationText = screen.getByText("Location");
+    fireEvent.click(locationText);
+
+    const locationValue = screen.getByText("USA -- United States of America");
+    fireEvent.click(locationValue);
+
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
+    expect(referenceText).toBeInTheDocument();
+    fireEvent.change(referenceText, { target: { value: "1234" } });
+
+    const depositBankText = screen.getByText("Deposited to bank");
+    fireEvent.click(depositBankText);
+
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
+    fireEvent.click(depositBankValue);
+
+    const paymentText = screen.getByText("Payment Method");
+    fireEvent.click(paymentText);
+
+    const paymentValue = screen.getByText("ACHCredit");
+    fireEvent.click(paymentValue);
+
+    const addPaymentInstallmentButton = screen.getByText(
+      "Add payment Installment"
+    );
+    fireEvent.click(addPaymentInstallmentButton);
+
+    const deleteButton = screen.getByText("Delete Item");
+    fireEvent.click(deleteButton);
+
+    const saveBtn = screen.getByText(/save/i);
+    fireEvent.click(saveBtn);
   });
 });
 
