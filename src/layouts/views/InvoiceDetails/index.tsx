@@ -1558,7 +1558,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             {status === "AR Review" || status === "Open" ? (
               <div className="dpContainer">
                 <DatePicker
-                  data-testid = "invoice-date"
+                  label="invoiceDate"
                   placeholderText={moment(topPanel.invoiceDate).format(
                     "DD/MMM/YYYY"
                   )}

@@ -4,7 +4,9 @@ import {
   fireEvent,
   waitForElementToBeRemoved,
   waitFor,
+  findByText,
 } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   HashRouter,
   useParams,
@@ -1416,6 +1418,39 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     expect(savebtn).toBeEnabled();
   });
   
+
+  test("vaidehi invoice date", async () => {
+    const component =  render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+  
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+    console.log("Butonnn:::" + savebtn);
+    const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
+    console.log("datePick::::"+ dateInput[0]);
+    //fireEvent.change(dateInput, { target: { value: new Date("2020-01-01") } });
+    
+    fireEvent.click(dateInput);
+
+
+// select the input to open the date picker
+await userEvent.click(dateInput);
+
+// clear previous value. In my case, I had a default value set
+//await user.clear(dateInput);
+
+// enter new value
+await userEvent.type(dateInput, '01/Feb/2000');
+// tab to the next form item to set the value. This tab (or mouse out) is needed to actually set the value
+await userEvent.tab();
+await userEvent.tab();
+await userEvent.tab();
+
+    expect(savebtn).toBeDisabled();
+  });
   //Vaidehi test
 
   test("tabs are working", async () => {
