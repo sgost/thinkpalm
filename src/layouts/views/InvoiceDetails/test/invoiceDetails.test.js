@@ -6,6 +6,9 @@ import {
   waitFor,
 } from "@testing-library/react";
 import {
+  Button,
+} from "atlasuikit";
+import {
   HashRouter,
   useParams,
   useLocation,
@@ -316,8 +319,6 @@ describe("Invoice details", () => {
 
     const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
-    // const convert = screen.getByText(/Change to Miscellaneous/);
-    // fireEvent.click(convert);
   });
 
   test("publish notes", async () => {

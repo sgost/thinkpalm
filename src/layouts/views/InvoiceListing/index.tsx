@@ -344,11 +344,11 @@ export default function InvoiceListing() {
       const { id, invoiceNo, transactionType } = matchingData;
       navigate(
         "/pay/invoicedetails" +
-          id +
-          "/" +
-          matchingData?.customerId +
-          "/" +
-          true,
+        id +
+        "/" +
+        matchingData?.customerId +
+        "/" +
+        true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -401,12 +401,12 @@ export default function InvoiceListing() {
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
-              " " +
-              cFormat.format(item.totalAmount).slice(1) || "",
+            " " +
+            cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
             item?.currency?.code +
-              " " +
-              cFormat.format(item.invoiceBalance).slice(1) || "",
+            " " +
+            cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
             value: "Not Exported",
             color: "#767676",
@@ -581,12 +581,12 @@ export default function InvoiceListing() {
     const nav = () => {
       navigate(
         "/pay/invoicedetails" +
-          checkedInvoices[0].id +
-          "/" +
-          checkedInvoices[0].customerId +
-          "/" +
-          isClientString +
-          "/payments",
+        checkedInvoices[0].id +
+        "/" +
+        checkedInvoices[0].customerId +
+        "/" +
+        isClientString +
+        "/payments",
         {
           state: {
             InvoiceId: checkedInvoices[0].invoiceNo,
@@ -699,17 +699,17 @@ export default function InvoiceListing() {
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
               "Add" && (
-              <Button
-                label="New Invoice"
-                className="primary-blue medium"
-                icon={{
-                  icon: "add",
-                  size: "medium",
-                  color: "#fff",
-                }}
-                handleOnClick={() => navigate("/pay/newinvoice")}
-              />
-            )}
+                <Button
+                  label="New Invoice"
+                  className="primary-blue medium"
+                  icon={{
+                    icon: "add",
+                    size: "medium",
+                    color: "#fff",
+                  }}
+                  handleOnClick={() => navigate("/pay/newinvoice")}
+                />
+              )}
           </div>
         </div>
 
@@ -729,69 +729,71 @@ export default function InvoiceListing() {
               {permission?.InvoiceList?.find(
                 (str: any) => str === "Download"
               ) === "Download" && (
-                <div
-                  onClick={downloadFunction}
-                  data-testid="download"
-                  className={downloadDisable ? "downloadpointer" : "download"}
-                >
-                  <Icon
-                    className="download"
-                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                    icon="download"
-                    size="large"
+                  <div
+                    onClick={downloadFunction}
+                    data-testid="download"
+                    className={downloadDisable ? "downloadpointer" : "download"}
+                  >
+                    <Icon
+                      className="download"
+                      color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                      icon="download"
+                      size="large"
+                    />
+                  </div>
+                )}
+
+              {permission.Role !== "Customer" &&
+                <div className="customerSelection">
+                  <Dropdown
+                    data-testid="customer-type"
+                    title="Customer"
+                    multiple
+                    search
+                    isOpen={customerOpen}
+                    handleDropdownClick={(bool: any) => {
+                      setCustomerOpen(bool);
+                      if (bool) {
+                        setIsStatusOpen(false);
+                      }
+                    }}
+                    handleDropOptionClick={(opt: any) => {
+                      setCustomerOpen(true);
+                      let index = customerData.findIndex(
+                        (e) => e.value === opt.value
+                      );
+
+                      let copy = [...customerData];
+
+                      copy.forEach((_e, i) => {
+                        if (i === index) {
+                          if (copy[index].isSelected) {
+                            copy[index] = { ...opt, isSelected: false };
+                          } else {
+                            copy[index] = { ...opt, isSelected: true };
+                          }
+                        }
+                      });
+
+                      let typesValue = "";
+
+                      copy.forEach((item) => {
+                        if (item.isSelected) {
+                          if (typesValue) {
+                            typesValue += "," + item.value.toString();
+                          } else {
+                            typesValue = item.value.toString();
+                          }
+                        }
+                      });
+
+                      setCustomerData(copy);
+                      setCustomerType(typesValue);
+                    }}
+                    options={customerData}
                   />
                 </div>
-              )}
-
-              <div className="customerSelection">
-                <Dropdown
-                  data-testid="customer-type"
-                  title="Customer"
-                  multiple
-                  search
-                  isOpen={customerOpen}
-                  handleDropdownClick={(bool: any) => {
-                    setCustomerOpen(bool);
-                    if (bool) {
-                      setIsStatusOpen(false);
-                    }
-                  }}
-                  handleDropOptionClick={(opt: any) => {
-                    setCustomerOpen(true);
-                    let index = customerData.findIndex(
-                      (e) => e.value === opt.value
-                    );
-
-                    let copy = [...customerData];
-
-                    copy.forEach((_e, i) => {
-                      if (i === index) {
-                        if (copy[index].isSelected) {
-                          copy[index] = { ...opt, isSelected: false };
-                        } else {
-                          copy[index] = { ...opt, isSelected: true };
-                        }
-                      }
-                    });
-
-                    let typesValue = "";
-
-                    copy.forEach((item) => {
-                      if (item.isSelected) {
-                        if (typesValue) {
-                          typesValue += "," + item.value.toString();
-                        } else {
-                          typesValue = item.value.toString();
-                        }
-                      }
-                    });
-
-                    setCustomerData(copy);
-                    setCustomerType(typesValue);
-                  }}
-                  options={customerData}
-                />
-              </div>
+              }
 
               <DatepickerDropdown
                 title="Date"
@@ -1099,17 +1101,17 @@ export default function InvoiceListing() {
                 options={
                   searchText
                     ? {
-                        ...searchedTableData,
-                        enableMultiSelect: true,
-                        onRowCheckboxChange: onRowCheckboxChange,
-                      }
+                      ...searchedTableData,
+                      enableMultiSelect: true,
+                      onRowCheckboxChange: onRowCheckboxChange,
+                    }
                     : isClient
-                    ? {
+                      ? {
                         ...clientTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
                       }
-                    : {
+                      : {
                         ...internalTabledata,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
@@ -1127,11 +1129,11 @@ export default function InvoiceListing() {
                   } else {
                     navigate(
                       "/pay/invoicedetails" +
-                        row.id +
-                        "/" +
-                        row.customerId +
-                        "/" +
-                        isClientStr,
+                      row.id +
+                      "/" +
+                      row.customerId +
+                      "/" +
+                      isClientStr,
                       {
                         state: {
                           InvoiceId: row.invoiceNo,
