@@ -5,11 +5,7 @@ import {
   waitForElementToBeRemoved,
   waitFor,
 } from "@testing-library/react";
-import {
-  HashRouter,
-  useParams,
-  useLocation,
-} from "react-router-dom";
+import { HashRouter, useParams, useLocation } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -170,7 +166,7 @@ const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
 const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
-const employeeId = "1000085"
+const employeeId = "1000085";
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
@@ -2450,5 +2446,199 @@ describe("add payment button click test cases on Apprroved", () => {
 
     const addPaymentButton = await screen.findByText(/Add Payment/);
     fireEvent.click(addPaymentButton);
+  });
+});
+
+describe("delete employee on AR Review status api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
+
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
+
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
+
+    mock.onPost(urls.deleteEmployeeApi).reply(200, {});
+
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    const { container } = render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    expect(payrollTab).toBeInTheDocument();
+
+    const deleteIcon = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon[0])
+
+    const cancleButton = await waitFor(() => screen.getByText(/Cancel/));
+    fireEvent.click(cancleButton)
+
+    const deleteIcon1 = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon1[0])
+
+    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
+    fireEvent.click(deleteButton)
+
+    
+
+
+  });
+});
+
+describe("delete employee on AR Review status", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
+
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
+
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
+
+    mock.onPost(urls.deleteEmployeeApi).reply(500, {});
+
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    const { container } = render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    expect(payrollTab).toBeInTheDocument();
+
+    const deleteIcon = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon[0])
+
+    const cancleButton = await waitFor(() => screen.getByText(/Cancel/));
+    fireEvent.click(cancleButton)
+
+    const deleteIcon1 = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon1[0])
+
+    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
+    fireEvent.click(deleteButton)
+
+    
+
+
   });
 });

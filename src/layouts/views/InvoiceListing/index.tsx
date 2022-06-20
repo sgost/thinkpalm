@@ -47,7 +47,6 @@ export default function InvoiceListing() {
   const [customerOpen, setCustomerOpen] = useState(false);
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
     useState<boolean>(false);
-
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
     message: "Downloading...",
@@ -200,11 +199,6 @@ export default function InvoiceListing() {
         isDefault: true,
         key: "exportToQB",
       },
-      // {
-      //   header: "Action",
-      //   isDefault: true,
-      //   key: "action",
-      // },
     ],
     data: [],
   });
@@ -416,13 +410,6 @@ export default function InvoiceListing() {
             value: "Not Exported",
             color: "#767676",
           },
-          // action: {
-          //   icon: {
-          //     icon: 'trash',
-          //     color: '#E32C15',
-          //     size: 'large',
-          //   }
-          // }
         });
       });
 

@@ -120,6 +120,10 @@ export default function InvoiceDetails() {
   const [transactionType, setTransactionType] = useState();
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
+  const [deleteEmployeeModalOpen, setDeleteEmployeeModalOpen] = useState({
+    isModalOpen: false,
+    data: {}
+  });
   const [countrySummary, setCountrySummary] = useState<any>([]);
   const [totalCountrySummaryDue, settotalCountrySummaryDue] = useState(0);
   const [feeSummary, setFeeSummary] = useState<any>([]);
@@ -246,13 +250,31 @@ export default function InvoiceDetails() {
                 let currencyCode = e.currencyCode;
                 let arr: any = [];
 
-                e.payrollItems.forEach((item: any) => {
+                e.payrollItems.forEach((item: any, index: any) => {
                   arr.push({
-                    employeeID: item.employeeId,
+                    employeeID: {
+                      value: (
+                        <span
+                        style={{fontWeight: 600}}
+                          onClick={() => {
+                            handleCompensationModal(item);
+                          }}
+                        >
+                          {item.employeeId}
+                        </span>
+                      ),
+                    },
                     name: {
-                      value: item.firstName + " " + item.lastName,
-                      // img: { src: item.employeeProfilePicture },
-
+                      value: (
+                        <span
+                        style={{fontWeight: 600}}
+                          onClick={() => {
+                            handleCompensationModal(item);
+                          }}
+                        >
+                          {item.firstName + " " + item.lastName}
+                        </span>
+                      ),
                       img: { src: avatar },
                       style: { borderRadius: 12 },
                     },
@@ -283,6 +305,22 @@ export default function InvoiceDetails() {
                       toCurrencyFormat(item.healthcare),
 
                     // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                  
+                    action:  (res.data?.invoice?.status === 2 || res.data?.invoice?.status === 12) ? {
+                      value: (
+                        <div
+                        data-testid="delete-icon"
+                          onClick={() => {
+                            setDeleteEmployeeModalOpen({isModalOpen: true, data: item});
+                          }}
+                        >
+                          <Icon icon="trash" color="#E32C15" size="large" />
+                        </div>
+                      ),
+                      color: "#E32C15",
+                    }
+                    : 
+                    "",
                   });
                 });
 
@@ -577,9 +615,11 @@ export default function InvoiceDetails() {
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
-        "DD MMM YYYY"
-      );
+      model.invoiceDate = moment(
+        state.transactionType == 7
+          ? apiData?.data?.invoice?.createdDate
+          : apiData?.data?.invoice?.submissionDate
+      ).format("DD MMM YYYY");
       model.invoiceApproval = moment(
         apiData?.data?.invoice?.approvalDate
       ).format("DD MMM YYYY");
@@ -666,6 +706,11 @@ export default function InvoiceDetails() {
       sharedColumns.countryVAT,
       sharedColumns.adminFees,
       tableSharedColumns.healthcareBenefits,
+      (apiData?.data?.invoice?.status === 2 || apiData?.data?.invoice?.status === 12) && {
+        header: "Action",
+        isDefault: true,
+        key: "action",
+      },
     ],
     showDefaultColumn: true,
   };
@@ -955,7 +1000,7 @@ export default function InvoiceDetails() {
 
   /* istanbul ignore next */
   const handleCompensationModal = (data: any) => {
-    if (data?.employeeID) {
+    if (data?.employeeId) {
       const headers: any = {
         headers: {
           authorization: `Bearer ${tempToken}`,
@@ -968,7 +1013,7 @@ export default function InvoiceDetails() {
         },
       };
 
-      const compensationApi = getEmployeeCompensationData(data?.employeeID);
+      const compensationApi = getEmployeeCompensationData(data?.employeeId);
 
       axios
         .get(compensationApi, headers)
@@ -1101,6 +1146,32 @@ export default function InvoiceDetails() {
     });
   };
 
+  const deleteEmployee = async () => {
+
+    const headers = getHeaders(tempToken, cid, isClient);
+    let deleteEmployeeApi = urls.deleteEmployeeApi
+
+    await axios
+    .post(
+      deleteEmployeeApi,
+      {
+        "customerId": cid,
+        "InvoiceId": deleteEmployeeModalOpen?.data?.id,
+        "PayrollId": deleteEmployeeModalOpen?.data?.payrollId,    
+        "EmployeeId":deleteEmployeeModalOpen?.data?.employeeId
+      },
+      {
+        headers: headers,
+      }
+    )
+    .then((response: any) => {
+      console.log("response", response)
+    })
+    .catch((e: any) => {
+      console.log(e);
+    });
+  }
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1154,27 +1225,28 @@ export default function InvoiceDetails() {
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               missTransType != 1) && (
-                <div
-                  onClick={() =>
-                    missTransType != 7
-                      ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
-                  }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
+              <div
+                onClick={() =>
+                  missTransType != 7
+                    ? setIsDownloadOpen(!isDownloadOpen)
+                    : function noRefCheck() {}
+                }
+                className={`${
+                  missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                    }`}
+                }`}
                 // className="download"
-                >
-                  <p className="text">Download</p>
-                  <Icon
-                    className="icon"
-                    color="#526fd6"
-                    icon="chevronDown"
-                    size="medium"
-                  />
-                </div>
-              )}
+              >
+                <p className="text">Download</p>
+                <Icon
+                  className="icon"
+                  color="#526fd6"
+                  icon="chevronDown"
+                  size="medium"
+                />
+              </div>
+            )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1203,7 +1275,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-            (status === "Invoiced" && missTransType === 7) ? (
+          (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1331,12 +1403,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
                     {
                       state: {
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
@@ -1371,7 +1443,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {((status === "AR Review") || (status === "Declined")) &&
+          {(status === "AR Review" || status === "Declined") &&
             missTransType === 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
@@ -1417,9 +1489,9 @@ export default function InvoiceDetails() {
             />
           )}
 
-          {((((status === "Declined") || (status === "Open")) &&
-            (missTransType !== 1)) &&
-            (permission?.InvoiceDetails.includes("Send"))) && (
+          {(status === "Declined" || status === "Open") &&
+            missTransType !== 1 &&
+            permission?.InvoiceDetails.includes("Send") && (
               <Button
                 data-testid="review-button"
                 className="primary-blue small"
@@ -1462,9 +1534,9 @@ export default function InvoiceDetails() {
                 <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                 <p>{getTransactionLabel()}</p>
               </div>
-              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 &&
+              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 && (
                 <p className="qbo">QBO No. {creditMemoData?.qbInvoiceNo}</p>
-              }
+              )}
             </div>
             <div className="amount">
               {missTransType != 7 && (
@@ -1650,7 +1722,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer status={status} />
         </div>
@@ -1778,9 +1850,6 @@ export default function InvoiceDetails() {
                         ...{ data: item.data },
                       }}
                       colSort
-                      handleRowClick={(rowData: any) => {
-                        handleCompensationModal(rowData);
-                      }}
                     />
                     <div className="feeSummaryCalc">
                       <div className="rowFee">
@@ -2184,7 +2253,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                          ?.photoUrl
+                            ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2231,11 +2300,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                          isCompensatioModalOpen.data &&
-                          isCompensatioModalOpen?.data?.startDate
+                        isCompensatioModalOpen.data &&
+                        isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                            isCompensatioModalOpen?.data?.startDate
-                          ).format("D MMM YYYY")
+                              isCompensatioModalOpen?.data?.startDate
+                            ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
@@ -2260,6 +2329,35 @@ export default function InvoiceDetails() {
             </div>
           </div>
         </Modal>
+      </div>
+
+      <div className="delete-employee-modal">
+        <Modal
+         isOpen={deleteEmployeeModalOpen.isModalOpen}
+         handleClose={() => {setDeleteEmployeeModalOpen({...deleteEmployeeModalOpen, isModalOpen: false})}}
+         >
+
+          <div className="delete-employee-inner-container">
+          <h1>Are you sure you want to delete this employee?</h1>
+          <div className="delete-emplyee-buttons">
+          <Button
+                data-testid="delete-button-Cancel"
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setDeleteEmployeeModalOpen({...deleteEmployeeModalOpen, isModalOpen: false});
+                }}
+              />
+              <Button
+                data-testid="delete-button-submit"
+                label="Delete Employee"
+                className="primary-blue medium employee-button"
+                handleOnClick={() => deleteEmployee()}
+              />
+          </div>
+          </div>
+         
+         </Modal>
       </div>
     </div>
   );

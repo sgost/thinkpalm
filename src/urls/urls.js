@@ -84,6 +84,11 @@ export const urls = {
     baseURL +
     services.atlasSubscriptionService +
     `/Lookup/GetSubscriptionLookup`,
+
+  deleteEmployeeApi: 
+  baseURL +
+  services.atlasIdgService +
+  "/PayrollChangeItems/RemoveEmployeeFromPayroll"
 };
 
 export const getClientListingUrl = (
