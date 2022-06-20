@@ -533,19 +533,21 @@ const PaymentDetailPage = () => {
       data = {
         PaymentType: 2,
         invoiceids: invoiceIds,
-        paymentnotes: [
-          {
-            noteType: "2",
-            note: paymentNote.note,
-            isCustomerVisible: paymentNote.isVisibleToCustomer,
-            exportToQuickbooks: paymentNote.isExportToQb,
-            createdDate: currDate,
-            modifiedBy: "00000000-0000-0000-0000-000000000000",
-            modifiedByUser: null,
-            displayInPDF: paymentNote.currDate,
-            customerId: state.state.inveoicesData[0].customerId,
-          },
-        ],
+        paymentnotes: paymentNote?.note
+          ? [
+              {
+                noteType: "2",
+                note: paymentNote.note,
+                isCustomerVisible: paymentNote.isVisibleToCustomer,
+                exportToQuickbooks: paymentNote.isExportToQb,
+                createdDate: currDate,
+                modifiedBy: "00000000-0000-0000-0000-000000000000",
+                modifiedByUser: null,
+                displayInPDF: paymentNote.currDate,
+                customerId: state.state.inveoicesData[0].customerId,
+              },
+            ]
+          : [],
         paymentdocuments: [],
         Payments: [
           {
@@ -600,19 +602,21 @@ const PaymentDetailPage = () => {
       data = {
         PaymentType: 1,
         invoiceids: invoiceIds,
-        paymentnotes: [
-          {
-            noteType: "2",
-            note: paymentNote.note,
-            isCustomerVisible: paymentNote.isVisibleToCustomer,
-            exportToQuickbooks: paymentNote.isExportToQb,
-            createdDate: currDate,
-            modifiedBy: "00000000-0000-0000-0000-000000000000",
-            modifiedByUser: null,
-            displayInPDF: paymentNote.currDate,
-            customerId: state.state.inveoicesData[0].customerId,
-          },
-        ],
+        paymentnotes: paymentNote?.note
+          ? [
+              {
+                noteType: "2",
+                note: paymentNote.note,
+                isCustomerVisible: paymentNote.isVisibleToCustomer,
+                exportToQuickbooks: paymentNote.isExportToQb,
+                createdDate: currDate,
+                modifiedBy: "00000000-0000-0000-0000-000000000000",
+                modifiedByUser: null,
+                displayInPDF: paymentNote.currDate,
+                customerId: state.state.inveoicesData[0].customerId,
+              },
+            ]
+          : [],
         paymentdocuments: [],
         Payments: arrData,
       };

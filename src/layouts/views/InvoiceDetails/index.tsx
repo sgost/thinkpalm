@@ -585,9 +585,11 @@ export default function InvoiceDetails() {
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
-        "DD MMM YYYY"
-      );
+      model.invoiceDate = moment(
+        state.transactionType == 7
+          ? apiData?.data?.invoice?.createdDate
+          : apiData?.data?.invoice?.submissionDate
+      ).format("DD MMM YYYY");
       model.invoiceApproval = moment(
         apiData?.data?.invoice?.approvalDate
       ).format("DD MMM YYYY");
@@ -608,9 +610,9 @@ export default function InvoiceDetails() {
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.createdDate).format(
-        "DD MMM YYYY"
-      );
+      model.invoiceDate = creditMemoData?.submissionDate
+        ? moment(creditMemoData?.submissionDate).format("DD MMM YYYY")
+        : moment(creditMemoData?.createdDate).format("DD MMM YYYY");
       model.invoiceApproval = moment(creditMemoData?.createdDate).format(
         "DD MMM YYYY"
       );
@@ -1108,21 +1110,18 @@ export default function InvoiceDetails() {
     });
   };
 
-
   const reCalculate = () => {
     axios
       .post(calculateInvoiceUrl(id), {
         headers: getHeaders(tempToken, cid, "false"),
       })
       .then((resp: any) => {
-        console.log('respresp', resp)
+        console.log("respresp", resp);
       })
       .catch((error: any) => {
         console.log(error);
       });
   };
-
-
 
   return (
     <div className="invoiceDetailsContainer">
@@ -1177,27 +1176,28 @@ export default function InvoiceDetails() {
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               missTransType != 1) && (
-                <div
-                  onClick={() =>
-                    missTransType != 7
-                      ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
-                  }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
+              <div
+                onClick={() =>
+                  missTransType != 7
+                    ? setIsDownloadOpen(!isDownloadOpen)
+                    : function noRefCheck() {}
+                }
+                className={`${
+                  missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                    }`}
+                }`}
                 // className="download"
-                >
-                  <p className="text">Download</p>
-                  <Icon
-                    className="icon"
-                    color="#526fd6"
-                    icon="chevronDown"
-                    size="medium"
-                  />
-                </div>
-              )}
+              >
+                <p className="text">Download</p>
+                <Icon
+                  className="icon"
+                  color="#526fd6"
+                  icon="chevronDown"
+                  size="medium"
+                />
+              </div>
+            )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1212,13 +1212,13 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-
-          {((status === "AR Review") || (status === "Declined")) &&
-            missTransType == 1 && permission.Role == "FinanceAR" && (
+          {(status === "AR Review" || status === "Declined") &&
+            missTransType == 1 &&
+            permission.Role == "FinanceAR" && (
               <div className="saveBtnContainer">
                 <Button
                   handleOnClick={() => {
-                    reCalculate()
+                    reCalculate();
                   }}
                   className="secondary-btn small"
                   icon={{
@@ -1245,7 +1245,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-            (status === "Invoiced" && missTransType === 7) ? (
+          (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1373,12 +1373,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
                     {
                       state: {
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
@@ -1413,7 +1413,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {((status === "AR Review") || (status === "Declined")) &&
+          {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
@@ -1459,7 +1459,7 @@ export default function InvoiceDetails() {
             />
           )}
 
-          {((status === "Declined") || (status === "Open")) &&
+          {(status === "Declined" || status === "Open") &&
             missTransType !== 1 &&
             permission?.InvoiceDetails.includes("Send") && (
               <Button
@@ -1504,9 +1504,9 @@ export default function InvoiceDetails() {
                 <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                 <p>{getTransactionLabel()}</p>
               </div>
-              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 &&
+              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 && (
                 <p className="qbo">QBO No. {creditMemoData?.qbInvoiceNo}</p>
-              }
+              )}
             </div>
             <div className="amount">
               {missTransType != 7 && (
@@ -1692,7 +1692,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer status={status} />
         </div>
@@ -2038,7 +2038,12 @@ export default function InvoiceDetails() {
                   }}
                   checked={employeeSalary}
                 />
-                <label className="dec_check_label" onClick={() => setEmployeeSalary(!employeeSalary)}>Employee Salary is not correct</label>
+                <label
+                  className="dec_check_label"
+                  onClick={() => setEmployeeSalary(!employeeSalary)}
+                >
+                  Employee Salary is not correct
+                </label>
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
@@ -2049,7 +2054,12 @@ export default function InvoiceDetails() {
                   }}
                   checked={benefit}
                 />
-                <label className="dec_check_label" onClick={() => setBenefit(!benefit)}>Benefit Amount is not correct</label>
+                <label
+                  className="dec_check_label"
+                  onClick={() => setBenefit(!benefit)}
+                >
+                  Benefit Amount is not correct
+                </label>
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
@@ -2060,7 +2070,12 @@ export default function InvoiceDetails() {
                   }}
                   checked={amountUpdate}
                 />
-                <label className="dec_check_label" onClick={() => setAmountUpdate(!amountUpdate)}>One-off pay items amount to be updated</label>
+                <label
+                  className="dec_check_label"
+                  onClick={() => setAmountUpdate(!amountUpdate)}
+                >
+                  One-off pay items amount to be updated
+                </label>
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
@@ -2071,7 +2086,12 @@ export default function InvoiceDetails() {
                   }}
                   checked={termination}
                 />
-                <label className="dec_check_label" onClick={() => setTermination(!termination)}>Termination</label>
+                <label
+                  className="dec_check_label"
+                  onClick={() => setTermination(!termination)}
+                >
+                  Termination
+                </label>
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
@@ -2082,7 +2102,12 @@ export default function InvoiceDetails() {
                   }}
                   checked={invoiceCalc}
                 />
-                <label className="dec_check_label" onClick={() => setinvoiceCalc(!invoiceCalc)}>Invoice Calculation Error</label>
+                <label
+                  className="dec_check_label"
+                  onClick={() => setinvoiceCalc(!invoiceCalc)}
+                >
+                  Invoice Calculation Error
+                </label>
               </div>
               <div className="dec_check_wrapp">
                 <Checkbox
@@ -2093,7 +2118,12 @@ export default function InvoiceDetails() {
                   }}
                   checked={feeIssue}
                 />
-                <label className="dec_check_label" onClick={() => setfeeIssue(!feeIssue)}>Fee Issue</label>
+                <label
+                  className="dec_check_label"
+                  onClick={() => setfeeIssue(!feeIssue)}
+                >
+                  Fee Issue
+                </label>
               </div>
             </div>
 
@@ -2295,7 +2325,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                          ?.photoUrl
+                            ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2342,11 +2372,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                          isCompensatioModalOpen.data &&
-                          isCompensatioModalOpen?.data?.startDate
+                        isCompensatioModalOpen.data &&
+                        isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                            isCompensatioModalOpen?.data?.startDate
-                          ).format("D MMM YYYY")
+                              isCompensatioModalOpen?.data?.startDate
+                            ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
