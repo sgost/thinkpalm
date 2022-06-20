@@ -2,6 +2,18 @@
 @import "../../../styles/styles";
 
 .atlas-payment-invoices {
+  .pickers{
+    .openDropdownDatepickerWithRangeContainer{
+      .a-dpicker__container{
+        width: 13rem;
+        .react-datepicker__input-container{
+          input{
+            width: 11.4rem !important;
+          }
+        }
+      }
+    }
+  }
   .customerSelection {
     .a-dropdown__option {
       width: 17rem;
@@ -127,6 +139,7 @@
           pointer-events: none;
           margin-top: 0.2rem;
         }
+        
       }
 
       .icon {
