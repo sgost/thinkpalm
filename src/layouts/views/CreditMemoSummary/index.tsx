@@ -1,4 +1,4 @@
-import { Cards, Button, Dropdown, Logs, DatePicker, Icon } from "atlasuikit";
+import { Cards, Button, Dropdown, DatePicker } from "atlasuikit";
 import axios from "axios";
 import moment from "moment";
 import LogsCompo from "../Logs/index"
