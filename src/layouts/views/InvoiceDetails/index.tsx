@@ -210,25 +210,26 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
+        axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails: any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+              customerEmail: log?.email,
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
+
         if (
           missTransType != 7 &&
           missTransType != 4 &&
           missTransType != 3 &&
           missTransType != 2
         ) {
-          axios
-            .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
-            .then((res: any) => {
-              const logsDetails: any = res?.data?.map((log: any) => ({
-                date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
-                customerEmail: log?.email,
-                description: log?.note,
-              }));
-              setLogsData([...logsDetails]);
-            })
-            .catch((e: any) => {
-              console.log("error", e);
-            });
           axios
             .get(api, headers)
             .then((res: any) => {
@@ -1700,6 +1701,18 @@ export default function InvoiceDetails() {
           currency={getBillingCurrency()}
           vatValue={vatValue}
           setCreditMemoData={setCreditMemoData}
+          isLogsOpen={isLogsOpen}
+          changeLogs={changeLogs}
+          setIsLogsOpen={setIsLogsOpen}
+          dataAvailable={dataAvailable}
+          logsData={logsData}
+          viewLimit={viewLimit}
+          setInitial={setInitial}
+          setLimitFor={setLimitFor}
+          setChangeLogs={setChangeLogs}
+          setDataAvailable={setDataAvailable}
+          initail={initail}
+          limitFor={limitFor}
         ></CreditMemoSummary>
       )}
 

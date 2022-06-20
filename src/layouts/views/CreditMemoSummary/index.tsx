@@ -1,4 +1,4 @@
-import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
+import { Cards, Button, Dropdown, Logs, DatePicker, Icon } from "atlasuikit";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -27,8 +27,26 @@ export default function CreditMemoSummary(props: any) {
     serviceCountries,
     vatValue,
     setCreditMemoData,
-    status
+    status,
+    isLogsOpen,
+    changeLogs,
+    setIsLogsOpen,
+    dataAvailable,
+    logsData,
+    viewLimit,
+    setInitial,
+    setLimitFor,
+    setChangeLogs,
+    setDataAvailable,
+    initail,
+    limitFor
   } = props;
+
+
+
+  console.log('propspropspropsprops', props)
+
+
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
   const [newQuantity, setNewQuantity] = useState<number>(0);
@@ -409,7 +427,7 @@ export default function CreditMemoSummary(props: any) {
                         {getPermissions(
                           creditMemoData?.transactionType,
                           "Edit"
-                        ) && status !== "Declined" &&(
+                        ) && status !== "Declined" && (
                             <Button
                               data-testid="edit-summary-button"
                               className="primary-blue medium edit"
@@ -747,52 +765,76 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></FileUploadWidget>
       </div>
-      <Cards className="UI-change-log">
+      <Cards className="invoice-logs">
         <Logs
-          data={[
-            {
-              customerEmail: "danielal@email.com",
-              date: "Sat May 14 2022",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "2",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "3",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "4",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "5",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-          ]}
-          isOpen={openLogs}
-          handleUpDown={() => {
-            setOpenLogs(!openLogs);
-          }}
-          handleViewMore={function noRefCheck() { }}
+          custom
+          isOpen={isLogsOpen}
+          data={changeLogs}
+          title={
+            <>
+              <Icon
+                icon="edit"
+                size="small"
+                color="#526FD6"
+                viewBox="-2 -1 24 24"
+                style={{
+                  marginTop: "0",
+                  padding: "0",
+                }}
+              />{" "}
+              View Change Log
+            </>
+          }
           name="View-change-log"
-          title="View Change Log"
+          handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
+          actions={{
+            primary: {
+              label: "View More",
+              icon: {
+                icon: "edit",
+                size: "small",
+                color: "#526FD6",
+                viewBox: "-2 -1 24 24",
+              },
+
+              handleOnClick: () => {
+                if (dataAvailable) {
+                  const spliced = [...logsData].splice(
+                    changeLogs.length,
+                    viewLimit
+                  );
+
+                  if (logsData.length > limitFor) {
+                    setInitial(limitFor);
+                    setLimitFor(limitFor + 10);
+                  }
+
+                  setChangeLogs([...changeLogs, ...spliced]);
+                }
+              },
+              disabled: !dataAvailable,
+            },
+            secondary: {
+              label: "View Less",
+              icon: {
+                icon: "edit",
+                size: "small",
+                color: "#526FD6",
+                viewBox: "-2 -1 24 24",
+              },
+              handleOnClick: () => {
+                const logs = [...changeLogs];
+                logs.splice(initail, limitFor);
+                setChangeLogs([...logs]);
+                setInitial(initail - 10);
+                setLimitFor(initail);
+                if (logs.length === changeLogs.length) {
+                  setDataAvailable(true);
+                }
+              },
+              disabled: changeLogs.length <= viewLimit,
+            },
+          }}
         />
       </Cards>
     </div>

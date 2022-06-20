@@ -10,6 +10,60 @@ import { BillsTable } from '../../BillsTable/index'
 import userEvent from "@testing-library/user-event";
 import { url } from "inspector";
 
+const changeLogs = [
+    {
+        "date": "14 Jun 2022, 11:41",
+        "description": "CREATED"
+    },
+    {
+        "date": "14 Jun 2022, 11:59",
+        "description": "Changed invoice to Miscellaneous 1100955"
+    },
+    {
+        "date": "14 Jun 2022, 11:59",
+        "description": "Changed invoice from Performa 1100960"
+    },
+    {
+        "date": "14 Jun 2022, 02:59",
+        "description": "Changed invoice to Miscellaneous 1100955"
+    },
+    {
+        "date": "14 Jun 2022, 02:59",
+        "description": "Changed invoice from Performa 1100977"
+    },
+    {
+        "date": "18 Jun 2022, 12:10",
+        "description": "payment"
+    }
+]
+
+const logsData = [
+    {
+        "date": "14 Jun 2022, 11:41",
+        "description": "CREATED"
+    },
+    {
+        "date": "14 Jun 2022, 11:59",
+        "description": "Changed invoice to Miscellaneous 1100955"
+    },
+    {
+        "date": "14 Jun 2022, 11:59",
+        "description": "Changed invoice from Performa 1100960"
+    },
+    {
+        "date": "14 Jun 2022, 02:59",
+        "description": "Changed invoice to Miscellaneous 1100955"
+    },
+    {
+        "date": "14 Jun 2022, 02:59",
+        "description": "Changed invoice from Performa 1100977"
+    },
+    {
+        "date": "18 Jun 2022, 12:10",
+        "description": "payment"
+    }
+]
+
 const id = "e6adaad5-089b-4a6f-b24f-a398b33c8cf3";
 const cid = "a9bbee6d-797a-4724-a86a-5b1a2e28763f";
 var token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTIzMzg2ODcsImlhdCI6MTY1MjMzNjg4NywiYXV0aF90aW1lIjowLCJqdGkiOiIyZDU5YzIxNi1hNWRiLTQyNmItYTAwYi03MGU3MDY3ZjEwMjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYTcwMDkxNjYtMDE0Yy00ZGE3LThjMTEtOTFjYmYxN2JiMmU5IiwiYXRfaGFzaCI6IkE2Wk5pN0RINEhTVTZNaUFzMWowTVEiLCJhY3IiOiIxIiwic2lkIjoiYTcwMDkxNjYtMDE0Yy00ZGE3LThjMTEtOTFjYmYxN2JiMmU5IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.kQwAyl4f2lOXpiCysnYmZNLs3qUE7zkJ2xozWExr55W_pdBCcXV2nDVf0TsAh022NJ0xr4Mx7hxOkFhJKatg42IvxljZoxunHv88QqKYpGMK_r-B1YqSR6Vz1hUwOSaF_zLFlseR292icQWmxuNXRvtoUfN4shurHNIob63Dua5sNLfBEJL0BF4xDNtgQrn6H5SImOm8274a8J1BK4StteS0GOAbtZyrAn1h1N5xLb0q-RykXru4PSlHOuS_vCjnX5ZIX0zW4gEuuNqzfcSjjrB5hZRRprxjrbVJXGn-XvxIUULXSj0jPcO7w8j3iIGkTjnqzNAtd5iu5_2UUgU2bw"
@@ -41,6 +95,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -62,6 +128,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -84,6 +162,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -106,6 +196,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -130,6 +232,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -153,6 +267,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -176,6 +302,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -197,6 +335,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -219,6 +369,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -241,6 +403,18 @@ describe("Credit Memo Summary", () => {
                     serviceCountries={mockServiceCountries}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
@@ -273,6 +447,18 @@ describe("Notes fail", () => {
                     serviceCountries={[]}
                     currency={"USD"}
                     vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
                 ></CreditMemoSummary>
             </HashRouter>
         );
