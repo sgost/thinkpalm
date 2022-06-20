@@ -1,6 +1,7 @@
 import { Cards, Button, Dropdown, Logs, DatePicker, Icon } from "atlasuikit";
 import axios from "axios";
 import moment from "moment";
+import LogsCompo from "../Logs/index"
 import { useEffect, useState } from "react";
 import {
   getHeaders,
@@ -765,78 +766,20 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></FileUploadWidget>
       </div>
-      <Cards className="invoice-logs">
-        <Logs
-          custom
-          isOpen={isLogsOpen}
-          data={changeLogs}
-          title={
-            <>
-              <Icon
-                icon="edit"
-                size="small"
-                color="#526FD6"
-                viewBox="-2 -1 24 24"
-                style={{
-                  marginTop: "0",
-                  padding: "0",
-                }}
-              />{" "}
-              View Change Log
-            </>
-          }
-          name="View-change-log"
-          handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
-          actions={{
-            primary: {
-              label: "View More",
-              icon: {
-                icon: "edit",
-                size: "small",
-                color: "#526FD6",
-                viewBox: "-2 -1 24 24",
-              },
-
-              handleOnClick: () => {
-                if (dataAvailable) {
-                  const spliced = [...logsData].splice(
-                    changeLogs.length,
-                    viewLimit
-                  );
-
-                  if (logsData.length > limitFor) {
-                    setInitial(limitFor);
-                    setLimitFor(limitFor + 10);
-                  }
-
-                  setChangeLogs([...changeLogs, ...spliced]);
-                }
-              },
-              disabled: !dataAvailable,
-            },
-            secondary: {
-              label: "View Less",
-              icon: {
-                icon: "edit",
-                size: "small",
-                color: "#526FD6",
-                viewBox: "-2 -1 24 24",
-              },
-              handleOnClick: () => {
-                const logs = [...changeLogs];
-                logs.splice(initail, limitFor);
-                setChangeLogs([...logs]);
-                setInitial(initail - 10);
-                setLimitFor(initail);
-                if (logs.length === changeLogs.length) {
-                  setDataAvailable(true);
-                }
-              },
-              disabled: changeLogs.length <= viewLimit,
-            },
-          }}
-        />
-      </Cards>
+      <LogsCompo
+        isLogsOpen={isLogsOpen}
+        changeLogs={changeLogs}
+        setIsLogsOpen={setIsLogsOpen}
+        dataAvailable={dataAvailable}
+        logsData={logsData}
+        viewLimit={viewLimit}
+        setInitial={setInitial}
+        setLimitFor={setLimitFor}
+        setChangeLogs={setChangeLogs}
+        setDataAvailable={setDataAvailable}
+        initail={initail}
+        limitFor={limitFor}
+      ></LogsCompo>
     </div>
   );
 }

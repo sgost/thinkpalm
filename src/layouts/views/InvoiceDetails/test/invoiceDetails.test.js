@@ -2366,22 +2366,6 @@ describe("Invoice details view change log click", () => {
     fireEvent.change(input, { target: { value: "Pending" } });
     const publish = await waitFor(() => screen.getByText(/Save/));
     fireEvent.click(publish);
-
-    const changeViewText = await screen.findByText(/View Change Log/);
-    fireEvent.click(changeViewText);
-
-    // const text = await screen.findByText(/test 9/);
-    // expect(text).toBeInTheDocument();
-
-    const viewMoreText = await screen.findByText(/View More/);
-    fireEvent.click(viewMoreText);
-    fireEvent.click(viewMoreText);
-    fireEvent.click(viewMoreText);
-
-    // screen.logTestingPlaygroundURL();
-
-    // const viewLessText = await screen.findByText(/View Less/);
-    // fireEvent.click(viewLessText);
   });
 });
 
