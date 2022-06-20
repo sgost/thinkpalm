@@ -321,28 +321,6 @@ describe("Invoice details", () => {
     fireEvent.click(approve);
   });
 
-  test("Send for Review ", async () => {
-    render(
-      <HashRouter>
-        <Button label="Send for Review" />
-      </HashRouter>
-    );
-
-    const review = screen.getByText(/Send for Review/);
-    fireEvent.click(review);
-  });
-
-  test("Change to Miscellaneous ", async () => {
-    render(
-      <HashRouter>
-        <Button label="Change to Miscellaneous" />
-      </HashRouter>
-    );
-
-    const convert = screen.getByText(/Change to Miscellaneous/);
-    fireEvent.click(convert);
-  });
-
   test("publish notes", async () => {
     render(
       <HashRouter>
