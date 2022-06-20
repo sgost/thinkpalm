@@ -71,6 +71,11 @@ export const urls = {
     services.atlasInvoiceService +
     "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2",
 
+  updateInvoiceCalendar:
+    baseURL +
+    services.atlasInvoiceService +
+    "/Invoices/UpdateInvoiceCalendar/",
+
   contractorBillingService:
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
