@@ -44,10 +44,6 @@ export default function CreditMemoSummary(props: any) {
   } = props;
 
 
-
-  console.log('propspropspropsprops', props)
-
-
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
   const [newQuantity, setNewQuantity] = useState<number>(0);
@@ -59,7 +55,6 @@ export default function CreditMemoSummary(props: any) {
   const [openEditProductService, setOpenEditProductService] = useState<any>();
   const [openCountryService, setOpenCountryService] = useState(false);
   const [openEditCountryService, setOpenEditCountryService] = useState<any>();
-  const [openLogs, setOpenLogs] = useState(false);
   const [addSectionCheck, setAddSectionCheck] = useState(false);
   const [editCheck, setEditCheck] = useState<any>();
   const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
