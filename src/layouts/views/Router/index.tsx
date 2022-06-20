@@ -11,7 +11,10 @@ export default function RouterComponent() {
     <Routes>
       <Route path="/" element={<InvoiceListing />} />
       <Route path="/newinvoice" element={<NewInvoice />} />
-      <Route path="/invoicedetails:id/:cid/:isClient/payments" element={<PaymentDetailPage />} />
+      <Route
+        path="/invoicedetails:id/:cid/:isClient/payments"
+        element={<PaymentDetailPage />}
+      />
       <Route
         path="/invoicedetails:id/:cid/:isClient"
         element={<InvoiceDetails />}

@@ -1468,7 +1468,6 @@
             .misc-info {
               height: 100%;
               display: flex;
-              margin-left: 14rem;
 
               &__item {
                 display: flex;
@@ -1513,7 +1512,7 @@
 
         .compensation-text {
           font-size: 1.4rem;
-          padding: 1rem 4rem;
+          padding: 1rem 2.6rem;
           display: flex;
           justify-content: flex-start;
           width: 90%;
@@ -1524,11 +1523,23 @@
           width: 100%;
           justify-content: center;
           margin-bottom: 4.3rem;
-          max-height: 12.5rem;
+          max-height: 15rem;
           overflow-y: scroll;
 
           .table {
             width: 92%;
+          }
+        }
+        .table{
+          .table__header{
+            .table__row{
+              padding-left: 1rem;
+            }
+          }
+          .table__body{
+            .table__row{
+              padding-left: 1rem;
+            }
           }
         }
       }

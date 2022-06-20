@@ -22,6 +22,7 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  calculateInvoiceUrl,
   getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
@@ -530,7 +531,7 @@ export default function InvoiceDetails() {
         .then((response: any) => {
           if (response.status == 200) {
             const { data } = response.data;
-            if (data?.length > 0) {
+            if (data?.invoiceBills?.length > 0) {
               setBillTableData(response);
             } else {
               console.log("no data");
@@ -640,9 +641,9 @@ export default function InvoiceDetails() {
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.createdDate).format(
-        "DD MMM YYYY"
-      );
+      model.invoiceDate = creditMemoData?.submissionDate
+        ? moment(creditMemoData?.submissionDate).format("DD MMM YYYY")
+        : moment(creditMemoData?.createdDate).format("DD MMM YYYY");
       model.invoiceApproval = moment(creditMemoData?.createdDate).format(
         "DD MMM YYYY"
       );
@@ -1171,6 +1172,18 @@ export default function InvoiceDetails() {
       console.log(e);
     });
   }
+  const reCalculate = () => {
+    axios
+      .post(calculateInvoiceUrl(id), {
+        headers: getHeaders(tempToken, cid, "false"),
+      })
+      .then((resp: any) => {
+        console.log("respresp", resp);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="invoiceDetailsContainer">
@@ -1260,6 +1273,25 @@ export default function InvoiceDetails() {
               </div>
             )}
           </div>
+
+          {(status === "AR Review" || status === "Declined") &&
+            missTransType == 1 &&
+            permission.Role == "FinanceAR" && (
+              <div className="saveBtnContainer">
+                <Button
+                  handleOnClick={() => {
+                    reCalculate();
+                  }}
+                  className="secondary-btn small"
+                  icon={{
+                    color: "#526FD6",
+                    icon: "autorenew",
+                    size: "small",
+                  }}
+                  label="Re-Calculate"
+                />
+              </div>
+            )}
 
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
@@ -1444,7 +1476,7 @@ export default function InvoiceDetails() {
             )}
 
           {(status === "AR Review" || status === "Declined") &&
-            missTransType === 1 &&
+            missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
               <Button
                 className="primary-blue small"
@@ -1478,7 +1510,7 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {status === "Approved" && missTransType === 3 && (
+          {status === "Approved" && missTransType === 3 && permission.Role == "FinanceAR" && (
             <Button
               data-testid="convert-button"
               label="Change to Miscellaneous"
@@ -2287,8 +2319,8 @@ export default function InvoiceDetails() {
               </div>
               <div className="section-2">
                 <div className="col-3"></div>
-                <div className="col-9 misc-info">
-                  <div className="col-4">
+                <div className="col-6 misc-info">
+                  <div className="col-6">
                     <div className="misc-info__item">
                       <Icon color="#767676" icon="pound" size="medium" />
                       &nbsp;
@@ -2309,7 +2341,7 @@ export default function InvoiceDetails() {
                       </span>
                     </div>
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <div className="misc-info__item misc-info__item__2">
                       <Icon color="#767676" icon="location" size="medium" />
                       &nbsp;

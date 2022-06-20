@@ -42,7 +42,7 @@ export default function InvoiceListing() {
       isSelected: false,
       label: "",
       value: "",
-    }
+    },
   ]);
   const [customerOpen, setCustomerOpen] = useState(false);
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
@@ -284,7 +284,7 @@ export default function InvoiceListing() {
         isSelected: false,
         label: "",
         value: "",
-      }
+      },
     ]);
     setStatusType("");
     setDateTo("");
@@ -554,6 +554,10 @@ export default function InvoiceListing() {
         bool = true;
       }
 
+      if (e.transactionType == 7) {
+        bool = true;
+      }
+
       if (e.transactionType == 4) {
         checkedInvoices.forEach((i: any) => {
           if (i.transactionType != 4) {
@@ -609,11 +613,10 @@ export default function InvoiceListing() {
     );
   }
 
-
-  //Customer filter 
+  //Customer filter
   useEffect(() => {
     getCustomerDropdownOptions();
-  }, [])
+  }, []);
 
   const getCustomerDropdownOptions = () => {
     let allCustomerapi = urls.customers;
@@ -743,56 +746,57 @@ export default function InvoiceListing() {
                   </div>
                 )}
 
-
-
-              <div className="customerSelection">
-                <Dropdown
-                  data-testid="customer-type"
-                  title="Customer"
-                  multiple
-                  search
-                  isOpen={customerOpen}
-                  handleDropdownClick={(bool: any) => {
-                    setCustomerOpen(bool);
-                    if (bool) {
-                      setIsStatusOpen(false);
-                    }
-                  }}
-
-                  handleDropOptionClick={(opt: any) => {
-                    setCustomerOpen(true)
-                    let index = customerData.findIndex((e) => e.value === opt.value);
-
-                    let copy = [...customerData];
-
-                    copy.forEach((_e, i) => {
-                      if (i === index) {
-                        if (copy[index].isSelected) {
-                          copy[index] = { ...opt, isSelected: false };
-                        } else {
-                          copy[index] = { ...opt, isSelected: true };
-                        }
+              {permission.Role !== "Customer" &&
+                <div className="customerSelection">
+                  <Dropdown
+                    data-testid="customer-type"
+                    title="Customer"
+                    multiple
+                    search
+                    isOpen={customerOpen}
+                    handleDropdownClick={(bool: any) => {
+                      setCustomerOpen(bool);
+                      if (bool) {
+                        setIsStatusOpen(false);
                       }
-                    });
+                    }}
+                    handleDropOptionClick={(opt: any) => {
+                      setCustomerOpen(true);
+                      let index = customerData.findIndex(
+                        (e) => e.value === opt.value
+                      );
 
-                    let typesValue = "";
+                      let copy = [...customerData];
 
-                    copy.forEach((item) => {
-                      if (item.isSelected) {
-                        if (typesValue) {
-                          typesValue += "," + item.value.toString();
-                        } else {
-                          typesValue = item.value.toString();
+                      copy.forEach((_e, i) => {
+                        if (i === index) {
+                          if (copy[index].isSelected) {
+                            copy[index] = { ...opt, isSelected: false };
+                          } else {
+                            copy[index] = { ...opt, isSelected: true };
+                          }
                         }
-                      }
-                    });
+                      });
 
-                    setCustomerData(copy);
-                    setCustomerType(typesValue)
-                  }}
-                  options={customerData}
-                />
-              </div>
+                      let typesValue = "";
+
+                      copy.forEach((item) => {
+                        if (item.isSelected) {
+                          if (typesValue) {
+                            typesValue += "," + item.value.toString();
+                          } else {
+                            typesValue = item.value.toString();
+                          }
+                        }
+                      });
+
+                      setCustomerData(copy);
+                      setCustomerType(typesValue);
+                    }}
+                    options={customerData}
+                  />
+                </div>
+              }
 
               <DatepickerDropdown
                 title="Date"
@@ -925,7 +929,7 @@ export default function InvoiceListing() {
                   setIsTypeOpen(bool);
                   if (bool) {
                     setIsStatusOpen(false);
-                    setCustomerOpen(false)
+                    setCustomerOpen(false);
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
