@@ -1066,7 +1066,7 @@ export default function InvoiceDetails() {
       method: "POST",
       url: convertMissInvoice(id),
       headers: getHeaders(tempToken, cid, isClient),
-    }).then((_e) => {
+    }).then(() => {
       handleApproveInvoice(8);
     }
     )
