@@ -424,6 +424,41 @@ describe("Credit Memo Summary", () => {
         userEvent.click(productDD);
         userEvent.click(productDD);
     })
+
+
+    test("For logs", () => {
+        const { getByTestId, getByText } = render(
+            <HashRouter>
+                <CreditMemoSummary
+                    notes={mockapidata.notes}
+                    documents={mockapidata.resData.invoice.invoiceDocuments}
+                    id={id}
+                    cid={cid}
+                    isClient={"true"}
+                    setNotes={() => { }}
+                    setDocuments={() => { }}
+                    creditMemoData={mockCreditMemoData}
+                    serviceCountries={mockServiceCountries}
+                    currency={"USD"}
+                    vatValue={10}
+                    isLogsOpen={false}
+                    changeLogs={changeLogs}
+                    setIsLogsOpen={() => { }}
+                    dataAvailable={false}
+                    logsData={logsData}
+                    viewLimit={10}
+                    setInitial={() => { }}
+                    setLimitFor={() => { }}
+                    setChangeLogs={() => { }}
+                    setDataAvailable={() => { }}
+                    initail={0}
+                    limitFor={10}
+                ></CreditMemoSummary>
+            </HashRouter>
+        );
+        var logs = getByText("View Change Log");
+        userEvent.click(logs);
+    })
 })
 describe("Notes fail", () => {
     beforeAll(() => {

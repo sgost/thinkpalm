@@ -766,7 +766,7 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         if (res.status === 201) {
-          setStatus(res.data.status === 2 ? "AR Review" : "Approved");
+          setStatus(res.data.status === 2 ? "AR Review" : res.data.status === 8 ? "Closed" : "Approved");
           setApprovalMsg(
             res.data.status === 4 ? "Invoice approve successfully" : ""
           );
@@ -1066,8 +1066,8 @@ export default function InvoiceDetails() {
       method: "POST",
       url: convertMissInvoice(id),
       headers: getHeaders(tempToken, cid, isClient),
-    }).then((e) => {
-      handleApproveInvoice(8)
+    }).then((_e) => {
+      handleApproveInvoice(8);
     }
     )
   };
