@@ -563,7 +563,7 @@ export default function BillsTable(props: any) {
                                     className="secondary-btn medium secondary-button reject-button"
                                     handleOnClick={() => { setRejectBanner(true) }}
                                 />
-                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.length > 1 && (
+                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.invoiceBills?.length > 1 && (
                                         <Button
                                             className="primary-blue medium primary next-invoice-button"
                                             label="Move To Next Invoice"
