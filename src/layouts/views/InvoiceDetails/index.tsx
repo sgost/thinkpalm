@@ -1448,7 +1448,7 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {status === "Approved" && missTransType === 3 && (
+          {status === "Approved" && missTransType === 3 && permission.Role == "FinanceAR" && (
             <Button
               data-testid="convert-button"
               label="Change to Miscellaneous"
