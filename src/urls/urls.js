@@ -261,6 +261,10 @@ export const getEmployeeBreakdownUrl = (id) => {
   );
 };
 
+export const convertMissInvoice = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + "/invoices/ChangePerformaInvoice/" + invoiceId;
+};
+
 export const getUpdateCreditMemoUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;
 };

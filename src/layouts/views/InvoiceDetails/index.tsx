@@ -22,6 +22,7 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  convertMissInvoice,
   calculateInvoiceUrl,
   getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
@@ -1060,32 +1061,16 @@ export default function InvoiceDetails() {
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
-    let payload: any = creditMemoData;
-    if (creditMemoData) {
-      payload.transactionType = 2;
+    axios({
+      method: "POST",
+      url: convertMissInvoice(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    }).then((e) => {
+      handleApproveInvoice(8)
     }
-    convertInvoice(payload);
+    )
   };
 
-  const convertInvoice = (payload: any) => {
-    axios
-      .put(getUpdateCreditMemoUrl(id), payload, {
-        headers: getHeaders(tempToken, cid, "false"),
-      })
-      .then((resp: any) => {
-        if (resp) {
-          setMissTransType(2);
-          getTransactionLabel();
-          setApprovalMsg("Invoice Converted Into Miscellineous");
-          setTimeout(() => {
-            setApprovalMsg("");
-          }, 3000);
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-  };
   const handleEditSave = () => {
     axios({
       method: "PUT",
