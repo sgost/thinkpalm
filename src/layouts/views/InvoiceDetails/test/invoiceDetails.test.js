@@ -6,7 +6,6 @@ import {
   waitFor,
   findByText,
 } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import {
   HashRouter,
   useParams,
@@ -34,6 +33,7 @@ import {
   urls,
   getHeaders,
 } from "../../../../urls/urls";
+import userEvent from "@testing-library/user-event";
 // describe("Invoice detail", () => {
 //   let mock;
 //   beforeAll(() => {
