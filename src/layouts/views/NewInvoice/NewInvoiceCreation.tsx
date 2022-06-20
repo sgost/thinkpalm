@@ -256,7 +256,7 @@ const NewInvoiceCreation = ({
       if (e.value === item.value) {
         arr[i] = {
           ...arr[i],
-          isSelected: !arr[i].isSelected,
+          isSelected: true,
         };
       } else {
         arr[i] = {
@@ -381,7 +381,6 @@ const NewInvoiceCreation = ({
                         ? moment(invoiceDate).format("DD/MMM/YYYY")
                         : "Please Select"
                     }
-                  
                   />
                 </div>
               </div>
