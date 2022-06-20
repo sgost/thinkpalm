@@ -47,7 +47,6 @@ export default function InvoiceListing() {
   const [customerOpen, setCustomerOpen] = useState(false);
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
     useState<boolean>(false);
-
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
     message: "Downloading...",
@@ -444,7 +443,7 @@ export default function InvoiceListing() {
           e.invoiceNo.includes(searchText)
         ),
       };
-      if (searchText && filteredData.data.length) {
+      if ((searchText) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -458,7 +457,7 @@ export default function InvoiceListing() {
             e.customerName.toLowerCase().includes(searchText.toLowerCase())
         ),
       };
-      if (searchText && filteredData.data.length) {
+      if ((searchText) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -644,6 +643,10 @@ export default function InvoiceListing() {
         console.log("error", e);
       });
   };
+
+
+  console.log('searchedTableData', searchedTableData)
+  console.log('customerType', customerType)
 
   return (
     <>
