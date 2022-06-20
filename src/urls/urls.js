@@ -85,6 +85,10 @@ export const urls = {
     services.atlasSubscriptionService +
     `/Lookup/GetSubscriptionLookup`,
 
+  deleteEmployeeApi: 
+  baseURL +
+  services.atlasIdgService +
+  "/PayrollChangeItems/RemoveEmployeeFromPayroll",
   savePayments:
     baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
 };

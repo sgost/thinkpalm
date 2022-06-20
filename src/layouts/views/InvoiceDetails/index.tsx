@@ -121,6 +121,10 @@ export default function InvoiceDetails() {
   const [transactionType, setTransactionType] = useState();
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
+  const [deleteEmployeeModalOpen, setDeleteEmployeeModalOpen] = useState({
+    isModalOpen: false,
+    data: {}
+  });
   const [countrySummary, setCountrySummary] = useState<any>([]);
   const [totalCountrySummaryDue, settotalCountrySummaryDue] = useState(0);
   const [feeSummary, setFeeSummary] = useState<any>([]);
@@ -139,13 +143,6 @@ export default function InvoiceDetails() {
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
-
-  const [employeeSalary, setEmployeeSalary] = useState(false);
-  const [benefit, setBenefit] = useState(false);
-  const [amountUpdate, setAmountUpdate] = useState(false);
-  const [termination, setTermination] = useState(false);
-  const [invoiceCalc, setinvoiceCalc] = useState(false);
-  const [feeIssue, setfeeIssue] = useState(false);
 
   const [poNumber, setPoNumber] = useState("");
   const [invoiceDate, setInvoiceDate] = useState<any>("");
@@ -254,13 +251,31 @@ export default function InvoiceDetails() {
                 let currencyCode = e.currencyCode;
                 let arr: any = [];
 
-                e.payrollItems.forEach((item: any) => {
+                e.payrollItems.forEach((item: any, index: any) => {
                   arr.push({
-                    employeeID: item.employeeId,
+                    employeeID: {
+                      value: (
+                        <span
+                        style={{fontWeight: 600}}
+                          onClick={() => {
+                            handleCompensationModal(item);
+                          }}
+                        >
+                          {item.employeeId}
+                        </span>
+                      ),
+                    },
                     name: {
-                      value: item.firstName + " " + item.lastName,
-                      // img: { src: item.employeeProfilePicture },
-
+                      value: (
+                        <span
+                        style={{fontWeight: 600}}
+                          onClick={() => {
+                            handleCompensationModal(item);
+                          }}
+                        >
+                          {item.firstName + " " + item.lastName}
+                        </span>
+                      ),
                       img: { src: avatar },
                       style: { borderRadius: 12 },
                     },
@@ -291,6 +306,22 @@ export default function InvoiceDetails() {
                       toCurrencyFormat(item.healthcare),
 
                     // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+                  
+                    action:  (res.data?.invoice?.status === 2 || res.data?.invoice?.status === 12) ? {
+                      value: (
+                        <div
+                        data-testid="delete-icon"
+                          onClick={() => {
+                            setDeleteEmployeeModalOpen({isModalOpen: true, data: item});
+                          }}
+                        >
+                          <Icon icon="trash" color="#E32C15" size="large" />
+                        </div>
+                      ),
+                      color: "#E32C15",
+                    }
+                    : 
+                    "",
                   });
                 });
 
@@ -676,6 +707,11 @@ export default function InvoiceDetails() {
       sharedColumns.countryVAT,
       sharedColumns.adminFees,
       tableSharedColumns.healthcareBenefits,
+      (apiData?.data?.invoice?.status === 2 || apiData?.data?.invoice?.status === 12) && {
+        header: "Action",
+        isDefault: true,
+        key: "action",
+      },
     ],
     showDefaultColumn: true,
   };
@@ -965,7 +1001,7 @@ export default function InvoiceDetails() {
 
   /* istanbul ignore next */
   const handleCompensationModal = (data: any) => {
-    if (data?.employeeID) {
+    if (data?.employeeId) {
       const headers: any = {
         headers: {
           authorization: `Bearer ${tempToken}`,
@@ -978,7 +1014,7 @@ export default function InvoiceDetails() {
         },
       };
 
-      const compensationApi = getEmployeeCompensationData(data?.employeeID);
+      const compensationApi = getEmployeeCompensationData(data?.employeeId);
 
       axios
         .get(compensationApi, headers)
@@ -1088,6 +1124,7 @@ export default function InvoiceDetails() {
         console.log(error);
       });
   };
+
   const handleEditSave = () => {
     axios({
       method: "PUT",
@@ -1110,6 +1147,31 @@ export default function InvoiceDetails() {
     });
   };
 
+  const deleteEmployee = async () => {
+
+    const headers = getHeaders(tempToken, cid, isClient);
+    let deleteEmployeeApi = urls.deleteEmployeeApi
+
+    await axios
+    .post(
+      deleteEmployeeApi,
+      {
+        "customerId": cid,
+        "InvoiceId": deleteEmployeeModalOpen?.data?.id,
+        "PayrollId": deleteEmployeeModalOpen?.data?.payrollId,    
+        "EmployeeId":deleteEmployeeModalOpen?.data?.employeeId
+      },
+      {
+        headers: headers,
+      }
+    )
+    .then((response: any) => {
+      console.log("response", response)
+    })
+    .catch((e: any) => {
+      console.log(e);
+    });
+  }
   const reCalculate = () => {
     axios
       .post(calculateInvoiceUrl(id), {
@@ -1820,9 +1882,6 @@ export default function InvoiceDetails() {
                         ...{ data: item.data },
                       }}
                       colSort
-                      handleRowClick={(rowData: any) => {
-                        handleCompensationModal(rowData);
-                      }}
                     />
                     <div className="feeSummaryCalc">
                       <div className="rowFee">
@@ -2026,105 +2085,6 @@ export default function InvoiceDetails() {
             </div>
             <div className="text-invoive-no">
               <p>{getTransactionLabel()}.</p>
-            </div>
-
-            <div className="dec_check_main">
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check1"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setEmployeeSalary(e.target.checked);
-                  }}
-                  checked={employeeSalary}
-                />
-                <label
-                  className="dec_check_label"
-                  onClick={() => setEmployeeSalary(!employeeSalary)}
-                >
-                  Employee Salary is not correct
-                </label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check2"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setBenefit(e.target.checked);
-                  }}
-                  checked={benefit}
-                />
-                <label
-                  className="dec_check_label"
-                  onClick={() => setBenefit(!benefit)}
-                >
-                  Benefit Amount is not correct
-                </label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check3"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setAmountUpdate(e.target.checked);
-                  }}
-                  checked={amountUpdate}
-                />
-                <label
-                  className="dec_check_label"
-                  onClick={() => setAmountUpdate(!amountUpdate)}
-                >
-                  One-off pay items amount to be updated
-                </label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check4"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setTermination(e.target.checked);
-                  }}
-                  checked={termination}
-                />
-                <label
-                  className="dec_check_label"
-                  onClick={() => setTermination(!termination)}
-                >
-                  Termination
-                </label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check5"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setinvoiceCalc(e.target.checked);
-                  }}
-                  checked={invoiceCalc}
-                />
-                <label
-                  className="dec_check_label"
-                  onClick={() => setinvoiceCalc(!invoiceCalc)}
-                >
-                  Invoice Calculation Error
-                </label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check6"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setfeeIssue(e.target.checked);
-                  }}
-                  checked={feeIssue}
-                />
-                <label
-                  className="dec_check_label"
-                  onClick={() => setfeeIssue(!feeIssue)}
-                >
-                  Fee Issue
-                </label>
-              </div>
             </div>
 
             <div className="text-invoice-comment">
@@ -2401,6 +2361,35 @@ export default function InvoiceDetails() {
             </div>
           </div>
         </Modal>
+      </div>
+
+      <div className="delete-employee-modal">
+        <Modal
+         isOpen={deleteEmployeeModalOpen.isModalOpen}
+         handleClose={() => {setDeleteEmployeeModalOpen({...deleteEmployeeModalOpen, isModalOpen: false})}}
+         >
+
+          <div className="delete-employee-inner-container">
+          <h1>Are you sure you want to delete this employee?</h1>
+          <div className="delete-emplyee-buttons">
+          <Button
+                data-testid="delete-button-Cancel"
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setDeleteEmployeeModalOpen({...deleteEmployeeModalOpen, isModalOpen: false});
+                }}
+              />
+              <Button
+                data-testid="delete-button-submit"
+                label="Delete Employee"
+                className="primary-blue medium employee-button"
+                handleOnClick={() => deleteEmployee()}
+              />
+          </div>
+          </div>
+         
+         </Modal>
       </div>
     </div>
   );
