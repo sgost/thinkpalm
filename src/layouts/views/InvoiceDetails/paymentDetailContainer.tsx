@@ -4,7 +4,7 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import moment from "moment";
 import { getHeaders, subscriptionLookup, urls } from "../../../urls/urls";
-// /* istanbul ignore next */
+ /* istanbul ignore next */
 const PaymentDetailContainer = ({
   status,
   cid,
@@ -92,7 +92,7 @@ const PaymentDetailContainer = ({
         const paymentMethodData: any = preparePaymentMethodDropdownOptionData(
           res?.data?.paymentMethods
         );
-        setPaymentMethodDropdownOption(paymentMethodData);
+        // setPaymentMethodDropdownOption(paymentMethodData);
         setAddPaymentMethodDropdownOption(paymentMethodData);
       })
       .catch((e: any) => {
@@ -268,7 +268,34 @@ const PaymentDetailContainer = ({
       })
       setLocationDropdownOption(locationArr)
     }
-  
+
+    const getSubscriptionLookup = subscriptionLookup();
+    const headers = {
+      headers: getHeaders(tempToken, cid, "false"),
+    };
+    axios
+      .get(getSubscriptionLookup, headers)
+      .then((res: any) => {
+        console.log("dataaaaaaaa", res)
+        if(res?.data?.paymentMethods) {
+          let paymentMethodArr: any = []
+          paymentDetailData.forEach((item: any) => {
+            paymentMethodArr.push(
+              res?.data?.paymentMethods?.map((x: any) => {
+                return{
+                  isSelected: x.value == item.paymentMethod,
+                  label: x.text,
+                  value: x.value,
+                }
+              })
+            )
+          })
+          setPaymentMethodDropdownOption(paymentMethodArr)
+        }
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
    
   };
 
@@ -334,8 +361,12 @@ const PaymentDetailContainer = ({
               <div className="paymentInstallmentDatepicker">
                 <DatePicker
                   label="Payment Date"
+                  value={moment(item.serviceDate).format("DD MMM YYYY")}
                   disabled={editChecked != key}
                   required
+                  handleDateChange={(date: any) => {
+                    paymentDetailData[key].serviceDate = date;
+                  }}
                 />
               </div>
 
@@ -436,6 +467,7 @@ const PaymentDetailContainer = ({
                 </div>
 
                 <div className="paymentInstallmentContainerDropdowns">
+                 { console.log("paymentMethodDropdownOptions", paymentMethodDropdownOptions)}
                   <Dropdown
                     handleDropdownClick={(b: boolean) => {
                       b
@@ -452,7 +484,7 @@ const PaymentDetailContainer = ({
                         setPaymentMethodEditOpen
                       );
                     }}
-                    options={paymentMethodDropdownOptions}
+                    options={paymentMethodDropdownOptions[key] || []}
                     isOpen={paymentMethodEditOpen == key}
                     isDisabled={editChecked != key}
                     title="Payment Method"

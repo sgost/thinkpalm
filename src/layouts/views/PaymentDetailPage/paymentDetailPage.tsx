@@ -82,6 +82,7 @@ const PaymentDetailPage = () => {
     }
   }, [hideTopCheck]);
 
+  /* istanbul ignore next */
   useEffect(() => {
     if (!navigateToInvoice) {
       navigate(
@@ -345,6 +346,7 @@ const PaymentDetailPage = () => {
     set([...arr]);
   };
 
+  /* istanbul ignore next */
   const toCurrencyFormat = (amount: number) => {
     const cFormat = new Intl.NumberFormat("en-US", {
       style: "currency",
@@ -689,7 +691,8 @@ const PaymentDetailPage = () => {
         console.log(err);
       });
   };
-
+ 
+  /* istanbul ignore next */
   const breadcrumbsLabel = () => {
     const label = state.state.inveoicesData.map((item: any) => {
       return item.transactionTypeLabel + " Invoice No. " + item.invoiceNo;
