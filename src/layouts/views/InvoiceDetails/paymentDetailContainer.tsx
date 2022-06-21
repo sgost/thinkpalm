@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Dropdown, Icon } from "atlasuikit";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
+import moment from "moment";
 import { getHeaders, subscriptionLookup, urls } from "../../../urls/urls";
 // /* istanbul ignore next */
-const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
+const PaymentDetailContainer = ({
+  status,
+  cid,
+  lookupData,
+  paymentDetailData,
+  getBillingCurrency
+}: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
-
-
 
   const [currencyEditOpen, setCurrencyEditOpen] = useState();
   const [locationEditOpen, setLocationEditOpen] = useState();
@@ -52,6 +57,11 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
     },
   ]);
 
+
+  useEffect(() => {
+    updateDropdowns();
+  }, [paymentDetailData])
+
   const getCurrencyAndDepositBankAndLocationDropdownOption = () => {
     const currencyDataOptions: any = prepareCurrencyDropdownOptionData(
       lookupData?.data?.billingCurrencies
@@ -63,39 +73,12 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
     const locationDataOptions: any = preparelocationDropdownOptionData(
       lookupData?.data?.locations
     );
-    setCurrencyDropdownOption(currencyDataOptions);
+    // setCurrencyDropdownOption(currencyDataOptions);
     setAddCurrencyDropdownOption(currencyDataOptions);
-    setBankToDepositDropdownOption(depositToBankDataOptions);
+    // setBankToDepositDropdownOption(depositToBankDataOptions);
     setAddBankToDepositDropdownOption(depositToBankDataOptions);
-    setLocationDropdownOption(locationDataOptions);
+    // setLocationDropdownOption(locationDataOptions);
     setAddLocationDropdownOption(locationDataOptions);
-
-    // const lookupApi = urls.lookup;
-    // const headers = {
-    //   headers: getHeaders(tempToken, cid, "false"),
-    // };
-    // axios
-    //   .get(lookupApi, headers)
-    //   .then((res: any) => {
-    //     console.log("lookup resssssssss", res)
-    //     const currencyDataOptions: any = prepareCurrencyDropdownOptionData(
-    //       res?.data?.billingCurrencies
-    //     );
-    //     const depositToBankDataOptions: any =
-    //       prepareDepositToBankDropdownOptionData(res?.data?.depositToOptions);
-    //     const locationDataOptions: any = preparelocationDropdownOptionData(
-    //       res?.data?.locations
-    //     );
-    //     setCurrencyDropdownOption(currencyDataOptions);
-    //     setAddCurrencyDropdownOption(currencyDataOptions)
-    //     setBankToDepositDropdownOption(depositToBankDataOptions);
-    //     setAddBankToDepositDropdownOption(depositToBankDataOptions)
-    //     setLocationDropdownOption(locationDataOptions);
-    //     setAddLocationDropdownOption(locationDataOptions)
-    //   })
-    //   .catch((e: any) => {
-    //     console.log("error", e);
-    //   });
   };
 
   const getPaymentMethodDropdownOptionData = () => {
@@ -184,7 +167,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
     });
 
     set(arr);
-    setIsOpen(multiDetailPaymentBlocks.length + 1);
+    setIsOpen(paymentDetailData.length + 1);
   };
 
   const currencyDropOptionClick = (option: any) =>
@@ -224,19 +207,69 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
     });
 
   const handleAddOptionClick = (args: any) => {
-    const {
-      option,
-      dropOptions,
-      updateIsOpen,
-      isDropOpen,
-      updateOptions,
-    } = args;
+    const { option, dropOptions, updateIsOpen, isDropOpen, updateOptions } =
+      args;
     updateIsOpen(!isDropOpen);
     let updatedOptions = dropOptions.map((opt: any) => {
       opt.isSelected = option.value === opt.value;
       return opt;
     });
     updateOptions(updatedOptions);
+  };
+
+  const updateDropdowns = () => {
+    let billingCurrencyArr: any = []
+
+    if(lookupData?.data?.billingCurrencies) {
+      paymentDetailData.forEach((item: any) => {
+        billingCurrencyArr.push(
+          lookupData?.data?.billingCurrencies.map((x: any) => {
+            return{
+              isSelected: x.value == item.currencyId,
+              label: x.text,
+              value: x.value,
+            }
+          })
+        )
+      })
+      setCurrencyDropdownOption(billingCurrencyArr)
+    }
+
+    let bankToDepositArr: any = []
+
+    if(lookupData?.data?.depositToOptions) {
+      paymentDetailData.forEach((item: any) => {
+        bankToDepositArr.push(
+          lookupData?.data?.depositToOptions.map((x: any) => {
+            return{
+              isSelected: x.value == item.depositedtoBank,
+              label: x.text,
+              value: x.value,
+            }
+          })
+        )
+      })
+      setBankToDepositDropdownOption(bankToDepositArr)
+    }
+
+    let locationArr: any = []
+
+    if(lookupData?.data?.locations) {
+      paymentDetailData.forEach((item: any) => {
+        locationArr.push(
+          lookupData?.data?.locations.map((x: any) => {
+            return{
+              isSelected: x.value == item.location,
+              label: x.text,
+              value: x.value,
+            }
+          })
+        )
+      })
+      setLocationDropdownOption(locationArr)
+    }
+  
+   
   };
 
   useEffect(() => {
@@ -250,7 +283,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
 
   return (
     <div className="paymentDisplayContainer">
-      {multiDetailPaymentBlocks?.map((_item: any, key: any) => {
+      {paymentDetailData?.map((item: any, key: any) => {
         return (
           <div className="paymentInstallmentContainer">
             <div className="paymentPageTitleHeader">
@@ -282,7 +315,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                         className="secondary-btn"
                         label="Cancel Edit"
                         handleOnClick={() => {
-                          setEditChecked(multiDetailPaymentBlocks.length);
+                          setEditChecked(paymentDetailData.length);
                         }}
                       />
                     </div>
@@ -307,13 +340,12 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
               </div>
 
               <div className="paymentInstallmentContainerDropdowns">
+                {console.log("currencyDropdownOptions", currencyDropdownOptions)}
                 <Dropdown
                   handleDropdownClick={(b: boolean) => {
                     b
                       ? setCurrencyEditOpen(key)
-                      : setCurrencyEditOpen(
-                          multiDetailPaymentBlocks.length + 1
-                        );
+                      : setCurrencyEditOpen(paymentDetailData.length + 1);
                   }}
                   handleDropOptionClick={(item: any) => {
                     handlePaymentDropOptionData(
@@ -323,7 +355,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                       setCurrencyEditOpen
                     );
                   }}
-                  options={currencyDropdownOptions}
+                  options={currencyDropdownOptions[key] || []}
                   isOpen={currencyEditOpen == key}
                   isDisabled={editChecked != key}
                   title="Currency"
@@ -335,9 +367,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                   handleDropdownClick={(b: boolean) => {
                     b
                       ? setLocationEditOpen(key)
-                      : setLocationEditOpen(
-                          multiDetailPaymentBlocks.length + 1
-                        );
+                      : setLocationEditOpen(paymentDetailData.length + 1);
                   }}
                   handleDropOptionClick={(item: any) => {
                     handlePaymentDropOptionData(
@@ -347,7 +377,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                       setLocationEditOpen
                     );
                   }}
-                  options={locationDropdownOptions}
+                  options={locationDropdownOptions[key] || []}
                   isOpen={locationEditOpen == key}
                   isDisabled={editChecked != key}
                   title="Location"
@@ -361,10 +391,17 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                   </span>
                   <input
                     className={editChecked != key ? "disable-input" : ""}
-                    value={referenceNo}
+                    // value={referenceNo}
+                    defaultValue={item.referenceNo}
                     name="Reference No"
                     type="text"
                     placeholder="Enter reference No"
+                    min="0"
+                    pattern="[+-]?\d+(?:[.,]\d+)?"
+                    onKeyDown={(e) => {
+                      ["e", "E", "+", "-", "."].includes(e.key) &&
+                        e.preventDefault();
+                    }}
                     disabled={editChecked != key}
                     onChange={(e) => {
                       setReferenceNo(e.target.value);
@@ -381,9 +418,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                     handleDropdownClick={(b: boolean) => {
                       b
                         ? setDepositBankEditOpen(key)
-                        : setDepositBankEditOpen(
-                            multiDetailPaymentBlocks.length + 1
-                          );
+                        : setDepositBankEditOpen(paymentDetailData.length + 1);
                     }}
                     handleDropOptionClick={(item: any) => {
                       handlePaymentDropOptionData(
@@ -393,7 +428,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                         setDepositBankEditOpen
                       );
                     }}
-                    options={bankToDepositDropdownOptions}
+                    options={bankToDepositDropdownOptions[key] || []}
                     isOpen={depositBankEditOpen == key}
                     isDisabled={editChecked != key}
                     title="Deposited to bank"
@@ -406,7 +441,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                       b
                         ? setPaymentMethodEditOpen(key)
                         : setPaymentMethodEditOpen(
-                            multiDetailPaymentBlocks.length + 1
+                            paymentDetailData.length + 1
                           );
                     }}
                     handleDropOptionClick={(item: any) => {
@@ -428,8 +463,9 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                   <div className="amountPaymentPageInput">
                     <span>Amount</span>
                     <input
-                      value="USD 300,523.15"
-                      type="number"
+                      defaultValue={getBillingCurrency() + " " + item.totalAmount}
+                      // value="USD 300,523.15"
+                      type="text"
                       className="disable-input-color"
                       placeholder="Please enter"
                       disabled={true}
@@ -443,7 +479,7 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
 
               <div className="PaymentPageTotalAmount">
                 <p>Amount</p>
-                <div className="amountPaymentPage">USD 300,523.15</div>
+                <div className="amountPaymentPage">{getBillingCurrency() + " " + item.totalAmount}</div>
                 <div className="fullAmountPaymentNo">Payment #765248</div>
               </div>
             </div>
@@ -509,6 +545,12 @@ const PaymentDetailContainer = ({ status, cid, lookupData }: any) => {
                   name="Reference No"
                   type="text"
                   placeholder="Enter reference No"
+                  min="0"
+                  pattern="[+-]?\d+(?:[.,]\d+)?"
+                  onKeyDown={(e) => {
+                    ["e", "E", "+", "-", "."].includes(e.key) &&
+                      e.preventDefault();
+                  }}
                   onChange={(e) => {
                     setReferenceNo(e.target.value);
                   }}
