@@ -10,6 +10,10 @@ import {
   DatePicker,
   AvatarHandler,
   ToastNotification,
+<<<<<<< HEAD
+=======
+  ButtonDropdown
+>>>>>>> b831deebfc63c00d2975adc847aae81b96fb894d
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -52,6 +56,7 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
+import cn from "classnames";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -166,6 +171,8 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [reCalButtonDisable, setReCalButtonDisable] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -1186,6 +1193,7 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
+            setReCalButtonDisable(false)
           }, 3000);
         }
       })
@@ -1232,7 +1240,13 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((resp: any) => {
-        console.log("respresp", resp);
+        if (resp) {
+          setReCalButtonDisable(true)
+          setApprovalMsg("Invoice Recalculated successfully");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        }
       })
       .catch((error: any) => {
         console.log(error);
@@ -1299,6 +1313,7 @@ export default function InvoiceDetails() {
           )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
+<<<<<<< HEAD
               missTransType != 1) && (
               <div
                 onClick={() =>
@@ -1308,6 +1323,16 @@ export default function InvoiceDetails() {
                 }
                 className={`${
                   missTransType == 7 || deleteDisableButtons === true
+=======
+              missTransType != 1) && missTransType !== 7 && (
+                <div
+                  onClick={() =>
+                    missTransType != 7
+                      ? setIsDownloadOpen(!isDownloadOpen)
+                      : function noRefCheck() { }
+                  }
+                  className={`${missTransType == 7 || deleteDisableButtons === true
+>>>>>>> b831deebfc63c00d2975adc847aae81b96fb894d
                     ? "download_disable"
                     : "download"
                 }`}
@@ -1341,6 +1366,7 @@ export default function InvoiceDetails() {
             permission.Role == "FinanceAR" && (
               <div className="saveBtnContainer">
                 <Button
+                  disabled={reCalButtonDisable}
                   handleOnClick={() => {
                     reCalculate();
                   }}
@@ -1545,18 +1571,20 @@ export default function InvoiceDetails() {
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
-              <Button
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Submit to Customer"
-                handleOnClick={() => {
-                  handleApproveAR();
-                }}
-              />
+              <div className="submit_customer">
+                <Button
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              </div>
             )}
           {(status === "Pending Approval" ||
             (status === "AR Review" && missTransType != 1)) &&
@@ -1623,6 +1651,44 @@ export default function InvoiceDetails() {
             label="Approve Invoice"
           /> */}
         </div>
+        {missTransType === 7 && <div className={cn("cp-download", {
+          "is-drop-open": isDropdownOpen,
+          "is-drop-closed": !isDropdownOpen
+        })}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          onBlur={() => setIsDropdownOpen(false)}
+        >
+          <ButtonDropdown
+            menuItems={{
+              options: [
+                { value: "pdf", label: "Invoice as PDF" },
+                { value: "xlsx", label: "Invoice as Excel" }
+              ],
+              labelKeyName: "label"
+            }}
+            onChange={(selected: any) => console.log("selected", selected)}
+          >
+            Download
+            <Icon
+              color="#526FD6"
+              className="chevron-down"
+              icon="chevronDown"
+              size="large"
+              viewBox="-6 -3 24 13"
+              width="34"
+              height="34"
+            />
+            <Icon
+              color="#526FD6"
+              className="chevron-up"
+              icon="chevronUp"
+              size="large"
+              viewBox="-6 -3 24 13"
+              width="34"
+              height="34"
+            />
+          </ButtonDropdown>
+        </div>}
       </div>
 
       <div className="payrollInvoiceInfo">
