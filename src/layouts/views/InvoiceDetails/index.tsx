@@ -10,10 +10,7 @@ import {
   DatePicker,
   AvatarHandler,
   ToastNotification,
-<<<<<<< HEAD
-=======
   ButtonDropdown
->>>>>>> b831deebfc63c00d2975adc847aae81b96fb894d
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -1313,17 +1310,6 @@ export default function InvoiceDetails() {
           )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
-<<<<<<< HEAD
-              missTransType != 1) && (
-              <div
-                onClick={() =>
-                  missTransType != 7
-                    ? setIsDownloadOpen(!isDownloadOpen)
-                    : function noRefCheck() {}
-                }
-                className={`${
-                  missTransType == 7 || deleteDisableButtons === true
-=======
               missTransType != 1) && missTransType !== 7 && (
                 <div
                   onClick={() =>
@@ -1332,7 +1318,6 @@ export default function InvoiceDetails() {
                       : function noRefCheck() { }
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
->>>>>>> b831deebfc63c00d2975adc847aae81b96fb894d
                     ? "download_disable"
                     : "download"
                 }`}
