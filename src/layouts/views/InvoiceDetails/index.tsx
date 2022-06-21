@@ -963,7 +963,9 @@ export default function InvoiceDetails() {
               headers: headers,
             }
           )
-          .then((_response: any) => {})
+          .then((response: any) => {
+            console.log(response)
+          })
           .catch((e: any) => {
             console.log(e);
           });
