@@ -6,7 +6,6 @@ import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
-import dots from "./dots.svg";
 import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
   urls,
@@ -79,11 +78,6 @@ export default function InvoiceListing() {
       label: "LateFee",
       value: 5,
     },
-    // {
-    //   isSelected: false,
-    //   label: "Payment",
-    //   value: 6,
-    // },
     {
       isSelected: false,
       label: "Contractor Pay",
@@ -124,11 +118,6 @@ export default function InvoiceListing() {
       label: "Partially Paid",
       value: 6,
     },
-    // {
-    //   isSelected: false,
-    //   label: "Partial",
-    //   value: 7,
-    // },
     {
       isSelected: false,
       label: "Voided",
@@ -161,7 +150,6 @@ export default function InvoiceListing() {
       {
         header: "Customer",
         isDefault: true,
-        // key: "customer",
         key: "customerName",
       },
       {
