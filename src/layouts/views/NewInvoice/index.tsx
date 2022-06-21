@@ -383,9 +383,11 @@ const NewInvoice = () => {
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
       return !(stepperOneData?.customer !== "" && invoiceDate !== "");
     }
+
+    let condition: any = [];
+    let boolen = false;
+
     if (stepsCount == 2) {
-      let condition: any = [];
-      let boolen = false;
       todos.forEach((item) => {
         if (
           item.product.length &&
@@ -399,14 +401,21 @@ const NewInvoice = () => {
           condition.push(true);
         }
       });
-
-      condition.forEach((element: any) => {
-        if (element) {
-          boolen = element;
-        }
-      });
-      return boolen;
     }
+
+    if (stepsCount == 3 && loading) {
+      condition.push(true)
+    } else {
+      condition.push(false)
+    }
+
+
+    condition.forEach((element: any) => {
+      if (element) {
+        boolen = element;
+      }
+    });
+    return boolen;
   };
 
   const handleNextButtonClick = () => {
@@ -543,10 +552,10 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-            paymentTermsOptions
-              .find((e: any) => e.isSelected)
-              ?.text.split(" ")[0]
-          );
+          paymentTermsOptions
+            .find((e: any) => e.isSelected)
+            ?.text.split(" ")[0]
+        );
 
     // const currDate = new Date();
     const dueDate = new Date();
@@ -682,10 +691,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                  ? "step2-right-panel"
-                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                  ? "step2-credit-memo"
-                  : "",
+                    ? "step2-right-panel"
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -697,8 +706,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
