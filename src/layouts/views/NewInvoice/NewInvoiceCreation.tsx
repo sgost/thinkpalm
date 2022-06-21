@@ -323,6 +323,11 @@ const NewInvoiceCreation = ({
                     setIsCountryOpen(false);
                     setIsMonthOpen(false);
                     setIsYearOpen(false);
+                    setIsInvoicer(false);
+                    setIsRecAcc(false);
+                    setIsCurrency(false);
+                    setIsQbId(false);
+                    setIsPaymentTerms(false);
                   }}
                   isOpen={istypeOpen}
                   options={typeOptions}
@@ -356,6 +361,11 @@ const NewInvoiceCreation = ({
                     setIsCountryOpen(false);
                     setIsMonthOpen(false);
                     setIsYearOpen(false);
+                    setIsInvoicer(false);
+                    setIsRecAcc(false);
+                    setIsCurrency(false);
+                    setIsQbId(false);
+                    setIsPaymentTerms(false);
                   }}
                   isOpen={isCustomerOpen}
                   options={CustomerOptions}
@@ -414,6 +424,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsInvoicer(b);
+                        setIsRecAcc(false);
+                        setIsCurrency(false);
+                        setIsQbId(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isInvoicer}
                       options={invoicerOptions}
@@ -439,6 +455,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsRecAcc(b);
+                        setIsInvoicer(false);
+                        setIsCurrency(false);
+                        setIsQbId(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isRecAcc}
                       options={receivableAccountOptions}
@@ -466,6 +488,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsCurrency(b);
+                        setIsInvoicer(false);
+                        setIsRecAcc(false);
+                        setIsQbId(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isCurrency}
                       options={currencyOptions}
@@ -491,6 +519,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsQbId(b);
+                        setIsRecAcc(false);
+                        setIsCurrency(false);
+                        setIsInvoicer(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isQbId}
                       options={qbIdOptions}
@@ -518,6 +552,10 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsPaymentTerms(b);
+                        setIsRecAcc(false);
+                        setIsCurrency(false);
+                        setIsQbId(false);
+                        setIsInvoicer(false);
                       }}
                       isOpen={isPaymentTerms}
                       options={paymentTermsOptions}
@@ -568,8 +606,16 @@ const NewInvoiceCreation = ({
                       setIsCountryOpen(b);
                       setIsCustomerOpen(false);
                       setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                       setIsMonthOpen(false);
                       setIsYearOpen(false);
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                     }}
                     isOpen={isCountryOpen}
                     options={CountryOptions}
@@ -587,6 +633,7 @@ const NewInvoiceCreation = ({
                     setIsMonthOpen(!isMonthOpen);
                     setIsCustomerOpen(false);
                     setIstypeOpen(false);
+                    setIsCustomerOpen(false);
                     setIsCountryOpen(false);
                     setIsYearOpen(false);
                   }}
@@ -607,6 +654,13 @@ const NewInvoiceCreation = ({
                     }}
                     handleDropdownClick={(b: boolean) => {
                       // setIsMonthOpen(b);
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                     }}
                     isOpen={isMonthOpen}
                     options={MonthOptions}
@@ -628,6 +682,7 @@ const NewInvoiceCreation = ({
                     setIsYearOpen(!isYearOpen);
                     setIsCustomerOpen(false);
                     setIstypeOpen(false);
+                    setIsCustomerOpen(false);
                     setIsCountryOpen(false);
                     setIsMonthOpen(false);
                   }}
@@ -648,6 +703,13 @@ const NewInvoiceCreation = ({
                     }}
                     handleDropdownClick={(b: boolean) => {
                       // setIsYearOpen(!isYearOpen);
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                     }}
                     isOpen={isYearOpen}
                     options={YearOptions}

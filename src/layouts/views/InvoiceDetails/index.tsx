@@ -167,6 +167,7 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [reCalButtonDisable, setReCalButtonDisable] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -1151,6 +1152,7 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
+            setReCalButtonDisable(false)
           }, 3000);
         }
       })
@@ -1192,7 +1194,13 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((resp: any) => {
-        console.log("respresp", resp);
+        if (resp) {
+          setReCalButtonDisable(true)
+          setApprovalMsg("Invoice Recalculated successfully");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        }
       })
       .catch((error: any) => {
         console.log(error);
@@ -1301,6 +1309,7 @@ export default function InvoiceDetails() {
             permission.Role == "FinanceAR" && (
               <div className="saveBtnContainer">
                 <Button
+                  disabled={reCalButtonDisable}
                   handleOnClick={() => {
                     reCalculate();
                   }}
@@ -1502,18 +1511,20 @@ export default function InvoiceDetails() {
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
-              <Button
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Submit to Customer"
-                handleOnClick={() => {
-                  handleApproveAR();
-                }}
-              />
+              <div className="submit_customer">
+                <Button
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              </div>
             )}
           {(status === "Pending Approval" ||
             (status === "AR Review" && missTransType != 1)) &&
