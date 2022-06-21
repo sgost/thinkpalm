@@ -248,10 +248,14 @@ export default function InvoiceListing() {
   const [customerID, setCustomerId] = useState("");
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [searchText, setSearchText] = useState<any>("");
+  const [searchCustomer, setSearchCustomer] = useState<any>("");
   const [searchedTableData, setSearchedTableData] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
+  console.log('searchText', searchText)
+  console.log('searchedTableData', searchedTableData)
+  console.log('searchCustomer', searchCustomer)
   let api = ``;
 
   const apiFunc = () => {
@@ -440,10 +444,10 @@ export default function InvoiceListing() {
       const filteredData = {
         columns: clientTableData.columns,
         data: clientTableData.data.filter((e: any) =>
-          e.invoiceNo.includes(searchText)
+          e.invoiceNo.includes(searchText || searchCustomer)
         ),
       };
-      if ((searchText) && filteredData.data.length) {
+      if (((searchText) || (searchCustomer)) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -453,17 +457,17 @@ export default function InvoiceListing() {
         columns: internalTabledata.columns,
         data: internalTabledata.data.filter(
           (e: any) =>
-            e.invoiceNo.includes(searchText) ||
-            e.customerName.toLowerCase().includes(searchText.toLowerCase())
+            e.invoiceNo.includes((searchText) || (searchCustomer)) ||
+            e.customerName.toLowerCase().includes(((searchText) || (searchCustomer)).toLowerCase())
         ),
       };
-      if ((searchText) && filteredData.data.length) {
+      if (((searchText) || (searchCustomer)) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
       }
     }
-  }, [searchText]);
+  }, [searchText, searchCustomer]);
 
   const downloadFunction = () => {
     console.log(multiInvoiceId);
@@ -784,8 +788,10 @@ export default function InvoiceListing() {
                         if (item.isSelected) {
                           if (typesValue) {
                             typesValue += "," + item.value.toString();
+                            setSearchCustomer(item.label);
                           } else {
                             typesValue = item.value.toString();
+                            setSearchCustomer(item.label);
                           }
                         }
                       });
@@ -1056,7 +1062,7 @@ export default function InvoiceListing() {
             </span>
           </div>
         )}
-        {searchText && !searchedTableData ? (
+        {((searchText) || (customerType)) && !searchedTableData ? (
           <div className="invalidSearch">
             <div className="uhohContainer">
               <svg
