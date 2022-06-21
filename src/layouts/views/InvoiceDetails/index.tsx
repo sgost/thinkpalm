@@ -1184,12 +1184,17 @@ export default function InvoiceDetails() {
       });
   }
   const reCalculate = () => {
-    axios
-      .post(calculateInvoiceUrl(id), {
-        headers: getHeaders(tempToken, cid, "false"),
-      })
+    axios({
+      method: "POST",
+      url: calculateInvoiceUrl(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    })
       .then((resp: any) => {
         console.log("respresp", resp);
+        setApprovalMsg("Invoice Re-calculated");
+        setTimeout(() => {
+          setApprovalMsg("");
+        }, 3000);
       })
       .catch((error: any) => {
         console.log(error);
