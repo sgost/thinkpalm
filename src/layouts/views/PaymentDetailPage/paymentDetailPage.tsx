@@ -584,7 +584,7 @@ const PaymentDetailPage = () => {
         paymentdocuments: [],
         Payments: [
           {
-            totalAmount: parseFloat(multiTotal.split(" ")[1]),
+            totalAmount: parseFloat(multiTotal),
             paymentDate: format(multiPaymentDate, "yyyy-MM-dd"),
             currencyId: multiCurrencyOptions.find((e: any) => e.isSelected)
               ?.value,
