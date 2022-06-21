@@ -9,6 +9,10 @@
       background-color: white !important;
     }
 
+    .submit_customer {
+      margin-left: 1.4rem;
+    }
+
     .invoiceDetailsHeaderRow {
       display: flex;
       justify-content: space-between;
@@ -184,7 +188,7 @@
           background: transparent !important;
           color: #526FD6 !important;
           text-align: right;
-          
+
           svg {
             padding: 0;
           }
@@ -192,7 +196,7 @@
           .chevron-down {
             display: inline-block !important;
           }
-          
+
           .chevron-up {
             display: none !important;
             transform: rotate(0deg) !important;
@@ -203,14 +207,17 @@
           .chevron-down {
             display: inline-block !important;
           }
+
           .chevron-up {
             display: none !important;
           }
         }
+
         &.is-drop-open .a-button {
           .chevron-down {
             display: none !important;
           }
+
           .chevron-up {
             display: inline-block !important;
           }
@@ -734,6 +741,7 @@
     }
 
     .payroll {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -744,6 +752,7 @@
     }
 
     .invoice_bill_table {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -753,6 +762,7 @@
     }
 
     .master {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -1427,7 +1437,7 @@
           flex-direction: column;
           border-radius: 10px;
 
-          > div {
+          >div {
             display: flex;
           }
 
@@ -1589,14 +1599,16 @@
             width: 92%;
           }
         }
-        .table{
-          .table__header{
-            .table__row{
+
+        .table {
+          .table__header {
+            .table__row {
               padding-left: 1rem;
             }
           }
-          .table__body{
-            .table__row{
+
+          .table__body {
+            .table__row {
               padding-left: 1rem;
             }
           }
@@ -1633,6 +1645,7 @@
       height: 32vh;
       width: 29%;
     }
+
     .delete-employee-inner-container {
       display: flex;
       flex-direction: column;
@@ -1648,6 +1661,7 @@
         .employee-button {
           margin-left: 1.6667rem;
         }
+
         svg {
           display: inline-block !important;
         }

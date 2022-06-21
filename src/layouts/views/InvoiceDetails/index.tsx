@@ -1511,18 +1511,20 @@ export default function InvoiceDetails() {
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
-              <Button
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Submit to Customer"
-                handleOnClick={() => {
-                  handleApproveAR();
-                }}
-              />
+              <div className="submit_customer">
+                <Button
+                  className="primary-blue small"
+                  icon={{
+                    color: "#fff",
+                    icon: "checkMark",
+                    size: "medium",
+                  }}
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              </div>
             )}
           {(status === "Pending Approval" ||
             (status === "AR Review" && missTransType != 1)) &&
