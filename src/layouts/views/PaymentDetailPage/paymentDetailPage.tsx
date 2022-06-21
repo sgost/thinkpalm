@@ -431,8 +431,8 @@ const PaymentDetailPage = () => {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
               return (
-                a + b
-                // parseFloat(b?.invoiceBalance?.split(" ")[1]?.replaceAll(",", ""))
+                a + 
+                parseFloat(b?.invoiceBalance?.split(" ")[1]?.replaceAll(",", ""))
               );
             },
             0
