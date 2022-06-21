@@ -428,14 +428,9 @@ const PaymentDetailPage = () => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
-              console.log("a ", a);
-              console.log(
-                " b",
-                b.invoiceBalance.split(" ")[1].replaceAll(",", "")
-              );
               return (
                 a +
-                parseFloat(b.invoiceBalance.split(" ")[1].replaceAll(",", ""))
+                parseFloat(b?.invoiceBalance?.split(" ")[1]?.replaceAll(",", ""))
               );
             },
             0
