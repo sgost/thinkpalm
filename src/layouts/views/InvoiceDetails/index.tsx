@@ -143,6 +143,7 @@ export default function InvoiceDetails() {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
   const [changeLogs, setChangeLogs] = useState<any>([]);
+  const [paymentDetailData, setPaymentDetailData] = useState<any>({});
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
@@ -669,6 +670,27 @@ export default function InvoiceDetails() {
       }, 4000);
     }
   }, [showAutoApprovedToast]);
+
+  useEffect(() => {
+
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    }; 
+
+    let paymentdetailApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/getrelatedpayments/${id}`
+    
+    axios
+    .get(paymentdetailApi, headers)
+    .then((res: any) => {
+      console.log("resssssssssssss", res)
+      setPaymentDetailData(res.data)
+    })
+    .catch((e: any) => {
+      console.log("error e", e);
+    });
+  
+  }, [id])
+  
 
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
@@ -1358,7 +1380,7 @@ export default function InvoiceDetails() {
                         apiData?.data?.invoice?.invoiceNo,
                       status: 4,
                       statusLabel: "Approved",
-                      transactionType: 2,
+                      transactionType: missTransType,
                       transactionTypeLabel: getTransactionLabelForPayment(),
                       createdDate: moment(topPanel.invoiceDate).format(
                         "DD/MMM/YYYY"
@@ -1464,9 +1486,10 @@ export default function InvoiceDetails() {
                     "/payments",
                     {
                       state: {
-                        InvoiceId: apiData?.data?.invoice?.invoiceNo,
+                        InvoiceId: apiData?.data?.invoice?.invoiceNo || creditMemoData.invoiceNo,
                         transactionType: missTransType,
                         inveoicesData: checkedInvoice,
+                        checkPage: true,
                       },
                     }
                   );
@@ -1788,7 +1811,7 @@ export default function InvoiceDetails() {
       {(status === "Paid" || status === "Partial Paid") &&
         (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
-          <PaymentDetailContainer status={status} cid={cid} lookupData={lookupData} />
+          <PaymentDetailContainer status={status} cid={cid} lookupData={lookupData} paymentDetailData={paymentDetailData} getBillingCurrency={getBillingCurrency} />
         </div>
       ) : (
         <></>
