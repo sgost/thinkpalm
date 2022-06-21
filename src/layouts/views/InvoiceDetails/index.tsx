@@ -9,7 +9,8 @@ import {
   Cards,
   DatePicker,
   AvatarHandler,
-  ToastNotification
+  ToastNotification,
+  ButtonDropdown
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -52,6 +53,7 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
+import cn from "classnames";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -165,6 +167,7 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -1257,7 +1260,7 @@ export default function InvoiceDetails() {
           )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
-              missTransType != 1) && (
+              missTransType != 1) && missTransType !== 7 && (
                 <div
                   onClick={() =>
                     missTransType != 7
@@ -1575,6 +1578,44 @@ export default function InvoiceDetails() {
             label="Approve Invoice"
           /> */}
         </div>
+        {missTransType === 7 && <div className={cn("cp-download", {
+          "is-drop-open": isDropdownOpen,
+          "is-drop-closed": !isDropdownOpen
+        })}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          onBlur={() => setIsDropdownOpen(false)}
+        >
+          <ButtonDropdown
+            menuItems={{
+              options: [
+                { value: "pdf", label: "Invoice as PDF" },
+                { value: "xlsx", label: "Invoice as Excel" }
+              ],
+              labelKeyName: "label"
+            }}
+            onChange={(selected: any) => console.log("selected", selected)}
+          >
+            Download
+            <Icon
+              color="#526FD6"
+              className="chevron-down"
+              icon="chevronDown"
+              size="large"
+              viewBox="-6 -3 24 13"
+              width="34"
+              height="34"
+            />
+            <Icon
+              color="#526FD6"
+              className="chevron-up"
+              icon="chevronUp"
+              size="large"
+              viewBox="-6 -3 24 13"
+              width="34"
+              height="34"
+            />
+          </ButtonDropdown>
+        </div>}
       </div>
 
       <div className="payrollInvoiceInfo">

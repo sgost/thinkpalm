@@ -471,7 +471,7 @@ export default function BillsTable(props: any) {
                                             ]
                                         }}
                                         label={{
-                                            footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].size),
+                                            footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].fileSize),
                                             header: clickedApiData.documents[0] && clickedApiData.documents[0].fileName
                                         }}
                                     />
