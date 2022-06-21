@@ -52,6 +52,7 @@ describe("View Change Log", () => {
     })
 
     test("View More", () => {
+        changeLogs.length = 11;
         render(
             <HashRouter>
                 <LogsCompo
@@ -80,6 +81,9 @@ describe("View Change Log", () => {
     })
 
     test("View Less", () => {
+        const logs = [...changeLogs];
+        logs.length = 11;
+        changeLogs.length = 11;
         render(
             <HashRouter>
                 <LogsCompo
