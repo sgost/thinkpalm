@@ -644,10 +644,6 @@ export default function InvoiceListing() {
       });
   };
 
-
-  console.log('searchedTableData', searchedTableData)
-  console.log('customerType', customerType)
-
   return (
     <>
       <div className="container">
