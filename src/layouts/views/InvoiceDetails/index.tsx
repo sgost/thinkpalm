@@ -165,6 +165,7 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [reCalButtonDisable, setReCalButtonDisable] = useState(false);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -1148,6 +1149,7 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
+            setReCalButtonDisable(true)
           }, 3000);
         }
       })
@@ -1189,7 +1191,13 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((resp: any) => {
-        console.log("respresp", resp);
+        if (resp) {
+          setReCalButtonDisable(false)
+          setApprovalMsg("Invoice Recalculated successfully");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        }
       })
       .catch((error: any) => {
         console.log(error);
@@ -1298,6 +1306,7 @@ export default function InvoiceDetails() {
             permission.Role == "FinanceAR" && (
               <div className="saveBtnContainer">
                 <Button
+                  disabled={reCalButtonDisable}
                   handleOnClick={() => {
                     reCalculate();
                   }}
