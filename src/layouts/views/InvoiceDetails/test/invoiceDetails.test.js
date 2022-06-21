@@ -4,13 +4,12 @@ import {
   fireEvent,
   waitForElementToBeRemoved,
   waitFor,
-  findByText,
 } from "@testing-library/react";
 import { HashRouter, useParams, useLocation } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata, mockCreditMemoDatas, approveMock } from "./mockdata";
+import { mockapidata, mockCreditMemoDatas } from "./mockdata";
 import axios from "axios";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
@@ -257,7 +256,7 @@ describe("Invoice details", () => {
       name: "sample.pdf",
     });
 
-    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);    
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
   });
 
   test("tabs are working", async () => {
@@ -1382,68 +1381,68 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
   //Vaidehi test 
   //test("vaidehi test", async () => {
   ///  const component =  render(
-     // <HashRouter>
-       // <InvoiceDetails />
-      //</HashRouter>
-    //);
- 
-   // waitForElementToBeRemoved(() => screen.getByText(/Loading/));
-    //const savebtn = await waitFor(() => screen.findByTestId("save-button"));
-    //fireEvent.click(savebtn);
-   // const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
-    //const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
-    //const notification2 = await waitFor(() => screen.findByTestId("toast-notify"));
-    //console.log("noti" + notification);
-    //expect(notification).toBeVisible();
-    //expect(notification2).toBeVisible();
+  // <HashRouter>
+  // <InvoiceDetails />
+  //</HashRouter>
+  //);
+
+  // waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+  //fireEvent.click(savebtn);
+  // const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
+  //const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
+  //const notification2 = await waitFor(() => screen.findByTestId("toast-notify"));
+  //console.log("noti" + notification);
+  //expect(notification).toBeVisible();
+  //expect(notification2).toBeVisible();
   //});
 
 
   test("vaidehi ponum", async () => {
-    const component =  render(
+    const component = render(
       <HashRouter>
         <InvoiceDetails />
       </HashRouter>
     );
-  
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
     const poInput = await waitFor(() => screen.findByTestId("PONUMBER"));
     fireEvent.change(poInput, { target: { value: 1233 } });
-    
+
     expect(savebtn).toBeEnabled();
   });
-  
+
 
   test("vaidehi invoice date", async () => {
-    const component =  render(
+    const component = render(
       <HashRouter>
         <InvoiceDetails />
       </HashRouter>
     );
-  
+
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
     console.log("Butonnn:::" + savebtn);
     const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
-    console.log("datePick::::"+ dateInput[0]);
+    console.log("datePick::::" + dateInput[0]);
     //fireEvent.change(dateInput, { target: { value: new Date("2020-01-01") } });
-    
+
     fireEvent.click(dateInput);
 
 
-// select the input to open the date picker
-await userEvent.click(dateInput);
+    // select the input to open the date picker
+    await userEvent.click(dateInput);
 
-// clear previous value. In my case, I had a default value set
-//await user.clear(dateInput);
+    // clear previous value. In my case, I had a default value set
+    //await user.clear(dateInput);
 
-// enter new value
-await userEvent.type(dateInput, '01/Feb/2000');
-// tab to the next form item to set the value. This tab (or mouse out) is needed to actually set the value
-await userEvent.tab();
-await userEvent.tab();
-await userEvent.tab();
+    // enter new value
+    await userEvent.type(dateInput, '01/Feb/2000');
+    // tab to the next form item to set the value. This tab (or mouse out) is needed to actually set the value
+    await userEvent.tab();
+    await userEvent.tab();
+    await userEvent.tab();
 
     expect(savebtn).toBeDisabled();
   });
@@ -2434,22 +2433,6 @@ describe("Invoice details view change log click", () => {
     fireEvent.change(input, { target: { value: "Pending" } });
     const publish = await waitFor(() => screen.getByText(/Save/));
     fireEvent.click(publish);
-
-    const changeViewText = await screen.findByText(/View Change Log/);
-    fireEvent.click(changeViewText);
-
-    // const text = await screen.findByText(/test 9/);
-    // expect(text).toBeInTheDocument();
-
-    const viewMoreText = await screen.findByText(/View More/);
-    fireEvent.click(viewMoreText);
-    fireEvent.click(viewMoreText);
-    fireEvent.click(viewMoreText);
-
-    // screen.logTestingPlaygroundURL();
-
-    // const viewLessText = await screen.findByText(/View Less/);
-    // fireEvent.click(viewLessText);
   });
 });
 
@@ -2521,24 +2504,24 @@ describe("add payment button click test cases on Apprroved", () => {
     fireEvent.click(addPaymentButton);
   });
 
- /* test("Save button enabled when change the poNumber", async () => {
-
-    render(
-      <HashRouter>
-        <InvoiceDetails />
-      </HashRouter>
-    );
-
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
-
-    const setPoNumber =  screen.findByTestId("PONUMBER");
-    const saveButton =   screen.findByTestId("SaveButton");
-
-    expect(setPoNumber).toBeInTheDocument();
-    await waitFor(() =>
-      fireEvent.change(setPoNumber, {target: { value: "123" } }));
-      expect(saveButton).not.toBeDisabled();
-  });*/
+  /* test("Save button enabled when change the poNumber", async () => {
+ 
+     render(
+       <HashRouter>
+         <InvoiceDetails />
+       </HashRouter>
+     );
+ 
+     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+ 
+     const setPoNumber =  screen.findByTestId("PONUMBER");
+     const saveButton =   screen.findByTestId("SaveButton");
+ 
+     expect(setPoNumber).toBeInTheDocument();
+     await waitFor(() =>
+       fireEvent.change(setPoNumber, {target: { value: "123" } }));
+       expect(saveButton).not.toBeDisabled();
+   });*/
 
 });
 
@@ -2633,7 +2616,7 @@ describe("delete employee on AR Review status api fail", () => {
     const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
     fireEvent.click(deleteButton)
 
-    
+
 
 
   });
@@ -2730,7 +2713,7 @@ describe("delete employee on AR Review status", () => {
     const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
     fireEvent.click(deleteButton)
 
-    
+
 
 
   });
