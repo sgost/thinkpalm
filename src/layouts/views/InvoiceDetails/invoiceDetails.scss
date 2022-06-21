@@ -675,7 +675,6 @@
     }
 
     .payroll {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -686,7 +685,6 @@
     }
 
     .invoice_bill_table {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -696,7 +694,6 @@
     }
 
     .master {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -1081,7 +1078,7 @@
         margin: 0 0 0 1rem;
         font-size: 1rem;
         line-height: 1rem;
-        color: #3E3E3E;
+        color: #3e3e3e;
         cursor: pointer;
         font-weight: 400;
       }
@@ -1355,7 +1352,6 @@
     }
 
     .compensation-full-container {
-
       .a-modal__body {
         height: 80vh;
         width: 57%;
@@ -1372,7 +1368,7 @@
           flex-direction: column;
           border-radius: 10px;
 
-          >div {
+          > div {
             display: flex;
           }
 
@@ -1570,6 +1566,39 @@
       border-radius: 100%;
       display: flex;
       cursor: pointer;
+    }
+  }
+
+  .delete-employee-modal {
+    .a-modal__body {
+      height: 32vh;
+      width: 29%;
+    }
+    .delete-employee-inner-container {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      height: 16rem;
+      justify-content: space-between;
+
+      .delete-emplyee-buttons {
+        margin-top: 4.7778rem;
+        display: flex;
+        justify-content: end;
+
+        .employee-button {
+          margin-left: 1.6667rem;
+        }
+        svg {
+          display: inline-block !important;
+        }
+
+        button.a-button.medium {
+          font-size: 1.16rem;
+          width: 12.13rem;
+          border: 2px solid #526fd6 !important;
+        }
+      }
     }
   }
 }

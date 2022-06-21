@@ -71,6 +71,11 @@ export const urls = {
     services.atlasInvoiceService +
     "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2",
 
+  updateInvoiceCalendar:
+    baseURL +
+    services.atlasInvoiceService +
+    "/Invoices/UpdateInvoiceCalendar/",
+
   contractorBillingService:
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
@@ -85,6 +90,10 @@ export const urls = {
     services.atlasSubscriptionService +
     `/Lookup/GetSubscriptionLookup`,
 
+  deleteEmployeeApi: 
+  baseURL +
+  services.atlasIdgService +
+  "/PayrollChangeItems/RemoveEmployeeFromPayroll",
   savePayments:
     baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
 };
