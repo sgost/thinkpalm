@@ -1121,7 +1121,7 @@ const PaymentDetailPage = () => {
             </div>
             <div>
               <p>
-                {/* {state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[0]}{" "} */}
+                {state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[0]}{" "}
                 {toCurrencyFormat(multiTotal)}
               </p>
             </div>
