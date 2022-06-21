@@ -70,6 +70,7 @@ export default function InvoiceDetails() {
     open: "",
   };
   const permission: any = getDecodedToken();
+  const [btnDis, setBtnDis] = useState(false);
   const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -765,13 +766,21 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         if (res.status === 201) {
-          setStatus(res.data.status === 2 ? "AR Review" : "Approved");
-          setApprovalMsg(
-            res.data.status === 4 ? "Invoice approve successfully" : ""
-          );
-          setTimeout(() => {
-            setApprovalMsg("");
-          }, 3000);
+          if (res.data.status === 2) {
+            setStatus("AR Review");
+          } else if (res.data.status === 8) {
+            setStatus("Closed");
+            setApprovalMsg("Invoice Converted successfully");
+            setTimeout(() => {
+              setApprovalMsg("");
+            }, 3000);
+          } else {
+            setStatus("Approved");
+            setApprovalMsg("Invoice approve successfully");
+            setTimeout(() => {
+              setApprovalMsg("");
+            }, 3000);
+          }
         } else {
           setApprovalMsg("Invoice approve failed");
         }
@@ -1065,8 +1074,11 @@ export default function InvoiceDetails() {
       method: "POST",
       url: convertMissInvoice(id),
       headers: getHeaders(tempToken, cid, isClient),
-    }).then((e) => {
-      handleApproveInvoice(8)
+    }).then((resp: any) => {
+      if (resp) {
+        handleApproveInvoice(8);
+        setBtnDis(true);
+      }
     }
     )
   };
@@ -1095,10 +1107,11 @@ export default function InvoiceDetails() {
 
 
   const reCalculate = () => {
-    axios
-      .post(calculateInvoiceUrl(id), {
-        headers: getHeaders(tempToken, cid, "false"),
-      })
+    axios({
+      method: "POST",
+      url: calculateInvoiceUrl(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    })
       .then((resp: any) => {
         console.log('respresp', resp)
       })
@@ -1435,6 +1448,7 @@ export default function InvoiceDetails() {
 
           {status === "Approved" && missTransType === 3 && permission.Role == "FinanceAR" && (
             <Button
+              disabled={btnDis}
               data-testid="convert-button"
               label="Change to Miscellaneous"
               className="secondary-btn small change-miss"
