@@ -15,6 +15,7 @@ import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
 import { format } from "date-fns";
 import { stat } from "fs";
+import { sharedBreadCrumbs } from "../../../sharedColumns/sharedSteps";
 
 const PaymentDetailPage = () => {
   const state: any = useLocation();
@@ -23,6 +24,7 @@ const PaymentDetailPage = () => {
   const tempToken = localStorage.getItem("accessToken");
 
   const [hideTopCheck, setHideTopCheck] = useState(true);
+  const [navigateToInvoice, setNavigateToInvoice] = useState(true);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [isMultiCurrencyDropdownOpen, setIsMultiCurrencyDropdownOpen] =
     useState(false);
@@ -79,6 +81,27 @@ const PaymentDetailPage = () => {
       navigate("/pay");
     }
   }, [hideTopCheck]);
+
+  /* istanbul ignore next */
+  useEffect(() => {
+    if (!navigateToInvoice) {
+      navigate(
+        "/pay/invoicedetails" +
+          state.state.inveoicesData[0].id +
+          "/" +
+          state.state.inveoicesData[0].customerId +
+          "/" +
+          "false",
+        {
+          state: {
+            InvoiceId: state.state.inveoicesData[0].invoiceNo,
+            transactionType: state.state.inveoicesData[0].transactionType,
+            rowDetails: state,
+          },
+        }
+      );
+    }
+  }, [navigateToInvoice]);
 
   const getCurrencyAndDepositBankAndLocationDropdownOption = () => {
     const lookupApi = urls.lookup;
@@ -323,6 +346,16 @@ const PaymentDetailPage = () => {
     set([...arr]);
   };
 
+  /* istanbul ignore next */
+  const toCurrencyFormat = (amount: number) => {
+    const cFormat = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+
+    return cFormat.format(amount).slice(1);
+  };
+
   const isSaveDisable = () => {
     let isDisable = false;
 
@@ -397,17 +430,14 @@ const PaymentDetailPage = () => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
-              console.log("a b", a, parseFloat(b.invoiceBalance.split(" ")[1]));
-              return a + parseFloat(b.invoiceBalance.split(" ")[1]);
+              return (
+                a + b
+                // parseFloat(b?.invoiceBalance?.split(" ")[1]?.replaceAll(",", ""))
+              );
             },
             0
           );
-
-          setMultiTotal(
-            state?.state?.inveoicesData[0].invoiceBalance.split(" ")[0] +
-              " " +
-              total.toFixed(2)
-          );
+          setMultiTotal(total);
         }
 
         multiPaymentBlocks.forEach((item: any, _index: number) => {
@@ -551,7 +581,7 @@ const PaymentDetailPage = () => {
         paymentdocuments: [],
         Payments: [
           {
-            totalAmount: parseFloat(multiTotal.split(" ")[1]),
+            totalAmount: parseFloat(multiTotal),
             paymentDate: format(multiPaymentDate, "yyyy-MM-dd"),
             currencyId: multiCurrencyOptions.find((e: any) => e.isSelected)
               ?.value,
@@ -661,6 +691,14 @@ const PaymentDetailPage = () => {
         console.log(err);
       });
   };
+ 
+  /* istanbul ignore next */
+  const breadcrumbsLabel = () => {
+    const label = state.state.inveoicesData.map((item: any) => {
+      return item.transactionTypeLabel + " Invoice No. " + item.invoiceNo;
+    });
+    return label;
+  };
 
   return (
     <div className="paymentDetailPageContainer">
@@ -669,25 +707,40 @@ const PaymentDetailPage = () => {
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
             hideHeaderTabs={hideTopCheck}
-            steps={[
-              {
-                isActive: true,
-                key: "Invoices",
-                label: "Invoices",
-                onClickLabel: () => {
-                  setHideTopCheck(false);
-                },
-              },
-              {
-                isActive: true,
-                key: "Invoices",
-                label: "Payroll Invoice No. 791230",
-              },
-              {
-                key: "payments",
-                label: "Payments",
-              },
-            ]}
+            steps={
+              state?.state?.checkPage
+                ? [
+                    {
+                      isActive: true,
+                      key: "Invoices",
+                      label: "Invoices",
+                      onClickLabel: () => {
+                        setHideTopCheck(false);
+                      },
+                    },
+
+                    {
+                      isActive: true,
+                      key: "Invoices",
+                      label: breadcrumbsLabel(),
+                      onClickLabel: () => {
+                        setNavigateToInvoice(false);
+                      },
+                    },
+                    sharedBreadCrumbs.payments,
+                  ]
+                : [
+                    {
+                      isActive: true,
+                      key: "Invoices",
+                      label: "Invoices",
+                      onClickLabel: () => {
+                        setHideTopCheck(false);
+                      },
+                    },
+                    sharedBreadCrumbs.payments,
+                  ]
+            }
           />
         </div>
         <div className="paymentSaveButton">
@@ -893,6 +946,12 @@ const PaymentDetailPage = () => {
                                   name="Reference No"
                                   type="number"
                                   placeholder="Enter reference No"
+                                  min="0"
+                                  pattern="[+-]?\d+(?:[.,]\d+)?"
+                                  onKeyDown={(e) => {
+                                    ["e", "E", "+", "-", "."].includes(e.key) &&
+                                      e.preventDefault();
+                                  }}
                                   onChange={(e) => {
                                     handleInputText(
                                       e.target.value,
@@ -1064,7 +1123,10 @@ const PaymentDetailPage = () => {
               <p>Total Amount ({state.state.inveoicesData.length} invoices)</p>
             </div>
             <div>
-              <p>{multiTotal}</p>
+              <p>
+                {state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[0]}{" "}
+                {toCurrencyFormat(multiTotal)}
+              </p>
             </div>
           </div>
           <div className="paaymentInstallmetOuterContainer">
@@ -1176,7 +1238,14 @@ const PaymentDetailPage = () => {
 
                 <div className="PaymentPageTotalAmount">
                   <p>Amount</p>
-                  <div className="amountPaymentPage">{multiTotal}</div>
+                  <div className="amountPaymentPage">
+                    {
+                      state?.state?.inveoicesData[0].invoiceBalance.split(
+                        " "
+                      )[0]
+                    }{" "}
+                    {toCurrencyFormat(multiTotal)}
+                  </div>
 
                   <div className="fullAmountPaymentCheckbox">
                     <Checkbox disabled checked={true} label="Full Amount" />
