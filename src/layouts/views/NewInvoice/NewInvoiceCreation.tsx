@@ -494,7 +494,7 @@ const NewInvoiceCreation = ({
                       }}
                       isOpen={isQbId}
                       options={qbIdOptions}
-                      title={`Quickbook ID`}
+                      title="Financial System ID"
                       search
                     />
                   </div>
@@ -525,7 +525,7 @@ const NewInvoiceCreation = ({
                       search
                     />
                   </div>
-                  <div className="dropdown col-md-4 select-component">
+                  {/* <div className="dropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -544,7 +544,7 @@ const NewInvoiceCreation = ({
                       title={`Payment Method`}
                       search
                     />
-                  </div>
+                  </div> */}
                 </div>
               )}
             {stepperOneData?.type === "Payroll" && (

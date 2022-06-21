@@ -1,4 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  cleanup,
+} from "@testing-library/react";
 import { mockapidata, mockStateData, mockStateSingleData } from "./mockData";
 import { HashRouter, useLocation } from "react-router-dom";
 import PaymentDetailPage from "../paymentDetailPage";
@@ -319,6 +325,7 @@ describe("Payment details page multiple", () => {
 
 describe("single paymwnt", () => {
   beforeAll(() => {
+    cleanup();
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
