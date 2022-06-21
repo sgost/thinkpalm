@@ -15,7 +15,6 @@ import moment from "moment";
 import { Loader } from "../../../components/Comman/Utils/utils";
 
 const PreviewInvoice = ({
-  accessToken,
   newInvoiceEmployeeDetailTable,
   newInvoiceCountrySummaryTable,
   newInvoiceFeeSummaryOptions,
@@ -154,7 +153,6 @@ const PreviewInvoice = ({
                 });
               });
 
-              // tempTotal += e.feeSummary.total;
               tempTotalPayroll += e.countryTotalDue;
 
               data.push({
@@ -191,16 +189,11 @@ const PreviewInvoice = ({
               );
 
               function precisionRound(number: number, precision: number) {
-                // if (precision < 0) {
-                //   const factor = Math.pow(10, precision);
-                //   return Math.round(number * factor) / factor;
-                // } else {
                 return +(
                   Math.round(Number(number + "e+" + precision)) +
                   "e-" +
                   precision
                 );
-                // }
               }
 
               let countrySumTotalTempPayroll =

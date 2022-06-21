@@ -3,7 +3,7 @@ import { Button, DatePicker, Dropdown, Icon } from "atlasuikit";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import moment from "moment";
-import { getHeaders, subscriptionLookup, urls } from "../../../urls/urls";
+import { getHeaders, subscriptionLookup } from "../../../urls/urls";
  /* istanbul ignore next */
 const PaymentDetailContainer = ({
   status,
@@ -44,19 +44,6 @@ const PaymentDetailContainer = ({
     useState<any>([]);
   const [addPaymentMethodDropdownOptions, setAddPaymentMethodDropdownOption] =
     useState<any>([]);
-  const [multiDetailPaymentBlocks] = useState<any>([
-    {
-      id: Math.random(),
-      paymentDate: "",
-      currency: "",
-      location: "",
-      referenceNo: "",
-      depositedBank: "",
-      paymentMethod: "",
-      amount: "",
-    },
-  ]);
-
 
   useEffect(() => {
     updateDropdowns();
@@ -73,11 +60,8 @@ const PaymentDetailContainer = ({
     const locationDataOptions: any = preparelocationDropdownOptionData(
       lookupData?.data?.locations
     );
-    // setCurrencyDropdownOption(currencyDataOptions);
     setAddCurrencyDropdownOption(currencyDataOptions);
-    // setBankToDepositDropdownOption(depositToBankDataOptions);
     setAddBankToDepositDropdownOption(depositToBankDataOptions);
-    // setLocationDropdownOption(locationDataOptions);
     setAddLocationDropdownOption(locationDataOptions);
   };
 
@@ -92,7 +76,6 @@ const PaymentDetailContainer = ({
         const paymentMethodData: any = preparePaymentMethodDropdownOptionData(
           res?.data?.paymentMethods
         );
-        // setPaymentMethodDropdownOption(paymentMethodData);
         setAddPaymentMethodDropdownOption(paymentMethodData);
       })
       .catch((e: any) => {
@@ -276,7 +259,6 @@ const PaymentDetailContainer = ({
     axios
       .get(getSubscriptionLookup, headers)
       .then((res: any) => {
-        console.log("dataaaaaaaa", res)
         if(res?.data?.paymentMethods) {
           let paymentMethodArr: any = []
           paymentDetailData.forEach((item: any) => {
@@ -371,16 +353,15 @@ const PaymentDetailContainer = ({
               </div>
 
               <div className="paymentInstallmentContainerDropdowns">
-                {console.log("currencyDropdownOptions", currencyDropdownOptions)}
                 <Dropdown
                   handleDropdownClick={(b: boolean) => {
                     b
                       ? setCurrencyEditOpen(key)
                       : setCurrencyEditOpen(paymentDetailData.length + 1);
                   }}
-                  handleDropOptionClick={(item: any) => {
+                  handleDropOptionClick={(data: any) => {
                     handlePaymentDropOptionData(
-                      item,
+                      data,
                       currencyDropdownOptions,
                       setCurrencyDropdownOption,
                       setCurrencyEditOpen
@@ -400,9 +381,9 @@ const PaymentDetailContainer = ({
                       ? setLocationEditOpen(key)
                       : setLocationEditOpen(paymentDetailData.length + 1);
                   }}
-                  handleDropOptionClick={(item: any) => {
+                  handleDropOptionClick={(data: any) => {
                     handlePaymentDropOptionData(
-                      item,
+                      data,
                       locationDropdownOptions,
                       setLocationDropdownOption,
                       setLocationEditOpen
@@ -451,9 +432,9 @@ const PaymentDetailContainer = ({
                         ? setDepositBankEditOpen(key)
                         : setDepositBankEditOpen(paymentDetailData.length + 1);
                     }}
-                    handleDropOptionClick={(item: any) => {
+                    handleDropOptionClick={(data: any) => {
                       handlePaymentDropOptionData(
-                        item,
+                        data,
                         bankToDepositDropdownOptions,
                         setBankToDepositDropdownOption,
                         setDepositBankEditOpen
@@ -467,7 +448,6 @@ const PaymentDetailContainer = ({
                 </div>
 
                 <div className="paymentInstallmentContainerDropdowns">
-                 { console.log("paymentMethodDropdownOptions", paymentMethodDropdownOptions)}
                   <Dropdown
                     handleDropdownClick={(b: boolean) => {
                       b
@@ -476,9 +456,9 @@ const PaymentDetailContainer = ({
                             paymentDetailData.length + 1
                           );
                     }}
-                    handleDropOptionClick={(item: any) => {
+                    handleDropOptionClick={(data: any) => {
                       handlePaymentDropOptionData(
-                        item,
+                        data,
                         paymentMethodDropdownOptions,
                         setPaymentMethodDropdownOption,
                         setPaymentMethodEditOpen
