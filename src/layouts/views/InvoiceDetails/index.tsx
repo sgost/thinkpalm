@@ -7,13 +7,14 @@ import {
   Checkbox,
   Modal,
   Cards,
-  Logs,
   DatePicker,
   AvatarHandler,
   ToastNotification
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
+
+import LogsCompo from "../Logs/index"
 
 import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
@@ -23,8 +24,8 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
+  convertMissInvoice,
   calculateInvoiceUrl,
-  getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
   getExcelUrl,
@@ -70,6 +71,7 @@ export default function InvoiceDetails() {
     open: "",
   };
   const permission: any = getDecodedToken();
+  const [btnDis, setBtnDis] = useState(false);
   const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -161,8 +163,8 @@ export default function InvoiceDetails() {
     ],
     data: [],
   });
-const [invoiceSaved, setInvoiceSavedValue] = useState("");
-const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [invoiceSaved, setInvoiceSavedValue] = useState("");
+  const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -209,25 +211,26 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
+        axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails: any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+              customerEmail: log?.email,
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
+
         if (
           missTransType != 7 &&
           missTransType != 4 &&
           missTransType != 3 &&
           missTransType != 2
         ) {
-          axios
-            .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
-            .then((res: any) => {
-              const logsDetails: any = res?.data?.map((log: any) => ({
-                date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
-                customerEmail: log?.email,
-                description: log?.note,
-              }));
-              setLogsData([...logsDetails]);
-            })
-            .catch((e: any) => {
-              console.log("error", e);
-            });
           axios
             .get(api, headers)
             .then((res: any) => {
@@ -259,7 +262,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                     employeeID: {
                       value: (
                         <span
-                        style={{fontWeight: 600}}
+                          style={{ fontWeight: 600 }}
                           onClick={() => {
                             handleCompensationModal(item);
                           }}
@@ -271,7 +274,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                     name: {
                       value: (
                         <span
-                        style={{fontWeight: 600}}
+                          style={{ fontWeight: 600 }}
                           onClick={() => {
                             handleCompensationModal(item);
                           }}
@@ -309,13 +312,13 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       toCurrencyFormat(item.healthcare),
 
                     // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                  
-                    action:  (res.data?.invoice?.status === 2 || res.data?.invoice?.status === 12) ? {
+
+                    action: (res.data?.invoice?.status === 2 || res.data?.invoice?.status === 12) ? {
                       value: (
                         <div
-                        data-testid="delete-icon"
+                          data-testid="delete-icon"
                           onClick={() => {
-                            setDeleteEmployeeModalOpen({isModalOpen: true, data: item});
+                            setDeleteEmployeeModalOpen({ isModalOpen: true, data: item });
                           }}
                         >
                           <Icon icon="trash" color="#E32C15" size="large" />
@@ -323,8 +326,8 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       ),
                       color: "#E32C15",
                     }
-                    : 
-                    "",
+                      :
+                      "",
                   });
                 });
 
@@ -453,7 +456,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
               }
-           })
+            })
             .catch((res) => {
               console.log(res);
               setIsErr(true);
@@ -805,13 +808,21 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     })
       .then((res: any) => {
         if (res.status === 201) {
-          setStatus(res.data.status === 2 ? "AR Review" : "Approved");
-          setApprovalMsg(
-            res.data.status === 4 ? "Invoice approve successfully" : ""
-          );
-          setTimeout(() => {
-            setApprovalMsg("");
-          }, 3000);
+          if (res.data.status === 2) {
+            setStatus("AR Review");
+          } else if (res.data.status === 8) {
+            setStatus("Closed");
+            setApprovalMsg("Invoice Converted successfully");
+            setTimeout(() => {
+              setApprovalMsg("");
+            }, 3000);
+          } else {
+            setStatus("Approved");
+            setApprovalMsg("Invoice approve successfully");
+            setTimeout(() => {
+              setApprovalMsg("");
+            }, 3000);
+          }
         } else {
           setApprovalMsg("Invoice approve failed");
         }
@@ -1101,31 +1112,17 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
-    let payload: any = creditMemoData;
-    if (creditMemoData) {
-      payload.transactionType = 2;
+    axios({
+      method: "POST",
+      url: convertMissInvoice(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    }).then((resp: any) => {
+      if (resp) {
+        handleApproveInvoice(8);
+        setBtnDis(true);
+      }
     }
-    convertInvoice(payload);
-  };
-
-  const convertInvoice = (payload: any) => {
-    axios
-      .put(getUpdateCreditMemoUrl(id), payload, {
-        headers: getHeaders(tempToken, cid, "false"),
-      })
-      .then((resp: any) => {
-        if (resp) {
-          setMissTransType(2);
-          getTransactionLabel();
-          setApprovalMsg("Invoice Converted Into Miscellineous");
-          setTimeout(() => {
-            setApprovalMsg("");
-          }, 3000);
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
+    )
   };
 
   const handleEditSave = () => {
@@ -1146,17 +1143,17 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         poNumber: poNumber ? poNumber : topPanel.poNumber,
       },
     })
-    .then((resp: any) => {
-      if (resp) {
-        setInvoiceSavedValue("Saved");
-        setTimeout(() => {
-          setInvoiceSavedValue("");
-        }, 3000);
-      }
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });
+      .then((resp: any) => {
+        if (resp) {
+          setInvoiceSavedValue("Saved");
+          setTimeout(() => {
+            setInvoiceSavedValue("");
+          }, 3000);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
     setSaveButtonDisable(true);
   };
 
@@ -1166,30 +1163,31 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     let deleteEmployeeApi = urls.deleteEmployeeApi
 
     await axios
-    .post(
-      deleteEmployeeApi,
-      {
-        "customerId": cid,
-        "InvoiceId": deleteEmployeeModalOpen?.data?.id,
-        "PayrollId": deleteEmployeeModalOpen?.data?.payrollId,    
-        "EmployeeId":deleteEmployeeModalOpen?.data?.employeeId
-      },
-      {
-        headers: headers,
-      }
-    )
-    .then((response: any) => {
-      console.log("response", response)
-    })
-    .catch((e: any) => {
-      console.log(e);
-    });
+      .post(
+        deleteEmployeeApi,
+        {
+          "customerId": cid,
+          "InvoiceId": deleteEmployeeModalOpen?.data?.id,
+          "PayrollId": deleteEmployeeModalOpen?.data?.payrollId,
+          "EmployeeId": deleteEmployeeModalOpen?.data?.employeeId
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response: any) => {
+        console.log("response", response)
+      })
+      .catch((e: any) => {
+        console.log(e);
+      });
   }
   const reCalculate = () => {
-    axios
-      .post(calculateInvoiceUrl(id), {
-        headers: getHeaders(tempToken, cid, "false"),
-      })
+    axios({
+      method: "POST",
+      url: calculateInvoiceUrl(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    })
       .then((resp: any) => {
         console.log("respresp", resp);
       })
@@ -1202,14 +1200,14 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
 
-     {(invoiceSaved === "Saved") && 
-        <ToastNotification
-        data-testid="toast-notify"
-        showNotification
-        toastMessage="Your record has been saved successfully..!"
-        toastPosition="bottom-right"
-      />
-     } 
+        {(invoiceSaved === "Saved") &&
+          <ToastNotification
+            data-testid="toast-notify"
+            showNotification
+            toastMessage="Your record has been saved successfully..!"
+            toastPosition="bottom-right"
+          />
+        }
         <div className="breadcrumbs">
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
@@ -1260,28 +1258,27 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
               missTransType != 1) && (
-              <div
-                onClick={() =>
-                  missTransType != 7
-                    ? setIsDownloadOpen(!isDownloadOpen)
-                    : function noRefCheck() {}
-                }
-                className={`${
-                  missTransType == 7 || deleteDisableButtons === true
+                <div
+                  onClick={() =>
+                    missTransType != 7
+                      ? setIsDownloadOpen(!isDownloadOpen)
+                      : function noRefCheck() { }
+                  }
+                  className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                }`}
+                    }`}
                 // className="download"
-              >
-                <p className="text">Download</p>
-                <Icon
-                  className="icon"
-                  color="#526fd6"
-                  icon="chevronDown"
-                  size="medium"
-                />
-              </div>
-            )}
+                >
+                  <p className="text">Download</p>
+                  <Icon
+                    className="icon"
+                    color="#526fd6"
+                    icon="chevronDown"
+                    size="medium"
+                  />
+                </div>
+              )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1331,7 +1328,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-          (status === "Invoiced" && missTransType === 7) ? (
+            (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1459,12 +1456,12 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
@@ -1536,6 +1533,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
           {status === "Approved" && missTransType === 3 && permission.Role == "FinanceAR" && (
             <Button
+              disabled={btnDis}
               data-testid="convert-button"
               label="Change to Miscellaneous"
               className="secondary-btn small change-miss"
@@ -1636,10 +1634,11 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 <p>PO Number</p>
                 {status === "AR Review" || status === "Open" ? (
                   <input
-                  data-testid="PONUMBER"
+                    data-testid="PONUMBER"
                     onChange={(e: any) => {
                       setPoNumber(Math.abs(parseInt(e.target.value)).toString())
-                      setSaveButtonDisable(false)}
+                      setSaveButtonDisable(false)
+                    }
                     }
                     value={poNumber ? poNumber : topPanel.poNumber}
                     type="number"
@@ -1662,7 +1661,8 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                   )}
                   handleDateChange={(date: any) => {
                     setInvoiceDate(date)
-                    setSaveButtonDisable(false)}}
+                    setSaveButtonDisable(false)
+                  }}
                 />
               </div>
             ) : (
@@ -1786,7 +1786,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer status={status} />
         </div>
@@ -1809,6 +1809,18 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           currency={getBillingCurrency()}
           vatValue={vatValue}
           setCreditMemoData={setCreditMemoData}
+          isLogsOpen={isLogsOpen}
+          changeLogs={changeLogs}
+          setIsLogsOpen={setIsLogsOpen}
+          dataAvailable={dataAvailable}
+          logsData={logsData}
+          viewLimit={viewLimit}
+          setInitial={setInitial}
+          setLimitFor={setLimitFor}
+          setChangeLogs={setChangeLogs}
+          setDataAvailable={setDataAvailable}
+          initail={initail}
+          limitFor={limitFor}
         ></CreditMemoSummary>
       )}
 
@@ -2013,78 +2025,20 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 transactionType={missTransType}
               ></FileUploadWidget>
             </div>
-            <Cards className="invoice-logs">
-              <Logs
-                custom
-                isOpen={isLogsOpen}
-                data={changeLogs}
-                title={
-                  <>
-                    <Icon
-                      icon="edit"
-                      size="small"
-                      color="#526FD6"
-                      viewBox="-2 -1 24 24"
-                      style={{
-                        marginTop: "0",
-                        padding: "0",
-                      }}
-                    />{" "}
-                    View Change Log
-                  </>
-                }
-                name="View-change-log"
-                handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
-                actions={{
-                  primary: {
-                    label: "View More",
-                    icon: {
-                      icon: "edit",
-                      size: "small",
-                      color: "#526FD6",
-                      viewBox: "-2 -1 24 24",
-                    },
-
-                    handleOnClick: () => {
-                      if (dataAvailable) {
-                        const spliced = [...logsData].splice(
-                          changeLogs.length,
-                          viewLimit
-                        );
-
-                        if (logsData.length > limitFor) {
-                          setInitial(limitFor);
-                          setLimitFor(limitFor + 10);
-                        }
-
-                        setChangeLogs([...changeLogs, ...spliced]);
-                      }
-                    },
-                    disabled: !dataAvailable,
-                  },
-                  secondary: {
-                    label: "View Less",
-                    icon: {
-                      icon: "edit",
-                      size: "small",
-                      color: "#526FD6",
-                      viewBox: "-2 -1 24 24",
-                    },
-                    handleOnClick: () => {
-                      const logs = [...changeLogs];
-                      logs.splice(initail, limitFor);
-                      setChangeLogs([...logs]);
-                      setInitial(initail - 10);
-                      setLimitFor(initail);
-                      if (logs.length === changeLogs.length) {
-                        setDataAvailable(true);
-                      }
-                    },
-                    disabled: changeLogs.length <= viewLimit,
-                  },
-                }}
-              />
-            </Cards>
+            <LogsCompo
+              isLogsOpen={isLogsOpen}
+              changeLogs={changeLogs}
+              setIsLogsOpen={setIsLogsOpen}
+              dataAvailable={dataAvailable}
+              logsData={logsData}
+              viewLimit={viewLimit}
+              setInitial={setInitial}
+              setLimitFor={setLimitFor}
+              setChangeLogs={setChangeLogs}
+              setDataAvailable={setDataAvailable}
+              initail={initail}
+              limitFor={limitFor}
+            ></LogsCompo>
           </>
         )}
       {missTransType == 7 && (
@@ -2317,7 +2271,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
+                          ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2364,11 +2318,11 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
@@ -2397,19 +2351,19 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
       <div className="delete-employee-modal">
         <Modal
-         isOpen={deleteEmployeeModalOpen.isModalOpen}
-         handleClose={() => {setDeleteEmployeeModalOpen({...deleteEmployeeModalOpen, isModalOpen: false})}}
-         >
+          isOpen={deleteEmployeeModalOpen.isModalOpen}
+          handleClose={() => { setDeleteEmployeeModalOpen({ ...deleteEmployeeModalOpen, isModalOpen: false }) }}
+        >
 
           <div className="delete-employee-inner-container">
-          <h1>Are you sure you want to delete this employee?</h1>
-          <div className="delete-emplyee-buttons">
-          <Button
+            <h1>Are you sure you want to delete this employee?</h1>
+            <div className="delete-emplyee-buttons">
+              <Button
                 data-testid="delete-button-Cancel"
                 label="Cancel"
                 className="secondary-btn medium"
                 handleOnClick={() => {
-                  setDeleteEmployeeModalOpen({...deleteEmployeeModalOpen, isModalOpen: false});
+                  setDeleteEmployeeModalOpen({ ...deleteEmployeeModalOpen, isModalOpen: false });
                 }}
               />
               <Button
@@ -2418,10 +2372,10 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 className="primary-blue medium employee-button"
                 handleOnClick={() => deleteEmployee()}
               />
+            </div>
           </div>
-          </div>
-         
-         </Modal>
+
+        </Modal>
       </div>
     </div>
   );
