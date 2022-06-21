@@ -7,13 +7,14 @@ import {
   Checkbox,
   Modal,
   Cards,
-  Logs,
   DatePicker,
   AvatarHandler,
   ToastNotification
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
+
+import LogsCompo from "../Logs/index"
 
 import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
@@ -25,7 +26,6 @@ import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
   convertMissInvoice,
   calculateInvoiceUrl,
-  getUpdateCreditMemoUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
   getExcelUrl,
@@ -211,25 +211,26 @@ export default function InvoiceDetails() {
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
+        axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails: any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+              customerEmail: log?.email,
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
+
         if (
           missTransType != 7 &&
           missTransType != 4 &&
           missTransType != 3 &&
           missTransType != 2
         ) {
-          axios
-            .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
-            .then((res: any) => {
-              const logsDetails: any = res?.data?.map((log: any) => ({
-                date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
-                customerEmail: log?.email,
-                description: log?.note,
-              }));
-              setLogsData([...logsDetails]);
-            })
-            .catch((e: any) => {
-              console.log("error", e);
-            });
           axios
             .get(api, headers)
             .then((res: any) => {
@@ -1264,8 +1265,8 @@ export default function InvoiceDetails() {
                       : function noRefCheck() { }
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
+                    ? "download_disable"
+                    : "download"
                     }`}
                 // className="download"
                 >
@@ -1808,6 +1809,18 @@ export default function InvoiceDetails() {
           currency={getBillingCurrency()}
           vatValue={vatValue}
           setCreditMemoData={setCreditMemoData}
+          isLogsOpen={isLogsOpen}
+          changeLogs={changeLogs}
+          setIsLogsOpen={setIsLogsOpen}
+          dataAvailable={dataAvailable}
+          logsData={logsData}
+          viewLimit={viewLimit}
+          setInitial={setInitial}
+          setLimitFor={setLimitFor}
+          setChangeLogs={setChangeLogs}
+          setDataAvailable={setDataAvailable}
+          initail={initail}
+          limitFor={limitFor}
         ></CreditMemoSummary>
       )}
 
@@ -2012,78 +2025,20 @@ export default function InvoiceDetails() {
                 transactionType={missTransType}
               ></FileUploadWidget>
             </div>
-            <Cards className="invoice-logs">
-              <Logs
-                custom
-                isOpen={isLogsOpen}
-                data={changeLogs}
-                title={
-                  <>
-                    <Icon
-                      icon="edit"
-                      size="small"
-                      color="#526FD6"
-                      viewBox="-2 -1 24 24"
-                      style={{
-                        marginTop: "0",
-                        padding: "0",
-                      }}
-                    />{" "}
-                    View Change Log
-                  </>
-                }
-                name="View-change-log"
-                handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
-                actions={{
-                  primary: {
-                    label: "View More",
-                    icon: {
-                      icon: "edit",
-                      size: "small",
-                      color: "#526FD6",
-                      viewBox: "-2 -1 24 24",
-                    },
-
-                    handleOnClick: () => {
-                      if (dataAvailable) {
-                        const spliced = [...logsData].splice(
-                          changeLogs.length,
-                          viewLimit
-                        );
-
-                        if (logsData.length > limitFor) {
-                          setInitial(limitFor);
-                          setLimitFor(limitFor + 10);
-                        }
-
-                        setChangeLogs([...changeLogs, ...spliced]);
-                      }
-                    },
-                    disabled: !dataAvailable,
-                  },
-                  secondary: {
-                    label: "View Less",
-                    icon: {
-                      icon: "edit",
-                      size: "small",
-                      color: "#526FD6",
-                      viewBox: "-2 -1 24 24",
-                    },
-                    handleOnClick: () => {
-                      const logs = [...changeLogs];
-                      logs.splice(initail, limitFor);
-                      setChangeLogs([...logs]);
-                      setInitial(initail - 10);
-                      setLimitFor(initail);
-                      if (logs.length === changeLogs.length) {
-                        setDataAvailable(true);
-                      }
-                    },
-                    disabled: changeLogs.length <= viewLimit,
-                  },
-                }}
-              />
-            </Cards>
+            <LogsCompo
+              isLogsOpen={isLogsOpen}
+              changeLogs={changeLogs}
+              setIsLogsOpen={setIsLogsOpen}
+              dataAvailable={dataAvailable}
+              logsData={logsData}
+              viewLimit={viewLimit}
+              setInitial={setInitial}
+              setLimitFor={setLimitFor}
+              setChangeLogs={setChangeLogs}
+              setDataAvailable={setDataAvailable}
+              initail={initail}
+              limitFor={limitFor}
+            ></LogsCompo>
           </>
         )}
       {missTransType == 7 && (

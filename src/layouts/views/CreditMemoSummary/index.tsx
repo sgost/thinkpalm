@@ -1,5 +1,6 @@
-import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
+import { Cards, Button, Dropdown, DatePicker } from "atlasuikit";
 import axios from "axios";
+import LogsCompo from "../Logs/index"
 import moment from "moment";
 import { useEffect, useState } from "react";
 import {
@@ -27,7 +28,19 @@ export default function CreditMemoSummary(props: any) {
     serviceCountries,
     vatValue,
     setCreditMemoData,
-    status
+    status,
+    isLogsOpen,
+    changeLogs,
+    setIsLogsOpen,
+    dataAvailable,
+    logsData,
+    viewLimit,
+    setInitial,
+    setLimitFor,
+    setChangeLogs,
+    setDataAvailable,
+    initail,
+    limitFor
   } = props;
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
@@ -409,7 +422,7 @@ export default function CreditMemoSummary(props: any) {
                         {getPermissions(
                           creditMemoData?.transactionType,
                           "Edit"
-                        ) && status !== "Declined" &&(
+                        ) && status !== "Declined" && (
                             <Button
                               data-testid="edit-summary-button"
                               className="primary-blue medium edit"
@@ -747,54 +760,20 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></FileUploadWidget>
       </div>
-      <Cards className="UI-change-log">
-        <Logs
-          data={[
-            {
-              customerEmail: "danielal@email.com",
-              date: "Sat May 14 2022",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "2",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "3",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "4",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "5",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-          ]}
-          isOpen={openLogs}
-          handleUpDown={() => {
-            setOpenLogs(!openLogs);
-          }}
-          handleViewMore={function noRefCheck() { }}
-          name="View-change-log"
-          title="View Change Log"
-        />
-      </Cards>
+      <LogsCompo
+        isLogsOpen={isLogsOpen}
+        changeLogs={changeLogs}
+        setIsLogsOpen={setIsLogsOpen}
+        dataAvailable={dataAvailable}
+        logsData={logsData}
+        viewLimit={viewLimit}
+        setInitial={setInitial}
+        setLimitFor={setLimitFor}
+        setChangeLogs={setChangeLogs}
+        setDataAvailable={setDataAvailable}
+        initail={initail}
+        limitFor={limitFor}
+      ></LogsCompo>
     </div>
   );
 }
