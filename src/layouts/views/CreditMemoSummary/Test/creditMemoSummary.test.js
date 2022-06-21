@@ -57,7 +57,7 @@ describe("Credit Memo Summary", () => {
     })
     test("Render CM with status = 2", () => {
         mockCreditMemoData.status = 2;
-        const { getByTestId, getByText } = render(
+        const { getByTestId } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -231,7 +231,7 @@ describe("Credit Memo Summary", () => {
         userEvent.click(productDD);
     })
     test("Product Service", () => {
-        const { getByTestId, getByText } = render(
+        const { getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
@@ -298,7 +298,7 @@ describe("Credit Memo Summary", () => {
         fireEvent.change(description, { target: { value: "test" } });
     })
     test("Service Country", () => {
-        const { getByTestId, getByText } = render(
+        const { getByText } = render(
             <HashRouter>
                 <CreditMemoSummary
                     notes={mockapidata.notes}
