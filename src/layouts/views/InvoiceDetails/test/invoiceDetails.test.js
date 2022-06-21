@@ -1423,9 +1423,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
 
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
-    console.log("Butonnn:::" + savebtn);
     const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
-    console.log("datePick::::" + dateInput[0]);
     //fireEvent.change(dateInput, { target: { value: new Date("2020-01-01") } });
 
     fireEvent.click(dateInput);

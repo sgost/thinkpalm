@@ -126,7 +126,6 @@ export default function BillsTable(props: any) {
             .then((response: any) => {
                 if (response.status == 200) {
                     setClickedApiData(response.data.data.data[0]);
-                    console.log(response.data.data.data[0]);
                 } else {
                     console.log("Bill API failing on contractor service");
                 }
@@ -624,7 +623,6 @@ export default function BillsTable(props: any) {
                                         maxLength={400}
                                         onChange={(e) => {
                                             setRejectReason(e.target.value);
-                                            console.log(e.target.value);
                                         }}
                                         value={rejectReason}
                                         rows={4}

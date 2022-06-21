@@ -466,7 +466,6 @@ export default function InvoiceListing() {
   }, [searchText, searchCustomer]);
 
   const downloadFunction = () => {
-    console.log(multiInvoiceId);
     const download = (res: any) => {
       if (res.status === 200) {
         setDownloadDisable(false);
@@ -514,7 +513,6 @@ export default function InvoiceListing() {
 
   /* istanbul ignore next */
   const onRowCheckboxChange = (selectedRows: any) => {
-    console.log(selectedRows);
     setCheckedInvoices(selectedRows);
     if (selectedRows.length) {
       setDownloadDisable(false);

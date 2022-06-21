@@ -57,7 +57,6 @@ import cn from "classnames";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  // const state = { transactionType: 4, InvoiceId: "100678"};
   const topPanelObj = {
     from: "",
     to: "",
@@ -251,18 +250,13 @@ export default function InvoiceDetails() {
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
-              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
-              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
-              //   res.data = apiInvoiceMockData;
-              // }
-
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
                 let countryCode = e.countryCode;
                 let currencyCode = e.currencyCode;
                 let arr: any = [];
 
-                e.payrollItems.forEach((item: any, index: any) => {
+                e.payrollItems.forEach((item: any) => {
                   arr.push({
                     employeeID: {
                       value: (
@@ -355,7 +349,6 @@ export default function InvoiceDetails() {
                   });
                 });
 
-                // tempTotal += e.feeSummary.total;
                 tempTotal += e.countryTotalDue;
 
                 data.push({
@@ -453,7 +446,6 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
                 (a: any, b: any) => a + (b || 0),
@@ -481,8 +473,7 @@ export default function InvoiceDetails() {
                 setDocuments(response.data.invoiceDocuments);
               }
             })
-            .catch((res) => {
-              console.log(res);
+            .catch((_res) => {
               setIsErr(true);
             });
           axios
@@ -704,7 +695,6 @@ export default function InvoiceDetails() {
     axios
       .get(paymentdetailApi, headers)
       .then((res: any) => {
-        console.log("resssssssssssss", res);
         setPaymentDetailData(res.data);
       })
       .catch((e: any) => {
@@ -893,7 +883,7 @@ export default function InvoiceDetails() {
         },
       ],
     })
-      .then((res: any) => {
+      .then((_res: any) => {
         setStatus("Pending Approval");
       })
       .catch((e: any) => {
@@ -974,16 +964,7 @@ export default function InvoiceDetails() {
             }
           )
           .then((response: any) => {
-            //  setDocuments([
-            //     ...documents,
-            //     {
-            //       documentId: response.data.documentId,
-            //       document: {
-            //         documentName: res.data.fileName,
-            //         url: res.data.url,
-            //       },
-            //     },
-            //   ]);
+            console.log(response)
           })
           .catch((e: any) => {
             console.log(e);
@@ -1218,7 +1199,6 @@ export default function InvoiceDetails() {
         }
       )
       .then((response: any) => {
-        console.log("response", response);
         if (response.status === 200) {
           setDeleteEmployeeModalOpen({
             ...deleteEmployeeModalOpen,
@@ -1621,20 +1601,6 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-
-          {/* <Button
-            data-testid="approve-button"
-            handleOnClick={() => {
-              handleApproveInvoice(4);
-            }}
-            className="primary-blue small"
-            icon={{
-              color: "#fff",
-              icon: "checkMark",
-              size: "medium",
-            }}
-            label="Approve Invoice"
-          /> */}
         </div>
         {missTransType === 7 && <div className={cn("cp-download", {
           "is-drop-open": isDropdownOpen,
@@ -2209,7 +2175,6 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-                  const url = urls.declineInvoice;
                   let currDate = new Date();
                   axios({
                     method: "POST",

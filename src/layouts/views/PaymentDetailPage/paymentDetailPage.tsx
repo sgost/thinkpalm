@@ -14,7 +14,6 @@ import { urls, getHeaders, subscriptionLookup } from "../../../urls/urls";
 import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
 import { format } from "date-fns";
-import { stat } from "fs";
 import { sharedBreadCrumbs } from "../../../sharedColumns/sharedSteps";
 
 const PaymentDetailPage = () => {
@@ -38,7 +37,6 @@ const PaymentDetailPage = () => {
   const [isMultiPaymentMethodOpen, setIsMultiPaymentMethodOpen] =
     useState(false);
   const [documents, setDocuments] = useState<any>([]);
-  const [notes, setNotes] = useState<any>([]);
   const [paymentNote, setPaymentNote] = useState<any>(null);
   const [toggleState, setToggleState] = useState<any>({
     index: null,
@@ -65,7 +63,6 @@ const PaymentDetailPage = () => {
   const [multiPaymentDate, setMultiPaymentDate] = useState<any>(null);
   const [referenceNo, setReferenceNo] = useState<any>([]);
   const [multiRefNo, setMultiRefNo] = useState("");
-  const [multiplePaymentId, setMultiplePaymentId] = useState([]);
   const [multiPaymentBlocks, setMultiPaymentBlocks] = useState(
     state.state.inveoicesData.map((e: any) => ({
       id: Math.random(),
@@ -126,7 +123,7 @@ const PaymentDetailPage = () => {
         let tempLocationOpt: any = [];
 
         state?.state?.inveoicesData?.forEach(
-          (invoiceItem: any, invoicesIndex: number) => {
+          (invoiceItem: any, _invoicesIndex: number) => {
             multiPaymentBlocks.forEach((item: any, _index: number) => {
               tempCurrOpt.push({
                 invoiceKey: invoiceItem.id,
@@ -146,8 +143,6 @@ const PaymentDetailPage = () => {
             });
           }
         );
-
-        console.log("tempCurrOpt", tempCurrOpt);
 
         setCurrencyOptionDefault(currencyData);
         setCurrencyOption(tempCurrOpt);
@@ -178,7 +173,7 @@ const PaymentDetailPage = () => {
 
         let tempPayMethodOpt: any = [];
         state?.state?.inveoicesData?.forEach(
-          (invoiceItem: any, invoicesIndex: number) => {
+          (invoiceItem: any, _invoicesIndex: number) => {
             multiPaymentBlocks.forEach((item: any, _index: number) => {
               tempPayMethodOpt.push({
                 invoiceKey: invoiceItem.id,
@@ -256,32 +251,16 @@ const PaymentDetailPage = () => {
       (e: any) => e.invoiceKey === invoiceKey && e.blockKey === blockKey
     );
 
-    console.log("index", index);
-
     arr[index].options.forEach((e: any, i: number) => {
-      console.log("loop item", e, i);
 
       if (e.value === item.value) {
-        // arr[index].options[i] = {
-        //   ...arr[index].options[i],
-        //   isSelected: !arr[index].options[i].isSelected,
-        // };
-        console.log("fired if", e);
         e.isSelected = !e.isSelected;
-        console.log("fired if", e, arr);
       } else {
-        // arr[i] = {
-        //   ...arr[i],
-        //   isSelected: false,
-        // };
         e.isSelected = false;
       }
     });
 
-    console.log("arr", arr);
-
     set([...arr]);
-
     setIsOpen(false);
   };
 
@@ -307,10 +286,7 @@ const PaymentDetailPage = () => {
       }
     });
 
-    // console.log("arr", arr);
-
     set([...arr]);
-
     setIsOpen(false);
   };
 
@@ -426,7 +402,7 @@ const PaymentDetailPage = () => {
     let tempTotals: any = [];
 
     state?.state?.inveoicesData?.forEach(
-      (invoiceItem: any, invoicesIndex: number) => {
+      (invoiceItem: any, _invoicesIndex: number) => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
@@ -542,16 +518,6 @@ const PaymentDetailPage = () => {
     );
   };
 
-  // const onChevronClick = (id: any) => {
-  //   let newData: any = [...multiplePaymentId];
-  //   if (newData.includes(id)) {
-  //     newData = newData.filter((item: any) => item != id);
-  //   } else {
-  //     newData.push(id);
-  //   }
-  //   setMultiplePaymentId(newData);
-  // };
-
   const handleSave = () => {
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
@@ -598,9 +564,7 @@ const PaymentDetailPage = () => {
         ],
       };
 
-      console.log(data);
     } else {
-      console.log(currencyOptions, referenceNo);
       let arrData: Array<any> = [];
       for (let i = 0; i < currencyOptions.length; i++) {
         arrData.push({
@@ -664,7 +628,6 @@ const PaymentDetailPage = () => {
       data: data,
     })
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           if (state.state.inveoicesData.length > 1) {
             navigate("/pay");
@@ -781,23 +744,6 @@ const PaymentDetailPage = () => {
                           Total <span>{invoiceItem.totalAmount}</span>
                         </p>
                       </div>
-                      {/* <div
-                        data-testid="open-payment-block"
-                        className="header-chevron-icon"
-                        onClick={() => {
-                          onChevronClick(invoiceItem.id);
-                        }}
-                      >
-                        <Icon
-                          color="#fff"
-                          icon={
-                            multiplePaymentId.includes(invoiceItem.id)
-                              ? "chevronUp"
-                              : "chevronDown"
-                          }
-                          size="large"
-                        />
-                      </div> */}
                     </div>
                   </div>
 
