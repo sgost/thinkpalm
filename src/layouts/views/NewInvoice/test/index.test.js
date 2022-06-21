@@ -1948,13 +1948,13 @@ describe("New Invoice for Miscellaneous ", () => {
     //add quickbook here in future
 
     fireEvent.click(pleaseSelectDropDown[4]);
-    screen.logTestingPlaygroundURL();
+    // screen.logTestingPlaygroundURL();
     const paymentTerm = await screen.findByText(/10 days/i);
     fireEvent.click(paymentTerm);
 
-    fireEvent.click(pleaseSelectDropDown[4]);
-    const paymentMethod = await screen.findByText(/achcredit/i);
-    fireEvent.click(paymentMethod);
+    // fireEvent.click(pleaseSelectDropDown[4]);
+    // const paymentMethod = await screen.findByText(/achcredit/i);
+    // fireEvent.click(paymentMethod);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -2251,10 +2251,10 @@ describe("Invoice preview Pop", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    const tempToken = localStorage.getItem("accessToken");  //Accesstoken
+    const tempToken = localStorage.getItem("accessToken"); //Accesstoken
 
     const headers = {
-      headers: getHeaders(tempToken, customerId, false),  //Headers
+      headers: getHeaders(tempToken, customerId, false), //Headers
     };
 
     mock

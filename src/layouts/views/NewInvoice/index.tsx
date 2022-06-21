@@ -376,8 +376,7 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
-        paymentMethodOptions.findIndex((e: any) => e.isSelected === true) !== -1
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
@@ -404,11 +403,10 @@ const NewInvoice = () => {
     }
 
     if (stepsCount == 3 && loading) {
-      condition.push(true)
+      condition.push(true);
     } else {
-      condition.push(false)
+      condition.push(false);
     }
-
 
     condition.forEach((element: any) => {
       if (element) {
@@ -552,10 +550,10 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-          paymentTermsOptions
-            .find((e: any) => e.isSelected)
-            ?.text.split(" ")[0]
-        );
+            paymentTermsOptions
+              .find((e: any) => e.isSelected)
+              ?.text.split(" ")[0]
+          );
 
     // const currDate = new Date();
     const dueDate = new Date();
@@ -611,7 +609,7 @@ const NewInvoice = () => {
       InvoiceNotes: [],
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
-      PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
+      // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
       BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
       CurrencyId:
@@ -691,10 +689,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                    ? "step2-right-panel"
-                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                      ? "step2-credit-memo"
-                      : "",
+                  ? "step2-right-panel"
+                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                  ? "step2-credit-memo"
+                  : "",
             },
           }}
           leftPanel={
@@ -706,8 +704,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                    ? creditMemoSteps
-                    : stepsInitial
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />
