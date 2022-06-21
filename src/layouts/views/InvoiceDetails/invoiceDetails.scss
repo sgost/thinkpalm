@@ -14,6 +14,7 @@
       justify-content: space-between;
       margin-bottom: 1.333rem;
       flex-direction: column-reverse;
+      position: relative;
 
       .breadcrumbs {
         display: flex;
@@ -172,6 +173,64 @@
 
       .download-invoice-dropdown {
         position: relative;
+      }
+
+      .cp-download {
+        position: absolute;
+        right: 0;
+        bottom: -1.5rem;
+
+        .a-button {
+          background: transparent !important;
+          color: #526FD6 !important;
+          text-align: right;
+          
+          svg {
+            padding: 0;
+          }
+
+          .chevron-down {
+            display: inline-block !important;
+          }
+          
+          .chevron-up {
+            display: none !important;
+            transform: rotate(0deg) !important;
+          }
+        }
+
+        &.is-drop-closed .a-button {
+          .chevron-down {
+            display: inline-block !important;
+          }
+          .chevron-up {
+            display: none !important;
+          }
+        }
+        &.is-drop-open .a-button {
+          .chevron-down {
+            display: none !important;
+          }
+          .chevron-up {
+            display: inline-block !important;
+          }
+        }
+
+        .button-popup-section {
+          top: 2.5rem;
+          right: 0;
+          box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+          border-radius: 4px;
+
+          .column-display-list {
+            color: #767676;
+            padding: 0.75rem 1rem;
+
+            &:hover {
+              font-weight: 500;
+            }
+          }
+        }
       }
     }
 
