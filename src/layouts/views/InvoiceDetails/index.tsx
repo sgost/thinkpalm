@@ -1149,7 +1149,7 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
-            setReCalButtonDisable(true)
+            setReCalButtonDisable(false)
           }, 3000);
         }
       })
@@ -1192,7 +1192,7 @@ export default function InvoiceDetails() {
     })
       .then((resp: any) => {
         if (resp) {
-          setReCalButtonDisable(false)
+          setReCalButtonDisable(true)
           setApprovalMsg("Invoice Recalculated successfully");
           setTimeout(() => {
             setApprovalMsg("");
