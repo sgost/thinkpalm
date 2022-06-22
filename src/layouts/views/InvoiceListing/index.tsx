@@ -910,6 +910,53 @@ export default function InvoiceListing() {
                       setDateFrom(thisYearStartFormatDate);
                       setDateTo(thisYearEndFormatDate);
                       break;
+
+
+                    case "Last Month":
+                      const lastMonthStartDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth() - 1,
+                      );
+                      const lastMonthEndDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth() - 1,
+                        31
+                      );
+                      const lastMonthStartFormatDate = format(
+                        lastMonthStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const lastMonthEndFormatDate = format(
+                        lastMonthEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(lastMonthStartFormatDate);
+                      setDateTo(lastMonthEndFormatDate);
+                      break;
+
+
+                    case "Last Year":
+                      const lastYearStartDate = new Date(
+                        date.getFullYear() - 1,
+                        0,
+                        1
+                      );
+                      const lastYearEndDate = new Date(
+                        date.getFullYear() - 1,
+                        11,
+                        31
+                      );
+                      const lastYearStartFormatDate = format(
+                        lastYearStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const lastYearEndFormatDate = format(
+                        lastYearEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(lastYearStartFormatDate);
+                      setDateTo(lastYearEndFormatDate);
+                      break;
                   }
                   setIsDateOpen(!isDateOpen);
                 }}

@@ -42,6 +42,8 @@ export default function DatepickerDropdown({
     "This Month",
     "This Quarter",
     "This Year",
+    "Last Month",
+    "Last Year",
   ];
 
   const wrapperRef = useRef();
@@ -72,9 +74,8 @@ export default function DatepickerDropdown({
     <div
       ref={wrapperRef}
       data-testid="datedd"
-      className={`dropdownContainer ${
-        isOpen && "dateRangePickerdropdownActive"
-      }`}
+      className={`dropdownContainer ${isOpen && "dateRangePickerdropdownActive"
+        }`}
     >
       <span className="title">{title}</span>
       <div onClick={() => handleDropdownClick()} className="dropdown">
