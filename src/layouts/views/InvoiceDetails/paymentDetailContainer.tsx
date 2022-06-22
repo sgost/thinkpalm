@@ -25,6 +25,7 @@ const PaymentDetailContainer = ({
   const [depositBankOpen, setDepositBankOpen] = useState(false);
   const [paymentMethodOpen, setPaymentMethodOpen] = useState(false);
   const [editChecked, setEditChecked] = useState<any>();
+  const [paymentApiData, setPaymentApiData] = useState<any>(paymentDetailData);
   const [addPaymentSectionCheck, setAddPaymentSectionCheck] = useState(false);
   const [currencyDropdownOptions, setCurrencyDropdownOption] = useState<any>(
     []
@@ -131,27 +132,40 @@ const PaymentDetailContainer = ({
     item: any,
     options: any,
     set: any,
-    setIsOpen: any
+    setIsOpen: any,
+    index: number,
+    type: any
   ) => {
+   
     let arr = [...options];
 
-    arr.forEach((e, i) => {
+    arr[index].forEach((e: any, i: number) => {
       if (e.value === item.value) {
-        arr[i] = {
-          ...arr[i],
-          isSelected: !arr[i].isSelected,
+        arr[index][i] = {
+          ...e,
+          label: e.label,
+          value: e.value,
+          isSelected: !e.isSelected,
         };
       } else {
-        arr[i] = {
-          ...arr[i],
+        arr[index][i] = {
+          ...arr[index][i],
           isSelected: false,
         };
       }
     });
+    set([]);
+    setTimeout(() => {
+      set([...arr]);
+    }, 1);
+    setIsOpen(paymentApiData.length + 1);
 
-    set(arr);
-    setIsOpen(paymentDetailData.length + 1);
+    // if (type == "currency") {
+    //   paymentApiData[index].currencyId = item.value;
+    // }
   };
+
+  
 
   const currencyDropOptionClick = (option: any) =>
     handleAddOptionClick({
@@ -204,7 +218,7 @@ const PaymentDetailContainer = ({
     let billingCurrencyArr: any = []
 
     if(lookupData?.data?.billingCurrencies) {
-      paymentDetailData.forEach((item: any) => {
+      paymentApiData.forEach((item: any) => {
         billingCurrencyArr.push(
           lookupData?.data?.billingCurrencies.map((x: any) => {
             return{
@@ -221,7 +235,7 @@ const PaymentDetailContainer = ({
     let bankToDepositArr: any = []
 
     if(lookupData?.data?.depositToOptions) {
-      paymentDetailData.forEach((item: any) => {
+      paymentApiData.forEach((item: any) => {
         bankToDepositArr.push(
           lookupData?.data?.depositToOptions.map((x: any) => {
             return{
@@ -238,7 +252,7 @@ const PaymentDetailContainer = ({
     let locationArr: any = []
 
     if(lookupData?.data?.locations) {
-      paymentDetailData.forEach((item: any) => {
+      paymentApiData.forEach((item: any) => {
         locationArr.push(
           lookupData?.data?.locations.map((x: any) => {
             return{
@@ -261,7 +275,7 @@ const PaymentDetailContainer = ({
       .then((res: any) => {
         if(res?.data?.paymentMethods) {
           let paymentMethodArr: any = []
-          paymentDetailData.forEach((item: any) => {
+          paymentApiData.forEach((item: any) => {
             paymentMethodArr.push(
               res?.data?.paymentMethods?.map((x: any) => {
                 return{
@@ -292,7 +306,7 @@ const PaymentDetailContainer = ({
 
   return (
     <div className="paymentDisplayContainer">
-      {paymentDetailData?.map((item: any, key: any) => {
+      {paymentApiData?.map((item: any, key: any) => {
         return (
           <div className="paymentInstallmentContainer">
             <div className="paymentPageTitleHeader">
@@ -324,7 +338,7 @@ const PaymentDetailContainer = ({
                         className="secondary-btn"
                         label="Cancel Edit"
                         handleOnClick={() => {
-                          setEditChecked(paymentDetailData.length);
+                          setEditChecked(paymentApiData.length);
                         }}
                       />
                     </div>
@@ -343,11 +357,12 @@ const PaymentDetailContainer = ({
               <div className="paymentInstallmentDatepicker">
                 <DatePicker
                   label="Payment Date"
-                  value={moment(item.serviceDate).format("DD MMM YYYY")}
+                  value={moment(item.paymentDate).format("DD MMM YYYY")}
                   disabled={editChecked != key}
                   required
                   handleDateChange={(date: any) => {
-                    paymentDetailData[key].serviceDate = date;
+                    paymentApiData[key].paymentDate = date;
+                    setPaymentApiData([...paymentApiData])
                   }}
                 />
               </div>
@@ -357,14 +372,16 @@ const PaymentDetailContainer = ({
                   handleDropdownClick={(b: boolean) => {
                     b
                       ? setCurrencyEditOpen(key)
-                      : setCurrencyEditOpen(paymentDetailData.length + 1);
+                      : setCurrencyEditOpen(paymentApiData.length + 1);
                   }}
                   handleDropOptionClick={(data: any) => {
                     handlePaymentDropOptionData(
                       data,
                       currencyDropdownOptions,
                       setCurrencyDropdownOption,
-                      setCurrencyEditOpen
+                      setCurrencyEditOpen,
+                      key,
+                      "currency"
                     );
                   }}
                   options={currencyDropdownOptions[key] || []}
@@ -379,14 +396,16 @@ const PaymentDetailContainer = ({
                   handleDropdownClick={(b: boolean) => {
                     b
                       ? setLocationEditOpen(key)
-                      : setLocationEditOpen(paymentDetailData.length + 1);
+                      : setLocationEditOpen(paymentApiData.length + 1);
                   }}
                   handleDropOptionClick={(data: any) => {
                     handlePaymentDropOptionData(
                       data,
                       locationDropdownOptions,
                       setLocationDropdownOption,
-                      setLocationEditOpen
+                      setLocationEditOpen,
+                      key,
+                      "location"
                     );
                   }}
                   options={locationDropdownOptions[key] || []}
@@ -430,14 +449,16 @@ const PaymentDetailContainer = ({
                     handleDropdownClick={(b: boolean) => {
                       b
                         ? setDepositBankEditOpen(key)
-                        : setDepositBankEditOpen(paymentDetailData.length + 1);
+                        : setDepositBankEditOpen(paymentApiData.length + 1);
                     }}
                     handleDropOptionClick={(data: any) => {
                       handlePaymentDropOptionData(
                         data,
                         bankToDepositDropdownOptions,
                         setBankToDepositDropdownOption,
-                        setDepositBankEditOpen
+                        setDepositBankEditOpen,
+                        key,
+                        "depositBank"
                       );
                     }}
                     options={bankToDepositDropdownOptions[key] || []}
@@ -453,7 +474,7 @@ const PaymentDetailContainer = ({
                       b
                         ? setPaymentMethodEditOpen(key)
                         : setPaymentMethodEditOpen(
-                            paymentDetailData.length + 1
+                          paymentApiData.length + 1
                           );
                     }}
                     handleDropOptionClick={(data: any) => {
@@ -461,7 +482,9 @@ const PaymentDetailContainer = ({
                         data,
                         paymentMethodDropdownOptions,
                         setPaymentMethodDropdownOption,
-                        setPaymentMethodEditOpen
+                        setPaymentMethodEditOpen,
+                        key,
+                        "paymentMethodcurrencycurrencycurrency"
                       );
                     }}
                     options={paymentMethodDropdownOptions[key] || []}
@@ -603,7 +626,7 @@ const PaymentDetailContainer = ({
                     type="number"
                     className="disable-input-color"
                     placeholder="Please enter"
-                    disabled={true}
+                    // disabled={true}
                   />
                 </div>
                 <div className="fullAmountPaymentNoInput">Payment #765248</div>
