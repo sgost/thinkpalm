@@ -1226,7 +1226,7 @@ const PaymentDetailPage = () => {
       {isToaster && (
         <ToastNotification
           showNotification
-          toastMessage="Entered amount can not be greater than total open amount!"
+          toastMessage="Entered amount can not be greater than open amount!"
           toastPosition="bottom-right"
         />
       )}
