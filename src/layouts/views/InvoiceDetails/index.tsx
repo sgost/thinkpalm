@@ -167,7 +167,7 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
-  const [reCalButtonDisable, setReCalButtonDisable] = useState(false);
+  const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -264,7 +264,7 @@ export default function InvoiceDetails() {
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
+                              res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
                               <></>
@@ -281,7 +281,7 @@ export default function InvoiceDetails() {
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
+                              res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
                               <></>
@@ -324,27 +324,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                      res.data?.invoice?.status === 12
+                        res.data?.invoice?.status === 12
                         ? {
-                            value: (
-                              <div
-                                data-testid="delete-icon"
-                                onClick={() => {
-                                  setDeleteEmployeeModalOpen({
-                                    isModalOpen: true,
-                                    data: item,
-                                  });
-                                }}
-                              >
-                                <Icon
-                                  icon="trash"
-                                  color="#E32C15"
-                                  size="large"
-                                />
-                              </div>
-                            ),
-                            color: "#E32C15",
-                          }
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
                         : "",
                   });
                 });
@@ -1218,7 +1218,6 @@ export default function InvoiceDetails() {
     })
       .then((resp: any) => {
         if (resp) {
-          setReCalButtonDisable(true)
           setApprovalMsg("Invoice Recalculated successfully");
           setTimeout(() => {
             setApprovalMsg("");
@@ -1227,7 +1226,13 @@ export default function InvoiceDetails() {
       })
       .catch((error: any) => {
         console.log(error);
+        setReCalButtonDisable(false)
+        setApprovalMsg("Invoice Recalculaton Failed");
+        setTimeout(() => {
+          setApprovalMsg("");
+        }, 3000);
       });
+    setReCalButtonDisable(true)
   };
 
   return (
@@ -1300,18 +1305,18 @@ export default function InvoiceDetails() {
                   className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
                     : "download"
-                }`}
+                    }`}
                 // className="download"
-              >
-                <p className="text">Download</p>
-                <Icon
-                  className="icon"
-                  color="#526fd6"
-                  icon="chevronDown"
-                  size="medium"
-                />
-              </div>
-            )}
+                >
+                  <p className="text">Download</p>
+                  <Icon
+                    className="icon"
+                    color="#526fd6"
+                    icon="chevronDown"
+                    size="medium"
+                  />
+                </div>
+              )}
 
             {isDownloadOpen && (
               <div className="openDownloadDropdown">
@@ -1362,7 +1367,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-          (status === "Invoiced" && missTransType === 7) ? (
+            (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1490,12 +1495,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1539,11 +1544,6 @@ export default function InvoiceDetails() {
               <div className="submit_customer">
                 <Button
                   className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
                   label="Submit to Customer"
                   handleOnClick={() => {
                     handleApproveAR();
@@ -1852,7 +1852,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             status={status}
@@ -2342,7 +2342,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
+                          ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2389,11 +2389,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
