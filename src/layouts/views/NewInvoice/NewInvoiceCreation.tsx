@@ -536,7 +536,7 @@ const NewInvoiceCreation = ({
               stepperOneData?.type !== "Payroll" &&
               stepperOneData?.type !== "Credit Memo" && (
                 <div className="row">
-                  <div className="dropdown col-md-4 select-component">
+                  <div className="dropdown col-md-4 select-component ddPaymentTerms">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
