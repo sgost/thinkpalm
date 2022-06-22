@@ -10,7 +10,7 @@ import {
   DatePicker,
   AvatarHandler,
   ToastNotification,
-  ButtonDropdown
+  ButtonDropdown,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
@@ -196,7 +196,7 @@ export default function InvoiceDetails() {
     }
   }, [hideTopCheck]);
 
-  useEffect(() => {
+  const initialApiCall = () => {
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
     };
@@ -264,7 +264,7 @@ export default function InvoiceDetails() {
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                              res.data?.invoice?.status === 12 ? (
+                            res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
                               <></>
@@ -281,7 +281,7 @@ export default function InvoiceDetails() {
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                              res.data?.invoice?.status === 12 ? (
+                            res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
                               <></>
@@ -324,27 +324,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                        res.data?.invoice?.status === 12
+                      res.data?.invoice?.status === 12
                         ? {
-                          value: (
-                            <div
-                              data-testid="delete-icon"
-                              onClick={() => {
-                                setDeleteEmployeeModalOpen({
-                                  isModalOpen: true,
-                                  data: item,
-                                });
-                              }}
-                            >
-                              <Icon
-                                icon="trash"
-                                color="#E32C15"
-                                size="large"
-                              />
-                            </div>
-                          ),
-                          color: "#E32C15",
-                        }
+                            value: (
+                              <div
+                                data-testid="delete-icon"
+                                onClick={() => {
+                                  setDeleteEmployeeModalOpen({
+                                    isModalOpen: true,
+                                    data: item,
+                                  });
+                                }}
+                              >
+                                <Icon
+                                  icon="trash"
+                                  color="#E32C15"
+                                  size="large"
+                                />
+                              </div>
+                            ),
+                            color: "#E32C15",
+                          }
                         : "",
                   });
                 });
@@ -581,6 +581,10 @@ export default function InvoiceDetails() {
           console.log("error e", e);
         });
     }
+  };
+
+  useEffect(() => {
+    initialApiCall();
   }, []);
 
   useEffect(() => {
@@ -952,6 +956,7 @@ export default function InvoiceDetails() {
             urls.voidCreateDoc,
             {
               invoiceId: id,
+              customerId: cid,
 
               document: {
                 url: res.data.url,
@@ -964,7 +969,7 @@ export default function InvoiceDetails() {
             }
           )
           .then((response: any) => {
-            console.log(response)
+            console.log(response);
           })
           .catch((e: any) => {
             console.log(e);
@@ -997,6 +1002,7 @@ export default function InvoiceDetails() {
               setTopPanel({ ...topPanel, open: 0.0 });
             }
           });
+          initialApiCall();
           setVoidFileData({});
           setIsVoidConfirmOptionOpen(false);
           setInputVoidValue("");
@@ -1171,7 +1177,7 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
-            setReCalButtonDisable(false)
+            setReCalButtonDisable(false);
           }, 3000);
         }
       })
@@ -1226,13 +1232,13 @@ export default function InvoiceDetails() {
       })
       .catch((error: any) => {
         console.log(error);
-        setReCalButtonDisable(false)
+        setReCalButtonDisable(false);
         setApprovalMsg("Invoice Recalculaton Failed");
         setTimeout(() => {
           setApprovalMsg("");
         }, 3000);
       });
-    setReCalButtonDisable(true)
+    setReCalButtonDisable(true);
   };
 
   return (
@@ -1295,18 +1301,20 @@ export default function InvoiceDetails() {
           )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
-              missTransType != 1) && missTransType !== 7 && (
+              missTransType != 1) &&
+              missTransType !== 7 && (
                 <div
                   onClick={() =>
                     missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
+                      : function noRefCheck() {}
                   }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
-                    ? "download_disable"
-                    : "download"
-                    }`}
-                // className="download"
+                  className={`${
+                    missTransType == 7 || deleteDisableButtons === true
+                      ? "download_disable"
+                      : "download"
+                  }`}
+                  // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -1367,7 +1375,7 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7) ||
-            (status === "Invoiced" && missTransType === 7) ? (
+          (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1495,12 +1503,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1602,44 +1610,47 @@ export default function InvoiceDetails() {
               />
             )}
         </div>
-        {missTransType === 7 && <div className={cn("cp-download", {
-          "is-drop-open": isDropdownOpen,
-          "is-drop-closed": !isDropdownOpen
-        })}
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          onBlur={() => setIsDropdownOpen(false)}
-        >
-          <ButtonDropdown
-            menuItems={{
-              options: [
-                { value: "pdf", label: "Invoice as PDF" },
-                { value: "xlsx", label: "Invoice as Excel" }
-              ],
-              labelKeyName: "label"
-            }}
-            onChange={(selected: any) => console.log("selected", selected)}
+        {missTransType === 7 && (
+          <div
+            className={cn("cp-download", {
+              "is-drop-open": isDropdownOpen,
+              "is-drop-closed": !isDropdownOpen,
+            })}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onBlur={() => setIsDropdownOpen(false)}
           >
-            Download
-            <Icon
-              color="#526FD6"
-              className="chevron-down"
-              icon="chevronDown"
-              size="large"
-              viewBox="-6 -3 24 13"
-              width="34"
-              height="34"
-            />
-            <Icon
-              color="#526FD6"
-              className="chevron-up"
-              icon="chevronUp"
-              size="large"
-              viewBox="-6 -3 24 13"
-              width="34"
-              height="34"
-            />
-          </ButtonDropdown>
-        </div>}
+            <ButtonDropdown
+              menuItems={{
+                options: [
+                  { value: "pdf", label: "Invoice as PDF" },
+                  { value: "xlsx", label: "Invoice as Excel" },
+                ],
+                labelKeyName: "label",
+              }}
+              onChange={(selected: any) => console.log("selected", selected)}
+            >
+              Download
+              <Icon
+                color="#526FD6"
+                className="chevron-down"
+                icon="chevronDown"
+                size="large"
+                viewBox="-6 -3 24 13"
+                width="34"
+                height="34"
+              />
+              <Icon
+                color="#526FD6"
+                className="chevron-up"
+                icon="chevronUp"
+                size="large"
+                viewBox="-6 -3 24 13"
+                width="34"
+                height="34"
+              />
+            </ButtonDropdown>
+          </div>
+        )}
       </div>
 
       <div className="payrollInvoiceInfo">
@@ -1852,7 +1863,7 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             status={status}
@@ -2342,7 +2353,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                          ?.photoUrl
+                            ?.photoUrl
                         : ""
                     }
                     style={{
@@ -2389,11 +2400,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                          isCompensatioModalOpen.data &&
-                          isCompensatioModalOpen?.data?.startDate
+                        isCompensatioModalOpen.data &&
+                        isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                            isCompensatioModalOpen?.data?.startDate
-                          ).format("D MMM YYYY")
+                              isCompensatioModalOpen?.data?.startDate
+                            ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
