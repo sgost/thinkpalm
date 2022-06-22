@@ -1544,11 +1544,6 @@ export default function InvoiceDetails() {
               <div className="submit_customer">
                 <Button
                   className="primary-blue small"
-                  icon={{
-                    color: "#fff",
-                    icon: "checkMark",
-                    size: "medium",
-                  }}
                   label="Submit to Customer"
                   handleOnClick={() => {
                     handleApproveAR();
