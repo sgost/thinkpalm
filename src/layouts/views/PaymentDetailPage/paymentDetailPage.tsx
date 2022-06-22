@@ -6,6 +6,7 @@ import {
   DatePicker,
   Dropdown,
   Checkbox,
+  ToastNotification,
 } from "atlasuikit";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./paymentDetailPage.scss";
@@ -73,6 +74,7 @@ const PaymentDetailPage = () => {
   const [isFullAmount, setIsFullAmount] = useState(true);
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
+  const [isToaster, setIsToaster] = useState(false);
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -378,6 +380,23 @@ const PaymentDetailPage = () => {
             isDisable = true;
           }
         });
+      }
+
+      //checking total amount is greater open amount
+      const totalAmount = totals.reduce(
+        (a: any, b: any) => a + parseFloat(b.text),
+        0
+      );
+      const openAmount = state?.state?.inveoicesData?.reduce(
+        (a: any, b: any) => a + parseFloat(b.invoiceBalance.split(" ")[1]),
+        0
+      );
+
+      console.log("totalAmount", totalAmount, "openAmount", openAmount);
+
+      if (totalAmount > openAmount) {
+        if (!isToaster) setIsToaster(true);
+        isDisable = true;
       }
     }
 
@@ -1204,6 +1223,13 @@ const PaymentDetailPage = () => {
           isPaymentPage={true}
         ></FileUploadWidget>
       </div>
+      {isToaster && (
+        <ToastNotification
+          showNotification
+          toastMessage="Entered amount can not be greater than total open amount!"
+          toastPosition="bottom-right"
+        />
+      )}
     </div>
   );
 };
