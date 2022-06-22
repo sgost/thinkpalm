@@ -210,7 +210,6 @@ describe("Payment details page multiple", () => {
       </HashRouter>
     );
     const dd = screen.getAllByPlaceholderText(/please select/i);
-    screen.debug(dd);
     fireEvent.click(dd[0]);
     const selDates = await waitFor(() => screen.getAllByText(/15/));
     fireEvent.click(selDates[2]);
@@ -349,7 +348,6 @@ describe("single paymwnt", () => {
       </HashRouter>
     );
     const dd = screen.getAllByPlaceholderText(/please select/i);
-    screen.debug(dd);
     fireEvent.click(dd[0]);
     const selDates = await waitFor(() => screen.getAllByText(/15/));
     fireEvent.click(selDates[2]);
@@ -412,5 +410,72 @@ describe("Payment details page lookup and subscription lookup api fail", () => {
         <PaymentDetailPage />
       </HashRouter>
     );
+  });
+});
+
+describe("Payment details page click on detail page breadcrumb", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+    mockStateSingleData["checkPage"]=  true,
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+   
+      const invoiceText = await screen.findAllByText(/Miscellaneous Invoice No. 1100810/);
+      expect(invoiceText[0]).toBeInTheDocument();
+      fireEvent.click(invoiceText[0]);
+      screen.debug()
+
+  });
+});
+
+describe("Payment details page click on invoice page breadcrumb", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+    mockStateSingleData["checkPage"]=  true,
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+   
+      const invoiceText = await screen.findAllByText(/Invoices/);
+      expect(invoiceText[0]).toBeInTheDocument();
+      fireEvent.click(invoiceText[0]);
+
   });
 });

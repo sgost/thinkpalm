@@ -28,14 +28,6 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
         console.log(err);
       });
 
-    // axios
-    //   .get(urls.countries)
-    //   .then((countryRes: any) => {
-    //     setCountriesData(countryRes);
-    //   })
-    //   .catch((err: any) => {
-    //     console.log(err);
-    //   });
     axios
       .get(urls.lookup)
       .then((res: any) => {
@@ -56,18 +48,10 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   }, []);
 
   const getCustlBillingCurrency = () => {
-    // if (countriesData?.data && invoiceData) {
-    //   let currency = countriesData.data.find(
-    //     (e: any) => e.currencyId === invoiceData.currencyId
-    //   );
-    //   return currency?.currency?.code;
-    // }
     if (countriesData?.length && invoiceData) {
       let currency = countriesData.find(
         (e: any) => e.value === invoiceData.currencyId
       );
-      console.log(invoiceData.currencyId);
-      // return currency?.currency?.code;
       return currency?.text;
     } else {
       return "";

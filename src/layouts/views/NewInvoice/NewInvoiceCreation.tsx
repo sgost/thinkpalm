@@ -34,7 +34,6 @@ const NewInvoiceCreation = ({
   setQbIdOptions,
   paymentTermsOptions,
   setPaymentTermsOptions,
-  paymentMethodOptions,
   setPaymentMethodOptions,
 }: any) => {
   // Dropdown open
@@ -49,7 +48,6 @@ const NewInvoiceCreation = ({
   const [isCurrency, setIsCurrency] = useState(false);
   const [isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
-  const [isPaymentMethod, setIsPaymentMethod] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -323,6 +321,11 @@ const NewInvoiceCreation = ({
                     setIsCountryOpen(false);
                     setIsMonthOpen(false);
                     setIsYearOpen(false);
+                    setIsInvoicer(false);
+                    setIsRecAcc(false);
+                    setIsCurrency(false);
+                    setIsQbId(false);
+                    setIsPaymentTerms(false);
                   }}
                   isOpen={istypeOpen}
                   options={typeOptions}
@@ -356,6 +359,11 @@ const NewInvoiceCreation = ({
                     setIsCountryOpen(false);
                     setIsMonthOpen(false);
                     setIsYearOpen(false);
+                    setIsInvoicer(false);
+                    setIsRecAcc(false);
+                    setIsCurrency(false);
+                    setIsQbId(false);
+                    setIsPaymentTerms(false);
                   }}
                   isOpen={isCustomerOpen}
                   options={CustomerOptions}
@@ -370,7 +378,6 @@ const NewInvoiceCreation = ({
                 <div className="col-md-4 input-component">
                   <DatePicker
                     handleDateChange={function (date: any) {
-                      console.log("date", date);
                       setInvoiceDate(date);
                     }}
                     label="Invoice Date"
@@ -414,6 +421,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsInvoicer(b);
+                        setIsRecAcc(false);
+                        setIsCurrency(false);
+                        setIsQbId(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isInvoicer}
                       options={invoicerOptions}
@@ -439,6 +452,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsRecAcc(b);
+                        setIsInvoicer(false);
+                        setIsCurrency(false);
+                        setIsQbId(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isRecAcc}
                       options={receivableAccountOptions}
@@ -466,6 +485,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsCurrency(b);
+                        setIsInvoicer(false);
+                        setIsRecAcc(false);
+                        setIsQbId(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isCurrency}
                       options={currencyOptions}
@@ -491,6 +516,12 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsQbId(b);
+                        setIsRecAcc(false);
+                        setIsCurrency(false);
+                        setIsInvoicer(false);
+                        setIsPaymentTerms(false);
+                        setIstypeOpen(false);
+                        setIsCustomerOpen(false);
                       }}
                       isOpen={isQbId}
                       options={qbIdOptions}
@@ -518,6 +549,10 @@ const NewInvoiceCreation = ({
                       }}
                       handleDropdownClick={(b: boolean) => {
                         setIsPaymentTerms(b);
+                        setIsRecAcc(false);
+                        setIsCurrency(false);
+                        setIsQbId(false);
+                        setIsInvoicer(false);
                       }}
                       isOpen={isPaymentTerms}
                       options={paymentTermsOptions}
@@ -525,26 +560,6 @@ const NewInvoiceCreation = ({
                       search
                     />
                   </div>
-                  {/* <div className="dropdown col-md-4 select-component">
-                    <Dropdown
-                      isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
-                        handleDropOption(
-                          item,
-                          paymentMethodOptions,
-                          setPaymentMethodOptions,
-                          setIsPaymentMethod
-                        );
-                      }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsPaymentMethod(b);
-                      }}
-                      isOpen={isPaymentMethod}
-                      options={paymentMethodOptions}
-                      title={`Payment Method`}
-                      search
-                    />
-                  </div> */}
                 </div>
               )}
             {stepperOneData?.type === "Payroll" && (
@@ -568,8 +583,16 @@ const NewInvoiceCreation = ({
                       setIsCountryOpen(b);
                       setIsCustomerOpen(false);
                       setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                       setIsMonthOpen(false);
                       setIsYearOpen(false);
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                     }}
                     isOpen={isCountryOpen}
                     options={CountryOptions}
@@ -587,6 +610,7 @@ const NewInvoiceCreation = ({
                     setIsMonthOpen(!isMonthOpen);
                     setIsCustomerOpen(false);
                     setIstypeOpen(false);
+                    setIsCustomerOpen(false);
                     setIsCountryOpen(false);
                     setIsYearOpen(false);
                   }}
@@ -605,8 +629,14 @@ const NewInvoiceCreation = ({
                         monthId: item.value,
                       });
                     }}
-                    handleDropdownClick={(b: boolean) => {
-                      // setIsMonthOpen(b);
+                    handleDropdownClick={(_b: boolean) => {
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                     }}
                     isOpen={isMonthOpen}
                     options={MonthOptions}
@@ -628,6 +658,7 @@ const NewInvoiceCreation = ({
                     setIsYearOpen(!isYearOpen);
                     setIsCustomerOpen(false);
                     setIstypeOpen(false);
+                    setIsCustomerOpen(false);
                     setIsCountryOpen(false);
                     setIsMonthOpen(false);
                   }}
@@ -646,8 +677,14 @@ const NewInvoiceCreation = ({
                         yearId: item.value,
                       });
                     }}
-                    handleDropdownClick={(b: boolean) => {
-                      // setIsYearOpen(!isYearOpen);
+                    handleDropdownClick={(_b: boolean) => {
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
                     }}
                     isOpen={isYearOpen}
                     options={YearOptions}

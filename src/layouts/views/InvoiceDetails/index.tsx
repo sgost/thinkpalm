@@ -9,12 +9,13 @@ import {
   Cards,
   DatePicker,
   AvatarHandler,
-  ToastNotification
+  ToastNotification,
+  ButtonDropdown
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
 
-import LogsCompo from "../Logs/index"
+import LogsCompo from "../Logs/index";
 
 import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
@@ -52,10 +53,10 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
+import cn from "classnames";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  // const state = { transactionType: 4, InvoiceId: "100678"};
   const topPanelObj = {
     from: "",
     to: "",
@@ -126,7 +127,7 @@ export default function InvoiceDetails() {
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
   const [deleteEmployeeModalOpen, setDeleteEmployeeModalOpen] = useState({
     isModalOpen: false,
-    data: {}
+    data: {},
   });
   const [countrySummary, setCountrySummary] = useState<any>([]);
   const [totalCountrySummaryDue, settotalCountrySummaryDue] = useState(0);
@@ -143,6 +144,7 @@ export default function InvoiceDetails() {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
   const [changeLogs, setChangeLogs] = useState<any>([]);
+  const [paymentDetailData, setPaymentDetailData] = useState<any>({});
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
@@ -165,6 +167,8 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -246,25 +250,25 @@ export default function InvoiceDetails() {
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
-              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
-              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
-              //   res.data = apiInvoiceMockData;
-              // }
-
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
                 let countryCode = e.countryCode;
                 let currencyCode = e.currencyCode;
                 let arr: any = [];
 
-                e.payrollItems.forEach((item: any, index: any) => {
+                e.payrollItems.forEach((item: any) => {
                   arr.push({
                     employeeID: {
                       value: (
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
-                            handleCompensationModal(item);
+                            res.data?.invoice?.status === 2 ||
+                              res.data?.invoice?.status === 12 ? (
+                              handleCompensationModal(item)
+                            ) : (
+                              <></>
+                            );
                           }}
                         >
                           {item.employeeId}
@@ -276,7 +280,12 @@ export default function InvoiceDetails() {
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
-                            handleCompensationModal(item);
+                            res.data?.invoice?.status === 2 ||
+                              res.data?.invoice?.status === 12 ? (
+                              handleCompensationModal(item)
+                            ) : (
+                              <></>
+                            );
                           }}
                         >
                           {item.firstName + " " + item.lastName}
@@ -313,25 +322,33 @@ export default function InvoiceDetails() {
 
                     // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
 
-                    action: (res.data?.invoice?.status === 2 || res.data?.invoice?.status === 12) ? {
-                      value: (
-                        <div
-                          data-testid="delete-icon"
-                          onClick={() => {
-                            setDeleteEmployeeModalOpen({ isModalOpen: true, data: item });
-                          }}
-                        >
-                          <Icon icon="trash" color="#E32C15" size="large" />
-                        </div>
-                      ),
-                      color: "#E32C15",
-                    }
-                      :
-                      "",
+                    action:
+                      res.data?.invoice?.status === 2 ||
+                        res.data?.invoice?.status === 12
+                        ? {
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
+                        : "",
                   });
                 });
 
-                // tempTotal += e.feeSummary.total;
                 tempTotal += e.countryTotalDue;
 
                 data.push({
@@ -429,7 +446,6 @@ export default function InvoiceDetails() {
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              // setTransactionType(res.data.invoice.transactionType);
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
                 (a: any, b: any) => a + (b || 0),
@@ -457,8 +473,7 @@ export default function InvoiceDetails() {
                 setDocuments(response.data.invoiceDocuments);
               }
             })
-            .catch((res) => {
-              console.log(res);
+            .catch((_res) => {
               setIsErr(true);
             });
           axios
@@ -670,6 +685,23 @@ export default function InvoiceDetails() {
     }
   }, [showAutoApprovedToast]);
 
+  useEffect(() => {
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    };
+
+    let paymentdetailApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/getrelatedpayments/${id}`;
+
+    axios
+      .get(paymentdetailApi, headers)
+      .then((res: any) => {
+        setPaymentDetailData(res.data);
+      })
+      .catch((e: any) => {
+        console.log("error e", e);
+      });
+  }, [id]);
+
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
       let currency = countriesData.data.find(
@@ -713,7 +745,8 @@ export default function InvoiceDetails() {
       sharedColumns.countryVAT,
       sharedColumns.adminFees,
       tableSharedColumns.healthcareBenefits,
-      (apiData?.data?.invoice?.status === 2 || apiData?.data?.invoice?.status === 12) && {
+      (apiData?.data?.invoice?.status === 2 ||
+        apiData?.data?.invoice?.status === 12) && {
         header: "Action",
         isDefault: true,
         key: "action",
@@ -850,7 +883,7 @@ export default function InvoiceDetails() {
         },
       ],
     })
-      .then((res: any) => {
+      .then((_res: any) => {
         setStatus("Pending Approval");
       })
       .catch((e: any) => {
@@ -931,16 +964,7 @@ export default function InvoiceDetails() {
             }
           )
           .then((response: any) => {
-            //  setDocuments([
-            //     ...documents,
-            //     {
-            //       documentId: response.data.documentId,
-            //       document: {
-            //         documentName: res.data.fileName,
-            //         url: res.data.url,
-            //       },
-            //     },
-            //   ]);
+            console.log(response)
           })
           .catch((e: any) => {
             console.log(e);
@@ -1121,8 +1145,7 @@ export default function InvoiceDetails() {
         handleApproveInvoice(8);
         setBtnDis(true);
       }
-    }
-    )
+    });
   };
 
   const handleEditSave = () => {
@@ -1148,6 +1171,7 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
+            setReCalButtonDisable(false)
           }, 3000);
         }
       })
@@ -1158,30 +1182,34 @@ export default function InvoiceDetails() {
   };
 
   const deleteEmployee = async () => {
-
     const headers = getHeaders(tempToken, cid, isClient);
-    let deleteEmployeeApi = urls.deleteEmployeeApi
+    let deleteEmployeeApi = urls.deleteEmployeeApi;
 
     await axios
       .post(
         deleteEmployeeApi,
         {
-          "customerId": cid,
-          "InvoiceId": deleteEmployeeModalOpen?.data?.id,
-          "PayrollId": deleteEmployeeModalOpen?.data?.payrollId,
-          "EmployeeId": deleteEmployeeModalOpen?.data?.employeeId
+          customerId: cid,
+          InvoiceId: deleteEmployeeModalOpen?.data?.id,
+          PayrollId: deleteEmployeeModalOpen?.data?.payrollId,
+          EmployeeId: deleteEmployeeModalOpen?.data?.employeeId,
         },
         {
           headers: headers,
         }
       )
       .then((response: any) => {
-        console.log("response", response)
+        if (response.status === 200) {
+          setDeleteEmployeeModalOpen({
+            ...deleteEmployeeModalOpen,
+            isModalOpen: false,
+          });
+        }
       })
       .catch((e: any) => {
         console.log(e);
       });
-  }
+  };
   const reCalculate = () => {
     axios({
       method: "POST",
@@ -1189,25 +1217,35 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((resp: any) => {
-        console.log("respresp", resp);
+        if (resp) {
+          setApprovalMsg("Invoice Recalculated successfully");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        }
       })
       .catch((error: any) => {
         console.log(error);
+        setReCalButtonDisable(false)
+        setApprovalMsg("Invoice Recalculaton Failed");
+        setTimeout(() => {
+          setApprovalMsg("");
+        }, 3000);
       });
+    setReCalButtonDisable(true)
   };
 
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
-
-        {(invoiceSaved === "Saved") &&
+        {invoiceSaved === "Saved" && (
           <ToastNotification
             data-testid="toast-notify"
             showNotification
             toastMessage="Your record has been saved successfully..!"
             toastPosition="bottom-right"
           />
-        }
+        )}
         <div className="breadcrumbs">
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
@@ -1257,7 +1295,7 @@ export default function InvoiceDetails() {
           )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
-              missTransType != 1) && (
+              missTransType != 1) && missTransType !== 7 && (
                 <div
                   onClick={() =>
                     missTransType != 7
@@ -1298,6 +1336,7 @@ export default function InvoiceDetails() {
             permission.Role == "FinanceAR" && (
               <div className="saveBtnContainer">
                 <Button
+                  disabled={reCalButtonDisable}
                   handleOnClick={() => {
                     reCalculate();
                   }}
@@ -1358,7 +1397,7 @@ export default function InvoiceDetails() {
                         apiData?.data?.invoice?.invoiceNo,
                       status: 4,
                       statusLabel: "Approved",
-                      transactionType: 2,
+                      transactionType: missTransType,
                       transactionTypeLabel: getTransactionLabelForPayment(),
                       createdDate: moment(topPanel.invoiceDate).format(
                         "DD/MMM/YYYY"
@@ -1464,9 +1503,12 @@ export default function InvoiceDetails() {
                     "/payments",
                     {
                       state: {
-                        InvoiceId: apiData?.data?.invoice?.invoiceNo,
+                        InvoiceId:
+                          apiData?.data?.invoice?.invoiceNo ||
+                          creditMemoData.invoiceNo,
                         transactionType: missTransType,
                         inveoicesData: checkedInvoice,
+                        checkPage: true,
                       },
                     }
                   );
@@ -1499,18 +1541,15 @@ export default function InvoiceDetails() {
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
-              <Button
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Submit to Customer"
-                handleOnClick={() => {
-                  handleApproveAR();
-                }}
-              />
+              <div className="submit_customer">
+                <Button
+                  className="primary-blue small"
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              </div>
             )}
           {(status === "Pending Approval" ||
             (status === "AR Review" && missTransType != 1)) &&
@@ -1531,17 +1570,19 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {status === "Approved" && missTransType === 3 && permission.Role == "FinanceAR" && (
-            <Button
-              disabled={btnDis}
-              data-testid="convert-button"
-              label="Change to Miscellaneous"
-              className="secondary-btn small change-miss"
-              handleOnClick={() => {
-                migrationInvoice();
-              }}
-            />
-          )}
+          {status === "Approved" &&
+            missTransType === 3 &&
+            permission.Role == "FinanceAR" && (
+              <Button
+                disabled={btnDis}
+                data-testid="convert-button"
+                label="Change to Miscellaneous"
+                className="secondary-btn small change-miss"
+                handleOnClick={() => {
+                  migrationInvoice();
+                }}
+              />
+            )}
 
           {(status === "Declined" || status === "Open") &&
             missTransType !== 1 &&
@@ -1560,21 +1601,45 @@ export default function InvoiceDetails() {
                 }}
               />
             )}
-
-          {/* <Button
-            data-testid="approve-button"
-            handleOnClick={() => {
-              handleApproveInvoice(4);
-            }}
-            className="primary-blue small"
-            icon={{
-              color: "#fff",
-              icon: "checkMark",
-              size: "medium",
-            }}
-            label="Approve Invoice"
-          /> */}
         </div>
+        {missTransType === 7 && <div className={cn("cp-download", {
+          "is-drop-open": isDropdownOpen,
+          "is-drop-closed": !isDropdownOpen
+        })}
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          onBlur={() => setIsDropdownOpen(false)}
+        >
+          <ButtonDropdown
+            menuItems={{
+              options: [
+                { value: "pdf", label: "Invoice as PDF" },
+                { value: "xlsx", label: "Invoice as Excel" }
+              ],
+              labelKeyName: "label"
+            }}
+            onChange={(selected: any) => console.log("selected", selected)}
+          >
+            Download
+            <Icon
+              color="#526FD6"
+              className="chevron-down"
+              icon="chevronDown"
+              size="large"
+              viewBox="-6 -3 24 13"
+              width="34"
+              height="34"
+            />
+            <Icon
+              color="#526FD6"
+              className="chevron-up"
+              icon="chevronUp"
+              size="large"
+              viewBox="-6 -3 24 13"
+              width="34"
+              height="34"
+            />
+          </ButtonDropdown>
+        </div>}
       </div>
 
       <div className="payrollInvoiceInfo">
@@ -1636,10 +1701,11 @@ export default function InvoiceDetails() {
                   <input
                     data-testid="PONUMBER"
                     onChange={(e: any) => {
-                      setPoNumber(Math.abs(parseInt(e.target.value)).toString())
-                      setSaveButtonDisable(false)
-                    }
-                    }
+                      setPoNumber(
+                        Math.abs(parseInt(e.target.value)).toString()
+                      );
+                      setSaveButtonDisable(false);
+                    }}
                     value={poNumber ? poNumber : topPanel.poNumber}
                     type="number"
                     className="poNoInput"
@@ -1660,8 +1726,8 @@ export default function InvoiceDetails() {
                     "DD/MMM/YYYY"
                   )}
                   handleDateChange={(date: any) => {
-                    setInvoiceDate(date)
-                    setSaveButtonDisable(false)
+                    setInvoiceDate(date);
+                    setSaveButtonDisable(false);
                   }}
                 />
               </div>
@@ -1740,8 +1806,8 @@ export default function InvoiceDetails() {
                         "DD/MMM/YYYY"
                       )}
                       handleDateChange={(date: any) => {
-                        setPaymentDue(date)
-                        setSaveButtonDisable(false)
+                        setPaymentDue(date);
+                        setSaveButtonDisable(false);
                       }}
                     />
                   </div>
@@ -1788,7 +1854,13 @@ export default function InvoiceDetails() {
       {(status === "Paid" || status === "Partial Paid") &&
         (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
-          <PaymentDetailContainer status={status} />
+          <PaymentDetailContainer
+            status={status}
+            cid={cid}
+            lookupData={lookupData}
+            paymentDetailData={paymentDetailData}
+            getBillingCurrency={getBillingCurrency}
+          />
         </div>
       ) : (
         <></>
@@ -2103,7 +2175,6 @@ export default function InvoiceDetails() {
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-                  const url = urls.declineInvoice;
                   let currDate = new Date();
                   axios({
                     method: "POST",
@@ -2352,9 +2423,13 @@ export default function InvoiceDetails() {
       <div className="delete-employee-modal">
         <Modal
           isOpen={deleteEmployeeModalOpen.isModalOpen}
-          handleClose={() => { setDeleteEmployeeModalOpen({ ...deleteEmployeeModalOpen, isModalOpen: false }) }}
+          handleClose={() => {
+            setDeleteEmployeeModalOpen({
+              ...deleteEmployeeModalOpen,
+              isModalOpen: false,
+            });
+          }}
         >
-
           <div className="delete-employee-inner-container">
             <h1>Are you sure you want to delete this employee?</h1>
             <div className="delete-emplyee-buttons">
@@ -2363,7 +2438,10 @@ export default function InvoiceDetails() {
                 label="Cancel"
                 className="secondary-btn medium"
                 handleOnClick={() => {
-                  setDeleteEmployeeModalOpen({ ...deleteEmployeeModalOpen, isModalOpen: false });
+                  setDeleteEmployeeModalOpen({
+                    ...deleteEmployeeModalOpen,
+                    isModalOpen: false,
+                  });
                 }}
               />
               <Button
@@ -2374,7 +2452,6 @@ export default function InvoiceDetails() {
               />
             </div>
           </div>
-
         </Modal>
       </div>
     </div>

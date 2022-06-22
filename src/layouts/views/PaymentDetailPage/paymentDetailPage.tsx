@@ -15,7 +15,7 @@ import { urls, getHeaders, subscriptionLookup } from "../../../urls/urls";
 import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
 import { format } from "date-fns";
-import { stat } from "fs";
+import { sharedBreadCrumbs } from "../../../sharedColumns/sharedSteps";
 
 const PaymentDetailPage = () => {
   const state: any = useLocation();
@@ -24,6 +24,7 @@ const PaymentDetailPage = () => {
   const tempToken = localStorage.getItem("accessToken");
 
   const [hideTopCheck, setHideTopCheck] = useState(true);
+  const [navigateToInvoice, setNavigateToInvoice] = useState(true);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
   const [isMultiCurrencyDropdownOpen, setIsMultiCurrencyDropdownOpen] =
     useState(false);
@@ -37,7 +38,6 @@ const PaymentDetailPage = () => {
   const [isMultiPaymentMethodOpen, setIsMultiPaymentMethodOpen] =
     useState(false);
   const [documents, setDocuments] = useState<any>([]);
-  const [notes, setNotes] = useState<any>([]);
   const [paymentNote, setPaymentNote] = useState<any>(null);
   const [toggleState, setToggleState] = useState<any>({
     index: null,
@@ -64,7 +64,6 @@ const PaymentDetailPage = () => {
   const [multiPaymentDate, setMultiPaymentDate] = useState<any>(null);
   const [referenceNo, setReferenceNo] = useState<any>([]);
   const [multiRefNo, setMultiRefNo] = useState("");
-  const [multiplePaymentId, setMultiplePaymentId] = useState([]);
   const [multiPaymentBlocks, setMultiPaymentBlocks] = useState(
     state.state.inveoicesData.map((e: any) => ({
       id: Math.random(),
@@ -81,6 +80,27 @@ const PaymentDetailPage = () => {
       navigate("/pay");
     }
   }, [hideTopCheck]);
+
+  /* istanbul ignore next */
+  useEffect(() => {
+    if (!navigateToInvoice) {
+      navigate(
+        "/pay/invoicedetails" +
+          state.state.inveoicesData[0].id +
+          "/" +
+          state.state.inveoicesData[0].customerId +
+          "/" +
+          "false",
+        {
+          state: {
+            InvoiceId: state.state.inveoicesData[0].invoiceNo,
+            transactionType: state.state.inveoicesData[0].transactionType,
+            rowDetails: state,
+          },
+        }
+      );
+    }
+  }, [navigateToInvoice]);
 
   const getCurrencyAndDepositBankAndLocationDropdownOption = () => {
     const lookupApi = urls.lookup;
@@ -105,7 +125,7 @@ const PaymentDetailPage = () => {
         let tempLocationOpt: any = [];
 
         state?.state?.inveoicesData?.forEach(
-          (invoiceItem: any, invoicesIndex: number) => {
+          (invoiceItem: any, _invoicesIndex: number) => {
             multiPaymentBlocks.forEach((item: any, _index: number) => {
               tempCurrOpt.push({
                 invoiceKey: invoiceItem.id,
@@ -125,8 +145,6 @@ const PaymentDetailPage = () => {
             });
           }
         );
-
-        console.log("tempCurrOpt", tempCurrOpt);
 
         setCurrencyOptionDefault(currencyData);
         setCurrencyOption(tempCurrOpt);
@@ -157,7 +175,7 @@ const PaymentDetailPage = () => {
 
         let tempPayMethodOpt: any = [];
         state?.state?.inveoicesData?.forEach(
-          (invoiceItem: any, invoicesIndex: number) => {
+          (invoiceItem: any, _invoicesIndex: number) => {
             multiPaymentBlocks.forEach((item: any, _index: number) => {
               tempPayMethodOpt.push({
                 invoiceKey: invoiceItem.id,
@@ -235,32 +253,16 @@ const PaymentDetailPage = () => {
       (e: any) => e.invoiceKey === invoiceKey && e.blockKey === blockKey
     );
 
-    console.log("index", index);
-
     arr[index].options.forEach((e: any, i: number) => {
-      console.log("loop item", e, i);
 
       if (e.value === item.value) {
-        // arr[index].options[i] = {
-        //   ...arr[index].options[i],
-        //   isSelected: !arr[index].options[i].isSelected,
-        // };
-        console.log("fired if", e);
         e.isSelected = !e.isSelected;
-        console.log("fired if", e, arr);
       } else {
-        // arr[i] = {
-        //   ...arr[i],
-        //   isSelected: false,
-        // };
         e.isSelected = false;
       }
     });
 
-    console.log("arr", arr);
-
     set([...arr]);
-
     setIsOpen(false);
   };
 
@@ -286,10 +288,7 @@ const PaymentDetailPage = () => {
       }
     });
 
-    // console.log("arr", arr);
-
     set([...arr]);
-
     setIsOpen(false);
   };
 
@@ -323,6 +322,16 @@ const PaymentDetailPage = () => {
     arr[index].date = format(date, "yyyy-MM-dd");
 
     set([...arr]);
+  };
+
+  /* istanbul ignore next */
+  const toCurrencyFormat = (amount: number) => {
+    const cFormat = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+
+    return cFormat.format(amount).slice(1);
   };
 
   const isSaveDisable = () => {
@@ -412,21 +421,18 @@ const PaymentDetailPage = () => {
     let tempTotals: any = [];
 
     state?.state?.inveoicesData?.forEach(
-      (invoiceItem: any, invoicesIndex: number) => {
+      (invoiceItem: any, _invoicesIndex: number) => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
-              console.log("a b", a, parseFloat(b.invoiceBalance.split(" ")[1]));
-              return a + parseFloat(b.invoiceBalance.split(" ")[1]);
+              return (
+                a + b
+                // parseFloat(b?.invoiceBalance?.split(" ")[1]?.replaceAll(",", ""))
+              );
             },
             0
           );
-
-          setMultiTotal(
-            state?.state?.inveoicesData[0].invoiceBalance.split(" ")[0] +
-              " " +
-              total.toFixed(2)
-          );
+          setMultiTotal(total);
         }
 
         multiPaymentBlocks.forEach((item: any, _index: number) => {
@@ -531,16 +537,6 @@ const PaymentDetailPage = () => {
     );
   };
 
-  // const onChevronClick = (id: any) => {
-  //   let newData: any = [...multiplePaymentId];
-  //   if (newData.includes(id)) {
-  //     newData = newData.filter((item: any) => item != id);
-  //   } else {
-  //     newData.push(id);
-  //   }
-  //   setMultiplePaymentId(newData);
-  // };
-
   const handleSave = () => {
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
@@ -570,7 +566,7 @@ const PaymentDetailPage = () => {
         paymentdocuments: [],
         Payments: [
           {
-            totalAmount: parseFloat(multiTotal.split(" ")[1]),
+            totalAmount: parseFloat(multiTotal),
             paymentDate: format(multiPaymentDate, "yyyy-MM-dd"),
             currencyId: multiCurrencyOptions.find((e: any) => e.isSelected)
               ?.value,
@@ -587,9 +583,7 @@ const PaymentDetailPage = () => {
         ],
       };
 
-      console.log(data);
     } else {
-      console.log(currencyOptions, referenceNo);
       let arrData: Array<any> = [];
       for (let i = 0; i < currencyOptions.length; i++) {
         arrData.push({
@@ -653,7 +647,6 @@ const PaymentDetailPage = () => {
       data: data,
     })
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           if (state.state.inveoicesData.length > 1) {
             navigate("/pay");
@@ -680,6 +673,14 @@ const PaymentDetailPage = () => {
         console.log(err);
       });
   };
+ 
+  /* istanbul ignore next */
+  const breadcrumbsLabel = () => {
+    const label = state.state.inveoicesData.map((item: any) => {
+      return item.transactionTypeLabel + " Invoice No. " + item.invoiceNo;
+    });
+    return label;
+  };
 
   return (
     <div className="paymentDetailPageContainer">
@@ -688,25 +689,40 @@ const PaymentDetailPage = () => {
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
             hideHeaderTabs={hideTopCheck}
-            steps={[
-              {
-                isActive: true,
-                key: "Invoices",
-                label: "Invoices",
-                onClickLabel: () => {
-                  setHideTopCheck(false);
-                },
-              },
-              {
-                isActive: true,
-                key: "Invoices",
-                label: "Payroll Invoice No. 791230",
-              },
-              {
-                key: "payments",
-                label: "Payments",
-              },
-            ]}
+            steps={
+              state?.state?.checkPage
+                ? [
+                    {
+                      isActive: true,
+                      key: "Invoices",
+                      label: "Invoices",
+                      onClickLabel: () => {
+                        setHideTopCheck(false);
+                      },
+                    },
+
+                    {
+                      isActive: true,
+                      key: "Invoices",
+                      label: breadcrumbsLabel(),
+                      onClickLabel: () => {
+                        setNavigateToInvoice(false);
+                      },
+                    },
+                    sharedBreadCrumbs.payments,
+                  ]
+                : [
+                    {
+                      isActive: true,
+                      key: "Invoices",
+                      label: "Invoices",
+                      onClickLabel: () => {
+                        setHideTopCheck(false);
+                      },
+                    },
+                    sharedBreadCrumbs.payments,
+                  ]
+            }
           />
         </div>
         <div className="paymentSaveButton">
@@ -747,23 +763,6 @@ const PaymentDetailPage = () => {
                           Total <span>{invoiceItem.totalAmount}</span>
                         </p>
                       </div>
-                      {/* <div
-                        data-testid="open-payment-block"
-                        className="header-chevron-icon"
-                        onClick={() => {
-                          onChevronClick(invoiceItem.id);
-                        }}
-                      >
-                        <Icon
-                          color="#fff"
-                          icon={
-                            multiplePaymentId.includes(invoiceItem.id)
-                              ? "chevronUp"
-                              : "chevronDown"
-                          }
-                          size="large"
-                        />
-                      </div> */}
                     </div>
                   </div>
 
@@ -912,6 +911,12 @@ const PaymentDetailPage = () => {
                                   name="Reference No"
                                   type="number"
                                   placeholder="Enter reference No"
+                                  min="0"
+                                  pattern="[+-]?\d+(?:[.,]\d+)?"
+                                  onKeyDown={(e) => {
+                                    ["e", "E", "+", "-", "."].includes(e.key) &&
+                                      e.preventDefault();
+                                  }}
                                   onChange={(e) => {
                                     handleInputText(
                                       e.target.value,
@@ -1083,7 +1088,10 @@ const PaymentDetailPage = () => {
               <p>Total Amount ({state.state.inveoicesData.length} invoices)</p>
             </div>
             <div>
-              <p>{multiTotal}</p>
+              <p>
+                {state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[0]}{" "}
+                {toCurrencyFormat(multiTotal)}
+              </p>
             </div>
           </div>
           <div className="paaymentInstallmetOuterContainer">
@@ -1195,7 +1203,14 @@ const PaymentDetailPage = () => {
 
                 <div className="PaymentPageTotalAmount">
                   <p>Amount</p>
-                  <div className="amountPaymentPage">{multiTotal}</div>
+                  <div className="amountPaymentPage">
+                    {
+                      state?.state?.inveoicesData[0].invoiceBalance.split(
+                        " "
+                      )[0]
+                    }{" "}
+                    {toCurrencyFormat(multiTotal)}
+                  </div>
 
                   <div className="fullAmountPaymentCheckbox">
                     <Checkbox disabled checked={true} label="Full Amount" />

@@ -13,7 +13,6 @@ import {
   tableSharedColumns,
   monthNameOptions,
 } from "../../../sharedColumns/sharedColumns";
-import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import {
   createManualInvoice,
@@ -25,8 +24,6 @@ import {
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
 const NewInvoice = () => {
-  const tempToken = localStorage.getItem("accessToken");
-  const cid = localStorage.getItem("current-org-id");
 
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
@@ -61,13 +58,12 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
-  const [countriesData, setCountriesData] = useState<any>([]);
 
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
 
-  var CurrentYear = new Date().getFullYear();
+  let CurrentYear = new Date().getFullYear();
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
@@ -471,7 +467,7 @@ const NewInvoice = () => {
         url: updateInvoiceStatus(CreateManualPayrollRes?.invoiceId),
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
-        .then((res: any) => {
+        .then((_res: any) => {
           setLoading(false);
           setStepsCount(stepsCount + 1);
         })
@@ -514,17 +510,6 @@ const NewInvoice = () => {
     }
   }, [hideTopCheck]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(urls.countries)
-  //     .then((countryRes: any) => {
-  //       setCountriesData(countryRes.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   const handleInvoiceCreation = () => {
     let invoiceItems = todos.map((e: any) => {
       return {
@@ -555,9 +540,7 @@ const NewInvoice = () => {
               ?.text.split(" ")[0]
           );
 
-    // const currDate = new Date();
     const dueDate = new Date();
-    // dueDate.setDate(invoiceDate.getDate() + 7);
     dueDate.setDate(invoiceDate.getDate() + payTerms);
     dueDate.setMonth(invoiceDate.getMonth());
     dueDate.setFullYear(invoiceDate.getFullYear());
