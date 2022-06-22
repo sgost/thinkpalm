@@ -468,6 +468,7 @@ export default function InvoiceDetails() {
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
               if (response.status == 200) {
+                console.log("response.data", response.data)
                 setCreditMemoData(response.data);
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
@@ -676,6 +677,9 @@ export default function InvoiceDetails() {
       setTopPanel(model);
     }
   }, [creditMemoData, addressData]);
+
+  console.log("creditMemoData?.invoiceBalance",creditMemoData?.invoiceBalance)
+  console.log("creditMemoData", creditMemoData)
 
   useEffect(() => {
     if (showAutoApprovedToast) {
