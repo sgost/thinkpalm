@@ -4,13 +4,13 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import moment from "moment";
 import { getHeaders, subscriptionLookup } from "../../../urls/urls";
- /* istanbul ignore next */
+/* istanbul ignore next */
 const PaymentDetailContainer = ({
   status,
   cid,
   lookupData,
   paymentDetailData,
-  getBillingCurrency
+  getBillingCurrency,
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -22,6 +22,7 @@ const PaymentDetailContainer = ({
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [referenceNo, setReferenceNo] = useState<any>([]);
+  const [addAmount, setAddAmount] = useState<any>([]);
   const [depositBankOpen, setDepositBankOpen] = useState(false);
   const [paymentMethodOpen, setPaymentMethodOpen] = useState(false);
   const [editChecked, setEditChecked] = useState<any>();
@@ -48,7 +49,7 @@ const PaymentDetailContainer = ({
 
   useEffect(() => {
     updateDropdowns();
-  }, [paymentDetailData])
+  }, [paymentDetailData]);
 
   const getCurrencyAndDepositBankAndLocationDropdownOption = () => {
     const currencyDataOptions: any = prepareCurrencyDropdownOptionData(
@@ -136,7 +137,6 @@ const PaymentDetailContainer = ({
     index: number,
     type: any
   ) => {
-   
     let arr = [...options];
 
     arr[index].forEach((e: any, i: number) => {
@@ -164,8 +164,6 @@ const PaymentDetailContainer = ({
     //   paymentApiData[index].currencyId = item.value;
     // }
   };
-
-  
 
   const currencyDropOptionClick = (option: any) =>
     handleAddOptionClick({
@@ -215,55 +213,55 @@ const PaymentDetailContainer = ({
   };
 
   const updateDropdowns = () => {
-    let billingCurrencyArr: any = []
+    let billingCurrencyArr: any = [];
 
-    if(lookupData?.data?.billingCurrencies) {
+    if (lookupData?.data?.billingCurrencies) {
       paymentApiData.forEach((item: any) => {
         billingCurrencyArr.push(
           lookupData?.data?.billingCurrencies.map((x: any) => {
-            return{
+            return {
               isSelected: x.value == item.currencyId,
               label: x.text,
               value: x.value,
-            }
+            };
           })
-        )
-      })
-      setCurrencyDropdownOption(billingCurrencyArr)
+        );
+      });
+      setCurrencyDropdownOption(billingCurrencyArr);
     }
 
-    let bankToDepositArr: any = []
+    let bankToDepositArr: any = [];
 
-    if(lookupData?.data?.depositToOptions) {
+    if (lookupData?.data?.depositToOptions) {
       paymentApiData.forEach((item: any) => {
         bankToDepositArr.push(
           lookupData?.data?.depositToOptions.map((x: any) => {
-            return{
+            return {
               isSelected: x.value == item.depositedtoBank,
               label: x.text,
               value: x.value,
-            }
+            };
           })
-        )
-      })
-      setBankToDepositDropdownOption(bankToDepositArr)
+        );
+      });
+      setBankToDepositDropdownOption(bankToDepositArr);
     }
 
-    let locationArr: any = []
+    let locationArr: any = [];
 
-    if(lookupData?.data?.locations) {
+    if (lookupData?.data?.locations) {
       paymentApiData.forEach((item: any) => {
         locationArr.push(
           lookupData?.data?.locations.map((x: any) => {
-            return{
+            return {
               isSelected: x.value == item.location,
               label: x.text,
               value: x.value,
-            }
+            };
           })
-        )
-      })
-      setLocationDropdownOption(locationArr)
+        );
+      });
+      setLocationDropdownOption(locationArr);
     }
 
     const getSubscriptionLookup = subscriptionLookup();
@@ -273,26 +271,25 @@ const PaymentDetailContainer = ({
     axios
       .get(getSubscriptionLookup, headers)
       .then((res: any) => {
-        if(res?.data?.paymentMethods) {
-          let paymentMethodArr: any = []
+        if (res?.data?.paymentMethods) {
+          let paymentMethodArr: any = [];
           paymentApiData.forEach((item: any) => {
             paymentMethodArr.push(
               res?.data?.paymentMethods?.map((x: any) => {
-                return{
+                return {
                   isSelected: x.value == item.paymentMethod,
                   label: x.text,
                   value: x.value,
-                }
+                };
               })
-            )
-          })
-          setPaymentMethodDropdownOption(paymentMethodArr)
+            );
+          });
+          setPaymentMethodDropdownOption(paymentMethodArr);
         }
       })
       .catch((e: any) => {
         console.log("error", e);
       });
-   
   };
 
   useEffect(() => {
@@ -362,7 +359,7 @@ const PaymentDetailContainer = ({
                   required
                   handleDateChange={(date: any) => {
                     paymentApiData[key].paymentDate = date;
-                    setPaymentApiData([...paymentApiData])
+                    setPaymentApiData([...paymentApiData]);
                   }}
                 />
               </div>
@@ -473,9 +470,7 @@ const PaymentDetailContainer = ({
                     handleDropdownClick={(b: boolean) => {
                       b
                         ? setPaymentMethodEditOpen(key)
-                        : setPaymentMethodEditOpen(
-                          paymentApiData.length + 1
-                          );
+                        : setPaymentMethodEditOpen(paymentApiData.length + 1);
                     }}
                     handleDropOptionClick={(data: any) => {
                       handlePaymentDropOptionData(
@@ -498,12 +493,20 @@ const PaymentDetailContainer = ({
                   <div className="amountPaymentPageInput">
                     <span>Amount</span>
                     <input
-                      defaultValue={getBillingCurrency() + " " + item.totalAmount}
+                      defaultValue={item.totalAmount}
                       // value="USD 300,523.15"
                       type="text"
-                      className="disable-input-color"
+                      className={
+                        editChecked != key ? "disable-input-color" : ""
+                      }
                       placeholder="Please enter"
-                      disabled={true}
+                      min="0"
+                      pattern="[+-]?\d+(?:[.,]\d+)?"
+                      onKeyDown={(e) => {
+                        ["e", "E", "+", "-", "."].includes(e.key) &&
+                          e.preventDefault();
+                      }}
+                      // disabled={true}
                     />
                   </div>
                   <div className="fullAmountPaymentNoInput">
@@ -514,7 +517,9 @@ const PaymentDetailContainer = ({
 
               <div className="PaymentPageTotalAmount">
                 <p>Amount</p>
-                <div className="amountPaymentPage">{getBillingCurrency() + " " + item.totalAmount}</div>
+                <div className="amountPaymentPage">
+                  {getBillingCurrency() + " " + item.totalAmount}
+                </div>
                 <div className="fullAmountPaymentNo">Payment #765248</div>
               </div>
             </div>
@@ -622,10 +627,17 @@ const PaymentDetailContainer = ({
                 <div className="amountPaymentPageInput">
                   <span>Amount</span>
                   <input
-                    value="USD 300,523.15"
+                    value={addAmount}
                     type="number"
-                    className="disable-input-color"
+                    // className="disable-input-color"
                     placeholder="Please enter"
+                    onChange={(e) => setAddAmount(e.target.value)}
+                    min="0"
+                    pattern="[+-]?\d+(?:[.,]\d+)?"
+                    onKeyDown={(e) => {
+                      ["e", "E", "+", "-", "."].includes(e.key) &&
+                        e.preventDefault();
+                    }}
                     // disabled={true}
                   />
                 </div>
