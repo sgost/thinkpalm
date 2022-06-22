@@ -413,6 +413,21 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           missTransType == 3 ||
           missTransType == 2
         ) {
+          //Vaidehi -- changes for Calling api other thatn payroll
+          axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails: any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+              customerEmail: log?.email,
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
+
           axios
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
@@ -1558,7 +1573,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             {status === "AR Review" || status === "Open" ? (
               <div className="dpContainer">
                 <DatePicker
-                  label="invoiceDate"
                   placeholderText={moment(topPanel.invoiceDate).format(
                     "DD/MMM/YYYY"
                   )}
@@ -1711,6 +1725,14 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           currency={getBillingCurrency()}
           vatValue={vatValue}
           setCreditMemoData={setCreditMemoData}
+          changeLogs={changeLogs}
+          dataAvailable={dataAvailable}
+          setDataAvailable={setDataAvailable}
+          logsData={logsData}
+          limitFor={limitFor}
+          setLimitFor={setLimitFor}
+          initail={initail}
+          setInitial={setInitial}
         ></CreditMemoSummary>
       )}
 

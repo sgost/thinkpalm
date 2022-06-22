@@ -27,7 +27,15 @@ export default function CreditMemoSummary(props: any) {
     serviceCountries,
     vatValue,
     setCreditMemoData,
-    status
+    status,
+    changeLogs,
+    dataAvailable,
+    setDataAvailable,
+    logsData,
+    limitFor,
+    setLimitFor,
+    initail,
+    setInitial
   } = props;
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
@@ -54,9 +62,22 @@ export default function CreditMemoSummary(props: any) {
   const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
   const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
   const [payload, setPayload] = useState<any>(creditMemoData);
+  const [initial, setInit] = useState(0);
+  const [limit, setLimit] = useState(10);
   const showAddFields = () => {
     setAddSectionCheck(true);
   };
+
+  const viewLimit = 10;
+  const [changeLog, setChangeLogs] = useState([...changeLogs]);
+  const [dataAvail, setDataAvail] = useState(true);
+
+  useEffect(() => {
+    if(changeLogs.length > 6) {
+        setDataAvail(false);
+    }
+  }, [changeLogs]);
+
   useEffect(() => {
     reCalculateTotal();
   }, [creditMemoData]);
@@ -749,50 +770,65 @@ export default function CreditMemoSummary(props: any) {
       </div>
       <Cards className="UI-change-log">
         <Logs
-          data={[
-            {
-              customerEmail: "danielal@email.com",
-              date: "Sat May 14 2022",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "2",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "3",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "4",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "5",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-          ]}
+          data-testid="change-log"
+          custom
           isOpen={openLogs}
+          data={changeLog}
+          name="View-change-log"
+          title="View Change Log"
           handleUpDown={() => {
             setOpenLogs(!openLogs);
           }}
-          handleViewMore={function noRefCheck() { }}
-          name="View-change-log"
-          title="View Change Log"
+         // handleViewMore={function noRefCheck() { }}
+          
+          actions={{
+            primary: {
+              label: "View More",
+              icon: {
+                icon: "edit",
+                size: "small",
+                color: "#526FD6",
+                viewBox: "-2 -1 24 24",
+              },
+
+              handleOnClick: () => {
+                if (dataAvail) {
+                  const spliced = [...logsData].splice(
+                    changeLog.length,
+                    viewLimit
+                  );
+
+                  if (logsData.length > limit) {
+                    setInit(limit);
+                    setLimit(limit + 10);
+                  }
+
+                  setChangeLogs([...changeLog, ...spliced]);
+                }
+              },
+              disabled: !dataAvail,
+            },
+            secondary: {
+              label: "View Less",
+              icon: {
+                icon: "edit",
+                size: "small",
+                color: "#526FD6",
+                viewBox: "-2 -1 24 24",
+              },
+              handleOnClick: () => {
+                const logs = [...changeLog];
+                logs.splice(initail, limitFor);
+                setChangeLogs([...logs]);
+                setInit(initial - 10);
+                setLimit(initial);
+                if (logs.length === changeLog.length) {
+                  setDataAvail(true);
+                }
+              },
+              disabled: changeLogs.length <= viewLimit,
+            },
+          }}
         />
       </Cards>
     </div>
