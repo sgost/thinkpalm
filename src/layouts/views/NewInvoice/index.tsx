@@ -360,6 +360,11 @@ const NewInvoice = () => {
     if (stepsCount == 2 && stepperOneData.type === "Payroll") {
       return Object.keys(selectedRowPostData).length === 0 ? true : false;
     }
+    if (loading) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const disableFunForStepOneCreditMemo = () => {
@@ -396,12 +401,6 @@ const NewInvoice = () => {
           condition.push(true);
         }
       });
-    }
-
-    if (stepsCount == 3 && loading) {
-      condition.push(true);
-    } else {
-      condition.push(false);
     }
 
     condition.forEach((element: any) => {
@@ -535,10 +534,10 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-            paymentTermsOptions
-              .find((e: any) => e.isSelected)
-              ?.text.split(" ")[0]
-          );
+          paymentTermsOptions
+            .find((e: any) => e.isSelected)
+            ?.text.split(" ")[0]
+        );
 
     const dueDate = new Date();
     dueDate.setDate(invoiceDate.getDate() + payTerms);
@@ -672,10 +671,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                  ? "step2-right-panel"
-                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                  ? "step2-credit-memo"
-                  : "",
+                    ? "step2-right-panel"
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -687,8 +686,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
