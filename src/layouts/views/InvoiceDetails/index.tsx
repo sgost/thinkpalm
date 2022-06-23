@@ -41,6 +41,7 @@ import {
   getAutoApproveCheckUrl,
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
+  getPaymentDetailApi,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -136,6 +137,7 @@ export default function InvoiceDetails() {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
   const [changeLogs, setChangeLogs] = useState<any>([]);
+  const [paymentDetailData, setPaymentDetailData] = useState<any>([]);
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
@@ -211,6 +213,19 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       .then((countryRes: any) => {
         setCountriesData(countryRes);
 
+        axios
+          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
+          .then((res: any) => {
+            const logsDetails: any = res?.data?.map((log: any) => ({
+              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+              customerEmail: log?.email,
+              description: log?.note,
+            }));
+            setLogsData([...logsDetails]);
+          })
+          .catch((e: any) => {
+            console.log("error", e);
+          });
         if (
           missTransType != 7 &&
           missTransType != 4 &&
@@ -657,6 +672,23 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     }
   }, [showAutoApprovedToast]);
 
+  useEffect(() => {
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    };
+
+    let paymentdetailApi = getPaymentDetailApi(id)
+
+    axios
+      .get(paymentdetailApi, headers)
+      .then((res: any) => {
+        setPaymentDetailData(res.data);
+      })
+      .catch((e: any) => {
+        console.log("error e", e);
+      });
+  }, [id]);
+
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
       let currency = countriesData.data.find(
@@ -789,10 +821,10 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        if (res.status === 201) {
-          setStatus(res.data.status === 2 ? "AR Review" : "Approved");
+        if (res?.status === 201) {
+          setStatus(res?.data?.status === 2 ? "AR Review" : "Approved");
           setApprovalMsg(
-            res.data.status === 4 ? "Invoice approve successfully" : ""
+            res?.data?.status === 4 ? "Invoice approve successfully" : ""
           );
           setTimeout(() => {
             setApprovalMsg("");
@@ -1686,11 +1718,18 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         </div>
       )}
 
-      {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
-        <div className="paymentCompnent">
-          <PaymentDetailContainer status={status} />
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        <div className="paymentCompnent"> 
+          <PaymentDetailContainer
+            setPaymentDetailData={setPaymentDetailData}
+            status={status}
+            cid={cid}
+            lookupData={lookupData}
+            paymentDetailData={paymentDetailData}
+            getBillingCurrency={getBillingCurrency}
+            id={id}
+          />
         </div>
       ) : (
         <></>
@@ -2012,7 +2051,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           billStatus={status}
           invoiceId={state.InvoiceId}
           navigate={navigate}
-          totalAmount={apiData.data?.invoice?.totalAmount}
+          totalAmount={apiData?.data?.invoice?.totalAmount}
           state={state}
         ></BillsTable>
       )}
