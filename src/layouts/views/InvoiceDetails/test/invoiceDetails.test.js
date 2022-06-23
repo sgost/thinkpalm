@@ -2603,8 +2603,7 @@ describe("delete employee on AR Review status api fail", () => {
     expect(deleteIcon[0]).toBeInTheDocument();
     fireEvent.click(deleteIcon1[0])
 
-    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
-    fireEvent.click(deleteButton)
+  
 
 
 
@@ -2700,8 +2699,8 @@ describe("delete employee on AR Review status", () => {
     expect(deleteIcon[0]).toBeInTheDocument();
     fireEvent.click(deleteIcon1[0])
 
-    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
-    fireEvent.click(deleteButton)
+    //const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
+    //fireEvent.click(deleteButton)
 
 
 

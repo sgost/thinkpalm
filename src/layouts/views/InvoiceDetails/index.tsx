@@ -1174,6 +1174,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               getPermissions(missTransType, "DeleteInvoice")) && (
               <div className="upper-delete-button">
                 <div
+                data-testid="delete-icon"
                   className="delete-invoice"
                   onClick={() => setDeleteConfirmModalOpen(true)}
                 >
