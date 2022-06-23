@@ -2602,16 +2602,7 @@ describe("delete employee on AR Review status api fail", () => {
 
     const deleteIcon1 = await screen.getAllByTestId("delete-icon");
     expect(deleteIcon[0]).toBeInTheDocument();
-<<<<<<< HEAD
     fireEvent.click(deleteIcon1[0]);
-=======
-    fireEvent.click(deleteIcon1[0])
-
-  
-
-
-
->>>>>>> d8dfb42485f71f7517ac771a21e1924e4b38aae4
 
     const deleteButton = await waitFor(() =>
       screen.getByText(/Delete Employee/)
