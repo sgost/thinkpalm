@@ -16,8 +16,8 @@
     .invoiceDetailsHeaderRow {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 1.333rem;
-      flex-direction: column-reverse;
+      margin-bottom: 0.333rem;
+      flex-direction: column;
       position: relative;
 
       .breadcrumbs {
@@ -45,6 +45,7 @@
         gap: 1.111rem;
         position: relative;
         margin: 0 0 2rem auto;
+        align-items: center;
 
         .void-button {
           cursor: pointer;
@@ -62,7 +63,7 @@
         }
 
         .addPaymentButton {
-          margin: 0 3.2rem 0 0;
+          margin-right: 2.1rem;
 
           button.a-button.medium {
             margin-right: -2rem;
@@ -116,9 +117,7 @@
           }
         }
 
-        .addPaymentButton {
-          margin-right: 2.1rem;
-        }
+        
 
         .decline-invoice {
           background-color: white;
@@ -531,10 +530,16 @@
         .paymentInstallmentUpperBlock {
           display: flex;
           margin-bottom: 5rem;
-          justify-content: space-between;
+          gap: 3.5rem;
 
           .paymentInstallmentDatepicker {
             margin-left: 1rem;
+
+            .react-datepicker__input-container{
+              input{
+                width: 14.778rem;
+              }
+            }
 
             span.react-datepicker__label:after {
               content: "*";
@@ -544,25 +549,9 @@
 
           .paymentInstallmentContainerDropdowns {
             margin-left: 1rem;
+            width: 17.778rem;
 
-            // span.a-dropdown__label.Currency::before {
-            //   content: "Select currency";
-            //   font-size: 1rem;
-            // }
-
-            // span.a-dropdown__label.Location::before {
-            //   content: "Select Location";
-            //   font-size: 1rem;
-            // }
-
-            // span.a-dropdown__label.Reference.No::before {
-            //   content: "Enter reference no";
-            //   font-size: 1rem;
-            // }
-
-            // .a-dropdown__label {
-            //   font-size: 0rem;
-            // }
+           
 
             .a-dropdown {
               z-index: inherit;
@@ -598,7 +587,7 @@
                 display: flex;
                 font-size: 1rem;
                 position: relative;
-                width: 17.5rem;
+                width: 16.5rem;
               }
               .disable-input {
                 background: #f5f5f6 !important;
@@ -617,25 +606,13 @@
 
           .paymentInnerLowerBlock {
             display: flex;
-            width: 68.3rem;
-            justify-content: space-between;
+            width: 64rem;
+            gap: 3.5rem;
 
             .paymentInstallmentContainerDropdowns {
               margin-left: 1rem;
 
-              // .a-dropdown__label {
-              //   font-size: 0rem;
-              // }
-
-              // span.a-dropdown__label.Deposited.to.bank::before {
-              //   content: "Select bank options";
-              //   font-size: 1rem;
-              // }
-
-              // span.a-dropdown__label.Payment.Method::before {
-              //   content: "Select payment method";
-              //   font-size: 1rem;
-              // }
+              
 
               .a-dropdown {
                 z-index: inherit;
@@ -649,6 +626,7 @@
 
             .PaymentPageTotalAmountInput {
               margin-top: -1.2rem;
+              margin-left: 1rem;
 
               .amountPaymentPageInput {
                 input {
@@ -679,7 +657,7 @@
                   display: flex;
                   font-size: 1rem;
                   position: relative;
-                  width: 17.5rem;
+                  width: 16.3rem;
                 }
               }
 
@@ -755,6 +733,7 @@
           }
         }
       }
+
     }
 
     .tab {
@@ -1371,7 +1350,6 @@
         img {
           height: 1.1111rem;
           width: 1.1111rem;
-          // margin-top: 12px;
         }
 
         h5 {
