@@ -397,7 +397,7 @@ const PaymentDetailPage = () => {
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
-        (a: any, b: any) => a + parseFloat(b.invoiceBalance.split(" ")[1]),
+        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1]),
         0
       );
 
@@ -425,9 +425,18 @@ const PaymentDetailPage = () => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
+              // const one = b?.invoiceBalance?.split(" ") 
+              // let two ;
+              // let three ;
+              // if(one?.length){
+              //    two = one?.[1]
+              // }
+              // if(two){
+              //    three = two?.replaceAll(",", "")
+              // }
               return (
                 a + b
-                // parseFloat(b?.invoiceBalance?.split(" ")[1]?.replaceAll(",", ""))
+                // parseFloat(three)
               );
             },
             0
@@ -686,6 +695,7 @@ const PaymentDetailPage = () => {
     <div className="paymentDetailPageContainer">
       <div className="paymentDetailPageHeaderRow">
         <div className="paymentDetailPageBreadcrumbs">
+          {console.log("stateeeee",state?.state)}
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
             hideHeaderTabs={hideTopCheck}
