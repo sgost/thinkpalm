@@ -649,7 +649,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.createdDate).format(
+      model.invoiceDate = moment(creditMemoData?.submissionDate).format(
         "DD MMM YYYY"
       );
       model.invoiceApproval = moment(creditMemoData?.createdDate).format(
