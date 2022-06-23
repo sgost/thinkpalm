@@ -1299,7 +1299,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       totalAmount:
                         topPanel.total || apiData?.data?.invoice?.totalAmount,
                       invoiceBalance:
-                        topPanel.open || apiData?.data?.invoice?.invoiceBalance,
+                        getBillingCurrency() + ' ' + topPanel.open ||  getBillingCurrency() + ' ' +  apiData?.data?.invoice?.invoiceBalance,
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
