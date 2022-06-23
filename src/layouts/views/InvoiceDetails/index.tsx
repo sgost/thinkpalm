@@ -821,10 +821,10 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        if (res.status === 201) {
-          setStatus(res.data.status === 2 ? "AR Review" : "Approved");
+        if (res?.status === 201) {
+          setStatus(res?.data?.status === 2 ? "AR Review" : "Approved");
           setApprovalMsg(
-            res.data.status === 4 ? "Invoice approve successfully" : ""
+            res?.data?.status === 4 ? "Invoice approve successfully" : ""
           );
           setTimeout(() => {
             setApprovalMsg("");
