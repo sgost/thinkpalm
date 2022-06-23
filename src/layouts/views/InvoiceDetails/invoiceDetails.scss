@@ -320,7 +320,9 @@
         display: flex;
         padding: 1.6667rem;
         margin-bottom: 3rem;
-
+        span.react-datepicker__label {
+          display: none;
+        }
         @mixin heading {
           color: $primary-blue;
           font-size: 0.8rem;
