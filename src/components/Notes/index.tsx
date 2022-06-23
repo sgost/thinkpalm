@@ -100,46 +100,8 @@ export default function NotesWidget(props: any) {
                         <Icon color="#b4b3bb" icon="info" size="small" />
                       </div>
                       <div className="noteBtn">
-                        <Icon color="#526FD6" icon="edit" size="small" />
-
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 24 26"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            clip-rule="evenodd"
-                            d="M4.38086 3.85719H19.619V22.1429C19.619 22.9512 19.2979 23.7264 18.7263 24.2979C18.1548 24.8694 17.3796 25.1905 16.5713 25.1905H7.42848C6.6202 25.1905 5.84503 24.8694 5.27349 24.2979C4.70195 23.7264 4.38086 22.9512 4.38086 22.1429V3.85719ZM11.9999 0.80957C12.7688 0.809327 13.5093 1.09971 14.0731 1.62252C14.6369 2.14532 14.9822 2.86191 15.0399 3.62862L15.0475 3.85719H8.95229C8.95229 3.04891 9.27338 2.27374 9.84492 1.7022C10.4165 1.13066 11.1916 0.80957 11.9999 0.80957V0.80957Z"
-                            stroke="#E32C15"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M1.33398 3.85742H22.6673"
-                            stroke="#E32C15"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M8.95312 8.42871V20.6192"
-                            stroke="#E32C15"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M15.0488 8.42871V20.6192"
-                            stroke="#E32C15"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
+                        {/* <Icon color="#526FD6" icon="edit" size="small" /> */}
+                        {/* <Icon color="#E32C15" icon="trash" size="large" /> */}
                       </div>
                     </div>
                     <div className="note">

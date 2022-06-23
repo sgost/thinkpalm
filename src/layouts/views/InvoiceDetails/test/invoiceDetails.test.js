@@ -1426,11 +1426,12 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
 
     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
-    const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
-    //fireEvent.change(dateInput, { target: { value: new Date("2020-01-01") } });
+   // const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
+      
+    //fireEvent.click(dateInput);
 
-    fireEvent.click(dateInput);
 
+<<<<<<< HEAD
     // select the input to open the date picker
     await userEvent.click(dateInput);
 
@@ -1443,6 +1444,13 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     await userEvent.tab();
     await userEvent.tab();
     await userEvent.tab();
+=======
+//await userEvent.click(dateInput);
+//await userEvent.type(dateInput, '01/Feb/2000');
+//await userEvent.tab();
+//await userEvent.tab();
+//await userEvent.tab();
+>>>>>>> d8dfb42485f71f7517ac771a21e1924e4b38aae4
 
     expect(savebtn).toBeDisabled();
   });
@@ -2609,7 +2617,16 @@ describe("delete employee on AR Review status api fail", () => {
 
     const deleteIcon1 = await screen.getAllByTestId("delete-icon");
     expect(deleteIcon[0]).toBeInTheDocument();
+<<<<<<< HEAD
     fireEvent.click(deleteIcon1[0]);
+=======
+    fireEvent.click(deleteIcon1[0])
+
+  
+
+
+
+>>>>>>> d8dfb42485f71f7517ac771a21e1924e4b38aae4
 
     const deleteButton = await waitFor(() =>
       screen.getByText(/Delete Employee/)
@@ -2808,7 +2825,12 @@ describe("payment detail on partial paid", () => {
       .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
       .reply(200,mockapidata.newGetRelatedData);
 
+<<<<<<< HEAD
     mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+=======
+    //const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
+    //fireEvent.click(deleteButton)
+>>>>>>> d8dfb42485f71f7517ac771a21e1924e4b38aae4
 
     mock
       .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
