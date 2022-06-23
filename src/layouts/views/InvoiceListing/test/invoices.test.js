@@ -5,13 +5,7 @@ import {
   render,
   screen,
   fireEvent,
-  within,
   waitFor,
-  queryByAttribute,
-  waitForElementToBeRemoved,
-  cleanup,
-  findAllByRole,
-  findAllByLabelText,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HashRouter } from "react-router-dom";
@@ -288,6 +282,18 @@ describe("client view", () => {
     fireEvent.click(today);
   });
 
+  test("Datepicker dropdowns Last Month clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/Last Month/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
   test("Datepicker dropdowns This Quarter clickable", async () => {
     const dd = await waitFor(() => screen.getAllByText(/Please Select/));
     fireEvent.click(dd[0]);
@@ -307,6 +313,18 @@ describe("client view", () => {
     fireEvent.click(dd[2]);
 
     const today = await waitFor(() => screen.getByText(/This Year/), {
+      timeout: 5000,
+    });
+    fireEvent.click(today);
+  });
+
+  test("Datepicker dropdowns Last Year clickable", async () => {
+    const dd = await waitFor(() => screen.getAllByText(/Please Select/));
+    fireEvent.click(dd[0]);
+    fireEvent.click(dd[1]);
+    fireEvent.click(dd[2]);
+
+    const today = await waitFor(() => screen.getByText(/Last Year/), {
       timeout: 5000,
     });
     fireEvent.click(today);

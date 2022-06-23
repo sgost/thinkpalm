@@ -68,7 +68,7 @@ const SelectEmployees = ({
     getEmployyeApiData();
   }, []);
 
-  const onRowCheckboxChange = (selectedRows: any, key: any, empId: any) => {
+  const onRowCheckboxChange = (selectedRows: any, key: any) => {
     let arr = { ...selectedRowPostData };
     if (selectedRows?.length) {
       arr[key] = selectedRows;

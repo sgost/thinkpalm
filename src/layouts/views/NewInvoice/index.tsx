@@ -13,7 +13,6 @@ import {
   tableSharedColumns,
   monthNameOptions,
 } from "../../../sharedColumns/sharedColumns";
-import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import {
   createManualInvoice,
@@ -25,8 +24,6 @@ import {
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
 const NewInvoice = () => {
-  const tempToken = localStorage.getItem("accessToken");
-  const cid = localStorage.getItem("current-org-id");
 
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
@@ -61,13 +58,12 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
-  const [countriesData, setCountriesData] = useState<any>([]);
 
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
 
-  var CurrentYear = new Date().getFullYear();
+  let CurrentYear = new Date().getFullYear();
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
@@ -364,6 +360,11 @@ const NewInvoice = () => {
     if (stepsCount == 2 && stepperOneData.type === "Payroll") {
       return Object.keys(selectedRowPostData).length === 0 ? true : false;
     }
+    if (loading) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const disableFunForStepOneCreditMemo = () => {
@@ -376,16 +377,17 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
-        paymentMethodOptions.findIndex((e: any) => e.isSelected === true) !== -1
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
       return !(stepperOneData?.customer !== "" && invoiceDate !== "");
     }
+
+    let condition: any = [];
+    let boolen = false;
+
     if (stepsCount == 2) {
-      let condition: any = [];
-      let boolen = false;
       todos.forEach((item) => {
         if (
           item.product.length &&
@@ -399,14 +401,14 @@ const NewInvoice = () => {
           condition.push(true);
         }
       });
-
-      condition.forEach((element: any) => {
-        if (element) {
-          boolen = element;
-        }
-      });
-      return boolen;
     }
+
+    condition.forEach((element: any) => {
+      if (element) {
+        boolen = element;
+      }
+    });
+    return boolen;
   };
 
   const handleNextButtonClick = () => {
@@ -464,7 +466,7 @@ const NewInvoice = () => {
         url: updateInvoiceStatus(CreateManualPayrollRes?.invoiceId),
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
-        .then((res: any) => {
+        .then((_res: any) => {
           setLoading(false);
           setStepsCount(stepsCount + 1);
         })
@@ -507,17 +509,6 @@ const NewInvoice = () => {
     }
   }, [hideTopCheck]);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(urls.countries)
-  //     .then((countryRes: any) => {
-  //       setCountriesData(countryRes.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
   const handleInvoiceCreation = () => {
     let invoiceItems = todos.map((e: any) => {
       return {
@@ -543,14 +534,12 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-            paymentTermsOptions
-              .find((e: any) => e.isSelected)
-              ?.text.split(" ")[0]
-          );
+          paymentTermsOptions
+            .find((e: any) => e.isSelected)
+            ?.text.split(" ")[0]
+        );
 
-    // const currDate = new Date();
     const dueDate = new Date();
-    // dueDate.setDate(invoiceDate.getDate() + 7);
     dueDate.setDate(invoiceDate.getDate() + payTerms);
     dueDate.setMonth(invoiceDate.getMonth());
     dueDate.setFullYear(invoiceDate.getFullYear());
@@ -602,7 +591,7 @@ const NewInvoice = () => {
       InvoiceNotes: [],
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
-      PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
+      // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
       BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
       CurrencyId:
@@ -682,10 +671,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                  ? "step2-right-panel"
-                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                  ? "step2-credit-memo"
-                  : "",
+                    ? "step2-right-panel"
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -697,8 +686,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />

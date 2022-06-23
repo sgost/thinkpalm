@@ -126,7 +126,6 @@ export default function BillsTable(props: any) {
             .then((response: any) => {
                 if (response.status == 200) {
                     setClickedApiData(response.data.data.data[0]);
-                    console.log(response.data.data.data[0]);
                 } else {
                     console.log("Bill API failing on contractor service");
                 }
@@ -471,7 +470,7 @@ export default function BillsTable(props: any) {
                                             ]
                                         }}
                                         label={{
-                                            footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].size),
+                                            footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].fileSize),
                                             header: clickedApiData.documents[0] && clickedApiData.documents[0].fileName
                                         }}
                                     />
@@ -563,7 +562,7 @@ export default function BillsTable(props: any) {
                                     className="secondary-btn medium secondary-button reject-button"
                                     handleOnClick={() => { setRejectBanner(true) }}
                                 />
-                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.length > 1 && (
+                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.invoiceBills?.length > 1 && (
                                         <Button
                                             className="primary-blue medium primary next-invoice-button"
                                             label="Move To Next Invoice"
@@ -624,7 +623,6 @@ export default function BillsTable(props: any) {
                                         maxLength={400}
                                         onChange={(e) => {
                                             setRejectReason(e.target.value);
-                                            console.log(e.target.value);
                                         }}
                                         value={rejectReason}
                                         rows={4}

@@ -5,15 +5,11 @@ import {
   waitForElementToBeRemoved,
   waitFor,
 } from "@testing-library/react";
-import {
-  HashRouter,
-  useParams,
-  useLocation,
-} from "react-router-dom";
+import { HashRouter, useParams, useLocation } from "react-router-dom";
 import InvoiceDetails from "..";
 // import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { mockapidata, mockCreditMemoDatas, approveMock } from "./mockdata";
+import { mockapidata, mockCreditMemoDatas } from "./mockdata";
 import axios from "axios";
 import { apiInvoiceMockData } from "../mockData";
 import { BillsByInvoiceId } from "../../BillsTable/mockBills";
@@ -31,7 +27,10 @@ import {
   getNotesUrl,
   urls,
   getHeaders,
+  subscriptionLookup,
+  getVatValue,
 } from "../../../../urls/urls";
+import userEvent from "@testing-library/user-event";
 // describe("Invoice detail", () => {
 //   let mock;
 //   beforeAll(() => {
@@ -170,7 +169,7 @@ const id = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
 const cid = "E291C9F0-2476-4238-85CB-7AFECDD085E4";
 const invoiceId = "1001002";
 const invoiceid2 = "ab9d400a-0b11-4a21-8505-7646f6caed8d";
-const employeeId = "1000085"
+const employeeId = "1000085";
 const blobUrl =
   "https://apnguatemeaservices.blob.core.windows.net/data/12751d17-f8e7-4af7-a90a-233c177229db.pdf";
 
@@ -316,8 +315,6 @@ describe("Invoice details", () => {
 
     const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
-    // const convert = screen.getByText(/Change to Miscellaneous/);
-    // fireEvent.click(convert);
   });
 
   test("publish notes", async () => {
@@ -416,41 +413,41 @@ describe("Invoice details", () => {
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
 
-    const check1 = screen.getByTestId("check1");
-    fireEvent.click(check1);
+    // const check1 = screen.getByTestId("check1");
+    // fireEvent.click(check1);
 
-    const text1 = screen.getByText(/Employee Salary is not correct/);
-    fireEvent.click(text1);
+    // const text1 = screen.getByText(/Employee Salary is not correct/);
+    // fireEvent.click(text1);
 
-    const check2 = screen.getByTestId("check2");
-    fireEvent.click(check2);
+    // const check2 = screen.getByTestId("check2");
+    // fireEvent.click(check2);
 
-    const text2 = screen.getByText(/Benefit Amount is not correct/);
-    fireEvent.click(text2);
+    // const text2 = screen.getByText(/Benefit Amount is not correct/);
+    // fireEvent.click(text2);
 
-    const check3 = screen.getByTestId("check3");
-    fireEvent.click(check3);
+    // const check3 = screen.getByTestId("check3");
+    // fireEvent.click(check3);
 
-    const text3 = screen.getByText(/One-off pay items amount to be updated/);
-    fireEvent.click(text3);
+    // const text3 = screen.getByText(/One-off pay items amount to be updated/);
+    // fireEvent.click(text3);
 
-    const check4 = screen.getByTestId("check4");
-    fireEvent.click(check4);
+    // const check4 = screen.getByTestId("check4");
+    // fireEvent.click(check4);
 
-    const text4 = screen.getByText(/Termination/);
-    fireEvent.click(text4);
+    // const text4 = screen.getByText(/Termination/);
+    // fireEvent.click(text4);
 
-    const check5 = screen.getByTestId("check5");
-    fireEvent.click(check5);
+    // const check5 = screen.getByTestId("check5");
+    // fireEvent.click(check5);
 
-    const text5 = screen.getByText(/Invoice Calculation Error/);
-    fireEvent.click(text5);
+    // const text5 = screen.getByText(/Invoice Calculation Error/);
+    // fireEvent.click(text5);
 
-    const check6 = screen.getByTestId("check6");
-    fireEvent.click(check6);
+    // const check6 = screen.getByTestId("check6");
+    // fireEvent.click(check6);
 
-    const text6 = screen.getByText(/Fee Issue/);
-    fireEvent.click(text6);
+    // const text6 = screen.getByText(/Fee Issue/);
+    // fireEvent.click(text6);
 
     const textarea = await waitFor(() =>
       screen.getByPlaceholderText("Please Enter a Reason")
@@ -1378,7 +1375,76 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
     mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(200, true);
+    mock.onPut(urls.updateInvoiceCalendar).reply(200, mockapidata.updateInvoiceCalendar);
   });
+
+  //Vaidehi test 
+  //test("vaidehi test", async () => {
+  ///  const component =  render(
+  // <HashRouter>
+  // <InvoiceDetails />
+  //</HashRouter>
+  //);
+
+  // waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+  //fireEvent.click(savebtn);
+  // const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
+  //const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
+  //const notification2 = await waitFor(() => screen.findByTestId("toast-notify"));
+  //console.log("noti" + notification);
+  //expect(notification).toBeVisible();
+  //expect(notification2).toBeVisible();
+  //});
+
+
+  test("vaidehi ponum", async () => {
+    const component = render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+    const poInput = await waitFor(() => screen.findByTestId("PONUMBER"));
+    fireEvent.change(poInput, { target: { value: 1233 } });
+
+    expect(savebtn).toBeEnabled();
+  });
+
+
+  test("vaidehi invoice date", async () => {
+    const component = render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    const savebtn = await waitFor(() => screen.findByTestId("save-button"));
+    const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
+    //fireEvent.change(dateInput, { target: { value: new Date("2020-01-01") } });
+
+    fireEvent.click(dateInput);
+
+
+    // select the input to open the date picker
+    await userEvent.click(dateInput);
+
+    // clear previous value. In my case, I had a default value set
+    //await user.clear(dateInput);
+
+    // enter new value
+    await userEvent.type(dateInput, '01/Feb/2000');
+    // tab to the next form item to set the value. This tab (or mouse out) is needed to actually set the value
+    await userEvent.tab();
+    await userEvent.tab();
+    await userEvent.tab();
+
+    expect(savebtn).toBeDisabled();
+  });
+  //Vaidehi test
 
   test("tabs are working", async () => {
     const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
@@ -2365,22 +2431,6 @@ describe("Invoice details view change log click", () => {
     fireEvent.change(input, { target: { value: "Pending" } });
     const publish = await waitFor(() => screen.getByText(/Save/));
     fireEvent.click(publish);
-
-    const changeViewText = await screen.findByText(/View Change Log/);
-    fireEvent.click(changeViewText);
-
-    // const text = await screen.findByText(/test 9/);
-    // expect(text).toBeInTheDocument();
-
-    const viewMoreText = await screen.findByText(/View More/);
-    fireEvent.click(viewMoreText);
-    fireEvent.click(viewMoreText);
-    fireEvent.click(viewMoreText);
-
-    // screen.logTestingPlaygroundURL();
-
-    // const viewLessText = await screen.findByText(/View Less/);
-    // fireEvent.click(viewLessText);
   });
 });
 
@@ -2451,4 +2501,296 @@ describe("add payment button click test cases on Apprroved", () => {
     const addPaymentButton = await screen.findByText(/Add Payment/);
     fireEvent.click(addPaymentButton);
   });
+
+  /* test("Save button enabled when change the poNumber", async () => {
+ 
+     render(
+       <HashRouter>
+         <InvoiceDetails />
+       </HashRouter>
+     );
+ 
+     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+ 
+     const setPoNumber =  screen.findByTestId("PONUMBER");
+     const saveButton =   screen.findByTestId("SaveButton");
+ 
+     expect(setPoNumber).toBeInTheDocument();
+     await waitFor(() =>
+       fireEvent.change(setPoNumber, {target: { value: "123" } }));
+       expect(saveButton).not.toBeDisabled();
+   });*/
+
 });
+
+describe("delete employee on AR Review status api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
+
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
+
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
+
+    mock.onPost(urls.deleteEmployeeApi).reply(200, {});
+
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    const { container } = render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    expect(payrollTab).toBeInTheDocument();
+
+    const deleteIcon = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon[0])
+
+    const cancleButton = await waitFor(() => screen.getByText(/Cancel/));
+    fireEvent.click(cancleButton)
+
+    const deleteIcon1 = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon1[0])
+
+    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
+    fireEvent.click(deleteButton)
+
+
+
+
+  });
+});
+
+describe("delete employee on AR Review status", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        transactionType: 1,
+      },
+    }));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 2;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
+
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
+
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
+
+    mock.onPost(urls.deleteEmployeeApi).reply(500, {});
+
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    const { container } = render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+    const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
+    expect(payrollTab).toBeInTheDocument();
+
+    const deleteIcon = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon[0])
+
+    const cancleButton = await waitFor(() => screen.getByText(/Cancel/));
+    fireEvent.click(cancleButton)
+
+    const deleteIcon1 = await screen.getAllByTestId("delete-icon");
+    expect(deleteIcon[0]).toBeInTheDocument();
+    fireEvent.click(deleteIcon1[0])
+
+    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
+    fireEvent.click(deleteButton)
+
+
+
+
+  });
+});
+
+// describe("payment detail on partial paid", () => {
+//   beforeAll(() => {
+//     useParams.mockImplementation(() => ({
+//       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
+//       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+//       isClient: "false",
+//     }));
+//     const mock = new MockAdapter(axios);
+
+//     mockapidata.resData.invoice.status = 6;
+//     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+//     mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+//     mock
+//       .onGet(getBillingAddressUrl(cid))
+//       .reply(200, mockapidata.resAddressData);
+
+//     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+//     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+//     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+//     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+//     mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+//     mock.onPut(getApproveUrl(id)).reply(201);
+
+//     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+//     mock
+//       .onGet(getRelatedInvoiceUrl(relatedid))
+//       .reply(200, mockapidata.RelatedMock);
+
+//       // mock
+//       // .onGet(getVatValue(cid))
+//       // .reply(200, mockapidata.resForVatDetail);
+
+//     // mock
+//     //   .onGet(urls.lookup)
+//     //   .reply(200, mockapidata.resForCurrencyData.billingCurrencies);
+//     // mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData.locations);
+//     // mock
+//     //   .onGet(urls.lookup)
+//     //   .reply(200, mockapidata.resLookupData.depositToOptions);
+//     mock
+//       .onGet(subscriptionLookup())
+//       .reply(200, mockapidata.resSuscriptionLookup.paymentMethods);
+//   });
+
+//   test("tabs are working", async () => {
+//     const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+//     render(
+//       <HashRouter>
+//         <InvoiceDetails />
+//       </HashRouter>
+//     );
+
+//     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+
+//     // const paymentText = await screen.findByText(/Payment Details/);
+//     // expect(paymentText).toBeInTheDocument();
+
+//     // const editText = await screen.findByText(/Edit/);
+//     // expect(editText).toBeInTheDocument();
+//     // const editText = await screen.findByTestId("payment-edit-button");
+//     // fireEvent.click(editText)
+//     // screen.debug(editText)
+
+//     // const cancelEditText = await screen.findByText(/Cancel Edit/);
+//     // expect(cancelEditText).toBeInTheDocument();
+//     // screen.debug(cancelEditText)
+
+    
+//   });
+// });

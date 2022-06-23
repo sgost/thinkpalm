@@ -522,15 +522,9 @@ const flags: any = {
 };
 
 export default function GetFlag(props: any) {
-  // const Flag = flags[props.code.toLowerCase()];
   const Flag = `https://flagcdn.com/${"w640"}/${props?.code?.toLocaleLowerCase()}.png`;
   return <img src={Flag} />;
 }
 export const getFlagPath = (code: any) => {
-  // let Flag = flags[code.toLowerCase()];
-  // return Flag;
-  // return "";
-
-  // code = "in";
   return `https://flagcdn.com/${"w640"}/${code?.toLocaleLowerCase()}.png`;
 };

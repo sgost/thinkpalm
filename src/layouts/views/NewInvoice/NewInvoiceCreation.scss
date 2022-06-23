@@ -24,7 +24,7 @@
         z-index: unset;
       }
     }
-    .type_dpStep{
+    .type_dpStep {
       span.a-dropdown__title:after {
         content: "*";
         color: red;
@@ -36,6 +36,12 @@
 
       .a-dropdown__search {
         box-sizing: border-box !important;
+      }
+    }
+
+    .ddPaymentTerms {
+      .a-dropdown__option__container {
+        max-height: 4.889rem;
       }
     }
 
@@ -75,7 +81,7 @@
         color: red;
       }
     }
-    .new_Invoice_itme{
+    .new_Invoice_itme {
       .dropdown-margin {
         margin-right: 0;
       }
@@ -110,25 +116,25 @@
   .year-dropdown svg.icon-up {
     display: none !important;
   }
-  .new_Invoice_itme{
+  .new_Invoice_itme {
     .dpStepContainer {
       .a-dpicker .react-datepicker__input-container input {
         width: -webkit-fill-available;
       }
-  
+
       .a-dpicker__container {
         width: 100%;
       }
     }
   }
-  .new_Invoice_itme_summary{
+  .new_Invoice_itme_summary {
     .a-dpicker__container {
       width: 100%;
     }
-    .a-dropdown{
+    .a-dropdown {
       width: 100% !important;
     }
-    #description_input{
+    #description_input {
       width: 100% !important;
     }
   }

@@ -4,14 +4,10 @@ import { format } from "date-fns";
 import axios from "axios";
 import "./ProductInvoiceCreation.scss";
 import {
-  getCountryByCustomer,
-  urls,
   productInvoice,
   CountryApi,
   getHeaders,
 } from "../../../urls/urls";
-import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
-import { loadavg } from "os";
 
 const ProductInvoiceCreation = ({
   todos,
@@ -19,11 +15,9 @@ const ProductInvoiceCreation = ({
   setDateFrom,
   setCountryService,
   setProductService,
-  newArrPush,
   setNewArrPush,
   Open,
   setOpen,
-  newArrPushs,
   setNewArrPushs,
   Opens,
   setOpens,
@@ -230,7 +224,7 @@ const ProductInvoiceCreation = ({
 
                         let copy = [...tempData];
                         let typesValue = "";
-                        copy.forEach((e, i) => {
+                        copy.forEach((_e, i) => {
                           if (i === index) {
                             if (copy[index].isSelected) {
                               copy[index] = { ...opt, isSelected: false };
@@ -306,7 +300,7 @@ const ProductInvoiceCreation = ({
                       );
 
                       let copy = [...tempDataCountry];
-                      copy.forEach((e, ind) => {
+                      copy.forEach((_e, ind) => {
                         if (ind === index) {
                           if (copy[index].isSelected) {
                             copy[index] = { ...opt, isSelected: false };
