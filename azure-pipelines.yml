@@ -15,6 +15,8 @@ stages:
     value: eu
   - name: ATLAS_ENVIRONMENT
     value: dev
+  - name: ATLAS_DOMAIN
+    value: atlasbyelements.com
   - name: ENV_FILE
     value: env.devops
   jobs:
@@ -137,6 +139,8 @@ stages:
       value: eu
     - name: ATLAS_ENVIRONMENT
       value: dev
+    - name: ATLAS_DOMAIN
+      value: atlasbyelements.com
     environment:
       name: ATLAS_FRONTEND_DEV
     strategy:
@@ -208,6 +212,8 @@ stages:
     value: eu
   - name: ATLAS_ENVIRONMENT
     value: qa
+  - name: ATLAS_DOMAIN
+    value: atlasbyelements.com
   - name: ENV_FILE
     value: env.devops
   jobs:
@@ -316,6 +322,8 @@ stages:
       value: eu
     - name: ATLAS_ENVIRONMENT
       value: qa
+    - name: ATLAS_DOMAIN
+      value: atlasbyelements.com
     environment:
       name: ATLAS_FRONTEND_QA
     strategy:
@@ -384,6 +392,8 @@ stages:
     value: eu
   - name: ATLAS_ENVIRONMENT
     value: uat
+  - name: ATLAS_DOMAIN
+    value: atlasbyelements.com
   - name: ENV_FILE
     value: env.devops
   jobs:
@@ -497,6 +507,8 @@ stages:
       value: eu
     - name: ATLAS_ENVIRONMENT
       value: uat
+    - name: ATLAS_DOMAIN
+      value: atlasbyelements.com
     environment:
       name: ATLAS_FRONTEND_UAT
     strategy:
@@ -569,6 +581,8 @@ stages:
     value: eu
   - name: ATLAS_ENVIRONMENT
     value: trng
+  - name: ATLAS_DOMAIN
+    value: atlasbyelements.com
   - name: ENV_FILE
     value: env.devops
   jobs:
@@ -682,6 +696,8 @@ stages:
       value: eu
     - name: ATLAS_ENVIRONMENT
       value: trng
+    - name: ATLAS_DOMAIN
+      value: atlasbyelements.com
     environment:
       name: ATLAS_FRONTEND_TRNG_PAY
     strategy:
@@ -754,6 +770,8 @@ stages:
     value: eu
   - name: ATLAS_ENVIRONMENT
     value: perf
+  - name: ATLAS_DOMAIN
+    value: atlasbyelements.com
   - name: ENV_FILE
     value: env.devops
   jobs:
@@ -867,6 +885,8 @@ stages:
       value: eu
     - name: ATLAS_ENVIRONMENT
       value: perf
+    - name: ATLAS_DOMAIN
+      value: atlasbyelements.com
     environment:
       name: ATLAS_FRONTEND_PERF_PAY
     strategy:
@@ -940,6 +960,8 @@ stages:
     value: eu
   - name: ATLAS_ENVIRONMENT
     value: demo
+  - name: ATLAS_DOMAIN
+    value: atlasbyelements.com
   - name: ENV_FILE
     value: env.devops
   jobs:
@@ -1053,6 +1075,8 @@ stages:
       value: eu
     - name: ATLAS_ENVIRONMENT
       value: demo
+    - name: ATLAS_DOMAIN
+      value: atlasbyelements.com
     environment:
       name: ATLAS_FRONTEND_DEMO_PAY
     strategy:
