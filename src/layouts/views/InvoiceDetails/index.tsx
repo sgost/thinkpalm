@@ -69,7 +69,7 @@ export default function InvoiceDetails() {
     open: "",
   };
   const permission: any = getDecodedToken();
-  const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
+  const missTransType = state.transactionType; //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -260,9 +260,21 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                   arr.push({
                     employeeID: item.employeeId,
                     name: {
-                      value: item.firstName + " " + item.lastName,
-                      // img: { src: item.employeeProfilePicture },
-
+                      value: (
+                        <span
+                          style={{ fontWeight: 600 }}
+                          onClick={() => {
+                            res.data?.invoice?.status === 2 ||
+                            res.data?.invoice?.status === 12 ? (
+                              handleCompensationModal(item)
+                            ) : (
+                             <div />
+                            );
+                          }}
+                        >
+                          {item.firstName + " " + item.lastName}
+                        </span>
+                      ),
                       img: { src: avatar },
                       style: { borderRadius: 12 },
                     },

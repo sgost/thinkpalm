@@ -236,7 +236,7 @@ export default function CreditMemoSummary(props: any) {
   const callUpdateAPI = (): any => {
     reCalculateTotal();
     const tempToken = localStorage.getItem("accessToken");
-    var headers = getHeaders(tempToken, cid, isClient);
+    let headers = getHeaders(tempToken, cid, isClient);
     // return;
     axios
       .put(updateCreditMemoUrl(creditMemoData?.id), payload, {
@@ -259,11 +259,11 @@ export default function CreditMemoSummary(props: any) {
   const cleanNewObject = () => {
     setNewServiceDate(new Date());
     setProductOptions(
-      rawProducts.map((x: any) => {
+      rawProducts.map((r: any) => {
         return {
           isSelected: false,
-          label: x.glDescription,
-          value: x.id,
+          label: r.glDescription,
+          value: r.id,
         };
       })
     );
@@ -271,11 +271,11 @@ export default function CreditMemoSummary(props: any) {
     setNewProduct(null);
     setNewDescription("");
     setCountryOptions(
-      serviceCountries.map((x: any) => {
+      serviceCountries.map((s: any) => {
         return {
           isSelected: false,
-          label: x.text,
-          value: x.value,
+          label: s.text,
+          value: s.value,
         };
       })
     );
@@ -285,7 +285,7 @@ export default function CreditMemoSummary(props: any) {
   };
   /* istanbul ignore next */
   const reCalculateTotal = () => {
-    var subtotal = 0;
+    let subtotal = 0;
     for (let a of creditMemoData.invoiceItems) {
       // removed parseInt beacuse it is creating problem in decimal values
       // subtotal = subtotal + parseInt(a.totalAmount);
@@ -306,11 +306,11 @@ export default function CreditMemoSummary(props: any) {
     if (serviceCountries) {
       fieldValues.forEach((item: any) => {
         countryArr.push(
-          serviceCountries.map((x: any) => {
+          serviceCountries.map((sc: any) => {
             return {
-              isSelected: x.value == item.serviceCountry,
-              label: x.text,
-              value: x.value,
+              isSelected: sc.value == item.serviceCountry,
+              label: sc.text,
+              value: sc.value,
             };
           })
         );
@@ -322,11 +322,11 @@ export default function CreditMemoSummary(props: any) {
     if (rawProducts) {
       for (let i of fieldValues) {
         arr.push(
-          rawProducts.map((x: any) => {
+          rawProducts.map((rp: any) => {
             return {
-              isSelected: x.id == i.productId,
-              label: x.glDescription,
-              value: x.id,
+              isSelected: rp.id == i.productId,
+              label: rp.glDescription,
+              value: rp.id,
             };
           })
         );
@@ -346,14 +346,14 @@ export default function CreditMemoSummary(props: any) {
   };
   /* istanbul ignore next */
   const setEditTotal = (index: number, value: any) => {
-    var newValue = value.replace(",", "");
+    let newValue = value.replace(",", "");
     newValue = newValue.substring(0, value.length - 3);
     fieldValues[index].totalAmount = newValue;
     setFieldValues([...fieldValues]);
   };
   /* istanbul ignore next */
   const setEditAmount = (index: number, value: any) => {
-    var newValue = value.replace(",", "");
+    let newValue = value.replace(",", "");
     fieldValues[index].amount = newValue;
     setFieldValues([...fieldValues]);
   };

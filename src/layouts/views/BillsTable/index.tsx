@@ -20,14 +20,14 @@ export default function BillsTable(props: any) {
     const currentOrgId: any = localStorage.getItem("current-org-id");
     const accessToken: any = localStorage.getItem("accessToken");
     const decoded: any = jwt_decode(accessToken);
-    var listingRole = decoded.Permissions[currentOrgId].ContractorPay.Bill.includes("ElementsGeneralList");
+    let listingRole = decoded.Permissions[currentOrgId].ContractorPay.Bill.includes("ElementsGeneralList");
     const customerId = props.customerId;
     const invoiceId = props.invoiceId;
-    const total = props.totalAmount;
+    
     const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
     const moveToNextEndPoint = "bill/removeinvoice"
-    const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID="
+   
     const customerEndpoint = "customer/bills?";
     const elementsEndpoint = "elements/bills?";
     const TableColumns = {
