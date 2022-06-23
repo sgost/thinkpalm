@@ -348,7 +348,9 @@ const NewInvoice = () => {
   };
 
   const disableFunForStepOnePayroll = () => {
-    if (stepsCount == 1) {
+    if (loading) {
+      return true;
+    } else if (stepsCount == 1) {
       return !(
         stepperOneData?.customer !== "" &&
         stepperOneData?.type !== "" &&
@@ -356,12 +358,8 @@ const NewInvoice = () => {
         stepperOneData?.year !== "" &&
         stepperOneData?.month !== ""
       );
-    }
-    if (stepsCount == 2 && stepperOneData.type === "Payroll") {
+    } else if (stepsCount == 2 && stepperOneData.type === "Payroll") {
       return Object.keys(selectedRowPostData).length === 0 ? true : false;
-    }
-    if (loading) {
-      return true;
     } else {
       return false;
     }
