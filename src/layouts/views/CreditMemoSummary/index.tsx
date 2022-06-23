@@ -773,6 +773,7 @@ export default function CreditMemoSummary(props: any) {
           data-testid="change-log"
           custom
           isOpen={openLogs}
+          
           data={changeLog}
           name="View-change-log"
           title="View Change Log"
