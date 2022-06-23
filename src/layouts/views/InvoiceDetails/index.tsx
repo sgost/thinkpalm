@@ -44,6 +44,7 @@ import {
   getAutoApproveCheckUrl,
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
+  getPaymentDetailApi,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -228,7 +229,6 @@ export default function InvoiceDetails() {
           .catch((e: any) => {
             console.log("error", e);
           });
-
         if (
           missTransType != 7 &&
           missTransType != 4 &&
@@ -468,7 +468,6 @@ export default function InvoiceDetails() {
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
               if (response.status == 200) {
-                console.log("response.data", response.data)
                 setCreditMemoData(response.data);
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
@@ -682,9 +681,6 @@ export default function InvoiceDetails() {
     }
   }, [creditMemoData, addressData]);
 
-  console.log("creditMemoData?.invoiceBalance",creditMemoData?.invoiceBalance)
-  console.log("creditMemoData", creditMemoData)
-
   useEffect(() => {
     if (showAutoApprovedToast) {
       setTimeout(() => {
@@ -698,7 +694,7 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     };
 
-    let paymentdetailApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/getrelatedpayments/${id}`;
+    let paymentdetailApi = getPaymentDetailApi(id)
 
     axios
       .get(paymentdetailApi, headers)
@@ -1865,16 +1861,17 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
       (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
-        <div className="paymentCompnent">
+        <div className="paymentCompnent"> 
           <PaymentDetailContainer
+            setPaymentDetailData={setPaymentDetailData}
             status={status}
             cid={cid}
             lookupData={lookupData}
             paymentDetailData={paymentDetailData}
             getBillingCurrency={getBillingCurrency}
+            id={id}
           />
         </div>
       ) : (
@@ -2136,7 +2133,7 @@ export default function InvoiceDetails() {
           billStatus={status}
           invoiceId={state.InvoiceId}
           navigate={navigate}
-          totalAmount={apiData.data?.invoice?.totalAmount}
+          totalAmount={apiData?.data?.invoice?.totalAmount}
           state={state}
         ></BillsTable>
       )}

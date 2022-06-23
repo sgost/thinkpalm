@@ -302,9 +302,14 @@ export const subscriptionLookup = () => {
   );
 };
 
-
-
-
 export const calculateInvoiceUrl = (invoiceId) => {
   return baseURL + services.atlasIdgService + `/InvoiceData/recalculate/${invoiceId}`
+}
+
+export const getPaymentDetailApi = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + `/Invoices/getrelatedpayments/${invoiceId}`
+}
+
+export const editPaymentDetailApi = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + `/Invoices/editpayment`
 }

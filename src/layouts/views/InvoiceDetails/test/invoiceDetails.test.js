@@ -29,6 +29,9 @@ import {
   getHeaders,
   subscriptionLookup,
   getVatValue,
+  productInvoice,
+  getPaymentDetailApi,
+  editPaymentDetailApi,
 } from "../../../../urls/urls";
 import userEvent from "@testing-library/user-event";
 // describe("Invoice detail", () => {
@@ -1375,10 +1378,12 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
     mock.onDelete(getDeleteInvoiceUrl(invoiceid2)).reply(200, true);
-    mock.onPut(urls.updateInvoiceCalendar).reply(200, mockapidata.updateInvoiceCalendar);
+    mock
+      .onPut(urls.updateInvoiceCalendar)
+      .reply(200, mockapidata.updateInvoiceCalendar);
   });
 
-  //Vaidehi test 
+  //Vaidehi test
   //test("vaidehi test", async () => {
   ///  const component =  render(
   // <HashRouter>
@@ -1397,7 +1402,6 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
   //expect(notification2).toBeVisible();
   //});
 
-
   test("vaidehi ponum", async () => {
     const component = render(
       <HashRouter>
@@ -1413,7 +1417,6 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     expect(savebtn).toBeEnabled();
   });
 
-
   test("vaidehi invoice date", async () => {
     const component = render(
       <HashRouter>
@@ -1428,7 +1431,6 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
 
     fireEvent.click(dateInput);
 
-
     // select the input to open the date picker
     await userEvent.click(dateInput);
 
@@ -1436,7 +1438,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
     //await user.clear(dateInput);
 
     // enter new value
-    await userEvent.type(dateInput, '01/Feb/2000');
+    await userEvent.type(dateInput, "01/Feb/2000");
     // tab to the next form item to set the value. This tab (or mouse out) is needed to actually set the value
     await userEvent.tab();
     await userEvent.tab();
@@ -2520,7 +2522,6 @@ describe("add payment button click test cases on Apprroved", () => {
        fireEvent.change(setPoNumber, {target: { value: "123" } }));
        expect(saveButton).not.toBeDisabled();
    });*/
-
 });
 
 describe("delete employee on AR Review status api fail", () => {
@@ -2583,7 +2584,6 @@ describe("delete employee on AR Review status api fail", () => {
     mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
     mock.onPost(urls.deleteEmployeeApi).reply(200, {});
-
   });
 
   test("tabs are working", async () => {
@@ -2602,21 +2602,19 @@ describe("delete employee on AR Review status api fail", () => {
 
     const deleteIcon = await screen.getAllByTestId("delete-icon");
     expect(deleteIcon[0]).toBeInTheDocument();
-    fireEvent.click(deleteIcon[0])
+    fireEvent.click(deleteIcon[0]);
 
     const cancleButton = await waitFor(() => screen.getByText(/Cancel/));
-    fireEvent.click(cancleButton)
+    fireEvent.click(cancleButton);
 
     const deleteIcon1 = await screen.getAllByTestId("delete-icon");
     expect(deleteIcon[0]).toBeInTheDocument();
-    fireEvent.click(deleteIcon1[0])
+    fireEvent.click(deleteIcon1[0]);
 
-    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
-    fireEvent.click(deleteButton)
-
-
-
-
+    const deleteButton = await waitFor(() =>
+      screen.getByText(/Delete Employee/)
+    );
+    fireEvent.click(deleteButton);
   });
 });
 
@@ -2680,7 +2678,6 @@ describe("delete employee on AR Review status", () => {
     mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
 
     mock.onPost(urls.deleteEmployeeApi).reply(500, {});
-
   });
 
   test("tabs are working", async () => {
@@ -2699,98 +2696,575 @@ describe("delete employee on AR Review status", () => {
 
     const deleteIcon = await screen.getAllByTestId("delete-icon");
     expect(deleteIcon[0]).toBeInTheDocument();
-    fireEvent.click(deleteIcon[0])
+    fireEvent.click(deleteIcon[0]);
 
     const cancleButton = await waitFor(() => screen.getByText(/Cancel/));
-    fireEvent.click(cancleButton)
+    fireEvent.click(cancleButton);
 
     const deleteIcon1 = await screen.getAllByTestId("delete-icon");
     expect(deleteIcon[0]).toBeInTheDocument();
-    fireEvent.click(deleteIcon1[0])
+    fireEvent.click(deleteIcon1[0]);
 
-    const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
-    fireEvent.click(deleteButton)
-
-
-
-
+    const deleteButton = await waitFor(() =>
+      screen.getByText(/Delete Employee/)
+    );
+    fireEvent.click(deleteButton);
   });
 });
 
-// describe("payment detail on partial paid", () => {
-//   beforeAll(() => {
-//     useParams.mockImplementation(() => ({
-//       id: "ab9d400a-0b11-4a21-8505-7646f6caed8d",
-//       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
-//       isClient: "false",
-//     }));
-//     const mock = new MockAdapter(axios);
+describe("payment detail on partial paid", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
 
-//     mockapidata.resData.invoice.status = 6;
-//     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
-//     mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
-//     mock
-//       .onGet(getBillingAddressUrl(cid))
-//       .reply(200, mockapidata.resAddressData);
+    useLocation.mockImplementation(() => ({
+      state: {
+        InvoiceId: "1101078",
+        transactionType: 2,
+        rowDetails: {
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "Italy",
+          currencyId: 1,
+          qbInvoiceNo: 0,
+          invoiceNo: "1101078",
+          status: 6,
+          statusLabel: "Partial Paid",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "5 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "15 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "undefined 300.00",
+          invoiceBalance: "undefined 96.00",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: 1,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: null,
+          id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      },
+    }));
 
-//     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
 
-//     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+    const mock = new MockAdapter(axios);
 
-//     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
 
-//     mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-//     mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-//     mock.onPut(getApproveUrl(id)).reply(201);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-//     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+    mock
+      .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.notes);
 
-//     mock
-//       .onGet(getRelatedInvoiceUrl(relatedid))
-//       .reply(200, mockapidata.RelatedMock);
+    mock
+      .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
+      .reply(201);
 
-//       // mock
-//       // .onGet(getVatValue(cid))
-//       // .reply(200, mockapidata.resForVatDetail);
+    mock
+      .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(201);
 
-//     // mock
-//     //   .onGet(urls.lookup)
-//     //   .reply(200, mockapidata.resForCurrencyData.billingCurrencies);
-//     // mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData.locations);
-//     // mock
-//     //   .onGet(urls.lookup)
-//     //   .reply(200, mockapidata.resLookupData.depositToOptions);
-//     mock
-//       .onGet(subscriptionLookup())
-//       .reply(200, mockapidata.resSuscriptionLookup.paymentMethods);
-//   });
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-//   test("tabs are working", async () => {
-//     const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+    mock
+      .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200,mockapidata.newGetRelatedData);
 
-//     render(
-//       <HashRouter>
-//         <InvoiceDetails />
-//       </HashRouter>
-//     );
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
 
-//     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+    mock
+      .onGet(
+        urls.invoiceLogs.replace(
+          "{invoice-id}",
+          "0d40412b-f901-4cab-b886-8f30e1bc9a71"
+        )
+      )
+      .reply(200, mockapidata.resInvoiceNotesData);
 
-//     // const paymentText = await screen.findByText(/Payment Details/);
-//     // expect(paymentText).toBeInTheDocument();
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resSuscriptionLookup);
+    mock.onGet(productInvoice()).reply(200, mockapidata.dd);
 
-//     // const editText = await screen.findByText(/Edit/);
-//     // expect(editText).toBeInTheDocument();
-//     // const editText = await screen.findByTestId("payment-edit-button");
-//     // fireEvent.click(editText)
-//     // screen.debug(editText)
+    mock.onPost(urls.savePayments).reply(200, mockapidata.dd);
 
-//     // const cancelEditText = await screen.findByText(/Cancel Edit/);
-//     // expect(cancelEditText).toBeInTheDocument();
-//     // screen.debug(cancelEditText)
+    mock.onPost(editPaymentDetailApi()).reply(200, mockapidata.resForEditPaymentDetailApi);
 
-    
-//   });
-// });
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, [
+        {
+          paymentInvoiceId: "241c6f79-a0e3-4890-903a-ce2a702c816f",
+          totalAmount: 2,
+          paymentDate: "2013-06-22T18:30:00",
+          currencyId: 6,
+          location: "1",
+          referenceNo: "0146",
+          depositedtoBank: 3,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "2afe99bf-66cf-4f1f-8417-54032e4ea97f",
+          totalAmount: 3,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 2,
+          location: "2",
+          referenceNo: "090",
+          depositedtoBank: 2,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "25572315-beec-48b5-860a-0344e2b86599",
+          totalAmount: 111,
+          paymentDate: "2022-06-23T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "0149",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "a3324c89-f02d-4c84-80d4-cff20e59338f",
+          totalAmount: 1,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "005",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "55c7941f-b467-4bd6-a6db-d5dbdabe039f",
+          totalAmount: 1,
+          paymentDate: "2022-06-19T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "0147",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "1e7ada29-1336-46ba-be39-31a90b7c3a14",
+          totalAmount: 1,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 1,
+          location: "3",
+          referenceNo: "001",
+          depositedtoBank: 3,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "a93433e7-9d30-4540-b752-442c6a36273b",
+          totalAmount: 0,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 3,
+          location: "2",
+          referenceNo: "2345678",
+          depositedtoBank: 3,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "9aa94d0f-5ac8-4414-b8b0-f3c695691e3a",
+          totalAmount: 1,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 6,
+          location: "3",
+          referenceNo: "007",
+          depositedtoBank: 10,
+          paymentMethod: 4,
+        },
+        {
+          paymentInvoiceId: "c7cd950d-f80d-4c67-8881-12f91fab2b25",
+          totalAmount: 1,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "232",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "3434fa97-9fdf-4408-9b7a-b1e9f78b4cd4",
+          totalAmount: 1,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 1,
+          location: "2",
+          referenceNo: "10",
+          depositedtoBank: 2,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "1a9abdb7-52e0-4fec-95ab-addcb8a2c70b",
+          totalAmount: 5,
+          paymentDate: "2009-06-22T18:30:00",
+          currencyId: 5,
+          location: "2",
+          referenceNo: "009",
+          depositedtoBank: 9,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "12509b50-09f3-458c-b8a9-f6629aae18be",
+          totalAmount: 2,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 2,
+          location: "2",
+          referenceNo: "2",
+          depositedtoBank: 3,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "5de12f28-d6b3-4dcc-baac-7cbc2d8422da",
+          totalAmount: 1,
+          paymentDate: "2022-06-14T18:30:00",
+          currencyId: 3,
+          location: "2",
+          referenceNo: "343",
+          depositedtoBank: 2,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "883fbfca-27ef-4165-a534-35fdf106f0a4",
+          totalAmount: 1,
+          paymentDate: "2022-06-26T18:30:00",
+          currencyId: 6,
+          location: "1",
+          referenceNo: "010",
+          depositedtoBank: 4,
+          paymentMethod: 4,
+        },
+        {
+          paymentInvoiceId: "8de7b950-48d3-4be6-a2bb-62a1e50b943e",
+          totalAmount: 1,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 2,
+          location: "2",
+          referenceNo: "999",
+          depositedtoBank: 3,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "c2dd84a0-3581-4d72-8cb7-e9198da3ca19",
+          totalAmount: 1,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 2,
+          location: "2",
+          referenceNo: "2345",
+          depositedtoBank: 2,
+          paymentMethod: 4,
+        },
+        {
+          paymentInvoiceId: "759071a2-17b3-4190-af1e-7d21a6a2b981",
+          totalAmount: 8,
+          paymentDate: "2013-06-22T18:30:00",
+          currencyId: 5,
+          location: "3",
+          referenceNo: "012",
+          depositedtoBank: 8,
+          paymentMethod: 4,
+        },
+        {
+          paymentInvoiceId: "df924a2d-8c86-42a5-bcee-123b7f16d3b4",
+          totalAmount: 6,
+          paymentDate: "1999-06-22T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "0015",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "d496e6b6-9620-40a9-9bab-089228985a80",
+          totalAmount: 1,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 3,
+          location: "2",
+          referenceNo: "12345678",
+          depositedtoBank: 2,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "ab8e1904-42bb-4d45-99ae-9ecbd3c80acd",
+          totalAmount: 99,
+          paymentDate: "2022-06-25T00:00:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "56443443",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "188f3dc6-0cf0-4da6-9bfc-c846307bbc8b",
+          totalAmount: 4,
+          paymentDate: "2022-06-14T18:30:00",
+          currencyId: 2,
+          location: "1",
+          referenceNo: "567",
+          depositedtoBank: 2,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "29e6b25a-e05a-4759-bc06-1144ea6bba31",
+          totalAmount: 11,
+          paymentDate: "2011-06-19T18:30:00",
+          currencyId: 3,
+          location: "2",
+          referenceNo: "011",
+          depositedtoBank: 3,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "c2e6cf63-6b48-47d0-a6a5-662be4812a7e",
+          totalAmount: 7,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 6,
+          location: "3",
+          referenceNo: "008",
+          depositedtoBank: 10,
+          paymentMethod: 3,
+        },
+        {
+          paymentInvoiceId: "6fe8813c-f344-4bd7-bda7-2ec28fef8dc3",
+          totalAmount: 3,
+          paymentDate: "2010-05-31T18:30:00",
+          currencyId: 3,
+          location: "1",
+          referenceNo: "0055",
+          depositedtoBank: 2,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "933df843-f4eb-46a8-ad7b-e12c69e246d9",
+          totalAmount: 22,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "333",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "329910c0-e147-487f-acfc-64a6d8ac102c",
+          totalAmount: 1,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 2,
+          location: "2",
+          referenceNo: "900",
+          depositedtoBank: 2,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "51b00f09-ff6e-4b01-894e-3700240cf9f8",
+          totalAmount: 1,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "123",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "a33ae372-a6c5-4b6a-ba94-ac14c333c82d",
+          totalAmount: 12,
+          paymentDate: "2022-06-26T18:30:00",
+          currencyId: 1,
+          location: "1",
+          referenceNo: "000999",
+          depositedtoBank: 1,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "bc59edc2-58e5-4ba4-900e-861773e047ae",
+          totalAmount: 3,
+          paymentDate: "2022-06-21T18:30:00",
+          currencyId: 1,
+          location: "2",
+          referenceNo: "123456",
+          depositedtoBank: 1,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "bdbed674-5e67-4481-a75c-b369f6e2a3cf",
+          totalAmount: 1,
+          paymentDate: "2022-06-22T18:30:00",
+          currencyId: 6,
+          location: "1",
+          referenceNo: "006",
+          depositedtoBank: 1,
+          paymentMethod: 1,
+        },
+        {
+          paymentInvoiceId: "da941cde-f3f6-43f1-a718-74d681e92c6b",
+          totalAmount: 1,
+          paymentDate: "2012-06-20T18:30:00",
+          currencyId: 2,
+          location: "2",
+          referenceNo: "01234",
+          depositedtoBank: 2,
+          paymentMethod: 2,
+        },
+        {
+          paymentInvoiceId: "43aeafff-a06c-4b8b-9e44-bafafa2f3248",
+          totalAmount: 1,
+          paymentDate: "2022-06-14T18:30:00",
+          currencyId: 3,
+          location: "3",
+          referenceNo: "555",
+          depositedtoBank: 3,
+          paymentMethod: 4,
+        },
+      ]);
+  });
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    const paymentText = await screen.findByText(/Payment Details/);
+    expect(paymentText).toBeInTheDocument();
+
+    const textEdit = await screen.findAllByText(/Edit/);
+    expect(textEdit[0]).toBeInTheDocument();
+    fireEvent.click(textEdit[0]);
+
+    const textEditCancel = await screen.findAllByText(/Cancel Edit/);
+    expect(textEditCancel[0]).toBeInTheDocument();
+    fireEvent.click(textEditCancel[0]);
+
+    const textEdit2 = await screen.findAllByText(/Edit/);
+
+    expect(textEdit2[1]).toBeInTheDocument();
+
+    fireEvent.click(textEdit2[1]);
+
+    const textEdiEUR = await screen.findAllByText(/EUR/);
+    expect(textEdiEUR[0]).toBeInTheDocument();
+    fireEvent.click(textEdiEUR[0]);
+
+    const textEdiUSD = await screen.findAllByText(/USD/);
+    expect(textEdiUSD[0]).toBeInTheDocument();
+    fireEvent.click(textEdiUSD[0]);
+
+    const textEditSave = await screen.findAllByText(/Save Changes/);
+    expect(textEditSave[0]).toBeInTheDocument();
+    fireEvent.click(textEditSave[0]);
+
+    const textEdit3 = await screen.findAllByText(/Edit/);
+
+    expect(textEdit3[2]).toBeInTheDocument();
+    fireEvent.click(textEdit3[2]);
+
+    const textref = await screen.findAllByTestId(/0149/);
+    expect(textref[0]).toBeInTheDocument();
+    fireEvent.change(textref[0], { target: { value: "01499" } });
+
+    const textAm = await screen.findAllByTestId(/111/);
+    expect(textAm[0]).toBeInTheDocument();
+    fireEvent.change(textAm[0], { target: { value: "014" } });
+
+    const textLocation = await screen.findAllByText(
+      /USA -- United States of America/
+    );
+    expect(textLocation[0]).toBeInTheDocument();
+    fireEvent.click(textLocation[0]);
+
+    const textLocation2 = await screen.findAllByText(/GBR -- United Kingdom/);
+    expect(textLocation2[0]).toBeInTheDocument();
+    fireEvent.click(textLocation2[0]);
+
+    const textBank = await screen.findAllByTestId(/deposite-bank/);
+    expect(textBank[2]).toBeInTheDocument();
+    // fireEvent.click(textBank[2])
+
+    const textEditSave2 = await screen.findAllByText(/Save Changes/);
+    expect(textEditSave2[0]).toBeInTheDocument();
+    fireEvent.click(textEditSave2[0]);
+
+    const textAddPaymentInstallment = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment[0]);
+
+    const cancelButton = await screen.findAllByText(/Cancel/);
+    expect(cancelButton[0]).toBeInTheDocument();
+    fireEvent.click(cancelButton[0]);
+
+    const textAddPaymentInstallment2 = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment2[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment2[0]);
+
+    const textBankww = await screen.findAllByTestId(/Deposited-id/);
+    fireEvent.click(textBankww[0]);
+
+    const locationid = await screen.findAllByTestId(/locationOpen-id/);
+    fireEvent.click(locationid[0]);
+
+    const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
+    fireEvent.click(currencyid[0]);
+
+    const paymentid = await screen.findAllByTestId(/payment-id/);
+    fireEvent.click(paymentid[0]);
+
+    const referenceText = await screen.findAllByPlaceholderText(
+      /Enter reference No/
+    );
+    expect(referenceText[32]).toBeInTheDocument();
+    fireEvent.keyDown(referenceText[32]);
+    fireEvent.change(referenceText[32], { target: { value: "000987" } });
+
+    const addAmountText = await screen.findAllByTestId(/addAmount/);
+    expect(addAmountText[0]).toBeInTheDocument();
+    fireEvent.keyDown(addAmountText[0]);
+    fireEvent.change(addAmountText[0], { target: { value: "2" } });
+
+  });
+});
