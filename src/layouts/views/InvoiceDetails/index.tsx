@@ -1377,8 +1377,8 @@ export default function InvoiceDetails() {
 
           {(status === "Approved" &&
             missTransType !== 4 &&
-            missTransType !== 7) ||
-            (status === "Invoiced" && missTransType === 7) ? (
+            missTransType !== 7 && permission.Role === "FinanceAR") ||
+            (status === "Invoiced" && missTransType === 7 && permission.Role === "FinanceAR") ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
