@@ -425,18 +425,18 @@ const PaymentDetailPage = () => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
-              const one = b?.invoiceBalance?.split(" ") 
-              let two ;
-              let three ;
-              if(one?.length){
-                 two = one?.[1]
-              }
-              if(two){
-                 three = two?.replaceAll(",", "")
-              }
+              // const one = b?.invoiceBalance?.split(" ") 
+              // let two ;
+              // let three ;
+              // if(one?.length){
+              //    two = one?.[1]
+              // }
+              // if(two){
+              //    three = two?.replaceAll(",", "")
+              // }
               return (
-                a + 
-                parseFloat(three)
+                a + b
+                // parseFloat(three)
               );
             },
             0
