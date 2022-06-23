@@ -322,6 +322,6 @@ export const getPaymentDetailApi = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/getrelatedpayments/${invoiceId}`
 }
 
-export const editPaymentDetailApi = (invoiceId) => {
+export const editPaymentDetailApi = () => {
   return baseURL + services.atlasInvoiceService + `/Invoices/editpayment`
 }
