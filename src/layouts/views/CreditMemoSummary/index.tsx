@@ -1,5 +1,6 @@
-import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
+import { Cards, Button, Dropdown, DatePicker } from "atlasuikit";
 import axios from "axios";
+import LogsCompo from "../Logs/index"
 import moment from "moment";
 import { useEffect, useState } from "react";
 import {
@@ -28,14 +29,18 @@ export default function CreditMemoSummary(props: any) {
     vatValue,
     setCreditMemoData,
     status,
+    isLogsOpen,
     changeLogs,
+    setIsLogsOpen,
     dataAvailable,
-    setDataAvailable,
     logsData,
-    limitFor,
+    viewLimit,
+    setInitial,
     setLimitFor,
+    setChangeLogs,
+    setDataAvailable,
     initail,
-    setInitial
+    limitFor
   } = props;
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
@@ -48,7 +53,6 @@ export default function CreditMemoSummary(props: any) {
   const [openEditProductService, setOpenEditProductService] = useState<any>();
   const [openCountryService, setOpenCountryService] = useState(false);
   const [openEditCountryService, setOpenEditCountryService] = useState<any>();
-  const [openLogs, setOpenLogs] = useState(false);
   const [addSectionCheck, setAddSectionCheck] = useState(false);
   const [editCheck, setEditCheck] = useState<any>();
   const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
@@ -68,8 +72,6 @@ export default function CreditMemoSummary(props: any) {
     setAddSectionCheck(true);
   };
 
-  const viewLimit = 10;
-  const [changeLog, setChangeLogs] = useState([...changeLogs]);
   const [dataAvail, setDataAvail] = useState(true);
 
   useEffect(() => {
@@ -235,7 +237,6 @@ export default function CreditMemoSummary(props: any) {
     reCalculateTotal();
     const tempToken = localStorage.getItem("accessToken");
     var headers = getHeaders(tempToken, cid, isClient);
-    console.log(payload);
     // return;
     axios
       .put(updateCreditMemoUrl(creditMemoData?.id), payload, {
@@ -430,7 +431,7 @@ export default function CreditMemoSummary(props: any) {
                         {getPermissions(
                           creditMemoData?.transactionType,
                           "Edit"
-                        ) && status !== "Declined" &&(
+                        ) && status !== "Declined" && (
                             <Button
                               data-testid="edit-summary-button"
                               className="primary-blue medium edit"
@@ -768,70 +769,20 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></FileUploadWidget>
       </div>
-      <Cards className="UI-change-log">
-        <Logs
-          data-testid="change-log"
-          custom
-          isOpen={openLogs}
-          
-          data={changeLog}
-          name="View-change-log"
-          title="View Change Log"
-          handleUpDown={() => {
-            setOpenLogs(!openLogs);
-          }}
-         // handleViewMore={function noRefCheck() { }}
-          
-          actions={{
-            primary: {
-              label: "View More",
-              icon: {
-                icon: "edit",
-                size: "small",
-                color: "#526FD6",
-                viewBox: "-2 -1 24 24",
-              },
-
-              handleOnClick: () => {
-                if (dataAvail) {
-                  const spliced = [...logsData].splice(
-                    changeLog.length,
-                    viewLimit
-                  );
-
-                  if (logsData.length > limit) {
-                    setInit(limit);
-                    setLimit(limit + 10);
-                  }
-
-                  setChangeLogs([...changeLog, ...spliced]);
-                }
-              },
-              disabled: !dataAvail,
-            },
-            secondary: {
-              label: "View Less",
-              icon: {
-                icon: "edit",
-                size: "small",
-                color: "#526FD6",
-                viewBox: "-2 -1 24 24",
-              },
-              handleOnClick: () => {
-                const logs = [...changeLog];
-                logs.splice(initail, limitFor);
-                setChangeLogs([...logs]);
-                setInit(initial - 10);
-                setLimit(initial);
-                if (logs.length === changeLog.length) {
-                  setDataAvail(true);
-                }
-              },
-              disabled: changeLogs.length <= viewLimit,
-            },
-          }}
-        />
-      </Cards>
+      <LogsCompo
+        isLogsOpen={isLogsOpen}
+        changeLogs={changeLogs}
+        setIsLogsOpen={setIsLogsOpen}
+        dataAvailable={dataAvailable}
+        logsData={logsData}
+        viewLimit={viewLimit}
+        setInitial={setInitial}
+        setLimitFor={setLimitFor}
+        setChangeLogs={setChangeLogs}
+        setDataAvailable={setDataAvailable}
+        initail={initail}
+        limitFor={limitFor}
+      ></LogsCompo>
     </div>
   );
 }

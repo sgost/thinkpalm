@@ -3,7 +3,6 @@ import { urls, getHeaders, getDownloadFileUrl } from "../../urls/urls";
 import axios from "axios";
 import "../../layouts/views/InvoiceDetails/invoiceDetails.scss";
 import { useState } from "react";
-import { getDecodedToken } from "../getDecodedToken";
 import { getPermissions } from "../Comman/Utils/utils";
 
 export default function FileUploadWidget(props: any) {
@@ -76,6 +75,7 @@ export default function FileUploadWidget(props: any) {
                               url: urls.deleteFile,
                               data: {
                                 invoiceId: id,
+                                customerId: cid,
                                 documentId: documents[index].documentId,
                               },
                               headers: headers,

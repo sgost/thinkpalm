@@ -10543,7 +10543,120 @@ export const mockapidata = {
       "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
       "id": 40136
     }
+  ],
+  resSuscriptionLookup:{
+    paymentMethods: [
+      {
+          "keyword": "PreferredPayment",
+          "value": 1,
+          "text": "ACH Credit",
+          "order": 1,
+          "isActive": true,
+          "integrationId": null,
+          "id": "6a56e502-e5f1-420b-b9af-89a58fa0ecee"
+      },
+      {
+          "keyword": "PreferredPayment",
+          "value": 2,
+          "text": "ACH Debit",
+          "order": 2,
+          "isActive": true,
+          "integrationId": null,
+          "id": "c9adbc19-708f-40e8-9480-c1ff7609765a"
+      },
+      {
+          "keyword": "PreferredPayment",
+          "value": 3,
+          "text": "Incoming Wire Payment",
+          "order": 3,
+          "isActive": true,
+          "integrationId": null,
+          "id": "0bf9bd5e-1c54-490b-ab59-fe2174af99e8"
+      },
+      {
+          "keyword": "PreferredPayment",
+          "value": 4,
+          "text": "International Wire Payment",
+          "order": 4,
+          "isActive": true,
+          "integrationId": null,
+          "id": "82b3d824-d6ab-471f-95c9-ab1e99133bdc"
+      }
   ]
+  },
+  resForCurrencyData: {
+    billingCurrencies: [
+      {
+        keyword: "BillingCurrency",
+        value: 1,
+        text: "USD",
+        order: 1,
+        isActive: true,
+        integrationId: null,
+        id: "ae0543ca-e94c-4215-9b25-5a3d39f83d03",
+      },
+      {
+        keyword: "BillingCurrency",
+        value: 2,
+        text: "EUR",
+        order: 2,
+        isActive: true,
+        integrationId: null,
+        id: "bb4095c9-8bb2-47d5-9677-0ab253ea4888",
+      },
+      {
+        keyword: "BillingCurrency",
+        value: 3,
+        text: "GBP",
+        order: 3,
+        isActive: true,
+        integrationId: null,
+        id: "7738ce1a-822a-4ff8-b95d-2ef9cf379d5b",
+      },
+      {
+        keyword: "BillingCurrency",
+        value: 4,
+        text: "HKD",
+        order: 4,
+        isActive: true,
+        integrationId: null,
+        id: "a63e0e92-735a-4503-8f4e-24316b6ba480",
+      },
+      {
+        keyword: "BillingCurrency",
+        value: 5,
+        text: "AUD",
+        order: 5,
+        isActive: true,
+        integrationId: null,
+        id: "db7f9312-bfb0-4ffb-a78d-c787ded830e7",
+      },
+      {
+        keyword: "BillingCurrency",
+        value: 6,
+        text: "CNY",
+        order: 6,
+        isActive: true,
+        integrationId: null,
+        id: "888c2fc1-d370-4806-8fcf-84ad2b0f27c1",
+      },
+    ],
+  },
+  resForVatDetail: {
+    "customerId": "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+    "feeConfigurationId": "00b7fee7-da5a-4ef1-894d-7b19a3e17ef9",
+    "customer": null,
+    "feeConfiguration": {
+        "feeId": "3d82a528-fcee-44a5-8f28-9f867c22bec2",
+        "percentage": 10,
+        "amount": 200,
+        "isActive": true,
+        "fee": null,
+        "customerFees": null,
+        "id": "00b7fee7-da5a-4ef1-894d-7b19a3e17ef9"
+    },
+    "id": "c1e840d6-32cf-44a4-930c-cf3de8b7f02c"
+}
 };
 export const mockCreditMemoData = {
   "customerId": "5caa7835-4a11-4e0e-b00f-4c22b29401a1",

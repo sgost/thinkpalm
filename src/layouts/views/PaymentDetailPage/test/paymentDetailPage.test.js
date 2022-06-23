@@ -1,6 +1,12 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { mockapidata } from "./mockData";
-import { HashRouter } from "react-router-dom";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  cleanup,
+} from "@testing-library/react";
+import { mockapidata, mockStateData, mockStateSingleData } from "./mockData";
+import { HashRouter, useLocation } from "react-router-dom";
 import PaymentDetailPage from "../paymentDetailPage";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -9,166 +15,168 @@ import { urls, subscriptionLookup } from "../../../../urls/urls";
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"), // use actual for all non-hook parts
   useParams: jest.fn(),
- 
-  useRouteMatch: () => ({ url: "/pay/invoicedetailsid321bd39c-cf25-4017-aa22-1c19d51f28b2/a9bbee6d-797a-4724-a86a-5b1a2e28763f/false/payments" }),
-  useLocation: jest
-    .fn()
-    .mockReturnValue({ state:  {
+
+  useRouteMatch: () => ({
+    url: "/pay/invoicedetailsid321bd39c-cf25-4017-aa22-1c19d51f28b2/a9bbee6d-797a-4724-a86a-5b1a2e28763f/false/payments",
+  }),
+  useLocation: jest.fn().mockReturnValue({
+    state: {
       InvoiceId: "1100810",
       transactionType: 2,
       inveoicesData: [
         {
-            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-            "customerName": "DSM Nutritional Products AG",
-            "customerLocation": "USA",
-            "currencyId": 840,
-            "qbInvoiceNo": 0,
-            "invoiceNo": "1100810",
-            "status": 4,
-            "statusLabel": "Approved",
-            "transactionType": 2,
-            "transactionTypeLabel": "Miscellaneous",
-            "createdDate": "6 Jul 2022",
-            "paymentDate": null,
-            "approvalDate": null,
-            "submissionDate": null,
-            "dueDate": "13 Jul 2022",
-            "exchangeRate": 1,
-            "totalAmount": "USD 1.10",
-            "invoiceBalance": "USD 1.10",
-            "invoiceFrom": null,
-            "regionItemCode": null,
-            "isClientVisible": true,
-            "depositTo": null,
-            "createdBy": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-            "modifiedBy": "28a34839-4798-4faa-9786-0677e1680f22",
-            "eorSubscriptionId": null,
-            "invoicerId": "1794f943-90b2-4d26-b81c-6e01cfa07e80",
-            "bankingDetailId": null,
-            "paymentMethod": null,
-            "poNumber": null,
-            "ageingNotPaid": null,
-            "ageingPaid": null,
-            "invoiceDocuments": [],
-            "invoiceItems": [],
-            "invoiceNotes": [],
-            "invoiceRelatedInvoices": [],
-            "invoiceRelatedRelatedInvoices": [],
-            "payrolls": [],
-            "customer": null,
-            "currency": {
-                "code": "USD",
-                "description": "US Dollar",
-                "id": 840
-            },
-            "id": "321bd39c-cf25-4017-aa22-1c19d51f28b2",
-            "exportToQB": {
-                "value": "Not Exported",
-                "color": "#767676"
-            }
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "USA",
+          currencyId: 840,
+          qbInvoiceNo: 0,
+          invoiceNo: "1100810",
+          status: 4,
+          statusLabel: "Approved",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "6 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "13 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "USD 1.10",
+          invoiceBalance: "USD 1.10",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "28a34839-4798-4faa-9786-0677e1680f22",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: null,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: {
+            code: "USD",
+            description: "US Dollar",
+            id: 840,
+          },
+          id: "321bd39c-cf25-4017-aa22-1c19d51f28b2",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
         },
         {
-            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-            "customerName": "DSM Nutritional Products AG",
-            "customerLocation": "",
-            "currencyId": 840,
-            "qbInvoiceNo": 0,
-            "invoiceNo": "1100754",
-            "status": 4,
-            "statusLabel": "Approved",
-            "transactionType": 1,
-            "transactionTypeLabel": "Payroll",
-            "createdDate": "3 Jun 2022",
-            "paymentDate": null,
-            "approvalDate": "2022-05-23T00:00:00",
-            "submissionDate": "2022-05-22T00:00:00",
-            "dueDate": "25 May 2022",
-            "exchangeRate": 1,
-            "totalAmount": "USD 24.02",
-            "invoiceBalance": "USD 24.02",
-            "invoiceFrom": null,
-            "regionItemCode": null,
-            "isClientVisible": false,
-            "depositTo": null,
-            "createdBy": "854895ac-f8f0-4a06-9567-2be3a7dc2f7e",
-            "modifiedBy": "d5a2a8fe-f4fd-4f0a-bda2-d258336b5ef2",
-            "eorSubscriptionId": "c1dc3b92-d3bf-4c89-41f0-08da3969bbb6",
-            "invoicerId": "1794f943-90b2-4d26-b81c-6e01cfa07e80",
-            "bankingDetailId": "87cdcb34-b4e7-4c00-a006-2544918fa71b",
-            "paymentMethod": null,
-            "poNumber": "250989",
-            "ageingNotPaid": 19,
-            "ageingPaid": null,
-            "invoiceDocuments": [],
-            "invoiceItems": [],
-            "invoiceNotes": [],
-            "invoiceRelatedInvoices": [],
-            "invoiceRelatedRelatedInvoices": [],
-            "payrolls": [],
-            "customer": null,
-            "currency": {
-                "code": "USD",
-                "description": "US Dollar",
-                "id": 840
-            },
-            "id": "4f2673ca-8a96-4780-b4e2-104815657966",
-            "exportToQB": {
-                "value": "Not Exported",
-                "color": "#767676"
-            }
-        }
-    ],
-    rowDetails: {
-      "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-      "customerName": "DSM Nutritional Products AG",
-      "customerLocation": "USA",
-      "currencyId": 840,
-      "qbInvoiceNo": 0,
-      "invoiceNo": "1100810",
-      "status": 4,
-      "statusLabel": "Approved",
-      "transactionType": 2,
-      "transactionTypeLabel": "Miscellaneous",
-      "createdDate": "6 Jul 2022",
-      "paymentDate": null,
-      "approvalDate": null,
-      "submissionDate": null,
-      "dueDate": "13 Jul 2022",
-      "exchangeRate": 1,
-      "totalAmount": "USD 1.10",
-      "invoiceBalance": "USD 1.10",
-      "invoiceFrom": null,
-      "regionItemCode": null,
-      "isClientVisible": true,
-      "depositTo": null,
-      "createdBy": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-      "modifiedBy": "28a34839-4798-4faa-9786-0677e1680f22",
-      "eorSubscriptionId": null,
-      "invoicerId": "1794f943-90b2-4d26-b81c-6e01cfa07e80",
-      "bankingDetailId": null,
-      "paymentMethod": null,
-      "poNumber": null,
-      "ageingNotPaid": null,
-      "ageingPaid": null,
-      "invoiceDocuments": [],
-      "invoiceItems": [],
-      "invoiceNotes": [],
-      "invoiceRelatedInvoices": [],
-      "invoiceRelatedRelatedInvoices": [],
-      "payrolls": [],
-      "customer": null,
-      "currency": {
-          "code": "USD",
-          "description": "US Dollar",
-          "id": 840
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "",
+          currencyId: 840,
+          qbInvoiceNo: 0,
+          invoiceNo: "1100754",
+          status: 4,
+          statusLabel: "Approved",
+          transactionType: 1,
+          transactionTypeLabel: "Payroll",
+          createdDate: "3 Jun 2022",
+          paymentDate: null,
+          approvalDate: "2022-05-23T00:00:00",
+          submissionDate: "2022-05-22T00:00:00",
+          dueDate: "25 May 2022",
+          exchangeRate: 1,
+          totalAmount: "USD 24.02",
+          invoiceBalance: "USD 24.02",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: false,
+          depositTo: null,
+          createdBy: "854895ac-f8f0-4a06-9567-2be3a7dc2f7e",
+          modifiedBy: "d5a2a8fe-f4fd-4f0a-bda2-d258336b5ef2",
+          eorSubscriptionId: "c1dc3b92-d3bf-4c89-41f0-08da3969bbb6",
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: "87cdcb34-b4e7-4c00-a006-2544918fa71b",
+          paymentMethod: null,
+          poNumber: "250989",
+          ageingNotPaid: 19,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: {
+            code: "USD",
+            description: "US Dollar",
+            id: 840,
+          },
+          id: "4f2673ca-8a96-4780-b4e2-104815657966",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      ],
+      rowDetails: {
+        customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        customerName: "DSM Nutritional Products AG",
+        customerLocation: "USA",
+        currencyId: 840,
+        qbInvoiceNo: 0,
+        invoiceNo: "1100810",
+        status: 4,
+        statusLabel: "Approved",
+        transactionType: 2,
+        transactionTypeLabel: "Miscellaneous",
+        createdDate: "6 Jul 2022",
+        paymentDate: null,
+        approvalDate: null,
+        submissionDate: null,
+        dueDate: "13 Jul 2022",
+        exchangeRate: 1,
+        totalAmount: "USD 1.10",
+        invoiceBalance: "USD 1.10",
+        invoiceFrom: null,
+        regionItemCode: null,
+        isClientVisible: true,
+        depositTo: null,
+        createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        modifiedBy: "28a34839-4798-4faa-9786-0677e1680f22",
+        eorSubscriptionId: null,
+        invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+        bankingDetailId: null,
+        paymentMethod: null,
+        poNumber: null,
+        ageingNotPaid: null,
+        ageingPaid: null,
+        invoiceDocuments: [],
+        invoiceItems: [],
+        invoiceNotes: [],
+        invoiceRelatedInvoices: [],
+        invoiceRelatedRelatedInvoices: [],
+        payrolls: [],
+        customer: null,
+        currency: {
+          code: "USD",
+          description: "US Dollar",
+          id: 840,
+        },
+        id: "321bd39c-cf25-4017-aa22-1c19d51f28b2",
+        exportToQB: {
+          value: "Not Exported",
+          color: "#767676",
+        },
       },
-      "id": "321bd39c-cf25-4017-aa22-1c19d51f28b2",
-      "exportToQB": {
-          "value": "Not Exported",
-          "color": "#767676"
-      }
-  }
-    } }),
+    },
+  }),
 }));
 
 localStorage.setItem(
@@ -177,17 +185,130 @@ localStorage.setItem(
 );
 localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
 
-describe("Payment details page", () => {
+describe("Payment details page multiple", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
-    
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
 
-    mock.onGet(subscriptionLookup()).reply(200, mockapidata.resForPaymentMethodData);
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
 
+    mock.onPost(urls.savePayments).reply(200);
+
+    useLocation.mockImplementation(() => ({
+      state: mockStateData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
+  test("save multiple", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    fireEvent.click(dd[0]);
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const currencyText = screen.getByText("Currency");
+    fireEvent.click(currencyText);
+
+    const currencyValue = screen.getByText("USD");
+    fireEvent.click(currencyValue);
+
+    const locationText = screen.getByText("Location");
+    fireEvent.click(locationText);
+
+    const locationValue = screen.getByText("USA -- United States of America");
+    fireEvent.click(locationValue);
+
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
+    expect(referenceText).toBeInTheDocument();
+    fireEvent.change(referenceText, { target: { value: "1234" } });
+
+    const depositBankText = screen.getByText("Deposited to bank");
+    fireEvent.click(depositBankText);
+
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
+    fireEvent.click(depositBankValue);
+
+    const paymentText = screen.getByText("Payment Method");
+    fireEvent.click(paymentText);
+
+    const paymentValue = screen.getByText("ACHCredit");
+    fireEvent.click(paymentValue);
+
+    const saveBtn = screen.getByText(/save/i);
+    fireEvent.click(saveBtn);
+  });
+
+  // test("test payment detail ", async () => {
+  //   render(
+  //     <HashRouter>
+  //       <PaymentDetailPage />
+  //     </HashRouter>
+  //   );
+
+  //   // const openIcon = await screen.findAllByTestId("open-payment-block");
+  //   // fireEvent.click(openIcon[0]);
+
+  //   const dpp = await waitFor(() => screen.getAllByRole("textbox"));
+  //   fireEvent.click(dpp[0]);
+
+  //   const selDates = await waitFor(() => screen.getAllByText(/15/));
+  //   fireEvent.click(selDates[2]);
+
+  //   const currencyText = await screen.findByText("Currency");
+  //   fireEvent.click(currencyText);
+
+  //   const currencyValue = await screen.findByText("USD");
+  //   fireEvent.click(currencyValue);
+
+  //   const locationText = await screen.findByText("Location");
+  //   fireEvent.click(locationText);
+
+  //   const locationValue = await screen.findByText(
+  //     "USA -- United States of America"
+  //   );
+  //   fireEvent.click(locationValue);
+
+  //   const referenceText = await screen.findByPlaceholderText(
+  //     /enter reference no/i
+  //   );
+  //   expect(referenceText).toBeInTheDocument();
+  //   fireEvent.change(referenceText, { target: { value: "1234" } });
+  //   // fireEvent.keyDown(referenceText);
+
+  //   const depositBankText = await screen.findByText("Deposited to bank");
+  //   fireEvent.click(depositBankText);
+
+  //   const depositBankValue = await screen.findByText("HSBC (UK) 0175 - USD");
+  //   fireEvent.click(depositBankValue);
+
+  //   const paymentText = await screen.findByText("Payment Method");
+  //   fireEvent.click(paymentText);
+
+  //   const paymentValue = await screen.findByText("ACHCredit");
+  //   fireEvent.click(paymentValue);
+
+  //   // const fullAmountText = await screen.findByText("Full Amount");
+  //   // fireEvent.click(fullAmountText);
+
+  //   const saveBtn = await screen.findByText(/save/i);
+  //   fireEvent.click(saveBtn);
+
+  //   // const addPaymentInstallmentButton = await screen.findByText(
+  //   //   "Add payment Installment"
+  //   // );
+  //   // fireEvent.click(addPaymentInstallmentButton);
+
+  //   // const deleteButton = await screen.findByText("Delete Item");
+  //   // fireEvent.click(deleteButton);
+  // });
   test("payment page breadcrumbs click", async () => {
     render(
       <HashRouter>
@@ -199,74 +320,88 @@ describe("Payment details page", () => {
     expect(invoiceText).toBeInTheDocument();
     fireEvent.click(invoiceText);
   });
+});
 
-  test("payment page", async () => {
+describe("single paymwnt", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
     render(
       <HashRouter>
         <PaymentDetailPage />
       </HashRouter>
     );
-
-    const openIcon = await screen.findAllByTestId("open-payment-block");
-    fireEvent.click(openIcon[0]);
-
-    const dpp = await waitFor(() => screen.getAllByRole("textbox"));
-    fireEvent.click(dpp[0]);
-
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    fireEvent.click(dd[0]);
     const selDates = await waitFor(() => screen.getAllByText(/15/));
     fireEvent.click(selDates[2]);
 
-    const currencyText = await screen.findByText("Currency");
+    const currencyText = screen.getByText("Currency");
     fireEvent.click(currencyText);
 
-    const currencyValue = await screen.findByText("USD");
+    const currencyValue = screen.getByText("USD");
     fireEvent.click(currencyValue);
 
-    const locationText = await screen.findByText("Location");
+    const locationText = screen.getByText("Location");
     fireEvent.click(locationText);
 
-    const locationValue = await screen.findByText("USA -- United States of America");
+    const locationValue = screen.getByText("USA -- United States of America");
     fireEvent.click(locationValue);
 
-    const referenceText = await screen.findByPlaceholderText("Enter reference No");
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
     expect(referenceText).toBeInTheDocument();
-    fireEvent.change(referenceText, { target: { value: "test" } });
-    fireEvent.keyDown(referenceText);
+    fireEvent.change(referenceText, { target: { value: "1234" } });
 
-    const depositBankText = await screen.findByText("Deposited to bank");
+    const depositBankText = screen.getByText("Deposited to bank");
     fireEvent.click(depositBankText);
 
-    const depositBankValue = await screen.findByText("HSBC (UK) 0175 - USD");
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
     fireEvent.click(depositBankValue);
 
-    const paymentText = await screen.findByText("Payment Method");
+    const paymentText = screen.getByText("Payment Method");
     fireEvent.click(paymentText);
 
-    const paymentValue = await screen.findByText("ACHCredit");
+    const paymentValue = screen.getByText("ACHCredit");
     fireEvent.click(paymentValue);
 
-    const fullAmountText = await screen.findByText("Full Amount");
-    fireEvent.click(fullAmountText);
-
-    const addPaymentInstallmentButton = await screen.findByText(
+    const addPaymentInstallmentButton = screen.getByText(
       "Add payment Installment"
     );
     fireEvent.click(addPaymentInstallmentButton);
 
-    const deleteButton = await screen.findByText("Delete Item");
+    const deleteButton = screen.getByText("Delete Item");
     fireEvent.click(deleteButton);
+
+    const saveBtn = screen.getByText(/save/i);
+    fireEvent.click(saveBtn);
   });
 });
 
 describe("Payment details page lookup and subscription lookup api fail", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
-    
 
     mock.onGet(urls.lookup).reply(500, mockapidata.resForLookupCurrencyData);
 
-    mock.onGet(subscriptionLookup()).reply(500, mockapidata.resForPaymentMethodData);
-
+    mock
+      .onGet(subscriptionLookup())
+      .reply(500, mockapidata.resForPaymentMethodData);
   });
 
   test("payment page", async () => {
@@ -275,8 +410,72 @@ describe("Payment details page lookup and subscription lookup api fail", () => {
         <PaymentDetailPage />
       </HashRouter>
     );
+  });
+});
 
-    const openIcon = await screen.findAllByTestId("open-payment-block");
-    fireEvent.click(openIcon[0]);
+describe("Payment details page click on detail page breadcrumb", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+    mockStateSingleData["checkPage"]=  true,
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+   
+      const invoiceText = await screen.findAllByText(/Miscellaneous Invoice No. 1100810/);
+      expect(invoiceText[0]).toBeInTheDocument();
+      fireEvent.click(invoiceText[0]);
+      screen.debug()
+
+  });
+});
+
+describe("Payment details page click on invoice page breadcrumb", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+    mockStateSingleData["checkPage"]=  true,
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+   
+      const invoiceText = await screen.findAllByText(/Invoices/);
+      expect(invoiceText[0]).toBeInTheDocument();
+      fireEvent.click(invoiceText[0]);
+
   });
 });

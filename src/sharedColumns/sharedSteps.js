@@ -19,4 +19,11 @@ export const sharedSteps = {
     key: "",
     label: "",
   },
-}
+};
+
+export const sharedBreadCrumbs = {
+  payments: {
+    key: "payments",
+    label: "Payments",
+  },
+};

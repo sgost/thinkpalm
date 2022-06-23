@@ -1725,14 +1725,18 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           currency={getBillingCurrency()}
           vatValue={vatValue}
           setCreditMemoData={setCreditMemoData}
-          changeLogs={changeLogs}
-          dataAvailable={dataAvailable}
           setDataAvailable={setDataAvailable}
+          isLogsOpen={isLogsOpen}
+          changeLogs={changeLogs}
+          setIsLogsOpen={setIsLogsOpen}
+          dataAvailable={dataAvailable}
           logsData={logsData}
-          limitFor={limitFor}
-          setLimitFor={setLimitFor}
-          initail={initail}
+          viewLimit={viewLimit}
           setInitial={setInitial}
+          setLimitFor={setLimitFor}
+          setChangeLogs={setChangeLogs}
+          initail={initail}
+          limitFor={limitFor}
         ></CreditMemoSummary>
       )}
 

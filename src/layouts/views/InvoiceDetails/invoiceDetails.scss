@@ -9,10 +9,16 @@
       background-color: white !important;
     }
 
+    .submit_customer {
+      margin-left: 1.4rem;
+    }
+
     .invoiceDetailsHeaderRow {
       display: flex;
       justify-content: space-between;
       margin-bottom: 1.333rem;
+      flex-direction: column-reverse;
+      position: relative;
 
       .breadcrumbs {
         display: flex;
@@ -38,6 +44,7 @@
         display: flex;
         gap: 1.111rem;
         position: relative;
+        margin: 0 0 2rem auto;
 
         .void-button {
           cursor: pointer;
@@ -114,6 +121,8 @@
         }
 
         .decline-invoice {
+          background-color: white;
+
           button.a-button.small {
             font-size: 0.889rem;
             height: 2.5rem;
@@ -168,6 +177,67 @@
 
       .download-invoice-dropdown {
         position: relative;
+      }
+
+      .cp-download {
+        position: absolute;
+        right: 0;
+        bottom: -1.5rem;
+
+        .a-button {
+          background: transparent !important;
+          color: #526fd6 !important;
+          text-align: right;
+
+          svg {
+            padding: 0;
+          }
+
+          .chevron-down {
+            display: inline-block !important;
+          }
+
+          .chevron-up {
+            display: none !important;
+            transform: rotate(0deg) !important;
+          }
+        }
+
+        &.is-drop-closed .a-button {
+          .chevron-down {
+            display: inline-block !important;
+          }
+
+          .chevron-up {
+            display: none !important;
+          }
+        }
+
+        &.is-drop-open .a-button {
+          .chevron-down {
+            display: none !important;
+          }
+
+          .chevron-up {
+            display: inline-block !important;
+          }
+        }
+
+        .button-popup-section {
+          top: 2.5rem;
+          right: 0;
+          box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+          border-radius: 4px;
+
+          .column-display-list {
+            color: #767676;
+            padding: 0.75rem 1rem;
+
+            &:hover {
+              font-weight: 500;
+            }
+          }
+        }
       }
     }
 
@@ -473,24 +543,24 @@
           .paymentInstallmentContainerDropdowns {
             margin-left: 1rem;
 
-            span.a-dropdown__label.Currency::before {
-              content: "Select currency";
-              font-size: 1rem;
-            }
+            // span.a-dropdown__label.Currency::before {
+            //   content: "Select currency";
+            //   font-size: 1rem;
+            // }
 
-            span.a-dropdown__label.Location::before {
-              content: "Select Location";
-              font-size: 1rem;
-            }
+            // span.a-dropdown__label.Location::before {
+            //   content: "Select Location";
+            //   font-size: 1rem;
+            // }
 
-            span.a-dropdown__label.Reference.No::before {
-              content: "Enter reference no";
-              font-size: 1rem;
-            }
+            // span.a-dropdown__label.Reference.No::before {
+            //   content: "Enter reference no";
+            //   font-size: 1rem;
+            // }
 
-            .a-dropdown__label {
-              font-size: 0rem;
-            }
+            // .a-dropdown__label {
+            //   font-size: 0rem;
+            // }
 
             .a-dropdown {
               z-index: inherit;
@@ -499,6 +569,41 @@
             span.a-dropdown__title:after {
               content: "*";
               color: red;
+            }
+            .referenceNoInput {
+              margin-top: -1.2rem;
+              .disable-input-color {
+                background: #f5f5f6 !important;
+              }
+
+              span {
+                font-size: 0.889rem;
+                margin-left: 0.2rem;
+                color: #767676;
+              }
+
+              span::after {
+                content: "*";
+                color: red;
+              }
+
+              input {
+                padding: 0.8rem;
+                background: #fff !important;
+                border: 0.056rem solid #ced4da;
+                border-radius: 0.222rem;
+                cursor: text;
+                display: flex;
+                font-size: 1rem;
+                position: relative;
+                width: 17.5rem;
+              }
+              .disable-input {
+                background: #f5f5f6 !important;
+              }
+              .disable-label {
+                color: #b4b3bb !important;
+              }
             }
           }
         }
@@ -516,19 +621,19 @@
             .paymentInstallmentContainerDropdowns {
               margin-left: 1rem;
 
-              .a-dropdown__label {
-                font-size: 0rem;
-              }
+              // .a-dropdown__label {
+              //   font-size: 0rem;
+              // }
 
-              span.a-dropdown__label.Deposited.to.bank::before {
-                content: "Select bank options";
-                font-size: 1rem;
-              }
+              // span.a-dropdown__label.Deposited.to.bank::before {
+              //   content: "Select bank options";
+              //   font-size: 1rem;
+              // }
 
-              span.a-dropdown__label.Payment.Method::before {
-                content: "Select payment method";
-                font-size: 1rem;
-              }
+              // span.a-dropdown__label.Payment.Method::before {
+              //   content: "Select payment method";
+              //   font-size: 1rem;
+              // }
 
               .a-dropdown {
                 z-index: inherit;
@@ -544,8 +649,12 @@
               margin-top: -1.2rem;
 
               .amountPaymentPageInput {
+                input {
+                  color: #767676;
+                }
                 .disable-input-color {
                   background: #f5f5f6 !important;
+                  color: #767676;
                 }
 
                 span {
@@ -671,7 +780,6 @@
     }
 
     .payroll {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -682,7 +790,6 @@
     }
 
     .invoice_bill_table {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -692,7 +799,6 @@
     }
 
     .master {
-
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -1077,7 +1183,7 @@
         margin: 0 0 0 1rem;
         font-size: 1rem;
         line-height: 1rem;
-        color: #3E3E3E;
+        color: #3e3e3e;
         cursor: pointer;
         font-weight: 400;
       }
@@ -1247,6 +1353,9 @@
 
     .upper-delete-button {
       display: flex;
+      position: absolute;
+      right: 0;
+      bottom: -3rem;
 
       .delete-invoice {
         display: flex;
@@ -1348,7 +1457,6 @@
     }
 
     .compensation-full-container {
-
       .a-modal__body {
         height: 80vh;
         width: 57%;
@@ -1365,7 +1473,7 @@
           flex-direction: column;
           border-radius: 10px;
 
-          >div {
+          > div {
             display: flex;
           }
 
@@ -1465,7 +1573,6 @@
             .misc-info {
               height: 100%;
               display: flex;
-              margin-left: 14rem;
 
               &__item {
                 display: flex;
@@ -1510,7 +1617,7 @@
 
         .compensation-text {
           font-size: 1.4rem;
-          padding: 1rem 4rem;
+          padding: 1rem 2.6rem;
           display: flex;
           justify-content: flex-start;
           width: 90%;
@@ -1521,11 +1628,25 @@
           width: 100%;
           justify-content: center;
           margin-bottom: 4.3rem;
-          max-height: 12.5rem;
+          max-height: 15rem;
           overflow-y: scroll;
 
           .table {
             width: 92%;
+          }
+        }
+
+        .table {
+          .table__header {
+            .table__row {
+              padding-left: 1rem;
+            }
+          }
+
+          .table__body {
+            .table__row {
+              padding-left: 1rem;
+            }
           }
         }
       }
@@ -1552,6 +1673,41 @@
       border-radius: 100%;
       display: flex;
       cursor: pointer;
+    }
+  }
+
+  .delete-employee-modal {
+    .a-modal__body {
+      height: 32vh;
+      width: 29%;
+    }
+
+    .delete-employee-inner-container {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      height: 16rem;
+      justify-content: space-between;
+
+      .delete-emplyee-buttons {
+        margin-top: 4.7778rem;
+        display: flex;
+        justify-content: end;
+
+        .employee-button {
+          margin-left: 1.6667rem;
+        }
+
+        svg {
+          display: inline-block !important;
+        }
+
+        button.a-button.medium {
+          font-size: 1.16rem;
+          width: 12.13rem;
+          border: 2px solid #526fd6 !important;
+        }
+      }
     }
   }
 }
