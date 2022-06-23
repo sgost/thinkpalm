@@ -19,9 +19,9 @@ export default function Input(props: any) {
   const masking = (e: any) => {
     let pattern = null;
     if (type == "amount") {
-      pattern = /[0-9]|\./;
+      pattern = /\d|\./;
     } else if (type == "number") {
-      pattern = /[0-9]/;
+      pattern = /\d/;
     }
 
     if (pattern && !pattern.test(e.key)) {

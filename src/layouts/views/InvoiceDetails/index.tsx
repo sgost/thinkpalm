@@ -73,7 +73,7 @@ export default function InvoiceDetails() {
   };
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
-  const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
+  const missTransType = state.transactionType; //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -284,7 +284,7 @@ export default function InvoiceDetails() {
                             res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
-                              <></>
+                             <div />
                             );
                           }}
                         >
