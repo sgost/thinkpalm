@@ -53,7 +53,7 @@ import format from "date-fns/format";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  // const state = { transactionType: 4, InvoiceId: "100678"};
+  
   const topPanelObj = {
     from: "",
     to: "",
@@ -245,10 +245,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
-              // //Mock Data used for id "fb706b8f-a622-43a1-a240-8c077e519d71"
-              // if (res.data.id == "fb706b8f-a622-43a1-a240-8c077e519d71") {
-              //   res.data = apiInvoiceMockData;
-              // }
+              
 
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
@@ -308,7 +305,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                   });
                 });
 
-                // tempTotal += e.feeSummary.total;
+                
                 tempTotal += e.countryTotalDue;
 
                 data.push({
@@ -406,7 +403,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              // setTransactionType(res.data.invoice.transactionType);
+              
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
                 (a: any, b: any) => a + (b || 0),
@@ -429,10 +426,10 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           axios
           .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
           .then((res: any) => {
-            const logsDetails: any = res?.data?.map((log: any) => ({
-              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
-              customerEmail: log?.email,
-              description: log?.note,
+            const logsDetails: any = res?.data?.map((logs: any) => ({
+              date: moment(logs?.createdDate).format("DD MMM YYYY, hh:mm"),
+              customerEmail: logs?.email,
+              description: logs?.note,
             }));
             setLogsData([...logsDetails]);
           })
@@ -827,7 +824,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         },
       ],
     })
-      .then((res: any) => {
+      .then((_res: any) => {
         setStatus("Pending Approval");
       })
       .catch((e: any) => {
@@ -866,12 +863,12 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     const downloadEmployeeBreakdwonApi = getEmployeeBreakdownUrl(id);
     axios
       .get(downloadEmployeeBreakdwonApi, headers)
-      .then((res: any) => {
-        if (res.status === 200) {
-          let url2 = res.data.url;
+      .then((response: any) => {
+        if (response.status === 200) {
+          let url2 = response.data.url;
           let a = document.createElement("a");
           a.href = url2;
-          a.download = `${res.data.name}`;
+          a.download = `${response.data.name}`;
           a.click();
         }
       })
@@ -884,7 +881,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   const handleVoid = async () => {
     const headers = getHeaders(tempToken, cid, isClient);
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
       .post(urls.voidUploadFile, formData, {
@@ -907,18 +904,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               headers: headers,
             }
           )
-          .then((response: any) => {
-            //  setDocuments([
-            //     ...documents,
-            //     {
-            //       documentId: response.data.documentId,
-            //       document: {
-            //         documentName: res.data.fileName,
-            //         url: res.data.url,
-            //       },
-            //     },
-            //   ]);
-          })
           .catch((e: any) => {
             console.log(e);
           });
@@ -1213,8 +1198,8 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 <div
                   onClick={() =>
                     missTransType != 7
-                      ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
+                      && setIsDownloadOpen(!isDownloadOpen)
+                    
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
@@ -1493,19 +1478,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               />
             )}
 
-          {/* <Button
-            data-testid="approve-button"
-            handleOnClick={() => {
-              handleApproveInvoice(4);
-            }}
-            className="primary-blue small"
-            icon={{
-              color: "#fff",
-              icon: "checkMark",
-              size: "medium",
-            }}
-            label="Approve Invoice"
-          /> */}
+        
         </div>
       </div>
 
@@ -1571,7 +1544,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       setPoNumber(Math.abs(parseInt(e.target.value)).toString())
                       setSaveButtonDisable(false)}
                     }
-                    value={poNumber ? poNumber : topPanel.poNumber}
+                    value={poNumber || topPanel.poNumber}
                     type="number"
                     className="poNoInput"
                   />
@@ -2162,7 +2135,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 label="Decline"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-                  const url = urls.declineInvoice;
+              
                   let currDate = new Date();
                   axios({
                     method: "POST",
