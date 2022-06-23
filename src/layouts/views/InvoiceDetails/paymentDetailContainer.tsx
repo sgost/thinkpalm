@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Dropdown, Icon } from "atlasuikit";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
@@ -254,11 +254,11 @@ const PaymentDetailContainer = ({
     updateOptions(updatedOptions);
   };
 
-  const updateDropdowns = (paymentDetailData: any) => {
+  const updateDropdowns = (paymentDetailDatas: any) => {
     let billingCurrencyArr: any = [];
 
     if (lookupData?.data?.billingCurrencies) {
-      paymentDetailData?.forEach((item: any) => {
+      paymentDetailDatas?.forEach((item: any) => {
         billingCurrencyArr.push(
           lookupData?.data?.billingCurrencies?.map((x: any) => {
             return {
@@ -275,7 +275,7 @@ const PaymentDetailContainer = ({
     let bankToDepositArr: any = [];
 
     if (lookupData?.data?.depositToOptions) {
-      paymentDetailData?.forEach((item: any) => {
+      paymentDetailDatas?.forEach((item: any) => {
         bankToDepositArr.push(
           lookupData?.data?.depositToOptions?.map((x: any) => {
             return {
@@ -292,7 +292,7 @@ const PaymentDetailContainer = ({
     let locationArr: any = [];
 
     if (lookupData?.data?.locations) {
-      paymentDetailData?.forEach((item: any) => {
+      paymentDetailDatas?.forEach((item: any) => {
         locationArr.push(
           lookupData?.data?.locations?.map((x: any) => {
             return {
@@ -315,7 +315,7 @@ const PaymentDetailContainer = ({
       .then((res: any) => {
         if (res?.data?.paymentMethods) {
           let paymentMethodArr: any = [];
-          paymentDetailData?.forEach((item: any) => {
+          paymentDetailDatas?.forEach((item: any) => {
             paymentMethodArr.push(
               res?.data?.paymentMethods?.map((x: any) => {
                 return {
@@ -345,30 +345,31 @@ const PaymentDetailContainer = ({
   const cleanNewPaymentObject = () => {
     setNewPaymentDate("");
     setNewCurrency(null);
+ 
     setAddLocationDropdownOption(
-      allDropdownData?.location?.map((x: any) => {
+      allDropdownData?.location?.map((item: any) => {
         return {
           isSelected: false,
-          label: x.text,
-          value: x.value,
+          label: item.text,
+          value: item.value,
         };
       })
     );
     setAddCurrencyDropdownOption(
-      allDropdownData?.currency?.map((x: any) => {
+      allDropdownData?.currency?.map((items: any) => {
         return {
           isSelected: false,
-          label: x.text,
-          value: x.value,
+          label: items.text,
+          value: items.value,
         };
       })
     );
     setAddBankToDepositDropdownOption(
-      allDropdownData?.depositBank?.map((x: any) => {
+      allDropdownData?.depositBank?.map((itemsNew: any) => {
         return {
           isSelected: false,
-          label: x.text,
-          value: x.value,
+          label: itemsNew.text,
+          value: itemsNew.value,
         };
       })
     );
@@ -424,8 +425,8 @@ const PaymentDetailContainer = ({
 
         axios
           .get(paymentdetailApi, headers)
-          .then((res: any) => {
-            setPaymentDetailData(res.data);
+          .then((response: any) => {
+            setPaymentDetailData(response.data);
             setAddPaymentSectionCheck(false);
             setEditChecked(null);
             setReferenceNo(null);

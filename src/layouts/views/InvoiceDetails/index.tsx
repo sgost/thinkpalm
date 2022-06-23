@@ -1417,6 +1417,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                         InvoiceId: apiData?.data?.invoice?.invoiceNo,
                         transactionType: missTransType,
                         inveoicesData: checkedInvoice,
+                        checkPage:true
                       },
                     }
                   );
