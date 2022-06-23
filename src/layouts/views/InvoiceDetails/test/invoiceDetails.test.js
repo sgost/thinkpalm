@@ -2825,12 +2825,7 @@ describe("payment detail on partial paid", () => {
       .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
       .reply(200,mockapidata.newGetRelatedData);
 
-<<<<<<< HEAD
     mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
-=======
-    //const deleteButton = await waitFor(() => screen.getByText(/Delete Employee/));
-    //fireEvent.click(deleteButton)
->>>>>>> d8dfb42485f71f7517ac771a21e1924e4b38aae4
 
     mock
       .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
