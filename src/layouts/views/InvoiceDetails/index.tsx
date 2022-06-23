@@ -649,7 +649,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.createdDate).format(
+      model.invoiceDate = moment(creditMemoData?.submissionDate).format(
         "DD MMM YYYY"
       );
       model.invoiceApproval = moment(creditMemoData?.createdDate).format(
@@ -1331,7 +1331,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       totalAmount:
                         topPanel.total || apiData?.data?.invoice?.totalAmount,
                       invoiceBalance:
-                        topPanel.open || apiData?.data?.invoice?.invoiceBalance,
+                        getBillingCurrency() + ' ' + topPanel.open ||  getBillingCurrency() + ' ' +  apiData?.data?.invoice?.invoiceBalance,
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,

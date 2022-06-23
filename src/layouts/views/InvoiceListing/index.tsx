@@ -396,7 +396,7 @@ export default function InvoiceListing() {
               ? "AR Review"
               : item.statusLabel || "",
           transactionTypeLabel: item.transactionTypeLabel || "",
-          createdDate: format(new Date(item.createdDate), "d MMM yyyy") || "",
+          createdDate: format(new Date(item.submissionDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
