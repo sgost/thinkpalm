@@ -303,10 +303,10 @@ export default function InvoiceListing() {
   };
 
   useEffect(() => {
-    if (permission?.Payments?.Role === "Customer") {
-      setIsClient(true);
-    } else {
+    if (permission.InvoiceList.includes("InternalView")) {
       setIsClient(false);
+    } else {
+      setIsClient(true);
     }
   }, []);
 
@@ -395,7 +395,8 @@ export default function InvoiceListing() {
               ? "AR Review"
               : item.statusLabel || "",
           transactionTypeLabel: item.transactionTypeLabel || "",
-          createdDate: format(new Date(item.submissionDate), "d MMM yyyy") || "",
+          createdDate:
+            format(new Date(item.submissionDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
@@ -749,7 +750,7 @@ export default function InvoiceListing() {
                 </div>
               )}
 
-              {permission.Role !== "Customer" && (
+              {permission.InvoiceList.includes("InternalView") && (
                 <div className="customerSelection">
                   <Dropdown
                     data-testid="customer-type"
@@ -919,11 +920,10 @@ export default function InvoiceListing() {
                       setDateTo(thisYearEndFormatDate);
                       break;
 
-
                     case "Last Month":
                       const lastMonthStartDate = new Date(
                         date.getFullYear(),
-                        date.getMonth() - 1,
+                        date.getMonth() - 1
                       );
                       const lastMonthEndDate = new Date(
                         date.getFullYear(),
@@ -941,7 +941,6 @@ export default function InvoiceListing() {
                       setDateFrom(lastMonthStartFormatDate);
                       setDateTo(lastMonthEndFormatDate);
                       break;
-
 
                     case "Last Year":
                       const lastYearStartDate = new Date(
