@@ -1310,11 +1310,12 @@ export default function InvoiceDetails() {
                       ? setIsDownloadOpen(!isDownloadOpen)
                       : function noRefCheck() {}
                   }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
-                    ? "download_disable"
-                    : "download"
-                    }`}
-                // className="download"
+                  className={`${
+                    missTransType == 7 || deleteDisableButtons === true
+                      ? "download_disable"
+                      : "download"
+                  }`}
+                  // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -1428,7 +1429,10 @@ export default function InvoiceDetails() {
                       totalAmount:
                         topPanel.total || apiData?.data?.invoice?.totalAmount,
                       invoiceBalance:
-                        getBillingCurrency() + ' ' + topPanel.open ||  getBillingCurrency() + ' ' +  apiData?.data?.invoice?.invoiceBalance,
+                        getBillingCurrency() + " " + topPanel.open ||
+                        getBillingCurrency() +
+                          " " +
+                          apiData?.data?.invoice?.invoiceBalance,
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1813,6 +1817,17 @@ export default function InvoiceDetails() {
                 {status === "AR Review" || status === "Open" ? (
                   <div className="dpContainer">
                     <DatePicker
+                      minDate={
+                        missTransType === 1
+                          ? new Date(
+                              invoiceChanges
+                                ? moment(invoiceChanges).format("YYYY-MM-DD")
+                                : moment(topPanel.invoiceApproval).format(
+                                    "YYYY-MM-DD"
+                                  )
+                            )
+                          : false
+                      }
                       placeholderText={moment(topPanel.paymentDue).format(
                         "DD/MMM/YYYY"
                       )}
@@ -2357,8 +2372,8 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                          ?.photoUrl
-                        : (avatar)
+                            ?.photoUrl
+                        : avatar
                     }
                     style={{
                       "background-color": "#FFFFF",
