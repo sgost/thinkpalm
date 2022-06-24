@@ -25,7 +25,6 @@ export default function InvoiceListing() {
   let navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
-  const currentRoles = JSON.parse(localStorage.getItem("current-org") || "");
   const customerId = localStorage.getItem("current-org-id");
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -304,12 +303,12 @@ export default function InvoiceListing() {
   };
 
   useEffect(() => {
-    if (currentRoles?.Payments?.Role === "Customer") {
+    if (permission?.Payments?.Role === "Customer") {
       setIsClient(true);
     } else {
       setIsClient(false);
     }
-  }, [currentRoles]);
+  }, []);
 
   useEffect(() => {
     if (localStorage.contractorInvoiceState) {
