@@ -102,6 +102,9 @@ export const urls = {
     "/PayrollChangeItems/RemoveEmployeeFromPayroll",
   savePayments:
     baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
+
+    getCustomersByIds:
+    baseURL + services.atlasCustomerService + "/Customer/GetAllByIds"
 };
 
 export const getClientListingUrl = (

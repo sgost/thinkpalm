@@ -10779,6 +10779,131 @@ export const mockapidata = {
       },
     ],
   },
+  resForCustomersByIds: [
+    {
+      processId: null,
+      custId: 1585,
+      customerId: "A9BBEE6D-797A-4724-A86A-5B1A2E28763F",
+      name: "DSM Nutritional Products AG",
+      website: "http://www.dsm.com",
+      contactDetails: {
+        officeLandline: {
+          countryCode: null,
+          number: "NULL",
+          extension: null,
+        },
+        additionalLandline: {
+          countryCode: null,
+          number: "NULL",
+          extension: null,
+        },
+        officeMobile: {
+          countryCode: null,
+          number: "NULL",
+        },
+        additionalMobile: null,
+        fax: {
+          countryCode: null,
+          number: "NULL",
+          extension: null,
+        },
+        email: "email_1585@skbskbs.com",
+      },
+      billingAddress: {
+        street1: "street1",
+        street2: "street2",
+        city: "city",
+        state: "state",
+        postalCode: "123456",
+        country: "Italy",
+      },
+      billingCurrency: "EUR",
+      billingSystemId: "",
+      region: "EMEA",
+      shippingAddress: {
+        street1: "street1",
+        street2: "street2",
+        city: "city",
+        state: "state",
+        postalCode: "123456",
+        country: "Italy",
+      },
+      note: "",
+      taxId: "",
+      location: "India",
+      status: "",
+      customers: [
+        {
+          name: "",
+          website: "",
+        },
+      ],
+      purchaseOrders: [
+        {
+          purchaseOrderNumber: 0,
+        },
+      ],
+      renewalEffectiveDate: "2022-06-02T05:10:14.462Z",
+      paymentInfo: {
+        country: "",
+        currency: "",
+        bankName: "",
+        swift: "",
+        branchName: "",
+        nationalClearingCode: "",
+        accountNumber: "",
+        routingNumber: "",
+        iban: "",
+        benefeciaryName: "",
+        benefeciaryAddress: {
+          street1: "",
+          street2: "",
+          city: "",
+          state: "",
+          postalCode: "",
+          country: "",
+        },
+        remittance: "",
+      },
+      accountReceivable: {
+        country: "",
+        currency: "",
+        bankName: "",
+        swift: "",
+        branchName: "",
+        nationalClearingCode: "",
+        accountNumber: "",
+        routingNumber: "",
+        iban: "",
+        benefeciaryName: "",
+        benefeciaryAddress: {
+          street1: "",
+          street2: "",
+          city: "",
+          state: "",
+          postalCode: "",
+          country: "",
+        },
+        remittance: "",
+      },
+      subscriptions: [
+        {
+          purchaseOrder: {
+            purchaseOrderNumber: 0,
+          },
+          subscribedCountries: [
+            {
+              name: "",
+              status: "",
+              effectiveDate: "2022-06-02T05:10:14.463Z",
+              payCycle: "",
+              currency: "",
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 export const currentOrgTokenMock = {

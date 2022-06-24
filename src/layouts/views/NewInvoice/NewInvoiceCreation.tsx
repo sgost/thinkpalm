@@ -49,6 +49,9 @@ const NewInvoiceCreation = ({
   const [isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
 
+  const tempToken = localStorage.getItem("accessToken");
+  const currentOrgId: any = localStorage.getItem("current-org-id");
+
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     axios
@@ -140,24 +143,29 @@ const NewInvoiceCreation = ({
   };
 
   const getCustomerDropdownOptions = () => {
-    let allCustomerapi = urls.customers;
-    const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
+    let allCustomerapi = urls.getCustomersByIds;
+
+    const headers = getHeaders(tempToken, currentOrgId, "false");
 
     setLoading(true);
 
     axios
-      .get(allCustomerapi, headers)
-      .then((res: any) => {
-        const preData: any = preparedCustomerData(res.data);
+      .post(
+        allCustomerapi,
+        {
+          customerIds: [currentOrgId],
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response: any) => {
+        const preData: any = preparedCustomerData(response.data);
         setCustomerOption(preData);
         setLoading(false);
       })
       .catch((e: any) => {
-        console.log("error", e);
+        console.log(e);
       });
   };
 

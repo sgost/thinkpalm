@@ -442,7 +442,6 @@ describe("Payment details page click on detail page breadcrumb", () => {
       const invoiceText = await screen.findAllByText(/Miscellaneous Invoice No. 1100810/);
       expect(invoiceText[0]).toBeInTheDocument();
       fireEvent.click(invoiceText[0]);
-      screen.debug()
 
   });
 });
