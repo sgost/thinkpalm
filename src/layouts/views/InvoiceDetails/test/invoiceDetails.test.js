@@ -2604,10 +2604,10 @@ describe("delete employee on AR Review status api fail", () => {
     expect(deleteIcon[0]).toBeInTheDocument();
     fireEvent.click(deleteIcon1[0]);
 
-    // const deleteButton = await waitFor(() =>
-    //   screen.getByText(/Delete Employee/)
-    // );
-    // fireEvent.click(deleteButton);
+    const deleteButton = await waitFor(() =>
+      screen.getByText(/Delete Employee/)
+    );
+    fireEvent.click(deleteButton);
   });
 });
 
@@ -2698,10 +2698,10 @@ describe("delete employee on AR Review status", () => {
     expect(deleteIcon[0]).toBeInTheDocument();
     fireEvent.click(deleteIcon1[0]);
 
-    // const deleteButton = await waitFor(() =>
-    //   screen.getByText(/Delete Employee/)
-    // );
-    // fireEvent.click(deleteButton);
+    const deleteButton = await waitFor(() =>
+      screen.getByText(/Delete Employee/)
+    );
+    fireEvent.click(deleteButton);
   });
 });
 
@@ -2868,7 +2868,6 @@ describe("payment detail on partial paid", () => {
     fireEvent.click(textEditSave[0]);
 
     const textEdit3 = await screen.findAllByText(/Edit/);
-
     expect(textEdit3[2]).toBeInTheDocument();
     fireEvent.click(textEdit3[2]);
 
@@ -2878,6 +2877,7 @@ describe("payment detail on partial paid", () => {
 
     const textAm = await screen.findAllByTestId(/111/);
     expect(textAm[0]).toBeInTheDocument();
+    screen.debug(textAm)
     fireEvent.change(textAm[0], { target: { value: "014" } });
 
     const textLocation = await screen.findAllByText(
