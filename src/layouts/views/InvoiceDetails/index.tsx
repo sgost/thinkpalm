@@ -1313,12 +1313,11 @@ export default function InvoiceDetails() {
                       ? setIsDownloadOpen(!isDownloadOpen)
                       : function noRefCheck() {}
                   }
-                  className={`${
-                    missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
-                  }`}
-                  // className="download"
+                  className={`${missTransType == 7 || deleteDisableButtons === true
+                    ? "download_disable"
+                    : "download"
+                    }`}
+                // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -2362,8 +2361,8 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
-                        : ""
+                          ?.photoUrl
+                        : (avatar)
                     }
                     style={{
                       "background-color": "#FFFFF",
