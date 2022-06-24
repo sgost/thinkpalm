@@ -1861,7 +1861,6 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
       (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
