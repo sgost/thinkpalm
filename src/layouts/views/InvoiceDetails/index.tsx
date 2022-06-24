@@ -1876,7 +1876,6 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
       (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
@@ -1890,6 +1889,7 @@ export default function InvoiceDetails() {
             id={id}
             topPanel={topPanel}
             setTopPanel={setTopPanel}
+            status={status}
           />
         </div>
       ) : (

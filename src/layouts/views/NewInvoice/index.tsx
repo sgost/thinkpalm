@@ -539,8 +539,6 @@ const NewInvoice = () => {
 
     const dueDate = new Date();
     dueDate.setDate(invoiceDate.getDate() + payTerms);
-    dueDate.setMonth(invoiceDate.getMonth());
-    dueDate.setFullYear(invoiceDate.getFullYear());
 
     let transactionType = null;
 
