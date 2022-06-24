@@ -20,6 +20,8 @@ const PaymentDetailContainer = ({
   getBillingCurrency,
   id,
   setPaymentDetailData,
+  topPanel,
+  setTopPanel
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -427,11 +429,12 @@ const PaymentDetailContainer = ({
         axios
           .get(paymentdetailApi, headers)
           .then((response: any) => {
-            setPaymentDetailData(response.data);
+            setPaymentDetailData(response?.data?.payments);
             setAddPaymentSectionCheck(false);
             setEditChecked(null);
             setReferenceNo(null);
             cleanNewPaymentObject();
+            setTopPanel({ ...topPanel, open: res?.data?.invoice?.invoiceBalance })
           })
           .catch((e: any) => {
             console.log("error e", e);
@@ -478,15 +481,17 @@ const PaymentDetailContainer = ({
     })
       .then(async (res) => {
         if (res.status == 200) {
-          setPaymentApiData(res.data);
+          setPaymentApiData(res?.data?.payments);
           let obj = { ...referenceNo };
-          obj[key] = res.data[key].referenceNo;
+          obj[key] = res?.data?.payments[key]?.referenceNo;
           setReferenceNo(obj);
           let objAm = { ...editAmount };
-          objAm[key] = res.data[key].totalAmount;
+          objAm[key] = res?.data?.payments[key]?.totalAmount;
           setEditAmount(objAm);
           setEditChecked(null);
           setEditButtonDisable(false);
+          setTopPanel({ ...topPanel, open: res?.data?.invoice?.invoiceBalance })
+
         }
       })
       .catch((err) => {
@@ -555,16 +560,17 @@ const PaymentDetailContainer = ({
                             axios
                               .get(paymentdetailApi, headers)
                               .then((res: any) => {
-                                setPaymentDetailData(res.data);
+                                setPaymentDetailData(res?.data?.payments);
                                 setAddPaymentSectionCheck(false);
                                 setEditChecked(null);
                                 let obj = { ...referenceNo };
-                                obj[key] = res.data[key].referenceNo;
+                                obj[key] = res.data?.payments[key].referenceNo;
                                 setReferenceNo(obj);
                                 let objAm = { ...editAmount };
-                                objAm[key] = res.data[key].totalAmount;
+                                objAm[key] = res.data?.payments[key].totalAmount;
                                 setEditAmount(objAm);
                                 setEditButtonDisable(false);
+                                setTopPanel({ ...topPanel, open: res?.data?.invoice?.invoiceBalance })
                               })
                               .catch((e: any) => {
                                 console.log("error e", e);
