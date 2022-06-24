@@ -1342,7 +1342,7 @@ export default function InvoiceDetails() {
 
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
-            permission.Role == "FinanceAR" && (
+            getPermissions(1 , 'Edit') && (
               <div className="saveBtnContainer">
                 <Button
                   disabled={reCalButtonDisable}
@@ -1584,7 +1584,7 @@ export default function InvoiceDetails() {
 
           {status === "Approved" &&
             missTransType === 3 &&
-            permission.Role == "FinanceAR" && (
+            getPermissions(2 , 'Add') && (
               <Button
                 disabled={btnDis}
                 data-testid="convert-button"
