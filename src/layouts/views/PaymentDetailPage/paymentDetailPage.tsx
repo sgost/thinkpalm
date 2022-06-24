@@ -401,8 +401,6 @@ const PaymentDetailPage = () => {
         0
       );
 
-      console.log("totalAmount", totalAmount, "openAmount", openAmount);
-
       if (totalAmount > openAmount) {
         if (!isToaster) setIsToaster(true);
         isDisable = true;
@@ -695,7 +693,6 @@ const PaymentDetailPage = () => {
     <div className="paymentDetailPageContainer">
       <div className="paymentDetailPageHeaderRow">
         <div className="paymentDetailPageBreadcrumbs">
-          {console.log("stateeeee",state?.state)}
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
             hideHeaderTabs={hideTopCheck}

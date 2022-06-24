@@ -2877,7 +2877,6 @@ describe("payment detail on partial paid", () => {
 
     const textAm = await screen.findAllByTestId(/111/);
     expect(textAm[0]).toBeInTheDocument();
-    screen.debug(textAm)
     fireEvent.change(textAm[0], { target: { value: "014" } });
 
     const textLocation = await screen.findAllByText(
