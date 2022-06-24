@@ -44,6 +44,7 @@ import {
   getAutoApproveCheckUrl,
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
+  getPaymentDetailApi,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -144,7 +145,7 @@ export default function InvoiceDetails() {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
   const [changeLogs, setChangeLogs] = useState<any>([]);
-  const [paymentDetailData, setPaymentDetailData] = useState<any>({});
+  const [paymentDetailData, setPaymentDetailData] = useState<any>([]);
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
@@ -264,7 +265,7 @@ export default function InvoiceDetails() {
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                              res.data?.invoice?.status === 12 ? (
+                            res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
                               <></>
@@ -281,7 +282,7 @@ export default function InvoiceDetails() {
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                              res.data?.invoice?.status === 12 ? (
+                            res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
                               <></>
@@ -324,27 +325,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                        res.data?.invoice?.status === 12
+                      res.data?.invoice?.status === 12
                         ? {
-                          value: (
-                            <div
-                              data-testid="delete-icon"
-                              onClick={() => {
-                                setDeleteEmployeeModalOpen({
-                                  isModalOpen: true,
-                                  data: item,
-                                });
-                              }}
-                            >
-                              <Icon
-                                icon="trash"
-                                color="#E32C15"
-                                size="large"
-                              />
-                            </div>
-                          ),
-                          color: "#E32C15",
-                        }
+                            value: (
+                              <div
+                                data-testid="delete-icon"
+                                onClick={() => {
+                                  setDeleteEmployeeModalOpen({
+                                    isModalOpen: true,
+                                    data: item,
+                                  });
+                                }}
+                              >
+                                <Icon
+                                  icon="trash"
+                                  color="#E32C15"
+                                  size="large"
+                                />
+                              </div>
+                            ),
+                            color: "#E32C15",
+                          }
                         : "",
                   });
                 });
@@ -468,7 +469,6 @@ export default function InvoiceDetails() {
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
               if (response.status == 200) {
-                console.log("response.data", response.data)
                 setCreditMemoData(response.data);
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
@@ -682,9 +682,6 @@ export default function InvoiceDetails() {
     }
   }, [creditMemoData, addressData]);
 
-  console.log("creditMemoData?.invoiceBalance", creditMemoData?.invoiceBalance)
-  console.log("creditMemoData", creditMemoData)
-
   useEffect(() => {
     if (showAutoApprovedToast) {
       setTimeout(() => {
@@ -698,12 +695,12 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     };
 
-    let paymentdetailApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/getrelatedpayments/${id}`;
+    let paymentdetailApi = getPaymentDetailApi(id);
 
     axios
       .get(paymentdetailApi, headers)
       .then((res: any) => {
-        setPaymentDetailData(res.data);
+        setPaymentDetailData(res?.data?.payments);
       })
       .catch((e: any) => {
         console.log("error e", e);
@@ -848,10 +845,10 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        if (res.status === 201) {
-          if (res.data.status === 2) {
+        if (res?.status === 201) {
+          if (res?.data?.status === 2) {
             setStatus("AR Review");
-          } else if (res.data.status === 8) {
+          } else if (res?.data?.status === 8) {
             setStatus("Closed");
             setApprovalMsg("Invoice Converted successfully");
             setTimeout(() => {
@@ -1200,7 +1197,7 @@ export default function InvoiceDetails() {
         deleteEmployeeApi,
         {
           customerId: cid,
-          InvoiceId: deleteEmployeeModalOpen?.data?.id,
+          InvoiceId: id,
           PayrollId: deleteEmployeeModalOpen?.data?.payrollId,
           EmployeeId: deleteEmployeeModalOpen?.data?.employeeId,
         },
@@ -1311,7 +1308,7 @@ export default function InvoiceDetails() {
                   onClick={() =>
                     missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
+                      : function noRefCheck() {}
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
                     ? "download_disable"
@@ -1506,12 +1503,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1866,14 +1863,18 @@ export default function InvoiceDetails() {
 
       {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
+            setPaymentDetailData={setPaymentDetailData}
             status={status}
             cid={cid}
             lookupData={lookupData}
             paymentDetailData={paymentDetailData}
             getBillingCurrency={getBillingCurrency}
+            id={id}
+            topPanel={topPanel}
+            setTopPanel={setTopPanel}
           />
         </div>
       ) : (
@@ -2135,7 +2136,7 @@ export default function InvoiceDetails() {
           billStatus={status}
           invoiceId={state.InvoiceId}
           navigate={navigate}
-          totalAmount={apiData.data?.invoice?.totalAmount}
+          totalAmount={apiData?.data?.invoice?.totalAmount}
           state={state}
         ></BillsTable>
       )}
@@ -2403,11 +2404,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                          isCompensatioModalOpen.data &&
-                          isCompensatioModalOpen?.data?.startDate
+                        isCompensatioModalOpen.data &&
+                        isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                            isCompensatioModalOpen?.data?.startDate
-                          ).format("D MMM YYYY")
+                              isCompensatioModalOpen?.data?.startDate
+                            ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
