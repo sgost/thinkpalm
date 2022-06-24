@@ -1875,6 +1875,7 @@ export default function InvoiceDetails() {
             id={id}
             topPanel={topPanel}
             setTopPanel={setTopPanel}
+            status={status}
           />
         </div>
       ) : (
