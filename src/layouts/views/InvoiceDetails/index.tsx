@@ -7,13 +7,15 @@ import {
   Checkbox,
   Modal,
   Cards,
-  Logs,
   DatePicker,
   AvatarHandler,
-  ToastNotification
+  ToastNotification,
+  ButtonDropdown,
 } from "atlasuikit";
 import "./invoiceDetails.scss";
 import { apiInvoiceMockData } from "./mockData";
+
+import LogsCompo from "../Logs/index";
 
 import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
@@ -23,7 +25,8 @@ import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
-  getUpdateCreditMemoUrl,
+  convertMissInvoice,
+  calculateInvoiceUrl,
   getDeleteInvoiceUrl,
   getDownloadUrl,
   getExcelUrl,
@@ -41,7 +44,6 @@ import {
   getAutoApproveCheckUrl,
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
-  getPaymentDetailApi,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -51,10 +53,10 @@ import { getDecodedToken } from "../../../components/getDecodedToken";
 import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
+import cn from "classnames";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
-  
   const topPanelObj = {
     from: "",
     to: "",
@@ -70,7 +72,8 @@ export default function InvoiceDetails() {
     open: "",
   };
   const permission: any = getDecodedToken();
-  const missTransType = state.transactionType; //To change the the invoice transictionType number
+  const [btnDis, setBtnDis] = useState(false);
+  const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -122,6 +125,10 @@ export default function InvoiceDetails() {
   const [transactionType, setTransactionType] = useState();
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
+  const [deleteEmployeeModalOpen, setDeleteEmployeeModalOpen] = useState({
+    isModalOpen: false,
+    data: {},
+  });
   const [countrySummary, setCountrySummary] = useState<any>([]);
   const [totalCountrySummaryDue, settotalCountrySummaryDue] = useState(0);
   const [feeSummary, setFeeSummary] = useState<any>([]);
@@ -137,17 +144,10 @@ export default function InvoiceDetails() {
   const [isLogsOpen, setIsLogsOpen] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(true);
   const [changeLogs, setChangeLogs] = useState<any>([]);
-  const [paymentDetailData, setPaymentDetailData] = useState<any>([]);
+  const [paymentDetailData, setPaymentDetailData] = useState<any>({});
   const [initail, setInitial] = useState(0);
   const [limitFor, setLimitFor] = useState(10);
   const [deleteApp, setDeleteApp] = useState(true);
-
-  const [employeeSalary, setEmployeeSalary] = useState(false);
-  const [benefit, setBenefit] = useState(false);
-  const [amountUpdate, setAmountUpdate] = useState(false);
-  const [termination, setTermination] = useState(false);
-  const [invoiceCalc, setinvoiceCalc] = useState(false);
-  const [feeIssue, setfeeIssue] = useState(false);
 
   const [poNumber, setPoNumber] = useState("");
   const [invoiceDate, setInvoiceDate] = useState<any>("");
@@ -165,8 +165,10 @@ export default function InvoiceDetails() {
     ],
     data: [],
   });
-const [invoiceSaved, setInvoiceSavedValue] = useState("");
-const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [invoiceSaved, setInvoiceSavedValue] = useState("");
+  const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -194,7 +196,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     }
   }, [hideTopCheck]);
 
-  useEffect(() => {
+  const initialApiCall = () => {
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
     };
@@ -226,25 +228,13 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           .catch((e: any) => {
             console.log("error", e);
           });
+
         if (
           missTransType != 7 &&
           missTransType != 4 &&
           missTransType != 3 &&
           missTransType != 2
         ) {
-          axios
-            .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
-            .then((res: any) => {
-              const logsDetails: any = res?.data?.map((log: any) => ({
-                date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
-                customerEmail: log?.email,
-                description: log?.note,
-              }));
-              setLogsData([...logsDetails]);
-            })
-            .catch((e: any) => {
-              console.log("error", e);
-            });
           axios
             .get(api, headers)
             .then((res: any) => {
@@ -260,8 +250,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               let countrySumTotalArrTemp: any = [];
               let feeSummaryTemp: any = [];
 
-              
-
               res.data?.countryPayroll.forEach((e: any) => {
                 let country = e.countryName;
                 let countryCode = e.countryCode;
@@ -270,17 +258,33 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
                 e.payrollItems.forEach((item: any) => {
                   arr.push({
-                    employeeID: item.employeeId,
+                    employeeID: {
+                      value: (
+                        <span
+                          style={{ fontWeight: 600 }}
+                          onClick={() => {
+                            res.data?.invoice?.status === 2 ||
+                              res.data?.invoice?.status === 12 ? (
+                              handleCompensationModal(item)
+                            ) : (
+                              <></>
+                            );
+                          }}
+                        >
+                          {item.employeeId}
+                        </span>
+                      ),
+                    },
                     name: {
                       value: (
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
                             res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
+                              res.data?.invoice?.status === 12 ? (
                               handleCompensationModal(item)
                             ) : (
-                             <div />
+                              <></>
                             );
                           }}
                         >
@@ -317,10 +321,34 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       toCurrencyFormat(item.healthcare),
 
                     // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+
+                    action:
+                      res.data?.invoice?.status === 2 ||
+                        res.data?.invoice?.status === 12
+                        ? {
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
+                        : "",
                   });
                 });
 
-                
                 tempTotal += e.countryTotalDue;
 
                 data.push({
@@ -418,7 +446,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               setTotal(tempTotal);
               setDocuments(res.data.invoice.invoiceDocuments);
               setApiData(res);
-              
               setCountrySummary(countrySummaryTemp);
               let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
                 (a: any, b: any) => a + (b || 0),
@@ -437,32 +464,17 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           missTransType == 3 ||
           missTransType == 2
         ) {
-          //Vaidehi -- changes for Calling api other thatn payroll
-          axios
-          .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
-          .then((res: any) => {
-            const logsDetails: any = res?.data?.map((logs: any) => ({
-              date: moment(logs?.createdDate).format("DD MMM YYYY, hh:mm"),
-              customerEmail: logs?.email,
-              description: logs?.note,
-            }));
-            setLogsData([...logsDetails]);
-          })
-          .catch((e: any) => {
-            console.log("error", e);
-          });
-
           axios
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
               if (response.status == 200) {
+                console.log("response.data", response.data)
                 setCreditMemoData(response.data);
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
               }
-           })
-            .catch((res) => {
-              console.log(res);
+            })
+            .catch((_res) => {
               setIsErr(true);
             });
           axios
@@ -541,7 +553,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         .then((response: any) => {
           if (response.status == 200) {
             const { data } = response.data;
-            if (data?.length > 0) {
+            if (data?.invoiceBills?.length > 0) {
               setBillTableData(response);
             } else {
               console.log("no data");
@@ -570,6 +582,10 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           console.log("error e", e);
         });
     }
+  };
+
+  useEffect(() => {
+    initialApiCall();
   }, []);
 
   useEffect(() => {
@@ -626,9 +642,11 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
       model.poNumber = apiData?.data?.invoice?.poNumber;
-      model.invoiceDate = moment(state.transactionType == 7 ? apiData?.data?.invoice?.createdDate : apiData?.data?.invoice?.submissionDate).format(
-        "DD MMM YYYY"
-      );
+      model.invoiceDate = moment(
+        state.transactionType == 7
+          ? apiData?.data?.invoice?.createdDate
+          : apiData?.data?.invoice?.submissionDate
+      ).format("DD MMM YYYY");
       model.invoiceApproval = moment(
         apiData?.data?.invoice?.approvalDate
       ).format("DD MMM YYYY");
@@ -649,9 +667,9 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
       model.poNumber = creditMemoData?.poNumber || "";
-      model.invoiceDate = moment(creditMemoData?.submissionDate).format(
-        "DD MMM YYYY"
-      );
+      model.invoiceDate = creditMemoData?.submissionDate
+        ? moment(creditMemoData?.submissionDate).format("DD MMM YYYY")
+        : moment(creditMemoData?.createdDate).format("DD MMM YYYY");
       model.invoiceApproval = moment(creditMemoData?.createdDate).format(
         "DD MMM YYYY"
       );
@@ -663,6 +681,9 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       setTopPanel(model);
     }
   }, [creditMemoData, addressData]);
+
+  console.log("creditMemoData?.invoiceBalance", creditMemoData?.invoiceBalance)
+  console.log("creditMemoData", creditMemoData)
 
   useEffect(() => {
     if (showAutoApprovedToast) {
@@ -677,7 +698,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       headers: getHeaders(tempToken, cid, isClient),
     };
 
-    let paymentdetailApi = getPaymentDetailApi(id)
+    let paymentdetailApi = `https://apigw-dev-eu.atlasbyelements.com/atlas-invoiceservice/api/Invoices/getrelatedpayments/${id}`;
 
     axios
       .get(paymentdetailApi, headers)
@@ -732,6 +753,12 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       sharedColumns.countryVAT,
       sharedColumns.adminFees,
       tableSharedColumns.healthcareBenefits,
+      (apiData?.data?.invoice?.status === 2 ||
+        apiData?.data?.invoice?.status === 12) && {
+        header: "Action",
+        isDefault: true,
+        key: "action",
+      },
     ],
     showDefaultColumn: true,
   };
@@ -821,14 +848,22 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        if (res?.status === 201) {
-          setStatus(res?.data?.status === 2 ? "AR Review" : "Approved");
-          setApprovalMsg(
-            res?.data?.status === 4 ? "Invoice approve successfully" : ""
-          );
-          setTimeout(() => {
-            setApprovalMsg("");
-          }, 3000);
+        if (res.status === 201) {
+          if (res.data.status === 2) {
+            setStatus("AR Review");
+          } else if (res.data.status === 8) {
+            setStatus("Closed");
+            setApprovalMsg("Invoice Converted successfully");
+            setTimeout(() => {
+              setApprovalMsg("");
+            }, 3000);
+          } else {
+            setStatus("Approved");
+            setApprovalMsg("Invoice approve successfully");
+            setTimeout(() => {
+              setApprovalMsg("");
+            }, 3000);
+          }
         } else {
           setApprovalMsg("Invoice approve failed");
         }
@@ -895,12 +930,12 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
     const downloadEmployeeBreakdwonApi = getEmployeeBreakdownUrl(id);
     axios
       .get(downloadEmployeeBreakdwonApi, headers)
-      .then((response: any) => {
-        if (response.status === 200) {
-          let url2 = response.data.url;
+      .then((res: any) => {
+        if (res.status === 200) {
+          let url2 = res.data.url;
           let a = document.createElement("a");
           a.href = url2;
-          a.download = `${response.data.name}`;
+          a.download = `${res.data.name}`;
           a.click();
         }
       })
@@ -913,7 +948,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   const handleVoid = async () => {
     const headers = getHeaders(tempToken, cid, isClient);
 
-    let formData = new FormData();
+    var formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
       .post(urls.voidUploadFile, formData, {
@@ -925,6 +960,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             urls.voidCreateDoc,
             {
               invoiceId: id,
+              customerId: cid,
 
               document: {
                 url: res.data.url,
@@ -936,6 +972,9 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               headers: headers,
             }
           )
+          .then((response: any) => {
+            console.log(response);
+          })
           .catch((e: any) => {
             console.log(e);
           });
@@ -967,6 +1006,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               setTopPanel({ ...topPanel, open: 0.0 });
             }
           });
+          initialApiCall();
           setVoidFileData({});
           setIsVoidConfirmOptionOpen(false);
           setInputVoidValue("");
@@ -1009,7 +1049,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
   /* istanbul ignore next */
   const handleCompensationModal = (data: any) => {
-    if (data?.employeeID) {
+    if (data?.employeeId) {
       const headers: any = {
         headers: {
           authorization: `Bearer ${tempToken}`,
@@ -1022,7 +1062,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         },
       };
 
-      const compensationApi = getEmployeeCompensationData(data?.employeeID);
+      const compensationApi = getEmployeeCompensationData(data?.employeeId);
 
       axios
         .get(compensationApi, headers)
@@ -1106,32 +1146,18 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
-    let payload: any = creditMemoData;
-    if (creditMemoData) {
-      payload.transactionType = 2;
-    }
-    convertInvoice(payload);
+    axios({
+      method: "POST",
+      url: convertMissInvoice(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    }).then((resp: any) => {
+      if (resp) {
+        handleApproveInvoice(8);
+        setBtnDis(true);
+      }
+    });
   };
 
-  const convertInvoice = (payload: any) => {
-    axios
-      .put(getUpdateCreditMemoUrl(id), payload, {
-        headers: getHeaders(tempToken, cid, "false"),
-      })
-      .then((resp: any) => {
-        if (resp) {
-          setMissTransType(2);
-          getTransactionLabel();
-          setApprovalMsg("Invoice Converted Into Miscellineous");
-          setTimeout(() => {
-            setApprovalMsg("");
-          }, 3000);
-        }
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-  };
   const handleEditSave = () => {
     axios({
       method: "PUT",
@@ -1150,32 +1176,86 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         poNumber: poNumber ? poNumber : topPanel.poNumber,
       },
     })
-    .then((resp: any) => {
-      if (resp) {
-        setInvoiceSavedValue("Saved");
-        setTimeout(() => {
-          setInvoiceSavedValue("");
-        }, 3000);
-      }
-    })
-    .catch((err: any) => {
-      console.log(err);
-    });
+      .then((resp: any) => {
+        if (resp) {
+          setInvoiceSavedValue("Saved");
+          setTimeout(() => {
+            setInvoiceSavedValue("");
+            setReCalButtonDisable(false);
+          }, 3000);
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
     setSaveButtonDisable(true);
+  };
+
+  const deleteEmployee = async () => {
+    const headers = getHeaders(tempToken, cid, isClient);
+    let deleteEmployeeApi = urls.deleteEmployeeApi;
+
+    await axios
+      .post(
+        deleteEmployeeApi,
+        {
+          customerId: cid,
+          InvoiceId: deleteEmployeeModalOpen?.data?.id,
+          PayrollId: deleteEmployeeModalOpen?.data?.payrollId,
+          EmployeeId: deleteEmployeeModalOpen?.data?.employeeId,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response: any) => {
+        if (response.status === 200) {
+          setDeleteEmployeeModalOpen({
+            ...deleteEmployeeModalOpen,
+            isModalOpen: false,
+          });
+        }
+      })
+      .catch((e: any) => {
+        console.log(e);
+      });
+  };
+  const reCalculate = () => {
+    axios({
+      method: "POST",
+      url: calculateInvoiceUrl(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    })
+      .then((resp: any) => {
+        if (resp) {
+          setApprovalMsg("Invoice Recalculated successfully");
+          setTimeout(() => {
+            setApprovalMsg("");
+          }, 3000);
+        }
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setReCalButtonDisable(false);
+        setApprovalMsg("Invoice Recalculaton Failed");
+        setTimeout(() => {
+          setApprovalMsg("");
+        }, 3000);
+      });
+    setReCalButtonDisable(true);
   };
 
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
-
-     {(invoiceSaved === "Saved") && 
-        <ToastNotification
-        data-testid="toast-notify"
-        showNotification
-        toastMessage="Your record has been saved successfully..!"
-        toastPosition="bottom-right"
-      />
-     } 
+        {invoiceSaved === "Saved" && (
+          <ToastNotification
+            data-testid="toast-notify"
+            showNotification
+            toastMessage="Your record has been saved successfully..!"
+            toastPosition="bottom-right"
+          />
+        )}
         <div className="breadcrumbs">
           <BreadCrumb
             hideHeaderTitle={hideTopCheck}
@@ -1203,7 +1283,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               getPermissions(missTransType, "DeleteInvoice")) && (
               <div className="upper-delete-button">
                 <div
-                data-testid="delete-icon"
                   className="delete-invoice"
                   onClick={() => setDeleteConfirmModalOpen(true)}
                 >
@@ -1226,16 +1305,17 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           )}
           <div className="download-invoice-dropdown">
             {(permission?.InvoiceDetails.includes("Download") ||
-              missTransType != 1) && (
+              missTransType != 1) &&
+              missTransType !== 7 && (
                 <div
                   onClick={() =>
                     missTransType != 7
-                      && setIsDownloadOpen(!isDownloadOpen)
-                    
+                      ? setIsDownloadOpen(!isDownloadOpen)
+                      : function noRefCheck() { }
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
-                    ? "download_disable"
-                    : "download"
+                      ? "download_disable"
+                      : "download"
                     }`}
                 // className="download"
                 >
@@ -1262,6 +1342,26 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             )}
           </div>
 
+          {(status === "AR Review" || status === "Declined") &&
+            missTransType == 1 &&
+            permission.Role == "FinanceAR" && (
+              <div className="saveBtnContainer">
+                <Button
+                  disabled={reCalButtonDisable}
+                  handleOnClick={() => {
+                    reCalculate();
+                  }}
+                  className="secondary-btn small"
+                  icon={{
+                    color: "#526FD6",
+                    icon: "autorenew",
+                    size: "small",
+                  }}
+                  label="Re-Calculate"
+                />
+              </div>
+            )}
+
           {(status === "AR Review" || status === "Open") &&
             getPermissions(missTransType, "Edit") && (
               <div className="saveBtnContainer">
@@ -1277,8 +1377,8 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
 
           {(status === "Approved" &&
             missTransType !== 4 &&
-            missTransType !== 7 && permission.Role === "FinanceAR") ||
-            (status === "Invoiced" && missTransType === 7 && permission.Role === "FinanceAR") ? (
+            missTransType !== 7) ||
+            (status === "Invoiced" && missTransType === 7) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1308,7 +1408,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                         apiData?.data?.invoice?.invoiceNo,
                       status: 4,
                       statusLabel: "Approved",
-                      transactionType: 2,
+                      transactionType: missTransType,
                       transactionTypeLabel: getTransactionLabelForPayment(),
                       createdDate: moment(topPanel.invoiceDate).format(
                         "DD/MMM/YYYY"
@@ -1331,7 +1431,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       totalAmount:
                         topPanel.total || apiData?.data?.invoice?.totalAmount,
                       invoiceBalance:
-                        getBillingCurrency() + ' ' + topPanel.open ||  getBillingCurrency() + ' ' +  apiData?.data?.invoice?.invoiceBalance,
+                        topPanel.open || apiData?.data?.invoice?.invoiceBalance,
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1414,9 +1514,12 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                     "/payments",
                     {
                       state: {
-                        InvoiceId: apiData?.data?.invoice?.invoiceNo,
+                        InvoiceId:
+                          apiData?.data?.invoice?.invoiceNo ||
+                          creditMemoData.invoiceNo,
                         transactionType: missTransType,
                         inveoicesData: checkedInvoice,
+                        checkPage: true,
                       },
                     }
                   );
@@ -1446,21 +1549,18 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               </div>
             )}
 
-          {status === "AR Review" &&
+          {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
-              <Button
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Submit to Customer"
-                handleOnClick={() => {
-                  handleApproveAR();
-                }}
-              />
+              <div className="submit_customer">
+                <Button
+                  className="primary-blue small"
+                  label="Submit to Customer"
+                  handleOnClick={() => {
+                    handleApproveAR();
+                  }}
+                />
+              </div>
             )}
           {(status === "Pending Approval" ||
             (status === "AR Review" && missTransType != 1)) &&
@@ -1481,18 +1581,21 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               />
             )}
 
-          {status === "Approved" && missTransType === 3 && (
-            <Button
-              data-testid="convert-button"
-              label="Change to Miscellaneous"
-              className="secondary-btn small change-miss"
-              handleOnClick={() => {
-                migrationInvoice();
-              }}
-            />
-          )}
+          {status === "Approved" &&
+            missTransType === 3 &&
+            permission.Role == "FinanceAR" && (
+              <Button
+                disabled={btnDis}
+                data-testid="convert-button"
+                label="Change to Miscellaneous"
+                className="secondary-btn small change-miss"
+                handleOnClick={() => {
+                  migrationInvoice();
+                }}
+              />
+            )}
 
-          {status === "Open" &&
+          {(status === "Declined" || status === "Open") &&
             missTransType !== 1 &&
             permission?.InvoiceDetails.includes("Send") && (
               <Button
@@ -1509,9 +1612,48 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 }}
               />
             )}
-
-        
         </div>
+        {missTransType === 7 && (
+          <div
+            className={cn("cp-download", {
+              "is-drop-open": isDropdownOpen,
+              "is-drop-closed": !isDropdownOpen,
+            })}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            onBlur={() => setIsDropdownOpen(false)}
+          >
+            <ButtonDropdown
+              menuItems={{
+                options: [
+                  { value: "pdf", label: "Invoice as PDF" },
+                  { value: "xlsx", label: "Invoice as Excel" },
+                ],
+                labelKeyName: "label",
+              }}
+              onChange={(selected: any) => console.log("selected", selected)}
+            >
+              Download
+              <Icon
+                color="#526FD6"
+                className="chevron-down"
+                icon="chevronDown"
+                size="large"
+                viewBox="-6 -3 24 13"
+                width="34"
+                height="34"
+              />
+              <Icon
+                color="#526FD6"
+                className="chevron-up"
+                icon="chevronUp"
+                size="large"
+                viewBox="-6 -3 24 13"
+                width="34"
+                height="34"
+              />
+            </ButtonDropdown>
+          </div>
+        )}
       </div>
 
       <div className="payrollInvoiceInfo">
@@ -1525,9 +1667,9 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                 <p>{getTransactionLabel()}</p>
               </div>
-              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 &&
+              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 && (
                 <p className="qbo">QBO No. {creditMemoData?.qbInvoiceNo}</p>
-              }
+              )}
             </div>
             <div className="amount">
               {missTransType != 7 && (
@@ -1571,12 +1713,14 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 <p>PO Number</p>
                 {status === "AR Review" || status === "Open" ? (
                   <input
-                  data-testid="PONUMBER"
+                    data-testid="PONUMBER"
                     onChange={(e: any) => {
-                      setPoNumber(Math.abs(parseInt(e.target.value)).toString())
-                      setSaveButtonDisable(false)}
-                    }
-                    value={poNumber || topPanel.poNumber}
+                      setPoNumber(
+                        Math.abs(parseInt(e.target.value)).toString()
+                      );
+                      setSaveButtonDisable(false);
+                    }}
+                    value={poNumber ? poNumber : topPanel.poNumber}
                     type="number"
                     className="poNoInput"
                   />
@@ -1591,12 +1735,14 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             {status === "AR Review" || status === "Open" ? (
               <div className="dpContainer">
                 <DatePicker
+                  label="invoiceDate"
                   placeholderText={moment(topPanel.invoiceDate).format(
                     "DD/MMM/YYYY"
                   )}
                   handleDateChange={(date: any) => {
-                    setInvoiceDate(date)
-                    setSaveButtonDisable(false)}}
+                    setInvoiceDate(date);
+                    setSaveButtonDisable(false);
+                  }}
                 />
               </div>
             ) : (
@@ -1674,8 +1820,8 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                         "DD/MMM/YYYY"
                       )}
                       handleDateChange={(date: any) => {
-                        setPaymentDue(date)
-                        setSaveButtonDisable(false)
+                        setPaymentDue(date);
+                        setSaveButtonDisable(false);
                       }}
                     />
                   </div>
@@ -1718,17 +1864,16 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
         </div>
       )}
 
+      {/* istanbul ignore next */}
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
-        <div className="paymentCompnent"> 
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        <div className="paymentCompnent">
           <PaymentDetailContainer
-            setPaymentDetailData={setPaymentDetailData}
             status={status}
             cid={cid}
             lookupData={lookupData}
             paymentDetailData={paymentDetailData}
             getBillingCurrency={getBillingCurrency}
-            id={id}
           />
         </div>
       ) : (
@@ -1750,7 +1895,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           currency={getBillingCurrency()}
           vatValue={vatValue}
           setCreditMemoData={setCreditMemoData}
-          setDataAvailable={setDataAvailable}
           isLogsOpen={isLogsOpen}
           changeLogs={changeLogs}
           setIsLogsOpen={setIsLogsOpen}
@@ -1760,6 +1904,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           setInitial={setInitial}
           setLimitFor={setLimitFor}
           setChangeLogs={setChangeLogs}
+          setDataAvailable={setDataAvailable}
           initail={initail}
           limitFor={limitFor}
         ></CreditMemoSummary>
@@ -1867,9 +2012,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                         ...{ data: item.data },
                       }}
                       colSort
-                      handleRowClick={(rowData: any) => {
-                        handleCompensationModal(rowData);
-                      }}
                     />
                     <div className="feeSummaryCalc">
                       <div className="rowFee">
@@ -1969,78 +2111,20 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                 transactionType={missTransType}
               ></FileUploadWidget>
             </div>
-            <Cards className="invoice-logs">
-              <Logs
-                custom
-                isOpen={isLogsOpen}
-                data={changeLogs}
-                title={
-                  <>
-                    <Icon
-                      icon="edit"
-                      size="small"
-                      color="#526FD6"
-                      viewBox="-2 -1 24 24"
-                      style={{
-                        marginTop: "0",
-                        padding: "0",
-                      }}
-                    />{" "}
-                    View Change Log
-                  </>
-                }
-                name="View-change-log"
-                handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
-                actions={{
-                  primary: {
-                    label: "View More",
-                    icon: {
-                      icon: "edit",
-                      size: "small",
-                      color: "#526FD6",
-                      viewBox: "-2 -1 24 24",
-                    },
-
-                    handleOnClick: () => {
-                      if (dataAvailable) {
-                        const spliced = [...logsData].splice(
-                          changeLogs.length,
-                          viewLimit
-                        );
-
-                        if (logsData.length > limitFor) {
-                          setInitial(limitFor);
-                          setLimitFor(limitFor + 10);
-                        }
-
-                        setChangeLogs([...changeLogs, ...spliced]);
-                      }
-                    },
-                    disabled: !dataAvailable,
-                  },
-                  secondary: {
-                    label: "View Less",
-                    icon: {
-                      icon: "edit",
-                      size: "small",
-                      color: "#526FD6",
-                      viewBox: "-2 -1 24 24",
-                    },
-                    handleOnClick: () => {
-                      const logs = [...changeLogs];
-                      logs.splice(initail, limitFor);
-                      setChangeLogs([...logs]);
-                      setInitial(initail - 10);
-                      setLimitFor(initail);
-                      if (logs.length === changeLogs.length) {
-                        setDataAvailable(true);
-                      }
-                    },
-                    disabled: changeLogs.length <= viewLimit,
-                  },
-                }}
-              />
-            </Cards>
+            <LogsCompo
+              isLogsOpen={isLogsOpen}
+              changeLogs={changeLogs}
+              setIsLogsOpen={setIsLogsOpen}
+              dataAvailable={dataAvailable}
+              logsData={logsData}
+              viewLimit={viewLimit}
+              setInitial={setInitial}
+              setLimitFor={setLimitFor}
+              setChangeLogs={setChangeLogs}
+              setDataAvailable={setDataAvailable}
+              initail={initail}
+              limitFor={limitFor}
+            ></LogsCompo>
           </>
         )}
       {missTransType == 7 && (
@@ -2051,7 +2135,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
           billStatus={status}
           invoiceId={state.InvoiceId}
           navigate={navigate}
-          totalAmount={apiData?.data?.invoice?.totalAmount}
+          totalAmount={apiData.data?.invoice?.totalAmount}
           state={state}
         ></BillsTable>
       )}
@@ -2073,75 +2157,6 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             </div>
             <div className="text-invoive-no">
               <p>{getTransactionLabel()}.</p>
-            </div>
-
-            <div className="dec_check_main">
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check1"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setEmployeeSalary(e.target.checked);
-                  }}
-                  checked={employeeSalary}
-                />
-                <label className="dec_check_label" onClick={() => setEmployeeSalary(!employeeSalary)}>Employee Salary is not correct</label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check2"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setBenefit(e.target.checked);
-                  }}
-                  checked={benefit}
-                />
-                <label className="dec_check_label" onClick={() => setBenefit(!benefit)}>Benefit Amount is not correct</label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check3"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setAmountUpdate(e.target.checked);
-                  }}
-                  checked={amountUpdate}
-                />
-                <label className="dec_check_label" onClick={() => setAmountUpdate(!amountUpdate)}>One-off pay items amount to be updated</label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check4"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setTermination(e.target.checked);
-                  }}
-                  checked={termination}
-                />
-                <label className="dec_check_label" onClick={() => setTermination(!termination)}>Termination</label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check5"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setinvoiceCalc(e.target.checked);
-                  }}
-                  checked={invoiceCalc}
-                />
-                <label className="dec_check_label" onClick={() => setinvoiceCalc(!invoiceCalc)}>Invoice Calculation Error</label>
-              </div>
-              <div className="dec_check_wrapp">
-                <Checkbox
-                  data-testid="check6"
-                  id="sampleCheckbox"
-                  onChange={function noRefCheck(e: any) {
-                    setfeeIssue(e.target.checked);
-                  }}
-                  checked={feeIssue}
-                />
-                <label className="dec_check_label" onClick={() => setfeeIssue(!feeIssue)}>Fee Issue</label>
-              </div>
             </div>
 
             <div className="text-invoice-comment">
@@ -2171,10 +2186,9 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               <Button
                 data-testid="decline-button-submit"
                 disabled={!inputValue}
-                label="Decline"
+                label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
-              
                   let currDate = new Date();
                   axios({
                     method: "POST",
@@ -2376,8 +2390,8 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
               </div>
               <div className="section-2">
                 <div className="col-3"></div>
-                <div className="col-9 misc-info">
-                  <div className="col-4">
+                <div className="col-6 misc-info">
+                  <div className="col-6">
                     <div className="misc-info__item">
                       <Icon color="#767676" icon="pound" size="medium" />
                       &nbsp;
@@ -2398,7 +2412,7 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
                       </span>
                     </div>
                   </div>
-                  <div className="col-4">
+                  <div className="col-6">
                     <div className="misc-info__item misc-info__item__2">
                       <Icon color="#767676" icon="location" size="medium" />
                       &nbsp;
@@ -2415,6 +2429,41 @@ const [saveButtonDisable, setSaveButtonDisable] = useState(true);
             <div className="compensation-text">Compensation</div>
             <div className="compensation-table">
               <Table options={compensationTableOptions} colSort />
+            </div>
+          </div>
+        </Modal>
+      </div>
+
+      <div className="delete-employee-modal">
+        <Modal
+          isOpen={deleteEmployeeModalOpen.isModalOpen}
+          handleClose={() => {
+            setDeleteEmployeeModalOpen({
+              ...deleteEmployeeModalOpen,
+              isModalOpen: false,
+            });
+          }}
+        >
+          <div className="delete-employee-inner-container">
+            <h1>Are you sure you want to delete this employee?</h1>
+            <div className="delete-emplyee-buttons">
+              <Button
+                data-testid="delete-button-Cancel"
+                label="Cancel"
+                className="secondary-btn medium"
+                handleOnClick={() => {
+                  setDeleteEmployeeModalOpen({
+                    ...deleteEmployeeModalOpen,
+                    isModalOpen: false,
+                  });
+                }}
+              />
+              <Button
+                data-testid="delete-button-submit"
+                label="Delete Employee"
+                className="primary-blue medium employee-button"
+                handleOnClick={() => deleteEmployee()}
+              />
             </div>
           </div>
         </Modal>
