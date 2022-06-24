@@ -1314,8 +1314,8 @@ export default function InvoiceDetails() {
                       : function noRefCheck() { }
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
+                    ? "download_disable"
+                    : "download"
                     }`}
                 // className="download"
                 >
@@ -2357,7 +2357,7 @@ export default function InvoiceDetails() {
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
                           ?.photoUrl
-                        : ""
+                        : (avatar)
                     }
                     style={{
                       "background-color": "#FFFFF",
