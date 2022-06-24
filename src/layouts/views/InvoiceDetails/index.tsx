@@ -139,7 +139,6 @@ export default function InvoiceDetails() {
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [creditMemoData, setCreditMemoData] = useState<any>(null);
   const [topPanel, setTopPanel] = useState<any>(topPanelObj);
-  console.log("topPanel", topPanel);
   const [vatValue, setVatValue] = useState();
   const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
   const viewLimit = 10;
@@ -470,7 +469,6 @@ export default function InvoiceDetails() {
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
               if (response.status == 200) {
-                console.log("response.data", response.data);
                 setCreditMemoData(response.data);
                 setNotes(response.data.invoiceNotes);
                 setDocuments(response.data.invoiceDocuments);
@@ -702,7 +700,6 @@ export default function InvoiceDetails() {
     axios
       .get(paymentdetailApi, headers)
       .then((res: any) => {
-        console.log("res", res);
         setPaymentDetailData(res?.data?.payments);
       })
       .catch((e: any) => {
@@ -1676,7 +1673,6 @@ export default function InvoiceDetails() {
                 <p>
                   Open{" "}
                   <span>
-                    {console.log("topPanel.open", topPanel.open)}
                     {getBillingCurrency()} {toCurrencyFormat(topPanel.open)}
                   </span>
                 </p>
