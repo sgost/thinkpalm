@@ -73,8 +73,8 @@ export default function CreditMemoSummary(props: any) {
   const [_dataAvail, setDataAvail] = useState(true);
 
   useEffect(() => {
-    if(changeLogs.length > 6) {
-        setDataAvail(false);
+    if (changeLogs.length > 6) {
+      setDataAvail(false);
     }
   }, [changeLogs]);
 
@@ -293,7 +293,7 @@ export default function CreditMemoSummary(props: any) {
     setVatAmount(subtotal * (vatValue / 100));
     payload.totalAmount = subtotal + subtotal * (vatValue / 100);
     if (creditMemoData.status != 9) {
-      setPayload({...payload, invoiceBalance: subtotal + subtotal * (vatValue / 100)})
+      setPayload({ ...payload, invoiceBalance: subtotal + subtotal * (vatValue / 100) })
     } else {
       payload.invoiceBalance = 0
     }
@@ -392,6 +392,10 @@ export default function CreditMemoSummary(props: any) {
       payload.invoiceItems[index].serviceCountry = selOption.value;
     }
   };
+
+
+  //Verifying vatAmount Type
+  let vatTotal = vatAmount != 'undefined' ? vatAmount : 0;
 
   return (
     <div className="credit-summary-wrapper">
@@ -717,13 +721,13 @@ export default function CreditMemoSummary(props: any) {
             <div className="rowFee no-border">
               <p className="title">VAT Amount</p>
               <p className="amount">
-                {currency} {toCurrencyFormat(vatAmount)}
+                {currency} {toCurrencyFormat(vatTotal)}
               </p>
             </div>
             <div className="totalRow">
               <p>Total Balance</p>
               <p className="total">
-                {currency} {toCurrencyFormat(subTotalAmount + vatAmount)}
+                {currency} {toCurrencyFormat(subTotalAmount + vatTotal)}
               </p>
             </div>
           </div>

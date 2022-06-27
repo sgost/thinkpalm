@@ -199,7 +199,7 @@ const PreviewInvoice = ({
               let countrySumTotalTempPayroll =
                 precisionRound(
                   (totalGrossWagesPayroll + totalAllowancesPayroll) *
-                    e.exchangeRate,
+                  e.exchangeRate,
                   2
                 ) +
                 precisionRound(totalExpenseReimbPayroll * e.exchangeRate, 2) +
@@ -390,8 +390,8 @@ const PreviewInvoice = ({
                     </div>
                   </div>
                 </div>
-           
-               <div className="newInfoDetails">
+
+                <div className="newInfoDetails">
                   <div className="column1">
                     <p className="newInvoiceHeading">From</p>
                     <p className="newInvoiceValue">
