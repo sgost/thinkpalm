@@ -104,13 +104,7 @@ const NewInvoice = () => {
     tableSharedColumns.createMemo,
   ]);
 
-  const [CountryOptions, setCountryOptions] = useState([
-    // {
-    //   isSelected: false,
-    //   label: "sdfgh",
-    //   value: "swaesrdgtf",
-    // }
-  ]);
+  const [CountryOptions, setCountryOptions] = useState([]);
 
   const [MonthOptions, setMonthOptions] = useState([
     monthNameOptions.january,
@@ -419,7 +413,7 @@ const NewInvoice = () => {
       const apiData = employeeApiData;
 
       let payLoadData = [];
-      for (const [key, value] of Object.entries(selectedRowPostData)) {
+      for (const [key, _value] of Object.entries(selectedRowPostData)) {
         const newPreapredData = apiData[key];
 
         newPreapredData.employeeDetail.compensation.payItems =
@@ -541,20 +535,20 @@ const NewInvoice = () => {
     const dueDate = new Date();
     dueDate.setDate(invoiceDate.getDate() + payTerms);
 
-    let transactionType = null;
+    let transactionTypeVar = null;
 
     switch (stepperOneData?.type) {
       case "Proforma":
-        transactionType = 3;
+        transactionTypeVar = 3;
         break;
 
       case "Credit Memo":
-        transactionType = 4;
+        transactionTypeVar = 4;
 
         break;
 
       case "Miscellaneous":
-        transactionType = 2;
+        transactionTypeVar = 2;
         break;
     }
 
@@ -572,7 +566,7 @@ const NewInvoice = () => {
       CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
       // CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
-      TransactionType: transactionType, //
+      TransactionType: transactionTypeVar, //
       // CreatedDate: currDate, // ? current date
       DueDate: dueDate, //
       CreatedDate: format(invoiceDate, "yyyy-MM-dd"),

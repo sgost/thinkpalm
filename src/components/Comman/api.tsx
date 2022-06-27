@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { getHeaders } from "../../urls/urls";
 
 const getRequest = (url: any, token: any, cid?: any, isClient: any) => {
   const [data, setData] = useState([]);
 
   const headers = {
-    headers: {
-      authorization: `Bearer ${token}`,
-      "x-apng-base-region": "EMEA",
-      "x-apng-customer-id": cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-      "x-apng-external": isClient,
-      "x-apng-inter-region": "0",
-      "x-apng-target-region": "EMEA",
-      customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-      customerid: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f"
-    },
+    headers: getHeaders(token, cid, isClient),
   };
 
   useEffect(() => {

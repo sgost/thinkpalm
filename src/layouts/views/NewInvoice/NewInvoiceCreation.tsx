@@ -122,7 +122,7 @@ const NewInvoiceCreation = ({
   }, []);
 
   const preparedCustomerData = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
           ...item,
@@ -139,7 +139,6 @@ const NewInvoiceCreation = ({
         };
       }
     });
-    return newData;
   };
 
   const getCustomerDropdownOptions = () => {
@@ -170,7 +169,7 @@ const NewInvoiceCreation = ({
   };
 
   const preparedPayrollCustomerData = (data: any) => {
-    const newData = data?.customers?.map((item: any) => {
+    return data?.customers?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
           isSelected: true,
@@ -185,7 +184,6 @@ const NewInvoiceCreation = ({
         };
       }
     });
-    return newData;
   };
 
   const getPayrollCustomerDropdownOptions = () => {
@@ -211,7 +209,7 @@ const NewInvoiceCreation = ({
   };
 
   const preparedCountryData = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       if (item.id === stepperOneData?.countryId) {
         return {
           isSelected: true,
@@ -226,7 +224,6 @@ const NewInvoiceCreation = ({
         };
       }
     });
-    return newData;
   };
 
   const getCountryDropdwonOptions = () => {
@@ -685,7 +682,7 @@ const NewInvoiceCreation = ({
                         yearId: item.value,
                       });
                     }}
-                    handleDropdownClick={(_b: boolean) => {
+                    handleDropdownClick={(_optionClick: boolean) => {
                       setIsInvoicer(false);
                       setIsRecAcc(false);
                       setIsCurrency(false);

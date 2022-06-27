@@ -74,7 +74,7 @@ export default function InvoiceDetails() {
   };
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
-  const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
+  const [missTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -122,8 +122,6 @@ export default function InvoiceDetails() {
   const [inputVoidValue, setInputVoidValue] = useState("");
   const [approvalMsg, setApprovalMsg] = useState("");
   const [notes, setNotes] = useState<any>([]);
-  const [isFileError, setIsFileError] = useState<any>(null);
-  const [transactionType, setTransactionType] = useState();
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
   const [deleteEmployeeModalOpen, setDeleteEmployeeModalOpen] = useState({
@@ -264,12 +262,15 @@ export default function InvoiceDetails() {
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
-                            res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
+                            // (status === "Declined" || status === "AR Review") &&
+                            (res.data?.invoice?.status === 2 ||
+                              res.data?.invoice?.status === 12) &&
+                               (
                               handleCompensationModal(item)
-                            ) : (
-                              <></>
-                            );
+                            ) 
+                            // : (
+                            //   <></>
+                            // );
                           }}
                         >
                           {item.employeeId}
@@ -281,12 +282,15 @@ export default function InvoiceDetails() {
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
-                            res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
+                            // (status === "Declined" || status === "AR Review") &&
+                            (res.data?.invoice?.status === 2 ||
+                              res.data?.invoice?.status === 12) &&
+                               (
                               handleCompensationModal(item)
-                            ) : (
-                              <></>
-                            );
+                            ) 
+                            // : (
+                            //   <></>
+                            // );
                           }}
                         >
                           {item.firstName + " " + item.lastName}
@@ -513,7 +517,6 @@ export default function InvoiceDetails() {
           };
           setTimeout(() => {
             setApiData(res);
-            setTransactionType(res.data.invoice.transactionType);
           });
         }
       })
@@ -945,7 +948,7 @@ export default function InvoiceDetails() {
   const handleVoid = async () => {
     const headers = getHeaders(tempToken, cid, isClient);
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
       .post(urls.voidUploadFile, formData, {
@@ -978,7 +981,6 @@ export default function InvoiceDetails() {
       })
       .catch((e: any) => {
         console.log(e);
-        setIsFileError(true);
       });
 
     let currDate = new Date();
@@ -1375,8 +1377,11 @@ export default function InvoiceDetails() {
 
           {(status === "Approved" &&
             missTransType !== 4 &&
-            missTransType !== 7 && getPermissions(missTransType, "AddPayment")) ||
-            (status === "Invoiced" && missTransType === 7 && getPermissions(missTransType, "AddPayment")) ? (
+            missTransType !== 7 &&
+            getPermissions(missTransType, "AddPayment")) ||
+          (status === "Invoiced" &&
+            missTransType === 7 &&
+            getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1894,7 +1899,6 @@ export default function InvoiceDetails() {
             id={id}
             topPanel={topPanel}
             setTopPanel={setTopPanel}
-            status={status}
           />
         </div>
       ) : (

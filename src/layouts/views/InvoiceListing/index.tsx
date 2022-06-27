@@ -151,93 +151,27 @@ export default function InvoiceListing() {
   const [status, setStatus] = useState(statusOptions);
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
-      {
-        header: "Invoice No",
-        isDefault: true,
-        key: "invoiceNo",
-      },
-      {
-        header: "Customer",
-        isDefault: true,
-        // key: "customer",
-        key: "customerName",
-      },
-      {
-        header: "Status",
-        isDefault: true,
-        key: "statusLabel",
-      },
-      {
-        header: "Type",
-        isDefault: true,
-        key: "transactionTypeLabel",
-      },
-      {
-        header: "Invoice Date",
-        isDefault: true,
-        key: "createdDate",
-      },
-      {
-        header: "Due Date",
-        isDefault: true,
-        key: "dueDate",
-      },
-      {
-        header: "Total",
-        isDefault: true,
-        key: "totalAmount",
-      },
-      {
-        header: "Balance",
-        isDefault: true,
-        key: "invoiceBalance",
-      },
-      {
-        header: "Exported to QB",
-        isDefault: true,
-        key: "exportToQB",
-      },
+      tableSharedColumns.invoiceNo,
+      tableSharedColumns.customerName,
+      tableSharedColumns.statusLabel,
+      tableSharedColumns.transactionTypeLabel,
+      tableSharedColumns.createdDate,
+      tableSharedColumns.dueDate,
+      tableSharedColumns.totalAmount,
+      tableSharedColumns.invoiceBalance,
+      tableSharedColumns.exportToQB,
     ],
     data: [],
   });
   const [clientTableData, setClientTableData] = useState({
     columns: [
-      {
-        header: "Invoice Number",
-        isDefault: true,
-        key: "invoiceNo",
-      },
-
-      {
-        header: "Status",
-        isDefault: true,
-        key: "statusLabel",
-      },
-      {
-        header: "Type",
-        isDefault: true,
-        key: "transactionTypeLabel",
-      },
-      {
-        header: "Invoice Date",
-        isDefault: true,
-        key: "createdDate",
-      },
-      {
-        header: "Payment Due",
-        isDefault: true,
-        key: "dueDate",
-      },
-      {
-        header: "Total",
-        isDefault: true,
-        key: "totalAmount",
-      },
-      {
-        header: "Balance",
-        isDefault: true,
-        key: "invoiceBalance",
-      },
+      tableSharedColumns.invoiceNo,
+      tableSharedColumns.statusLabel,
+      tableSharedColumns.transactionTypeLabel,
+      tableSharedColumns.createdDate,
+      tableSharedColumns.dueDate,
+      tableSharedColumns.totalAmount,
+      tableSharedColumns.invoiceBalance,
     ],
     data: [],
   });
@@ -1034,7 +968,7 @@ export default function InvoiceListing() {
                 handleDropOptionClick={(opt: any) => {
                   let copy = [...status];
                   let index = status.findIndex((e) => e.value === opt.value);
-                  copy.forEach((e, ind) => {
+                  copy.forEach((_e, ind) => {
                     if (ind === index) {
                       if (copy[index].isSelected) {
                         copy[index] = { ...opt, isSelected: false };

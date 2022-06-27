@@ -48,7 +48,7 @@ export default function CreditMemoSummary(props: any) {
   const [newAmount, setNewAmount] = useState<any>(0);
   const [newCountry, setNewCountry] = useState<any>();
   const [newProduct, setNewProduct] = useState<any>();
-  const [newTotalAmount, setNewTotalAmount] = useState<any>();
+  const [_newTotalAmount, setNewTotalAmount] = useState<any>();
   const [openProductService, setOpenProductService] = useState(false);
   const [openEditProductService, setOpenEditProductService] = useState<any>();
   const [openCountryService, setOpenCountryService] = useState(false);
@@ -66,13 +66,11 @@ export default function CreditMemoSummary(props: any) {
   const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
   const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
   const [payload, setPayload] = useState<any>(creditMemoData);
-  const [initial, setInit] = useState(0);
-  const [limit, setLimit] = useState(10);
   const showAddFields = () => {
     setAddSectionCheck(true);
   };
 
-  const [dataAvail, setDataAvail] = useState(true);
+  const [_dataAvail, setDataAvail] = useState(true);
 
   useEffect(() => {
     if(changeLogs.length > 6) {

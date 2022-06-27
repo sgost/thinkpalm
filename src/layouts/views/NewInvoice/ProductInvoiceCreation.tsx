@@ -41,8 +41,8 @@ const ProductInvoiceCreation = ({
   //Product API
   let productApi = productInvoice();
   const [toggleState, setToggleState] = useState(0);
-  const [totalQuantity, setTotalQuantity] = useState(0);
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [_totalQuantity, setTotalQuantity] = useState(0);
+  const [_totalAmount, setTotalAmount] = useState(0);
 
   //CountryAPI
   let countryApi = CountryApi();
@@ -54,9 +54,9 @@ const ProductInvoiceCreation = ({
     }
   }, []);
 
-  const productFun = (productApi: any) => {
+  const productFun = (productApiUrl: any) => {
     axios
-      .get(productApi, headers)
+      .get(productApiUrl, headers)
       .then((response: any) => {
         const temp: any = [];
         response?.data.map((item: any) =>
@@ -76,9 +76,9 @@ const ProductInvoiceCreation = ({
       });
   };
 
-  const countryFun = (countryApi: any) => {
+  const countryFun = (countryApiUrl: any) => {
     axios
-      .get(countryApi, headers)
+      .get(countryApiUrl, headers)
       .then((response: any) => {
         const temp: any = [];
         response?.data.serviceCountries.map((item: any) =>
@@ -141,9 +141,9 @@ const ProductInvoiceCreation = ({
   };
 
   const handleChange = (e: any, index: any) => {
-    const tempData = [...todos];
-    tempData[index][e.target.name] = e.target.value;
-    setTodos(tempData);
+    const newtempData = [...todos];
+    newtempData[index][e.target.name] = e.target.value;
+    setTodos(newtempData);
   };
 
   const blockInvalidChar = (e: any) =>
@@ -225,8 +225,8 @@ const ProductInvoiceCreation = ({
 
                         let copy = [...tempData];
                         let typesValue = "";
-                        copy.forEach((_e, i) => {
-                          if (i === index) {
+                        copy.forEach((_e, key) => {
+                          if (key === index) {
                             if (copy[index].isSelected) {
                               copy[index] = { ...opt, isSelected: false };
                             } else {
