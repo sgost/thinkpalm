@@ -1690,4 +1690,30 @@
       }
     }
   }
+
+  .sent-popup{
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem;
+    .sent-popup-header{
+      font-size: 1.75rem;
+      padding-bottom: 2.5rem;
+      font-weight: 500;
+    }
+    .sent-popout-body{
+      font-size: 1.125rem;
+    }
+    .sent-popout-action{
+      display: flex;
+      justify-content: end;
+      margin-top: 3.5rem;
+    }
+    .no-sent-btn{
+      width: 3.75rem;
+      margin-right: 1.125rem;
+    }
+    .yes-sent-btn{
+      width: 3.75rem;
+    }
+  }
 }

@@ -74,6 +74,7 @@ export default function InvoiceDetails() {
   };
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
+  const [sentPopup, setSentPopup] = useState(true);
   const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -2484,6 +2485,37 @@ export default function InvoiceDetails() {
           </div>
         </Modal>
       </div>
+      {missTransType == 7 && apiData?.data?.invoice?.status == 10 && <div>
+        <Modal
+          isOpen = {sentPopup}
+          width = "31.3125rem"
+          height = "auto"
+          handleClose={() => {
+            setSentPopup(false)
+          }}
+        >
+          <div className="sent-popup">
+            <div className="sent-popup-header">
+              Final Invoice Confirmation
+            </div>
+            <div className="sent-popout-body">Do you want to request an email receipt against the final invoice?</div>
+            <div className="sent-popout-action">
+              <Button
+                data-testid=""
+                label="No"
+                className="secondary-btn medium no-sent-btn"
+                handleOnClick={()=>{setSentPopup(false)}}
+              />
+              <Button
+                data-testid=""
+                label="Yes"
+                className="primary-blue medium yes-sent-btn"
+                handleOnClick={()=>{setSentPopup(false)}}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>}
     </div>
   );
 }
