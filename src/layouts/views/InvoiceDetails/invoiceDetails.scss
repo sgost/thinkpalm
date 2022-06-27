@@ -5,10 +5,20 @@
   .invoiceDetailsContainer {
     padding-bottom: 2.222rem;
 
+    .change-miss {
+      background-color: white !important;
+    }
+
+    .submit_customer {
+      margin-left: 1.4rem;
+    }
+
     .invoiceDetailsHeaderRow {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 1.333rem;
+      margin-bottom: 0.333rem;
+      flex-direction: column;
+      position: relative;
 
       .breadcrumbs {
         display: flex;
@@ -34,6 +44,8 @@
         display: flex;
         gap: 1.111rem;
         position: relative;
+        margin: 0 0 2rem auto;
+        align-items: center;
 
         .void-button {
           cursor: pointer;
@@ -41,7 +53,7 @@
           button.a-button.secondary-btn {
             border: none !important;
             color: red !important;
-            margin-right: -38px;
+            margin-right: -2.1111rem;
           }
 
           button.a-button.small {
@@ -51,6 +63,8 @@
         }
 
         .addPaymentButton {
+          margin-right: 2.1rem;
+
           button.a-button.medium {
             margin-right: -2rem;
           }
@@ -103,7 +117,11 @@
           }
         }
 
+        
+
         .decline-invoice {
+          background-color: white;
+
           button.a-button.small {
             font-size: 0.889rem;
             height: 2.5rem;
@@ -142,6 +160,7 @@
         button.a-button.secondary-btn {
           background-color: $white;
         }
+
         button.a-button.small {
           width: 9.31rem;
         }
@@ -157,6 +176,67 @@
 
       .download-invoice-dropdown {
         position: relative;
+      }
+
+      .cp-download {
+        position: absolute;
+        right: 0;
+        bottom: -1.5rem;
+
+        .a-button {
+          background: transparent !important;
+          color: #526fd6 !important;
+          text-align: right;
+
+          svg {
+            padding: 0;
+          }
+
+          .chevron-down {
+            display: inline-block !important;
+          }
+
+          .chevron-up {
+            display: none !important;
+            transform: rotate(0deg) !important;
+          }
+        }
+
+        &.is-drop-closed .a-button {
+          .chevron-down {
+            display: inline-block !important;
+          }
+
+          .chevron-up {
+            display: none !important;
+          }
+        }
+
+        &.is-drop-open .a-button {
+          .chevron-down {
+            display: none !important;
+          }
+
+          .chevron-up {
+            display: inline-block !important;
+          }
+        }
+
+        .button-popup-section {
+          top: 2.5rem;
+          right: 0;
+          box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
+          border-radius: 4px;
+
+          .column-display-list {
+            color: #767676;
+            padding: 0.75rem 1rem;
+
+            &:hover {
+              font-weight: 500;
+            }
+          }
+        }
       }
     }
 
@@ -193,8 +273,20 @@
 
           .invoiceNo {
             display: flex;
-            align-items: center;
-            gap: 0.333rem;
+            flex-direction: column;
+
+            .qbo_wrapper {
+              display: flex;
+              align-items: center;
+              gap: 0.333rem;
+            }
+
+            .qbo {
+              font-style: normal;
+              font-weight: 400;
+              font-size: 1.2rem;
+              line-height: 3rem;
+            }
 
             p {
               color: $white;
@@ -226,7 +318,10 @@
       .infoDetails {
         display: flex;
         padding: 1.6667rem;
-
+        margin-bottom: 3rem;
+        span.react-datepicker__label {
+          display: none;
+        }
         @mixin heading {
           color: $primary-blue;
           font-size: 0.8rem;
@@ -250,6 +345,7 @@
             .a-dpicker__container {
               width: 14rem;
             }
+
             .a-dpicker .react-datepicker__input-container input {
               width: 10.778rem;
             }
@@ -322,6 +418,324 @@
       }
     }
 
+    .paymentDisplayContainer {
+      background-color: $white;
+      border-radius: 0.4444rem;
+
+      .border-line {
+        border-top: 0.1rem solid #000000;
+      }
+
+      .paymentInstallmentContainer {
+        display: flex;
+        flex-direction: column;
+        margin: 0rem 3rem 1rem;
+        padding-top: 2rem;
+
+        .paymentPageTitleHeader {
+          display: flex;
+          justify-content: space-between;
+          padding: 0rem 1rem 2rem;
+
+          p {
+            color: #17224e;
+            font-size: 1.4rem;
+          }
+
+          .topButtonActions {
+            display: flex;
+            flex-direction: row;
+
+            .paymentDetailEdit {
+              button.a-button.medium {
+                font-size: 1.2rem;
+                width: 7.13rem;
+              }
+
+              svg {
+                height: 1.3rem;
+                width: 1.3rem;
+              }
+            }
+
+            .paymentPageCancelSave {
+              display: flex;
+              width: 18rem;
+              justify-content: space-between;
+              align-items: center;
+
+              .paymentDetailCancel {
+                button.a-button.secondary-btn {
+                  border: 0px;
+                  font-size: 1.2rem;
+                }
+              }
+
+              .paymentDetailSave {
+                button.a-button.medium {
+                  width: 10.13rem;
+                  font-size: 1.1rem;
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+
+        .paymentPageTitleHeaderNoTitle {
+          display: flex;
+          justify-content: flex-end;
+          padding: 0rem 1rem 3rem;
+
+          .topButtonActions {
+            display: flex;
+            flex-direction: row;
+
+            .paymentDetailEdit {
+              button.a-button.medium {
+                font-size: 1.2rem;
+                width: 7.13rem;
+              }
+
+              svg {
+                height: 1.3rem;
+                width: 1.3rem;
+              }
+            }
+
+            .paymentPageCancelSave {
+              display: flex;
+              width: 18rem;
+              justify-content: space-between;
+              align-items: center;
+
+              .paymentDetailCancel {
+                button.a-button.secondary-btn {
+                  border: 0px;
+                  font-size: 1.2rem;
+                }
+              }
+
+              .paymentDetailSave {
+                button.a-button.medium {
+                  width: 10.13rem;
+                  font-size: 1.1rem;
+                  font-weight: 500;
+                }
+              }
+            }
+          }
+        }
+
+        .paymentInstallmentUpperBlock {
+          display: flex;
+          margin-bottom: 5rem;
+          gap: 3.5rem;
+
+          .paymentInstallmentDatepicker {
+            margin-left: 1rem;
+
+            .react-datepicker__input-container{
+              input{
+                width: 14.778rem;
+              }
+            }
+
+            span.react-datepicker__label:after {
+              content: "*";
+              color: red;
+            }
+          }
+
+          .paymentInstallmentContainerDropdowns {
+            margin-left: 1rem;
+            width: 17.778rem;
+
+           
+
+            .a-dropdown {
+              z-index: inherit;
+            }
+
+            span.a-dropdown__title:after {
+              content: "*";
+              color: red;
+            }
+            .referenceNoInput {
+              margin-top: -1.2rem;
+              .disable-input-color {
+                background: #f5f5f6 !important;
+              }
+
+              span {
+                font-size: 0.889rem;
+                margin-left: 0.2rem;
+                color: #767676;
+              }
+
+              span::after {
+                content: "*";
+                color: red;
+              }
+
+              input {
+                padding: 0.8rem;
+                background: #fff !important;
+                border: 0.056rem solid #ced4da;
+                border-radius: 0.222rem;
+                cursor: text;
+                display: flex;
+                font-size: 1rem;
+                position: relative;
+                width: 16.5rem;
+              }
+              .disable-input {
+                background: #f5f5f6 !important;
+              }
+              .disable-label {
+                color: #b4b3bb !important;
+              }
+            }
+          }
+        }
+
+        .paymentInstallmentLowerBlock {
+          display: flex;
+          margin-bottom: 3rem;
+          justify-content: space-between;
+
+          .paymentInnerLowerBlock {
+            display: flex;
+            width: 64rem;
+            gap: 3.5rem;
+
+            .paymentInstallmentContainerDropdowns {
+              margin-left: 1rem;
+
+              
+
+              .a-dropdown {
+                z-index: inherit;
+              }
+
+              span.a-dropdown__title:after {
+                content: "*";
+                color: red;
+              }
+            }
+
+            .PaymentPageTotalAmountInput {
+              margin-top: -1.2rem;
+              margin-left: 1rem;
+
+              .amountPaymentPageInput {
+                input {
+                  color: #767676;
+                }
+                .disable-input-color {
+                  background: #f5f5f6 !important;
+                  color: #767676;
+                }
+
+                span {
+                  font-size: 0.889rem;
+                  margin-left: 0.2rem;
+                  color: #767676;
+                }
+
+                span::after {
+                  content: "*";
+                  color: red;
+                }
+
+                input {
+                  padding: 0.8rem;
+                  background: #fff !important;
+                  border: 0.056rem solid #ced4da;
+                  border-radius: 0.222rem;
+                  cursor: text;
+                  display: flex;
+                  font-size: 1rem;
+                  position: relative;
+                  width: 16.3rem;
+                }
+              }
+
+              .fullAmountPaymentNoInput {
+                color: #767676;
+                font-size: 0.7rem;
+                margin-top: 0.5rem;
+                margin-left: 0.1rem;
+              }
+            }
+          }
+
+          .PaymentPageTotalAmount {
+            margin-top: -3rem;
+            margin-left: 1rem;
+
+            p {
+              color: $primary-blue;
+              margin-bottom: 0rem;
+              font-weight: 600;
+            }
+
+            .amountPaymentPage {
+              color: $primary-blue;
+              background-color: $active;
+              padding: 1rem 1rem;
+              border-radius: 8px;
+              font-size: 1.5rem;
+              font-weight: 500;
+            }
+
+            .fullAmountPaymentCheckbox {
+              margin-top: 0.7rem;
+              margin-left: 0.5rem;
+
+              .a-checkbox-wrapper input[type="checkbox"] {
+                height: 0.8rem;
+                width: 0.8rem;
+              }
+
+              .a-checkbox-wrapper label {
+                font-weight: 500;
+                top: 0rem;
+              }
+            }
+          }
+        }
+      }
+
+      .addPaymentInstallmentButton {
+        border-top: 1rem solid #eff1f4;
+
+        .addPaymentInstallmentIcon {
+          display: flex;
+          align-items: center;
+          color: #526fd6;
+          cursor: pointer;
+          padding: 2rem 3rem;
+          font-weight: 500;
+
+          span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #526fd6;
+            padding: 3px 1px 2px 4px;
+            border-radius: 1.8rem;
+            margin: 0 0.5rem 0 0;
+
+            svg {
+              margin: 0 !important;
+            }
+          }
+        }
+      }
+
+    }
+
     .tab {
       display: flex;
       padding: 0.6667rem 0px;
@@ -343,7 +757,7 @@
     }
 
     .tableHeader {
-      margin-left: 16px;
+      margin-left: 0.8889rem;
     }
 
     .payroll {
@@ -389,7 +803,7 @@
       h3 {
         color: $primary-blue;
         background-color: $active;
-        padding: 16px;
+        padding: 0.8889rem;
         border-radius: 8px;
       }
     }
@@ -728,6 +1142,33 @@
         margin-top: -0.722rem;
       }
 
+      .a-checkbox-wrapper label {
+        display: none;
+      }
+
+      .dec_check_main {
+        margin-top: 1.3rem;
+      }
+
+      .dec_check_wrapp {
+        display: flex;
+      }
+
+      #dec_check_wrapp #sampleCheckbox {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .dec_check_wrapp .dec_check_label {
+        display: flex;
+        margin: 0 0 0 1rem;
+        font-size: 1rem;
+        line-height: 1rem;
+        color: #3e3e3e;
+        cursor: pointer;
+        font-weight: 400;
+      }
+
       .text-invoice-comment {
         display: flex;
         flex-direction: column;
@@ -893,6 +1334,9 @@
 
     .upper-delete-button {
       display: flex;
+      position: absolute;
+      right: 0;
+      bottom: -3rem;
 
       .delete-invoice {
         display: flex;
@@ -906,7 +1350,6 @@
         img {
           height: 1.1111rem;
           width: 1.1111rem;
-          // margin-top: 12px;
         }
 
         h5 {
@@ -992,28 +1435,259 @@
         font-weight: bold;
       }
     }
+
+    .compensation-full-container {
+      .a-modal__body {
+        height: 80vh;
+        width: 57%;
+        display: block;
+        padding: 0;
+      }
+
+      .compensation-inner-container {
+        .profile-header-container {
+          margin-bottom: 1.7rem;
+          margin-top: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          border-radius: 10px;
+
+          > div {
+            display: flex;
+          }
+
+          .section-1 {
+            background-color: #041e42;
+            width: 100%;
+            height: 10rem;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+
+            .img-container {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+
+              .a-iupload {
+                width: 10.333rem;
+                height: 10.333rem;
+                position: relative;
+                top: 6rem;
+                font-family: "CircularXX", Arial, Helvetica, sans-serif;
+                border: none !important;
+                background: #eef1fb;
+                cursor: context-menu;
+                margin-left: 3rem;
+
+                .a-iupload__icon {
+                  display: none !important;
+                }
+
+                &__initials {
+                  cursor: context-menu;
+                  font-size: 5rem;
+                  letter-spacing: -0.625rem;
+                }
+
+                img {
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 100%;
+                }
+
+                &__icon {
+                  width: 3.5rem;
+                  height: 3.5rem;
+                  right: 1.5rem;
+                }
+              }
+            }
+
+            .info-text-container {
+              position: absolute;
+              right: 40px;
+              bottom: 1rem;
+
+              .info-text {
+                font-style: normal;
+                font-weight: 450;
+                font-size: 1rem;
+                line-height: 1.444rem;
+                text-align: right;
+                color: #ffffff;
+                padding-top: 0.8rem;
+              }
+            }
+
+            .col-6 {
+              margin-left: 1rem;
+
+              .header {
+                font-style: normal;
+                font-weight: 500;
+                font-size: 2.3rem;
+                line-height: 3.222rem;
+                letter-spacing: -0.005em;
+                color: #ffffff;
+                padding-top: 4rem;
+              }
+
+              .sub-header {
+                font-style: normal;
+                font-weight: 500;
+                font-size: 1.333rem;
+                line-height: 1.889rem;
+                color: #cbd4f3;
+              }
+            }
+          }
+
+          .section-2 {
+            background-color: #e0e5f8;
+            width: 100%;
+            height: 10rem;
+            border-radius: 0 0 10px 10px;
+
+            .misc-info {
+              height: 100%;
+              display: flex;
+
+              &__item {
+                display: flex;
+                color: #041e42;
+                font-style: normal;
+                font-weight: 450;
+                font-size: 1rem;
+                line-height: 1.444rem;
+                padding-top: 2rem;
+
+                &__2 {
+                  .desig {
+                    font-style: normal;
+                    font-weight: 450;
+                    font-size: 1rem;
+                    line-height: 1.444rem;
+                    color: #767676;
+                  }
+                }
+              }
+            }
+
+            .compensation-invoice-status {
+              display: flex;
+              justify-content: flex-end;
+              width: 38%;
+              align-items: center;
+
+              p {
+                color: green;
+                border: 1px solid;
+                font-size: 1rem;
+                padding: 0.5rem 1.7rem;
+                border-radius: 2rem;
+                margin-right: 3rem;
+                background-color: #eef5f1;
+                margin-top: 6rem;
+              }
+            }
+          }
+        }
+
+        .compensation-text {
+          font-size: 1.4rem;
+          padding: 1rem 2.6rem;
+          display: flex;
+          justify-content: flex-start;
+          width: 90%;
+        }
+
+        .compensation-table {
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          margin-bottom: 4.3rem;
+          max-height: 15rem;
+          overflow-y: scroll;
+
+          .table {
+            width: 92%;
+          }
+        }
+
+        .table {
+          .table__header {
+            .table__row {
+              padding-left: 1rem;
+            }
+          }
+
+          .table__body {
+            .table__row {
+              padding-left: 1rem;
+            }
+          }
+        }
+      }
+    }
   }
-}
 
-.toast {
-  position: fixed;
-  bottom: 0;
-  display: flex !important;
-  background: #041e42;
-  right: 3rem;
-  color: #ffffff;
-  width: 21.5rem;
-  height: 4.75rem;
-  align-items: center;
-  justify-content: space-around;
-  z-index: 9999;
-  opacity: 1 !important;
-  padding: 1rem;
+  .toast {
+    position: fixed;
+    bottom: 0;
+    display: flex !important;
+    background: #041e42;
+    right: 3rem;
+    color: #ffffff;
+    width: 21.5rem;
+    height: 4.75rem;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 9999;
+    opacity: 1 !important;
+    padding: 1rem;
 
-  &__action {
-      background: #526FD6;
+    &__action {
+      background: #526fd6;
       border-radius: 100%;
       display: flex;
       cursor: pointer;
+    }
+  }
+
+  .delete-employee-modal {
+    .a-modal__body {
+      height: 32vh;
+      width: 29%;
+    }
+
+    .delete-employee-inner-container {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
+      height: 16rem;
+      justify-content: space-between;
+
+      .delete-emplyee-buttons {
+        margin-top: 4.7778rem;
+        display: flex;
+        justify-content: end;
+
+        .employee-button {
+          margin-left: 1.6667rem;
+        }
+
+        svg {
+          display: inline-block !important;
+        }
+
+        button.a-button.medium {
+          font-size: 1.16rem;
+          width: 12.13rem;
+          border: 2px solid #526fd6 !important;
+        }
+      }
+    }
   }
 }

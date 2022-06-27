@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Checkbox, Button, ProfileHeader, Table, Icon } from "atlasuikit";
+import { Checkbox, ProfileHeader, Table, Icon } from "atlasuikit";
 import axios from "axios";
 import "./SelectEmployees.scss";
 import { getEmployee, getHeaders } from "../../../urls/urls";
@@ -19,11 +19,12 @@ const SelectEmployees = ({
   setSelectedRowPostData,
   loading,
   setLoading,
+  selectedRowPostData,
 }: any) => {
   const [cssForData, setCssForData] = useState(false);
   const [isPayrollItemsChecked, setIsPayrollItemsChecked] = useState(false);
   const [showTable, setShowTable] = useState(false);
-  const [showNoEmployeeText, setShowNoEmployeeText] = useState('');
+  const [showNoEmployeeText, setShowNoEmployeeText] = useState("");
 
   const getEmployyeApiData = () => {
     const headers = {
@@ -37,7 +38,6 @@ const SelectEmployees = ({
       stepperOneData?.yearId
     );
 
-
     setLoading(true);
 
     axios
@@ -50,12 +50,16 @@ const SelectEmployees = ({
         }
       })
       .catch((e: any) => {
-        if (e.response?.data?.includes('No Employees found under this customer')) {
+        if (
+          e.response?.data?.includes("No Employees found under this customer")
+        ) {
           setLoading(false);
-          setShowNoEmployeeText('No Employees found under this customer');
+          setShowNoEmployeeText("No Employees found under this customer");
         } else {
-          setLoading(false)
-          setShowNoEmployeeText("An error occurred while fetching employees for this customer")
+          setLoading(false);
+          setShowNoEmployeeText(
+            "An error occurred while fetching employees for this customer"
+          );
         }
       });
   };
@@ -64,8 +68,14 @@ const SelectEmployees = ({
     getEmployyeApiData();
   }, []);
 
-  const onRowCheckboxChange = (selectedRows: any) => {
-    setSelectedRowPostData(selectedRows);
+  const onRowCheckboxChange = (selectedRows: any, key: any) => {
+    let arr = { ...selectedRowPostData };
+    if (selectedRows?.length) {
+      arr[key] = selectedRows;
+    } else {
+      delete arr[key];
+    }
+    setSelectedRowPostData(arr);
   };
 
   const preparedTableData = (item: any, check: any) => {
@@ -190,7 +200,7 @@ const SelectEmployees = ({
 
                           <h5>
                             {
-                              item?.employeeDetail?.personalDetails?.homeAddress
+                              item?.employeeDetail?.jobDetails?.workAddress
                                 ?.country
                             }
                           </h5>
@@ -237,8 +247,14 @@ const SelectEmployees = ({
                                       key: "isInvoiced",
                                       value: true,
                                     },
+                                    selectedItems: selectedRowPostData[key],
                                     isMultiSelectDisabled: true,
-                                    onRowCheckboxChange: onRowCheckboxChange,
+                                    onRowCheckboxChange: (e: any) =>
+                                      onRowCheckboxChange(
+                                        e,
+                                        key,
+                                        item?.employeeDetail?.employeeID
+                                      ),
                                   }
                                 : {
                                     ...tableOptionsForNoData,

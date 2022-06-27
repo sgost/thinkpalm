@@ -7,7 +7,6 @@ const validateIsURLValid = () => {
     return process?.env?.ATLAS_ENVIRONMENT;
   }
   return "dev";
-  // return "qa";
 };
 /* istanbul ignore next */
 
@@ -22,9 +21,18 @@ const validateIsRegionValid = () => {
   return "eu";
 };
 /* istanbul ignore next */
+const validateIsDomainValid = () => {
+  if (
+    process?.env?.ATLAS_DOMAIN &&
+    process?.env?.ATLAS_DOMAIN !== "$ATLAS_DOMAIN"
+  ) {
+    return process?.env?.ATLAS_DOMAIN;
+  }
+  return "atlasbyelements.com";
+};
 
-const baseURL = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.atlasbyelements.com`;
-const metaDataUrl = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.atlasbyelements.com`;
+const baseURL = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.${validateIsDomainValid()}`;
+const metaDataUrl = `https://apigw-${validateIsURLValid()}-${validateIsRegionValid()}.${validateIsDomainValid()}`;
 
 const services = {
   atlasInvoiceService: "/atlas-invoiceservice/api",
@@ -33,6 +41,7 @@ const services = {
   atlasCustomerService: "/cs/api",
   contractorPayBillingService: "/billingservice/api",
   atlasSubscriptionService: "/atlas-subscriptionservice/api",
+  employeeCompensation: "/employee/employee/api",
 };
 
 export const urls = {
@@ -70,6 +79,9 @@ export const urls = {
     services.atlasInvoiceService +
     "/InvoiceNote/notes/{invoice-id}?inoviceNoteType=2",
 
+  updateInvoiceCalendar:
+    baseURL + services.atlasInvoiceService + "/Invoices/UpdateInvoiceCalendar/",
+
   contractorBillingService:
     baseURL + services.contractorPayBillingService + "/billing/",
   createCreditMemo: baseURL + services.atlasInvoiceService + "/invoices",
@@ -78,6 +90,21 @@ export const urls = {
     baseURL +
     services.atlasSubscriptionService +
     "/Subscription/GetCustomerWithSubscription",
+
+  subscriptionLookup:
+    baseURL +
+    services.atlasSubscriptionService +
+    `/Lookup/GetSubscriptionLookup`,
+
+  deleteEmployeeApi:
+    baseURL +
+    services.atlasIdgService +
+    "/PayrollChangeItems/RemoveEmployeeFromPayroll",
+  savePayments:
+    baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
+
+    getCustomersByIds:
+    baseURL + services.atlasCustomerService + "/Customer/GetAllByIds"
 };
 
 export const getClientListingUrl = (
@@ -94,6 +121,7 @@ export const getClientListingUrl = (
 };
 
 export const getInternalListingUrl = (
+  customerType,
   transactionTypes,
   statusType,
   dateFrom,
@@ -102,7 +130,7 @@ export const getInternalListingUrl = (
   return (
     baseURL +
     services.atlasInvoiceService +
-    `/invoices/filter?page=1&pageSize=10000&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
+    `/invoices/filter?page=1&pageSize=10000&customerIds=${customerType}&transactionTypes=${transactionTypes}&statuses=${statusType}&dateFrom=${dateFrom}&dateTo=${dateTo}`
   );
 };
 export const getVatValue = (cid) => {
@@ -151,6 +179,7 @@ export const getHeaders = (token, cid, isClient) => {
     "x-apng-inter-region": "0",
     "x-apng-target-region": "EMEA",
     customer_id: cid || "",
+    customerid: cid || ""
   };
 };
 
@@ -251,6 +280,52 @@ export const getEmployeeBreakdownUrl = (id) => {
   );
 };
 
+export const convertMissInvoice = (invoiceId) => {
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    "/invoices/ChangePerformaInvoice/" +
+    invoiceId
+  );
+};
+
 export const getUpdateCreditMemoUrl = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + "/invoices/" + invoiceId;
 };
+
+export const getUpdateInvoiceCalanderPoNoUrl = (invoiceId) => {
+  return (
+    baseURL +
+    services.atlasInvoiceService +
+    "/Invoices/UpdateInvoiceCalendar/" +
+    invoiceId
+  );
+};
+
+export const getEmployeeCompensationData = (employeeId) => {
+  return (
+    baseURL +
+    services.employeeCompensation +
+    `/PostOnboardInternal/PostOnboardEmployeeDetails?employeeId=${employeeId}`
+  );
+};
+
+export const subscriptionLookup = () => {
+  return (
+    baseURL +
+    services.atlasSubscriptionService +
+    `/Lookup/GetSubscriptionLookup`
+  );
+};
+
+export const calculateInvoiceUrl = (invoiceId) => {
+  return baseURL + services.atlasIdgService + `/InvoiceData/recalculate/${invoiceId}`
+}
+
+export const getPaymentDetailApi = (invoiceId) => {
+  return baseURL + services.atlasInvoiceService + `/Invoices/getrelatedpayments/${invoiceId}`
+}
+
+export const editPaymentDetailApi = () => {
+  return baseURL + services.atlasInvoiceService + `/Invoices/editpayment`
+}

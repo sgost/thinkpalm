@@ -1,11 +1,13 @@
 import { Table, Modal, Cards, Icon, FileHandler, Button, Banner } from 'atlasuikit';
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from 'react';
 import { amountWithCommas, customDate, formatFileSize, formatTimePeriod, ToastContainer } from '../../../components/Comman/Utils/utils'  // 'src/components/Comman/Utils/utils';
 import { profileImageEmpty } from '../../../assets/icons/index';
 import {
     urls
 } from "../../../urls/urls";
+import cn from "classnames";
 import "./billTable.scss";
 
 /* istanbul ignore next */
@@ -15,23 +17,31 @@ export const getFlagURL = (code: string, size?: string) => {
 };
 
 export default function BillsTable(props: any) {
+    const currentOrgId: any = localStorage.getItem("current-org-id");
+    const accessToken: any = localStorage.getItem("accessToken");
+    const decoded: any = jwt_decode(accessToken);
+    let listingRole = decoded.Permissions[currentOrgId].ContractorPay.Bill.includes("ElementsGeneralList");
     const customerId = props.customerId;
     const invoiceId = props.invoiceId;
-    const total = props.totalAmount;
+    
     const basecontractorURL = urls.contractorBillingService;
     const rejectEndPoint = "bill/reject"
     const moveToNextEndPoint = "bill/removeinvoice"
-    const documentDownloadApi = "https://apigw-dev-eu.atlasbyelements.com/contractorpay/api/document/personal/download?fileID="
-    const endpoint = "customer/bills?"
+   
+    const customerEndpoint = "customer/bills?";
+    const elementsEndpoint = "elements/bills?";
     const TableColumns = {
         columns: [
-            { header: "Bill Reference No.", isDefault: true, key: "referenceNo" },
+            { header: "Bill Ref No.", isDefault: true, key: "referenceNo" },
             { header: "Contractor Name", isDefault: true, key: "contractorName" },
             { header: "Contractor ID", isDefault: true, key: "contractor_id" },
             { header: "Country", isDefault: true, key: "country" },
             { header: "Pay Amount", isDefault: true, key: "payAmount" },
             { header: "FX Rate", isDefault: true, key: "exchangeRate" },
             { header: "Pay Converted", isDefault: true, key: "payConverted" },
+            { header: "Same Currency Fees", isDefault: true, key: "sameCurrencyFee" },
+            { header: "FX Fees", isDefault: true, key: "fxFee" },
+            { header: "Money Transfer Fees", isDefault: true, key: "moneyTransferFee" },
             { header: "Total", isDefault: true, key: "total" }
         ],
         showDefaultColumn: true,
@@ -62,8 +72,7 @@ export default function BillsTable(props: any) {
     /* istanbul ignore next */
     useEffect(() => {
         let data: any = [];
-        let paysConverted = 0;
-        rawData.forEach((item: any) => {
+        rawData?.invoiceBills?.forEach((item: any) => {
             data.push({
                 referenceNo: item.billReferenceNo || '-',
                 contractorName: {
@@ -76,11 +85,13 @@ export default function BillsTable(props: any) {
                     img: { src: item.countryCode ? getFlagURL(item.countryCode) : null }
                 },
                 payAmount: (item.billingCurrencyCode || '-') + ' ' + toCurrencyFormat(item.payAmount),
-                exchangeRate: item.exchangeRate?.toFixed(2),
-                payConverted: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate?.toFixed(2)),
-                total: props.currency + ' ' + toCurrencyFormat(item.payAmount * item.exchangeRate?.toFixed(2))
-            })
-            paysConverted = paysConverted + (item.payAmount * item.exchangeRate?.toFixed(2));
+                exchangeRate: item.exchangeRate,
+                payConverted: props.currency + ' ' + toCurrencyFormat(item.payConverted),
+                sameCurrencyFee: props.currency + ' ' + toCurrencyFormat(item.sameCurrencyFee || 0),
+                fxFee: props.currency + ' ' + toCurrencyFormat(item.fxFee || 0),
+                moneyTransferFee: props.currency + ' ' + toCurrencyFormat(item.moneyTransferFee || 0),
+                total: props.currency + ' ' + toCurrencyFormat((item.payAmount * item.exchangeRate) + (item.sameCurrencyFee || 0) + (item.fxFee || 0) + (item.moneyTransferFee || 0))
+            });
         });
         setTableData(data);
     }, [rawData])
@@ -105,17 +116,16 @@ export default function BillsTable(props: any) {
     const openBillDetailModal = (rowData: any) => {
         setOpenModal(!openModal);
         axios
-            .get(basecontractorURL + endpoint + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, {
+            .get(basecontractorURL + (listingRole ? elementsEndpoint : customerEndpoint) + "BillReferenceNumber=" + rowData.referenceNo + "&CustomerId=" + customerId, {
                 headers: {
                     accept: "text/plain",
-                    customerid: customerId,
+                    customerid: currentOrgId || "",
                     authorization: `Bearer ${localStorage.accessToken}`
                 }
             })
             .then((response: any) => {
                 if (response.status == 200) {
                     setClickedApiData(response.data.data.data[0]);
-                    console.log(response.data.data.data[0]);
                 } else {
                     console.log("Bill API failing on contractor service");
                 }
@@ -208,19 +218,52 @@ export default function BillsTable(props: any) {
         const endDate = customDate(clickedApiData.endDate, format);
         return formatTimePeriod(startDate, endDate);
     };
+
     /* istanbul ignore next */
-    const getSignedDownloadURL = async (payload: any = {}) => {
-        axios
-            .get(documentDownloadApi + payload.fileID, { headers: { accept: "*/*" } })
+    function blobToBase64(blob: any) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onloadend = function () {
+                resolve(reader.result);
+            };
+        });
+    }
+
+    /* istanbul ignore next */
+    function fetchImageAsBase64(req: any) {
+        const url = `${basecontractorURL}${req}`;
+        return new Promise((resolve) => {
+            const headers = new Headers({
+                authorization: `Bearer ${localStorage.accessToken}`,
+                "customerid": customerId
+            });
+            fetch(url, { headers })
+                .then((response) => response.blob())
+                .then((blob) => blobToBase64(blob))
+                .then((base64) => resolve(base64));
+        });
+    }
+    /* istanbul ignore next */
+    const downloadFile = (fileUrl: string | null, fileName: string) => {
+        if (!fileUrl) return;
+
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    /* istanbul ignore next */
+    const downloadBills = async (payload: any = {}) => {
+        return fetchImageAsBase64(`download?documentId=${payload.fileId}`)
             .then((response: any) => {
-                if (response.status == 200) {
-                    return response.data;
-                } else {
-                    console.log("Document Download API failing on contractor service");
-                }
+                return response;
             })
-            .catch((e: any) => {
-                console.log("error", e);
+            .catch((e) => {
+                console.log("error in document download", e);
             });
     };
 
@@ -235,25 +278,104 @@ export default function BillsTable(props: any) {
     /* istanbul ignore next */
     return (
         <div className="invoice_bill_table">
-            <Table
-                options={{
-                    ...TableColumns,
-                    ...{ data: tableData }
-                }}
-                handleRowClick={(rowData: any) => { openBillDetailModal(rowData) }}
-                colSort
-                pagination
-                pagingOptions={[15, 30, 45, 60]}
+            {!props.isSubscription && <div className={cn("table-container", {
+                "hide-pagination": (tableData?.length <= 15)
+            })}>
+                <Table
+                    options={{
+                        ...TableColumns,
+                        ...{ data: tableData }
+                    }}
+                    handleRowClick={(rowData: any) => { openBillDetailModal(rowData) }}
+                    colSort
+                    pagination
+                    pagingOptions={[15, 30, 45, 60]}
 
-            />
-            <div className="feeSummaryCalc">
-                <div className="rowFee">
-                    <p className="title">Pay Converted Total</p>
-                    <p className="amount">{props.currency} {toCurrencyFormat(total)}</p>
+                />
+            </div>}
+            {props.isSubscription && <div className="fee-details">
+                <div className="fee-details-header">
+                    <p className="title">Fee Details</p>
+                    <p className="subscription-plan">
+                        <span className="title">Subscription Plan</span>
+                        <span className="chip">{props.subscriptionType}</span>
+                    </p>
                 </div>
+                <div className="fee-details-body">
+                    <div className="fee-details-row">
+                        <div className="fee-details-row_item">
+                            <p className="heading">Subscription Fees</p>
+                            <p className="fee-value">{props.currency} {toCurrencyFormat(rawData?.subscriptionFees || 0)}</p>
+                        </div>
+                        <div className="fee-details-row_item">
+                            <p className="heading">Start Date</p>
+                            <p className="fee-value">{customDate(rawData?.startDate, "DD MMM YYYY")}</p>
+                        </div>
+                        <div className="fee-details-row_item">
+                            <p className="heading">End Date</p>
+                            <p className="fee-value">{customDate(rawData?.endDate, "DD MMM YYYY")}</p>
+                        </div>
+                    </div>
+                    <div className="fee-details-row">
+                        <div className="fee-details-row_item">
+                            <p className="heading">Per Contractor Per Fee</p>
+                            <p className="fee-value">{props.currency} {toCurrencyFormat(rawData?.perFee || 0)}</p>
+                        </div>
+                        <div className="fee-details-row_item">
+                            <p className="heading">Number of Active Contractors</p>
+                            <p className="fee-value">{rawData.activeContractors || 0}</p>
+                        </div>
+                        <div className="fee-details-row_item">
+                            <p className="heading">Contractor Tiered Fee</p>
+                            <p className="fee-value">{props.currency} {toCurrencyFormat(rawData?.tieredFee || 0)}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>}
+            <div className="feeSummaryCalc">
+                {
+                    !props.isSubscription && <>
+                        <div className="rowFee">
+                            <p className="title">Pay Converted Total</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.payConvertedTotal || 0)}</p>
+                        </div>
+                        <div className="rowFee">
+                            <p className="title">Funding Fee</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.fundingFee || 0)}</p>
+                        </div>
+                        <div className="rowFee">
+                            <p className="title">Same Currency Fees Total</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.sameCurrencyFeesTotal || 0)}</p>
+                        </div>
+                        <div className="rowFee">
+                            <p className="title">FX Fees Total</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.fxFeesTotal || 0)}</p>
+                        </div>
+                        <div className="rowFee">
+                            <p className="title">Money Transfer Fees Total</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.moneyTransferFeesTotal || 0)}</p>
+                        </div>
+                    </>
+                }
+                {
+                    props.isSubscription && <>
+                        <div className="rowFee">
+                            <p className="title">Subscription Fee</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.subscriptionFee || 0)}</p>
+                        </div>
+                        {props.subscriptionType === "Monthly" && <div className="rowFee">
+                            <p className="title">Contractor Tiered Fee</p>
+                            <p className="amount">{props.currency} {toCurrencyFormat(rawData?.tieredFee || 0)}</p>
+                        </div>}
+                        {props.subscriptionType === "Annually" && <div className="rowFee">
+                            <p className="title">Discount</p>
+                            <p className="amount">{rawData?.discount || 0}%</p>
+                        </div>}
+                    </>
+                }
                 <div className="totalRow">
                     <p>Total Due</p>
-                    <p className='total'>{props.currency} {toCurrencyFormat(total)}</p>
+                    <p className='total'>{props.currency} {toCurrencyFormat(rawData?.totalDue || 0)}</p>
                 </div>
             </div>
             <div className='modal-wrapper'>
@@ -338,9 +460,9 @@ export default function BillsTable(props: any) {
                                                     icon: 'download',
                                                     width: '35',
                                                     handleOnClick: /* istanbul ignore next */ async () => {
-                                                        getSignedDownloadURL({ fileID: clickedApiData.documents[0]?.documentId }).then((data: any) => {
-                                                            window.open(data?.url, '_blank');
-                                                        });
+                                                        downloadBills({
+                                                            fileId: clickedApiData.documents[0]?.documentId
+                                                        }).then((blobUrl: any) => downloadFile(blobUrl, clickedApiData.documents[0] && clickedApiData.documents[0].fileName));
                                                     },
                                                     disabled: !(clickedApiData?.documents
                                                         && clickedApiData.documents?.length > 0)
@@ -348,7 +470,7 @@ export default function BillsTable(props: any) {
                                             ]
                                         }}
                                         label={{
-                                            footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].size),
+                                            footer: formatFileSize(clickedApiData.documents[0] && clickedApiData.documents[0].fileSize),
                                             header: clickedApiData.documents[0] && clickedApiData.documents[0].fileName
                                         }}
                                     />
@@ -440,7 +562,7 @@ export default function BillsTable(props: any) {
                                     className="secondary-btn medium secondary-button reject-button"
                                     handleOnClick={() => { setRejectBanner(true) }}
                                 />
-                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.length > 1 && (
+                                    {(props?.billStatus === "Pending Approval" || props?.billStatus === "Invoiced") && rawData?.invoiceBills?.length > 1 && (
                                         <Button
                                             className="primary-blue medium primary next-invoice-button"
                                             label="Move To Next Invoice"
@@ -501,7 +623,6 @@ export default function BillsTable(props: any) {
                                         maxLength={400}
                                         onChange={(e) => {
                                             setRejectReason(e.target.value);
-                                            console.log(e.target.value);
                                         }}
                                         value={rejectReason}
                                         rows={4}

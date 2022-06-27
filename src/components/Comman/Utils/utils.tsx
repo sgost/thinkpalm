@@ -52,7 +52,7 @@ export const formatTimePeriod = (
 /* istanbul ignore next */
 export const formatFileSize = (bytes: number, decimalPoint: number = 0) => {
   if (bytes == 0) return "0 Bytes";
-  var k = 1000,
+  let k = 1000,
     dm = decimalPoint,
     sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"],
     i = Math.floor(Math.log(Number(bytes)) / Math.log(k));

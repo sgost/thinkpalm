@@ -1,5 +1,6 @@
-import { Cards, Button, Dropdown, Logs, DatePicker } from "atlasuikit";
+import { Cards, Button, Dropdown, DatePicker } from "atlasuikit";
 import axios from "axios";
+import LogsCompo from "../Logs/index"
 import moment from "moment";
 import { useEffect, useState } from "react";
 import {
@@ -27,6 +28,19 @@ export default function CreditMemoSummary(props: any) {
     serviceCountries,
     vatValue,
     setCreditMemoData,
+    status,
+    isLogsOpen,
+    changeLogs,
+    setIsLogsOpen,
+    dataAvailable,
+    logsData,
+    viewLimit,
+    setInitial,
+    setLimitFor,
+    setChangeLogs,
+    setDataAvailable,
+    initail,
+    limitFor
   } = props;
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
@@ -39,7 +53,6 @@ export default function CreditMemoSummary(props: any) {
   const [openEditProductService, setOpenEditProductService] = useState<any>();
   const [openCountryService, setOpenCountryService] = useState(false);
   const [openEditCountryService, setOpenEditCountryService] = useState<any>();
-  const [openLogs, setOpenLogs] = useState(false);
   const [addSectionCheck, setAddSectionCheck] = useState(false);
   const [editCheck, setEditCheck] = useState<any>();
   const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
@@ -53,15 +66,26 @@ export default function CreditMemoSummary(props: any) {
   const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
   const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
   const [payload, setPayload] = useState<any>(creditMemoData);
+  const [initial, setInit] = useState(0);
+  const [limit, setLimit] = useState(10);
   const showAddFields = () => {
     setAddSectionCheck(true);
   };
+
+  const [dataAvail, setDataAvail] = useState(true);
+
+  useEffect(() => {
+    if(changeLogs.length > 6) {
+        setDataAvail(false);
+    }
+  }, [changeLogs]);
+
   useEffect(() => {
     reCalculateTotal();
   }, [creditMemoData]);
   useEffect(() => {
     updateDropdowns();
-  }, [fieldValues]);
+  }, [fieldValues])
   useEffect(() => {
     axios
       .get(productInvoice())
@@ -95,9 +119,12 @@ export default function CreditMemoSummary(props: any) {
       .catch((err) => {
         console.log(err);
       });
+
+
   }, []);
 
   useEffect(() => {
+
     if (serviceCountries) {
       setCountryOptions(
         serviceCountries.map((x: any) => {
@@ -122,7 +149,9 @@ export default function CreditMemoSummary(props: any) {
       });
       setMultipleCountryArr(countryArr);
     }
-  }, [serviceCountries]);
+
+  }, [serviceCountries])
+
 
   const toCurrencyFormat = (amount: any) => {
     const cFormat = new Intl.NumberFormat("en-US", {
@@ -207,8 +236,7 @@ export default function CreditMemoSummary(props: any) {
   const callUpdateAPI = (): any => {
     reCalculateTotal();
     const tempToken = localStorage.getItem("accessToken");
-    var headers = getHeaders(tempToken, cid, isClient);
-    console.log(payload);
+    let headers = getHeaders(tempToken, cid, isClient);
     // return;
     axios
       .put(updateCreditMemoUrl(creditMemoData?.id), payload, {
@@ -231,11 +259,11 @@ export default function CreditMemoSummary(props: any) {
   const cleanNewObject = () => {
     setNewServiceDate(new Date());
     setProductOptions(
-      rawProducts.map((x: any) => {
+      rawProducts.map((r: any) => {
         return {
           isSelected: false,
-          label: x.glDescription,
-          value: x.id,
+          label: r.glDescription,
+          value: r.id,
         };
       })
     );
@@ -243,11 +271,11 @@ export default function CreditMemoSummary(props: any) {
     setNewProduct(null);
     setNewDescription("");
     setCountryOptions(
-      serviceCountries.map((x: any) => {
+      serviceCountries.map((s: any) => {
         return {
           isSelected: false,
-          label: x.text,
-          value: x.value,
+          label: s.text,
+          value: s.value,
         };
       })
     );
@@ -257,7 +285,7 @@ export default function CreditMemoSummary(props: any) {
   };
   /* istanbul ignore next */
   const reCalculateTotal = () => {
-    var subtotal = 0;
+    let subtotal = 0;
     for (let a of creditMemoData.invoiceItems) {
       // removed parseInt beacuse it is creating problem in decimal values
       // subtotal = subtotal + parseInt(a.totalAmount);
@@ -267,22 +295,22 @@ export default function CreditMemoSummary(props: any) {
     setVatAmount(subtotal * (vatValue / 100));
     payload.totalAmount = subtotal + subtotal * (vatValue / 100);
     if (creditMemoData.status != 9) {
-      payload.invoiceBalance = subtotal + subtotal * (vatValue / 100);
+      setPayload({...payload, invoiceBalance: subtotal + subtotal * (vatValue / 100)})
     } else {
-      payload.invoiceBalance = 0;
+      payload.invoiceBalance = 0
     }
   };
   /* istanbul ignore next */
   const updateDropdowns = () => {
-    let countryArr: any = [];
+    let countryArr: any = []
     if (serviceCountries) {
       fieldValues.forEach((item: any) => {
         countryArr.push(
-          serviceCountries.map((x: any) => {
+          serviceCountries.map((sc: any) => {
             return {
-              isSelected: x.value == item.serviceCountry,
-              label: x.text,
-              value: x.value,
+              isSelected: sc.value == item.serviceCountry,
+              label: sc.text,
+              value: sc.value,
             };
           })
         );
@@ -294,11 +322,11 @@ export default function CreditMemoSummary(props: any) {
     if (rawProducts) {
       for (let i of fieldValues) {
         arr.push(
-          rawProducts.map((x: any) => {
+          rawProducts.map((rp: any) => {
             return {
-              isSelected: x.id == i.productId,
-              label: x.glDescription,
-              value: x.id,
+              isSelected: rp.id == i.productId,
+              label: rp.glDescription,
+              value: rp.id,
             };
           })
         );
@@ -318,14 +346,14 @@ export default function CreditMemoSummary(props: any) {
   };
   /* istanbul ignore next */
   const setEditTotal = (index: number, value: any) => {
-    var newValue = value.replace(",", "");
+    let newValue = value.replace(",", "");
     newValue = newValue.substring(0, value.length - 3);
     fieldValues[index].totalAmount = newValue;
     setFieldValues([...fieldValues]);
   };
   /* istanbul ignore next */
   const setEditAmount = (index: number, value: any) => {
-    var newValue = value.replace(",", "");
+    let newValue = value.replace(",", "");
     fieldValues[index].amount = newValue;
     setFieldValues([...fieldValues]);
   };
@@ -403,21 +431,21 @@ export default function CreditMemoSummary(props: any) {
                         {getPermissions(
                           creditMemoData?.transactionType,
                           "Edit"
-                        ) && (
-                          <Button
-                            data-testid="edit-summary-button"
-                            className="primary-blue medium edit"
-                            icon={{
-                              color: "#fff",
-                              icon: "edit",
-                              size: "medium",
-                            }}
-                            label="Edit"
-                            handleOnClick={() => {
-                              setEditCheck(index);
-                            }}
-                          />
-                        )}
+                        ) && status !== "Declined" && (
+                            <Button
+                              data-testid="edit-summary-button"
+                              className="primary-blue medium edit"
+                              icon={{
+                                color: "#fff",
+                                icon: "edit",
+                                size: "medium",
+                              }}
+                              label="Edit"
+                              handleOnClick={() => {
+                                setEditCheck(index);
+                              }}
+                            />
+                          )}
                       </>
                     )}
                   {editCheck == index && (
@@ -723,6 +751,7 @@ export default function CreditMemoSummary(props: any) {
         )}
       <div className="filesNotes">
         <NotesWidget
+          status={status}
           notes={notes}
           setNotes={setNotes}
           isClient={isClient}
@@ -731,6 +760,7 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></NotesWidget>
         <FileUploadWidget
+          status={status}
           documents={documents}
           setDocuments={setDocuments}
           isClient={isClient}
@@ -739,54 +769,20 @@ export default function CreditMemoSummary(props: any) {
           transactionType={creditMemoData?.transactionType}
         ></FileUploadWidget>
       </div>
-      <Cards className="UI-change-log">
-        <Logs
-          data={[
-            {
-              customerEmail: "danielal@email.com",
-              date: "Sat May 14 2022",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "2",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "3",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "4",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-            {
-              customerEmail: "danielal@email.com",
-              date: "5",
-              fieldName: "pay type",
-              newValue: "NGN 70",
-              oldValue: "NGN 65",
-            },
-          ]}
-          isOpen={openLogs}
-          handleUpDown={() => {
-            setOpenLogs(!openLogs);
-          }}
-          handleViewMore={function noRefCheck() {}}
-          name="View-change-log"
-          title="View Change Log"
-        />
-      </Cards>
+      <LogsCompo
+        isLogsOpen={isLogsOpen}
+        changeLogs={changeLogs}
+        setIsLogsOpen={setIsLogsOpen}
+        dataAvailable={dataAvailable}
+        logsData={logsData}
+        viewLimit={viewLimit}
+        setInitial={setInitial}
+        setLimitFor={setLimitFor}
+        setChangeLogs={setChangeLogs}
+        setDataAvailable={setDataAvailable}
+        initail={initail}
+        limitFor={limitFor}
+      ></LogsCompo>
     </div>
   );
 }

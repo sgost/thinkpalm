@@ -5,6 +5,24 @@
     .invoice_bill_table {
         margin-top: 2.667rem;
 
+        ::-webkit-scrollbar {
+            height: 0.3rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+
+            &.hide-pagination {
+                .table__body {
+                    padding-bottom: 2rem;
+                }
+
+                .pagination {
+                    display: none;
+                }
+            }
+        }
+
         .toast {
             position: fixed;
             bottom: 0;
@@ -30,7 +48,16 @@
         }
 
         .table {
-            border-bottom: 1px solid #767676;
+            width: 160vw;
+
+            &__row__header,
+            &__row__data {
+                margin-left: 1rem;
+                &:last-child,
+                &:nth-last-child(3) {
+                    margin-left: 3rem;
+                }
+            }
         }
 
         .table__header {
@@ -42,7 +69,7 @@
             flex-direction: column;
             align-items: flex-end;
             background-color: $white;
-            padding: 1.1111rem;
+            padding: 2.5rem 1.1111rem;
 
             .spacerclass {
                 width: 70%;
@@ -50,8 +77,8 @@
 
             .rowFee {
                 display: flex;
-                border-bottom-style: solid;
-                // border-bottom-width: 1;
+                border-top-style: solid;
+                border-bottom: none;
                 border-color: $light-gray;
                 border-width: 2px;
                 width: 30%;
@@ -100,6 +127,7 @@
 
                 p {
                     color: $primary-blue;
+                    font-weight: 500;
                 }
 
                 .total {
@@ -171,6 +199,69 @@
 
                 span {
                     font-family: "circularmed", Arial, serif;
+                }
+            }
+        }
+        
+        .fee-details {
+            background: #fff;
+            border-radius: 8px;
+            padding: 2rem 5.5rem;
+
+            p {
+                margin: 0;
+            }
+
+            &-header {
+                .title {
+                    font-weight: 450;
+                    font-size: 1.75rem;
+                    color: #041E42;
+                    margin-bottom: 3rem;
+                }
+                .subscription-plan {
+                    .title {
+                        font-weight: 450;
+                        font-size: 1.125rem;
+                        color: #767676;
+                    }
+
+                    .chip {
+                        margin: 0 1rem;
+                        background: #EEF1FB;
+                        border: 1px solid #526FD6;
+                        color: #526FD6;
+                        border-radius: 20px;
+                        padding: 0.25rem 0.75rem;
+                    }
+                }
+            }
+
+            &-body {
+                margin-top: 4rem;
+            }
+            &-row {
+                display: flex;
+                justify-content: space-between;
+                width: 90%;
+
+                &:first-child {
+                    margin-bottom: 2.5rem;
+                }
+
+                &_item {
+                    min-width: 30%
+                }
+
+                .heading {
+                    color: #526fd6;
+                    font-size: 0.8rem;
+                    margin-bottom: 0.875rem;
+                }
+
+                .fee-value {
+                    font-size: 1.125rem;
+                    color: #3E3E3E;
                 }
             }
         }
@@ -248,7 +339,7 @@
                 display: block;
                 font-style: normal;
                 font-weight: 400;
-                font-size: 16px;
+                font-size: 0.8889rem;
                 line-height: 1.5rem;
                 color: #526FD6;
                 font-family: 'CircularXX', Arial, serif;

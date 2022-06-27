@@ -4,14 +4,10 @@ import { format } from "date-fns";
 import axios from "axios";
 import "./ProductInvoiceCreation.scss";
 import {
-  getCountryByCustomer,
-  urls,
   productInvoice,
   CountryApi,
   getHeaders,
 } from "../../../urls/urls";
-import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
-import { loadavg } from "os";
 
 const ProductInvoiceCreation = ({
   todos,
@@ -19,11 +15,9 @@ const ProductInvoiceCreation = ({
   setDateFrom,
   setCountryService,
   setProductService,
-  newArrPush,
   setNewArrPush,
   Open,
   setOpen,
-  newArrPushs,
   setNewArrPushs,
   Opens,
   setOpens,
@@ -35,6 +29,7 @@ const ProductInvoiceCreation = ({
   setCountryInitialData,
   tempDataCountry,
   setTempDataCountry,
+  CustomerOptions
 }: any) => {
   const tempToken = localStorage.getItem("accessToken");
   const cid = localStorage.getItem("current-org-id");
@@ -159,7 +154,7 @@ const ProductInvoiceCreation = ({
       {todos?.map((item: any, i: any) => (
         <div className="newinvoice_main">
           <div>
-            <div className="newinvoice-container">
+            <div className="newinvoice-container new_Invoice_itme_summary">
               <div id="head_sec">
                 <h3>Summary</h3>
                 <div id="action_buttons">
@@ -182,10 +177,10 @@ const ProductInvoiceCreation = ({
                 </div>
               </div>
 
-              <div id="container_main1">
+              <div id="container_main1" className="row">
                 {/* Customer */}
                 <div
-                  className="year-dropdown"
+                  className=" col-md-3 input-component"
                   data-testid="Date-picker"
                   onClick={() => localStorage.setItem("name_value", "date")}
                 >
@@ -204,7 +199,7 @@ const ProductInvoiceCreation = ({
                 {/* Product Service */}
 
                 <div
-                  className="dropdownP mandotary-field textcolor"
+                  className=" mandotary-field textcolor col-md-3 select-component"
                   onClick={() => {
                     localStorage.setItem("name_value", "product");
                     setOpen(true);
@@ -230,7 +225,7 @@ const ProductInvoiceCreation = ({
 
                         let copy = [...tempData];
                         let typesValue = "";
-                        copy.forEach((e, i) => {
+                        copy.forEach((_e, i) => {
                           if (i === index) {
                             if (copy[index].isSelected) {
                               copy[index] = { ...opt, isSelected: false };
@@ -264,7 +259,7 @@ const ProductInvoiceCreation = ({
 
                 {/* Description */}
 
-                <div className="dropdownP">
+                <div className=" col-md-3 input-component">
                   <span id="desc_label">Description</span>
                   <input
                     type="text"
@@ -279,10 +274,10 @@ const ProductInvoiceCreation = ({
                 </div>
               </div>
 
-              <div id="container_main2">
+              <div id="container_main2" className="row">
                 {/* Country Service */}
                 <div
-                  className="dropdownP mandotary-field textcolor"
+                  className=" mandotary-field textcolor col-md-3 input-component"
                   data-testid="Country_name"
                   onClick={() => {
                     localStorage.setItem("name_value", "country");
@@ -306,7 +301,7 @@ const ProductInvoiceCreation = ({
                       );
 
                       let copy = [...tempDataCountry];
-                      copy.forEach((e, ind) => {
+                      copy.forEach((_e, ind) => {
                         if (ind === index) {
                           if (copy[index].isSelected) {
                             copy[index] = { ...opt, isSelected: false };
@@ -337,7 +332,7 @@ const ProductInvoiceCreation = ({
                     }
                   />
                 </div>
-                <div className="dropdownCount">
+                <div className=" col-md-3 input-component uantity_mount">
                   <div id="count_tags">
                     <span>
                       Quantity <span style={{ color: "red" }}>*</span>
@@ -392,9 +387,10 @@ const ProductInvoiceCreation = ({
 
             <div id="container_main3" className="buttons">
               <span>Total Balance</span>
+              {console.log('currencyOptions',CustomerOptions)}
               <Button
                 label={
-                  "USD " +
+                  CustomerOptions.find( (e:any)=> e.isSelected )?.billingCurrency + " " +
                   (item.amount
                     ? item.quantity * item.amount
                     : 0

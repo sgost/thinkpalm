@@ -6,8 +6,9 @@ import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
 import getRequest from "../../../components/Comman/api";
-import dots from "./dots.svg";
+import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
+  urls,
   getClientListingUrl,
   getGenerateMultiplePdfUrl,
   getGenerateSinglePdfUrl,
@@ -24,7 +25,6 @@ export default function InvoiceListing() {
   let navigate = useNavigate();
   const accessToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
-  const currentRoles = JSON.parse(localStorage.getItem("current-org") || "");
   const customerId = localStorage.getItem("current-org-id");
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -34,9 +34,17 @@ export default function InvoiceListing() {
   const [dateTo, setDateTo] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [isClient, setIsClient] = useState<any>(null);
+  const [customerType, setCustomerType] = useState("");
+  const [customerData, setCustomerData] = useState([
+    {
+      isSelected: false,
+      label: "",
+      value: "",
+    },
+  ]);
+  const [customerOpen, setCustomerOpen] = useState(false);
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
     useState<boolean>(false);
-
   const [showSuccessToast, setShowSuccessToast] = useState({
     type: false,
     message: "Downloading...",
@@ -133,6 +141,11 @@ export default function InvoiceListing() {
       isSelected: false,
       label: "Invoiced",
       value: 10,
+    },
+    {
+      isSelected: false,
+      label: "Declined",
+      value: 12,
     },
   ];
   const [status, setStatus] = useState(statusOptions);
@@ -233,6 +246,7 @@ export default function InvoiceListing() {
   const [customerID, setCustomerId] = useState("");
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [searchText, setSearchText] = useState<any>("");
+  const [searchCustomer, setSearchCustomer] = useState<any>("");
   const [searchedTableData, setSearchedTableData] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -245,6 +259,7 @@ export default function InvoiceListing() {
       return api;
     } else if (isClient !== null && isClient === false) {
       api = getInternalListingUrl(
+        customerType,
         transactionTypes,
         statusType,
         dateFrom,
@@ -262,6 +277,14 @@ export default function InvoiceListing() {
 
   const clearFilter = () => {
     setTransactionTypes("");
+    setCustomerType("");
+    setCustomerData([
+      {
+        isSelected: false,
+        label: "",
+        value: "",
+      },
+    ]);
     setStatusType("");
     setDateTo("");
     setDateFrom("");
@@ -275,17 +298,17 @@ export default function InvoiceListing() {
       status: "",
     });
     setStatus(statusOptions);
-
     setTypes(typeOptions);
+    getCustomerDropdownOptions();
   };
 
   useEffect(() => {
-    if (currentRoles?.Payments?.Role === "Customer") {
-      setIsClient(true);
-    } else {
+    if (permission.InvoiceList.includes("InternalView")) {
       setIsClient(false);
+    } else {
+      setIsClient(true);
     }
-  }, [currentRoles]);
+  }, []);
 
   useEffect(() => {
     if (localStorage.contractorInvoiceState) {
@@ -372,7 +395,8 @@ export default function InvoiceListing() {
               ? "AR Review"
               : item.statusLabel || "",
           transactionTypeLabel: item.transactionTypeLabel || "",
-          createdDate: format(new Date(item.createdDate), "d MMM yyyy") || "",
+          createdDate:
+            format(new Date(item.submissionDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
@@ -396,7 +420,7 @@ export default function InvoiceListing() {
       }
     }
 
-    if (transactionTypes || statusType || dateFrom || dateTo) {
+    if (customerType || transactionTypes || statusType || dateFrom || dateTo) {
       setIsClearFilter(true);
     } else {
       setIsClearFilter(false);
@@ -416,10 +440,10 @@ export default function InvoiceListing() {
       const filteredData = {
         columns: clientTableData.columns,
         data: clientTableData.data.filter((e: any) =>
-          e.invoiceNo.includes(searchText)
+          e.invoiceNo.includes(searchText || searchCustomer)
         ),
       };
-      if (searchText && filteredData.data.length) {
+      if ((searchText || searchCustomer) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -429,20 +453,21 @@ export default function InvoiceListing() {
         columns: internalTabledata.columns,
         data: internalTabledata.data.filter(
           (e: any) =>
-            e.invoiceNo.includes(searchText) ||
-            e.customerName.toLowerCase().includes(searchText.toLowerCase())
+            e.invoiceNo.includes(searchText || searchCustomer) ||
+            e.customerName
+              .toLowerCase()
+              .includes((searchText || searchCustomer).toLowerCase())
         ),
       };
-      if (searchText && filteredData.data.length) {
+      if ((searchText || searchCustomer) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
       }
     }
-  }, [searchText]);
+  }, [searchText, searchCustomer]);
 
   const downloadFunction = () => {
-    console.log(multiInvoiceId);
     const download = (res: any) => {
       if (res.status === 200) {
         setDownloadDisable(false);
@@ -490,7 +515,6 @@ export default function InvoiceListing() {
 
   /* istanbul ignore next */
   const onRowCheckboxChange = (selectedRows: any) => {
-    console.log(selectedRows);
     setCheckedInvoices(selectedRows);
     if (selectedRows.length) {
       setDownloadDisable(false);
@@ -524,36 +548,68 @@ export default function InvoiceListing() {
       return true;
     }
 
+    /* istanbul ignore next */
     checkedInvoices.forEach((e: any) => {
       if (e.status != 4 && e.status != 10) {
         bool = true;
+      }
+
+      if (e.transactionType == 7) {
+        bool = true;
+      }
+
+      if (e.transactionType == 4) {
+        checkedInvoices.forEach((i: any) => {
+          if (i.transactionType != 4) {
+            bool = true;
+          }
+        });
+      }
+      if (checkedInvoices.length > 1) {
+        if (checkedInvoices[0].customerId != e.customerId) {
+          bool = true;
+        }
+        if (checkedInvoices[0]?.currency?.code != e?.currency?.code) {
+          bool = true;
+        }
       }
     });
 
     return bool;
   };
 
+  /* istanbul ignore next */
   const handleAddPaymentNavigation = (e: any) => {
     let isClientString = isClient ? "true" : "false";
-    if (e.value === "invoicePayment") {
-      if (checkedInvoices.length === 1) {
-        navigate(
-          "/pay/invoicedetails" +
-            checkedInvoices[0].id +
-            "/" +
-            checkedInvoices[0].customerId +
-            "/" +
-            isClientString +
-            "/payments",
-          {
-            state: {
-              InvoiceId: checkedInvoices[0].invoiceNo,
-              transactionType: checkedInvoices[0].transactionType,
-              rowDetails: checkedInvoices[0],
-            },
-          }
-        );
-      }
+    let isCreditRefund = checkedInvoices.findIndex(
+      (c: any) => c.transactionType == 4
+    );
+
+    const nav = () => {
+      navigate(
+        "/pay/invoicedetails" +
+          checkedInvoices[0].id +
+          "/" +
+          checkedInvoices[0].customerId +
+          "/" +
+          isClientString +
+          "/payments",
+        {
+          state: {
+            InvoiceId: checkedInvoices[0].invoiceNo,
+            transactionType: checkedInvoices[0].transactionType,
+            rowDetails: checkedInvoices[0],
+            inveoicesData: checkedInvoices,
+          },
+        }
+      );
+    };
+
+    if (e.value === "invoicePayment" && isCreditRefund == -1) {
+      nav();
+    }
+    if (e.value === "creditRefund" && isCreditRefund != -1) {
+      nav();
     }
   };
 
@@ -565,12 +621,43 @@ export default function InvoiceListing() {
     );
   }
 
+  //Customer filter
+  useEffect(() => {
+    getCustomerDropdownOptions();
+  }, []);
+
+  const getCustomerDropdownOptions = () => {
+    let allCustomerapi = urls.customers;
+    const headers = {
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+      },
+    };
+
+    axios
+      .get(allCustomerapi, headers)
+      .then((response: any) => {
+        const temp: any = [];
+        response?.data.map((item: any) =>
+          temp.push({
+            isSelected: false,
+            label: item.name,
+            value: item.customerId,
+          })
+        );
+        setCustomerData(temp);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  };
+
   return (
     <>
       <div className="container">
         <div className="listingBtnContainer">
-          <div>
-            {permission.Role === "FinanceAR" && (
+          <div className="add_payment_invoice">
+            {permission.InvoiceList.includes('AddPayment') && (
               <>
                 {handleAddNewPaymentDisable() ? (
                   <Button
@@ -602,8 +689,6 @@ export default function InvoiceListing() {
                       ],
                     }}
                     onChange={handleAddPaymentNavigation}
-                    testIdButton="test-drop-down-button"
-                    testIdOptions="test-drop-down-button-option"
                   >
                     <Icon
                       color="#ffff"
@@ -634,6 +719,7 @@ export default function InvoiceListing() {
             )}
           </div>
         </div>
+
         {!localStorage.redirectingInvoiceState && (
           <div className="dropdowns">
             <div className="inputContainer">
@@ -660,6 +746,60 @@ export default function InvoiceListing() {
                     color={downloadDisable ? "#CBD4F3" : "#526fd6"}
                     icon="download"
                     size="large"
+                  />
+                </div>
+              )}
+
+              {permission.InvoiceList.includes("InternalView") && (
+                <div className="customerSelection">
+                  <Dropdown
+                    data-testid="customer-type"
+                    title="Customer"
+                    multiple
+                    search
+                    isOpen={customerOpen}
+                    handleDropdownClick={(bool: any) => {
+                      setCustomerOpen(bool);
+                      if (bool) {
+                        setIsStatusOpen(false);
+                      }
+                    }}
+                    handleDropOptionClick={(opt: any) => {
+                      setCustomerOpen(true);
+                      let index = customerData.findIndex(
+                        (e) => e.value === opt.value
+                      );
+
+                      let copy = [...customerData];
+
+                      copy.forEach((_e, i) => {
+                        if (i === index) {
+                          if (copy[index].isSelected) {
+                            copy[index] = { ...opt, isSelected: false };
+                          } else {
+                            copy[index] = { ...opt, isSelected: true };
+                          }
+                        }
+                      });
+
+                      let typesValue = "";
+
+                      copy.forEach((item) => {
+                        if (item.isSelected) {
+                          if (typesValue) {
+                            typesValue += "," + item.value.toString();
+                            setSearchCustomer(item.label);
+                          } else {
+                            typesValue = item.value.toString();
+                            setSearchCustomer(item.label);
+                          }
+                        }
+                      });
+
+                      setCustomerData(copy);
+                      setCustomerType(typesValue);
+                    }}
+                    options={customerData}
                   />
                 </div>
               )}
@@ -779,6 +919,51 @@ export default function InvoiceListing() {
                       setDateFrom(thisYearStartFormatDate);
                       setDateTo(thisYearEndFormatDate);
                       break;
+
+                    case "Last Month":
+                      const lastMonthStartDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth() - 1
+                      );
+                      const lastMonthEndDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth() - 1,
+                        31
+                      );
+                      const lastMonthStartFormatDate = format(
+                        lastMonthStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const lastMonthEndFormatDate = format(
+                        lastMonthEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(lastMonthStartFormatDate);
+                      setDateTo(lastMonthEndFormatDate);
+                      break;
+
+                    case "Last Year":
+                      const lastYearStartDate = new Date(
+                        date.getFullYear() - 1,
+                        0,
+                        1
+                      );
+                      const lastYearEndDate = new Date(
+                        date.getFullYear() - 1,
+                        11,
+                        31
+                      );
+                      const lastYearStartFormatDate = format(
+                        lastYearStartDate,
+                        "yyyy-MM-dd"
+                      );
+                      const lastYearEndFormatDate = format(
+                        lastYearEndDate,
+                        "yyyy-MM-dd"
+                      );
+                      setDateFrom(lastYearStartFormatDate);
+                      setDateTo(lastYearEndFormatDate);
+                      break;
                   }
                   setIsDateOpen(!isDateOpen);
                 }}
@@ -795,6 +980,7 @@ export default function InvoiceListing() {
                   setIsTypeOpen(bool);
                   if (bool) {
                     setIsStatusOpen(false);
+                    setCustomerOpen(false);
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
@@ -802,7 +988,7 @@ export default function InvoiceListing() {
 
                   let copy = [...types];
 
-                  copy.forEach((e, i) => {
+                  copy.forEach((_item, i) => {
                     if (i === index) {
                       if (copy[index].isSelected) {
                         copy[index] = { ...opt, isSelected: false };
@@ -814,7 +1000,7 @@ export default function InvoiceListing() {
 
                   let typesValue = "";
 
-                  copy.forEach((e) => {
+                  copy.forEach((e: any) => {
                     if (e.isSelected) {
                       if (typesValue) {
                         typesValue += "," + e.value.toString();
@@ -842,6 +1028,7 @@ export default function InvoiceListing() {
                   setIsStatusOpen(bool);
                   if (bool) {
                     setIsTypeOpen(false);
+                    setCustomerOpen(false);
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
@@ -879,8 +1066,8 @@ export default function InvoiceListing() {
                 options={status}
               />
               {permission?.InvoiceList?.find((str: any) => str === "Edit") ===
-                "Edit" && <img src={dots} />}
-              {/* <FaEllipsisH className="icon" /> */}
+                "Edit" && <img src={disabled} className="disabled_dots" />}
+              {/* <FaEllipsisH className="icon" /> dots*/}
             </div>
           </div>
         )}
@@ -920,7 +1107,7 @@ export default function InvoiceListing() {
             </span>
           </div>
         )}
-        {searchText && !searchedTableData ? (
+        {(searchText || customerType) && !searchedTableData ? (
           <div className="invalidSearch">
             <div className="uhohContainer">
               <svg

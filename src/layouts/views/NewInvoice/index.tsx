@@ -13,7 +13,6 @@ import {
   tableSharedColumns,
   monthNameOptions,
 } from "../../../sharedColumns/sharedColumns";
-import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import {
   createManualInvoice,
@@ -24,12 +23,8 @@ import {
 } from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
-// import { getFlagPath } from "../InvoiceDetails/getFlag";
 const NewInvoice = () => {
 
-  const tempToken = localStorage.getItem("accessToken");
-  const cid = localStorage.getItem("current-org-id");
-  
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
   const [tempData, setTempData] = useState<any>([]);
@@ -63,13 +58,12 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
-  const [countriesData, setCountriesData] = useState<any>([]);
 
   const navigate = useNavigate();
 
   const accessToken = localStorage.getItem("accessToken");
 
-  var CurrentYear = new Date().getFullYear();
+  let CurrentYear = new Date().getFullYear();
 
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
@@ -143,40 +137,25 @@ const NewInvoice = () => {
 
   const [invoiceDate, setInvoiceDate] = useState<any>("");
 
+  const [invoicerOptions, setInvoicerOptions] = useState<any>([]);
+  const [receivableAccountOptions, setReceivableAccountOptions] = useState<any>(
+    []
+  );
+  const [currencyOptions, setCurrencyOptions] = useState<any>([]);
+  const [qbIdOptions, setQbIdOptions] = useState<any>([]);
+  const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
+  const [paymentMethodOptions, setPaymentMethodOptions] = useState<any>([]);
+
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
     columns: [
-      {
-        header: "Pay Item",
-        isDefault: true,
-        key: "payItemName",
-      },
-      {
-        header: "Amount",
-        isDefault: true,
-        key: "amount",
-      },
+      tableSharedColumns.payItemName,
+      tableSharedColumns.amount,
       tableSharedColumns.currencyCode,
-      {
-        header: "Effective Date",
-        isDefault: true,
-        key: "effectiveDate",
-      },
-      {
-        header: "End Date",
-        isDefault: true,
-        key: "endDate",
-      },
-      {
-        header: "Scope",
-        isDefault: true,
-        key: "scopesName",
-      },
-      {
-        header: "Frequency",
-        isDefault: true,
-        key: "payItemFrequencyName",
-      },
+      tableSharedColumns.effectiveDate,
+      tableSharedColumns.endDate,
+      tableSharedColumns.scopesName,
+      tableSharedColumns.payItemFrequencyName,
     ],
     data: [],
   });
@@ -279,6 +258,18 @@ const NewInvoice = () => {
     setLoading,
     invoiceDate,
     setInvoiceDate,
+    invoicerOptions,
+    setInvoicerOptions,
+    receivableAccountOptions,
+    setReceivableAccountOptions,
+    currencyOptions,
+    setCurrencyOptions,
+    qbIdOptions,
+    setQbIdOptions,
+    paymentTermsOptions,
+    setPaymentTermsOptions,
+    paymentMethodOptions,
+    setPaymentMethodOptions,
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -294,6 +285,7 @@ const NewInvoice = () => {
     setSelectedRowPostData,
     loading,
     setLoading,
+    selectedRowPostData,
   };
 
   //stepper three payroll props
@@ -353,10 +345,13 @@ const NewInvoice = () => {
     setCountryInitialData,
     tempDataCountry,
     setTempDataCountry,
+    CustomerOptions
   };
 
   const disableFunForStepOnePayroll = () => {
-    if (stepsCount == 1) {
+    if (loading) {
+      return true;
+    } else if (stepsCount == 1) {
       return !(
         stepperOneData?.customer !== "" &&
         stepperOneData?.type !== "" &&
@@ -364,23 +359,34 @@ const NewInvoice = () => {
         stepperOneData?.year !== "" &&
         stepperOneData?.month !== ""
       );
-    }
-    if (stepsCount == 2 && stepperOneData.type === "Payroll") {
-      return selectedRowPostData?.length > 0 ? false : true;
+    } else if (stepsCount == 2 && stepperOneData.type === "Payroll") {
+      return Object.keys(selectedRowPostData).length === 0 ? true : false;
+    } else {
+      return false;
     }
   };
 
   const disableFunForStepOneCreditMemo = () => {
-    if (stepsCount == 1) {
+    if (stepsCount == 1 && stepperOneData.type !== "Credit Memo") {
       return !(
         stepperOneData?.customer !== "" &&
         stepperOneData?.type !== "" &&
-        invoiceDate !== ""
+        invoiceDate !== "" &&
+        invoicerOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        receivableAccountOptions.findIndex(
+          (e: any) => e.isSelected === true
+        ) !== -1 &&
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
+    if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
+      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
+    }
+
+    let condition: any = [];
+    let boolen = false;
+
     if (stepsCount == 2) {
-      let condition: any = [];
-      let boolen = false;
       todos.forEach((item) => {
         if (
           item.product.length &&
@@ -394,34 +400,14 @@ const NewInvoice = () => {
           condition.push(true);
         }
       });
-
-      condition.forEach((element: any) => {
-        if (element) {
-          boolen = element;
-        }
-      });
-      return boolen;
     }
-  };
 
-  const disableFunForStepOneProforma = () => {
-    if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        invoiceDate !== ""
-      );
-    }
-  };
-
-  const disableFunForStepOneMiscellaneous = () => {
-    if (stepsCount == 1) {
-      return !(
-        stepperOneData?.customer !== "" &&
-        stepperOneData?.type !== "" &&
-        invoiceDate !== ""
-      );
-    }
+    condition.forEach((element: any) => {
+      if (element) {
+        boolen = element;
+      }
+    });
+    return boolen;
   };
 
   const handleNextButtonClick = () => {
@@ -430,8 +416,18 @@ const NewInvoice = () => {
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
       setLoading(true);
-      const PrepareData = employeeRowData;
-      PrepareData.employeeDetail.compensation.payItems = selectedRowPostData;
+      const apiData = employeeApiData;
+
+      let payLoadData = [];
+      for (const [key, value] of Object.entries(selectedRowPostData)) {
+        const newPreapredData = apiData[key];
+
+        newPreapredData.employeeDetail.compensation.payItems =
+          selectedRowPostData[key];
+
+        payLoadData.push(newPreapredData);
+      }
+
       const data = {
         customerId: stepperOneData?.customerId,
         userId: stepperOneData?.customerId,
@@ -441,7 +437,7 @@ const NewInvoice = () => {
         month: stepperOneData?.monthId,
         year: stepperOneData?.yearId,
         employeeDetail: {
-          employees: [PrepareData.employeeDetail],
+          employees: payLoadData,
         },
       };
       axios({
@@ -469,7 +465,7 @@ const NewInvoice = () => {
         url: updateInvoiceStatus(CreateManualPayrollRes?.invoiceId),
         headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
       })
-        .then((res: any) => {
+        .then((_res: any) => {
           setLoading(false);
           setStepsCount(stepsCount + 1);
         })
@@ -504,15 +500,6 @@ const NewInvoice = () => {
     ) {
       setStepsCount(4);
     }
-
-    // if (stepsCount == 1 && stepperOneData?.type === "Miscellaneous") {
-    //   setStepsCount(stepsCount + 1);
-    // }
-
-    // if (stepsCount == 2 && stepperOneData?.type === "Miscellaneous") {
-    //   //API integration here
-    //   setStepsCount(3);
-    // }
   };
 
   useEffect(() => {
@@ -520,18 +507,6 @@ const NewInvoice = () => {
       navigate("/pay");
     }
   }, [hideTopCheck]);
-
-  useEffect(() => {
-
-    axios
-      .get(urls.countries)
-      .then((countryRes: any) => {
-        setCountriesData(countryRes.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   const handleInvoiceCreation = () => {
     let invoiceItems = todos.map((e: any) => {
@@ -554,11 +529,17 @@ const NewInvoice = () => {
       balance += parseFloat(item.amount) * parseFloat(item.quantity);
     });
 
-    // const currDate = new Date();
+    const payTerms =
+      stepperOneData.type === "Credit Memo"
+        ? 7
+        : parseInt(
+          paymentTermsOptions
+            .find((e: any) => e.isSelected)
+            ?.text.split(" ")[0]
+        );
+
     const dueDate = new Date();
-    dueDate.setDate(invoiceDate.getDate() + 7);
-    dueDate.setMonth(invoiceDate.getMonth());
-    dueDate.setFullYear(invoiceDate.getFullYear());
+    dueDate.setDate(invoiceDate.getDate() + payTerms);
 
     let transactionType = null;
 
@@ -581,21 +562,15 @@ const NewInvoice = () => {
       (c: any) => c.customerId === stepperOneData?.customerId
     );
 
-    const currencyId = countriesData.find(
-      (c: any) => c.currency.code === customer?.billingCurrency
-    );
-    console.log(
-      "CustomerOptions",
-      customer?.billingAddress?.country,
-      stepperOneData?.customerId,
-      currencyId?.currency?.id
+    const currencyId = currencyOptions.find(
+      (c: any) => c.text === customer?.billingCurrency
     );
 
     let data = {
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
       CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
-      CurrencyId: currencyId?.currency?.id, // backend will provide it
+      // CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
       TransactionType: transactionType, //
       // CreatedDate: currDate, // ? current date
@@ -613,6 +588,13 @@ const NewInvoice = () => {
       InvoiceNotes: [],
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
+      // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
+      InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
+      BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
+      CurrencyId:
+        stepperOneData.type === "Credit Memo"
+          ? currencyId?.value
+          : currencyOptions.find((e: any) => e.isSelected)?.value,
     };
 
     if (!isInvoiceCreated) {
@@ -686,10 +668,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                  ? "step2-right-panel"
-                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                  ? "step2-credit-memo"
-                  : "",
+                    ? "step2-right-panel"
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -701,8 +683,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />

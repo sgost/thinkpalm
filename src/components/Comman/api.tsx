@@ -13,6 +13,7 @@ const getRequest = (url: any, token: any, cid?: any, isClient: any) => {
       "x-apng-inter-region": "0",
       "x-apng-target-region": "EMEA",
       customer_id: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+      customerid: cid ? cid : "a9bbee6d-797a-4724-a86a-5b1a2e28763f"
     },
   };
 

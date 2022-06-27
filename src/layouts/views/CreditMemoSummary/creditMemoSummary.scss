@@ -39,15 +39,25 @@
             width: -webkit-fill-available !important;
           }
         }
+        .input-component{
+          margin: 0;
+          padding: 0;
+        }
       }
 
       .quantity-box {
         width: 5.8rem;
-        margin-right: 2.2778rem;
+        margin-right: 1.2778rem;
+        .amount-box{
+          width: 66.6%;
+          input{
+            width: 100%;
+          }
+        }
       }
 
       .amount-box {
-        width: 55.6%;
+        width: 61.6%;
       }
       .UI-flex {
         display: flex;
@@ -104,6 +114,9 @@
 
       .line-sec-width {
         width: 46% !important;
+        .input-component{
+          padding:0;
+        }
       }
 
       .margin-top {

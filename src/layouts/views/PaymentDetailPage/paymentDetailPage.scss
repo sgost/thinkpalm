@@ -12,7 +12,19 @@
   .paymentPageInvoiceInfo {
     background-color: $white;
     border-radius: 0.4444rem;
-    margin-bottom: 2.333rem;
+    margin-bottom: 0.333rem;
+
+    .totalMultiContainer {
+      background-color: $secondary-blue;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0rem 5rem;
+      p {
+        color: $white;
+        font-size: 1.778rem;
+      }
+    }
 
     .paymentPageTopBar {
       background-color: $secondary-blue;
@@ -46,18 +58,34 @@
             }
           }
 
-          .paymentDetailPageamount {
+          .payment-header-two {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            p {
-              color: #cbd4f3;
-              margin: 0px;
-              font-size: 1.111rem;
-
-              span {
-                color: $white;
+            width: 18rem;
+            justify-content: space-around;
+            .paymentDetailPageamount {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              p {
+                color: #cbd4f3;
+                margin: 0px;
                 font-size: 1.111rem;
+
+                span {
+                  color: $white;
+                  font-size: 1.111rem;
+                }
+              }
+            }
+            .header-chevron-icon {
+              height: 3rem;
+              width: 2rem;
+              display: flex;
+              align-items: end;
+              cursor: pointer;
+              svg {
+                width: 2rem !important;
+                height: 2rem;
               }
             }
           }
@@ -148,27 +176,52 @@
 
           .paymentInstallmentContainerDropdowns {
             margin-left: 1rem;
-            span.a-dropdown__label.Currency::before {
-              content: "Select currency";
-              font-size: 1rem;
-            }
-            span.a-dropdown__label.Location::before {
-              content: "Select Location";
-              font-size: 1rem;
-            }
-            span.a-dropdown__label.Reference.No::before {
-              content: "Enter reference no";
-              font-size: 1rem;
-            }
-            .a-dropdown__label {
-              font-size: 0rem;
-            }
+            // span.a-dropdown__label.Currency::before {
+            //   content: "Select currency";
+            //   font-size: 1rem;
+            // }
+            // span.a-dropdown__label.Location::before {
+            //   content: "Select Location";
+            //   font-size: 1rem;
+            // }
+            // .a-dropdown__label {
+            //   font-size: 0rem;
+            // }
             .a-dropdown {
               z-index: inherit;
             }
             span.a-dropdown__title:after {
               content: "*";
               color: red;
+            }
+            .referenceNoInput {
+              margin-top: -1.2rem;
+              .disable-input-color {
+                background: #f5f5f6 !important;
+              }
+
+              span {
+                font-size: 0.889rem;
+                margin-left: 0.2rem;
+                color: #767676;
+              }
+
+              span::after {
+                content: "*";
+                color: red;
+              }
+
+              input {
+                padding: 0.8rem;
+                background: #fff !important;
+                border: 0.056rem solid #ced4da;
+                border-radius: 0.222rem;
+                cursor: text;
+                display: flex;
+                font-size: 1rem;
+                position: relative;
+                width: 17.5rem;
+              }
             }
           }
         }
@@ -183,17 +236,17 @@
             justify-content: space-between;
             .paymentInstallmentContainerDropdowns {
               margin-left: 1rem;
-              .a-dropdown__label {
-                font-size: 0rem;
-              }
-              span.a-dropdown__label.Deposited.to.bank::before {
-                content: "Select bank options";
-                font-size: 1rem;
-              }
-              span.a-dropdown__label.Payment.Method::before {
-                content: "Select payment method";
-                font-size: 1rem;
-              }
+              // .a-dropdown__label {
+              //   font-size: 0rem;
+              // }
+              // span.a-dropdown__label.Deposited.to.bank::before {
+              //   content: "Select bank options";
+              //   font-size: 1rem;
+              // }
+              // span.a-dropdown__label.Payment.Method::before {
+              //   content: "Select payment method";
+              //   font-size: 1rem;
+              // }
               .a-dropdown {
                 z-index: inherit;
               }
@@ -211,6 +264,9 @@
               margin-bottom: 0rem;
               font-weight: 600;
             }
+            input {
+              height: 2.5rem;
+            }
             .amountPaymentPage {
               color: $primary-blue;
               background-color: $active;
@@ -218,6 +274,10 @@
               border-radius: 8px;
               font-size: 1.5rem;
               font-weight: 500;
+
+              input {
+                background-color: transparent;
+              }
             }
             .fullAmountPaymentCheckbox {
               margin-top: 0.7rem;
@@ -266,6 +326,7 @@
     display: flex;
     gap: 1.25rem;
     margin-bottom: 2.333rem;
+    margin-top: 3rem;
 
     .box {
       width: 40%;
