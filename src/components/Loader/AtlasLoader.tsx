@@ -15,7 +15,7 @@ export default function AtlasLoader() {
   }, []);
 
   return (
-    <div className="loaderContainer">
+    <div data-testid='loader' className="loaderContainer">
       <div id="atlas-loader" />
     </div>
   );
