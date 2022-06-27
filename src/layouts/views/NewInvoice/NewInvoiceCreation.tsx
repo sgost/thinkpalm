@@ -682,7 +682,7 @@ const NewInvoiceCreation = ({
                         yearId: item.value,
                       });
                     }}
-                    handleDropdownClick={(_a: boolean) => {
+                    handleDropdownClick={(_optionClick: boolean) => {
                       setIsInvoicer(false);
                       setIsRecAcc(false);
                       setIsCurrency(false);

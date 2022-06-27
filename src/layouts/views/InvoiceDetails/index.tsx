@@ -1378,10 +1378,10 @@ export default function InvoiceDetails() {
           {(status === "Approved" &&
             missTransType !== 4 &&
             missTransType !== 7 &&
-            permission.Role === "FinanceAR") ||
+            getPermissions(missTransType, "AddPayment")) ||
           (status === "Invoiced" &&
             missTransType === 7 &&
-            permission.Role === "FinanceAR") ? (
+            getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
