@@ -206,35 +206,35 @@ const PaymentDetailPage = () => {
     });
   };
 
-  const prepareDepositToBankDropdownOption = (data: any) => {
-    return data?.map((item: any) => {
+  const prepareDepositToBankDropdownOption = (olddata: any) => {
+    return olddata?.map((d: any) => {
       return {
-        ...item,
+        ...d,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: d.text,
+        value: d.value,
       };
     });
   };
 
   const preparelocationDropdownOption = (data: any) => {
-    return data?.map((item: any) => {
+    return data?.map((newitem: any) => {
       return {
-        ...item,
+        ...newitem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: newitem.text,
+        value: newitem.value,
       };
     });
   };
 
-  const preparePaymentMethodDropdownOption = (data: any) => {
-    return data?.map((item: any) => {
+  const preparePaymentMethodDropdownOption = (newdata: any) => {
+    return newdata?.map((items: any) => {
       return {
-        ...item,
+        ...items,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: items.text,
+        value: items.value,
       };
     });
   };
@@ -253,7 +253,7 @@ const PaymentDetailPage = () => {
       (e: any) => e.invoiceKey === invoiceKey && e.blockKey === blockKey
     );
 
-    arr[index].options.forEach((e: any, i: number) => {
+    arr[index].options.forEach((e: any, _i: number) => {
 
       if (e.value === item.value) {
         e.isSelected = !e.isSelected;
@@ -354,8 +354,8 @@ const PaymentDetailPage = () => {
           isDisable = true;
         }
       });
-      currencyOptions.forEach((e: any) => {
-        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+      currencyOptions.forEach((event: any) => {
+        if (event.options.findIndex((item: any) => item.isSelected) == -1) {
           isDisable = true;
         }
       });
@@ -364,13 +364,13 @@ const PaymentDetailPage = () => {
           isDisable = true;
         }
       });
-      referenceNo.forEach((e: any) => {
-        if (!e.text) {
+      referenceNo.forEach((item: any) => {
+        if (!item.text) {
           isDisable = true;
         }
       });
-      bankToDepositOptions.forEach((e: any) => {
-        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+      bankToDepositOptions.forEach((items: any) => {
+        if (items.options.findIndex((obj: any) => obj.isSelected) == -1) {
           isDisable = true;
         }
       });
@@ -684,10 +684,9 @@ const PaymentDetailPage = () => {
  
   /* istanbul ignore next */
   const breadcrumbsLabel = () => {
-    const label = state.state.inveoicesData.map((item: any) => {
+    return state.state.inveoicesData.map((item: any) => {
       return item.transactionTypeLabel + " Invoice No. " + item.invoiceNo;
     });
-    return label;
   };
 
   return (
