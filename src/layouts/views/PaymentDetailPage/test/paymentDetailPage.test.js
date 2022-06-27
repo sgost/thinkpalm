@@ -415,7 +415,6 @@ describe("Payment details page lookup and subscription lookup api fail", () => {
 
 describe("Payment details page click on detail page breadcrumb", () => {
   beforeAll(() => {
-    cleanup();
     const mock = new MockAdapter(axios);
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
@@ -429,17 +428,16 @@ describe("Payment details page click on detail page breadcrumb", () => {
     useLocation.mockImplementation(() => ({
       state: mockStateSingleData,
     }));
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
-  test("save single", async () => {
+  test("breadcrumb", async () => {
     render(
       <HashRouter>
         <PaymentDetailPage />
       </HashRouter>
     );
    
-      const invoiceText = await screen.findAllByText(/Miscellaneous Invoice No. 1100810/);
+      const invoiceText = screen.getAllByText(/Miscellaneous Invoice No. 1100810/);
       expect(invoiceText[0]).toBeInTheDocument();
       fireEvent.click(invoiceText[0]);
 
@@ -465,7 +463,7 @@ describe("Payment details page click on invoice page breadcrumb", () => {
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
-  test("save single", async () => {
+  test("Invoices", async () => {
     render(
       <HashRouter>
         <PaymentDetailPage />

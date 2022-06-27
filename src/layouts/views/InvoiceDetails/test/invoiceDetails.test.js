@@ -105,7 +105,7 @@ import userEvent from "@testing-library/user-event";
 //     const row = await waitFor(() => screen.getByText("1000991"));
 //     fireEvent.click(row);
 
-//     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+//     await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
 //     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
 //   });
@@ -269,7 +269,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     screen.logTestingPlaygroundURL();
@@ -291,7 +291,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const download = screen.getByText(/Download/);
     fireEvent.click(download);
@@ -314,7 +314,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
@@ -327,7 +327,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -347,7 +347,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -364,7 +364,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -381,7 +381,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getAllByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const breadcrumbs = await waitFor(() => screen.getAllByText(/Invoices/));
     fireEvent.click(breadcrumbs[0]);
   });
@@ -392,7 +392,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
@@ -411,7 +411,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
@@ -579,7 +579,7 @@ describe("Invoice details decline api fail case handling", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
@@ -656,7 +656,7 @@ describe("void test cases on Apprroved", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -761,7 +761,7 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -866,7 +866,7 @@ describe("void test cases on Apprroved Create Api Failed", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -971,7 +971,7 @@ describe("void test cases on Apprroved Void Api Failed", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -1076,7 +1076,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -1232,7 +1232,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
 //       </HashRouter>
 //     );
 
-//     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+//     waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
 //     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
 //     fireEvent.click(filesTab);
@@ -1309,7 +1309,7 @@ describe("api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const attachmenttestId = await screen.findAllByText(
       /Something went wrong!/
@@ -1391,7 +1391,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
   //</HashRouter>
   //);
 
-  // waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  // waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //const savebtn = await waitFor(() => screen.findByTestId("save-button"));
   //fireEvent.click(savebtn);
   // const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
@@ -1409,7 +1409,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
     const poInput = await waitFor(() => screen.findByTestId("PONUMBER"));
     fireEvent.change(poInput, { target: { value: 1233 } });
@@ -1424,7 +1424,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
    // const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
       
@@ -1450,7 +1450,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1471,7 +1471,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
         <InvoiceDetails />
       </HashRouter>
     );
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const savebtn = await waitFor(() => screen.getByText(/save/i));
     fireEvent.click(savebtn);
   });
@@ -1545,7 +1545,7 @@ describe("delete test cases on AR Reveiew click on cancel button", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1629,7 +1629,7 @@ describe("delete test cases on AR Reveiew on false", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1714,7 +1714,7 @@ describe("delete test cases on AR Reveiew on api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1792,7 +1792,7 @@ describe("Invoice details auto approve checkbox click", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const approve = await screen.getByText(/Auto-Approval after 24h/);
     fireEvent.click(approve);
@@ -1878,7 +1878,7 @@ describe("Invoice details auto approve checkbox click api fail", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const approve = await screen.getByText(/Auto-Approval after 24h/);
     fireEvent.click(approve);
@@ -1943,7 +1943,7 @@ describe("Invoice details fee api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -1963,7 +1963,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const download = screen.getByText(/Download/);
   //   fireEvent.click(download);
@@ -1981,7 +1981,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const approve = screen.getByText(/Approve Invoice/);
   //   fireEvent.click(approve);
@@ -1994,7 +1994,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
   //   if (filesTab) { fireEvent.click(filesTab) }
   //   const input = await waitFor(() =>
@@ -2012,7 +2012,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
   //   if (filesTab) { fireEvent.click(filesTab) }
   //   const download = await waitFor(() =>
@@ -2027,7 +2027,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
   //   if (filesTab) { fireEvent.click(filesTab) }
   //   const download = await waitFor(() =>
@@ -2042,7 +2042,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getAllByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const breadcrumbs = await waitFor(() => screen.getAllByText(/Invoices/));
   //   fireEvent.click(breadcrumbs[0]);
   // });
@@ -2053,7 +2053,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const decline = screen.getByTestId("decline-button");
   //   fireEvent.click(decline);
@@ -2072,7 +2072,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const decline = screen.getByTestId("decline-button");
   //   fireEvent.click(decline);
@@ -2141,7 +2141,7 @@ describe("Invoice details invoice detail api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -2208,7 +2208,7 @@ describe("Invoice details lookup api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -2275,7 +2275,7 @@ describe("Invoice details countries api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -2353,7 +2353,7 @@ describe("Invoice details employeeBreakDown api fail", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const download = screen.getByText(/Download/);
     fireEvent.click(download);
@@ -2415,7 +2415,7 @@ describe("Invoice details view change log click", () => {
       </HashRouter>
     );
     return;
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -2491,7 +2491,7 @@ describe("add payment button click test cases on Apprroved", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const addPaymentButton = await screen.findByText(/Add Payment/);
     fireEvent.click(addPaymentButton);
@@ -2505,7 +2505,7 @@ describe("add payment button click test cases on Apprroved", () => {
        </HashRouter>
      );
  
-     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+     waitForElementToBeRemoved(() => screen.getByTestId('loader'));
  
      const setPoNumber =  screen.findByTestId("PONUMBER");
      const saveButton =   screen.findByTestId("SaveButton");
@@ -2588,7 +2588,7 @@ describe("delete employee on AR Review status api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     expect(payrollTab).toBeInTheDocument();
@@ -2682,7 +2682,7 @@ describe("delete employee on AR Review status", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     expect(payrollTab).toBeInTheDocument();

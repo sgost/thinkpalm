@@ -51,7 +51,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
-import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
+import { getPermissions, Loader } from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
 import cn from "classnames";
@@ -1088,7 +1088,7 @@ export default function InvoiceDetails() {
   };
 
   if (!apiData?.data && !isErr && !creditMemoData && !isErr) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
   if (isErr) {
     return <p>Something went wrong!</p>;
