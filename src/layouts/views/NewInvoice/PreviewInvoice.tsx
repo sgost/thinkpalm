@@ -374,7 +374,7 @@ const PreviewInvoice = ({
                         <span>
                           {getPayrollBillingCurrency()}{" "}
                           {payrollToCurrencyFormat(
-                            apiData?.data?.invoice?.invoiceBalance != 'undefined' ? apiData?.data?.invoice?.invoiceBalance : 0.00
+                            apiData?.data?.invoice?.invoiceBalance
                           )}
                         </span>
                       </p>
@@ -383,7 +383,7 @@ const PreviewInvoice = ({
                         <span>
                           {getPayrollBillingCurrency()}{" "}
                           {payrollToCurrencyFormat(
-                            apiData?.data?.invoice?.totalAmount != 'undefined' ? apiData?.data?.invoice?.totalAmount : 0.00
+                            apiData?.data?.invoice?.totalAmount
                           )}
                         </span>
                       </p>
