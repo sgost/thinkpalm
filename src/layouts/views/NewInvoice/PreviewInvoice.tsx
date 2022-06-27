@@ -199,7 +199,7 @@ const PreviewInvoice = ({
               let countrySumTotalTempPayroll =
                 precisionRound(
                   (totalGrossWagesPayroll + totalAllowancesPayroll) *
-                    e.exchangeRate,
+                  e.exchangeRate,
                   2
                 ) +
                 precisionRound(totalExpenseReimbPayroll * e.exchangeRate, 2) +
@@ -374,7 +374,7 @@ const PreviewInvoice = ({
                         <span>
                           {getPayrollBillingCurrency()}{" "}
                           {payrollToCurrencyFormat(
-                            apiData?.data?.invoice?.invoiceBalance
+                            apiData?.data?.invoice?.invoiceBalance != 'undefined' ? apiData?.data?.invoice?.invoiceBalance : 0.00
                           )}
                         </span>
                       </p>
@@ -383,15 +383,15 @@ const PreviewInvoice = ({
                         <span>
                           {getPayrollBillingCurrency()}{" "}
                           {payrollToCurrencyFormat(
-                            apiData?.data?.invoice?.totalAmount
+                            apiData?.data?.invoice?.totalAmount != 'undefined' ? apiData?.data?.invoice?.totalAmount : 0.00
                           )}
                         </span>
                       </p>
                     </div>
                   </div>
                 </div>
-           
-               <div className="newInfoDetails">
+
+                <div className="newInfoDetails">
                   <div className="column1">
                     <p className="newInvoiceHeading">From</p>
                     <p className="newInvoiceValue">
