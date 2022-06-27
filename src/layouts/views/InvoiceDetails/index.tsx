@@ -1749,6 +1749,11 @@ export default function InvoiceDetails() {
             ) : (
               <p className="value">{topPanel.invoiceDate}</p>
             )}
+            {missTransType == 7 && <>
+              <p className="heading">Due Date</p>
+              <p className="value">{topPanel.paymentDue}</p>
+              </>
+            }
 
             {missTransType != 7 && (
               <>
