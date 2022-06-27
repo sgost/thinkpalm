@@ -345,6 +345,7 @@ const NewInvoice = () => {
     setCountryInitialData,
     tempDataCountry,
     setTempDataCountry,
+    CustomerOptions
   };
 
   const disableFunForStepOnePayroll = () => {

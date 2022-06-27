@@ -657,7 +657,7 @@ export default function InvoiceListing() {
       <div className="container">
         <div className="listingBtnContainer">
           <div className="add_payment_invoice">
-            {permission.Role === "FinanceAR" && (
+            {permission.InvoiceList.includes('AddPayment') && (
               <>
                 {handleAddNewPaymentDisable() ? (
                   <Button
