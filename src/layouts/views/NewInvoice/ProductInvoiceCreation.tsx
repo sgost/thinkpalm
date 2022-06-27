@@ -29,6 +29,7 @@ const ProductInvoiceCreation = ({
   setCountryInitialData,
   tempDataCountry,
   setTempDataCountry,
+  CustomerOptions
 }: any) => {
   const tempToken = localStorage.getItem("accessToken");
   const cid = localStorage.getItem("current-org-id");
@@ -386,9 +387,10 @@ const ProductInvoiceCreation = ({
 
             <div id="container_main3" className="buttons">
               <span>Total Balance</span>
+              {console.log('currencyOptions',CustomerOptions)}
               <Button
                 label={
-                  "USD " +
+                  CustomerOptions.find( (e:any)=> e.isSelected )?.billingCurrency + " " +
                   (item.amount
                     ? item.quantity * item.amount
                     : 0
