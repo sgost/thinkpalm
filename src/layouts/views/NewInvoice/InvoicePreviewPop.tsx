@@ -199,7 +199,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
                       </div>
                       <div className="cards">
                         <div className="cards_date_container">
-                          <h3>Invoice Type</h3>
+                          <h3>Product Service</h3>
                           <span className="description">{item.product}</span>
                         </div>
                         <div className="cards_date_container">
