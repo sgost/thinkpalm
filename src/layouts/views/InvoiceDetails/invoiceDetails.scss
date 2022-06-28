@@ -629,9 +629,6 @@
               margin-left: 1rem;
 
               .amountPaymentPageInput {
-                input {
-                  color: #767676;
-                }
                 .disable-input-color {
                   background: #f5f5f6 !important;
                   color: #767676;
@@ -649,6 +646,7 @@
                 }
 
                 input {
+                  color: #767676;
                   padding: 0.8rem;
                   background: #fff !important;
                   border: 0.056rem solid #ced4da;
@@ -1379,17 +1377,17 @@
         padding: 2.5rem !important;
       }
 
-      .delete-confirm-button {
-        svg {
-          display: inline-block !important;
-        }
+      // .delete-confirm-button {
+      //   svg {
+      //     display: inline-block !important;
+      //   }
 
-        button.a-button.medium {
-          font-size: 1.16rem;
-          width: 9.13rem;
-          border: 2px solid #526fd6 !important;
-        }
-      }
+      //   button.a-button.medium {
+      //     font-size: 1.16rem;
+      //     width: 9.13rem;
+      //     border: 2px solid #526fd6 !important;
+      //   }
+      // }
 
       h4 {
         font-size: 1.899rem;
@@ -1400,6 +1398,12 @@
         margin-top: 4.7778rem;
         display: flex;
         justify-content: end;
+
+        button.a-button.medium {
+          font-size: 1.16rem;
+          width: 9.13rem;
+          border: 2px solid #526fd6 !important;
+        }
 
         .delete-button {
           margin-left: 1.6667rem;

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
-import getRequest from "../../../components/Comman/api";
+import getRequest from "../../../components/Comman/getRequest";
 import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
   urls,
@@ -175,6 +175,8 @@ export default function InvoiceListing() {
     ],
     data: [],
   });
+
+  console.log("clientTableData", clientTableData)
   const [downloadDisable, setDownloadDisable] = useState(true);
   const [checkedInvoices, setCheckedInvoices] = useState<Array<any>>([]);
   const [customerID, setCustomerId] = useState("");

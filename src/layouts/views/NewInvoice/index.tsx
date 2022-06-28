@@ -205,6 +205,78 @@ const NewInvoice = () => {
     showDefaultColumn: true,
   };
 
+
+
+  // calling initally dropdown options for stepper1 non-payroll invoices (NewInvoiceCreation.tsx)
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    axios
+      .get(urls.subscriptionLookup, {
+        headers: getHeaders(token, stepperOneData.customerId, "false"),
+      })
+      .then((res: any) => {
+        setInvoicerOptions(
+          res.data.invoicers.map((invoicer: any) => {
+            return {
+              ...invoicer,
+              isSelected: false,
+              label: invoicer.text,
+              value: invoicer.value,
+              receivableAccounts: invoicer.receivableAccounts,
+            };
+          })
+        );
+        setPaymentMethodOptions(
+          res.data.paymentMethods.map((pm: any) => {
+            return {
+              ...pm,
+              isSelected: false,
+              label: pm.text,
+              value: pm.value,
+            };
+          })
+        );
+
+        setCurrencyOptions(
+          res.data.billingCurrencies.map((bc: any) => {
+            return {
+              ...bc,
+              isSelected: false,
+              label: bc.text,
+              value: bc.value,
+            };
+          })
+        );
+      })
+      .catch((err: any) => console.log(err));
+
+    axios
+      .get(urls.lookup, {
+        headers: getHeaders(token, stepperOneData.customerId, "false"),
+      })
+      .then((res: any) => {
+        setPaymentTermsOptions(
+          res.data.otherDueTypes.map((od: any) => {
+            return {
+              ...od,
+              isSelected: false,
+              label: od.text,
+              value: od.value,
+            };
+          })
+        );
+      })
+      .catch((err: any) => console.log(err));
+
+    setQbIdOptions([
+      {
+        isSelected: false,
+        label: "test 1",
+        value: "test1",
+      },
+    ]);
+  }, []);
+
   //stepper one  Data
   const [stepperOneData, setStepperOneData] = useState({
     customer: "",

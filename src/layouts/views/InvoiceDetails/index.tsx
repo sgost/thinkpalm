@@ -51,7 +51,10 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
-import { getPermissions, Loader } from "../../../../src/components/Comman/Utils/utils";
+import {
+  getPermissions,
+  Loader,
+} from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
 import cn from "classnames";
@@ -166,6 +169,7 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
   const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -265,9 +269,7 @@ export default function InvoiceDetails() {
                             // (status === "Declined" || status === "AR Review") &&
                             (res.data?.invoice?.status === 2 ||
                               res.data?.invoice?.status === 12) &&
-                               (
-                              handleCompensationModal(item)
-                            ) 
+                              handleCompensationModal(item);
                             // : (
                             //   <></>
                             // );
@@ -285,9 +287,7 @@ export default function InvoiceDetails() {
                             // (status === "Declined" || status === "AR Review") &&
                             (res.data?.invoice?.status === 2 ||
                               res.data?.invoice?.status === 12) &&
-                               (
-                              handleCompensationModal(item)
-                            ) 
+                              handleCompensationModal(item);
                             // : (
                             //   <></>
                             // );
@@ -694,21 +694,59 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    const headers = {
-      headers: getHeaders(tempToken, cid, isClient),
-    };
+    if((status === "Paid" || status === "Partial Paid") && id) {
+      const headers = {
+        headers: getHeaders(tempToken, cid, isClient),
+      };
+  
+      let paymentdetailApi = getPaymentDetailApi(id);
+  
+      axios
+        .get(paymentdetailApi, headers)
+        .then((res: any) => {
+          setPaymentDetailData(res?.data?.payments);
+        })
+        .catch((e: any) => {
+          console.log("error e", e);
+        });
+    }  
+  }, [id, status]);
 
-    let paymentdetailApi = getPaymentDetailApi(id);
+  const handleSaveDisable = () => {
+    const invDate = new Date(
+      invoiceDate
+        ? moment(invoiceDate).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceDate).format("YYYY-MM-DD")
+    );
 
-    axios
-      .get(paymentdetailApi, headers)
-      .then((res: any) => {
-        setPaymentDetailData(res?.data?.payments);
-      })
-      .catch((e: any) => {
-        console.log("error e", e);
-      });
-  }, [id]);
+    const invAppDate = new Date(
+      invoiceChanges
+        ? moment(invoiceChanges).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceApproval).format("YYYY-MM-DD")
+    );
+
+    const payDue = new Date(
+      paymentDue
+        ? moment(paymentDue).format("YYYY-MM-DD")
+        : moment(topPanel.paymentDue).format("YYYY-MM-DD")
+    );
+
+    if (
+      invDate > payDue ||
+      (invDate > invAppDate && missTransType == 1) ||
+      (invAppDate > payDue && missTransType == 1)
+    ) {
+      setSaveButtonDisable(true);
+    } else {
+      setSaveButtonDisable(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isEditFieldsChanges) {
+      handleSaveDisable();
+    }
+  }, [paymentDue, invoiceDate, invoiceChanges, isEditFieldsChanges]);
 
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
@@ -1244,6 +1282,27 @@ export default function InvoiceDetails() {
     setReCalButtonDisable(true);
   };
 
+  const handleMinDate = (dateType: string) => {
+    const invDate = new Date(
+      invoiceDate
+        ? moment(invoiceDate).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceDate).format("YYYY-MM-DD")
+    );
+
+    const invAppDate = new Date(
+      invoiceChanges
+        ? moment(invoiceChanges).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceApproval).format("YYYY-MM-DD")
+    );
+
+    if (dateType === "approvalDate") {
+      return invDate;
+    }
+    if (dateType === "paymentDate") {
+      return missTransType === 1 ? invAppDate : invDate;
+    }
+  };
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1344,7 +1403,7 @@ export default function InvoiceDetails() {
 
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
-            getPermissions(1 , 'Edit') && (
+            getPermissions(1, "Edit") && (
               <div className="saveBtnContainer">
                 <Button
                   disabled={reCalButtonDisable}
@@ -1589,7 +1648,7 @@ export default function InvoiceDetails() {
 
           {status === "Approved" &&
             missTransType === 3 &&
-            getPermissions(2 , 'Add') && (
+            getPermissions(2, "Add") && (
               <Button
                 disabled={btnDis}
                 data-testid="convert-button"
@@ -1724,7 +1783,7 @@ export default function InvoiceDetails() {
                       setPoNumber(
                         Math.abs(parseInt(e.target.value)).toString()
                       );
-                      setSaveButtonDisable(false);
+                      setIsEditFieldsChanges(true);
                     }}
                     value={poNumber ? poNumber : topPanel.poNumber}
                     type="number"
@@ -1747,18 +1806,19 @@ export default function InvoiceDetails() {
                   )}
                   handleDateChange={(date: any) => {
                     setInvoiceDate(date);
-                    setSaveButtonDisable(false);
+                    setIsEditFieldsChanges(true);
                   }}
                 />
               </div>
             ) : (
               <p className="value">{topPanel.invoiceDate}</p>
             )}
-            {missTransType == 7 && <>
-              <p className="heading">Due Date</p>
-              <p className="value">{topPanel.paymentDue}</p>
+            {missTransType == 7 && (
+              <>
+                <p className="heading">Due Date</p>
+                <p className="value">{topPanel.paymentDue}</p>
               </>
-            }
+            )}
 
             {missTransType != 7 && (
               <>
@@ -1770,12 +1830,14 @@ export default function InvoiceDetails() {
                         {status === "AR Review" || status === "Open" ? (
                           <div className="dpContainer dpMidMargin">
                             <DatePicker
+                              minDate={handleMinDate("approvalDate")}
                               placeholderText={moment(
                                 topPanel.invoiceApproval
                               ).format("DD/MMM/YYYY")}
-                              handleDateChange={(date: any) =>
-                                setInvoiceChanges(date)
-                              }
+                              handleDateChange={(date: any) => {
+                                setInvoiceChanges(date);
+                                setIsEditFieldsChanges(true);
+                              }}
                             />
                           </div>
                         ) : (
@@ -1827,23 +1889,13 @@ export default function InvoiceDetails() {
                 {status === "AR Review" || status === "Open" ? (
                   <div className="dpContainer">
                     <DatePicker
-                      minDate={
-                        missTransType === 1
-                          ? new Date(
-                              invoiceChanges
-                                ? moment(invoiceChanges).format("YYYY-MM-DD")
-                                : moment(topPanel.invoiceApproval).format(
-                                    "YYYY-MM-DD"
-                                  )
-                            )
-                          : false
-                      }
+                      minDate={handleMinDate("paymentDate")}
                       placeholderText={moment(topPanel.paymentDue).format(
                         "DD/MMM/YYYY"
                       )}
                       handleDateChange={(date: any) => {
                         setPaymentDue(date);
-                        setSaveButtonDisable(false);
+                        setIsEditFieldsChanges(true);
                       }}
                     />
                   </div>
