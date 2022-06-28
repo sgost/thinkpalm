@@ -694,7 +694,7 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    // if((status === "Paid" || status === "Partial Paid") && id) {
+    if((status === "Paid" || status === "Partial Paid") && id) {
       const headers = {
         headers: getHeaders(tempToken, cid, isClient),
       };
@@ -709,8 +709,8 @@ export default function InvoiceDetails() {
         .catch((e: any) => {
           console.log("error e", e);
         });
-    // }  
-  }, [id]);
+    }  
+  }, [id, status]);
 
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
