@@ -14,6 +14,17 @@
       }
     }
   }
+  .a-dropdown__option__item.multi-select{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: flex-start;
+    padding-left: 1rem;
+    gap: 0.8rem;
+    .a-dropdown__option__item__check-mark{
+      position: unset;
+    }
+  }
   .customerSelection {
     .a-dropdown__option {
       width: 17rem;

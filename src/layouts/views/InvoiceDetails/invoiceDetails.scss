@@ -1096,7 +1096,13 @@
 
     .a-breadcrumb {
       margin-bottom: 0.5rem;
-
+  
+      .steps{
+        svg{
+          width: 1.1111rem;
+          height: 1.1111rem;
+        }
+      }
       &__label {
         font-weight: 400;
         cursor: pointer;
