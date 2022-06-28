@@ -729,7 +729,11 @@ export default function InvoiceDetails() {
         : moment(topPanel.paymentDue).format("YYYY-MM-DD")
     );
 
-    if (invDate > payDue || invDate > invAppDate || invAppDate > payDue) {
+    if (
+      invDate > payDue ||
+      (invDate > invAppDate && missTransType == 1) ||
+      (invAppDate > payDue && missTransType == 1)
+    ) {
       setSaveButtonDisable(true);
     } else {
       setSaveButtonDisable(false);
@@ -1287,12 +1291,6 @@ export default function InvoiceDetails() {
       invoiceChanges
         ? moment(invoiceChanges).format("YYYY-MM-DD")
         : moment(topPanel.invoiceApproval).format("YYYY-MM-DD")
-    );
-
-    const payDue = new Date(
-      paymentDue
-        ? moment(paymentDue).format("YYYY-MM-DD")
-        : moment(topPanel.paymentDue).format("YYYY-MM-DD")
     );
 
     if (dateType === "approvalDate") {
