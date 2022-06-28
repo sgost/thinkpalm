@@ -694,20 +694,22 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    const headers = {
-      headers: getHeaders(tempToken, cid, isClient),
-    };
-
-    let paymentdetailApi = getPaymentDetailApi(id);
-
-    axios
-      .get(paymentdetailApi, headers)
-      .then((res: any) => {
-        setPaymentDetailData(res?.data?.payments);
-      })
-      .catch((e: any) => {
-        console.log("error e", e);
-      });
+    // if((status === "Paid" || status === "Partial Paid") && id) {
+      const headers = {
+        headers: getHeaders(tempToken, cid, isClient),
+      };
+  
+      let paymentdetailApi = getPaymentDetailApi(id);
+  
+      axios
+        .get(paymentdetailApi, headers)
+        .then((res: any) => {
+          setPaymentDetailData(res?.data?.payments);
+        })
+        .catch((e: any) => {
+          console.log("error e", e);
+        });
+    // }  
   }, [id]);
 
   const getBillingCurrency = () => {
