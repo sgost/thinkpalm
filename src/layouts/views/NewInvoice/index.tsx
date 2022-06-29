@@ -643,7 +643,7 @@ const NewInvoice = () => {
       // CreatedDate: currDate, // ? current date
       DueDate: dueDate, //
       CreatedDate: format(invoiceDate, "yyyy-MM-dd"),
-
+      submissiondate: format(invoiceDate, "yyyy-MM-dd"),
       // DueDate: "2022-05-23T12:31:21.125Z",
       TotalAmount: balance, //  total balance
       InvoiceBalance: balance, //  total balance

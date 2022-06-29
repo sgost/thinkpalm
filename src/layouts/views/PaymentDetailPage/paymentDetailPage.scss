@@ -1,7 +1,42 @@
 @import "../../../styles/variables";
 @import "../../../styles/styles";
 
+.cancel_modal {
+  .a-modal__body {
+    height: fit-content;
+    flex-direction: column;
+  }
+
+  .cancel_note {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0 auto 0 0;
+  }
+
+  .modal_main {
+    display: flex;
+    margin: 30px 0 0 auto;
+    width: fit-content;
+    align-items: center;
+
+    button.a-button.secondary-btn {
+      height: 2.2rem;
+    }
+
+    button.a-button.small {
+      width: 7rem !important;
+      margin: 0 0 0 10px;
+    }
+  }
+}
+
 .paymentDetailPageContainer {
+  .paymentSaveButton {
+    .secondary-btn {
+      margin-right: 1.3rem;
+    }
+  }
+
   .paymentDetailPageHeaderRow {
     display: flex;
     flex-direction: row;
@@ -20,6 +55,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0rem 5rem;
+
       p {
         color: $white;
         font-size: 1.778rem;
@@ -62,10 +98,12 @@
             display: flex;
             width: 18rem;
             justify-content: space-around;
+
             .paymentDetailPageamount {
               display: flex;
               flex-direction: column;
               justify-content: space-between;
+
               p {
                 color: #cbd4f3;
                 margin: 0px;
@@ -77,12 +115,14 @@
                 }
               }
             }
+
             .header-chevron-icon {
               height: 3rem;
               width: 2rem;
               display: flex;
               align-items: end;
               cursor: pointer;
+
               svg {
                 width: 2rem !important;
                 height: 2rem;
@@ -118,21 +158,26 @@
           display: flex;
           justify-content: space-between;
           padding: 0rem 1rem 2rem;
+
           p {
             color: #17224e;
             font-size: 1.4rem;
           }
+
           .paymentPageEdit {
             button.a-button svg {
               padding-right: 0rem;
             }
+
             svg {
               height: 2rem;
               width: 2rem;
             }
+
             button.a-button.secondary-btn {
               border: 0px;
             }
+
             button.a-button.medium {
               font-size: 1.2rem;
               font-weight: 500;
@@ -144,17 +189,21 @@
           display: flex;
           justify-content: flex-end;
           padding: 0rem 1rem 3rem;
+
           .paymentPageEdit {
             button.a-button svg {
               padding-right: 0rem;
             }
+
             svg {
               height: 2rem;
               width: 2rem;
             }
+
             button.a-button.secondary-btn {
               border: 0px;
             }
+
             button.a-button.medium {
               font-size: 1.2rem;
               font-weight: 500;
@@ -166,8 +215,10 @@
           display: flex;
           margin-bottom: 5rem;
           justify-content: space-between;
+
           .paymentInstallmentDatepicker {
             margin-left: 1rem;
+
             span.react-datepicker__label:after {
               content: "*";
               color: red;
@@ -176,6 +227,7 @@
 
           .paymentInstallmentContainerDropdowns {
             margin-left: 1rem;
+
             // span.a-dropdown__label.Currency::before {
             //   content: "Select currency";
             //   font-size: 1rem;
@@ -190,12 +242,15 @@
             .a-dropdown {
               z-index: inherit;
             }
+
             span.a-dropdown__title:after {
               content: "*";
               color: red;
             }
+
             .referenceNoInput {
               margin-top: -1.2rem;
+
               .disable-input-color {
                 background: #f5f5f6 !important;
               }
@@ -230,12 +285,15 @@
           display: flex;
           margin-bottom: 3rem;
           justify-content: space-between;
+
           .paymentInnerLowerBlock {
             display: flex;
             width: 45rem;
             justify-content: space-between;
+
             .paymentInstallmentContainerDropdowns {
               margin-left: 1rem;
+
               // .a-dropdown__label {
               //   font-size: 0rem;
               // }
@@ -250,23 +308,28 @@
               .a-dropdown {
                 z-index: inherit;
               }
+
               span.a-dropdown__title:after {
                 content: "*";
                 color: red;
               }
             }
           }
+
           .PaymentPageTotalAmount {
             margin-top: -3rem;
             margin-left: 1rem;
+
             p {
               color: $primary-blue;
               margin-bottom: 0rem;
               font-weight: 600;
             }
+
             input {
               height: 2.5rem;
             }
+
             .amountPaymentPage {
               color: $primary-blue;
               background-color: $active;
@@ -279,13 +342,16 @@
                 background-color: transparent;
               }
             }
+
             .fullAmountPaymentCheckbox {
               margin-top: 0.7rem;
               margin-left: 0.5rem;
+
               .a-checkbox-wrapper input[type="checkbox"] {
                 height: 0.8rem;
                 width: 0.8rem;
               }
+
               .a-checkbox-wrapper label {
                 font-weight: 500;
                 top: 0rem;
@@ -297,6 +363,7 @@
 
       .addPaymentInstallmentButton {
         border-top: 1rem solid #eff1f4;
+
         .addPaymentInstallmentIcon {
           display: flex;
           align-items: center;
@@ -304,6 +371,7 @@
           cursor: pointer;
           padding: 2rem 3rem;
           font-weight: 500;
+
           span {
             display: flex;
             justify-content: center;

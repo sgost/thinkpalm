@@ -313,6 +313,10 @@ export default function InvoiceDetails() {
                     },
                     name: {
                       value: (
+                        <span style={{display: 'flex' , alignItems: 'center'}}>
+                        { item?.employeeProfilePicture ?  <img style={{borderRadius: 12}} src={item?.employeeProfilePicture} /> 
+                          : <span className="initialsImg">{item?.firstName[0] + " " + item?.lastName[0]}</span>  
+                        }
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
@@ -327,9 +331,11 @@ export default function InvoiceDetails() {
                         >
                           {item.firstName + " " + item.lastName}
                         </span>
+                        </span>
+
                       ),
-                      img: { src: avatar },
-                      style: { borderRadius: 12 },
+                      // img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
+                      // style: { borderRadius: 12 },
                     },
                     grossWages:
                       currencyCode + " " + toCurrencyFormat(item.totalWage),
@@ -361,27 +367,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                      res.data?.invoice?.status === 12
+                        res.data?.invoice?.status === 12
                         ? {
-                            value: (
-                              <div
-                                data-testid="delete-icon"
-                                onClick={() => {
-                                  setDeleteEmployeeModalOpen({
-                                    isModalOpen: true,
-                                    data: item,
-                                  });
-                                }}
-                              >
-                                <Icon
-                                  icon="trash"
-                                  color="#E32C15"
-                                  size="large"
-                                />
-                              </div>
-                            ),
-                            color: "#E32C15",
-                          }
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
                         : "",
                   });
                 });
@@ -1345,6 +1351,8 @@ export default function InvoiceDetails() {
     });
     return isDisable;
   };
+  const openBal = topPanel.open != 'undefined' ? topPanel.open : 0;
+  const TotalBal = topPanel.total != 'undefined' ? topPanel.total : 0;
 
   return (
     <div className="invoiceDetailsContainer">
@@ -1412,14 +1420,13 @@ export default function InvoiceDetails() {
                   onClick={() =>
                     missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() {}
+                      : function noRefCheck() { }
                   }
-                  className={`${
-                    missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
-                  }`}
-                  // className="download"
+                  className={`${missTransType == 7 || deleteDisableButtons === true
+                    ? "download_disable"
+                    : "download"
+                    }`}
+                // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -1481,9 +1488,9 @@ export default function InvoiceDetails() {
             missTransType !== 4 &&
             missTransType !== 7 &&
             getPermissions(missTransType, "AddPayment")) ||
-          (status === "Invoiced" &&
-            missTransType === 7 &&
-            getPermissions(missTransType, "AddPayment")) ? (
+            (status === "Invoiced" &&
+              missTransType === 7 &&
+              getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1538,8 +1545,8 @@ export default function InvoiceDetails() {
                       invoiceBalance:
                         getBillingCurrency() + " " + topPanel.open ||
                         getBillingCurrency() +
-                          " " +
-                          apiData?.data?.invoice?.invoiceBalance,
+                        " " +
+                        apiData?.data?.invoice?.invoiceBalance,
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1614,12 +1621,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1784,14 +1791,14 @@ export default function InvoiceDetails() {
                 <p>
                   Open{" "}
                   <span>
-                    {getBillingCurrency()} {toCurrencyFormat(topPanel.open)}
+                    {getBillingCurrency()} {toCurrencyFormat(openBal)}
                   </span>
                 </p>
               )}
               <p>
                 Total{" "}
                 <span>
-                  {getBillingCurrency()} {toCurrencyFormat(topPanel.total)}
+                  {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                 </span>
               </p>
             </div>
@@ -1982,7 +1989,7 @@ export default function InvoiceDetails() {
       )}
 
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             setPaymentDetailData={setPaymentDetailData}
@@ -2504,7 +2511,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
+                          ?.photoUrl
                         : avatar
                     }
                     style={{
@@ -2551,11 +2558,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
