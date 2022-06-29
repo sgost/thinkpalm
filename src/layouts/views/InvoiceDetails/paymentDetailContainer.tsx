@@ -11,7 +11,6 @@ import {
   urls,
 } from "../../../urls/urls";
 
-// /* istanbul ignore next */
 const PaymentDetailContainer = ({
   status,
   cid,
