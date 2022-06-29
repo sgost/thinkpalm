@@ -296,7 +296,7 @@ export default function InvoiceDetails() {
                           {item.firstName + " " + item.lastName}
                         </span>
                       ),
-                      img: { src: avatar },
+                      img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
                       style: { borderRadius: 12 },
                     },
                     grossWages:
