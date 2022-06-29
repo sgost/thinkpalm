@@ -281,6 +281,10 @@ export default function InvoiceDetails() {
                     },
                     name: {
                       value: (
+                        <span style={{display: 'flex' , alignItems: 'center'}}>
+                        { item?.employeeProfilePicture ?  <img style={{borderRadius: 12}} src={item?.employeeProfilePicture} /> 
+                          : <span className="initialsImg">{item?.firstName[0] + " " + item?.lastName[0]}</span>  
+                        }
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
@@ -295,9 +299,11 @@ export default function InvoiceDetails() {
                         >
                           {item.firstName + " " + item.lastName}
                         </span>
+                        </span>
+
                       ),
-                      img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
-                      style: { borderRadius: 12 },
+                      // img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
+                      // style: { borderRadius: 12 },
                     },
                     grossWages:
                       currencyCode + " " + toCurrencyFormat(item.totalWage),
