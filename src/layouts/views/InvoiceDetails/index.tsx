@@ -2300,7 +2300,7 @@ export default function InvoiceDetails() {
                         onChange={(e: any) => {
                           const declineData = [...declineCheckboxLabel];
                           declineData[index].isSelected = e.target.checked;
-                          declineData.map((i, k) => {
+                          declineData.forEach((i, k) => {
                             if (i.label != item.label) {
                               declineData[k].isDisable = e.target.checked;
                             }
