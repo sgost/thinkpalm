@@ -1122,30 +1122,35 @@
       h3 {
         margin-top: -12px;
         font-size: 1.556rem;
-        line-height: 1.9444rem;
+        line-height: 2rem;
       }
 
       .text-line {
         font-size: 0.889rem;
-        line-height: 1.333rem;
+        // line-height: 1.333rem;
         color: #3e3e3e;
         margin-top: -6px;
       }
 
       .text-invoive-no {
         font-size: 0.889rem;
-        line-height: 1.333rem;
+        // line-height: 1.333rem;
         font-weight: 600;
         color: #3e3e3e;
-        margin-top: -0.722rem;
+        margin-top: -0.4rem;
+        // margin-top: -0.722rem;
       }
+
+      .a-checkbox-wrapper {
+        margin: 0 0 2.3rem;
+    }
 
       .a-checkbox-wrapper label {
         display: none;
       }
 
       .dec_check_main {
-        margin-top: 1.3rem;
+        margin-top: 2rem;
       }
 
       .dec_check_wrapp {
@@ -1171,6 +1176,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.3333rem;
+        margin-top: 0.8rem;
 
         label {
           color: #3e3e3e;
@@ -1370,18 +1376,6 @@
         width: auto;
         padding: 2.5rem !important;
       }
-
-      // .delete-confirm-button {
-      //   svg {
-      //     display: inline-block !important;
-      //   }
-
-      //   button.a-button.medium {
-      //     font-size: 1.16rem;
-      //     width: 9.13rem;
-      //     border: 2px solid #526fd6 !important;
-      //   }
-      // }
 
       h4 {
         font-size: 1.899rem;
