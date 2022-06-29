@@ -172,6 +172,38 @@ export default function InvoiceDetails() {
   const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
   const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
+    {
+      label: "Employee Salary is not correct",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Benefit Amount is not correct",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "One-off pay items amount to be updated",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Termination",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Invoice Calculation Error",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Fee Issue",
+      isSelected: undefined,
+      isDisable: false,
+    },
+  ]);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -1309,6 +1341,16 @@ export default function InvoiceDetails() {
     }
   };
 
+  const declineCheckboxDisable = () => {
+    let isDisable = true;
+
+    declineCheckboxLabel?.map((item: any) => {
+      if (item?.isSelected === true && inputValue != "") {
+        isDisable = false;
+      }
+    });
+    return isDisable;
+  };
   const openBal = topPanel.open != 'undefined' ? topPanel.open : 0;
   const TotalBal = topPanel.total != 'undefined' ? topPanel.total : 0;
 
@@ -2244,6 +2286,35 @@ export default function InvoiceDetails() {
               <p>{getTransactionLabel()}.</p>
             </div>
 
+            <div className="dec_check_main">
+              {declineCheckboxLabel &&
+                declineCheckboxLabel?.map((item: any, index: any) => {
+                  return (
+                    <div className="dec_check_wrapp">
+                      <Checkbox
+                        data-testid="check1"
+                        id="sampleCheckbox"
+                        disabled={
+                          declineCheckboxLabel[index].isDisable === true
+                        }
+                        onChange={(e: any) => {
+                          const declineData = [...declineCheckboxLabel];
+                          declineData[index].isSelected = e.target.checked;
+                          declineData.forEach((i, k) => {
+                            if (i.label != item.label) {
+                              declineData[k].isDisable = e.target.checked;
+                            }
+                          });
+                          setDeclineCheckboxLabel(declineData);
+                        }}
+                        checked={declineCheckboxLabel[index].isSelected}
+                      />
+                      <label className="dec_check_label">{item.label}</label>
+                    </div>
+                  );
+                })}
+            </div>
+
             <div className="text-invoice-comment">
               <label>
                 Comment<span className="comment">*</span>
@@ -2267,10 +2338,9 @@ export default function InvoiceDetails() {
                   setInputValue("");
                 }}
               />
-
               <Button
                 data-testid="decline-button-submit"
-                disabled={!inputValue}
+                disabled={declineCheckboxDisable()}
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
