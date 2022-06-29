@@ -19,7 +19,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../..//components/getDecodedToken";
 
 import { WeAreSorryModal } from "./weAreSorryModal";
-import { ToastContainer } from "../../../components/Comman/Utils/utils";
+import { Loader, ToastContainer } from "../../../components/Comman/Utils/utils";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -100,6 +100,7 @@ export default function InvoiceListing() {
   const [lookupData, setLookupData] = useState<any>({});
   const [toggle, setToggle] = useState(true);
   const [toggleForType, setToggleForType] = useState(true);
+  const [isLoader, setIsLoader] = useState(false)
 
   let api = ``;
 
@@ -122,7 +123,7 @@ export default function InvoiceListing() {
       return api;
     }
   };
-  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient);
+  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient, setIsLoader);
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -1031,6 +1032,7 @@ export default function InvoiceListing() {
             </span>
           </div>
         )}
+        {isLoader && <Loader />}
         {(searchText || customerType) && !searchedTableData ? (
           <div className="invalidSearch">
             <div className="uhohContainer">
@@ -1074,7 +1076,7 @@ export default function InvoiceListing() {
           </div>
         ) : (
           <>
-            {!localStorage.redirectingInvoiceState && (
+            {!localStorage.redirectingInvoiceState && !isLoader && (
               <Table
                 options={
                   searchText
@@ -1082,17 +1084,20 @@ export default function InvoiceListing() {
                         ...searchedTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
+                        fallback: ''
                       }
                     : isClient
                     ? {
                         ...clientTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
+                        fallback: ''
                       }
                     : {
                         ...internalTabledata,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
+                        fallback: ''
                       }
                 }
                 colSort
