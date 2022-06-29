@@ -103,7 +103,7 @@ export const urls = {
   savePayments:
     baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
 
-    getCustomersByIds:
+  getCustomersByIds:
     baseURL + services.atlasCustomerService + "/Customer/GetAllByIds"
 };
 
