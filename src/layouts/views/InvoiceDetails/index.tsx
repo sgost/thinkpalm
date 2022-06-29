@@ -335,27 +335,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                      res.data?.invoice?.status === 12
+                        res.data?.invoice?.status === 12
                         ? {
-                            value: (
-                              <div
-                                data-testid="delete-icon"
-                                onClick={() => {
-                                  setDeleteEmployeeModalOpen({
-                                    isModalOpen: true,
-                                    data: item,
-                                  });
-                                }}
-                              >
-                                <Icon
-                                  icon="trash"
-                                  color="#E32C15"
-                                  size="large"
-                                />
-                              </div>
-                            ),
-                            color: "#E32C15",
-                          }
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
                         : "",
                   });
                 });
@@ -700,21 +700,23 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    const headers = {
-      headers: getHeaders(tempToken, cid, isClient),
-    };
+    if ((status === "Paid" || status === "Partial Paid") && id) {
+      const headers = {
+        headers: getHeaders(tempToken, cid, isClient),
+      };
 
-    let paymentdetailApi = getPaymentDetailApi(id);
+      let paymentdetailApi = getPaymentDetailApi(id);
 
-    axios
-      .get(paymentdetailApi, headers)
-      .then((res: any) => {
-        setPaymentDetailData(res?.data?.payments);
-      })
-      .catch((e: any) => {
-        console.log("error e", e);
-      });
-  }, [id]);
+      axios
+        .get(paymentdetailApi, headers)
+        .then((res: any) => {
+          setPaymentDetailData(res?.data?.payments);
+        })
+        .catch((e: any) => {
+          console.log("error e", e);
+        });
+    }
+  }, [id, status]);
 
   const handleSaveDisable = () => {
     const invDate = new Date(
@@ -1307,6 +1309,9 @@ export default function InvoiceDetails() {
     }
   };
 
+  const openBal = topPanel.open != 'undefined' ? topPanel.open : 0;
+  const TotalBal = topPanel.total != 'undefined' ? topPanel.total : 0;
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1373,14 +1378,13 @@ export default function InvoiceDetails() {
                   onClick={() =>
                     missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() {}
+                      : function noRefCheck() { }
                   }
-                  className={`${
-                    missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
-                  }`}
-                  // className="download"
+                  className={`${missTransType == 7 || deleteDisableButtons === true
+                    ? "download_disable"
+                    : "download"
+                    }`}
+                // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -1442,9 +1446,9 @@ export default function InvoiceDetails() {
             missTransType !== 4 &&
             missTransType !== 7 &&
             getPermissions(missTransType, "AddPayment")) ||
-          (status === "Invoiced" &&
-            missTransType === 7 &&
-            getPermissions(missTransType, "AddPayment")) ? (
+            (status === "Invoiced" &&
+              missTransType === 7 &&
+              getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1499,8 +1503,8 @@ export default function InvoiceDetails() {
                       invoiceBalance:
                         getBillingCurrency() + " " + topPanel.open ||
                         getBillingCurrency() +
-                          " " +
-                          apiData?.data?.invoice?.invoiceBalance,
+                        " " +
+                        apiData?.data?.invoice?.invoiceBalance,
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1575,12 +1579,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1745,14 +1749,14 @@ export default function InvoiceDetails() {
                 <p>
                   Open{" "}
                   <span>
-                    {getBillingCurrency()} {toCurrencyFormat(topPanel.open)}
+                    {getBillingCurrency()} {toCurrencyFormat(openBal)}
                   </span>
                 </p>
               )}
               <p>
                 Total{" "}
                 <span>
-                  {getBillingCurrency()} {toCurrencyFormat(topPanel.total)}
+                  {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                 </span>
               </p>
             </div>
@@ -1943,7 +1947,7 @@ export default function InvoiceDetails() {
       )}
 
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             setPaymentDetailData={setPaymentDetailData}
@@ -2437,7 +2441,7 @@ export default function InvoiceDetails() {
                     source={
                       isCompensatioModalOpen?.data?.personalDetails?.photoUrl
                         ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
+                          ?.photoUrl
                         : avatar
                     }
                     style={{
@@ -2484,11 +2488,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>

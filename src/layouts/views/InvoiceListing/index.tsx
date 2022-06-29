@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
-import getRequest from "../../../components/Comman/api";
+import getRequest from "../../../components/Comman/getRequest";
 import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
   urls,
@@ -60,95 +60,8 @@ export default function InvoiceListing() {
   });
   const [singleInvoiceId, setSingleInvoiceId] = useState("");
   const [multiInvoiceId, setMultiInvoiveId] = useState([]);
-
-  // Contractor, payroll, credit memos, proformas, miscellaneous
-  const typeOptions = [
-    // {
-    //   isSelected: false,
-    //   label: "Contractor Invoice",
-    //   value: "contractorInvoice",
-    // },
-    tableSharedColumns.createMemo,
-    tableSharedColumns.payroll,
-    tableSharedColumns.Miscellaneous,
-    tableSharedColumns.proforma,
-    {
-      isSelected: false,
-      label: "LateFee",
-      value: 5,
-    },
-    // {
-    //   isSelected: false,
-    //   label: "Payment",
-    //   value: 6,
-    // },
-    {
-      isSelected: false,
-      label: "Contractor Pay",
-      value: 7,
-    },
-  ];
-  const [types, setTypes] = useState(typeOptions);
-
-  //  open, AR review, Pending Approval, Approved, Paid, Partially paid, cancelled, voided,
-  const statusOptions = [
-    {
-      isSelected: false,
-      label: "Open",
-      value: "1",
-    },
-    {
-      isSelected: false,
-      label: "AR Review",
-      value: "2",
-    },
-    {
-      isSelected: false,
-      label: "Pending Approval",
-      value: 3,
-    },
-    {
-      isSelected: false,
-      label: "Approved",
-      value: "4",
-    },
-    {
-      isSelected: false,
-      label: "Paid",
-      value: 5,
-    },
-    {
-      isSelected: false,
-      label: "Partially Paid",
-      value: 6,
-    },
-    // {
-    //   isSelected: false,
-    //   label: "Partial",
-    //   value: 7,
-    // },
-    {
-      isSelected: false,
-      label: "Voided",
-      value: 9,
-    },
-    {
-      isSelected: false,
-      label: "Closed",
-      value: 8,
-    },
-    {
-      isSelected: false,
-      label: "Invoiced",
-      value: 10,
-    },
-    {
-      isSelected: false,
-      label: "Declined",
-      value: 12,
-    },
-  ];
-  const [status, setStatus] = useState(statusOptions);
+  const [types, setTypes] = useState<any>([]);
+  const [status, setStatus] = useState<any>([]);
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
       tableSharedColumns.invoiceNo,
@@ -184,6 +97,9 @@ export default function InvoiceListing() {
   const [searchedTableData, setSearchedTableData] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [lookupData, setLookupData] = useState<any>({});
+  const [toggle, setToggle] = useState(true);
+  const [toggleForType, setToggleForType] = useState(true);
 
   let api = ``;
 
@@ -206,7 +122,6 @@ export default function InvoiceListing() {
       return api;
     }
   };
-
   const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient);
 
   const clearFilter = () => {
@@ -231,10 +146,80 @@ export default function InvoiceListing() {
       types: "",
       status: "",
     });
-    setStatus(statusOptions);
-    setTypes(typeOptions);
+    setToggle(true);
+    setToggleForType(true);
     getCustomerDropdownOptions();
   };
+
+  useEffect(() => {
+    const headers = {
+      headers: getHeaders(accessToken, customerId, isClient),
+    };
+
+    const lookupApi = urls.lookup;
+
+    axios
+      .get(lookupApi, headers)
+      .then((res: any) => {
+        setLookupData(res.data);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  }, []);
+
+  useEffect(() => {
+    const data = internalTabledata ? internalTabledata : clientTableData;
+    if (data?.data && lookupData && toggle) {
+      const statuses: any = data?.data?.map((item: any) => {
+        if (item.statusLabel) {
+          return item.statusLabel;
+        }
+      });
+
+      const uniqueStatusNames = Array.from(new Set(statuses));
+      let statusOptionsArr: any = [];
+      const lookUpdataVar = lookupData?.invoiceStatuses;
+      lookUpdataVar?.forEach((lookupItem: any) => {
+        uniqueStatusNames.forEach((name) => {
+          if (lookupItem?.text === "In Review") {
+            lookupItem.text = "AR Review";
+          }
+          if (lookupItem?.text === name) {
+            statusOptionsArr.push({
+              isSelected: false,
+              label: lookupItem.text,
+              value: lookupItem.value,
+            });
+          }
+        });
+      });
+      setStatus(statusOptionsArr);
+    }
+    if (data?.data && lookupData && toggleForType) {
+      const transactionTypeNames: any = data?.data?.map((item: any) => {
+        if (item.transactionTypeLabel) {
+          return item.transactionTypeLabel;
+        }
+      });
+
+      const uniqueTransactionTypeNames = Array.from(new Set(transactionTypeNames));
+      let transactionTypeOptionsArr: any = [];
+      const lookUpdataVar = lookupData?.transactionTypes;
+      lookUpdataVar?.forEach((lookupItem: any) => {
+        uniqueTransactionTypeNames.forEach((name) => {
+          if (lookupItem?.text === name) {
+            transactionTypeOptionsArr.push({
+              isSelected: false,
+              label: lookupItem.text,
+              value: lookupItem.value,
+            });
+          }
+        });
+      });
+      setTypes(transactionTypeOptionsArr);
+    }
+  }, [internalTabledata, clientTableData, lookupData, toggle]);
 
   useEffect(() => {
     if (permission.InvoiceList.includes("InternalView")) {
@@ -276,11 +261,11 @@ export default function InvoiceListing() {
       const { id, invoiceNo, transactionType } = matchingData;
       navigate(
         "/pay/invoicedetails" +
-        id +
-        "/" +
-        matchingData?.customerId +
-        "/" +
-        true,
+          id +
+          "/" +
+          matchingData?.customerId +
+          "/" +
+          true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -329,17 +314,19 @@ export default function InvoiceListing() {
               ? "AR Review"
               : item.statusLabel || "",
           transactionTypeLabel: item.transactionTypeLabel || "",
-          createdDate: item.transactionTypeLabel === 'Contractor Pay' ? format(new Date(item.createdDate), "d MMM yyyy") || ""
-            : format(new Date(item.submissionDate), "d MMM yyyy") || "",
+          createdDate:
+            item.transactionTypeLabel === "Contractor Pay"
+              ? format(new Date(item.createdDate), "d MMM yyyy") || ""
+              : format(new Date(item.submissionDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
-            " " +
-            cFormat.format(item.totalAmount).slice(1) || "",
+              " " +
+              cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
             item?.currency?.code +
-            " " +
-            cFormat.format(item.invoiceBalance).slice(1) || "",
+              " " +
+              cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
             value: "Not Exported",
             color: "#767676",
@@ -522,12 +509,12 @@ export default function InvoiceListing() {
     const nav = () => {
       navigate(
         "/pay/invoicedetails" +
-        checkedInvoices[0].id +
-        "/" +
-        checkedInvoices[0].customerId +
-        "/" +
-        isClientString +
-        "/payments",
+          checkedInvoices[0].id +
+          "/" +
+          checkedInvoices[0].customerId +
+          "/" +
+          isClientString +
+          "/payments",
         {
           state: {
             InvoiceId: checkedInvoices[0].invoiceNo,
@@ -591,7 +578,7 @@ export default function InvoiceListing() {
       <div className="container">
         <div className="listingBtnContainer">
           <div className="add_payment_invoice">
-            {permission.InvoiceList.includes('AddPayment') && (
+            {permission.InvoiceList.includes("AddPayment") && (
               <>
                 {handleAddNewPaymentDisable() ? (
                   <Button
@@ -640,17 +627,17 @@ export default function InvoiceListing() {
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
               "Add" && (
-                <Button
-                  label="New Invoice"
-                  className="primary-blue medium"
-                  icon={{
-                    icon: "add",
-                    size: "medium",
-                    color: "#fff",
-                  }}
-                  handleOnClick={() => navigate("/pay/newinvoice")}
-                />
-              )}
+              <Button
+                label="New Invoice"
+                className="primary-blue medium"
+                icon={{
+                  icon: "add",
+                  size: "medium",
+                  color: "#fff",
+                }}
+                handleOnClick={() => navigate("/pay/newinvoice")}
+              />
+            )}
           </div>
         </div>
 
@@ -670,19 +657,19 @@ export default function InvoiceListing() {
               {permission?.InvoiceList?.find(
                 (str: any) => str === "Download"
               ) === "Download" && (
-                  <div
-                    onClick={downloadFunction}
-                    data-testid="download"
-                    className={downloadDisable ? "downloadpointer" : "download"}
-                  >
-                    <Icon
-                      className="download"
-                      color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                      icon="download"
-                      size="large"
-                    />
-                  </div>
-                )}
+                <div
+                  onClick={downloadFunction}
+                  data-testid="download"
+                  className={downloadDisable ? "downloadpointer" : "download"}
+                >
+                  <Icon
+                    className="download"
+                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                    icon="download"
+                    size="large"
+                  />
+                </div>
+              )}
 
               {permission.InvoiceList.includes("InternalView") && (
                 <div className="customerSelection">
@@ -918,6 +905,7 @@ export default function InvoiceListing() {
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
+                  setToggleForType(false)
                   let index = types.findIndex((e) => e.value === opt.value);
 
                   let copy = [...types];
@@ -966,8 +954,11 @@ export default function InvoiceListing() {
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
+                  setToggle(false);
                   let copy = [...status];
-                  let index = status.findIndex((e) => e.value === opt.value);
+                  let index = status.findIndex(
+                    (e: any) => e.value === opt.value
+                  );
                   copy.forEach((_e, ind) => {
                     if (ind === index) {
                       if (copy[index].isSelected) {
@@ -1088,17 +1079,17 @@ export default function InvoiceListing() {
                 options={
                   searchText
                     ? {
-                      ...searchedTableData,
-                      enableMultiSelect: true,
-                      onRowCheckboxChange: onRowCheckboxChange,
-                    }
+                        ...searchedTableData,
+                        enableMultiSelect: true,
+                        onRowCheckboxChange: onRowCheckboxChange,
+                      }
                     : isClient
-                      ? {
+                    ? {
                         ...clientTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
                       }
-                      : {
+                    : {
                         ...internalTabledata,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
@@ -1116,11 +1107,11 @@ export default function InvoiceListing() {
                   } else {
                     navigate(
                       "/pay/invoicedetails" +
-                      row.id +
-                      "/" +
-                      row.customerId +
-                      "/" +
-                      isClientStr,
+                        row.id +
+                        "/" +
+                        row.customerId +
+                        "/" +
+                        isClientStr,
                       {
                         state: {
                           InvoiceId: row.invoiceNo,

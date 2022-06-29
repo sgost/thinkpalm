@@ -106,11 +106,11 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
     axios
       .get(getSubscriptionLookup, headers)
       .then((res: any) => {
-        const paymentMethodData: any = preparePaymentMethodDropdownOptionData(
+        const paymentMethodDropdownData: any = preparePaymentMethodDropdownOptionData(
           res?.data?.paymentMethods
         );
-        setAddPaymentMethodDropdownOption(paymentMethodData);
-        setPaymentMethodData(paymentMethodData);
+        setAddPaymentMethodDropdownOption(paymentMethodDropdownData);
+        setPaymentMethodData(paymentMethodDropdownData);
       })
       .catch((e: any) => {
         console.log("error", e);
