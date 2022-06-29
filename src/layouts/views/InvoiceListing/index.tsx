@@ -187,7 +187,6 @@ export default function InvoiceListing() {
           }
           if (lookupItem?.text === name) {
             statusOptionsArr.push({
-              // ...lookupItem,
               isSelected: false,
               label: lookupItem.text,
               value: lookupItem.value,
@@ -195,7 +194,6 @@ export default function InvoiceListing() {
           }
         });
       });
-
       setStatus(statusOptionsArr);
     }
     if (data?.data && lookupData && toggleForType) {
@@ -210,12 +208,8 @@ export default function InvoiceListing() {
       const lookUpdataVar = lookupData?.transactionTypes;
       lookUpdataVar?.forEach((lookupItem: any) => {
         uniqueTransactionTypeNames.forEach((name) => {
-          if (lookupItem?.text === "In Review") {
-            lookupItem.text = "AR Review";
-          }
           if (lookupItem?.text === name) {
             transactionTypeOptionsArr.push({
-              // ...lookupItem,
               isSelected: false,
               label: lookupItem.text,
               value: lookupItem.value,
@@ -223,7 +217,6 @@ export default function InvoiceListing() {
           }
         });
       });
-
       setTypes(transactionTypeOptionsArr);
     }
   }, [internalTabledata, clientTableData, lookupData, toggle]);
