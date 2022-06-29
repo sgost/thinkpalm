@@ -122,7 +122,6 @@ export default function InvoiceListing() {
       return api;
     }
   };
-
   const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient);
 
   const clearFilter = () => {
@@ -152,7 +151,6 @@ export default function InvoiceListing() {
     getCustomerDropdownOptions();
   };
 
-   /* istanbul ignore next */
   useEffect(() => {
     const headers = {
       headers: getHeaders(accessToken, customerId, isClient),
@@ -170,7 +168,6 @@ export default function InvoiceListing() {
       });
   }, []);
 
-   /* istanbul ignore next */
   useEffect(() => {
     const data = internalTabledata ? internalTabledata : clientTableData;
     if (data?.data && lookupData && toggle) {
