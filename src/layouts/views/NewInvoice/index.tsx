@@ -210,9 +210,10 @@ const NewInvoice = () => {
   // calling initally dropdown options for stepper1 non-payroll invoices (NewInvoiceCreation.tsx)
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
+    const cid = localStorage.getItem("current-org-id");
     axios
       .get(urls.subscriptionLookup, {
-        headers: getHeaders(token, stepperOneData.customerId, "false"),
+        headers: getHeaders(token, cid, "false"),
       })
       .then((res: any) => {
         setInvoicerOptions(
@@ -252,7 +253,7 @@ const NewInvoice = () => {
 
     axios
       .get(urls.lookup, {
-        headers: getHeaders(token, stepperOneData.customerId, "false"),
+        headers: getHeaders(token, cid, "false"),
       })
       .then((res: any) => {
         setPaymentTermsOptions(
