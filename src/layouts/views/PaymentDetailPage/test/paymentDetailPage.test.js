@@ -257,7 +257,7 @@ describe("Payment details page multiple", () => {
     fireEvent.click(OkBtnmodal);
   });
 
-  test("save multiple", async () => {
+  test("Test case for the payment details revert Modal", async () => {
     let showCancel;
     showCancel = true;
     render(
