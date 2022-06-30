@@ -314,10 +314,17 @@ export default function InvoiceDetails() {
                     },
                     name: {
                       value: (
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                          {item?.employeeProfilePicture ? <img style={{ borderRadius: 12 }} src={item?.employeeProfilePicture} />
-                            : <span className="initialsImg">{item?.firstName[0] + " " + item?.lastName[0]}</span>
-                          }
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          {item?.employeeProfilePicture ? (
+                            <img
+                              style={{ borderRadius: 12 }}
+                              src={item?.employeeProfilePicture}
+                            />
+                          ) : (
+                            <span className="initialsImg">
+                              {item?.firstName[0] + " " + item?.lastName[0]}
+                            </span>
+                          )}
                           <span
                             style={{ fontWeight: 600 }}
                             onClick={() => {
@@ -333,7 +340,6 @@ export default function InvoiceDetails() {
                             {item.firstName + " " + item.lastName}
                           </span>
                         </span>
-
                       ),
                       // img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
                       // style: { borderRadius: 12 },
@@ -368,27 +374,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                        res.data?.invoice?.status === 12
+                      res.data?.invoice?.status === 12
                         ? {
-                          value: (
-                            <div
-                              data-testid="delete-icon"
-                              onClick={() => {
-                                setDeleteEmployeeModalOpen({
-                                  isModalOpen: true,
-                                  data: item,
-                                });
-                              }}
-                            >
-                              <Icon
-                                icon="trash"
-                                color="#E32C15"
-                                size="large"
-                              />
-                            </div>
-                          ),
-                          color: "#E32C15",
-                        }
+                            value: (
+                              <div
+                                data-testid="delete-icon"
+                                onClick={() => {
+                                  setDeleteEmployeeModalOpen({
+                                    isModalOpen: true,
+                                    data: item,
+                                  });
+                                }}
+                              >
+                                <Icon
+                                  icon="trash"
+                                  color="#E32C15"
+                                  size="large"
+                                />
+                              </div>
+                            ),
+                            color: "#E32C15",
+                          }
                         : "",
                   });
                 });
@@ -1352,8 +1358,8 @@ export default function InvoiceDetails() {
     });
     return isDisable;
   };
-  const openBal = topPanel.open != 'undefined' ? topPanel.open : 0;
-  const TotalBal = topPanel.total != 'undefined' ? topPanel.total : 0;
+  const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
+  const TotalBal = topPanel.total != "undefined" ? topPanel.total : 0;
 
   return (
     <div className="invoiceDetailsContainer">
@@ -1421,13 +1427,14 @@ export default function InvoiceDetails() {
                   onClick={() =>
                     missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
+                      : function noRefCheck() {}
                   }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
-                    ? "download_disable"
-                    : "download"
-                    }`}
-                // className="download"
+                  className={`${
+                    missTransType == 7 || deleteDisableButtons === true
+                      ? "download_disable"
+                      : "download"
+                  }`}
+                  // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -1489,9 +1496,9 @@ export default function InvoiceDetails() {
             missTransType !== 4 &&
             missTransType !== 7 &&
             getPermissions(missTransType, "AddPayment")) ||
-            (status === "Invoiced" &&
-              missTransType === 7 &&
-              getPermissions(missTransType, "AddPayment")) ? (
+          (status === "Invoiced" &&
+            missTransType === 7 &&
+            getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1542,12 +1549,21 @@ export default function InvoiceDetails() {
                         creditMemoData?.exchangeRate ||
                         apiData?.data?.invoice?.exchangeRate,
                       totalAmount:
-                      getBillingCurrency() + " " + topPanel.total || getBillingCurrency() + " " + apiData?.data?.invoice?.totalAmount,
-                      invoiceBalance:
-                        getBillingCurrency() + " " + topPanel.open ||
                         getBillingCurrency() +
-                        " " +
-                        apiData?.data?.invoice?.invoiceBalance,
+                          " " +
+                          toCurrencyFormat(topPanel.total) ||
+                        getBillingCurrency() +
+                          " " +
+                          toCurrencyFormat(apiData?.data?.invoice?.totalAmount),
+                      invoiceBalance:
+                        getBillingCurrency() +
+                          " " +
+                          toCurrencyFormat(topPanel.open) ||
+                        getBillingCurrency() +
+                          " " +
+                          toCurrencyFormat(
+                            apiData?.data?.invoice?.invoiceBalance
+                          ),
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1622,12 +1638,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
+                      id +
+                      "/" +
+                      cid +
+                      "/" +
+                      isClient +
+                      "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1990,7 +2006,7 @@ export default function InvoiceDetails() {
       )}
 
       {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             setPaymentDetailData={setPaymentDetailData}
@@ -2359,7 +2375,7 @@ export default function InvoiceDetails() {
                       note: inputValue,
                       createdDate: currDate,
                       customerId: cid,
-                      DeclineOption: declineLabel
+                      DeclineOption: declineLabel,
                     },
                   })
                     .then((res: any) => {
@@ -2509,8 +2525,8 @@ export default function InvoiceDetails() {
           <div className="compensation-inner-container">
             <Cards className={`profile-header-container`}>
               <div className="section-1">
-                {isCompensatioModalOpen?.data?.personalDetails?.photoUrl ?
-                  <div className="img-container" >
+                {isCompensatioModalOpen?.data?.personalDetails?.photoUrl ? (
+                  <div className="img-container">
                     <AvatarHandler
                       // handleClick={handleAvatarClick}
                       // initials={user.initials}
@@ -2522,11 +2538,17 @@ export default function InvoiceDetails() {
                       }}
                     />
                   </div>
-                  :
-                  <div className="img-container-logo" >
-                    <p className="user_initials">{isCompensatioModalOpen?.data?.personalDetails?.firstName[0] + " " + isCompensatioModalOpen?.data?.personalDetails?.lastName[0]}</p>
+                ) : (
+                  <div className="img-container-logo">
+                    <p className="user_initials">
+                      {isCompensatioModalOpen?.data?.personalDetails
+                        ?.firstName[0] +
+                        " " +
+                        isCompensatioModalOpen?.data?.personalDetails
+                          ?.lastName[0]}
+                    </p>
                   </div>
-                }
+                )}
                 <div className="col-6">
                   <div className="header">
                     {isCompensatioModalOpen?.data?.fullName}
@@ -2566,11 +2588,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                          isCompensatioModalOpen.data &&
-                          isCompensatioModalOpen?.data?.startDate
+                        isCompensatioModalOpen.data &&
+                        isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                            isCompensatioModalOpen?.data?.startDate
-                          ).format("D MMM YYYY")
+                              isCompensatioModalOpen?.data?.startDate
+                            ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>
