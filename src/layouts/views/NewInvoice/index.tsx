@@ -601,8 +601,8 @@ const NewInvoice = () => {
               ?.text.split(" ")[0]
           );
 
-    var dueDate = new Date(invoiceDate);
-    var result = dueDate.setDate(invoiceDate.getDate() + payTerms + 1);
+    let dueDate = new Date(invoiceDate);
+    let result = dueDate.setDate(invoiceDate.getDate() + payTerms + 1);
     const newDueDate = new Date(result);
 
     let transactionTypeVar = null;
