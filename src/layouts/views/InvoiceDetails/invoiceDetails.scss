@@ -17,7 +17,8 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 0.333rem;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
       position: relative;
 
       .breadcrumbs {
@@ -116,8 +117,6 @@
             margin-top: 0.667rem;
           }
         }
-
-        
 
         .decline-invoice {
           background-color: white;
@@ -300,6 +299,7 @@
             display: flex;
             flex-direction: column;
             gap: 0.556rem;
+            font-weight: 450;
 
             p {
               color: #cbd4f3;
@@ -319,9 +319,11 @@
         display: flex;
         padding: 1.6667rem;
         margin-bottom: 3rem;
+
         span.react-datepicker__label {
           display: none;
         }
+
         @mixin heading {
           color: $primary-blue;
           font-size: 0.8rem;
@@ -535,8 +537,8 @@
           .paymentInstallmentDatepicker {
             margin-left: 1rem;
 
-            .react-datepicker__input-container{
-              input{
+            .react-datepicker__input-container {
+              input {
                 width: 14.778rem;
               }
             }
@@ -551,8 +553,6 @@
             margin-left: 1rem;
             width: 17.778rem;
 
-           
-
             .a-dropdown {
               z-index: inherit;
             }
@@ -561,8 +561,10 @@
               content: "*";
               color: red;
             }
+
             .referenceNoInput {
               margin-top: -1.2rem;
+
               .disable-input-color {
                 background: #f5f5f6 !important;
               }
@@ -589,9 +591,11 @@
                 position: relative;
                 width: 16.5rem;
               }
+
               .disable-input {
                 background: #f5f5f6 !important;
               }
+
               .disable-label {
                 color: #b4b3bb !important;
               }
@@ -612,8 +616,6 @@
             .paymentInstallmentContainerDropdowns {
               margin-left: 1rem;
 
-              
-
               .a-dropdown {
                 z-index: inherit;
               }
@@ -629,9 +631,6 @@
               margin-left: 1rem;
 
               .amountPaymentPageInput {
-                input {
-                  color: #767676;
-                }
                 .disable-input-color {
                   background: #f5f5f6 !important;
                   color: #767676;
@@ -649,6 +648,7 @@
                 }
 
                 input {
+                  color: #767676;
                   padding: 0.8rem;
                   background: #fff !important;
                   border: 0.056rem solid #ced4da;
@@ -733,7 +733,6 @@
           }
         }
       }
-
     }
 
     .tab {
@@ -761,6 +760,7 @@
     }
 
     .payroll {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -771,6 +771,7 @@
     }
 
     .invoice_bill_table {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -780,6 +781,7 @@
     }
 
     .master {
+
       .table__row__data img,
       .table__row__header img {
         margin-right: 0.5rem;
@@ -1097,6 +1099,13 @@
     .a-breadcrumb {
       margin-bottom: 0.5rem;
 
+      .steps {
+        svg {
+          width: 1.1111rem;
+          height: 1.1111rem;
+        }
+      }
+
       &__label {
         font-weight: 400;
         cursor: pointer;
@@ -1124,22 +1133,24 @@
       h3 {
         margin-top: -12px;
         font-size: 1.556rem;
-        line-height: 1.9444rem;
+        line-height: 2rem;
       }
 
       .text-line {
         font-size: 0.889rem;
-        line-height: 1.333rem;
         color: #3e3e3e;
         margin-top: -6px;
       }
 
       .text-invoive-no {
         font-size: 0.889rem;
-        line-height: 1.333rem;
         font-weight: 600;
         color: #3e3e3e;
-        margin-top: -0.722rem;
+        margin-top: -0.4rem;
+      }
+
+      .a-checkbox-wrapper {
+        margin: 0 0 2.3rem;
       }
 
       .a-checkbox-wrapper label {
@@ -1147,7 +1158,7 @@
       }
 
       .dec_check_main {
-        margin-top: 1.3rem;
+        margin-top: 2rem;
       }
 
       .dec_check_wrapp {
@@ -1173,6 +1184,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.3333rem;
+        margin-top: 0.8rem;
 
         label {
           color: #3e3e3e;
@@ -1336,7 +1348,7 @@
       display: flex;
       position: absolute;
       right: 0;
-      bottom: -3rem;
+      bottom: -1.8rem;
 
       .delete-invoice {
         display: flex;
@@ -1373,18 +1385,6 @@
         padding: 2.5rem !important;
       }
 
-      .delete-confirm-button {
-        svg {
-          display: inline-block !important;
-        }
-
-        button.a-button.medium {
-          font-size: 1.16rem;
-          width: 9.13rem;
-          border: 2px solid #526fd6 !important;
-        }
-      }
-
       h4 {
         font-size: 1.899rem;
         margin-top: 0rem;
@@ -1394,6 +1394,12 @@
         margin-top: 4.7778rem;
         display: flex;
         justify-content: end;
+
+        button.a-button.medium {
+          font-size: 1.16rem;
+          width: 9.13rem;
+          border: 2px solid #526fd6 !important;
+        }
 
         .delete-button {
           margin-left: 1.6667rem;
@@ -1453,7 +1459,7 @@
           flex-direction: column;
           border-radius: 10px;
 
-          > div {
+          >div {
             display: flex;
           }
 
@@ -1463,6 +1469,25 @@
             height: 10rem;
             border-radius: 10px 10px 0 0;
             position: relative;
+
+            .img-container-logo {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              width: 8rem;
+              height: 8rem;
+              border-radius: 6rem;
+              border: 0.2rem solid white;
+              background: transparent;
+              margin: auto 0 auto 0.5rem;
+
+              .user_initials {
+                font-size: 3rem;
+                font-weight: bold;
+                color: white;
+              }
+            }
 
             .img-container {
               display: flex;
@@ -1689,6 +1714,12 @@
         }
       }
     }
+  }
+  .initialsImg {
+    background-color: $alt-bg;
+    font-size: 0.8rem;
+    border-radius: 12rem;
+    padding: 0.3rem 0.23rem;
   }
 
   .sent-popup{

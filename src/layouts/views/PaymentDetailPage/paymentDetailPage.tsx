@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Button,
+  Modal,
   Icon,
   BreadCrumb,
   DatePicker,
@@ -23,6 +24,8 @@ const PaymentDetailPage = () => {
 
   const tempToken = localStorage.getItem("accessToken");
 
+
+  const [showCancel, useShowCancel] = useState(false)
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [navigateToInvoice, setNavigateToInvoice] = useState(true);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
@@ -86,11 +89,11 @@ const PaymentDetailPage = () => {
     if (!navigateToInvoice) {
       navigate(
         "/pay/invoicedetails" +
-          state.state.inveoicesData[0].id +
-          "/" +
-          state.state.inveoicesData[0].customerId +
-          "/" +
-          "false",
+        state.state.inveoicesData[0].id +
+        "/" +
+        state.state.inveoicesData[0].customerId +
+        "/" +
+        "false",
         {
           state: {
             InvoiceId: state.state.inveoicesData[0].invoiceNo,
@@ -206,35 +209,35 @@ const PaymentDetailPage = () => {
     });
   };
 
-  const prepareDepositToBankDropdownOption = (data: any) => {
-    return data?.map((item: any) => {
+  const prepareDepositToBankDropdownOption = (olddata: any) => {
+    return olddata?.map((d: any) => {
       return {
-        ...item,
+        ...d,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: d.text,
+        value: d.value,
       };
     });
   };
 
   const preparelocationDropdownOption = (data: any) => {
-    return data?.map((item: any) => {
+    return data?.map((newitem: any) => {
       return {
-        ...item,
+        ...newitem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: newitem.text,
+        value: newitem.value,
       };
     });
   };
 
-  const preparePaymentMethodDropdownOption = (data: any) => {
-    return data?.map((item: any) => {
+  const preparePaymentMethodDropdownOption = (newdata: any) => {
+    return newdata?.map((items: any) => {
       return {
-        ...item,
+        ...items,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: items.text,
+        value: items.value,
       };
     });
   };
@@ -253,7 +256,7 @@ const PaymentDetailPage = () => {
       (e: any) => e.invoiceKey === invoiceKey && e.blockKey === blockKey
     );
 
-    arr[index].options.forEach((e: any, i: number) => {
+    arr[index].options.forEach((e: any, _i: number) => {
 
       if (e.value === item.value) {
         e.isSelected = !e.isSelected;
@@ -354,8 +357,8 @@ const PaymentDetailPage = () => {
           isDisable = true;
         }
       });
-      currencyOptions.forEach((e: any) => {
-        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+      currencyOptions.forEach((event: any) => {
+        if (event.options.findIndex((item: any) => item.isSelected) == -1) {
           isDisable = true;
         }
       });
@@ -364,13 +367,13 @@ const PaymentDetailPage = () => {
           isDisable = true;
         }
       });
-      referenceNo.forEach((e: any) => {
-        if (!e.text) {
+      referenceNo.forEach((item: any) => {
+        if (!item.text) {
           isDisable = true;
         }
       });
-      bankToDepositOptions.forEach((e: any) => {
-        if (e.options.findIndex((o: any) => o.isSelected) == -1) {
+      bankToDepositOptions.forEach((items: any) => {
+        if (items.options.findIndex((obj: any) => obj.isSelected) == -1) {
           isDisable = true;
         }
       });
@@ -423,19 +426,20 @@ const PaymentDetailPage = () => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
-              // const one = b?.invoiceBalance?.split(" ") 
-              // let two ;
-              // let three ;
-              // if(one?.length){
-              //    two = one?.[1]
-              // }
-              // if(two){
-              //    three = two?.replaceAll(",", "")
-              // }
+              const one = b?.invoiceBalance?.split(" ")
+              let two;
+              let three;
+              if (one?.length) {
+                two = one?.[1]
+              }
+              if (two) {
+                three = two?.replace(/,/g, "")
+              }
               return (
-                a + b
-                // parseFloat(three)
+                a +
+                parseFloat(three)
               );
+
             },
             0
           );
@@ -557,18 +561,18 @@ const PaymentDetailPage = () => {
         invoiceids: invoiceIds,
         paymentnotes: paymentNote?.note
           ? [
-              {
-                noteType: "2",
-                note: paymentNote.note,
-                isCustomerVisible: paymentNote.isVisibleToCustomer,
-                exportToQuickbooks: paymentNote.isExportToQb,
-                createdDate: currDate,
-                modifiedBy: "00000000-0000-0000-0000-000000000000",
-                modifiedByUser: null,
-                displayInPDF: paymentNote.currDate,
-                customerId: state.state.inveoicesData[0].customerId,
-              },
-            ]
+            {
+              noteType: "2",
+              note: paymentNote.note,
+              isCustomerVisible: paymentNote.isVisibleToCustomer,
+              exportToQuickbooks: paymentNote.isExportToQb,
+              createdDate: currDate,
+              modifiedBy: "00000000-0000-0000-0000-000000000000",
+              modifiedByUser: null,
+              displayInPDF: paymentNote.currDate,
+              customerId: state.state.inveoicesData[0].customerId,
+            },
+          ]
           : [],
         paymentdocuments: [],
         Payments: [
@@ -598,10 +602,10 @@ const PaymentDetailPage = () => {
             multiPaymentBlocks.length === 1
               ? isFullAmount
                 ? parseFloat(
-                    state?.state?.inveoicesData[0]?.invoiceBalance?.split(
-                      " "
-                    )[1]
-                  )
+                  state?.state?.inveoicesData[0]?.invoiceBalance?.split(
+                    " "
+                  )[1]
+                )
                 : parseFloat(totals[i].text)
               : parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
@@ -624,18 +628,18 @@ const PaymentDetailPage = () => {
         invoiceids: invoiceIds,
         paymentnotes: paymentNote?.note
           ? [
-              {
-                noteType: "2",
-                note: paymentNote.note,
-                isCustomerVisible: paymentNote.isVisibleToCustomer,
-                exportToQuickbooks: paymentNote.isExportToQb,
-                createdDate: currDate,
-                modifiedBy: "00000000-0000-0000-0000-000000000000",
-                modifiedByUser: null,
-                displayInPDF: paymentNote.currDate,
-                customerId: state.state.inveoicesData[0].customerId,
-              },
-            ]
+            {
+              noteType: "2",
+              note: paymentNote.note,
+              isCustomerVisible: paymentNote.isVisibleToCustomer,
+              exportToQuickbooks: paymentNote.isExportToQb,
+              createdDate: currDate,
+              modifiedBy: "00000000-0000-0000-0000-000000000000",
+              modifiedByUser: null,
+              displayInPDF: paymentNote.currDate,
+              customerId: state.state.inveoicesData[0].customerId,
+            },
+          ]
           : [],
         paymentdocuments: [],
         Payments: arrData,
@@ -660,11 +664,11 @@ const PaymentDetailPage = () => {
           } else {
             navigate(
               "/pay/invoicedetails" +
-                state.state.inveoicesData[0].id +
-                "/" +
-                state.state.inveoicesData[0].customerId +
-                "/" +
-                "false",
+              state.state.inveoicesData[0].id +
+              "/" +
+              state.state.inveoicesData[0].customerId +
+              "/" +
+              "false",
               {
                 state: {
                   InvoiceId: state.state.inveoicesData[0].invoiceNo,
@@ -680,13 +684,12 @@ const PaymentDetailPage = () => {
         console.log(err);
       });
   };
- 
+
   /* istanbul ignore next */
   const breadcrumbsLabel = () => {
-    const label = state.state.inveoicesData.map((item: any) => {
+    return state.state.inveoicesData.map((item: any) => {
       return item.transactionTypeLabel + " Invoice No. " + item.invoiceNo;
     });
-    return label;
   };
 
   return (
@@ -699,40 +702,47 @@ const PaymentDetailPage = () => {
             steps={
               state?.state?.checkPage
                 ? [
-                    {
-                      isActive: true,
-                      key: "Invoices",
-                      label: "Invoices",
-                      onClickLabel: () => {
-                        setHideTopCheck(false);
-                      },
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: "Invoices",
+                    onClickLabel: () => {
+                      setHideTopCheck(false);
                     },
+                  },
 
-                    {
-                      isActive: true,
-                      key: "Invoices",
-                      label: breadcrumbsLabel(),
-                      onClickLabel: () => {
-                        setNavigateToInvoice(false);
-                      },
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: breadcrumbsLabel(),
+                    onClickLabel: () => {
+                      setNavigateToInvoice(false);
                     },
-                    sharedBreadCrumbs.payments,
-                  ]
+                  },
+                  sharedBreadCrumbs.payments,
+                ]
                 : [
-                    {
-                      isActive: true,
-                      key: "Invoices",
-                      label: "Invoices",
-                      onClickLabel: () => {
-                        setHideTopCheck(false);
-                      },
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: "Invoices",
+                    onClickLabel: () => {
+                      setHideTopCheck(false);
                     },
-                    sharedBreadCrumbs.payments,
-                  ]
+                  },
+                  sharedBreadCrumbs.payments,
+                ]
             }
           />
         </div>
         <div className="paymentSaveButton">
+          <Button
+            className="secondary-btn medium"
+            label="Cancel"
+            handleOnClick={() => {
+              useShowCancel(true)
+            }}
+          />
           <Button
             className="primary-blue medium"
             label="Save"
@@ -853,7 +863,7 @@ const PaymentDetailPage = () => {
                                 }}
                                 isOpen={
                                   toggleState.index == i &&
-                                  toggleState.invoicesIndex == invoicesIndex
+                                    toggleState.invoicesIndex == invoicesIndex
                                     ? isCurrencyDropdownOpen
                                     : false
                                 }
@@ -889,7 +899,7 @@ const PaymentDetailPage = () => {
                                 }}
                                 isOpen={
                                   toggleState.index == i &&
-                                  toggleState.invoicesIndex == invoicesIndex
+                                    toggleState.invoicesIndex == invoicesIndex
                                     ? isLocationDropdownOpen
                                     : false
                                 }
@@ -909,11 +919,11 @@ const PaymentDetailPage = () => {
                                 <span>Reference No</span>
                                 <input
                                   value={
-                                    referenceNo.find(
+                                    (referenceNo.find(
                                       (e: any) =>
                                         e.invoiceKey === invoiceItem.id &&
                                         e.blockKey === item.id
-                                    )?.text || ""
+                                    )?.text || "")
                                   }
                                   name="Reference No"
                                   type="number"
@@ -961,7 +971,7 @@ const PaymentDetailPage = () => {
                                   }}
                                   isOpen={
                                     toggleState.index == i &&
-                                    toggleState.invoicesIndex == invoicesIndex
+                                      toggleState.invoicesIndex == invoicesIndex
                                       ? isBankDropdownOpen
                                       : false
                                   }
@@ -996,7 +1006,7 @@ const PaymentDetailPage = () => {
                                   }}
                                   isOpen={
                                     toggleState.index == i &&
-                                    toggleState.invoicesIndex == invoicesIndex
+                                      toggleState.invoicesIndex == invoicesIndex
                                       ? isPaymentMethodDropdownOpen
                                       : false
                                   }
@@ -1023,26 +1033,26 @@ const PaymentDetailPage = () => {
                                 )}
                               {(!isFullAmount ||
                                 multiPaymentBlocks.length > 1) && (
-                                <input
-                                  type="number"
-                                  value={
-                                    totals.find(
-                                      (e: any) =>
-                                        e.invoiceKey === invoiceItem.id &&
-                                        e.blockKey === item.id
-                                    )?.text || ""
-                                  }
-                                  onChange={(e) => {
-                                    handleInputText(
-                                      e.target.value,
-                                      totals,
-                                      setTotals,
-                                      invoiceItem.id,
-                                      item.id
-                                    );
-                                  }}
-                                />
-                              )}
+                                  <input
+                                    type="number"
+                                    value={
+                                      totals.find(
+                                        (e: any) =>
+                                          e.invoiceKey === invoiceItem.id &&
+                                          e.blockKey === item.id
+                                      )?.text || ""
+                                    }
+                                    onChange={(e) => {
+                                      handleInputText(
+                                        e.target.value,
+                                        totals,
+                                        setTotals,
+                                        invoiceItem.id,
+                                        item.id
+                                      );
+                                    }}
+                                  />
+                                )}
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
@@ -1252,6 +1262,31 @@ const PaymentDetailPage = () => {
           toastPosition="bottom-right"
         />
       )}
+      <div className="cancel_modal">
+        <Modal
+          handleClose={() => { useShowCancel(false) }}
+          isOpen={showCancel}
+        >
+          <p className="cancel_note">Your changes will be unsaved!</p>
+          <div className="modal_main">
+            <Button
+              label="cancel"
+              className="secondary-btn small"
+              handleOnClick={() => { useShowCancel(false) }}
+            />
+            <Button
+              className="primary-blue small"
+              label="Proceed"
+              handleOnClick={() => {
+                getCurrencyAndDepositBankAndLocationDropdownOption();
+                getPaymentMethodDropdownOption();
+                setReferenceNo([]);
+                useShowCancel(false);
+              }}
+            />
+          </div>
+        </Modal>
+      </div>
     </div>
   );
 };

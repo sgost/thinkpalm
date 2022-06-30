@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
 import DatepickerDropdown from "../../../components/DatepickerDropdown/DatepickerDropdown";
-import getRequest from "../../../components/Comman/api";
+import getRequest from "../../../components/Comman/getRequest";
 import disabled from "../../../assets/icons/disabled-3dote.svg";
 import {
   urls,
@@ -19,7 +19,7 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import { getDecodedToken } from "../../..//components/getDecodedToken";
 
 import { WeAreSorryModal } from "./weAreSorryModal";
-import { ToastContainer } from "../../../components/Comman/Utils/utils";
+import { Loader, ToastContainer } from "../../../components/Comman/Utils/utils";
 
 export default function InvoiceListing() {
   let navigate = useNavigate();
@@ -60,184 +60,31 @@ export default function InvoiceListing() {
   });
   const [singleInvoiceId, setSingleInvoiceId] = useState("");
   const [multiInvoiceId, setMultiInvoiveId] = useState([]);
-
-  // Contractor, payroll, credit memos, proformas, miscellaneous
-  const typeOptions = [
-    // {
-    //   isSelected: false,
-    //   label: "Contractor Invoice",
-    //   value: "contractorInvoice",
-    // },
-    tableSharedColumns.createMemo,
-    tableSharedColumns.payroll,
-    tableSharedColumns.Miscellaneous,
-    tableSharedColumns.proforma,
-    {
-      isSelected: false,
-      label: "LateFee",
-      value: 5,
-    },
-    // {
-    //   isSelected: false,
-    //   label: "Payment",
-    //   value: 6,
-    // },
-    {
-      isSelected: false,
-      label: "Contractor Pay",
-      value: 7,
-    },
-  ];
-  const [types, setTypes] = useState(typeOptions);
-
-  //  open, AR review, Pending Approval, Approved, Paid, Partially paid, cancelled, voided,
-  const statusOptions = [
-    {
-      isSelected: false,
-      label: "Open",
-      value: "1",
-    },
-    {
-      isSelected: false,
-      label: "AR Review",
-      value: "2",
-    },
-    {
-      isSelected: false,
-      label: "Pending Approval",
-      value: 3,
-    },
-    {
-      isSelected: false,
-      label: "Approved",
-      value: "4",
-    },
-    {
-      isSelected: false,
-      label: "Paid",
-      value: 5,
-    },
-    {
-      isSelected: false,
-      label: "Partially Paid",
-      value: 6,
-    },
-    // {
-    //   isSelected: false,
-    //   label: "Partial",
-    //   value: 7,
-    // },
-    {
-      isSelected: false,
-      label: "Voided",
-      value: 9,
-    },
-    {
-      isSelected: false,
-      label: "Closed",
-      value: 8,
-    },
-    {
-      isSelected: false,
-      label: "Invoiced",
-      value: 10,
-    },
-    {
-      isSelected: false,
-      label: "Declined",
-      value: 12,
-    },
-  ];
-  const [status, setStatus] = useState(statusOptions);
+  const [types, setTypes] = useState<any>([]);
+  const [status, setStatus] = useState<any>([]);
   const [internalTabledata, setInternalTabletData] = useState({
     columns: [
-      {
-        header: "Invoice No",
-        isDefault: true,
-        key: "invoiceNo",
-      },
-      {
-        header: "Customer",
-        isDefault: true,
-        // key: "customer",
-        key: "customerName",
-      },
-      {
-        header: "Status",
-        isDefault: true,
-        key: "statusLabel",
-      },
-      {
-        header: "Type",
-        isDefault: true,
-        key: "transactionTypeLabel",
-      },
-      {
-        header: "Invoice Date",
-        isDefault: true,
-        key: "createdDate",
-      },
-      {
-        header: "Due Date",
-        isDefault: true,
-        key: "dueDate",
-      },
-      {
-        header: "Total",
-        isDefault: true,
-        key: "totalAmount",
-      },
-      {
-        header: "Balance",
-        isDefault: true,
-        key: "invoiceBalance",
-      },
-      {
-        header: "Exported to QB",
-        isDefault: true,
-        key: "exportToQB",
-      },
+      tableSharedColumns.invoiceNo,
+      tableSharedColumns.customerName,
+      tableSharedColumns.statusLabel,
+      tableSharedColumns.transactionTypeLabel,
+      tableSharedColumns.createdDate,
+      tableSharedColumns.dueDate,
+      tableSharedColumns.totalAmount,
+      tableSharedColumns.invoiceBalance,
+      tableSharedColumns.exportToQB,
     ],
     data: [],
   });
   const [clientTableData, setClientTableData] = useState({
     columns: [
-      {
-        header: "Invoice Number",
-        isDefault: true,
-        key: "invoiceNo",
-      },
-
-      {
-        header: "Status",
-        isDefault: true,
-        key: "statusLabel",
-      },
-      {
-        header: "Type",
-        isDefault: true,
-        key: "transactionTypeLabel",
-      },
-      {
-        header: "Invoice Date",
-        isDefault: true,
-        key: "createdDate",
-      },
-      {
-        header: "Payment Due",
-        isDefault: true,
-        key: "dueDate",
-      },
-      {
-        header: "Total",
-        isDefault: true,
-        key: "totalAmount",
-      },
-      {
-        header: "Balance",
-        isDefault: true,
-        key: "invoiceBalance",
-      },
+      tableSharedColumns.invoiceNo,
+      tableSharedColumns.statusLabel,
+      tableSharedColumns.transactionTypeLabel,
+      tableSharedColumns.createdDate,
+      tableSharedColumns.dueDate,
+      tableSharedColumns.totalAmount,
+      tableSharedColumns.invoiceBalance,
     ],
     data: [],
   });
@@ -250,6 +97,10 @@ export default function InvoiceListing() {
   const [searchedTableData, setSearchedTableData] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [lookupData, setLookupData] = useState<any>({});
+  const [toggle, setToggle] = useState(true);
+  const [toggleForType, setToggleForType] = useState(true);
+  const [isLoader, setIsLoader] = useState(false)
 
   let api = ``;
 
@@ -272,8 +123,7 @@ export default function InvoiceListing() {
       return api;
     }
   };
-
-  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient);
+  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient, setIsLoader);
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -297,10 +147,80 @@ export default function InvoiceListing() {
       types: "",
       status: "",
     });
-    setStatus(statusOptions);
-    setTypes(typeOptions);
+    setToggle(true);
+    setToggleForType(true);
     getCustomerDropdownOptions();
   };
+
+  useEffect(() => {
+    const headers = {
+      headers: getHeaders(accessToken, customerId, isClient),
+    };
+
+    const lookupApi = urls.lookup;
+
+    axios
+      .get(lookupApi, headers)
+      .then((res: any) => {
+        setLookupData(res.data);
+      })
+      .catch((e: any) => {
+        console.log("error", e);
+      });
+  }, []);
+
+  useEffect(() => {
+    const data = internalTabledata ? internalTabledata : clientTableData;
+    if (data?.data && lookupData && toggle) {
+      const statuses: any = data?.data?.map((item: any) => {
+        if (item.statusLabel) {
+          return item.statusLabel;
+        }
+      });
+
+      const uniqueStatusNames = Array.from(new Set(statuses));
+      let statusOptionsArr: any = [];
+      const lookUpdataVar = lookupData?.invoiceStatuses;
+      lookUpdataVar?.forEach((lookupItem: any) => {
+        uniqueStatusNames.forEach((name) => {
+          if (lookupItem?.text === "In Review") {
+            lookupItem.text = "AR Review";
+          }
+          if (lookupItem?.text === name) {
+            statusOptionsArr.push({
+              isSelected: false,
+              label: lookupItem.text,
+              value: lookupItem.value,
+            });
+          }
+        });
+      });
+      setStatus(statusOptionsArr);
+    }
+    if (data?.data && lookupData && toggleForType) {
+      const transactionTypeNames: any = data?.data?.map((item: any) => {
+        if (item.transactionTypeLabel) {
+          return item.transactionTypeLabel;
+        }
+      });
+
+      const uniqueTransactionTypeNames = Array.from(new Set(transactionTypeNames));
+      let transactionTypeOptionsArr: any = [];
+      const lookUpdataVar = lookupData?.transactionTypes;
+      lookUpdataVar?.forEach((lookupItem: any) => {
+        uniqueTransactionTypeNames.forEach((name) => {
+          if (lookupItem?.text === name) {
+            transactionTypeOptionsArr.push({
+              isSelected: false,
+              label: lookupItem.text,
+              value: lookupItem.value,
+            });
+          }
+        });
+      });
+      setTypes(transactionTypeOptionsArr);
+    }
+  }, [internalTabledata, clientTableData, lookupData, toggle]);
 
   useEffect(() => {
     if (permission.InvoiceList.includes("InternalView")) {
@@ -396,7 +316,9 @@ export default function InvoiceListing() {
               : item.statusLabel || "",
           transactionTypeLabel: item.transactionTypeLabel || "",
           createdDate:
-            format(new Date(item.submissionDate), "d MMM yyyy") || "",
+            item.transactionTypeLabel === "Contractor Pay"
+              ? format(new Date(item.createdDate), "d MMM yyyy") || ""
+              : format(new Date(item.submissionDate), "d MMM yyyy") || "",
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
@@ -407,8 +329,8 @@ export default function InvoiceListing() {
               " " +
               cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
-            value: "Not Exported",
-            color: "#767676",
+            value: item?.qbInvoiceNo > 0 ? "Exported" : "Not Exported",
+            color: item?.qbInvoiceNo > 0 ? '#519872' : "#767676",
           },
         });
       });
@@ -657,7 +579,7 @@ export default function InvoiceListing() {
       <div className="container">
         <div className="listingBtnContainer">
           <div className="add_payment_invoice">
-            {permission.Role === "FinanceAR" && (
+            {permission.InvoiceList.includes("AddPayment") && (
               <>
                 {handleAddNewPaymentDisable() ? (
                   <Button
@@ -984,6 +906,7 @@ export default function InvoiceListing() {
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
+                  setToggleForType(false)
                   let index = types.findIndex((e) => e.value === opt.value);
 
                   let copy = [...types];
@@ -1032,9 +955,12 @@ export default function InvoiceListing() {
                   }
                 }}
                 handleDropOptionClick={(opt: any) => {
+                  setToggle(false);
                   let copy = [...status];
-                  let index = status.findIndex((e) => e.value === opt.value);
-                  copy.forEach((e, ind) => {
+                  let index = status.findIndex(
+                    (e: any) => e.value === opt.value
+                  );
+                  copy.forEach((_e, ind) => {
                     if (ind === index) {
                       if (copy[index].isSelected) {
                         copy[index] = { ...opt, isSelected: false };
@@ -1056,7 +982,6 @@ export default function InvoiceListing() {
                   });
 
                   setStatus(copy);
-                  setIsStatusOpen(false);
                   setStatusType(statusValue);
                   setDropdownLabel({
                     ...dropdownLabel,
@@ -1107,6 +1032,7 @@ export default function InvoiceListing() {
             </span>
           </div>
         )}
+        {isLoader && <Loader />}
         {(searchText || customerType) && !searchedTableData ? (
           <div className="invalidSearch">
             <div className="uhohContainer">
@@ -1150,7 +1076,7 @@ export default function InvoiceListing() {
           </div>
         ) : (
           <>
-            {!localStorage.redirectingInvoiceState && (
+            {!localStorage.redirectingInvoiceState && !isLoader && (
               <Table
                 options={
                   searchText
@@ -1158,17 +1084,20 @@ export default function InvoiceListing() {
                         ...searchedTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
+                        fallback: ''
                       }
                     : isClient
                     ? {
                         ...clientTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
+                        fallback: ''
                       }
                     : {
                         ...internalTabledata,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
+                        fallback: ''
                       }
                 }
                 colSort

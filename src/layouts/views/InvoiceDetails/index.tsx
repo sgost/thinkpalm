@@ -51,7 +51,10 @@ import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
 import NotesWidget from "../../../components/Notes";
 import FileUploadWidget from "../../../components/FileUpload";
 import { getDecodedToken } from "../../../components/getDecodedToken";
-import { getPermissions } from "../../../../src/components/Comman/Utils/utils";
+import {
+  getPermissions,
+  Loader,
+} from "../../../../src/components/Comman/Utils/utils";
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
 import cn from "classnames";
@@ -75,7 +78,7 @@ export default function InvoiceDetails() {
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
   const [sentPopup, setSentPopup] = useState(true);
-  const [missTransType, setMissTransType] = useState(state.transactionType); //To change the the invoice transictionType number
+  const [missTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -123,8 +126,6 @@ export default function InvoiceDetails() {
   const [inputVoidValue, setInputVoidValue] = useState("");
   const [approvalMsg, setApprovalMsg] = useState("");
   const [notes, setNotes] = useState<any>([]);
-  const [isFileError, setIsFileError] = useState<any>(null);
-  const [transactionType, setTransactionType] = useState();
   const [deleteDisableButtons, setDeleteDisableButtons] = useState(false);
   const [deleteConfirmModalOpen, setDeleteConfirmModalOpen] = useState(false);
   const [deleteEmployeeModalOpen, setDeleteEmployeeModalOpen] = useState({
@@ -169,8 +170,42 @@ export default function InvoiceDetails() {
   });
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
+  const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
   const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
+    {
+      label: "Employee Salary is not correct",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Benefit Amount is not correct",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "One-off pay items amount to be updated",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Termination",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Invoice Calculation Error",
+      isSelected: undefined,
+      isDisable: false,
+    },
+    {
+      label: "Fee Issue",
+      isSelected: undefined,
+      isDisable: false,
+    },
+  ]);
+  const [declineLabel, setDeclineLabel] = useState("");
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -265,12 +300,13 @@ export default function InvoiceDetails() {
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
-                            res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
-                              handleCompensationModal(item)
-                            ) : (
-                              <></>
-                            );
+                            // (status === "Declined" || status === "AR Review") &&
+                            (res.data?.invoice?.status === 2 ||
+                              res.data?.invoice?.status === 12) &&
+                              handleCompensationModal(item);
+                            // : (
+                            //   <></>
+                            // );
                           }}
                         >
                           {item.employeeId}
@@ -279,22 +315,35 @@ export default function InvoiceDetails() {
                     },
                     name: {
                       value: (
-                        <span
-                          style={{ fontWeight: 600 }}
-                          onClick={() => {
-                            res.data?.invoice?.status === 2 ||
-                            res.data?.invoice?.status === 12 ? (
-                              handleCompensationModal(item)
-                            ) : (
-                              <></>
-                            );
-                          }}
-                        >
-                          {item.firstName + " " + item.lastName}
+                        <span style={{ display: "flex", alignItems: "center" }}>
+                          {item?.employeeProfilePicture ? (
+                            <img
+                              style={{ borderRadius: 12 }}
+                              src={item?.employeeProfilePicture}
+                            />
+                          ) : (
+                            <span className="initialsImg">
+                              {item?.firstName[0] + " " + item?.lastName[0]}
+                            </span>
+                          )}
+                          <span
+                            style={{ fontWeight: 600 }}
+                            onClick={() => {
+                              // (status === "Declined" || status === "AR Review") &&
+                              (res.data?.invoice?.status === 2 ||
+                                res.data?.invoice?.status === 12) &&
+                                handleCompensationModal(item);
+                              // : (
+                              //   <></>
+                              // );
+                            }}
+                          >
+                            {item.firstName + " " + item.lastName}
+                          </span>
                         </span>
                       ),
-                      img: { src: avatar },
-                      style: { borderRadius: 12 },
+                      // img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
+                      // style: { borderRadius: 12 },
                     },
                     grossWages:
                       currencyCode + " " + toCurrencyFormat(item.totalWage),
@@ -514,7 +563,6 @@ export default function InvoiceDetails() {
           };
           setTimeout(() => {
             setApiData(res);
-            setTransactionType(res.data.invoice.transactionType);
           });
         }
       })
@@ -692,21 +740,59 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    const headers = {
-      headers: getHeaders(tempToken, cid, isClient),
-    };
+    if ((status === "Paid" || status === "Partial Paid") && id) {
+      const headers = {
+        headers: getHeaders(tempToken, cid, isClient),
+      };
 
-    let paymentdetailApi = getPaymentDetailApi(id);
+      let paymentdetailApi = getPaymentDetailApi(id);
 
-    axios
-      .get(paymentdetailApi, headers)
-      .then((res: any) => {
-        setPaymentDetailData(res?.data?.payments);
-      })
-      .catch((e: any) => {
-        console.log("error e", e);
-      });
-  }, [id]);
+      axios
+        .get(paymentdetailApi, headers)
+        .then((res: any) => {
+          setPaymentDetailData(res?.data?.payments);
+        })
+        .catch((e: any) => {
+          console.log("error e", e);
+        });
+    }
+  }, [id, status]);
+
+  const handleSaveDisable = () => {
+    const invDate = new Date(
+      invoiceDate
+        ? moment(invoiceDate).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceDate).format("YYYY-MM-DD")
+    );
+
+    const invAppDate = new Date(
+      invoiceChanges
+        ? moment(invoiceChanges).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceApproval).format("YYYY-MM-DD")
+    );
+
+    const payDue = new Date(
+      paymentDue
+        ? moment(paymentDue).format("YYYY-MM-DD")
+        : moment(topPanel.paymentDue).format("YYYY-MM-DD")
+    );
+
+    if (
+      invDate > payDue ||
+      (invDate > invAppDate && missTransType == 1) ||
+      (invAppDate > payDue && missTransType == 1)
+    ) {
+      setSaveButtonDisable(true);
+    } else {
+      setSaveButtonDisable(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isEditFieldsChanges) {
+      handleSaveDisable();
+    }
+  }, [paymentDue, invoiceDate, invoiceChanges, isEditFieldsChanges]);
 
   const getBillingCurrency = () => {
     if (countriesData?.data && apiData?.data) {
@@ -946,7 +1032,7 @@ export default function InvoiceDetails() {
   const handleVoid = async () => {
     const headers = getHeaders(tempToken, cid, isClient);
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("asset", voidFileData);
     await axios
       .post(urls.voidUploadFile, formData, {
@@ -979,7 +1065,6 @@ export default function InvoiceDetails() {
       })
       .catch((e: any) => {
         console.log(e);
-        setIsFileError(true);
       });
 
     let currDate = new Date();
@@ -1089,7 +1174,7 @@ export default function InvoiceDetails() {
   };
 
   if (!apiData?.data && !isErr && !creditMemoData && !isErr) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
   if (isErr) {
     return <p>Something went wrong!</p>;
@@ -1243,6 +1328,40 @@ export default function InvoiceDetails() {
     setReCalButtonDisable(true);
   };
 
+  const handleMinDate = (dateType: string) => {
+    const invDate = new Date(
+      invoiceDate
+        ? moment(invoiceDate).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceDate).format("YYYY-MM-DD")
+    );
+
+    const invAppDate = new Date(
+      invoiceChanges
+        ? moment(invoiceChanges).format("YYYY-MM-DD")
+        : moment(topPanel.invoiceApproval).format("YYYY-MM-DD")
+    );
+
+    if (dateType === "approvalDate") {
+      return invDate;
+    }
+    if (dateType === "paymentDate") {
+      return missTransType === 1 ? invAppDate : invDate;
+    }
+  };
+
+  const declineCheckboxDisable = () => {
+    let isDisable = true;
+
+    declineCheckboxLabel?.map((item: any) => {
+      if (item?.isSelected === true && inputValue != "") {
+        isDisable = false;
+      }
+    });
+    return isDisable;
+  };
+  const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
+  const TotalBal = topPanel.total != "undefined" ? topPanel.total : 0;
+
   return (
     <div className="invoiceDetailsContainer">
       <div className="invoiceDetailsHeaderRow">
@@ -1343,7 +1462,7 @@ export default function InvoiceDetails() {
 
           {(status === "AR Review" || status === "Declined") &&
             missTransType == 1 &&
-            getPermissions(1 , 'Edit') && (
+            getPermissions(1, "Edit") && (
               <div className="saveBtnContainer">
                 <Button
                   disabled={reCalButtonDisable}
@@ -1376,8 +1495,11 @@ export default function InvoiceDetails() {
 
           {(status === "Approved" &&
             missTransType !== 4 &&
-            missTransType !== 7 && permission.Role === "FinanceAR") ||
-            (status === "Invoiced" && missTransType === 7 && permission.Role === "FinanceAR") ? (
+            missTransType !== 7 &&
+            getPermissions(missTransType, "AddPayment")) ||
+          (status === "Invoiced" &&
+            missTransType === 7 &&
+            getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1428,12 +1550,21 @@ export default function InvoiceDetails() {
                         creditMemoData?.exchangeRate ||
                         apiData?.data?.invoice?.exchangeRate,
                       totalAmount:
-                        topPanel.total || apiData?.data?.invoice?.totalAmount,
-                      invoiceBalance:
-                        getBillingCurrency() + " " + topPanel.open ||
                         getBillingCurrency() +
                           " " +
-                          apiData?.data?.invoice?.invoiceBalance,
+                          toCurrencyFormat(topPanel.total) ||
+                        getBillingCurrency() +
+                          " " +
+                          toCurrencyFormat(apiData?.data?.invoice?.totalAmount),
+                      invoiceBalance:
+                        getBillingCurrency() +
+                          " " +
+                          toCurrencyFormat(topPanel.open) ||
+                        getBillingCurrency() +
+                          " " +
+                          toCurrencyFormat(
+                            apiData?.data?.invoice?.invoiceBalance
+                          ),
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1585,7 +1716,7 @@ export default function InvoiceDetails() {
 
           {status === "Approved" &&
             missTransType === 3 &&
-            getPermissions(2 , 'Add') && (
+            getPermissions(2, "Add") && (
               <Button
                 disabled={btnDis}
                 data-testid="convert-button"
@@ -1678,14 +1809,14 @@ export default function InvoiceDetails() {
                 <p>
                   Open{" "}
                   <span>
-                    {getBillingCurrency()} {toCurrencyFormat(topPanel.open)}
+                    {getBillingCurrency()} {toCurrencyFormat(openBal)}
                   </span>
                 </p>
               )}
               <p>
                 Total{" "}
                 <span>
-                  {getBillingCurrency()} {toCurrencyFormat(topPanel.total)}
+                  {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                 </span>
               </p>
             </div>
@@ -1720,7 +1851,7 @@ export default function InvoiceDetails() {
                       setPoNumber(
                         Math.abs(parseInt(e.target.value)).toString()
                       );
-                      setSaveButtonDisable(false);
+                      setIsEditFieldsChanges(true);
                     }}
                     value={poNumber ? poNumber : topPanel.poNumber}
                     type="number"
@@ -1743,12 +1874,18 @@ export default function InvoiceDetails() {
                   )}
                   handleDateChange={(date: any) => {
                     setInvoiceDate(date);
-                    setSaveButtonDisable(false);
+                    setIsEditFieldsChanges(true);
                   }}
                 />
               </div>
             ) : (
               <p className="value">{topPanel.invoiceDate}</p>
+            )}
+            {missTransType == 7 && (
+              <>
+                <p className="heading">Due Date</p>
+                <p className="value">{topPanel.paymentDue}</p>
+              </>
             )}
 
             {missTransType != 7 && (
@@ -1761,12 +1898,14 @@ export default function InvoiceDetails() {
                         {status === "AR Review" || status === "Open" ? (
                           <div className="dpContainer dpMidMargin">
                             <DatePicker
+                              minDate={handleMinDate("approvalDate")}
                               placeholderText={moment(
                                 topPanel.invoiceApproval
                               ).format("DD/MMM/YYYY")}
-                              handleDateChange={(date: any) =>
-                                setInvoiceChanges(date)
-                              }
+                              handleDateChange={(date: any) => {
+                                setInvoiceChanges(date);
+                                setIsEditFieldsChanges(true);
+                              }}
                             />
                           </div>
                         ) : (
@@ -1818,23 +1957,13 @@ export default function InvoiceDetails() {
                 {status === "AR Review" || status === "Open" ? (
                   <div className="dpContainer">
                     <DatePicker
-                      minDate={
-                        missTransType === 1
-                          ? new Date(
-                              invoiceChanges
-                                ? moment(invoiceChanges).format("YYYY-MM-DD")
-                                : moment(topPanel.invoiceApproval).format(
-                                    "YYYY-MM-DD"
-                                  )
-                            )
-                          : false
-                      }
+                      minDate={handleMinDate("paymentDate")}
                       placeholderText={moment(topPanel.paymentDue).format(
                         "DD/MMM/YYYY"
                       )}
                       handleDateChange={(date: any) => {
                         setPaymentDue(date);
-                        setSaveButtonDisable(false);
+                        setIsEditFieldsChanges(true);
                       }}
                     />
                   </div>
@@ -1890,7 +2019,6 @@ export default function InvoiceDetails() {
             id={id}
             topPanel={topPanel}
             setTopPanel={setTopPanel}
-            status={status}
           />
         </div>
       ) : (
@@ -2176,6 +2304,38 @@ export default function InvoiceDetails() {
               <p>{getTransactionLabel()}.</p>
             </div>
 
+            <div className="dec_check_main">
+              {declineCheckboxLabel &&
+                declineCheckboxLabel?.map((item: any, index: any) => {
+                  return (
+                    <div className="dec_check_wrapp">
+                      <Checkbox
+                        data-testid="check1"
+                        id="sampleCheckbox"
+                        disabled={
+                          declineCheckboxLabel[index].isDisable === true
+                        }
+                        onChange={(e: any) => {
+                          const declineData = [...declineCheckboxLabel];
+                          declineData[index].isSelected = e.target.checked;
+                          declineData.forEach((i, k) => {
+                            if (i.label === item.label) {
+                              setDeclineLabel(declineData[k].label);
+                            }
+                            if (i.label != item.label) {
+                              declineData[k].isDisable = e.target.checked;
+                            }
+                          });
+                          setDeclineCheckboxLabel(declineData);
+                        }}
+                        checked={declineCheckboxLabel[index].isSelected}
+                      />
+                      <label className="dec_check_label">{item.label}</label>
+                    </div>
+                  );
+                })}
+            </div>
+
             <div className="text-invoice-comment">
               <label>
                 Comment<span className="comment">*</span>
@@ -2199,10 +2359,9 @@ export default function InvoiceDetails() {
                   setInputValue("");
                 }}
               />
-
               <Button
                 data-testid="decline-button-submit"
-                disabled={!inputValue}
+                disabled={declineCheckboxDisable()}
                 label="Decline Invoice"
                 className="primary-blue medium decline-button"
                 handleOnClick={() => {
@@ -2217,6 +2376,7 @@ export default function InvoiceDetails() {
                       note: inputValue,
                       createdDate: currDate,
                       customerId: cid,
+                      DeclineOption: declineLabel,
                     },
                   })
                     .then((res: any) => {
@@ -2366,21 +2526,30 @@ export default function InvoiceDetails() {
           <div className="compensation-inner-container">
             <Cards className={`profile-header-container`}>
               <div className="section-1">
-                <div className="img-container">
-                  <AvatarHandler
-                    // handleClick={handleAvatarClick}
-                    // initials={user.initials}
-                    source={
-                      isCompensatioModalOpen?.data?.personalDetails?.photoUrl
-                        ? isCompensatioModalOpen?.data?.personalDetails
-                            ?.photoUrl
-                        : avatar
-                    }
-                    style={{
-                      "background-color": "#FFFFF",
-                    }}
-                  />
-                </div>
+                {isCompensatioModalOpen?.data?.personalDetails?.photoUrl ? (
+                  <div className="img-container">
+                    <AvatarHandler
+                      // handleClick={handleAvatarClick}
+                      // initials={user.initials}
+                      source={
+                        isCompensatioModalOpen?.data?.personalDetails?.photoUrl
+                      }
+                      style={{
+                        "background-color": "#FFFFF",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="img-container-logo">
+                    <p className="user_initials">
+                      {isCompensatioModalOpen?.data?.personalDetails
+                        ?.firstName[0] +
+                        " " +
+                        isCompensatioModalOpen?.data?.personalDetails
+                          ?.lastName[0]}
+                    </p>
+                  </div>
+                )}
                 <div className="col-6">
                   <div className="header">
                     {isCompensatioModalOpen?.data?.fullName}

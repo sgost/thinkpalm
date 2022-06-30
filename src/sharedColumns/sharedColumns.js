@@ -149,6 +149,52 @@ export const tableSharedColumns = {
     isDefault: true,
     key: "payItemFrequencyName",
   },
+  invoiceNo: {
+    header: "Invoice No",
+    isDefault: true,
+    key: "invoiceNo",
+  },
+  customerName:  {
+    header: "Customer",
+    isDefault: true,
+    // key: "customer",
+    key: "customerName",
+  },
+  statusLabel: {
+    header: "Status",
+    isDefault: true,
+    key: "statusLabel",
+  },
+  transactionTypeLabel: {
+    header: "Type",
+    isDefault: true,
+    key: "transactionTypeLabel",
+  },
+  createdDate: {
+    header: "Invoice Date",
+    isDefault: true,
+    key: "createdDate",
+  },
+  dueDate: {
+    header: "Due Date",
+    isDefault: true,
+    key: "dueDate",
+  },
+  totalAmount: {
+    header: "Total",
+    isDefault: true,
+    key: "totalAmount",
+  },
+  invoiceBalance: {
+    header: "Balance",
+    isDefault: true,
+    key: "invoiceBalance",
+  },
+  exportToQB:  {
+    header: "Exported to QB",
+    isDefault: true,
+    key: "exportToQB",
+  },
 };
 
 export const monthNameOptions = {

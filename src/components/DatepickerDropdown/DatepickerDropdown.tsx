@@ -144,12 +144,6 @@ export default function DatepickerDropdown({
                   className="openDropdownOption"
                 >
                   <span className="text">{item}</span>
-
-                  {/* {item.isSelected && (
-                  <div className="icon">
-                    <Icon icon="checkMark" size="small" title="Order Summary" />
-                  </div>
-                )} */}
                 </div>
               );
             })}

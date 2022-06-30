@@ -103,7 +103,7 @@ export const urls = {
   savePayments:
     baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
 
-    getCustomersByIds:
+  getCustomersByIds:
     baseURL + services.atlasCustomerService + "/Customer/GetAllByIds"
 };
 
@@ -179,6 +179,7 @@ export const getHeaders = (token, cid, isClient) => {
     "x-apng-inter-region": "0",
     "x-apng-target-region": "EMEA",
     customer_id: cid || "",
+    customerid: cid || ""
   };
 };
 
