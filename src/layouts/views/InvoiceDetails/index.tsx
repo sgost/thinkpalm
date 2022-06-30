@@ -1542,12 +1542,12 @@ export default function InvoiceDetails() {
                         creditMemoData?.exchangeRate ||
                         apiData?.data?.invoice?.exchangeRate,
                       totalAmount:
-                      getBillingCurrency() + " " + topPanel.total || getBillingCurrency() + " " + apiData?.data?.invoice?.totalAmount,
+                      getBillingCurrency() + " " + toCurrencyFormat(topPanel.total) || getBillingCurrency() + " " + toCurrencyFormat(apiData?.data?.invoice?.totalAmount),
                       invoiceBalance:
-                        getBillingCurrency() + " " + topPanel.open ||
+                        getBillingCurrency() + " " + toCurrencyFormat(topPanel.open) ||
                         getBillingCurrency() +
                         " " +
-                        apiData?.data?.invoice?.invoiceBalance,
+                       toCurrencyFormat( apiData?.data?.invoice?.invoiceBalance),
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
