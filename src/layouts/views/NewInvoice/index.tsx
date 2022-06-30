@@ -137,6 +137,7 @@ const NewInvoice = () => {
   );
   const [currencyOptions, setCurrencyOptions] = useState<any>([]);
   const [qbIdOptions, setQbIdOptions] = useState<any>([]);
+  const [qbIdValue, setQbIdValue] = useState('')
   const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
   const [paymentMethodOptions, setPaymentMethodOptions] = useState<any>([]);
 
@@ -333,6 +334,8 @@ const NewInvoice = () => {
     setCurrencyOptions,
     qbIdOptions,
     setQbIdOptions,
+    qbIdValue,
+    setQbIdValue,
     paymentTermsOptions,
     setPaymentTermsOptions,
     paymentMethodOptions,

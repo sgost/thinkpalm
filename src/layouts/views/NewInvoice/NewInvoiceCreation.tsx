@@ -5,6 +5,7 @@ import "./NewInvoiceCreation.scss";
 import { getCountryByCustomer, getHeaders, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
+import Input from "../../../components/Input/input";
 
 const NewInvoiceCreation = ({
   accessToken,
@@ -32,6 +33,8 @@ const NewInvoiceCreation = ({
   setCurrencyOptions,
   qbIdOptions,
   setQbIdOptions,
+  qbIdValue,
+  setQbIdValue,
   paymentTermsOptions,
   setPaymentTermsOptions,
 }: any) => {
@@ -329,47 +332,45 @@ const NewInvoiceCreation = ({
             )}
 
             <div className="row">
-              {stepperOneData?.type &&
-                stepperOneData?.type !== "Payroll" &&
-                stepperOneData?.type !== "Credit Memo" && (
-                  <div className="dropdown col-md-4 select-component">
-                    <Dropdown
-                      isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
-                        handleDropOption(
-                          item,
-                          invoicerOptions,
-                          setInvoicerOptions,
-                          setIsInvoicer
-                        );
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="dropdown col-md-4 select-component">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        invoicerOptions,
+                        setInvoicerOptions,
+                        setIsInvoicer
+                      );
 
-                        let tempRecAccOptions: Array<any> = [];
-                        item.receivableAccounts?.forEach((recAcc: any) => {
-                          tempRecAccOptions.push({
-                            ...recAcc,
-                            isSelected: false,
-                            label: recAcc.text,
-                            value: recAcc.value,
-                          });
+                      let tempRecAccOptions: Array<any> = [];
+                      item.receivableAccounts?.forEach((recAcc: any) => {
+                        tempRecAccOptions.push({
+                          ...recAcc,
+                          isSelected: false,
+                          label: recAcc.text,
+                          value: recAcc.value,
                         });
-                        setReceivableAccountOptions(tempRecAccOptions);
-                      }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsInvoicer(b);
-                        setIsRecAcc(false);
-                        setIsCurrency(false);
-                        setIsQbId(false);
-                        setIsPaymentTerms(false);
-                        setIstypeOpen(false);
-                        setIsCustomerOpen(false);
-                      }}
-                      isOpen={isInvoicer}
-                      options={invoicerOptions}
-                      title={`Invoicer`}
-                      search
-                    />
-                  </div>
-                )}
+                      });
+                      setReceivableAccountOptions(tempRecAccOptions);
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsInvoicer(b);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
+                    }}
+                    isOpen={isInvoicer}
+                    options={invoicerOptions}
+                    title={`Invoicer`}
+                    search
+                  />
+                </div>
+              )}
 
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
@@ -404,42 +405,40 @@ const NewInvoiceCreation = ({
             </div>
 
             <div className="row">
-              {stepperOneData?.type &&
-                stepperOneData?.type !== "Payroll" &&
-                stepperOneData?.type !== "Credit Memo" && (
-                  <div className="lastDropdown col-md-4 select-component">
-                    <Dropdown
-                      isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
-                        handleDropOption(
-                          item,
-                          currencyOptions,
-                          setCurrencyOptions,
-                          setIsCurrency
-                        );
-                      }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsCurrency(b);
-                        setIsInvoicer(false);
-                        setIsRecAcc(false);
-                        setIsQbId(false);
-                        setIsPaymentTerms(false);
-                        setIstypeOpen(false);
-                        setIsCustomerOpen(false);
-                      }}
-                      isOpen={isCurrency}
-                      options={currencyOptions}
-                      title={`Currency`}
-                      search
-                    />
-                  </div>
-                )}
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="lastDropdown col-md-4 select-component">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        currencyOptions,
+                        setCurrencyOptions,
+                        setIsCurrency
+                      );
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsCurrency(b);
+                      setIsInvoicer(false);
+                      setIsRecAcc(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
+                    }}
+                    isOpen={isCurrency}
+                    options={currencyOptions}
+                    title={`Currency`}
+                    search
+                  />
+                </div>
+              )}
 
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
                   <div className="lastDropdown col-md-4 select-component">
-                    <Dropdown
+                    {/* <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
                         handleDropOption(
@@ -462,16 +461,7 @@ const NewInvoiceCreation = ({
                       options={qbIdOptions}
                       title="Financial System ID"
                       search
-                    />
-                  </div>
-                )}
-            </div>
-
-            {stepperOneData?.type &&
-              stepperOneData?.type !== "Payroll" &&
-              stepperOneData?.type !== "Credit Memo" && (
-                <div className="row">
-                  <div className="dropdown col-md-4 select-component ddPaymentTerms">
+                    /> */}
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -495,8 +485,23 @@ const NewInvoiceCreation = ({
                       search
                     />
                   </div>
+                )}
+            </div>
+
+            {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+              <div className="row">
+                <div className="col-md-4">
+                  <Input
+                    required
+                    className="qbInput"
+                    type="number"
+                    label="Financial System ID"
+                    value={qbIdValue}
+                    setValue={setQbIdValue}
+                  />
                 </div>
-              )}
+              </div>
+            )}
             {stepperOneData?.type === "Payroll" && (
               <div className="row">
                 <div className="col-md-4 select-component">
