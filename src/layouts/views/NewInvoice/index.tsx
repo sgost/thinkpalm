@@ -305,7 +305,6 @@ const NewInvoice = () => {
 
   // steppers one Props
   const stepperOneProps = {
-    accessToken,
     stepperOneData,
     setStepperOneData,
     YearOptions,
