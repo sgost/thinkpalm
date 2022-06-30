@@ -204,6 +204,7 @@ export default function InvoiceDetails() {
       isDisable: false,
     },
   ]);
+  const [declineLabel, setDeclineLabel] = useState("");
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -2301,6 +2302,9 @@ export default function InvoiceDetails() {
                           const declineData = [...declineCheckboxLabel];
                           declineData[index].isSelected = e.target.checked;
                           declineData.forEach((i, k) => {
+                            if (i.label === item.label) {
+                              setDeclineLabel(declineData[k].label);
+                            }
                             if (i.label != item.label) {
                               declineData[k].isDisable = e.target.checked;
                             }
@@ -2355,6 +2359,7 @@ export default function InvoiceDetails() {
                       note: inputValue,
                       createdDate: currDate,
                       customerId: cid,
+                      DeclineOption: declineLabel
                     },
                   })
                     .then((res: any) => {
