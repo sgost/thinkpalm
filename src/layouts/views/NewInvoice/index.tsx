@@ -24,7 +24,6 @@ import {
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
 const NewInvoice = () => {
-
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
   const [tempData, setTempData] = useState<any>([]);
@@ -205,8 +204,6 @@ const NewInvoice = () => {
     showDefaultColumn: true,
   };
 
-
-
   // calling initally dropdown options for stepper1 non-payroll invoices (NewInvoiceCreation.tsx)
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -308,7 +305,6 @@ const NewInvoice = () => {
 
   // steppers one Props
   const stepperOneProps = {
-    accessToken,
     stepperOneData,
     setStepperOneData,
     YearOptions,
@@ -412,7 +408,7 @@ const NewInvoice = () => {
     setCountryInitialData,
     tempDataCountry,
     setTempDataCountry,
-    CustomerOptions
+    CustomerOptions,
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -600,13 +596,14 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-          paymentTermsOptions
-            .find((e: any) => e.isSelected)
-            ?.text.split(" ")[0]
-        );
+            paymentTermsOptions
+              .find((e: any) => e.isSelected)
+              ?.text.split(" ")[0]
+          );
 
-    const dueDate = new Date();
-    dueDate.setDate(invoiceDate.getDate() + payTerms);
+    var dueDate = new Date(invoiceDate);
+    var result = dueDate.setDate(invoiceDate.getDate() + payTerms + 1);
+    const newDueDate = new Date(result);
 
     let transactionTypeVar = null;
 
@@ -641,7 +638,7 @@ const NewInvoice = () => {
       Status: 1, // hard code
       TransactionType: transactionTypeVar, //
       // CreatedDate: currDate, // ? current date
-      DueDate: dueDate, //
+      DueDate: newDueDate, //
       CreatedDate: format(invoiceDate, "yyyy-MM-dd"),
       submissiondate: format(invoiceDate, "yyyy-MM-dd"),
       // DueDate: "2022-05-23T12:31:21.125Z",
@@ -735,10 +732,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                    ? "step2-right-panel"
-                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                      ? "step2-credit-memo"
-                      : "",
+                  ? "step2-right-panel"
+                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                  ? "step2-credit-memo"
+                  : "",
             },
           }}
           leftPanel={
@@ -750,8 +747,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                    ? creditMemoSteps
-                    : stepsInitial
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />

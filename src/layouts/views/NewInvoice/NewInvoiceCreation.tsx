@@ -7,7 +7,6 @@ import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
 
 const NewInvoiceCreation = ({
-  accessToken,
   stepperOneData,
   setStepperOneData,
   YearOptions,
@@ -118,10 +117,9 @@ const NewInvoiceCreation = ({
 
   const getPayrollCustomerDropdownOptions = () => {
     let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi;
+
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      headers: getHeaders(tempToken, currentOrgId, "false"),
     };
 
     setLoading(true);
@@ -158,11 +156,10 @@ const NewInvoiceCreation = ({
 
   const getCountryDropdwonOptions = () => {
     let api = getCountryByCustomer(stepperOneData?.customerId);
+
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
+      headers: getHeaders(tempToken, currentOrgId, "false")
+    }
 
     axios
       .get(api, headers)
