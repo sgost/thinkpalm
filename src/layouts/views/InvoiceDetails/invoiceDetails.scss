@@ -118,8 +118,6 @@
           }
         }
 
-        
-
         .decline-invoice {
           background-color: white;
 
@@ -536,8 +534,8 @@
           .paymentInstallmentDatepicker {
             margin-left: 1rem;
 
-            .react-datepicker__input-container{
-              input{
+            .react-datepicker__input-container {
+              input {
                 width: 14.778rem;
               }
             }
@@ -551,8 +549,6 @@
           .paymentInstallmentContainerDropdowns {
             margin-left: 1rem;
             width: 17.778rem;
-
-           
 
             .a-dropdown {
               z-index: inherit;
@@ -612,8 +608,6 @@
 
             .paymentInstallmentContainerDropdowns {
               margin-left: 1rem;
-
-              
 
               .a-dropdown {
                 z-index: inherit;
@@ -732,7 +726,6 @@
           }
         }
       }
-
     }
 
     .tab {
@@ -1700,5 +1693,12 @@
         }
       }
     }
+  }
+
+  .initialsImg {
+    background-color: $alt-bg;
+    font-size: 0.8rem;
+    border-radius: 12rem;
+    padding: 0.3rem 0.23rem;
   }
 }
