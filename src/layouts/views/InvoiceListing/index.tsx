@@ -329,8 +329,8 @@ export default function InvoiceListing() {
               " " +
               cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
-            value: "Not Exported",
-            color: "#767676",
+            value: item?.qbInvoiceNo > 0 ? "Exported" : "Not Exported",
+            color: item?.qbInvoiceNo > 0 ? '#519872' : "#767676",
           },
         });
       });
