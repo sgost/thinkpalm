@@ -313,24 +313,24 @@ export default function InvoiceDetails() {
                     },
                     name: {
                       value: (
-                        <span style={{display: 'flex' , alignItems: 'center'}}>
-                        { item?.employeeProfilePicture ?  <img style={{borderRadius: 12}} src={item?.employeeProfilePicture} /> 
-                          : <span className="initialsImg">{item?.firstName[0] + " " + item?.lastName[0]}</span>  
-                        }
-                        <span
-                          style={{ fontWeight: 600 }}
-                          onClick={() => {
-                            // (status === "Declined" || status === "AR Review") &&
-                            (res.data?.invoice?.status === 2 ||
-                              res.data?.invoice?.status === 12) &&
-                              handleCompensationModal(item);
-                            // : (
-                            //   <></>
-                            // );
-                          }}
-                        >
-                          {item.firstName + " " + item.lastName}
-                        </span>
+                        <span style={{ display: 'flex', alignItems: 'center' }}>
+                          {item?.employeeProfilePicture ? <img style={{ borderRadius: 12 }} src={item?.employeeProfilePicture} />
+                            : <span className="initialsImg">{item?.firstName[0] + " " + item?.lastName[0]}</span>
+                          }
+                          <span
+                            style={{ fontWeight: 600 }}
+                            onClick={() => {
+                              // (status === "Declined" || status === "AR Review") &&
+                              (res.data?.invoice?.status === 2 ||
+                                res.data?.invoice?.status === 12) &&
+                                handleCompensationModal(item);
+                              // : (
+                              //   <></>
+                              // );
+                            }}
+                          >
+                            {item.firstName + " " + item.lastName}
+                          </span>
                         </span>
 
                       ),
@@ -2504,21 +2504,24 @@ export default function InvoiceDetails() {
           <div className="compensation-inner-container">
             <Cards className={`profile-header-container`}>
               <div className="section-1">
-                <div className="img-container">
-                  <AvatarHandler
-                    // handleClick={handleAvatarClick}
-                    // initials={user.initials}
-                    source={
-                      isCompensatioModalOpen?.data?.personalDetails?.photoUrl
-                        ? isCompensatioModalOpen?.data?.personalDetails
-                          ?.photoUrl
-                        : avatar
-                    }
-                    style={{
-                      "background-color": "#FFFFF",
-                    }}
-                  />
-                </div>
+                {isCompensatioModalOpen?.data?.personalDetails?.photoUrl ?
+                  <div className="img-container" >
+                    <AvatarHandler
+                      // handleClick={handleAvatarClick}
+                      // initials={user.initials}
+                      source={
+                        isCompensatioModalOpen?.data?.personalDetails?.photoUrl
+                      }
+                      style={{
+                        "background-color": "#FFFFF",
+                      }}
+                    />
+                  </div>
+                  :
+                  <div className="img-container-logo" >
+                    <p className="user_initials">{isCompensatioModalOpen?.data?.personalDetails?.firstName[0] + " " + isCompensatioModalOpen?.data?.personalDetails?.lastName[0]}</p>
+                  </div>
+                }
                 <div className="col-6">
                   <div className="header">
                     {isCompensatioModalOpen?.data?.fullName}
