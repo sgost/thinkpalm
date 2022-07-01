@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, DatePicker, Dropdown, Icon } from "atlasuikit";
+import { Button, DatePicker, Dropdown, Icon, ToastNotification } from "atlasuikit";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import moment from "moment";
@@ -11,7 +11,6 @@ import {
   urls,
 } from "../../../urls/urls";
 
-/* istanbul ignore next */
 const PaymentDetailContainer = ({
   status,
   cid,
@@ -20,6 +19,8 @@ const PaymentDetailContainer = ({
   getBillingCurrency,
   id,
   setPaymentDetailData,
+  topPanel,
+  setTopPanel,
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -52,7 +53,7 @@ const PaymentDetailContainer = ({
   const [paymentDate, setPaymentDate] = useState();
   const [editAmount, setEditAmount] = useState<any>({});
   const [editButtonDisable, setEditButtonDisable] = useState(false);
-
+const [editDisableToggle, setEditDisableToggle] = useState(false)
   const [currencyDropdownOptions, setCurrencyDropdownOption] = useState<any>(
     []
   );
@@ -71,6 +72,8 @@ const PaymentDetailContainer = ({
     useState<any>([]);
   const [addPaymentMethodDropdownOptions, setAddPaymentMethodDropdownOption] =
     useState<any>([]);
+  const [isToaster, setIsToaster] = useState(false);
+
   useEffect(() => {
     if (paymentDetailData) {
       setPaymentApiData(paymentDetailData);
@@ -102,11 +105,11 @@ const PaymentDetailContainer = ({
     axios
       .get(getSubscriptionLookup, headers)
       .then((res: any) => {
-        const paymentMethodData: any = preparePaymentMethodDropdownOptionData(
+        const paymentMethodDropdownData: any = preparePaymentMethodDropdownOptionData(
           res?.data?.paymentMethods
         );
-        setAddPaymentMethodDropdownOption(paymentMethodData);
-        setPaymentMethodData(paymentMethodData);
+        setAddPaymentMethodDropdownOption(paymentMethodDropdownData);
+        setPaymentMethodData(paymentMethodDropdownData);
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -346,7 +349,7 @@ const PaymentDetailContainer = ({
   const cleanNewPaymentObject = () => {
     setNewPaymentDate("");
     setNewCurrency(null);
- 
+
     setAddLocationDropdownOption(
       allDropdownData?.location?.map((item: any) => {
         return {
@@ -391,6 +394,7 @@ const PaymentDetailContainer = ({
   };
 
   const savePaymentDetail = () => {
+
     let arr: any = [];
     arr.push({
       totalAmount: addAmount,
@@ -427,11 +431,15 @@ const PaymentDetailContainer = ({
         axios
           .get(paymentdetailApi, headers)
           .then((response: any) => {
-            setPaymentDetailData(response.data);
+            setPaymentDetailData(response?.data?.payments);
             setAddPaymentSectionCheck(false);
             setEditChecked(null);
             setReferenceNo(null);
             cleanNewPaymentObject();
+            setTopPanel({
+              ...topPanel,
+              open: response?.data?.invoice?.invoiceBalance,
+            });
           })
           .catch((e: any) => {
             console.log("error e", e);
@@ -478,21 +486,51 @@ const PaymentDetailContainer = ({
     })
       .then(async (res) => {
         if (res.status == 200) {
-          setPaymentApiData(res.data);
+          setPaymentApiData(res?.data?.payments);
           let obj = { ...referenceNo };
-          obj[key] = res.data[key].referenceNo;
+          obj[key] = res?.data?.payments[key]?.referenceNo;
           setReferenceNo(obj);
           let objAm = { ...editAmount };
-          objAm[key] = res.data[key].totalAmount;
+          objAm[key] = res?.data?.payments[key]?.totalAmount;
           setEditAmount(objAm);
           setEditChecked(null);
           setEditButtonDisable(false);
+          setTopPanel({
+            ...topPanel,
+            open: res?.data?.invoice?.invoiceBalance,
+          });
         }
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
+  const AddInstallmentSaveDisable = () => {
+    let isDisable = false;
+
+    const totalAmount = addAmount
+    const openAmount = topPanel?.open
+
+    if (totalAmount > openAmount) {
+      if (!isToaster) setIsToaster(true);
+      isDisable = true;
+    } 
+    return isDisable;
+  }
+
+   const EditInstallmentSaveDisable = (key: any) => {
+    let isDisable = false;
+
+    const openAmount = topPanel?.open
+    const editTotalAmount = editAmount
+
+     if (editDisableToggle && editTotalAmount[key] > openAmount) {
+      if (!isToaster) setIsToaster(true);
+      isDisable = true;
+    }
+    return isDisable;
+  }
 
   useEffect(() => {
     getCurrencyAndDepositBankAndLocationDropdownOption();
@@ -519,7 +557,7 @@ const PaymentDetailContainer = ({
                 {key == 0 ? <p>Payment Details</p> : <></>}
                 <div className="topButtonActions">
                   {permission?.InvoiceDetails.includes("Edit") &&
-                    editChecked != key && (
+                    editChecked != key && status === "Partial Paid" && (
                       <div className="paymentDetailEdit">
                         <Button
                           disabled={editButtonDisable}
@@ -555,16 +593,21 @@ const PaymentDetailContainer = ({
                             axios
                               .get(paymentdetailApi, headers)
                               .then((res: any) => {
-                                setPaymentDetailData(res.data);
+                                setPaymentDetailData(res?.data?.payments);
                                 setAddPaymentSectionCheck(false);
                                 setEditChecked(null);
                                 let obj = { ...referenceNo };
-                                obj[key] = res.data[key].referenceNo;
+                                obj[key] = res.data?.payments[key].referenceNo;
                                 setReferenceNo(obj);
                                 let objAm = { ...editAmount };
-                                objAm[key] = res.data[key].totalAmount;
+                                objAm[key] =
+                                  res.data?.payments[key].totalAmount;
                                 setEditAmount(objAm);
                                 setEditButtonDisable(false);
+                                setTopPanel({
+                                  ...topPanel,
+                                  open: res?.data?.invoice?.invoiceBalance,
+                                });
                               })
                               .catch((e: any) => {
                                 console.log("error e", e);
@@ -575,6 +618,8 @@ const PaymentDetailContainer = ({
 
                       <div className="paymentDetailSave">
                         <Button
+                        disabled={
+                          EditInstallmentSaveDisable(key)}
                           className="primary-blue medium"
                           label="Save Changes"
                           handleOnClick={() => {
@@ -751,6 +796,7 @@ const PaymentDetailContainer = ({
                           const obj: any = { ...editAmount };
                           obj[key] = parseFloat(e.target.value);
                           setEditAmount(obj);
+                          setEditDisableToggle(true)
                         }}
                       />
                     </div>
@@ -803,7 +849,8 @@ const PaymentDetailContainer = ({
                         !newDepositBank ||
                         !newPaymentMethod ||
                         !newReferenceNo ||
-                        !addAmount
+                        !addAmount ||
+                        AddInstallmentSaveDisable()
                       }
                     />
                   </div>
@@ -957,6 +1004,14 @@ const PaymentDetailContainer = ({
         </div>
       ) : (
         <></>
+      )}
+
+      {isToaster && (
+        <ToastNotification
+          showNotification
+          toastMessage="Entered amount can not be greater than open amount!"
+          toastPosition="bottom-right"
+        />
       )}
     </div>
   );

@@ -24,7 +24,6 @@ import {
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
 const NewInvoice = () => {
-
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
   const [tempData, setTempData] = useState<any>([]);
@@ -104,13 +103,7 @@ const NewInvoice = () => {
     tableSharedColumns.createMemo,
   ]);
 
-  const [CountryOptions, setCountryOptions] = useState([
-    // {
-    //   isSelected: false,
-    //   label: "sdfgh",
-    //   value: "swaesrdgtf",
-    // }
-  ]);
+  const [CountryOptions, setCountryOptions] = useState([]);
 
   const [MonthOptions, setMonthOptions] = useState([
     monthNameOptions.january,
@@ -143,6 +136,7 @@ const NewInvoice = () => {
   );
   const [currencyOptions, setCurrencyOptions] = useState<any>([]);
   const [qbIdOptions, setQbIdOptions] = useState<any>([]);
+  const [qbIdValue, setQbIdValue] = useState('')
   const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
   const [paymentMethodOptions, setPaymentMethodOptions] = useState<any>([]);
 
@@ -211,6 +205,77 @@ const NewInvoice = () => {
     showDefaultColumn: true,
   };
 
+  // calling initally dropdown options for stepper1 non-payroll invoices (NewInvoiceCreation.tsx)
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const cid = localStorage.getItem("current-org-id");
+    axios
+      .get(urls.subscriptionLookup, {
+        headers: getHeaders(token, cid, "false"),
+      })
+      .then((res: any) => {
+        setInvoicerOptions(
+          res.data.invoicers.map((invoicer: any) => {
+            return {
+              ...invoicer,
+              isSelected: false,
+              label: invoicer.text,
+              value: invoicer.value,
+              receivableAccounts: invoicer.receivableAccounts,
+            };
+          })
+        );
+        setPaymentMethodOptions(
+          res.data.paymentMethods.map((pm: any) => {
+            return {
+              ...pm,
+              isSelected: false,
+              label: pm.text,
+              value: pm.value,
+            };
+          })
+        );
+
+        setCurrencyOptions(
+          res.data.billingCurrencies.map((bc: any) => {
+            return {
+              ...bc,
+              isSelected: false,
+              label: bc.text,
+              value: bc.value,
+            };
+          })
+        );
+      })
+      .catch((err: any) => console.log(err));
+
+    axios
+      .get(urls.lookup, {
+        headers: getHeaders(token, cid, "false"),
+      })
+      .then((res: any) => {
+        setPaymentTermsOptions(
+          res.data.otherDueTypes.map((od: any) => {
+            return {
+              ...od,
+              isSelected: false,
+              label: od.text,
+              value: od.value,
+            };
+          })
+        );
+      })
+      .catch((err: any) => console.log(err));
+
+    setQbIdOptions([
+      {
+        isSelected: false,
+        label: "test 1",
+        value: "test1",
+      },
+    ]);
+  }, []);
+
   //stepper one  Data
   const [stepperOneData, setStepperOneData] = useState({
     customer: "",
@@ -241,7 +306,6 @@ const NewInvoice = () => {
 
   // steppers one Props
   const stepperOneProps = {
-    accessToken,
     stepperOneData,
     setStepperOneData,
     YearOptions,
@@ -266,6 +330,8 @@ const NewInvoice = () => {
     setCurrencyOptions,
     qbIdOptions,
     setQbIdOptions,
+    qbIdValue,
+    setQbIdValue,
     paymentTermsOptions,
     setPaymentTermsOptions,
     paymentMethodOptions,
@@ -345,6 +411,7 @@ const NewInvoice = () => {
     setCountryInitialData,
     tempDataCountry,
     setTempDataCountry,
+    CustomerOptions,
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -375,11 +442,12 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        qbIdValue !== ''
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
-      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
+      return !(stepperOneData?.customer !== "" && invoiceDate !== "" && qbIdValue !== '');
     }
 
     let condition: any = [];
@@ -418,7 +486,7 @@ const NewInvoice = () => {
       const apiData = employeeApiData;
 
       let payLoadData = [];
-      for (const [key, value] of Object.entries(selectedRowPostData)) {
+      for (const [key, _value] of Object.entries(selectedRowPostData)) {
         const newPreapredData = apiData[key];
 
         newPreapredData.employeeDetail.compensation.payItems =
@@ -532,30 +600,29 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-          paymentTermsOptions
-            .find((e: any) => e.isSelected)
-            ?.text.split(" ")[0]
-        );
+            paymentTermsOptions
+              .find((e: any) => e.isSelected)
+              ?.text.split(" ")[0]
+          );
 
-    const dueDate = new Date();
-    dueDate.setDate(invoiceDate.getDate() + payTerms);
-    dueDate.setMonth(invoiceDate.getMonth());
-    dueDate.setFullYear(invoiceDate.getFullYear());
+    let dueDate = new Date(invoiceDate);
+    let result = dueDate.setDate(invoiceDate.getDate() + payTerms + 1);
+    const newDueDate = new Date(result);
 
-    let transactionType = null;
+    let transactionTypeVar = null;
 
     switch (stepperOneData?.type) {
       case "Proforma":
-        transactionType = 3;
+        transactionTypeVar = 3;
         break;
 
       case "Credit Memo":
-        transactionType = 4;
+        transactionTypeVar = 4;
 
         break;
 
       case "Miscellaneous":
-        transactionType = 2;
+        transactionTypeVar = 2;
         break;
     }
 
@@ -568,16 +635,17 @@ const NewInvoice = () => {
     );
 
     let data = {
+      qbInvoiceNo: parseInt(qbIdValue),
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
       CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
       // CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
-      TransactionType: transactionType, //
+      TransactionType: transactionTypeVar, //
       // CreatedDate: currDate, // ? current date
-      DueDate: dueDate, //
+      DueDate: newDueDate, //
       CreatedDate: format(invoiceDate, "yyyy-MM-dd"),
-
+      submissiondate: format(invoiceDate, "yyyy-MM-dd"),
       // DueDate: "2022-05-23T12:31:21.125Z",
       TotalAmount: balance, //  total balance
       InvoiceBalance: balance, //  total balance
@@ -669,10 +737,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                    ? "step2-right-panel"
-                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                      ? "step2-credit-memo"
-                      : "",
+                  ? "step2-right-panel"
+                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                  ? "step2-credit-memo"
+                  : "",
             },
           }}
           leftPanel={
@@ -684,8 +752,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                    ? creditMemoSteps
-                    : stepsInitial
+                  ? creditMemoSteps
+                  : stepsInitial
               }
               type="step-progress"
             />

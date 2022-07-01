@@ -1765,7 +1765,9 @@ describe("New Invoice for Proforma ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock
+      .onPost(urls.getCustomersByIds)
+      .reply(200, mockapidata.resForCustomersByIds);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
 
@@ -1798,21 +1800,18 @@ describe("New Invoice for Proforma ", () => {
     );
 
     const newInvoice = await screen.findAllByText(/New Invoice/);
-
     expect(newInvoice[0]).toBeInTheDocument();
-    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Proforma/);
     expect(typeDropDownValue).toBeInTheDocument();
     fireEvent.click(typeDropDownValue);
 
-    await screen.findByText(/Invoicer/);
-    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
-
-    fireEvent.click(pleaseSelectDropDown[0]);
+    fireEvent.click(pleaseSelectDropDown[1]);
     const customerDropValue = await screen.findByText(
-      /"dsm nutritional products ag"/i
+      /DSM Nutritional Products AG/
     );
     expect(customerDropValue).toBeInTheDocument();
     fireEvent.click(customerDropValue);
@@ -1832,7 +1831,9 @@ describe("New Invoice for Proforma ", () => {
 describe("step one Proforma getCustomer api fail ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
-    mock.onGet(urls.customers).reply(400, mockapidata.resGetAllCustomer);
+    mock
+      .onPost(urls.getCustomersByIds)
+      .reply(400, mockapidata.resForCustomersByIds);
   });
 
   test("dropDown Value change", async () => {
@@ -1861,7 +1862,9 @@ describe("New Invoice for Miscellaneous ", () => {
   beforeEach(async () => {
     const mock = new MockAdapter(axios);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock
+      .onPost(urls.getCustomersByIds)
+      .reply(200, mockapidata.resForCustomersByIds);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
     mock
@@ -1929,7 +1932,6 @@ describe("New Invoice for Miscellaneous ", () => {
 
     //select all drpdowns
     pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
-    screen.debug(pleaseSelectDropDown);
 
     fireEvent.click(pleaseSelectDropDown[0]);
     const invoiceDropDownValue = await screen.findByText(
@@ -1945,10 +1947,10 @@ describe("New Invoice for Miscellaneous ", () => {
     const currencyDropDownValue = await screen.findByText(/eur/i);
     fireEvent.click(currencyDropDownValue);
 
-    //add quickbook here in future
+    const qb = screen.getByRole('spinbutton')
+    fireEvent.change(qb, { target: { value: "1234" } });
 
-    fireEvent.click(pleaseSelectDropDown[4]);
-    // screen.logTestingPlaygroundURL();
+    fireEvent.click(pleaseSelectDropDown[3]);
     const paymentTerm = await screen.findByText(/10 days/i);
     fireEvent.click(paymentTerm);
 
@@ -2033,12 +2035,20 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock
+      .onPost(urls.getCustomersByIds)
+      .reply(200, mockapidata.resForCustomersByIds);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
     mock
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
+
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
@@ -2053,7 +2063,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const payrollTab = await screen.findAllByText(/New Invoice/);
 
     expect(payrollTab[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Credit Memo/);
@@ -2073,6 +2083,20 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
 
     const selDate = await waitFor(() => screen.getByText(/15/));
     fireEvent.click(selDate);
+
+    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+    const invoiceDropDownValue = await screen.findByText(
+      /usa\-\-unitedstatesofamerica/i
+    );
+    fireEvent.click(invoiceDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+    const currencyDropDownValue = await screen.findByText(/eur/i);
+    fireEvent.click(currencyDropDownValue);
+
+    const qb = screen.getByRole('spinbutton')
+    fireEvent.change(qb, { target: { value: "1234" } });
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -2147,12 +2171,20 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
     const mock = new MockAdapter(axios);
     mock.onGet(urls.countries).reply(500, mockapidata.resCountriesData);
 
-    mock.onGet(urls.customers).reply(200, mockapidata.resGetAllCustomer);
+    mock
+      .onPost(urls.getCustomersByIds)
+      .reply(200, mockapidata.resForCustomersByIds);
     mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
     mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
     mock
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
+
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
@@ -2167,7 +2199,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
     const payrollTab = await screen.findAllByText(/New Invoice/);
 
     expect(payrollTab[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Credit Memo/);
@@ -2187,6 +2219,20 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
 
     const selDate = await waitFor(() => screen.getByText(/15/));
     fireEvent.click(selDate);
+
+    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+    const invoiceDropDownValue = await screen.findByText(
+      /usa\-\-unitedstatesofamerica/i
+    );
+    fireEvent.click(invoiceDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+    const currencyDropDownValue = await screen.findByText(/eur/i);
+    fireEvent.click(currencyDropDownValue);
+
+    const qb = screen.getByRole('spinbutton')
+    fireEvent.change(qb, { target: { value: "1234" } });
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -2237,7 +2283,6 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
     fireEvent.click(addNewText[0]);
 
     const DeleteText = await screen.findAllByText(/Delete/);
-    screen.debug(DeleteText);
     expect(DeleteText[0]).toBeInTheDocument();
     fireEvent.click(DeleteText[0]);
 

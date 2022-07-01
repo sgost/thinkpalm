@@ -4,16 +4,20 @@
 .preview-invoice-container {
   .preview-invoice-inner-container {
     min-height: 27rem;
+
     .preview-para-one {
       margin-top: 2rem;
+
       p {
         font-size: 1.1rem;
         color: #3e3e3e;
       }
     }
+
     .preview-para-two {
       width: 28rem;
       margin-top: -0.955rem;
+
       p {
         font-size: 1.1rem;
         color: #3e3e3e;
@@ -23,6 +27,7 @@
 
     .preview-invoice-button {
       margin-top: 3rem;
+
       button.a-button.medium {
         width: 9.13rem;
         font-size: 1rem;
@@ -37,36 +42,43 @@
       width: 90rem;
       padding: 0rem;
     }
+
     .body-wrapper-style {
       // background-color: #cf2424;
       width: 100%;
       height: 100%;
       overflow-y: scroll;
       border-radius: 0.556rem;
+
       .newInvoiceTopBar {
         background-color: #cbd4f3;
         display: flex;
         justify-content: center;
         min-height: 11rem;
+
         .newInvoiceInnerHeader {
           display: flex;
           width: 80rem;
           align-items: end;
           justify-content: space-between;
+
           .newInvoiceNoHeader {
             display: flex;
             align-items: center;
             color: #17224e;
+
             .orderSummary {
               svg {
                 width: 2rem;
                 height: 2rem;
               }
             }
+
             p {
               font-size: 1.8rem;
             }
           }
+
           .newInvoiceHeaderAmount {
             padding: 2rem;
             font-size: 1.1111rem;
@@ -75,12 +87,15 @@
             display: flex;
             flex-direction: column;
             gap: 0.556rem;
-            width: 10rem;
+            width: fit-content;
+            min-width: 9rem;
+
             p {
               margin: 0px;
               font-size: 1.111rem;
               display: flex;
-              justify-content: space-around;
+              justify-content: space-between;
+
               span {
                 font-size: 1.111rem;
               }
@@ -97,6 +112,7 @@
           color: $primary-blue;
           font-size: 0.8rem;
         }
+
         @mixin value {
           font-weight: bold;
           font-size: 1rem;
@@ -145,19 +161,23 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+
         .newInvoiceTable {
           display: flex;
           justify-content: center;
         }
+
         .table {
           max-width: 87rem;
         }
+
         .table__row__data img,
         .table__row__header img {
           margin-right: 0.5rem;
           width: 1.5rem;
           height: 1.5rem;
         }
+
         .newInvoiceFeeSummaryCalc {
           display: flex;
           flex-direction: column;
@@ -165,6 +185,7 @@
           background-color: $white;
           padding: 1.1111rem;
           max-width: 87rem;
+
           .newInvoiceRowFee {
             display: flex;
             border-bottom-style: solid;
@@ -172,9 +193,11 @@
             border-width: 1px;
             width: 30%;
             justify-content: space-between;
+
             .newInvoiceTitle {
               color: $secondary-gray;
             }
+
             .newInvoiceAmount {
               font-weight: bold;
             }
@@ -184,9 +207,11 @@
             display: flex;
             width: 30%;
             justify-content: space-between;
+
             .newInvoiceTitle {
               color: $secondary-gray;
             }
+
             .newInvoiceAmount {
               font-weight: bold;
             }
@@ -202,6 +227,7 @@
             p {
               color: $primary-blue;
             }
+
             h3 {
               color: $primary-blue;
               background-color: $active;
@@ -216,22 +242,27 @@
         display: flex;
         justify-content: center;
         flex-direction: column;
+
         .table__row__data img,
         .table__row__header img {
           margin-right: 0.5rem;
           width: 1.5rem;
           height: 1.5rem;
         }
+
         .countryTableHeader {
           margin-left: 3rem;
         }
+
         .newInvoiceCountryTable {
           display: flex;
           justify-content: center;
         }
+
         .table {
           max-width: 87rem;
         }
+
         .newInvoiceCountrySummaryCalc {
           display: flex;
           background-color: $white;
@@ -243,6 +274,7 @@
           p {
             color: $primary-blue;
           }
+
           h3 {
             color: $primary-blue;
             background-color: $active;
@@ -250,12 +282,14 @@
             border-radius: 0.4444rem;
           }
         }
+
         .newInvoiceFeeSummaryCalc {
           display: flex;
           flex-direction: column;
           align-items: flex-end;
           background-color: $white;
           padding: 1.1111rem;
+
           .newInvoiceRowFee {
             display: flex;
             border-bottom-style: solid;
@@ -268,10 +302,12 @@
             .title {
               color: $secondary-gray;
             }
+
             .amount {
               font-weight: bold;
             }
           }
+
           .newInvoicerow2 {
             display: flex;
             width: 30%;
@@ -280,10 +316,12 @@
             .title {
               color: $secondary-gray;
             }
+
             .amount {
               font-weight: bold;
             }
           }
+
           .newInvoiceTotalRow {
             display: flex;
             align-items: center;
@@ -292,6 +330,7 @@
             p {
               color: $primary-blue;
             }
+
             h3 {
               color: $primary-blue;
               background-color: $active;

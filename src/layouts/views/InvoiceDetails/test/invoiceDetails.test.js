@@ -105,7 +105,7 @@ import userEvent from "@testing-library/user-event";
 //     const row = await waitFor(() => screen.getByText("1000991"));
 //     fireEvent.click(row);
 
-//     await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+//     await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
 //     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
 //   });
@@ -178,9 +178,9 @@ const blobUrl =
 
 localStorage.setItem(
   "accessToken",
-  "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTI0NDA0NTQsImlhdCI6MTY1MjQzODY1NCwiYXV0aF90aW1lIjowLCJqdGkiOiJjNjc1ZjYwMy0xNmQ1LTQ5MGEtYWQ3Mi04OWViNDFlMjdjZjMiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiIyOGEzNDgzOS00Nzk4LTRmYWEtOTc4Ni0wNjc3ZTE2ODBmMjIiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiYXRfaGFzaCI6IjdEV25wVExkdFZ3MnM1cFlaeVNCelEiLCJhY3IiOiIxIiwic2lkIjoiYWI5MjcwNTUtYjU1MC00N2M4LWEyYTgtYzJkNWNjNzg2MzRiIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl0sIlBlcm1pc3Npb25zIjp7IkUyOTFDOUYwLTI0NzYtNDIzOC04NUNCLTdBRkVDREQwODVFNCI6eyJOYW1lIjoiRUdTIiwiWm9uZSI6IkVVIiwiVHlwZSI6IkF0bGFzX093bmVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJNaXNjZWxsYW5lb3VzSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1hbnVhbFBheXJvbGxJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiSW52b2ljZURldGFpbHMiOlsiQWRkIiwiRGVsZXRlIiwiUGFpZCIsIkVkaXQiLCJWaWV3IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIkNyZWRpdE1lbW9JbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlZpZXciLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiUHJvZm9ybWFJbnZvaWNlIjpbIkFkZCIsIkRlbGV0ZUludm9pY2UiLCJEZWxldGVJdGVtIiwiUGF5IiwiRWRpdCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdfX19LCJHcm91cCBNZW1iZXJzaGlwcyI6WyIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9BdGxhc19Pd25lcnMvRUdTL1BheW1lbnRzL0ZpbmFuY2VBUiIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvU3Vic2NyaXB0aW9ucy9QYXltZW50cyJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwYXltZW50c2ZpbmFuY2VhcnVzZXJAc29tZS1vcmcuY29tIn0.DdBvd-6ivuV9e3oPNT6RodPnuTJwvjX9P098LEzIEtee-T9O9887HDSnyYKq-ukOBdQEHQaFYsxU8agEnQbJOPKeba2t1urFKeKX1LqsD5FPQ66-Ulq3N2zgjqAC7gRjAIvSAU64WRubFlQP_-A3aQn8ETS-Y3M_hb1-a9YpHXMgUumYo0pDFriHXjOZXGO3RaooDZBVqSRVTJiQEy37-4DzqJWqLEOxbnpEqSKqoWksmzXoMYrssm4sxSD6D-68f7LN_hZ5k1_Q_D39LbZh5HLF2kw9XfJ-IErvwuOKF5gD499JTum3NEslpvZH1eBvnlAjsuW1hqXdlbD1GqpeMQ"
+  'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIwdmRELXE3ekFYdkFxUzRfTDdoUExua2ZJbVVzaW1NWE1ZWGoxVUYwUUxVIn0.eyJleHAiOjE2NTYzMTMyNDEsImlhdCI6MTY1NjMxMTQ0MSwiYXV0aF90aW1lIjowLCJqdGkiOiJhNGM1Yjk2MC1jMzhjLTQwYzUtYTFkYi03MDMyMTQxODc2MDgiLCJpc3MiOiJodHRwczovL2FjY291bnRzLWRldi5hdGxhc2J5ZWxlbWVudHMuY29tL3JlYWxtcy9BdGxhcyIsImF1ZCI6IkFBQSBCcm9rZXIiLCJzdWIiOiI1MDRiYzQyZi1iNWE3LTQ4Y2EtYjVjYy0yMjEwZDAxOTI4N2EiLCJ0eXAiOiJJRCIsImF6cCI6IkFBQSBCcm9rZXIiLCJzZXNzaW9uX3N0YXRlIjoiZTY3NmNjZDctNmRkMC00YWJjLThmNTQtM2UzZTFlZDI4Y2Y4IiwiYXRfaGFzaCI6IkFjMVFJdEEzTlV4SDNBY0x5NlNMX2ciLCJhY3IiOiIxIiwic2lkIjoiZTY3NmNjZDctNmRkMC00YWJjLThmNTQtM2UzZTFlZDI4Y2Y4IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIkNyZWF0ZV9Mb2NrZXIiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdLCJQZXJtaXNzaW9ucyI6eyJhOWJiZWU2ZC03OTdhLTQ3MjQtYTg2YS01YjFhMmUyODc2M2YiOnsiTmFtZSI6IkRTTSBOdXRyaXRpb25hbCBQcm9kdWN0cyIsIlpvbmUiOiJFVSIsIlR5cGUiOiJTZXJ2aWNlX0NvbnN1bWVycyIsIlBheW1lbnRzIjp7IlJvbGUiOiJGaW5hbmNlQVIiLCJDcmVkaXRNZW1vSW52b2ljZUNyZWF0aW9uIjpbIlNhdmUiLCJFZGl0Il0sIlByb2Zvcm1hSW52b2ljZSI6WyJBZGQiLCJEZWxldGVJbnZvaWNlIiwiRGVsZXRlSXRlbSIsIlBheSIsIkVkaXQiLCJWaWV3IiwiQWRkUGF5bWVudCIsIlNlbmQiLCJCcm93c2UiLCJSZWplY3QiLCJFeHBvcnQiLCJDbG9zZSIsIlZvaWQiLCJEb3dubG9hZCIsIlB1Ymxpc2giLCJBcHByb3ZlIiwiRGVsZXRlRmlsZSJdLCJQcm9mb3JtYUludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdLCJJbnZvaWNlRGV0YWlscyI6WyJBZGQiLCJEZWxldGUiLCJQYWlkIiwiRWRpdCIsIlZpZXciLCJBZGRQYXltZW50IiwiU2VuZCIsIkJyb3dzZSIsIlJlamVjdCIsIlNlbGVjdCIsIkV4cG9ydCIsIkNsb3NlIiwiVm9pZCIsIkRvd25sb2FkIiwiUHVibGlzaCIsIkFwcHJvdmUiLCJEZWxldGVGaWxlIl0sIk1pc2NlbGxhbmVvdXNJbnZvaWNlQ3JlYXRpb24iOlsiU2F2ZSIsIkVkaXQiXSwiSW52b2ljZUxpc3QiOlsiQWRkIiwiSW50ZXJuYWxWaWV3IiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyIsIkFkZFBheW1lbnQiXSwiTWlzY2VsbGFuZW91c0ludm9pY2UiOlsiQWRkIiwiRGVsZXRlSW52b2ljZSIsIkRlbGV0ZUl0ZW0iLCJQYXkiLCJFZGl0IiwiVmlldyIsIkFkZFBheW1lbnQiLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiQ3JlZGl0TWVtb0ludm9pY2UiOlsiQWRkIiwiRGVsZXRlSW52b2ljZSIsIkRlbGV0ZUl0ZW0iLCJQYXkiLCJFZGl0IiwiVmlldyIsIkFkZFBheW1lbnQiLCJTZW5kIiwiQnJvd3NlIiwiUmVqZWN0IiwiRXhwb3J0IiwiQ2xvc2UiLCJWb2lkIiwiRG93bmxvYWQiLCJQdWJsaXNoIiwiQXBwcm92ZSIsIkRlbGV0ZUZpbGUiXSwiTWFudWFsUGF5cm9sbEludm9pY2VDcmVhdGlvbiI6WyJTYXZlIiwiRWRpdCJdfSwiTFBQQyI6eyJSb2xlIjoiRWxlbWVudHNVc2VyIiwiUGF5cm9sbExhbmRpbmdPdXRwdXRGb2xkZXJQYXlzbGlwQXNzaWduYXRpb24iOlsiQWRkIiwiVmlldyJdLCJDb25maWd1cmVDYWxlbmRhciI6WyJWaWV3Il0sIlBheXJvbGxMYW5kaW5nUm9vdE91dHB1dEZpbGUiOlsiRGVsZXRlIiwiRG93bmxvYWQiLCJWaWV3Il0sIlBheXJvbGxDb21wZW5zYXRpb24iOlsiQWRkIiwiU2VsZWN0IiwiU3VibWl0IiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJQYXlyb2xsTGFuZGluZ091dHB1dENyZWF0ZU5ld0ZvbGRlciI6WyJDcmVhdGVOZXdGb2xkZXIiXSwiQ29uZmlndXJlQ2FsZW5kYXJNaWxlc3RvbmVTZXJpZXMiOlsiTWlsZXN0b25lU2VyaWVzQWRkIl0sIlBheXJvbGxMYW5kaW5nSW5wdXRGb2xkZXIiOlsiRGVsZXRlIiwiRG93bmxvYWQiLCJWaWV3IiwiUmVuYW1lIl0sIkJpZ0NhbGVuZGFyTWlsZXN0b25lU2VyaWVzIjpbIk1pbGVzdG9uZVNlcmllc0RlbGV0ZSIsIk1pbGVzdG9uZVNlcmllc0VkaXQiXSwiUGF5cm9sbExhbmRpbmdPdXRwdXRGb2xkZXJGaWxlIjpbIlVwbG9hZEZpbGUiLCJQZGZDb252ZXJ0IiwiVmlldyIsIlJlbmFtZUZpbGUiLCJEZWxldGVGaWxlIiwiRG93bmxvYWRGaWxlcyJdLCJQYXlyb2xsTGFuZGluZ1Jvb3RJbnB1dFRhYiI6WyJVcGxvYWRGaWxlIiwiVXBsb2FkQ29yZUhSIl0sIlBheXJvbGxBdXRvbWF0ZWRGaWxlQ3JlYXRpb24iOlsiRmlsZVJlZ2VuZXJhdGUiLCJFZGl0IiwiVmlldyJdLCJQYXlyb2xsTGFuZGluZ091dHB1dEZvbGRlclNwbGl0RmlsZSI6WyJTcGxpdEZpbGUiXSwiUGF5cm9sbExhbmRpbmdGb2xkZXJOZXdQYXlyb2xsRmlsZSI6WyJBZGQiLCJGaWxlUmVnZW5lcmF0ZSIsIlZpZXciXSwiUGF5cm9sbExhbmRpbmdJbnB1dFRhYiI6WyJWaWV3Il0sIlBheXJvbGxMYW5kaW5nVmlldyI6WyJWaWV3Il0sIlBheXJvbGxMYW5kaW5nUm9vdElucHV0RmlsZSI6WyJEZWxldGUiLCJEb3dubG9hZCIsIlZpZXciXSwiRGFzaGJvYXJkQ291bnRyeUNhcmRzIjpbIlZpZXciXSwiQmlnQ2FsZW5kYXJNaWxlc3RvbmUiOlsiVmlldyJdLCJQYXlyb2xsTGFuZGluZ091dHB1dEZvbGRlciI6WyJEZWxldGUiLCJEb3dubG9hZCIsIlZpZXciLCJSZW5hbWUiXSwiQmlnQ2FsZW5kYXJBY3Rpdml0eSI6WyJWaWV3Il0sIkJpZ0NhbGVuZGFyQWN0aXZpdHlTZXJpZXMiOlsiQWN0aXZpdHlTZXJpZXNEZWxldGUiLCJBY3Rpdml0eVNlcmllc0VkaXQiXSwiUGF5cm9sbExhbmRpbmdPdXRwdXRUYWIiOlsiVmlldyJdLCJQYXlyb2xsTGFuZGluZ1Jvb3RPdXRwdXRUYWIiOlsiVXBsb2FkRmlsZSJdLCJCaWdDYWxlbmRhckFjdGl2aXR5T2NjdXJlbmNlIjpbIkFjdGl2aXR5T2NjdXJlbmNlRWRpdCIsIkFjdGl2aXR5T2NjdXJlbmNlRGVsZXRlIl0sIlBheXJvbGxMYW5kaW5nT3V0cHV0Rm9sZGVyUGF5c2xpcEFzc2lnbmF0aW9uVXBsb2FkIjpbIlVwbG9hZCJdLCJUZXN0IjpbIkFkZCJdLCJQYXlyb2xsTGFuZGluZ0Rvd25sb2FkRmlsZXMiOlsiRG93bmxvYWRGaWxlcyJdLCJDb25maWd1cmVDYWxlbmRhckFjdGl2aXR5U2VyaWVzIjpbIkFjdGl2aXR5U2VyaWVzQWRkIl0sIkJpZ0NhbGVuZGFyIjpbIlZpZXciXSwiUGF5cm9sbExhbmRpbmciOlsiVXBsb2FkRmlsZSIsIlZpZXciLCJEb3dubG9hZEZpbGVzIl0sIlBheXJvbGxMYW5kaW5nSW5wdXRGb2xkZXJGaWxlIjpbIkRlbGV0ZSIsIlVwbG9hZENvcmVIUiIsIlVwbG9hZCIsIkRvd25sb2FkIiwiVmlldyJdLCJQYXlyb2xsTGFuZGluZ0ZvbGRlciI6WyJEZWxldGUiLCJVcGxvYWRGaWxlIiwiTmV3UGF5cm9sbEZpbGUiLCJOZXdQYXlyb2xsQWRkIiwiVmlldyIsIlJlbmFtZSJdLCJQYXlyb2xsSGlzdG9yeVBheXJvbGxGb2xkZXJMaXN0IjpbIlZpZXciXSwiQ29uZmlndXJlQ2FsZW5kYXJBY3Rpdml0eU9jY3VyZW5jZSI6WyJBY3Rpdml0eU9jY3VyZW5jZUFkZCJdLCJDb25maWd1cmVDYWxlbmRhck1pbGVzdG9uZU9jY3VyZW5jZSI6WyJNaWxlc3RvbmVPY2N1cmVuY2VBZGQiXSwiUGF5cm9sbEhpc3RvcnlNaW5pQ2FsZW5kYXIiOlsiVmlldyJdLCJCaWdDYWxlbmRhck1pbGVzdG9uZU9jdXJyZW5jZSI6WyJNaWxlc3RvbmVPY3VycmVuY2VFZGl0IiwiTWlsZXN0b25lT2N1cnJlbmNlRGVsZXRlIl0sIlBheXJvbGxMYW5kaW5nSW5wdXRDcmVhdGVOZXdGb2xkZXIiOlsiQ3JlYXRlTmV3Rm9sZGVyIl19LCJDb3JlSFIiOnsiUm9sZSI6IkludGVybmFsSFIiLCJQb3N0T25ib2FyZGluZ0JhbmtEZXRhaWwiOlsiQWRkIiwiRWRpdCIsIlZpZXciXSwiSW50ZXJuYWxIUkxpc3RpbmdQYWdlIjpbIkRvd25sb2FkIiwiVmlldyJdLCJCZW5lZml0c2NvbmZpZ3VyYXRvciI6WyJBZGQiLCJEZWxldGUiLCJFZGl0IiwiVmlldyJdLCJUaW1lT2ZmIjpbIkN1c3RvbWl6ZSIsIkFwcHJvdmVEZWNsaW5lIiwiVmlldyJdLCJQb3N0T25ib2FyZGluZ0JlbmVmaXRzIjpbIkFkZCIsIkVkaXQiLCJWaWV3Il0sIkRvY3VtZW50cyI6WyJEZWxldGUiLCJVcGxvYWQiLCJQcmV2aWV3IiwiRG93bmxvYWQiXSwiSm9iRGV0YWlscyI6WyJBZGQiLCJFZGl0IiwiVmlldyJdLCJCZW5lZml0cyI6WyJWaWV3Il0sIlBvc3RPbmJvYXJkaW5nRW1lcmdlbmN5IjpbIlZpZXciXSwiQmFua0RldGFpbCI6WyJWaWV3Il0sIkVtcGxveWVlUHJvZmlsZSI6WyJDaGFuZ2VTdGF0dXMiLCJBZGRFbXBsb3llZSJdLCJQb3N0T25ib2FyZGluZ0VtcGxveWVlUHJvZmlsZSI6WyJDaGFuZ2VTdGF0dXMiXSwiUG9zdE9uYm9hcmRpbmdQcm9maWxlIjpbIkZ1bGxFZGl0IiwiVmlldyJdLCJDb21wZW5zYXRpb24iOlsiQWRkIiwiU2VsZWN0IiwiU3VibWl0IiwiRWRpdCIsIkRvd25sb2FkIiwiVmlldyJdLCJFbWVyZ2VuY3kiOlsiVmlldyJdLCJQcm9maWxlIjpbIkZ1bGxFZGl0IiwiVmlldyJdLCJQb3N0T25ib2FyZGluZ0pvYkRldGFpbHMiOlsiQWRkIiwiRWRpdCIsIlZpZXciXSwiUG9zdE9uYm9hcmRpbmdEb2N1bWVudHMiOlsiRGVsZXRlIiwiVXBsb2FkIiwiUHJldmlldyIsIkRvd25sb2FkIl19LCJDb250cmFjdG9yUGF5Ijp7IlJvbGUiOiJFbGVtZW50c0dlbmVyYWwiLCJDb250cmFjdERvY3VtZW50cyI6WyJHZW5lcmFsRG93bmxvYWQiXSwiSm9iIjpbIkdlbmVyYWxWaWV3Il0sIlByb2ZpbGUiOlsiRWxlbWVudHNHZW5lcmFsVmlldyIsIkN1c3RvbWVyTGlzdCJdLCJCaWxsIjpbIkVsZW1lbnRzR2VuZXJhbExpc3QiXX19fSwiR3JvdXAgTWVtYmVyc2hpcHMiOlsiL1N1YnNjcmlwdGlvbnMvQ29udHJhY3RvclBheSIsIi9TdWJzY3JpcHRpb25zL0NvcmVIUiIsIi9Sb2xlcy9Db250cmFjdG9yUGF5L0VsZW1lbnRzR2VuZXJhbCIsIi9ab25lcy9FVS9Pcmdhbml6YXRpb25zL1NlcnZpY2VfQ29uc3VtZXJzL0RTTSBOdXRyaXRpb25hbCBQcm9kdWN0cy9Db250cmFjdG9yUGF5L0VsZW1lbnRzR2VuZXJhbCIsIi9Sb2xlcy9MUFBDL0VsZW1lbnRzVXNlciIsIi9ab25lcy9FVS9Pcmdhbml6YXRpb25zL1NlcnZpY2VfQ29uc3VtZXJzL0RTTSBOdXRyaXRpb25hbCBQcm9kdWN0cy9MUFBDL0VsZW1lbnRzVXNlciIsIi9Sb2xlcy9QYXltZW50cy9GaW5hbmNlQVIiLCIvWm9uZXMvRVUvT3JnYW5pemF0aW9ucy9TZXJ2aWNlX0NvbnN1bWVycy9EU00gTnV0cml0aW9uYWwgUHJvZHVjdHMvUGF5bWVudHMvRmluYW5jZUFSIiwiL1JvbGVzL0NvcmVIUi9JbnRlcm5hbEhSIiwiL1pvbmVzL0VVL09yZ2FuaXphdGlvbnMvU2VydmljZV9Db25zdW1lcnMvRFNNIE51dHJpdGlvbmFsIFByb2R1Y3RzL0NvcmVIUi9JbnRlcm5hbEhSIiwiL1N1YnNjcmlwdGlvbnMvTFBQQyIsIi9TdWJzY3JpcHRpb25zL1BheW1lbnRzIl0sInByZWZlcnJlZF91c2VybmFtZSI6ImRzbW51dHJpdGlvbmFscHJvZHVjdHNlbGVtZW50c3VzZXJAcHJvdG9ubWFpbC5jb20iLCJlbWFpbCI6ImRzbW51dHJpdGlvbmFscHJvZHVjdHNlbGVtZW50c3VzZXJAcHJvdG9ubWFpbC5jb20ifQ.IHVWwNGTGLJkiyXVg3IXt5tzDtvjTGooRawwBp57PlO54ia1A7_IIX4-m2BhLAi93Lcj3j3w5IGmSfA-44QdYXMAI2oLc0VsRbk1OqCpjQ6iI3gi9XZ5HHhAbEPFmOTNaFlxOy9E1iI4l8yqRS2b7blT_jUO8A4rsc4nE8-lsi9B-pqUg7aCgBgzb0QCBoegmXYG6z3w3xYstmAnH9V8UbI_f6Ego2TZlyFTCHpJ6L9fqRChSbJChz200qtJpoAAfKBjIaKKsycuiB3GBAGh_kypsVJG05yv5POpodVx_96hvIqKIUk4WhEGmdEzcwPP2m5zMqGbSBHG9NrE43KKwQ'
 );
-localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
+localStorage.setItem("current-org-id", "a9bbee6d-797a-4724-a86a-5b1a2e28763f");
 localStorage.setItem(
   "current-org",
   '{ "Name": "EGS", "Zone": "EU", "Type": "Atlas_Owners", "Payments": { "Role": "FinanceAR", "MiscellaneousInvoiceCreation": [ "Save", "Edit" ], "ManualPayrollInvoiceCreation": [ "Save", "Edit" ], "InvoiceList": [ "Add", "Edit", "Download", "View" ], "ProformaInvoiceCreation": [ "Save", "Edit" ], "CreditMemoInvoiceCreation": [ "Save", "Edit" ], "MiscellaneousInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "InvoiceDetails": [ "Add", "Delete", "Paid", "Edit", "View", "Send", "Browse", "Reject", "Select", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "CreditMemoInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "View", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ], "ProformaInvoice": [ "Add", "DeleteInvoice", "DeleteItem", "Pay", "Edit", "Send", "Browse", "Reject", "Export", "Close", "Void", "Download", "Publish", "Approve", "DeleteFile" ] } }'
@@ -269,7 +269,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     screen.logTestingPlaygroundURL();
@@ -291,7 +291,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const download = screen.getByText(/Download/);
     fireEvent.click(download);
@@ -314,7 +314,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const approve = screen.getByTestId("approve-button");
     fireEvent.click(approve);
@@ -327,7 +327,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -347,7 +347,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -364,7 +364,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -381,7 +381,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getAllByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const breadcrumbs = await waitFor(() => screen.getAllByText(/Invoices/));
     fireEvent.click(breadcrumbs[0]);
   });
@@ -392,7 +392,7 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
@@ -411,46 +411,13 @@ describe("Invoice details", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
 
-    // const check1 = screen.getByTestId("check1");
-    // fireEvent.click(check1);
-
-    // const text1 = screen.getByText(/Employee Salary is not correct/);
-    // fireEvent.click(text1);
-
-    // const check2 = screen.getByTestId("check2");
-    // fireEvent.click(check2);
-
-    // const text2 = screen.getByText(/Benefit Amount is not correct/);
-    // fireEvent.click(text2);
-
-    // const check3 = screen.getByTestId("check3");
-    // fireEvent.click(check3);
-
-    // const text3 = screen.getByText(/One-off pay items amount to be updated/);
-    // fireEvent.click(text3);
-
-    // const check4 = screen.getByTestId("check4");
-    // fireEvent.click(check4);
-
-    // const text4 = screen.getByText(/Termination/);
-    // fireEvent.click(text4);
-
-    // const check5 = screen.getByTestId("check5");
-    // fireEvent.click(check5);
-
-    // const text5 = screen.getByText(/Invoice Calculation Error/);
-    // fireEvent.click(text5);
-
-    // const check6 = screen.getByTestId("check6");
-    // fireEvent.click(check6);
-
-    // const text6 = screen.getByText(/Fee Issue/);
-    // fireEvent.click(text6);
+    const check1 = screen.getAllByTestId("check1");
+    fireEvent.click(check1[0]);
 
     const textarea = await waitFor(() =>
       screen.getByPlaceholderText("Please Enter a Reason")
@@ -579,7 +546,7 @@ describe("Invoice details decline api fail case handling", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const decline = screen.getByTestId("decline-button");
     fireEvent.click(decline);
@@ -656,7 +623,7 @@ describe("void test cases on Apprroved", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -761,7 +728,7 @@ describe("void test cases on Apprroved Upload Api Failed", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -866,7 +833,7 @@ describe("void test cases on Apprroved Create Api Failed", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -971,7 +938,7 @@ describe("void test cases on Apprroved Void Api Failed", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -1076,7 +1043,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonVoidInvoice = await screen.findByText(/Void Invoice/);
     fireEvent.click(buttonVoidInvoice);
@@ -1232,7 +1199,7 @@ describe("void test cases on Apprroved and click on cancel", () => {
 //       </HashRouter>
 //     );
 
-//     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+//     waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
 //     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
 //     fireEvent.click(filesTab);
@@ -1309,7 +1276,7 @@ describe("api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const attachmenttestId = await screen.findAllByText(
       /Something went wrong!/
@@ -1391,7 +1358,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
   //</HashRouter>
   //);
 
-  // waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  // waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //const savebtn = await waitFor(() => screen.findByTestId("save-button"));
   //fireEvent.click(savebtn);
   // const notification = await waitFor(() => screen.queryByText("Your record has been saved successfully..!"));
@@ -1409,7 +1376,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
     const poInput = await waitFor(() => screen.findByTestId("PONUMBER"));
     fireEvent.change(poInput, { target: { value: 1233 } });
@@ -1424,18 +1391,18 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const savebtn = await waitFor(() => screen.findByTestId("save-button"));
-   // const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
-      
+    // const dateInput = await waitFor(() => screen.getByText("invoiceDate"));
+
     //fireEvent.click(dateInput);
 
 
-//await userEvent.click(dateInput);
-//await userEvent.type(dateInput, '01/Feb/2000');
-//await userEvent.tab();
-//await userEvent.tab();
-//await userEvent.tab();
+    //await userEvent.click(dateInput);
+    //await userEvent.type(dateInput, '01/Feb/2000');
+    //await userEvent.tab();
+    //await userEvent.tab();
+    //await userEvent.tab();
 
     expect(savebtn).toBeDisabled();
   });
@@ -1450,7 +1417,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1471,7 +1438,7 @@ describe("delete test cases on AR Reveiew on true  , and save invoice calander a
         <InvoiceDetails />
       </HashRouter>
     );
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const savebtn = await waitFor(() => screen.getByText(/save/i));
     fireEvent.click(savebtn);
   });
@@ -1545,7 +1512,7 @@ describe("delete test cases on AR Reveiew click on cancel button", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1629,7 +1596,7 @@ describe("delete test cases on AR Reveiew on false", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1714,7 +1681,7 @@ describe("delete test cases on AR Reveiew on api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const buttonDeleteInvoice = await screen.findByText(/Delete Invoice/);
     fireEvent.click(buttonDeleteInvoice);
@@ -1792,7 +1759,7 @@ describe("Invoice details auto approve checkbox click", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const approve = await screen.getByText(/Auto-Approval after 24h/);
     fireEvent.click(approve);
@@ -1878,7 +1845,7 @@ describe("Invoice details auto approve checkbox click api fail", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const approve = await screen.getByText(/Auto-Approval after 24h/);
     fireEvent.click(approve);
@@ -1943,7 +1910,7 @@ describe("Invoice details fee api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -1963,7 +1930,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const download = screen.getByText(/Download/);
   //   fireEvent.click(download);
@@ -1981,7 +1948,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const approve = screen.getByText(/Approve Invoice/);
   //   fireEvent.click(approve);
@@ -1994,7 +1961,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
   //   if (filesTab) { fireEvent.click(filesTab) }
   //   const input = await waitFor(() =>
@@ -2012,7 +1979,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
   //   if (filesTab) { fireEvent.click(filesTab) }
   //   const download = await waitFor(() =>
@@ -2027,7 +1994,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
   //   if (filesTab) { fireEvent.click(filesTab) }
   //   const download = await waitFor(() =>
@@ -2042,7 +2009,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getAllByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
   //   const breadcrumbs = await waitFor(() => screen.getAllByText(/Invoices/));
   //   fireEvent.click(breadcrumbs[0]);
   // });
@@ -2053,7 +2020,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const decline = screen.getByTestId("decline-button");
   //   fireEvent.click(decline);
@@ -2072,7 +2039,7 @@ describe("Invoice details fee api fail", () => {
   //     </HashRouter>
   //   );
 
-  //   await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+  //   await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
   //   const decline = screen.getByTestId("decline-button");
   //   fireEvent.click(decline);
@@ -2141,7 +2108,7 @@ describe("Invoice details invoice detail api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -2208,7 +2175,7 @@ describe("Invoice details lookup api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -2275,7 +2242,7 @@ describe("Invoice details countries api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     // const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     // screen.logTestingPlaygroundURL();
@@ -2353,7 +2320,7 @@ describe("Invoice details employeeBreakDown api fail", () => {
       </HashRouter>
     );
 
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const download = screen.getByText(/Download/);
     fireEvent.click(download);
@@ -2415,7 +2382,7 @@ describe("Invoice details view change log click", () => {
       </HashRouter>
     );
     return;
-    await waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    await waitForElementToBeRemoved(() => screen.getByTestId('loader'));
     const filesTab = await waitFor(() => screen.getByText(/Files & Notes/));
     if (filesTab) {
       fireEvent.click(filesTab);
@@ -2491,7 +2458,7 @@ describe("add payment button click test cases on Apprroved", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const addPaymentButton = await screen.findByText(/Add Payment/);
     fireEvent.click(addPaymentButton);
@@ -2505,7 +2472,7 @@ describe("add payment button click test cases on Apprroved", () => {
        </HashRouter>
      );
  
-     waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+     waitForElementToBeRemoved(() => screen.getByTestId('loader'));
  
      const setPoNumber =  screen.findByTestId("PONUMBER");
      const saveButton =   screen.findByTestId("SaveButton");
@@ -2588,7 +2555,7 @@ describe("delete employee on AR Review status api fail", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     expect(payrollTab).toBeInTheDocument();
@@ -2604,10 +2571,10 @@ describe("delete employee on AR Review status api fail", () => {
     expect(deleteIcon[0]).toBeInTheDocument();
     fireEvent.click(deleteIcon1[0]);
 
-    // const deleteButton = await waitFor(() =>
-    //   screen.getByText(/Delete Employee/)
-    // );
-    // fireEvent.click(deleteButton);
+    const deleteButton = await waitFor(() =>
+      screen.getByText(/Delete Employee/)
+    );
+    fireEvent.click(deleteButton);
   });
 });
 
@@ -2682,7 +2649,7 @@ describe("delete employee on AR Review status", () => {
       </HashRouter>
     );
 
-    waitForElementToBeRemoved(() => screen.getByText(/Loading/));
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
 
     const payrollTab = await waitFor(() => screen.getByText(/Payroll Journal/));
     expect(payrollTab).toBeInTheDocument();
@@ -2698,245 +2665,244 @@ describe("delete employee on AR Review status", () => {
     expect(deleteIcon[0]).toBeInTheDocument();
     fireEvent.click(deleteIcon1[0]);
 
-    // const deleteButton = await waitFor(() =>
-    //   screen.getByText(/Delete Employee/)
-    // );
-    // fireEvent.click(deleteButton);
+    const deleteButton = await waitFor(() =>
+      screen.getByText(/Delete Employee/)
+    );
+    fireEvent.click(deleteButton);
   });
 });
 
-// describe("payment detail on partial paid", () => {
-//   beforeAll(() => {
-//     useParams.mockImplementation(() => ({
-//       id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
-//       cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
-//       isClient: "false",
-//     }));
+describe("payment detail on partial paid", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
 
-//     useLocation.mockImplementation(() => ({
-//       state: {
-//         InvoiceId: "1101078",
-//         transactionType: 2,
-//         rowDetails: {
-//           customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-//           customerName: "DSM Nutritional Products AG",
-//           customerLocation: "Italy",
-//           currencyId: 1,
-//           qbInvoiceNo: 0,
-//           invoiceNo: "1101078",
-//           status: 6,
-//           statusLabel: "Partial Paid",
-//           transactionType: 2,
-//           transactionTypeLabel: "Miscellaneous",
-//           createdDate: "5 Jul 2022",
-//           paymentDate: null,
-//           approvalDate: null,
-//           submissionDate: null,
-//           dueDate: "15 Jul 2022",
-//           exchangeRate: 1,
-//           totalAmount: "undefined 300.00",
-//           invoiceBalance: "undefined 96.00",
-//           invoiceFrom: null,
-//           regionItemCode: null,
-//           isClientVisible: true,
-//           depositTo: null,
-//           createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
-//           modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
-//           eorSubscriptionId: null,
-//           invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
-//           bankingDetailId: null,
-//           paymentMethod: 1,
-//           poNumber: null,
-//           ageingNotPaid: null,
-//           ageingPaid: null,
-//           invoiceDocuments: [],
-//           invoiceItems: [],
-//           invoiceNotes: [],
-//           invoiceRelatedInvoices: [],
-//           invoiceRelatedRelatedInvoices: [],
-//           payrolls: [],
-//           customer: null,
-//           currency: null,
-//           id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
-//           exportToQB: {
-//             value: "Not Exported",
-//             color: "#767676",
-//           },
-//         },
-//       },
-//     }));
+    useLocation.mockImplementation(() => ({
+      state: {
+        InvoiceId: "1101078",
+        transactionType: 2,
+        rowDetails: {
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "Italy",
+          currencyId: 1,
+          qbInvoiceNo: 0,
+          invoiceNo: "1101078",
+          status: 6,
+          statusLabel: "Partial Paid",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "5 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "15 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "undefined 300.00",
+          invoiceBalance: "undefined 96.00",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: 1,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: null,
+          id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      },
+    }));
 
-//     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
 
-//     const mock = new MockAdapter(axios);
+    const mock = new MockAdapter(axios);
 
-//     mockapidata.resData.invoice.status = 6;
-//     mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
-//     mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
-//     mock
-//       .onGet(getBillingAddressUrl(cid))
-//       .reply(200, mockapidata.resAddressData);
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
 
-//     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
 
-//     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
-//     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
-//     mock
-//       .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
-//       .reply(200, mockapidata.notes);
+    mock
+      .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.notes);
 
-//     mock
-//       .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
-//       .reply(201);
+    mock
+      .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
+      .reply(201);
 
-//     mock
-//       .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
-//       .reply(201);
+    mock
+      .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(201);
 
-//     mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
 
-//     mock
-//       .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
-//       .reply(200,mockapidata.newGetRelatedData);
+    mock
+      .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.newGetRelatedData);
 
-//     mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
 
-//     mock
-//       .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
-//       .reply(200, mockapidata.resForPaymentDetailApi);
-//     mock
-//       .onGet(
-//         urls.invoiceLogs.replace(
-//           "{invoice-id}",
-//           "0d40412b-f901-4cab-b886-8f30e1bc9a71"
-//         )
-//       )
-//       .reply(200, mockapidata.resInvoiceNotesData);
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+    mock
+      .onGet(
+        urls.invoiceLogs.replace(
+          "{invoice-id}",
+          "0d40412b-f901-4cab-b886-8f30e1bc9a71"
+        )
+      )
+      .reply(200, mockapidata.resInvoiceNotesData);
 
-//     mock
-//       .onGet(subscriptionLookup())
-//       .reply(200, mockapidata.resSuscriptionLookup);
-//     mock.onGet(productInvoice()).reply(200, mockapidata.dd);
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resSuscriptionLookup);
+    mock.onGet(productInvoice()).reply(200, mockapidata.dd);
 
-//     mock.onPost(urls.savePayments).reply(200, mockapidata.dd);
+    mock.onPost(urls.savePayments).reply(200, mockapidata.dd);
 
-//     mock.onPost(editPaymentDetailApi()).reply(200, mockapidata.resForEditPaymentDetailApi);
+    mock.onPost(editPaymentDetailApi()).reply(200, mockapidata.resForEditPaymentDetailApi);
 
-//     mock
-//       .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
-//       .reply(200, mockapidata.resForPaymentDetailApi);
-//   });
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+  });
 
-//   // test("tabs are working", async () => {
-//   //   const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
-//   //   render(
-//   //     <HashRouter>
-//   //       <InvoiceDetails />
-//   //     </HashRouter>
-//   //   );
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
 
-//   //   const paymentText = await screen.findByText(/Payment Details/);
-//   //   expect(paymentText).toBeInTheDocument();
+    const paymentText = await screen.findByText(/Payment Details/);
+    expect(paymentText).toBeInTheDocument();
 
-//   //   const textEdit = await screen.findAllByText(/Edit/);
-//   //   expect(textEdit[0]).toBeInTheDocument();
-//   //   fireEvent.click(textEdit[0]);
+    const textEdit = await screen.findAllByText(/Edit/);
+    expect(textEdit[0]).toBeInTheDocument();
+    fireEvent.click(textEdit[0]);
 
-//   //   const textEditCancel = await screen.findAllByText(/Cancel Edit/);
-//   //   expect(textEditCancel[0]).toBeInTheDocument();
-//   //   fireEvent.click(textEditCancel[0]);
+    const textEditCancel = await screen.findAllByText(/Cancel Edit/);
+    expect(textEditCancel[0]).toBeInTheDocument();
+    fireEvent.click(textEditCancel[0]);
 
-//   //   const textEdit2 = await screen.findAllByText(/Edit/);
+    const textEdit2 = await screen.findAllByText(/Edit/);
 
-//   //   expect(textEdit2[1]).toBeInTheDocument();
+    expect(textEdit2[1]).toBeInTheDocument();
 
-//   //   fireEvent.click(textEdit2[1]);
+    fireEvent.click(textEdit2[1]);
 
-//   //   const textEdiEUR = await screen.findAllByText(/EUR/);
-//   //   expect(textEdiEUR[0]).toBeInTheDocument();
-//   //   fireEvent.click(textEdiEUR[0]);
+    const textEdiEUR = await screen.findAllByText(/EUR/);
+    expect(textEdiEUR[0]).toBeInTheDocument();
+    fireEvent.click(textEdiEUR[0]);
 
-//   //   const textEdiUSD = await screen.findAllByText(/USD/);
-//   //   expect(textEdiUSD[0]).toBeInTheDocument();
-//   //   fireEvent.click(textEdiUSD[0]);
+    const textEdiUSD = await screen.findAllByText(/USD/);
+    expect(textEdiUSD[0]).toBeInTheDocument();
+    fireEvent.click(textEdiUSD[0]);
 
-//   //   const textEditSave = await screen.findAllByText(/Save Changes/);
-//   //   expect(textEditSave[0]).toBeInTheDocument();
-//   //   fireEvent.click(textEditSave[0]);
+    const textEditSave = await screen.findAllByText(/Save Changes/);
+    expect(textEditSave[0]).toBeInTheDocument();
+    fireEvent.click(textEditSave[0]);
 
-//   //   const textEdit3 = await screen.findAllByText(/Edit/);
+    const textEdit3 = await screen.findAllByText(/Edit/);
+    expect(textEdit3[2]).toBeInTheDocument();
+    fireEvent.click(textEdit3[2]);
 
-//   //   expect(textEdit3[2]).toBeInTheDocument();
-//   //   fireEvent.click(textEdit3[2]);
+    const textref = await screen.findAllByTestId(/0149/);
+    expect(textref[0]).toBeInTheDocument();
+    fireEvent.change(textref[0], { target: { value: "01499" } });
 
-//   //   const textref = await screen.findAllByTestId(/0149/);
-//   //   expect(textref[0]).toBeInTheDocument();
-//   //   fireEvent.change(textref[0], { target: { value: "01499" } });
+    const textAm = await screen.findAllByTestId(/111/);
+    expect(textAm[0]).toBeInTheDocument();
+    fireEvent.change(textAm[0], { target: { value: "014" } });
 
-//   //   const textAm = await screen.findAllByTestId(/111/);
-//   //   expect(textAm[0]).toBeInTheDocument();
-//   //   fireEvent.change(textAm[0], { target: { value: "014" } });
+    const textLocation = await screen.findAllByText(
+      /USA -- United States of America/
+    );
+    expect(textLocation[0]).toBeInTheDocument();
+    fireEvent.click(textLocation[0]);
 
-//   //   const textLocation = await screen.findAllByText(
-//   //     /USA -- United States of America/
-//   //   );
-//   //   expect(textLocation[0]).toBeInTheDocument();
-//   //   fireEvent.click(textLocation[0]);
+    const textLocation2 = await screen.findAllByText(/GBR -- United Kingdom/);
+    expect(textLocation2[0]).toBeInTheDocument();
+    fireEvent.click(textLocation2[0]);
 
-//   //   const textLocation2 = await screen.findAllByText(/GBR -- United Kingdom/);
-//   //   expect(textLocation2[0]).toBeInTheDocument();
-//   //   fireEvent.click(textLocation2[0]);
+    const textBank = await screen.findAllByTestId(/deposite-bank/);
+    expect(textBank[2]).toBeInTheDocument();
+    // fireEvent.click(textBank[2])
 
-//   //   const textBank = await screen.findAllByTestId(/deposite-bank/);
-//   //   expect(textBank[2]).toBeInTheDocument();
-//   //   // fireEvent.click(textBank[2])
+    const textEditSave2 = await screen.findAllByText(/Save Changes/);
+    expect(textEditSave2[0]).toBeInTheDocument();
+    fireEvent.click(textEditSave2[0]);
 
-//   //   const textEditSave2 = await screen.findAllByText(/Save Changes/);
-//   //   expect(textEditSave2[0]).toBeInTheDocument();
-//   //   fireEvent.click(textEditSave2[0]);
+    const textAddPaymentInstallment = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment[0]);
 
-//   //   const textAddPaymentInstallment = await screen.findAllByText(
-//   //     /Add payment Installment/
-//   //   );
-//   //   expect(textAddPaymentInstallment[0]).toBeInTheDocument();
-//   //   fireEvent.click(textAddPaymentInstallment[0]);
+    const cancelButton = await screen.findAllByText(/Cancel/);
+    expect(cancelButton[0]).toBeInTheDocument();
+    fireEvent.click(cancelButton[0]);
 
-//   //   const cancelButton = await screen.findAllByText(/Cancel/);
-//   //   expect(cancelButton[0]).toBeInTheDocument();
-//   //   fireEvent.click(cancelButton[0]);
+    const textAddPaymentInstallment2 = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment2[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment2[0]);
 
-//   //   const textAddPaymentInstallment2 = await screen.findAllByText(
-//   //     /Add payment Installment/
-//   //   );
-//   //   expect(textAddPaymentInstallment2[0]).toBeInTheDocument();
-//   //   fireEvent.click(textAddPaymentInstallment2[0]);
+    const textBankww = await screen.findAllByTestId(/Deposited-id/);
+    fireEvent.click(textBankww[0]);
 
-//   //   const textBankww = await screen.findAllByTestId(/Deposited-id/);
-//   //   fireEvent.click(textBankww[0]);
+    const locationid = await screen.findAllByTestId(/locationOpen-id/);
+    fireEvent.click(locationid[0]);
 
-//   //   const locationid = await screen.findAllByTestId(/locationOpen-id/);
-//   //   fireEvent.click(locationid[0]);
+    const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
+    fireEvent.click(currencyid[0]);
 
-//   //   const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
-//   //   fireEvent.click(currencyid[0]);
+    const paymentid = await screen.findAllByTestId(/payment-id/);
+    fireEvent.click(paymentid[0]);
 
-//   //   const paymentid = await screen.findAllByTestId(/payment-id/);
-//   //   fireEvent.click(paymentid[0]);
+    const referenceText = await screen.findAllByPlaceholderText(
+      /Enter reference No/
+    );
+    expect(referenceText[32]).toBeInTheDocument();
+    fireEvent.keyDown(referenceText[32]);
+    fireEvent.change(referenceText[32], { target: { value: "000987" } });
 
-//   //   const referenceText = await screen.findAllByPlaceholderText(
-//   //     /Enter reference No/
-//   //   );
-//   //   expect(referenceText[32]).toBeInTheDocument();
-//   //   fireEvent.keyDown(referenceText[32]);
-//   //   fireEvent.change(referenceText[32], { target: { value: "000987" } });
+    const addAmountText = await screen.findAllByTestId(/addAmount/);
+    expect(addAmountText[0]).toBeInTheDocument();
+    fireEvent.keyDown(addAmountText[0]);
+    fireEvent.change(addAmountText[0], { target: { value: "2" } });
 
-//   //   const addAmountText = await screen.findAllByTestId(/addAmount/);
-//   //   expect(addAmountText[0]).toBeInTheDocument();
-//   //   fireEvent.keyDown(addAmountText[0]);
-//   //   fireEvent.change(addAmountText[0], { target: { value: "2" } });
-
-//   // });
-// });
+  });
+});

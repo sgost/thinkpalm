@@ -48,7 +48,7 @@ export default function CreditMemoSummary(props: any) {
   const [newAmount, setNewAmount] = useState<any>(0);
   const [newCountry, setNewCountry] = useState<any>();
   const [newProduct, setNewProduct] = useState<any>();
-  const [newTotalAmount, setNewTotalAmount] = useState<any>();
+  const [_newTotalAmount, setNewTotalAmount] = useState<any>();
   const [openProductService, setOpenProductService] = useState(false);
   const [openEditProductService, setOpenEditProductService] = useState<any>();
   const [openCountryService, setOpenCountryService] = useState(false);
@@ -66,17 +66,15 @@ export default function CreditMemoSummary(props: any) {
   const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
   const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
   const [payload, setPayload] = useState<any>(creditMemoData);
-  const [initial, setInit] = useState(0);
-  const [limit, setLimit] = useState(10);
   const showAddFields = () => {
     setAddSectionCheck(true);
   };
 
-  const [dataAvail, setDataAvail] = useState(true);
+  const [_dataAvail, setDataAvail] = useState(true);
 
   useEffect(() => {
-    if(changeLogs.length > 6) {
-        setDataAvail(false);
+    if (changeLogs.length > 6) {
+      setDataAvail(false);
     }
   }, [changeLogs]);
 
@@ -293,11 +291,11 @@ export default function CreditMemoSummary(props: any) {
     }
     setSubTotalAmount(subtotal);
     setVatAmount(subtotal * (vatValue / 100));
-    payload.totalAmount = subtotal + subtotal * (vatValue / 100);
+    const totalAmountVar = subtotal + subtotal * (vatValue / 100)
     if (creditMemoData.status != 9) {
-      setPayload({...payload, invoiceBalance: subtotal + subtotal * (vatValue / 100)})
+      setPayload({ ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar })
     } else {
-      payload.invoiceBalance = 0
+      setPayload({...payload, invoiceBalance: 0,  totalAmount: totalAmountVar})
     }
   };
   /* istanbul ignore next */
@@ -394,6 +392,10 @@ export default function CreditMemoSummary(props: any) {
       payload.invoiceItems[index].serviceCountry = selOption.value;
     }
   };
+
+
+  //Verifying vatAmount Type
+  let vatTotal = vatAmount != 'undefined' ? vatAmount : 0;
 
   return (
     <div className="credit-summary-wrapper">
@@ -719,13 +721,13 @@ export default function CreditMemoSummary(props: any) {
             <div className="rowFee no-border">
               <p className="title">VAT Amount</p>
               <p className="amount">
-                {currency} {toCurrencyFormat(vatAmount)}
+                {currency} {toCurrencyFormat(vatTotal)}
               </p>
             </div>
             <div className="totalRow">
               <p>Total Balance</p>
               <p className="total">
-                {currency} {toCurrencyFormat(subTotalAmount + vatAmount)}
+                {currency} {toCurrencyFormat(subTotalAmount + vatTotal)}
               </p>
             </div>
           </div>

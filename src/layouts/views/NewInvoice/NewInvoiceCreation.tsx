@@ -5,9 +5,10 @@ import "./NewInvoiceCreation.scss";
 import { getCountryByCustomer, getHeaders, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
+import Input from "../../../components/Input/input";
+import jwt_decode from "jwt-decode";
 
 const NewInvoiceCreation = ({
-  accessToken,
   stepperOneData,
   setStepperOneData,
   YearOptions,
@@ -32,9 +33,10 @@ const NewInvoiceCreation = ({
   setCurrencyOptions,
   qbIdOptions,
   setQbIdOptions,
+  qbIdValue,
+  setQbIdValue,
   paymentTermsOptions,
   setPaymentTermsOptions,
-  setPaymentMethodOptions,
 }: any) => {
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
@@ -49,77 +51,11 @@ const NewInvoiceCreation = ({
   const [isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
 
-  useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    axios
-      .get(urls.subscriptionLookup, {
-        headers: getHeaders(token, stepperOneData.customerId, "false"),
-      })
-      .then((res: any) => {
-        setInvoicerOptions(
-          res.data.invoicers.map((invoicer: any) => {
-            return {
-              ...invoicer,
-              isSelected: false,
-              label: invoicer.text,
-              value: invoicer.value,
-              receivableAccounts: invoicer.receivableAccounts,
-            };
-          })
-        );
-        setPaymentMethodOptions(
-          res.data.paymentMethods.map((pm: any) => {
-            return {
-              ...pm,
-              isSelected: false,
-              label: pm.text,
-              value: pm.value,
-            };
-          })
-        );
-
-        setCurrencyOptions(
-          res.data.billingCurrencies.map((bc: any) => {
-            return {
-              ...bc,
-              isSelected: false,
-              label: bc.text,
-              value: bc.value,
-            };
-          })
-        );
-      })
-      .catch((err: any) => console.log(err));
-
-    axios
-      .get(urls.lookup, {
-        headers: getHeaders(token, stepperOneData.customerId, "false"),
-      })
-      .then((res: any) => {
-        setPaymentTermsOptions(
-          res.data.otherDueTypes.map((od: any) => {
-            return {
-              ...od,
-              isSelected: false,
-              label: od.text,
-              value: od.value,
-            };
-          })
-        );
-      })
-      .catch((err: any) => console.log(err));
-
-    setQbIdOptions([
-      {
-        isSelected: false,
-        label: "test 1",
-        value: "test1",
-      },
-    ]);
-  }, []);
+  const tempToken : any = localStorage.getItem("accessToken");
+  const currentOrgId: any = localStorage.getItem("current-org-id");
 
   const preparedCustomerData = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
           ...item,
@@ -136,33 +72,39 @@ const NewInvoiceCreation = ({
         };
       }
     });
-    return newData;
   };
 
   const getCustomerDropdownOptions = () => {
-    let allCustomerapi = urls.customers;
-    const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
+    let allCustomerapi = urls.getCustomersByIds;
+
+    const headers = getHeaders(tempToken, currentOrgId, "false");
+    let decToken : any = jwt_decode(tempToken);
+    let custIds : any = Object.keys(decToken.Permissions)
 
     setLoading(true);
 
     axios
-      .get(allCustomerapi, headers)
-      .then((res: any) => {
-        const preData: any = preparedCustomerData(res.data);
+      .post(
+        allCustomerapi,
+        {
+          customerIds: custIds,
+        },
+        {
+          headers: headers,
+        }
+      )
+      .then((response: any) => {
+        const preData: any = preparedCustomerData(response.data);
         setCustomerOption(preData);
         setLoading(false);
       })
       .catch((e: any) => {
-        console.log("error", e);
+        console.log(e);
       });
   };
 
   const preparedPayrollCustomerData = (data: any) => {
-    const newData = data?.customers?.map((item: any) => {
+    return data?.customers?.map((item: any) => {
       if (item.customerId === stepperOneData?.customerId) {
         return {
           isSelected: true,
@@ -177,15 +119,13 @@ const NewInvoiceCreation = ({
         };
       }
     });
-    return newData;
   };
 
   const getPayrollCustomerDropdownOptions = () => {
     let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi;
+
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      headers: getHeaders(tempToken, currentOrgId, "false"),
     };
 
     setLoading(true);
@@ -203,7 +143,7 @@ const NewInvoiceCreation = ({
   };
 
   const preparedCountryData = (data: any) => {
-    const newData = data?.map((item: any) => {
+    return data?.map((item: any) => {
       if (item.id === stepperOneData?.countryId) {
         return {
           isSelected: true,
@@ -218,16 +158,14 @@ const NewInvoiceCreation = ({
         };
       }
     });
-    return newData;
   };
 
   const getCountryDropdwonOptions = () => {
     let api = getCountryByCustomer(stepperOneData?.customerId);
+
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
+      headers: getHeaders(tempToken, currentOrgId, "false")
+    }
 
     axios
       .get(api, headers)
@@ -394,47 +332,45 @@ const NewInvoiceCreation = ({
             )}
 
             <div className="row">
-              {stepperOneData?.type &&
-                stepperOneData?.type !== "Payroll" &&
-                stepperOneData?.type !== "Credit Memo" && (
-                  <div className="dropdown col-md-4 select-component">
-                    <Dropdown
-                      isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
-                        handleDropOption(
-                          item,
-                          invoicerOptions,
-                          setInvoicerOptions,
-                          setIsInvoicer
-                        );
+              {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+                <div className="dropdown col-md-4 select-component">
+                  <Dropdown
+                    isDisabled={!stepperOneData?.type}
+                    handleDropOptionClick={(item: any) => {
+                      handleDropOption(
+                        item,
+                        invoicerOptions,
+                        setInvoicerOptions,
+                        setIsInvoicer
+                      );
 
-                        let tempRecAccOptions: Array<any> = [];
-                        item.receivableAccounts?.forEach((recAcc: any) => {
-                          tempRecAccOptions.push({
-                            ...recAcc,
-                            isSelected: false,
-                            label: recAcc.text,
-                            value: recAcc.value,
-                          });
+                      let tempRecAccOptions: Array<any> = [];
+                      item.receivableAccounts?.forEach((recAcc: any) => {
+                        tempRecAccOptions.push({
+                          ...recAcc,
+                          isSelected: false,
+                          label: recAcc.text,
+                          value: recAcc.value,
                         });
-                        setReceivableAccountOptions(tempRecAccOptions);
-                      }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsInvoicer(b);
-                        setIsRecAcc(false);
-                        setIsCurrency(false);
-                        setIsQbId(false);
-                        setIsPaymentTerms(false);
-                        setIstypeOpen(false);
-                        setIsCustomerOpen(false);
-                      }}
-                      isOpen={isInvoicer}
-                      options={invoicerOptions}
-                      title={`Invoicer`}
-                      search
-                    />
-                  </div>
-                )}
+                      });
+                      setReceivableAccountOptions(tempRecAccOptions);
+                    }}
+                    handleDropdownClick={(b: boolean) => {
+                      setIsInvoicer(b);
+                      setIsRecAcc(false);
+                      setIsCurrency(false);
+                      setIsQbId(false);
+                      setIsPaymentTerms(false);
+                      setIstypeOpen(false);
+                      setIsCustomerOpen(false);
+                    }}
+                    isOpen={isInvoicer}
+                    options={invoicerOptions}
+                    title={`Invoicer`}
+                    search
+                  />
+                </div>
+              )}
 
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
@@ -466,13 +402,10 @@ const NewInvoiceCreation = ({
                     />
                   </div>
                 )}
-            </div>
-
-            <div className="row">
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
-                stepperOneData?.type !== "Credit Memo" && (
-                  <div className="lastDropdown col-md-4 select-component">
+                stepperOneData?.type === "Credit Memo" && (
+                  <div className="dropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -499,44 +432,44 @@ const NewInvoiceCreation = ({
                     />
                   </div>
                 )}
+            </div>
 
+            <div className="row">
               {stepperOneData?.type &&
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
                   <div className="lastDropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
+                      handleDropOptionClick={(items: any) => {
                         handleDropOption(
-                          item,
-                          qbIdOptions,
-                          setQbIdOptions,
-                          setIsQbId
+                          items,
+                          currencyOptions,
+                          setCurrencyOptions,
+                          setIsCurrency
                         );
                       }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsQbId(b);
-                        setIsRecAcc(false);
-                        setIsCurrency(false);
+                      handleDropdownClick={(bool: boolean) => {
+                        setIsCurrency(bool);
                         setIsInvoicer(false);
+                        setIsRecAcc(false);
+                        setIsQbId(false);
                         setIsPaymentTerms(false);
                         setIstypeOpen(false);
                         setIsCustomerOpen(false);
                       }}
-                      isOpen={isQbId}
-                      options={qbIdOptions}
-                      title="Financial System ID"
+                      isOpen={isCurrency}
+                      options={currencyOptions}
+                      title={`Currency`}
                       search
                     />
                   </div>
                 )}
-            </div>
 
-            {stepperOneData?.type &&
-              stepperOneData?.type !== "Payroll" &&
-              stepperOneData?.type !== "Credit Memo" && (
-                <div className="row">
-                  <div className="dropdown col-md-4 select-component ddPaymentTerms">
+              {stepperOneData?.type &&
+                stepperOneData?.type !== "Payroll" &&
+                stepperOneData?.type !== "Credit Memo" && (
+                  <div className="lastDropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
@@ -560,8 +493,23 @@ const NewInvoiceCreation = ({
                       search
                     />
                   </div>
+                )}
+            </div>
+
+            {stepperOneData?.type && stepperOneData?.type !== "Payroll" && (
+              <div className="row">
+                <div className="col-md-4">
+                  <Input
+                    required
+                    className="qbInput"
+                    type="number"
+                    label="Financial System ID"
+                    value={qbIdValue}
+                    setValue={setQbIdValue}
+                  />
                 </div>
-              )}
+              </div>
+            )}
             {stepperOneData?.type === "Payroll" && (
               <div className="row">
                 <div className="col-md-4 select-component">
@@ -677,7 +625,7 @@ const NewInvoiceCreation = ({
                         yearId: item.value,
                       });
                     }}
-                    handleDropdownClick={(_b: boolean) => {
+                    handleDropdownClick={(_optionClick: boolean) => {
                       setIsInvoicer(false);
                       setIsRecAcc(false);
                       setIsCurrency(false);

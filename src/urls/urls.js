@@ -102,6 +102,9 @@ export const urls = {
     "/PayrollChangeItems/RemoveEmployeeFromPayroll",
   savePayments:
     baseURL + services.atlasInvoiceService + "/Invoices/savepayments",
+
+  getCustomersByIds:
+    baseURL + services.atlasCustomerService + "/Customer/GetAllByIds"
 };
 
 export const getClientListingUrl = (
@@ -176,6 +179,7 @@ export const getHeaders = (token, cid, isClient) => {
     "x-apng-inter-region": "0",
     "x-apng-target-region": "EMEA",
     customer_id: cid || "",
+    customerid: cid || ""
   };
 };
 
