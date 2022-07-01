@@ -442,12 +442,11 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
-        qbIdValue !== ''
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
-      return !(stepperOneData?.customer !== "" && invoiceDate !== "" && qbIdValue !== '');
+      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
     }
 
     let condition: any = [];
@@ -600,10 +599,10 @@ const NewInvoice = () => {
       stepperOneData.type === "Credit Memo"
         ? 7
         : parseInt(
-            paymentTermsOptions
-              .find((e: any) => e.isSelected)
-              ?.text.split(" ")[0]
-          );
+          paymentTermsOptions
+            .find((e: any) => e.isSelected)
+            ?.text.split(" ")[0]
+        );
 
     let dueDate = new Date(invoiceDate);
     let result = dueDate.setDate(invoiceDate.getDate() + payTerms + 1);
@@ -737,10 +736,10 @@ const NewInvoice = () => {
                 stepsCount === 1
                   ? ""
                   : stepsCount === 2 && stepperOneData?.type === "Payroll"
-                  ? "step2-right-panel"
-                  : stepsCount === 2 && stepperOneData?.type !== "Payroll"
-                  ? "step2-credit-memo"
-                  : "",
+                    ? "step2-right-panel"
+                    : stepsCount === 2 && stepperOneData?.type !== "Payroll"
+                      ? "step2-credit-memo"
+                      : "",
             },
           }}
           leftPanel={
@@ -752,8 +751,8 @@ const NewInvoice = () => {
                   : stepperOneData?.type === "Credit Memo" ||
                     stepperOneData?.type === "Proforma" ||
                     stepperOneData?.type === "Miscellaneous"
-                  ? creditMemoSteps
-                  : stepsInitial
+                    ? creditMemoSteps
+                    : stepsInitial
               }
               type="step-progress"
             />
@@ -794,9 +793,9 @@ const NewInvoice = () => {
                 (stepperOneData?.type === "Credit Memo" ||
                   stepperOneData?.type === "Proforma" ||
                   stepperOneData?.type === "Miscellaneous") && (
-                  <FinishCreditMemo 
-                  invoiceId={invoiceId} 
-                  invoiceType={stepperOneData?.type}/>
+                  <FinishCreditMemo
+                    invoiceId={invoiceId}
+                    invoiceType={stepperOneData?.type} />
                 )}
             </>
           }
