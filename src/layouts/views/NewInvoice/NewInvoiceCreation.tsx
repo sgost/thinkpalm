@@ -441,16 +441,16 @@ const NewInvoiceCreation = ({
                   <div className="lastDropdown col-md-4 select-component">
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
+                      handleDropOptionClick={(items: any) => {
                         handleDropOption(
-                          item,
+                          items,
                           currencyOptions,
                           setCurrencyOptions,
                           setIsCurrency
                         );
                       }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsCurrency(b);
+                      handleDropdownClick={(bool: boolean) => {
+                        setIsCurrency(bool);
                         setIsInvoicer(false);
                         setIsRecAcc(false);
                         setIsQbId(false);
@@ -470,30 +470,6 @@ const NewInvoiceCreation = ({
                 stepperOneData?.type !== "Payroll" &&
                 stepperOneData?.type !== "Credit Memo" && (
                   <div className="lastDropdown col-md-4 select-component">
-                    {/* <Dropdown
-                      isDisabled={!stepperOneData?.type}
-                      handleDropOptionClick={(item: any) => {
-                        handleDropOption(
-                          item,
-                          qbIdOptions,
-                          setQbIdOptions,
-                          setIsQbId
-                        );
-                      }}
-                      handleDropdownClick={(b: boolean) => {
-                        setIsQbId(b);
-                        setIsRecAcc(false);
-                        setIsCurrency(false);
-                        setIsInvoicer(false);
-                        setIsPaymentTerms(false);
-                        setIstypeOpen(false);
-                        setIsCustomerOpen(false);
-                      }}
-                      isOpen={isQbId}
-                      options={qbIdOptions}
-                      title="Financial System ID"
-                      search
-                    /> */}
                     <Dropdown
                       isDisabled={!stepperOneData?.type}
                       handleDropOptionClick={(item: any) => {
