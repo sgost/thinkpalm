@@ -634,7 +634,8 @@ const NewInvoice = () => {
     );
 
     let data = {
-      qbInvoiceNo: parseInt(qbIdValue),
+      QbCustomerId: parseInt(qbIdValue),
+      qbInvoiceNo: 0,
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
       CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
