@@ -109,7 +109,7 @@ export default function InvoiceDetails() {
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
-  const [countriesData, setCountriesData] = useState<any>(null);
+  const [_countriesData, setCountriesData] = useState<any>(null);
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
   const [documents, setDocuments] = useState<any>([]);
@@ -794,16 +794,11 @@ export default function InvoiceDetails() {
   }, [paymentDue, invoiceDate, invoiceChanges, isEditFieldsChanges]);
 
   const getBillingCurrency = () => {
-    if (countriesData?.data && apiData?.data) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === apiData.data.invoice.currencyId
-      );
-      return currency?.currency?.code;
-    } else if (creditMemoData && lookupData?.data) {
-      let currency = lookupData.data.billingCurrencies.find(
-        (e: any) => e.value === creditMemoData.currencyId
-      );
-      return currency?.text;
+    if (apiData?.data) {
+      return apiData?.data?.invoice?.currency?.code;
+      
+    } else if (creditMemoData) {
+      return creditMemoData?.currency?.code;
     } else {
       return "";
     }
