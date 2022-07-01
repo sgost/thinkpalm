@@ -1033,7 +1033,7 @@ export default function InvoiceListing() {
           </div>
         )}
         {isLoader && <Loader />}
-        {(searchText && !searchedTableData) || (!isClient && !internalTabledata.data.length && !isLoader) ? (
+        {(searchText && !searchedTableData) || (!isClient && !internalTabledata.data.length && !isLoader) || (isClient && !clientTableData.data.length && !isLoader) ? (
           <NoSearchCard
           style={{
             height: '19rem',
