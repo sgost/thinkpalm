@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table, Dropdown, ButtonDropdown } from "atlasuikit";
+import { Icon, Button, Table, Dropdown, ButtonDropdown, NoSearchCard } from "atlasuikit";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
@@ -362,10 +362,10 @@ export default function InvoiceListing() {
       const filteredData = {
         columns: clientTableData.columns,
         data: clientTableData.data.filter((e: any) =>
-          e.invoiceNo.includes(searchText || searchCustomer)
+          e.invoiceNo.includes(searchText)
         ),
       };
-      if ((searchText || searchCustomer) && filteredData.data.length) {
+      if ((searchText) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
@@ -375,19 +375,19 @@ export default function InvoiceListing() {
         columns: internalTabledata.columns,
         data: internalTabledata.data.filter(
           (e: any) =>
-            e.invoiceNo.includes(searchText || searchCustomer) ||
+            e.invoiceNo.includes(searchText) ||
             e.customerName
               .toLowerCase()
-              .includes((searchText || searchCustomer).toLowerCase())
+              .includes((searchText).toLowerCase())
         ),
       };
-      if ((searchText || searchCustomer) && filteredData.data.length) {
+      if ((searchText) && filteredData.data.length) {
         setSearchedTableData(filteredData);
       } else {
         setSearchedTableData(null);
       }
     }
-  }, [searchText, searchCustomer]);
+  }, [searchText]);
 
   const downloadFunction = () => {
     const download = (res: any) => {
@@ -710,14 +710,14 @@ export default function InvoiceListing() {
                         if (item.isSelected) {
                           if (typesValue) {
                             typesValue += "," + item.value.toString();
-                            setSearchCustomer(item.label);
+                            // setSearchCustomer(item.label);
                           } else {
                             typesValue = item.value.toString();
-                            setSearchCustomer(item.label);
+                            // setSearchCustomer(item.label);
                           }
                         }
                       });
-
+                     
                       setCustomerData(copy);
                       setCustomerType(typesValue);
                     }}
@@ -1033,47 +1033,14 @@ export default function InvoiceListing() {
           </div>
         )}
         {isLoader && <Loader />}
-        {(searchText || customerType) && !searchedTableData ? (
-          <div className="invalidSearch">
-            <div className="uhohContainer">
-              <svg
-                width="48"
-                height="48"
-                viewBox="0 0 48 48"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M21 38C30.389 38 38 30.389 38 21C38 11.611 30.389 4 21 4C11.611 4 4 11.611 4 21C4 30.389 11.611 38 21 38Z"
-                  fill="#526FD6"
-                  fill-opacity="0.4"
-                  stroke="#3E3E3E"
-                  stroke-width="4"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M26.6568 14.343C25.9147 13.599 25.0329 13.0091 24.0621 12.607C23.0913 12.2049 22.0506 11.9986 20.9998 12C18.7898 12 16.7898 12.895 15.3428 14.343"
-                  stroke="white"
-                  stroke-width="4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M33.2222 33.2227L41.7072 41.7077"
-                  stroke="#3E3E3E"
-                  stroke-width="4"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-
-              <p>Uh-oh! We found no matches for your search.</p>
-            </div>
-            <ul>
-              <li>Try modifiying your search or;</li>
-              <li>Use filters to refine your search.</li>
-            </ul>
-          </div>
+        {(searchText && !searchedTableData) || (!isClient && !internalTabledata.data.length && !isLoader) ? (
+          <NoSearchCard
+          style={{
+            height: '19rem',
+            width: 'auto'
+          }}
+          title="Uh-oh! We found no matches for your search."
+        />
         ) : (
           <>
             {!localStorage.redirectingInvoiceState && !isLoader && (
