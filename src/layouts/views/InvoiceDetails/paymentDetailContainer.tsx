@@ -169,7 +169,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   ) => {
     let arr = [...options];
 
-    arr[index].forEach((e: any, i: number) => {
+   arr && arr[index]?.forEach((e: any, i: number) => {
       if (e.value === item.value) {
         arr[index][i] = {
           ...e,

@@ -139,7 +139,7 @@ export default function DatepickerDropdown({
                 <div
                   onClick={() => {
                     handleDropOptionClick(item);
-                    setSelectedDate({ ...selectedDate, day: item });
+                    setSelectedDate({ day: item });
                   }}
                   className="openDropdownOption"
                 >
