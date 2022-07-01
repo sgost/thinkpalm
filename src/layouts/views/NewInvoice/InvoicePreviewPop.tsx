@@ -76,7 +76,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
         <div id="body_main">
           <h1 id="title">Invoice Preview</h1>
           <p id="description">
-            Please preview the new payroll invoice has been created. You can
+            Please preview the new {stepperOneData?.type} invoice has been created. You can
             access it right from here or from the Invoices listing page.
           </p>
           <div className="credit-memo-preview-invoice-button">
