@@ -394,6 +394,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   };
 
   const savePaymentDetail = () => {
+
     let arr: any = [];
     arr.push({
       totalAmount: addAmount,
@@ -437,7 +438,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             cleanNewPaymentObject();
             setTopPanel({
               ...topPanel,
-              open: res?.data?.invoice?.invoiceBalance,
+              open: response?.data?.invoice?.invoiceBalance,
             });
           })
           .catch((e: any) => {
