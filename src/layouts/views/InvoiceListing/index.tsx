@@ -93,7 +93,6 @@ export default function InvoiceListing() {
   const [customerID, setCustomerId] = useState("");
   const [isClearFilter, setIsClearFilter] = useState(false);
   const [searchText, setSearchText] = useState<any>("");
-  const [searchCustomer, setSearchCustomer] = useState<any>("");
   const [searchedTableData, setSearchedTableData] = useState<any>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
@@ -710,10 +709,8 @@ export default function InvoiceListing() {
                         if (item.isSelected) {
                           if (typesValue) {
                             typesValue += "," + item.value.toString();
-                            // setSearchCustomer(item.label);
                           } else {
                             typesValue = item.value.toString();
-                            // setSearchCustomer(item.label);
                           }
                         }
                       });
