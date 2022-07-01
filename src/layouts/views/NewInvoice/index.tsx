@@ -446,11 +446,12 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        qbIdValue !== ''
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
-      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
+      return !(stepperOneData?.customer !== "" && invoiceDate !== "" && qbIdValue !== '');
     }
 
     let condition: any = [];
@@ -637,6 +638,7 @@ const NewInvoice = () => {
     );
 
     let data = {
+      qbInvoiceNo: parseInt(qbIdValue),
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
       CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future

@@ -258,8 +258,7 @@ describe("Payment details page multiple", () => {
   });
 
   test("Test case for the payment details revert Modal", async () => {
-    let showCancel;
-    showCancel = true;
+    
     render(
       <HashRouter>
         <PaymentDetailPage />

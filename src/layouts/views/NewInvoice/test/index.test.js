@@ -1947,10 +1947,10 @@ describe("New Invoice for Miscellaneous ", () => {
     const currencyDropDownValue = await screen.findByText(/eur/i);
     fireEvent.click(currencyDropDownValue);
 
-    //add quickbook here in future
+    const qb = screen.getByRole('spinbutton')
+    fireEvent.change(qb, { target: { value: "1234" } });
 
-    fireEvent.click(pleaseSelectDropDown[4]);
-    // screen.logTestingPlaygroundURL();
+    fireEvent.click(pleaseSelectDropDown[3]);
     const paymentTerm = await screen.findByText(/10 days/i);
     fireEvent.click(paymentTerm);
 
@@ -2044,6 +2044,12 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
 
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -2057,7 +2063,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
     const payrollTab = await screen.findAllByText(/New Invoice/);
 
     expect(payrollTab[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Credit Memo/);
@@ -2077,6 +2083,20 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
 
     const selDate = await waitFor(() => screen.getByText(/15/));
     fireEvent.click(selDate);
+
+    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+    const invoiceDropDownValue = await screen.findByText(
+      /usa\-\-unitedstatesofamerica/i
+    );
+    fireEvent.click(invoiceDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+    const currencyDropDownValue = await screen.findByText(/eur/i);
+    fireEvent.click(currencyDropDownValue);
+
+    const qb = screen.getByRole('spinbutton')
+    fireEvent.change(qb, { target: { value: "1234" } });
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -2160,6 +2180,12 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
       .onPost(urls.createCreditMemo)
       .reply(200, mockapidata.resCreateCreditMemo);
 
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -2173,7 +2199,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
     const payrollTab = await screen.findAllByText(/New Invoice/);
 
     expect(payrollTab[0]).toBeInTheDocument();
-    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    let pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
     fireEvent.click(pleaseSelectDropDown[0]);
 
     const typeDropDownValue = await screen.findByText(/Credit Memo/);
@@ -2193,6 +2219,20 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
 
     const selDate = await waitFor(() => screen.getByText(/15/));
     fireEvent.click(selDate);
+
+    pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+    const invoiceDropDownValue = await screen.findByText(
+      /usa\-\-unitedstatesofamerica/i
+    );
+    fireEvent.click(invoiceDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+    const currencyDropDownValue = await screen.findByText(/eur/i);
+    fireEvent.click(currencyDropDownValue);
+
+    const qb = screen.getByRole('spinbutton')
+    fireEvent.change(qb, { target: { value: "1234" } });
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
