@@ -794,7 +794,9 @@ const NewInvoice = () => {
                 (stepperOneData?.type === "Credit Memo" ||
                   stepperOneData?.type === "Proforma" ||
                   stepperOneData?.type === "Miscellaneous") && (
-                  <FinishCreditMemo invoiceId={invoiceId} />
+                  <FinishCreditMemo 
+                  invoiceId={invoiceId} 
+                  invoiceType={stepperOneData?.type}/>
                 )}
             </>
           }

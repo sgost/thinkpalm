@@ -143,8 +143,11 @@ const ProductInvoiceCreation = ({
     setTodos(newtempData);
   };
 
-  const blockInvalidChar = (e: any) =>
-    ["e", "E", "+", "-"].includes(e.key) && e.preventDefault();
+  const blockInvalidChar = (e: any) => {
+    // added for input type number not working in firefox
+    const regex = new RegExp(/(^\d*$)|(Backspace|Tab|Delete|ArrowLeft|ArrowRight)/);
+    return !e.key.match(regex) && e.preventDefault();
+  }
 
   return (
     <div>
@@ -346,10 +349,7 @@ const ProductInvoiceCreation = ({
                       min="0"
                       pattern="[+-]?\d+(?:[.,]\d+)?"
                       defaultValue={item.quantity}
-                      onKeyDown={(e) => {
-                        ["e", "E", "+", "-", "."].includes(e.key) &&
-                          e.preventDefault();
-                      }}
+                      onKeyDown={(e) => blockInvalidChar(e)}
                       className="inputField"
                       onChange={(e) => {
                         handleChange(e, i);
