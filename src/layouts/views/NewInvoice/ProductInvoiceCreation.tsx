@@ -3,11 +3,7 @@ import { Button, Dropdown, Icon, DatePicker } from "atlasuikit";
 import { format } from "date-fns";
 import axios from "axios";
 import "./ProductInvoiceCreation.scss";
-import {
-  productInvoice,
-  CountryApi,
-  getHeaders,
-} from "../../../urls/urls";
+import { productInvoice, CountryApi, getHeaders } from "../../../urls/urls";
 
 const ProductInvoiceCreation = ({
   todos,
@@ -29,10 +25,11 @@ const ProductInvoiceCreation = ({
   setCountryInitialData,
   tempDataCountry,
   setTempDataCountry,
-  CustomerOptions
+  currencyOptions,
 }: any) => {
   const tempToken = localStorage.getItem("accessToken");
   const cid = localStorage.getItem("current-org-id");
+  const currencyLabel = currencyOptions.find((e: any) => e.isSelected === true);
 
   const headers = {
     headers: getHeaders(tempToken, cid, "false"),
@@ -387,10 +384,10 @@ const ProductInvoiceCreation = ({
 
             <div id="container_main3" className="buttons">
               <span>Total Balance</span>
-              {console.log('currencyOptions', CustomerOptions)}
               <Button
                 label={
-                  CustomerOptions.find((e: any) => e.isSelected)?.billingCurrency + " " +
+                  currencyLabel?.text +
+                  " " +
                   (item.amount
                     ? item.quantity * item.amount
                     : 0
