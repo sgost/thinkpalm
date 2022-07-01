@@ -17,7 +17,8 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 0.333rem;
-      flex-direction: column;
+      flex-direction: row;
+      align-items: center;
       position: relative;
 
       .breadcrumbs {

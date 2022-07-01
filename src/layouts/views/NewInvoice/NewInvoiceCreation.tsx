@@ -6,9 +6,9 @@ import { getCountryByCustomer, getHeaders, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
 import Input from "../../../components/Input/input";
+import jwt_decode from "jwt-decode";
 
 const NewInvoiceCreation = ({
-  accessToken,
   stepperOneData,
   setStepperOneData,
   YearOptions,
@@ -51,7 +51,7 @@ const NewInvoiceCreation = ({
   const [isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
 
-  const tempToken = localStorage.getItem("accessToken");
+  const tempToken : any = localStorage.getItem("accessToken");
   const currentOrgId: any = localStorage.getItem("current-org-id");
 
   const preparedCustomerData = (data: any) => {
@@ -78,6 +78,8 @@ const NewInvoiceCreation = ({
     let allCustomerapi = urls.getCustomersByIds;
 
     const headers = getHeaders(tempToken, currentOrgId, "false");
+    let decToken : any = jwt_decode(tempToken);
+    let custIds : any = Object.keys(decToken.Permissions)
 
     setLoading(true);
 
@@ -85,7 +87,7 @@ const NewInvoiceCreation = ({
       .post(
         allCustomerapi,
         {
-          customerIds: [currentOrgId],
+          customerIds: custIds,
         },
         {
           headers: headers,
@@ -121,10 +123,9 @@ const NewInvoiceCreation = ({
 
   const getPayrollCustomerDropdownOptions = () => {
     let allPayrollCustomerapi = urls.allPayrollCustomerSubscriptionapi;
+
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
+      headers: getHeaders(tempToken, currentOrgId, "false"),
     };
 
     setLoading(true);
@@ -161,11 +162,10 @@ const NewInvoiceCreation = ({
 
   const getCountryDropdwonOptions = () => {
     let api = getCountryByCustomer(stepperOneData?.customerId);
+
     const headers = {
-      headers: {
-        authorization: `Bearer ${accessToken}`,
-      },
-    };
+      headers: getHeaders(tempToken, currentOrgId, "false")
+    }
 
     axios
       .get(api, headers)
