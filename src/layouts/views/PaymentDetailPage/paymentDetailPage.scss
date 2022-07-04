@@ -228,14 +228,6 @@
               content: "*";
               color: red;
             }
-
-            .a-dpicker .react-datepicker__input-container input {
-              width: 16.578rem;
-            }
-
-            .a-dpicker .a-dpicker__container svg {
-              right: -1rem;
-            }
           }
 
           .paymentInstallmentContainerDropdowns {
@@ -288,6 +280,10 @@
           margin-bottom: 3rem;
           position: relative;
           // justify-content: space-between;
+          .paymentPageTitleHeader{
+            margin-left: -1rem;
+            padding: 0rem 0rem 2rem;
+          }
           .PaymentPageTotalAmount{
             position: absolute;
             right: 2.7222rem;
