@@ -21,7 +21,6 @@ import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
