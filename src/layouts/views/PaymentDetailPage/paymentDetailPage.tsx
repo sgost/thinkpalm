@@ -86,6 +86,15 @@ const PaymentDetailPage = () => {
   }, [hideTopCheck]);
 
   useEffect(() => {
+    if(multiPaymentBlocks.length > 1){
+      setIsFullAmount(false)
+    }
+    else{
+      setIsFullAmount(true)
+    }
+  }, [multiPaymentBlocks])
+  
+  useEffect(() => {
     if (!navigateToInvoice) {
       navigate(
         "/pay/invoicedetails" +
@@ -399,7 +408,7 @@ const PaymentDetailPage = () => {
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
-        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1]),
+        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(',','')),
         0
       );
 
@@ -606,10 +615,10 @@ const PaymentDetailPage = () => {
             multiPaymentBlocks.length === 1
               ? isFullAmount
                 ? parseFloat(
-                    state?.state?.inveoicesData[0]?.invoiceBalance?.split(
-                      " "
-                    )[1]
-                  )
+                  state?.state?.inveoicesData[0]?.invoiceBalance?.split(
+                    " "
+                  )[1].replace(",","")
+                )
                 : parseFloat(totals[i].text)
               : parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
@@ -650,7 +659,6 @@ const PaymentDetailPage = () => {
       };
     }
 
-    // return;
     axios({
       method: "POST",
       url: urls.savePayments,
@@ -877,8 +885,8 @@ const PaymentDetailPage = () => {
                             )}
                           </div>
 
-                          <div className="paymentInstallmentUpperBlock">
-                            <div className="paymentInstallmentDatepicker">
+                          <div className="paymentInstallmentUpperBlock row">
+                            <div className="paymentInstallmentDatepicker col-md-3 p-0">
                               <DatePicker
                                 label="Payment Date"
                                 handleDateChange={function (date: any) {
@@ -894,7 +902,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
                                   setIsCurrencyDropdownOpen(b);
@@ -930,7 +938,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
                                   setIsLocationDropdownOpen(b);
@@ -966,7 +974,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <div className="referenceNoInput">
                                 <span>Reference No</span>
                                 <input
