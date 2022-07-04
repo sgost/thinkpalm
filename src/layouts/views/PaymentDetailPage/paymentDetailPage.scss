@@ -163,7 +163,7 @@
         display: flex;
         flex-direction: column;
         margin: 0rem 3rem 1rem;
-        padding-top: 2rem;
+        padding: 2rem 2rem;
 
         .paymentPageTitleHeader {
           display: flex;
@@ -288,6 +288,52 @@
           margin-bottom: 3rem;
           position: relative;
           // justify-content: space-between;
+
+          .paymentCreditMemoInnerLowerBlock {
+            display: flex;
+            // width: 66.5rem;
+            // justify-content: space-between;
+
+            .paymentInstallmentContainerDropdowns {
+              // margin-left: 1rem;
+
+              .a-dropdown {
+                z-index: inherit;
+              }
+
+              span.a-dropdown__title:after {
+                content: "*";
+                color: red;
+              }
+
+              .invoiceNumber {
+                margin-top: -1.2rem;
+
+                .disable-input-color {
+                  background: #f5f5f6 !important;
+                }
+
+                span {
+                  font-size: 0.889rem;
+                  margin-left: 0.2rem;
+                  color: #767676;
+                }
+
+                input {
+                  padding: 0.8rem;
+                  background: #fff !important;
+                  border: 0.056rem solid #ced4da;
+                  border-radius: 0.222rem;
+                  cursor: text;
+                  display: flex;
+                  font-size: 1rem;
+                  position: relative;
+                  width: 16.5rem;
+                }
+              }
+            }
+          }
+
           .paymentPageTitleHeader{
             margin-left: -1rem;
             padding: 0rem 0rem 2rem;

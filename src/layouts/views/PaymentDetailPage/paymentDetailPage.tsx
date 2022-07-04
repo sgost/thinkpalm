@@ -700,33 +700,6 @@ const PaymentDetailPage = () => {
 
   const handleCreditMemoSave = () => {
     alert("credit memo refund data");
-    // let arrData: Array<any> = [];
-    // for (let i = 0; i < currencyOptions.length; i++) {
-    //   arrData.push({
-    //     totalAmount:
-    //       multiPaymentBlocks.length === 1
-    //         ? isFullAmount
-    //           ? parseFloat(
-    //               state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[1]
-    //             )
-    //           : parseFloat(totals[i].text)
-    //         : parseFloat(totals[i].text),
-    //     paymentDate: paymentDate[i]?.date,
-    //     currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
-    //       ?.value,
-    //     location: locationOptions[i].options.find((e: any) => e.isSelected)
-    //       ?.value,
-    //     referenceNo: referenceNo[i].text,
-    //     depositedtoBank: bankToDepositOptions[i].options.find(
-    //       (e: any) => e.isSelected
-    //     )?.value,
-    //     paymentMethod: paymentMethodOptions[i].options.find(
-    //       (e: any) => e.isSelected
-    //     )?.value,
-    //     invoiceNumber: invoiceNumber,
-    //   });
-    // }
-    // console.log("credit memo data", arrData);
   };
 
   /* istanbul ignore next */
@@ -860,18 +833,6 @@ const PaymentDetailPage = () => {
                                 : "paymentPageTitleHeaderNoTitle"
                             }
                           >
-                            {/* {invoiceItem.transactionTypeLabel ===
-                            "Credit Memo" ? (
-                              i == 0 ? (
-                                <p>Refund Details</p>
-                              ) : (
-                                <></>
-                              )
-                            ) : i == 0 ? (
-                              <p>Payment Details</p>
-                            ) : (
-                              <></>
-                            )} */}
                             {invoiceItem.transactionTypeLabel ===
                               "Credit Memo" && i == 0 ? (
                               <p>Refund Details</p>
@@ -881,9 +842,7 @@ const PaymentDetailPage = () => {
                               <></>
                             )}
 
-                            {i == 0 ? (
-                              <></>
-                            ) : (
+                            {i != 0 && (
                               <div className="paymentPageEdit">
                                 <Button
                                   className="secondary-btn medium"
@@ -1027,11 +986,11 @@ const PaymentDetailPage = () => {
                               className={
                                 invoiceItem.transactionTypeLabel ===
                                 "Credit Memo"
-                                  ? "paymentCreditMemoInnerLowerBlock"
-                                  : "paymentInnerLowerBlock"
+                                  ? "paymentCreditMemoInnerLowerBlock row"
+                                  : "paymentInnerLowerBlock row"
                               }
                             >
-                              <div className="paymentInstallmentContainerDropdowns">
+                              <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
                                     setIsBankDropdownOpen(b);
@@ -1075,7 +1034,7 @@ const PaymentDetailPage = () => {
                                 />
                               </div>
 
-                              <div className="paymentInstallmentContainerDropdowns">
+                              <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
                                     setIsPaymentMethodDropdownOpen(b);
@@ -1113,7 +1072,7 @@ const PaymentDetailPage = () => {
 
                               {invoiceItem.transactionTypeLabel ===
                                 "Credit Memo" && (
-                                <div className="paymentInstallmentContainerDropdowns">
+                                <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                   <div className="invoiceNumber">
                                     <span>Invoice Number</span>
                                     <input
