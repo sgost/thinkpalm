@@ -56,7 +56,7 @@ export default function CreditMemoSummary(props: any) {
   const [addSectionCheck, setAddSectionCheck] = useState(false);
   const [editCheck, setEditCheck] = useState<any>();
   const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
-  const [vatAmount, setVatAmount] = useState<any>();
+  const [vatAmount, setVatAmount] = useState<any>(0);
   const [subTotalAmount, setSubTotalAmount] = useState<any>(
     creditMemoData.totalAmount
   );
@@ -80,7 +80,7 @@ export default function CreditMemoSummary(props: any) {
 
   useEffect(() => {
     reCalculateTotal();
-  }, [creditMemoData]);
+  }, [creditMemoData, vatValue]);
   useEffect(() => {
     updateDropdowns();
   }, [fieldValues])
@@ -289,8 +289,11 @@ export default function CreditMemoSummary(props: any) {
       // subtotal = subtotal + parseInt(a.totalAmount);
       subtotal = subtotal + a.totalAmount;
     }
+    console.log('subtotal',subtotal , vatValue)
     setSubTotalAmount(subtotal);
-    setVatAmount(subtotal * (vatValue / 100));
+    if(vatValue != undefined ){
+      setVatAmount(subtotal * (vatValue / 100));
+    }
     const totalAmountVar = subtotal + subtotal * (vatValue / 100)
     if (creditMemoData.status != 9) {
       setPayload({ ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar })
