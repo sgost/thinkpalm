@@ -530,6 +530,7 @@ export default function InvoiceDetails() {
             .get(getVatValue(cid), headers)
             .then((resp) => {
               if (resp.status == 200) {
+                console.log('fee config', resp?.data?.feeConfiguration?.percentage)
                 setVatValue(resp?.data?.feeConfiguration?.percentage);
               }
             })
