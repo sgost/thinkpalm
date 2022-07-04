@@ -74,7 +74,8 @@ const PaymentDetailPage = () => {
     }))
   );
   const [isFullAmount, setIsFullAmount] = useState(true);
-  const [creditMemoFullAmountChecked, setCreditMemoFullAmountChecked] = useState(false);
+  const [creditMemoFullAmountChecked, setCreditMemoFullAmountChecked] =
+    useState(false);
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
@@ -86,14 +87,13 @@ const PaymentDetailPage = () => {
   }, [hideTopCheck]);
 
   useEffect(() => {
-    if(multiPaymentBlocks.length > 1){
-      setIsFullAmount(false)
+    if (multiPaymentBlocks.length > 1) {
+      setIsFullAmount(false);
+    } else {
+      setIsFullAmount(true);
     }
-    else{
-      setIsFullAmount(true)
-    }
-  }, [multiPaymentBlocks])
-  
+  }, [multiPaymentBlocks]);
+
   useEffect(() => {
     if (!navigateToInvoice) {
       navigate(
@@ -408,7 +408,8 @@ const PaymentDetailPage = () => {
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
-        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(',','')),
+        (a: any, b: any) =>
+          a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(",", "")),
         0
       );
 
@@ -615,10 +616,10 @@ const PaymentDetailPage = () => {
             multiPaymentBlocks.length === 1
               ? isFullAmount
                 ? parseFloat(
-                  state?.state?.inveoicesData[0]?.invoiceBalance?.split(
-                    " "
-                  )[1].replace(",","")
-                )
+                    state?.state?.inveoicesData[0]?.invoiceBalance
+                      ?.split(" ")[1]
+                      .replace(",", "")
+                  )
                 : parseFloat(totals[i].text)
               : parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
@@ -698,33 +699,34 @@ const PaymentDetailPage = () => {
   };
 
   const handleCreditMemoSave = () => {
-    let arrData: Array<any> = [];
-    for (let i = 0; i < currencyOptions.length; i++) {
-      arrData.push({
-        totalAmount:
-          multiPaymentBlocks.length === 1
-            ? isFullAmount
-              ? parseFloat(
-                  state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[1]
-                )
-              : parseFloat(totals[i].text)
-            : parseFloat(totals[i].text),
-        paymentDate: paymentDate[i]?.date,
-        currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
-          ?.value,
-        location: locationOptions[i].options.find((e: any) => e.isSelected)
-          ?.value,
-        referenceNo: referenceNo[i].text,
-        depositedtoBank: bankToDepositOptions[i].options.find(
-          (e: any) => e.isSelected
-        )?.value,
-        paymentMethod: paymentMethodOptions[i].options.find(
-          (e: any) => e.isSelected
-        )?.value,
-        invoiceNumber: invoiceNumber,
-      });
-    }
-    console.log("credit memo data", arrData);
+    alert("credit memo refund data");
+    // let arrData: Array<any> = [];
+    // for (let i = 0; i < currencyOptions.length; i++) {
+    //   arrData.push({
+    //     totalAmount:
+    //       multiPaymentBlocks.length === 1
+    //         ? isFullAmount
+    //           ? parseFloat(
+    //               state?.state?.inveoicesData[0]?.invoiceBalance?.split(" ")[1]
+    //             )
+    //           : parseFloat(totals[i].text)
+    //         : parseFloat(totals[i].text),
+    //     paymentDate: paymentDate[i]?.date,
+    //     currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
+    //       ?.value,
+    //     location: locationOptions[i].options.find((e: any) => e.isSelected)
+    //       ?.value,
+    //     referenceNo: referenceNo[i].text,
+    //     depositedtoBank: bankToDepositOptions[i].options.find(
+    //       (e: any) => e.isSelected
+    //     )?.value,
+    //     paymentMethod: paymentMethodOptions[i].options.find(
+    //       (e: any) => e.isSelected
+    //     )?.value,
+    //     invoiceNumber: invoiceNumber,
+    //   });
+    // }
+    // console.log("credit memo data", arrData);
   };
 
   /* istanbul ignore next */
@@ -796,6 +798,10 @@ const PaymentDetailPage = () => {
 
       {state?.state?.inveoicesData?.map(
         (invoiceItem: any, invoicesIndex: number) => {
+          const checkedCondition =
+            invoiceItem.transactionTypeLabel === "Credit Memo"
+              ? creditMemoFullAmountChecked
+              : isFullAmount;
           return (
             <div className="paymentPageInvoiceInfo">
               <div className="paymentPageTopBar">
@@ -854,13 +860,21 @@ const PaymentDetailPage = () => {
                                 : "paymentPageTitleHeaderNoTitle"
                             }
                           >
-                            {invoiceItem.transactionTypeLabel ===
+                            {/* {invoiceItem.transactionTypeLabel ===
                             "Credit Memo" ? (
                               i == 0 ? (
                                 <p>Refund Details</p>
                               ) : (
                                 <></>
                               )
+                            ) : i == 0 ? (
+                              <p>Payment Details</p>
+                            ) : (
+                              <></>
+                            )} */}
+                            {invoiceItem.transactionTypeLabel ===
+                              "Credit Memo" && i == 0 ? (
+                              <p>Refund Details</p>
                             ) : i == 0 ? (
                               <p>Payment Details</p>
                             ) : (
@@ -1017,45 +1031,49 @@ const PaymentDetailPage = () => {
                                   : "paymentInnerLowerBlock"
                               }
                             >
-                                <div className="paymentInstallmentContainerDropdowns">
-                                  <Dropdown
-                                    handleDropdownClick={(b: boolean) => {
-                                      setIsBankDropdownOpen(b);
-                                      setIsCurrencyDropdownOpen(false);
-                                      setIsLocationDropdownOpen(false);
-                                      setIsPaymentMethodDropdownOpen(false);
-                                      setToggleState({
-                                        index: i,
-                                        invoicesIndex,
-                                      });
-                                    }}
-                                    handleDropOptionClick={(sel: any) => {
-                                      handlePaymentDropOption(
-                                        sel,
-                                        bankToDepositOptions,
-                                        setBankToDepositOption,
-                                        setIsBankDropdownOpen,
-                                        invoiceItem.id,
-                                        item.id
-                                      );
-                                    }}
-                                    isOpen={
-                                      toggleState.index == i &&
-                                      toggleState.invoicesIndex == invoicesIndex
-                                        ? isBankDropdownOpen
-                                        : false
-                                    }
-                                    options={
-                                      bankToDepositOptions.find(
-                                        (e: any) =>
-                                          e.invoiceKey === invoiceItem.id &&
-                                          e.blockKey === item.id
-                                      )?.options || []
-                                    }
-                                    title={invoiceItem.transactionTypeLabel ===
-                                      "Credit Memo" ? "Credited from bank" : "Deposited to bank"}
-                                  />
-                                </div>
+                              <div className="paymentInstallmentContainerDropdowns">
+                                <Dropdown
+                                  handleDropdownClick={(b: boolean) => {
+                                    setIsBankDropdownOpen(b);
+                                    setIsCurrencyDropdownOpen(false);
+                                    setIsLocationDropdownOpen(false);
+                                    setIsPaymentMethodDropdownOpen(false);
+                                    setToggleState({
+                                      index: i,
+                                      invoicesIndex,
+                                    });
+                                  }}
+                                  handleDropOptionClick={(sel: any) => {
+                                    handlePaymentDropOption(
+                                      sel,
+                                      bankToDepositOptions,
+                                      setBankToDepositOption,
+                                      setIsBankDropdownOpen,
+                                      invoiceItem.id,
+                                      item.id
+                                    );
+                                  }}
+                                  isOpen={
+                                    toggleState.index == i &&
+                                    toggleState.invoicesIndex == invoicesIndex
+                                      ? isBankDropdownOpen
+                                      : false
+                                  }
+                                  options={
+                                    bankToDepositOptions.find(
+                                      (e: any) =>
+                                        e.invoiceKey === invoiceItem.id &&
+                                        e.blockKey === item.id
+                                    )?.options || []
+                                  }
+                                  title={
+                                    invoiceItem.transactionTypeLabel ===
+                                    "Credit Memo"
+                                      ? "Credited from bank"
+                                      : "Deposited to bank"
+                                  }
+                                />
+                              </div>
 
                               <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
@@ -1159,12 +1177,7 @@ const PaymentDetailPage = () => {
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
                                     id="fullAmt"
-                                    checked={
-                                      invoiceItem.transactionTypeLabel ===
-                                      "Credit Memo"
-                                        ? creditMemoFullAmountChecked
-                                        : isFullAmount
-                                    }
+                                    checked={checkedCondition}
                                     label="Full Amount"
                                     onChange={(e: any) =>
                                       invoiceItem.transactionTypeLabel ===
