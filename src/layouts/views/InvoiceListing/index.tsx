@@ -751,16 +751,11 @@ export default function InvoiceListing() {
                       break;
 
                     case "This Week":
-                      const thisWeekStartDate = new Date(
-                        date.getFullYear(),
-                        date.getMonth(),
-                        date.getDate()
-                      );
-                      const thisWeekEndDate = new Date(
-                        date.getFullYear(),
-                        date.getMonth(),
-                        date.getDate() + 7
-                      );
+                      var curr = new Date;
+                      var first = curr.getDate() - curr.getDay();
+                      var last = first + 6;
+                      const thisWeekStartDate = new Date(curr.setDate(first));
+                      const thisWeekEndDate = new Date(curr.setDate(last));
                       const thisWeekStartFormatDate = format(
                         thisWeekStartDate,
                         "yyyy-MM-dd"
