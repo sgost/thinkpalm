@@ -8,7 +8,7 @@ import { getHeaders, urls, getBillingAddressUrl, } from "../../../urls/urls";
 
 const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
   const [invoiceData, setInvoiceData] = useState<any>(null);
-  const [countriesData, setCountriesData] = useState<any>(null);
+  const [_countriesData, setCountriesData] = useState<any>(null);
   const [billingData, setBillingData] = useState<any>(null);
 
   const addressApi = getBillingAddressUrl(stepperOneData.customerId); //Address api

@@ -5,7 +5,12 @@ import {
   waitFor,
   cleanup,
 } from "@testing-library/react";
-import { mockapidata, mockStateData, mockStateSingleData } from "./mockData";
+import {
+  mockapidata,
+  mockStateCreditMemoSingleData,
+  mockStateData,
+  mockStateSingleData,
+} from "./mockData";
 import { HashRouter, useLocation } from "react-router-dom";
 import PaymentDetailPage from "../paymentDetailPage";
 import axios from "axios";
@@ -258,7 +263,6 @@ describe("Payment details page multiple", () => {
   });
 
   test("Test case for the payment details revert Modal", async () => {
-    
     render(
       <HashRouter>
         <PaymentDetailPage />
@@ -383,7 +387,7 @@ describe("Payment details page multiple", () => {
   });
 });
 
-describe("single paymwnt", () => {
+describe("single payment", () => {
   beforeAll(() => {
     cleanup();
     const mock = new MockAdapter(axios);
@@ -449,7 +453,12 @@ describe("single paymwnt", () => {
     const deleteButton = screen.getByText("Delete Item");
     fireEvent.click(deleteButton);
 
-    const saveBtn = screen.getByText(/save/i);
+    const customerCheckbox = await screen.findByText(/Full Amount/);
+    fireEvent.click(customerCheckbox);
+
+    fireEvent.click(customerCheckbox);
+
+    const saveBtn = screen.getByText(/Save/);
     fireEvent.click(saveBtn);
   });
 });
@@ -474,6 +483,69 @@ describe("Payment details page lookup and subscription lookup api fail", () => {
   });
 });
 
+describe("save api fail", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(500);
+
+    useLocation.mockImplementation(() => ({
+      state: mockStateSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save api fail", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    fireEvent.click(dd[0]);
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const currencyText = screen.getByText("Currency");
+    fireEvent.click(currencyText);
+
+    const currencyValue = screen.getByText("USD");
+    fireEvent.click(currencyValue);
+
+    const locationText = screen.getByText("Location");
+    fireEvent.click(locationText);
+
+    const locationValue = screen.getByText("USA -- United States of America");
+    fireEvent.click(locationValue);
+
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
+    expect(referenceText).toBeInTheDocument();
+    fireEvent.change(referenceText, { target: { value: "1234" } });
+
+    const depositBankText = screen.getByText("Deposited to bank");
+    fireEvent.click(depositBankText);
+
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
+    fireEvent.click(depositBankValue);
+
+    const paymentText = screen.getByText("Payment Method");
+    fireEvent.click(paymentText);
+
+    const paymentValue = screen.getByText("ACHCredit");
+    fireEvent.click(paymentValue);
+
+    const saveBtn = screen.getByText(/Save/);
+    fireEvent.click(saveBtn);
+  });
+});
+
 describe("Payment details page click on detail page breadcrumb", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
@@ -485,7 +557,7 @@ describe("Payment details page click on detail page breadcrumb", () => {
       .reply(200, mockapidata.resForPaymentMethodData);
 
     mock.onPost(urls.savePayments).reply(200);
-    mockStateSingleData["checkPage"] = true,
+    (mockStateSingleData["checkPage"] = true),
       useLocation.mockImplementation(() => ({
         state: mockStateSingleData,
       }));
@@ -498,10 +570,11 @@ describe("Payment details page click on detail page breadcrumb", () => {
       </HashRouter>
     );
 
-    const invoiceText = screen.getAllByText(/Miscellaneous Invoice No. 1100810/);
+    const invoiceText = screen.getAllByText(
+      /Miscellaneous Invoice No. 1100810/
+    );
     expect(invoiceText[0]).toBeInTheDocument();
     fireEvent.click(invoiceText[0]);
-
   });
 });
 
@@ -517,7 +590,7 @@ describe("Payment details page click on invoice page breadcrumb", () => {
       .reply(200, mockapidata.resForPaymentMethodData);
 
     mock.onPost(urls.savePayments).reply(200);
-    mockStateSingleData["checkPage"] = true,
+    (mockStateSingleData["checkPage"] = true),
       useLocation.mockImplementation(() => ({
         state: mockStateSingleData,
       }));
@@ -534,6 +607,90 @@ describe("Payment details page click on invoice page breadcrumb", () => {
     const invoiceText = await screen.findAllByText(/Invoices/);
     expect(invoiceText[0]).toBeInTheDocument();
     fireEvent.click(invoiceText[0]);
+  });
+});
 
+describe("single credit refund", () => {
+  beforeAll(() => {
+    cleanup();
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resForLookupCurrencyData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resForPaymentMethodData);
+
+    mock.onPost(urls.savePayments).reply(200);
+
+    useLocation.mockImplementation(() => ({
+      state: mockStateCreditMemoSingleData,
+    }));
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("save single", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+
+    const refundText = screen.getByText(/Refund Details/);
+    fireEvent.click(refundText);
+
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    fireEvent.click(dd[0]);
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const currencyText = screen.getByText("Currency");
+    fireEvent.click(currencyText);
+
+    const currencyValue = screen.getByText("USD");
+    fireEvent.click(currencyValue);
+
+    const locationText = screen.getByText("Location");
+    fireEvent.click(locationText);
+
+    const locationValue = screen.getByText("USA -- United States of America");
+    fireEvent.click(locationValue);
+
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
+    expect(referenceText).toBeInTheDocument();
+    fireEvent.keyDown(referenceText);
+    fireEvent.change(referenceText, { target: { value: "1234" } });
+
+    const depositBankText = screen.getByText("Credited from bank");
+    fireEvent.click(depositBankText);
+
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
+    fireEvent.click(depositBankValue);
+
+    const paymentText = screen.getByText("Payment Method");
+    fireEvent.click(paymentText);
+
+    const paymentValue = screen.getByText("ACHCredit");
+    fireEvent.click(paymentValue);
+
+    const invoiceNumberText =
+      screen.getByPlaceholderText(/Enter Invoice Number/i);
+    expect(invoiceNumberText).toBeInTheDocument();
+    fireEvent.keyDown(invoiceNumberText);
+    fireEvent.change(invoiceNumberText, { target: { value: "1234" } });
+
+    const customerCheckbox = await screen.findByText(/Full Amount/);
+    fireEvent.click(customerCheckbox);
+
+    // const addPaymentInstallmentButton = screen.getByText(
+    //   "Add payment Installment"
+    // );
+    // fireEvent.click(addPaymentInstallmentButton);
+
+    // const deleteButton = screen.getByText("Delete Item");
+    // fireEvent.click(deleteButton);
+
+    const saveBtn = screen.getByText(/save/i);
+    fireEvent.click(saveBtn);
   });
 });

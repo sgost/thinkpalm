@@ -31,8 +31,6 @@ const NewInvoiceCreation = ({
   setReceivableAccountOptions,
   currencyOptions,
   setCurrencyOptions,
-  qbIdOptions,
-  setQbIdOptions,
   qbIdValue,
   setQbIdValue,
   paymentTermsOptions,
@@ -48,7 +46,7 @@ const NewInvoiceCreation = ({
   const [isInvoicer, setIsInvoicer] = useState(false);
   const [isRecAcc, setIsRecAcc] = useState(false);
   const [isCurrency, setIsCurrency] = useState(false);
-  const [isQbId, setIsQbId] = useState(false);
+  const [_isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
 
   const tempToken: any = localStorage.getItem("accessToken");
