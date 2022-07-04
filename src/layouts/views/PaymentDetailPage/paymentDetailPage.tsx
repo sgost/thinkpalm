@@ -825,8 +825,8 @@ const PaymentDetailPage = () => {
                             )}
                           </div>
 
-                          <div className="paymentInstallmentUpperBlock">
-                            <div className="paymentInstallmentDatepicker">
+                          <div className="paymentInstallmentUpperBlock row">
+                            <div className="paymentInstallmentDatepicker col-md-3 p-0">
                               <DatePicker
                                 label="Payment Date"
                                 handleDateChange={function (date: any) {
@@ -842,7 +842,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
                                   setIsCurrencyDropdownOpen(b);
@@ -878,7 +878,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
                                   setIsLocationDropdownOpen(b);
@@ -914,7 +914,7 @@ const PaymentDetailPage = () => {
                               />
                             </div>
 
-                            <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <div className="referenceNoInput">
                                 <span>Reference No</span>
                                 <input
@@ -949,8 +949,8 @@ const PaymentDetailPage = () => {
                           </div>
 
                           <div className="paymentInstallmentLowerBlock">
-                            <div className="paymentInnerLowerBlock">
-                              <div className="paymentInstallmentContainerDropdowns">
+                            <div className="paymentInnerLowerBlock row">
+                              <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
                                     setIsBankDropdownOpen(b);
@@ -985,7 +985,7 @@ const PaymentDetailPage = () => {
                                   title="Deposited to bank"
                                 />
                               </div>
-                              <div className="paymentInstallmentContainerDropdowns">
+                              <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
                                     setIsPaymentMethodDropdownOpen(b);

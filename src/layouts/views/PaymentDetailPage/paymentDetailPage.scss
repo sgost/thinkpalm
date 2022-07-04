@@ -34,6 +34,7 @@
   .paymentSaveButton {
     .secondary-btn {
       margin-right: 1.3rem;
+      width: 8.31rem;
     }
   }
 
@@ -41,6 +42,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.333rem;
   }
 
@@ -214,10 +216,12 @@
         .paymentInstallmentUpperBlock {
           display: flex;
           margin-bottom: 5rem;
-          justify-content: space-between;
 
           .paymentInstallmentDatepicker {
-            margin-left: 1rem;
+            margin-left: 0;
+            .a-dpicker .react-datepicker__input-container input{
+              width: 14.778rem;
+            }
 
             span.react-datepicker__label:after {
               content: "*";
@@ -226,7 +230,7 @@
           }
 
           .paymentInstallmentContainerDropdowns {
-            margin-left: 1rem;
+            // margin-left: 1rem;
 
             // span.a-dropdown__label.Currency::before {
             //   content: "Select currency";
@@ -282,17 +286,21 @@
         }
 
         .paymentInstallmentLowerBlock {
-          display: flex;
+          // display: flex;
           margin-bottom: 3rem;
-          justify-content: space-between;
-
+          position: relative;
+          // justify-content: space-between;
+          .PaymentPageTotalAmount{
+            position: absolute;
+            right: 2.7222rem;
+            top: 0rem;
+          }
           .paymentInnerLowerBlock {
             display: flex;
-            width: 45rem;
-            justify-content: space-between;
+            // width: 45rem;
 
             .paymentInstallmentContainerDropdowns {
-              margin-left: 1rem;
+              margin-left: 0rem;
 
               // .a-dropdown__label {
               //   font-size: 0rem;
