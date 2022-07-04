@@ -1824,7 +1824,7 @@ export default function InvoiceDetails() {
             </p>
             {missTransType != 7 && (
               <>
-                <p>PO Number</p>
+                <p className="ponumber">PO Number</p>
                 {status === "AR Review" || status === "Open" ? (
                   <input
                     data-testid="PONUMBER"
