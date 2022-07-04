@@ -295,7 +295,7 @@ export default function CreditMemoSummary(props: any) {
     if (creditMemoData.status != 9) {
       setPayload({ ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar })
     } else {
-      setPayload({...payload, invoiceBalance: 0,  totalAmount: totalAmountVar})
+      setPayload({ ...payload, invoiceBalance: 0, totalAmount: totalAmountVar })
     }
   };
   /* istanbul ignore next */
@@ -395,7 +395,7 @@ export default function CreditMemoSummary(props: any) {
 
 
   //Verifying vatAmount Type
-  let vatTotal = vatAmount != 'undefined' ? vatAmount : 0;
+  let vatTotal = vatAmount != undefined ? vatAmount : 0;
 
   return (
     <div className="credit-summary-wrapper">
@@ -760,6 +760,7 @@ export default function CreditMemoSummary(props: any) {
           cid={cid}
           id={id}
           transactionType={creditMemoData?.transactionType}
+          creditMemoData={creditMemoData}
         ></NotesWidget>
         <FileUploadWidget
           status={status}

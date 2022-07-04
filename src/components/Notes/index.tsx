@@ -2,7 +2,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { Button, Icon, NoDataCard, Checkbox } from "atlasuikit";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { urls, getHeaders } from "../../urls/urls";
+import { urls, getHeaders, saveEditNoteApi } from "../../urls/urls";
 import axios from "axios";
 import "../../layouts/views/InvoiceDetails/invoiceDetails.scss";
 import { getDecodedToken } from "../getDecodedToken";
@@ -19,6 +19,7 @@ export default function NotesWidget(props: any) {
     status,
     isPaymentPage,
     setPaymentNote,
+    creditMemoData
   } = props;
   const [noteText, setNoteText] = useState("");
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
@@ -26,6 +27,7 @@ export default function NotesWidget(props: any) {
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const tempToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
+  const [payloads, setPayloads] = useState<any>(creditMemoData);
 
   useEffect(() => {
     if (isPaymentPage) {
@@ -38,6 +40,65 @@ export default function NotesWidget(props: any) {
     }
   }, [noteText, isVisibleToCustomer, isExportToQb, isVisibleOnPDFInvoice]);
 
+
+  //save note
+  const editNote = (value: any, index: any) => {
+    let noteNum;
+    creditMemoData.invoiceNotes.map((item, i) => {
+      if (i == index) {
+        noteNum = item.id;
+      }
+    })
+
+    console.log('noteNum', noteNum)
+    console.log('ee', value);
+    console.log('index', index);
+    notes[index].note = value;
+    setNotes([...notes])
+    saveEditNote(noteNum)
+  }
+
+  console.log('notes', notes)
+
+
+  const saveEditNote = (index: any) => {
+    const url = saveEditNoteApi(index);
+    let currDate = new Date();
+
+    axios({
+      method: "PUT",
+      url: url,
+      headers: getHeaders(tempToken, cid, isClient),
+      data: {
+        invoiceId: id,
+        noteType: "1",
+        note: false,
+        isCustomerVisible: true,
+        exportToQuickbooks: true,
+        createdDate: currDate,
+        modifiedBy: id,
+        modifiedByUser: {
+          document: {
+            invoiceNotes: payloads.invoiceNotes
+          }
+        },
+        displayInPDF: isVisibleOnPDFInvoice,
+        customerId: cid,
+      },
+    })
+      .then((res: any) => {
+        setNotes([res.data, ...notes]);
+        setNoteText("");
+        console.log('ress', res)
+      })
+      .catch((e: any) => {
+        console.log(e);
+      });
+  }
+
+
+
+  console.log('creditMemoData', creditMemoData)
   /* istanbul ignore next */
   return (
     <div className="box">
@@ -86,7 +147,7 @@ export default function NotesWidget(props: any) {
                 />
               </div>
             ) : (
-              notes.map((item: any) => {
+              notes.map((item: any, index: number) => {
                 return (
                   <div className="notesSubContainer">
                     <div className="noteInfoBtn">
@@ -100,12 +161,16 @@ export default function NotesWidget(props: any) {
                         <Icon color="#b4b3bb" icon="info" size="small" />
                       </div>
                       <div className="noteBtn">
-                        {/* <Icon color="#526FD6" icon="edit" size="small" /> */}
-                        {/* <Icon color="#E32C15" icon="trash" size="large" /> */}
+                        <span onClick={() => saveEditNote(index)}>
+                          <Icon color="#526FD6" icon="edit" size="small" />
+                        </span>
+                        <span>
+                          <Icon color="#E32C15" icon="trash" size="large" />
+                        </span>
                       </div>
                     </div>
                     <div className="note">
-                      <p>{item.note}</p>
+                      <input type="text" value={item.note} className="noteInput" onChange={(e) => editNote(e.target.value, index)} />
                     </div>
                   </div>
                 );

@@ -949,16 +949,18 @@
             }
 
             .note {
-              p {
+              .noteInput {
                 display: flex;
+                outline: none;
+                border: none;
                 background-color: $active;
-                padding: 1rem;
+                padding: 1.5rem 1rem;
                 border-radius: 4px;
                 color: $primary-gray;
                 margin: 1rem 0px;
                 font-size: 0.8rem;
                 word-break: break-all;
-                line-height: 2rem;
+                width: -webkit-fill-available;
               }
             }
           }

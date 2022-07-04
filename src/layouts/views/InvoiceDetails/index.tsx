@@ -796,7 +796,7 @@ export default function InvoiceDetails() {
   const getBillingCurrency = () => {
     if (apiData?.data) {
       return apiData?.data?.invoice?.currency?.code;
-      
+
     } else if (creditMemoData) {
       return creditMemoData?.currency?.code;
     } else {
@@ -1340,8 +1340,8 @@ export default function InvoiceDetails() {
     });
     return isDisable;
   };
-  const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
-  const TotalBal = topPanel.total != "undefined" ? topPanel.total : 0;
+  const openBal = topPanel.open != undefined ? topPanel.open : 0;
+  const TotalBal = topPanel.total != undefined ? topPanel.total : 0;
 
   return (
     <div className="invoiceDetailsContainer">
