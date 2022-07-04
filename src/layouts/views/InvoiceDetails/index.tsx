@@ -45,6 +45,7 @@ import {
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
   getPaymentDetailApi,
+  changeInvoiceStatusAPI,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -810,6 +811,27 @@ export default function InvoiceDetails() {
     }
   };
 
+  const callCloseInvoiceAPI = () =>{
+    setSentPopup(false)
+    let sentStatus = lookupData.data.invoiceStatuses.filter((x:any) => x.text == "Sent");
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    };
+    axios.put(changeInvoiceStatusAPI(apiData?.data?.invoice?.id, sentStatus[0].value), null, headers).then((resp: any) => {
+      if(resp.status == 201 ){
+        let tempInovoice = apiData;
+        tempInovoice.data.invoice = resp.data;
+        setApiData((current: any) => {
+          return {
+            ...current,
+            invoice: {
+              ...resp.data
+            }
+          }
+        })
+      }
+    })
+ }
   const sharedColumns = {
     grossWages: tableSharedColumns.grossWages,
     allowances: tableSharedColumns.allowances,
@@ -2279,6 +2301,7 @@ export default function InvoiceDetails() {
           customerId={cid}
           billStatus={status}
           invoiceId={state.InvoiceId}
+          invoiceStatus={apiData?.data?.invoice?.status}
           navigate={navigate}
           totalAmount={apiData?.data?.invoice?.totalAmount}
           state={state}
@@ -2679,7 +2702,7 @@ export default function InvoiceDetails() {
                 data-testid=""
                 label="Yes"
                 className="primary-blue medium yes-sent-btn"
-                handleOnClick={()=>{setSentPopup(false)}}
+                handleOnClick={()=>{callCloseInvoiceAPI()}}
               />
             </div>
           </div>
