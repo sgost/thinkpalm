@@ -261,11 +261,11 @@ export default function InvoiceListing() {
       const { id, invoiceNo, transactionType } = matchingData;
       navigate(
         "/pay/invoicedetails" +
-          id +
-          "/" +
-          matchingData?.customerId +
-          "/" +
-          true,
+        id +
+        "/" +
+        matchingData?.customerId +
+        "/" +
+        true,
         {
           state: {
             InvoiceId: invoiceNo,
@@ -321,12 +321,12 @@ export default function InvoiceListing() {
           dueDate: format(new Date(item.dueDate), "d MMM yyyy") || "",
           totalAmount:
             item?.currency?.code +
-              " " +
-              cFormat.format(item.totalAmount).slice(1) || "",
+            " " +
+            cFormat.format(item.totalAmount).slice(1) || "",
           invoiceBalance:
             item?.currency?.code +
-              " " +
-              cFormat.format(item.invoiceBalance).slice(1) || "",
+            " " +
+            cFormat.format(item.invoiceBalance).slice(1) || "",
           exportToQB: {
             value: item?.qbInvoiceNo > 0 ? "Exported" : "Not Exported",
             color: item?.qbInvoiceNo > 0 ? '#519872' : "#767676",
@@ -509,12 +509,12 @@ export default function InvoiceListing() {
     const nav = () => {
       navigate(
         "/pay/invoicedetails" +
-          checkedInvoices[0].id +
-          "/" +
-          checkedInvoices[0].customerId +
-          "/" +
-          isClientString +
-          "/payments",
+        checkedInvoices[0].id +
+        "/" +
+        checkedInvoices[0].customerId +
+        "/" +
+        isClientString +
+        "/payments",
         {
           state: {
             InvoiceId: checkedInvoices[0].invoiceNo,
@@ -627,17 +627,17 @@ export default function InvoiceListing() {
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
               "Add" && (
-              <Button
-                label="New Invoice"
-                className="primary-blue medium"
-                icon={{
-                  icon: "add",
-                  size: "medium",
-                  color: "#fff",
-                }}
-                handleOnClick={() => navigate("/pay/newinvoice")}
-              />
-            )}
+                <Button
+                  label="New Invoice"
+                  className="primary-blue medium"
+                  icon={{
+                    icon: "add",
+                    size: "medium",
+                    color: "#fff",
+                  }}
+                  handleOnClick={() => navigate("/pay/newinvoice")}
+                />
+              )}
           </div>
         </div>
 
@@ -657,19 +657,19 @@ export default function InvoiceListing() {
               {permission?.InvoiceList?.find(
                 (str: any) => str === "Download"
               ) === "Download" && (
-                <div
-                  onClick={downloadFunction}
-                  data-testid="download"
-                  className={downloadDisable ? "downloadpointer" : "download"}
-                >
-                  <Icon
-                    className="download"
-                    color={downloadDisable ? "#CBD4F3" : "#526fd6"}
-                    icon="download"
-                    size="large"
-                  />
-                </div>
-              )}
+                  <div
+                    onClick={downloadFunction}
+                    data-testid="download"
+                    className={downloadDisable ? "downloadpointer" : "download"}
+                  >
+                    <Icon
+                      className="download"
+                      color={downloadDisable ? "#CBD4F3" : "#526fd6"}
+                      icon="download"
+                      size="large"
+                    />
+                  </div>
+                )}
 
               {permission.InvoiceList.includes("InternalView") && (
                 <div className="customerSelection">
@@ -714,7 +714,7 @@ export default function InvoiceListing() {
                           }
                         }
                       });
-                     
+
                       setCustomerData(copy);
                       setCustomerType(typesValue);
                     }}
@@ -754,9 +754,13 @@ export default function InvoiceListing() {
                       const thisWeekStartDate = new Date(
                         date.getFullYear(),
                         date.getMonth(),
-                        date.getDate() - 7
+                        date.getDate()
                       );
-                      const thisWeekEndDate = date.setDate(date.getDate() - 1);
+                      const thisWeekEndDate = new Date(
+                        date.getFullYear(),
+                        date.getMonth(),
+                        date.getDate() + 7
+                      );
                       const thisWeekStartFormatDate = format(
                         thisWeekStartDate,
                         "yyyy-MM-dd"
@@ -1032,12 +1036,12 @@ export default function InvoiceListing() {
         {isLoader && <Loader />}
         {(searchText && !searchedTableData) || (!isClient && !internalTabledata.data.length && !isLoader) || (isClient && !clientTableData.data.length && !isLoader) ? (
           <NoSearchCard
-          style={{
-            height: '19rem',
-            width: 'auto'
-          }}
-          title="Uh-oh! We found no matches for your search."
-        />
+            style={{
+              height: '19rem',
+              width: 'auto'
+            }}
+            title="Uh-oh! We found no matches for your search."
+          />
         ) : (
           <>
             {!localStorage.redirectingInvoiceState && !isLoader && (
@@ -1045,19 +1049,19 @@ export default function InvoiceListing() {
                 options={
                   searchText
                     ? {
-                        ...searchedTableData,
-                        enableMultiSelect: true,
-                        onRowCheckboxChange: onRowCheckboxChange,
-                        fallback: ''
-                      }
+                      ...searchedTableData,
+                      enableMultiSelect: true,
+                      onRowCheckboxChange: onRowCheckboxChange,
+                      fallback: ''
+                    }
                     : isClient
-                    ? {
+                      ? {
                         ...clientTableData,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
                         fallback: ''
                       }
-                    : {
+                      : {
                         ...internalTabledata,
                         enableMultiSelect: true,
                         onRowCheckboxChange: onRowCheckboxChange,
@@ -1076,11 +1080,11 @@ export default function InvoiceListing() {
                   } else {
                     navigate(
                       "/pay/invoicedetails" +
-                        row.id +
-                        "/" +
-                        row.customerId +
-                        "/" +
-                        isClientStr,
+                      row.id +
+                      "/" +
+                      row.customerId +
+                      "/" +
+                      isClientStr,
                       {
                         state: {
                           InvoiceId: row.invoiceNo,
