@@ -21,6 +21,7 @@ const PaymentDetailContainer = ({
   setPaymentDetailData,
   topPanel,
   setTopPanel,
+  setStatus
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -169,7 +170,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   ) => {
     let arr = [...options];
 
-    arr[index].forEach((e: any, i: number) => {
+   arr && arr[index]?.forEach((e: any, i: number) => {
       if (e.value === item.value) {
         arr[index][i] = {
           ...e,
@@ -440,6 +441,9 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
               ...topPanel,
               open: response?.data?.invoice?.invoiceBalance,
             });
+            if(response?.data?.invoice?.invoiceBalance === 0) {
+              setStatus("Paid")
+            }
           })
           .catch((e: any) => {
             console.log("error e", e);
@@ -789,7 +793,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                         min="0"
                         pattern="[+-]?\d+(?:[.,]\d+)?"
                         onKeyDown={(e) => {
-                          ["e", "E", "+", "-", "."].includes(e.key) &&
+                          ["e", "E", "+", "-"].includes(e.key) &&
                             e.preventDefault();
                         }}
                         onChange={(e) => {
@@ -957,7 +961,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                     min="0"
                     pattern="[+-]?\d+(?:[.,]\d+)?"
                     onKeyDown={(e) => {
-                      ["e", "E", "+", "-", "."].includes(e.key) &&
+                      ["e", "E", "+", "-"].includes(e.key) &&
                         e.preventDefault();
                     }}
                   />

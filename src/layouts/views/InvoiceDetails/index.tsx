@@ -109,7 +109,7 @@ export default function InvoiceDetails() {
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
-  const [countriesData, setCountriesData] = useState<any>(null);
+  const [_countriesData, setCountriesData] = useState<any>(null);
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
   const [documents, setDocuments] = useState<any>([]);
@@ -374,27 +374,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                      res.data?.invoice?.status === 12
+                        res.data?.invoice?.status === 12
                         ? {
-                            value: (
-                              <div
-                                data-testid="delete-icon"
-                                onClick={() => {
-                                  setDeleteEmployeeModalOpen({
-                                    isModalOpen: true,
-                                    data: item,
-                                  });
-                                }}
-                              >
-                                <Icon
-                                  icon="trash"
-                                  color="#E32C15"
-                                  size="large"
-                                />
-                              </div>
-                            ),
-                            color: "#E32C15",
-                          }
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
                         : "",
                   });
                 });
@@ -530,6 +530,7 @@ export default function InvoiceDetails() {
             .get(getVatValue(cid), headers)
             .then((resp) => {
               if (resp.status == 200) {
+                console.log('fee config', resp?.data?.feeConfiguration?.percentage)
                 setVatValue(resp?.data?.feeConfiguration?.percentage);
               }
             })
@@ -794,16 +795,11 @@ export default function InvoiceDetails() {
   }, [paymentDue, invoiceDate, invoiceChanges, isEditFieldsChanges]);
 
   const getBillingCurrency = () => {
-    if (countriesData?.data && apiData?.data) {
-      let currency = countriesData.data.find(
-        (e: any) => e.currencyId === apiData.data.invoice.currencyId
-      );
-      return currency?.currency?.code;
-    } else if (creditMemoData && lookupData?.data) {
-      let currency = lookupData.data.billingCurrencies.find(
-        (e: any) => e.value === creditMemoData.currencyId
-      );
-      return currency?.text;
+    if (apiData?.data) {
+      return apiData?.data?.invoice?.currency?.code;
+      
+    } else if (creditMemoData) {
+      return creditMemoData?.currency?.code;
     } else {
       return "";
     }
@@ -887,32 +883,19 @@ export default function InvoiceDetails() {
   };
 
   const downloadFunction = () => {
-    const headers = {
-      headers: {
-        authorization: `Bearer ${tempToken}`,
-        "x-apng-base-region": "EMEA",
-        "x-apng-customer-id": cid?.toString() || "",
-        "x-apng-external": "false",
-        "x-apng-inter-region": "0",
-        "x-apng-target-region": "EMEA",
-        customer_id: cid?.toString() || "",
-        // "Content-Type": "application/json",
-      },
-    };
-
-    const downloadApi = getDownloadUrl(id);
-
-    axios
-      .get(downloadApi, headers)
-      .then((res: any) => {
-        if (res.status === 200) {
-          let url = res.data.url;
-          let a = document.createElement("a");
-          a.href = url;
-          a.download = `${res.data.name}`;
-          a.click();
-        }
-      })
+    axios({
+      method: "GET",
+      url: getDownloadUrl(id),
+      headers: getHeaders(tempToken, cid, isClient),
+    }).then((res: any) => {
+      if (res.status === 200) {
+        let url = res.data.url;
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = `${res.data.name}`;
+        a.click();
+      }
+    })
       .catch((e: any) => {
         console.log("error", e);
       });
@@ -1427,14 +1410,13 @@ export default function InvoiceDetails() {
                   onClick={() =>
                     missTransType != 7
                       ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() {}
+                      : function noRefCheck() { }
                   }
-                  className={`${
-                    missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
-                  }`}
-                  // className="download"
+                  className={`${missTransType == 7 || deleteDisableButtons === true
+                    ? "download_disable"
+                    : "download"
+                    }`}
+                // className="download"
                 >
                   <p className="text">Download</p>
                   <Icon
@@ -1496,9 +1478,9 @@ export default function InvoiceDetails() {
             missTransType !== 4 &&
             missTransType !== 7 &&
             getPermissions(missTransType, "AddPayment")) ||
-          (status === "Invoiced" &&
-            missTransType === 7 &&
-            getPermissions(missTransType, "AddPayment")) ? (
+            (status === "Invoiced" &&
+              missTransType === 7 &&
+              getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1550,20 +1532,20 @@ export default function InvoiceDetails() {
                         apiData?.data?.invoice?.exchangeRate,
                       totalAmount:
                         getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(topPanel.total) ||
+                        " " +
+                        toCurrencyFormat(topPanel.total) ||
                         getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(apiData?.data?.invoice?.totalAmount),
+                        " " +
+                        toCurrencyFormat(apiData?.data?.invoice?.totalAmount),
                       invoiceBalance:
                         getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(topPanel.open) ||
+                        " " +
+                        toCurrencyFormat(topPanel.open) ||
                         getBillingCurrency() +
-                          " " +
-                          toCurrencyFormat(
-                            apiData?.data?.invoice?.invoiceBalance
-                          ),
+                        " " +
+                        toCurrencyFormat(
+                          apiData?.data?.invoice?.invoiceBalance
+                        ),
                       invoiceFrom:
                         creditMemoData?.invoiceFrom ||
                         apiData?.data?.invoice?.invoiceFrom,
@@ -1638,12 +1620,12 @@ export default function InvoiceDetails() {
                   ];
                   navigate(
                     "/pay/invoicedetails" +
-                      id +
-                      "/" +
-                      cid +
-                      "/" +
-                      isClient +
-                      "/payments",
+                    id +
+                    "/" +
+                    cid +
+                    "/" +
+                    isClient +
+                    "/payments",
                     {
                       state: {
                         InvoiceId:
@@ -1713,7 +1695,7 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {status === "Approved" &&
+          {((status === 'Approved') || (status === 'Paid') || (status === 'Partial Paid')) &&
             missTransType === 3 &&
             getPermissions(2, "Add") && (
               <Button
@@ -2006,7 +1988,7 @@ export default function InvoiceDetails() {
       )}
 
       {(status === "Paid" || status === "Partial Paid") &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             setPaymentDetailData={setPaymentDetailData}
@@ -2018,6 +2000,7 @@ export default function InvoiceDetails() {
             id={id}
             topPanel={topPanel}
             setTopPanel={setTopPanel}
+            setStatus={setStatus}
           />
         </div>
       ) : (
@@ -2588,11 +2571,11 @@ export default function InvoiceDetails() {
                       <span>
                         {"Effective Start Date: "}
                         {isCompensatioModalOpen &&
-                        isCompensatioModalOpen.data &&
-                        isCompensatioModalOpen?.data?.startDate
+                          isCompensatioModalOpen.data &&
+                          isCompensatioModalOpen?.data?.startDate
                           ? moment(
-                              isCompensatioModalOpen?.data?.startDate
-                            ).format("D MMM YYYY")
+                            isCompensatioModalOpen?.data?.startDate
+                          ).format("D MMM YYYY")
                           : ""}
                       </span>
                     </div>

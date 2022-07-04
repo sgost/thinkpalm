@@ -51,7 +51,7 @@ const NewInvoiceCreation = ({
   const [isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
 
-  const tempToken : any = localStorage.getItem("accessToken");
+  const tempToken: any = localStorage.getItem("accessToken");
   const currentOrgId: any = localStorage.getItem("current-org-id");
 
   const preparedCustomerData = (data: any) => {
@@ -78,8 +78,8 @@ const NewInvoiceCreation = ({
     let allCustomerapi = urls.getCustomersByIds;
 
     const headers = getHeaders(tempToken, currentOrgId, "false");
-    let decToken : any = jwt_decode(tempToken);
-    let custIds : any = Object.keys(decToken.Permissions)
+    let decToken: any = jwt_decode(tempToken);
+    let custIds: any = Object.keys(decToken.Permissions)
 
     setLoading(true);
 
@@ -500,7 +500,6 @@ const NewInvoiceCreation = ({
               <div className="row">
                 <div className="col-md-4">
                   <Input
-                    required
                     className="qbInput"
                     type="number"
                     label="Financial System ID"

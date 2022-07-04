@@ -4,7 +4,8 @@ import "./FinishCreditMemo.scss";
 import { useNavigate } from "react-router-dom";
 import { getCreditMemoStep4Data } from "../../../apis/apis";
 
-export default function FinishCreditMemo({ invoiceId }: any) {
+export default function FinishCreditMemo(props: any) {
+ const { invoiceId,  invoiceType} = props;
   const navigate = useNavigate();
 
   return (
@@ -12,7 +13,7 @@ export default function FinishCreditMemo({ invoiceId }: any) {
       <p className="finish">Finish</p>
       <p className="done">You’re done!</p>
       <p className="msg">
-        A new payroll invoice has been created. You can access it right from
+        A new {invoiceType} invoice has been created. You can access it right from
         here or from the Invoices listing page.
       </p>
       <Button

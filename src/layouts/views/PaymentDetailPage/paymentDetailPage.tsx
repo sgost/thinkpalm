@@ -84,6 +84,16 @@ const PaymentDetailPage = () => {
     }
   }, [hideTopCheck]);
 
+  useEffect(() => {
+    if(multiPaymentBlocks.length > 1){
+      setIsFullAmount(false)
+    }
+    else{
+      setIsFullAmount(true)
+    }
+  }, [multiPaymentBlocks])
+  
+
   /* istanbul ignore next */
   useEffect(() => {
     if (!navigateToInvoice) {
@@ -400,7 +410,7 @@ const PaymentDetailPage = () => {
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
-        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1]),
+        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(',','')),
         0
       );
 
@@ -604,7 +614,7 @@ const PaymentDetailPage = () => {
                 ? parseFloat(
                   state?.state?.inveoicesData[0]?.invoiceBalance?.split(
                     " "
-                  )[1]
+                  )[1].replace(",","")
                 )
                 : parseFloat(totals[i].text)
               : parseFloat(totals[i].text),
@@ -646,7 +656,6 @@ const PaymentDetailPage = () => {
       };
     }
 
-    // return;
     axios({
       method: "POST",
       url: urls.savePayments,
