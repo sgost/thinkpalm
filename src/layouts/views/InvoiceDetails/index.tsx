@@ -2683,7 +2683,7 @@ export default function InvoiceDetails() {
           isOpen = {sentPopup}
           width = "31.3125rem"
           height = "auto"
-          handleClose={() => {
+          handleClose={/* istanbul ignore next */() => {
             setSentPopup(false)
           }}
         >
@@ -2703,7 +2703,7 @@ export default function InvoiceDetails() {
                 data-testid=""
                 label="Yes"
                 className="primary-blue medium yes-sent-btn"
-                handleOnClick={()=>{callCloseInvoiceAPI()}}
+                handleOnClick={/* istanbul ignore next */()=>{callCloseInvoiceAPI()}}
               />
             </div>
           </div>
