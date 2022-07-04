@@ -811,6 +811,7 @@ export default function InvoiceDetails() {
     }
   };
 
+  /* istanbul ignore next */
   const callCloseInvoiceAPI = () =>{
     setSentPopup(false)
     let sentStatus = lookupData.data.invoiceStatuses.filter((x:any) => x.text == "Sent");
@@ -2696,7 +2697,7 @@ export default function InvoiceDetails() {
                 data-testid=""
                 label="No"
                 className="secondary-btn medium no-sent-btn"
-                handleOnClick={()=>{setSentPopup(false)}}
+                handleOnClick={/* istanbul ignore next */()=>{setSentPopup(false)}}
               />
               <Button
                 data-testid=""
