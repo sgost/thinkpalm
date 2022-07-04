@@ -2906,3 +2906,286 @@ describe("payment detail on partial paid", () => {
 
   });
 });
+
+describe("subscription api fail on payment detail on partial paid", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        InvoiceId: "1101078",
+        transactionType: 2,
+        rowDetails: {
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "Italy",
+          currencyId: 1,
+          qbInvoiceNo: 0,
+          invoiceNo: "1101078",
+          status: 6,
+          statusLabel: "Partial Paid",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "5 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "15 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "undefined 300.00",
+          invoiceBalance: "undefined 96.00",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: 1,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: null,
+          id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      },
+    }));
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
+      .reply(201);
+
+    mock
+      .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.newGetRelatedData);
+
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+    mock
+      .onGet(
+        urls.invoiceLogs.replace(
+          "{invoice-id}",
+          "0d40412b-f901-4cab-b886-8f30e1bc9a71"
+        )
+      )
+      .reply(200, mockapidata.resInvoiceNotesData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(500, mockapidata.resSuscriptionLookup);
+    mock.onGet(productInvoice()).reply(200, mockapidata.dd);
+
+    mock.onPost(urls.savePayments).reply(200, mockapidata.dd);
+
+    mock.onPost(editPaymentDetailApi()).reply(200, mockapidata.resForEditPaymentDetailApi);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+  });
+
+  test("subscription api fail", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    const paymentText = await screen.findByText(/Payment Details/);
+    expect(paymentText).toBeInTheDocument();
+
+  });
+});
+
+describe("refund payment button click test cases on Apprroved", () => {
+
+    beforeAll(() => {
+      useParams.mockImplementation(() => ({
+        id: "350c165c-77db-4804-9b8e-64c8bc7c6d86",
+        cid: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+        isClient: "false",
+      }));
+  
+      useLocation.mockImplementation(() => ({
+        state: {
+          InvoiceId: "1101146",
+          transactionType: 4,
+          rowDetails: {
+            "customerId": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "customerName": "DSM Nutritional Products AG",
+            "customerLocation": "",
+            "currencyId": 0,
+            "qbInvoiceNo": 0,
+            "invoiceNo": "1101146",
+            "status": 4,
+            "statusLabel": "Approved",
+            "transactionType": 4,
+            "transactionTypeLabel": "Credit Memo",
+            "createdDate": "2 Jul 2022",
+            "paymentDate": null,
+            "approvalDate": null,
+            "submissionDate": "2022-07-02T00:00:00",
+            "dueDate": "9 Jun 2022",
+            "exchangeRate": 1,
+            "totalAmount": "undefined 110.00",
+            "invoiceBalance": "undefined 110.00",
+            "invoiceFrom": null,
+            "regionItemCode": null,
+            "isClientVisible": true,
+            "depositTo": null,
+            "createdBy": "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+            "modifiedBy": "28a34839-4798-4faa-9786-0677e1680f22",
+            "eorSubscriptionId": null,
+            "eorSubscriptionName": null,
+            "invoicerId": null,
+            "bankingDetailId": null,
+            "paymentMethod": null,
+            "poNumber": null,
+            "qbCustomerId": null,
+            "ageingNotPaid": 25,
+            "ageingPaid": null,
+            "invoiceDocuments": [],
+            "invoiceItems": [],
+            "invoiceNotes": [],
+            "invoiceRelatedInvoices": [],
+            "invoiceRelatedRelatedInvoices": [],
+            "payrolls": [],
+            "customer": null,
+            "currency": null,
+            "id": "350c165c-77db-4804-9b8e-64c8bc7c6d86",
+            "exportToQB": {
+                "value": "Not Exported",
+                "color": "#767676"
+            }
+        },
+        },
+      }));
+
+      const relatedid = "350c165c-77db-4804-9b8e-64c8bc7c6d86"
+
+
+    const mock = new MockAdapter(axios);
+
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getNotesUrl(id)).reply(200, mockapidata.notes);
+
+    mock.onPut(getApproveUrlNo(id, 2)).reply(201);
+
+    mock.onPut(getApproveUrl(id)).reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock.onGet(getDownloadFileUrl(blobUrl)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getDownloadUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+
+    mock.onGet(getExcelUrl(id)).reply(200, {
+      url: "https://apnguatemeaservices.blob.core.windows.net/data/b7951974-531e-45ac-b399-fc07cde58bc0.png?sv=2019-07-07&sr=b&sig=aMz0OBUbKzAJv%2FYA0Dfsl5FQk5NKraO10%2B%2FuvSe6bUw%3D&se=2022-04-07T11%3A07%3A32Z&sp=rl",
+      name: "sample.pdf",
+    });
+    mock.onPost(urls.declineInvoice).reply(200, mockapidata.declineInvoicePost);
+
+    mock.onPost(urls.voidInvoice).reply(200, mockapidata.voidApiPost);
+
+    mock.onPost(urls.uploadFile).reply(200, mockapidata.uploadFile);
+
+    mock.onPost(urls.createDocument).reply(200, mockapidata.createDocument);
+
+    mock
+    .onGet(getRelatedInvoiceUrl(relatedid))
+    .reply(200, mockapidata.resForCreditMemoDetailPage);
+
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+
+    mock
+    .onGet(
+      urls.invoiceLogs.replace(
+        "{invoice-id}",
+        "350c165c-77db-4804-9b8e-64c8bc7c6d86"
+      )
+    )
+    .reply(200, mockapidata.resInvoiceNotesData);
+  });
+
+
+  test("tabs are working", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    waitForElementToBeRemoved(() => screen.getByTestId('loader'));
+
+    const addPaymentButton = await screen.findByText(/Refund Payment/);
+    fireEvent.click(addPaymentButton);
+  });
+});
