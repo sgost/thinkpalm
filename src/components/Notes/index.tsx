@@ -60,7 +60,7 @@ export default function NotesWidget(props: any) {
 
   //save note
   const editNote = (value: any, index: any) => {
-    var noteId = getNoteIdFun(index);
+    let noteId = getNoteIdFun(index);
     console.log('noteId', noteId)
     notes[index].note = value;
     setNotes([...notes])
@@ -102,7 +102,7 @@ export default function NotesWidget(props: any) {
 
   //delete Notes
   const deleteNote = (index: any) => {
-    var noteId = getNoteIdFun(index);
+    let noteId = getNoteIdFun(index);
     const url = saveEditNoteApi(noteId);
     axios({
       method: "DELETE",
