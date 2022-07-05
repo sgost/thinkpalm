@@ -22,19 +22,6 @@ export default function NotesWidget(props: any) {
     creditMemoData
   } = props;
 
-  console.log("notes", notes)
-  console.log("isClient", isClient)
-  console.log("cid", cid)
-  console.log("id", id)
-  console.log("setNotes", setNotes)
-  console.log("transactionType", transactionType)
-  console.log("status", status)
-  console.log("isPaymentPage", isPaymentPage)
-  console.log("setPaymentNote", setPaymentNote)
-  console.log("creditMemoData", creditMemoData)
-
-
-
   const [noteText, setNoteText] = useState("");
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
@@ -56,6 +43,16 @@ export default function NotesWidget(props: any) {
 
 
 
+  const getNoteIdFun = (index: any) => {
+    let noteNum;
+    creditMemoData.invoiceNotes.filter((item: any, i: any) => {
+      if (i == index) {
+        noteNum = item.id;
+      }
+    })
+    return noteNum;
+  }
+
   //edit
   const editOpen = (index: any) => {
     setUpdateEdit(index)
@@ -63,15 +60,11 @@ export default function NotesWidget(props: any) {
 
   //save note
   const editNote = (value: any, index: any) => {
-    let noteNum;
-    creditMemoData.invoiceNotes.filter((item: any, i: any) => {
-      if (i == index) {
-        noteNum = item.id;
-      }
-    })
+    var noteId = getNoteIdFun(index);
+    console.log('noteId', noteId)
     notes[index].note = value;
     setNotes([...notes])
-    saveEditNote(noteNum, value)
+    saveEditNote(noteId, value)
   }
 
 
@@ -98,8 +91,7 @@ export default function NotesWidget(props: any) {
         id: index
       },
     })
-      .then((res: any) => {
-        setNotes([res, ...notes]);
+      .then((_res: any) => {
         setNoteText("");
       })
       .catch((e: any) => {
@@ -110,14 +102,8 @@ export default function NotesWidget(props: any) {
 
   //delete Notes
   const deleteNote = (index: any) => {
-    let noteNum;
-    creditMemoData.invoiceNotes.filter((item: any, i: any) => {
-      if (i == index) {
-        noteNum = item.id;
-      }
-    })
-
-    const url = saveEditNoteApi(noteNum);
+    var noteId = getNoteIdFun(index);
+    const url = saveEditNoteApi(noteId);
     axios({
       method: "DELETE",
       url: url,
