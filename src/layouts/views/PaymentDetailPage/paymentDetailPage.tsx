@@ -702,6 +702,8 @@ const PaymentDetailPage = () => {
     alert("credit memo refund data");
   };
 
+  console.log("state", state);
+
   /* istanbul ignore next */
   const breadcrumbsLabel = () => {
     return state.state.inveoicesData.map((item: any) => {
@@ -776,16 +778,15 @@ const PaymentDetailPage = () => {
               ? creditMemoFullAmountChecked
               : isFullAmount;
 
-              const paymentHeader =
-            invoiceItem.transactionTypeLabel === "Credit Memo"
-              ? <p>Refund Details</p>
-              : <p>Payment Details</p>;
+          const paymentHeader =
+            invoiceItem.transactionTypeLabel === "Credit Memo" ? (
+              <p>Refund Details</p>
+            ) : (
+              <p>Payment Details</p>
+            );
           return (
             <div className="paymentPageInvoiceInfo">
               <div className="paymentPageTopBar">
-                {/* <div className="invoic-status">
-            <p className="status">{status}</p>
-          </div> */}
                 <div className="paymentHeaderContainer">
                   <div className="paymentTopBarrow">
                     <div className="paymentInvoivceNo">
@@ -814,8 +815,11 @@ const PaymentDetailPage = () => {
                       </div>
                     </div>
                   </div>
-
-                  <p>QBO No. 730</p>
+                  {invoiceItem != null &&
+                    invoiceItem?.qbInvoiceNo != 0 &&
+                    invoiceItem?.qbInvoiceNo != undefined && (
+                      <p>QBO No. {invoiceItem.qbInvoiceNo}</p>
+                    )}
                 </div>
               </div>
 
