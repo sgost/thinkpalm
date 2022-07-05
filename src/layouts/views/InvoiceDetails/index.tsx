@@ -2407,7 +2407,7 @@ export default function InvoiceDetails() {
             </div>
 
             <div className="dec_check_main">
-              {declineCheckboxLabel &&
+              {declineCheckboxLabel && missTransType === 1 &&
                 declineCheckboxLabel?.map((item: any, index: any) => {
                   return (
                     <div className="dec_check_wrapp">
