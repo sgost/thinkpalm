@@ -740,7 +740,8 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    if ((status === "Paid" || status === "Partial Paid") && id) {
+    
+    if ((status === "Paid" || status === "Partially Paid") && id) {
       const headers = {
         headers: getHeaders(tempToken, cid, isClient),
       };
@@ -1823,7 +1824,7 @@ export default function InvoiceDetails() {
 
           {(status === "Approved" ||
             status === "Paid" ||
-            status === "Partial Paid") &&
+            status === "Partially Paid") &&
             missTransType === 3 &&
             getPermissions(2, "Add") && (
               <Button
@@ -2115,7 +2116,7 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {(status === "Paid" || status === "Partial Paid") &&
+      {(status === "Paid" || status === "Partially Paid") &&
       (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer

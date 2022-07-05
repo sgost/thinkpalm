@@ -189,7 +189,6 @@ const NewInvoiceCreation = ({
     .get(getVatValue(stepperOneData?.customerId), headers)
     .then((resp) => {
       if (resp.status == 200) {
-        console.log('fee config', resp?.data?.feeConfiguration?.percentage)
         setVatValue(resp?.data?.feeConfiguration?.percentage);
       }
     })

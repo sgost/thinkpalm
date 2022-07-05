@@ -6343,7 +6343,7 @@ export const mockapidata = {
       {
         keyword: "InvoiceStatus",
         value: 6,
-        text: "Partial Paid",
+        text: "Partially Paid",
         order: 6,
         isActive: true,
         integrationId: null,
@@ -12272,7 +12272,7 @@ export const productInvoiceMoc = {
       {
         keyword: "InvoiceStatus",
         value: 6,
-        text: "Partial Paid",
+        text: "Partially Paid",
         order: 6,
         isActive: true,
         integrationId: null,

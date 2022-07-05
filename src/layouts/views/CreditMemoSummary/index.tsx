@@ -289,7 +289,6 @@ export default function CreditMemoSummary(props: any) {
       // subtotal = subtotal + parseInt(a.totalAmount);
       subtotal = subtotal + a.totalAmount;
     }
-    console.log('subtotal',subtotal , vatValue)
     setSubTotalAmount(subtotal);
     if(vatValue != undefined ){
       setVatAmount(subtotal * (vatValue / 100))
