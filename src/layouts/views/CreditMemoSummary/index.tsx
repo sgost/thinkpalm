@@ -761,6 +761,7 @@ export default function CreditMemoSummary(props: any) {
           cid={cid}
           id={id}
           transactionType={creditMemoData?.transactionType}
+          creditMemoData={creditMemoData}
         ></NotesWidget>
         <FileUploadWidget
           status={status}
