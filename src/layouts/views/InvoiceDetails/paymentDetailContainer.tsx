@@ -10,6 +10,7 @@ import {
   subscriptionLookup,
   urls,
 } from "../../../urls/urls";
+import { statusValues } from "./statusValues";
 
 const PaymentDetailContainer = ({
   status,
@@ -21,7 +22,9 @@ const PaymentDetailContainer = ({
   setPaymentDetailData,
   topPanel,
   setTopPanel,
-  setStatus
+  setStatus,
+  currentStatusValue,
+  setCurrentStatusValue
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -443,6 +446,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             });
             if(response?.data?.invoice?.invoiceBalance === 0) {
               setStatus("Paid")
+              setCurrentStatusValue(statusValues.paid)
             }
           })
           .catch((e: any) => {
@@ -561,7 +565,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                 {key == 0 ? <p>Payment Details</p> : <></>}
                 <div className="topButtonActions">
                   {permission?.InvoiceDetails.includes("Edit") &&
-                    editChecked != key && status === "Partially Paid" && (
+                    editChecked != key && currentStatusValue === statusValues.partiallyPaid && (
                       <div className="paymentDetailEdit">
                         <Button
                           disabled={editButtonDisable}
@@ -985,7 +989,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       )}
 
       {permission?.InvoiceDetails?.includes("Add") &&
-      status === "Partially Paid" ? (
+      currentStatusValue === statusValues.partiallyPaid ? (
         <div className="addPaymentInstallmentButton">
           <div
             className="addPaymentInstallmentIcon"

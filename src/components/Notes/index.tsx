@@ -7,6 +7,7 @@ import axios from "axios";
 import "../../layouts/views/InvoiceDetails/invoiceDetails.scss";
 import { getDecodedToken } from "../getDecodedToken";
 import { getPermissions } from "../Comman/Utils/utils";
+import { statusValues } from "../../layouts/views/InvoiceDetails/statusValues";
 
 export default function NotesWidget(props: any) {
   const {
@@ -19,6 +20,7 @@ export default function NotesWidget(props: any) {
     status,
     isPaymentPage,
     setPaymentNote,
+    currentStatusValue,
     creditMemoData
   } = props;
 
@@ -217,7 +219,7 @@ export default function NotesWidget(props: any) {
               value={noteText}
               onChange={(e: any) => setNoteText(e.target.value)}
               placeholder="Add a note here..."
-              disabled={status === "Declined"}
+              disabled={currentStatusValue === statusValues.declined}
             />
             <span>Characters left: {400 - noteText.length}</span>
           </div>
