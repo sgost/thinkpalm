@@ -140,6 +140,7 @@ export default function InvoiceDetails() {
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [creditMemoData, setCreditMemoData] = useState<any>(null);
+  const [payrollData, setPayrollData] = useState<any>(null);
   const [topPanel, setTopPanel] = useState<any>(topPanelObj);
   const [vatValue, setVatValue] = useState();
   const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
@@ -275,6 +276,7 @@ export default function InvoiceDetails() {
           axios
             .get(api, headers)
             .then((res: any) => {
+              setPayrollData(res.data.invoice)
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
               }
@@ -1436,8 +1438,8 @@ export default function InvoiceDetails() {
                       : function noRefCheck() { }
                   }
                   className={`${missTransType == 7 || deleteDisableButtons === true
-                      ? "download_disable"
-                      : "download"
+                    ? "download_disable"
+                    : "download"
                     }`}
                 // className="download"
                 >
@@ -2165,43 +2167,37 @@ export default function InvoiceDetails() {
         ></CreditMemoSummary>
       )}
 
-      {missTransType != 7 &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 2 && (
-          <div className="tab">
-            <p
-              onClick={() => setActiveTab("payroll")}
-              className={
-                activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
-              }
-            >
-              Payroll Journal
-            </p>
-            <p
-              onClick={() => setActiveTab("master")}
-              className={
-                activeTab === "master" ? "tabTextActive" : "tabTextPassive"
-              }
-            >
-              Master Invoice
-            </p>
-            <p
-              onClick={() => setActiveTab("files")}
-              className={
-                activeTab === "files" ? "tabTextActive" : "tabTextPassive"
-              }
-            >
-              Files & Notes
-            </p>
-          </div>
-        )}
+      {missTransType === 1 && (
+        <div className="tab">
+          <p
+            onClick={() => setActiveTab("payroll")}
+            className={
+              activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Payroll Journal
+          </p>
+          <p
+            onClick={() => setActiveTab("master")}
+            className={
+              activeTab === "master" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Master Invoice
+          </p>
+          <p
+            onClick={() => setActiveTab("files")}
+            className={
+              activeTab === "files" ? "tabTextActive" : "tabTextPassive"
+            }
+          >
+            Files & Notes
+          </p>
+        </div>
+      )}
 
       {activeTab === "master" &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 7 &&
-        missTransType != 2 && (
+        missTransType === 1 && (
           <div className="master">
             <h3 className="tableHeader">Country Summary</h3>
             <Table
@@ -2248,10 +2244,7 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "payroll" &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 7 &&
-        missTransType != 2 && (
+        missTransType === 1 && (
           <div className="payroll">
             {payrollTables.map((item: any) => {
               return (
@@ -2340,10 +2333,7 @@ export default function InvoiceDetails() {
           </div>
         )}
       {activeTab === "files" &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 7 &&
-        missTransType != 2 && (
+        missTransType === 1 && (
           <>
             <div className="filesNotes">
               <NotesWidget
@@ -2354,7 +2344,7 @@ export default function InvoiceDetails() {
                 cid={cid}
                 id={id}
                 transactionType={missTransType}
-                creditMemoData={creditMemoData}
+                creditMemoData={payrollData}
               ></NotesWidget>
 
               <FileUploadWidget

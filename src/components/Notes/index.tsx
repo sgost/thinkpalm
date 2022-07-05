@@ -22,6 +22,19 @@ export default function NotesWidget(props: any) {
     creditMemoData
   } = props;
 
+  console.log("notes", notes)
+  console.log("isClient", isClient)
+  console.log("cid", cid)
+  console.log("id", id)
+  console.log("setNotes", setNotes)
+  console.log("transactionType", transactionType)
+  console.log("status", status)
+  console.log("isPaymentPage", isPaymentPage)
+  console.log("setPaymentNote", setPaymentNote)
+  console.log("creditMemoData", creditMemoData)
+
+
+
   const [noteText, setNoteText] = useState("");
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
