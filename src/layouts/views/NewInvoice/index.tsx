@@ -446,11 +446,16 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 && 
+        paymentTermsOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
-      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
+      return !(
+        stepperOneData?.customer !== "" && 
+        invoiceDate !== "" && 
+        invoicerOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1);
     }
 
     let condition: any = [];
@@ -633,10 +638,6 @@ const NewInvoice = () => {
       (c: any) => c.customerId === stepperOneData?.customerId
     );
 
-    const currencyId = currencyOptions.find(
-      (c: any) => c.text === customer?.billingCurrency
-    );
-
     const totalBalanceWithVatValue = balance + balance * (vatValue / 100)
 
     let data = {
@@ -644,7 +645,7 @@ const NewInvoice = () => {
       qbInvoiceNo: 0,
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
-      CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
+      CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is empty string , backend will provice it in future
       // CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
       TransactionType: transactionTypeVar, //
@@ -665,11 +666,8 @@ const NewInvoice = () => {
       InvoiceRelatedRelatedInvoices: [],
       // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
-      BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
-      CurrencyId:
-        stepperOneData.type === "Credit Memo"
-          ? currencyId?.value
-          : currencyOptions.find((e: any) => e.isSelected)?.value,
+      BankDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.id,
+      CurrencyId: currencyOptions.find((e: any) => e.isSelected)?.value,
     };
 
     if (!isInvoiceCreated) {

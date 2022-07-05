@@ -44,6 +44,7 @@ import {
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
   getPaymentDetailApi,
+  changeInvoiceStatusAPI,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -76,6 +77,7 @@ export default function InvoiceDetails() {
   };
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
+  const [sentPopup, setSentPopup] = useState(true);
   const [missTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -802,6 +804,28 @@ export default function InvoiceDetails() {
     }
   };
 
+  /* istanbul ignore next */
+  const callCloseInvoiceAPI = () =>{
+    setSentPopup(false)
+    let sentStatus = lookupData.data.invoiceStatuses.filter((x:any) => x.text == "Sent");
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    };
+    axios.put(changeInvoiceStatusAPI(apiData?.data?.invoice?.id, sentStatus[0].value), null, headers).then((resp: any) => {
+      if(resp.status == 201 ){
+        let tempInovoice = apiData;
+        tempInovoice.data.invoice = resp.data;
+        setApiData((current: any) => {
+          return {
+            ...current,
+            invoice: {
+              ...resp.data
+            }
+          }
+        })
+      }
+    })
+ }
   const sharedColumns = {
     grossWages: tableSharedColumns.grossWages,
     allowances: tableSharedColumns.allowances,
@@ -2365,6 +2389,7 @@ export default function InvoiceDetails() {
           customerId={cid}
           billStatus={status}
           invoiceId={state.InvoiceId}
+          invoiceStatus={apiData?.data?.invoice?.status}
           navigate={navigate}
           totalAmount={apiData?.data?.invoice?.totalAmount}
           state={state}
@@ -2740,6 +2765,37 @@ export default function InvoiceDetails() {
           </div>
         </Modal>
       </div>
+      {missTransType == 7 && apiData?.data?.invoice?.status == 10 && <div>
+        <Modal
+          isOpen = {sentPopup}
+          width = "31.3125rem"
+          height = "auto"
+          handleClose={/* istanbul ignore next */() => {
+            setSentPopup(false)
+          }}
+        >
+          <div className="sent-popup">
+            <div className="sent-popup-header">
+              Final Invoice Confirmation
+            </div>
+            <div className="sent-popout-body">Do you want to request an email receipt against the final invoice?</div>
+            <div className="sent-popout-action">
+              <Button
+                data-testid=""
+                label="No"
+                className="secondary-btn medium no-sent-btn"
+                handleOnClick={/* istanbul ignore next */()=>{setSentPopup(false)}}
+              />
+              <Button
+                data-testid=""
+                label="Yes"
+                className="primary-blue medium yes-sent-btn"
+                handleOnClick={/* istanbul ignore next */()=>{callCloseInvoiceAPI()}}
+              />
+            </div>
+          </div>
+        </Modal>
+      </div>}
     </div>
   );
 }

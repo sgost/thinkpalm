@@ -56,9 +56,15 @@ export default function BillsTable(props: any) {
     const [rawData, setRawData] = useState<any>([]);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
+    const [invoiceStat, setInvoiceStat] = useState(props.invoiceStatus);
     const { state }: any = props;
     localStorage.removeItem("redirectingReferenceNumber");
     localStorage.removeItem("voidedInvoice");
+
+    /* istanbul ignore next */
+    useEffect(() => {
+        setInvoiceStat(props.invoiceStatus);
+    }, [props.invoiceStatus])
 
     /* istanbul ignore next */
     useEffect(() => {
@@ -556,7 +562,7 @@ export default function BillsTable(props: any) {
                         </div>
                         <div className='action-btns'>
 
-                            <div className='justification margin-right'>
+                            {invoiceStat != 13 && <div className='justification margin-right'>
                                 {!(rejectBanner || moveNextBanner) && <><Button
                                     label="Reject Bill"
                                     className="secondary-btn medium secondary-button reject-button"
@@ -596,7 +602,7 @@ export default function BillsTable(props: any) {
                                         /></>}
                                 </>)}
 
-                            </div>
+                            </div>}
                         </div>
                         <Modal
                             className="zero-padding"
