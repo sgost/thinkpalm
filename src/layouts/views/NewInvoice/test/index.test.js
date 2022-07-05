@@ -26,6 +26,7 @@ import {
   CountryApi,
   getRelatedInvoiceUrl,
   getHeaders,
+  getVatValue,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
 import InvoicePreviewPop from "../InvoicePreviewPop";
@@ -1775,6 +1776,8 @@ describe("New Invoice for Proforma ", () => {
       .onGet(urls.subscriptionLookup)
       .reply(200, mockapidata.resSubscriptionsLookUp);
 
+    mock.onGet(getVatValue("A9BBEE6D-797A-4724-A86A-5B1A2E28763F")).reply(200, mockapidata.resForVatDetail);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -1828,6 +1831,72 @@ describe("New Invoice for Proforma ", () => {
   }, 30000);
 });
 
+describe("New Invoice for Proforma vat api fail ", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    mock
+      .onPost(urls.getCustomersByIds)
+      .reply(200, mockapidata.resForCustomersByIds);
+    mock.onGet(productInvoice()).reply(200, productInvoiceMoc.productdata);
+    mock.onGet(CountryApi()).reply(200, productInvoiceMoc.countrydata);
+
+    mock
+      .onGet(urls.subscriptionLookup)
+      .reply(200, mockapidata.resSubscriptionsLookUp);
+
+    mock.onGet(getVatValue("A9BBEE6D-797A-4724-A86A-5B1A2E28763F")).reply(500, mockapidata.resForVatDetail);
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+  });
+
+  test("breadcumbs are working", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+
+    expect(newInvoice[0]).toBeInTheDocument();
+    const invoiceBreadClick = await screen.findAllByText(/Invoices/);
+    expect(invoiceBreadClick[0]).toBeInTheDocument();
+    fireEvent.click(invoiceBreadClick[0]);
+  }, 30000);
+  test("dropDown Value change stepper 1", async () => {
+    render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const newInvoice = await screen.findAllByText(/New Invoice/);
+    expect(newInvoice[0]).toBeInTheDocument();
+
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const typeDropDownValue = await screen.findByText(/Proforma/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    const dp = await waitFor(() => screen.getByRole("textbox"));
+    fireEvent.click(dp);
+
+    const selDate = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDate[0]);
+
+  }, 30000);
+});
+
 describe("step one Proforma getCustomer api fail ", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
@@ -1876,6 +1945,8 @@ describe("New Invoice for Miscellaneous ", () => {
       .reply(200, mockapidata.resSubscriptionsLookUp);
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock.onGet(getVatValue("A9BBEE6D-797A-4724-A86A-5B1A2E28763F")).reply(200, mockapidata.resForVatDetail);
 
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
@@ -2050,6 +2121,8 @@ describe("Stepper for Credit Memo  1, 2 and 3 ", () => {
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
+    mock.onGet(getVatValue("A9BBEE6D-797A-4724-A86A-5B1A2E28763F")).reply(200, mockapidata.resForVatDetail);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -2186,6 +2259,8 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
 
     mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
 
+    mock.onGet(getVatValue("A9BBEE6D-797A-4724-A86A-5B1A2E28763F")).reply(200, mockapidata.resForVatDetail);
+
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
   });
 
@@ -2310,6 +2385,55 @@ describe("Invoice preview Pop", () => {
     mock
       .onGet(getRelatedInvoiceUrl(invoiceId))
       .reply(200, mockapidata.resFinalStepper);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+  });
+  test("final stepper", async () => {
+    render(
+      <HashRouter>
+        <InvoicePreviewPop
+          stepperOneData={stepperOneData}
+          todos={todos}
+          invoiceId={invoiceId}
+        />
+      </HashRouter>
+    );
+    const payrollTabs = await screen.findAllByText(/Invoice Preview/);
+    expect(payrollTabs[0]).toBeInTheDocument();
+  });
+
+  test("Preview Invoice", async () => {
+    render(
+      <HashRouter>
+        <InvoicePreviewPop
+          stepperOneData={stepperOneData}
+          todos={todos}
+          invoiceId={invoiceId}
+        />
+      </HashRouter>
+    );
+    const PreviewButton = await screen.findByTestId("preview-button");
+    fireEvent.click(PreviewButton);
+  });
+});
+
+describe("Invoice preview Pop related api fail", () => {
+  beforeAll(() => {
+    const mock = new MockAdapter(axios);
+
+    const tempToken = localStorage.getItem("accessToken"); //Accesstoken
+
+    const headers = {
+      headers: getHeaders(tempToken, customerId, false), //Headers
+    };
+
+    mock
+      .onGet(getBillingAddressUrl(customerId), headers)
+      .reply(200, mockapidata.resAddressData);
+
+    mock
+      .onGet(getRelatedInvoiceUrl(invoiceId))
+      .reply(500, mockapidata.resFinalStepper);
 
     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
   });

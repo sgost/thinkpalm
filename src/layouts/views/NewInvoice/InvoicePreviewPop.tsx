@@ -4,19 +4,24 @@ import "./InvoicePreviewPop.scss";
 import { getCreditMemoStep4Data } from "../../../apis/apis";
 import moment from "moment";
 import axios from "axios";
-import { getHeaders, urls, getBillingAddressUrl, } from "../../../urls/urls";
+import { getHeaders, urls, getBillingAddressUrl } from "../../../urls/urls";
 
-const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
+const InvoicePreviewPop = ({
+  stepperOneData,
+  todos,
+  invoiceId,
+  vatValue,
+}: any) => {
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [_countriesData, setCountriesData] = useState<any>(null);
   const [billingData, setBillingData] = useState<any>(null);
 
   const addressApi = getBillingAddressUrl(stepperOneData.customerId); //Address api
 
-  const tempToken = localStorage.getItem("accessToken");  //Accesstoken
+  const tempToken = localStorage.getItem("accessToken"); //Accesstoken
 
   const headers = {
-    headers: getHeaders(tempToken, stepperOneData.customerId, false),  //Headers
+    headers: getHeaders(tempToken, stepperOneData.customerId, false), //Headers
   };
 
   useEffect(() => {
@@ -40,7 +45,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
     axios
       .get(addressApi, headers)
       .then((res: any) => {
-        setBillingData(res?.data)
+        setBillingData(res?.data);
       })
       .catch((e: any) => {
         console.log("error", e);
@@ -66,6 +71,7 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
     0
   );
 
+  const vatAmount = newAmount * (vatValue / 100);
 
   return (
     <div id="popover_main">
@@ -73,8 +79,9 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
         <div id="body_main">
           <h1 id="title">Invoice Preview</h1>
           <p id="description">
-            Please preview the new {stepperOneData?.type} invoice has been created. You can
-            access it right from here or from the Invoices listing page.
+            Please preview the new {stepperOneData?.type} invoice has been
+            created. You can access it right from here or from the Invoices
+            listing page.
           </p>
           <div className="credit-memo-preview-invoice-button">
             <Button
@@ -146,10 +153,20 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
                   <p className="creditMemoInvoiceValue">
                     {invoiceData?.customerName}
                   </p>
-                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.street1}</p>
-                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.street2}</p>
-                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.state}, {billingData?.shippingAddress?.city}</p>
-                  <p className="creditMemoInvoiceAddress">{billingData?.shippingAddress?.country}, {billingData?.shippingAddress?.postalCode}</p>
+                  <p className="creditMemoInvoiceAddress">
+                    {billingData?.shippingAddress?.street1}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {billingData?.shippingAddress?.street2}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {billingData?.shippingAddress?.state},{" "}
+                    {billingData?.shippingAddress?.city}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {billingData?.shippingAddress?.country},{" "}
+                    {billingData?.shippingAddress?.postalCode}
+                  </p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">Invoice Date</p>
@@ -222,11 +239,28 @@ const InvoicePreviewPop = ({ stepperOneData, todos, invoiceId }: any) => {
               </div>
 
               <div className="invoice_bottom">
-                <p>Total Balance</p>
-                <h3>
-                  {getCustlBillingCurrency()}{" "}
-                  {newAmount.toLocaleString("en-US")}
-                </h3>
+                <div className="rowBox">
+                  <div className="rowFee">
+                    <p className="title">Subtotal Due</p>
+                    <p className="amount">
+                      {getCustlBillingCurrency()}{" "}
+                      {newAmount.toLocaleString("en-US")}
+                    </p>
+                  </div>
+                  <div className="rowFee no-border">
+                    <p className="title">VAT Amount</p>
+                    <p className="amount">
+                      {getCustlBillingCurrency()} {vatAmount.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="totalRow">
+                    <p>Total Balance</p>
+                    <p className="total">
+                      {getCustlBillingCurrency()}{" "}
+                      {invoiceData?.invoiceBalance?.toLocaleString("en-US")}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </Modal>

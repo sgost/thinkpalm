@@ -533,7 +533,6 @@ export default function InvoiceDetails() {
             .get(getVatValue(cid), headers)
             .then((resp) => {
               if (resp.status == 200) {
-                console.log('fee config', resp?.data?.feeConfiguration?.percentage)
                 setVatValue(resp?.data?.feeConfiguration?.percentage);
               }
             })
@@ -743,7 +742,8 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    if ((status === "Paid" || status === "Partial Paid") && id) {
+    
+    if ((status === "Paid" || status === "Partially Paid") && id) {
       const headers = {
         headers: getHeaders(tempToken, cid, isClient),
       };
@@ -1825,7 +1825,7 @@ export default function InvoiceDetails() {
 
           {(status === "Approved" ||
             status === "Paid" ||
-            status === "Partial Paid") &&
+            status === "Partially Paid") &&
             missTransType === 3 &&
             getPermissions(2, "Add") && (
               <Button
@@ -2117,8 +2117,8 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+      {(status === "Paid" || status === "Partially Paid") &&
+      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             setPaymentDetailData={setPaymentDetailData}

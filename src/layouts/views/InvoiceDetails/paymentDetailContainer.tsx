@@ -561,7 +561,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                 {key == 0 ? <p>Payment Details</p> : <></>}
                 <div className="topButtonActions">
                   {permission?.InvoiceDetails.includes("Edit") &&
-                    editChecked != key && status === "Partial Paid" && (
+                    editChecked != key && status === "Partially Paid" && (
                       <div className="paymentDetailEdit">
                         <Button
                           disabled={editButtonDisable}
@@ -985,7 +985,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       )}
 
       {permission?.InvoiceDetails?.includes("Add") &&
-      status === "Partial Paid" ? (
+      status === "Partially Paid" ? (
         <div className="addPaymentInstallmentButton">
           <div
             className="addPaymentInstallmentIcon"
