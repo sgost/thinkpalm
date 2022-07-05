@@ -293,10 +293,11 @@ export default function CreditMemoSummary(props: any) {
     if(vatValue != undefined ){
       setVatAmount(subtotal * (vatValue / 100))
     }
+    const totalAmountVar = subtotal + subtotal * (vatValue / 100)
     if (creditMemoData.status != 9) {
-      setPayload({ ...payload, invoiceBalance: creditMemoData.totalAmount, totalAmount: creditMemoData.totalAmount })
+      setPayload({ ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar })
     } else {
-      setPayload({...payload, invoiceBalance: 0,  totalAmount: creditMemoData.totalAmount})
+      setPayload({...payload, invoiceBalance: 0,  totalAmount: totalAmountVar})
     }
   };
   /* istanbul ignore next */
