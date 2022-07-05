@@ -58,6 +58,7 @@ import {
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
 import cn from "classnames";
+import { statusValues } from "./statusValues";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -120,6 +121,7 @@ export default function InvoiceDetails() {
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
+  const [currentStatusValue, setCurrentStatusValue] = useState(0)
   const [voidFileData, setVoidFileData] = useState<any>({});
   const [isErr, setIsErr] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -640,6 +642,7 @@ export default function InvoiceDetails() {
 
   useEffect(() => {
     if (lookupData?.data && apiData?.data) {
+      setCurrentStatusValue(apiData.data.invoice.status)
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -649,6 +652,7 @@ export default function InvoiceDetails() {
   }, [lookupData, apiData]);
   useEffect(() => {
     if (lookupData?.data && creditMemoData) {
+        setCurrentStatusValue(creditMemoData.status)
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === creditMemoData.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -741,7 +745,7 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    if ((status === "Paid" || status === "Partial Paid") && id) {
+    if ((currentStatusValue === statusValues.paid || currentStatusValue === statusValues.partiallyPaid) && id) {
       const headers = {
         headers: getHeaders(tempToken, cid, isClient),
       };
@@ -757,7 +761,7 @@ export default function InvoiceDetails() {
           console.log("error e", e);
         });
     }
-  }, [id, status]);
+  }, [id, currentStatusValue]);
 
   const handleSaveDisable = () => {
     const invDate = new Date(
@@ -938,6 +942,7 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         if (res?.status === 201) {
+          setCurrentStatusValue(res?.data?.status)
           if (res?.data?.status === 2) {
             setStatus("AR Review");
           } else if (res?.data?.status === 8) {
@@ -981,6 +986,7 @@ export default function InvoiceDetails() {
       ],
     })
       .then((_res: any) => {
+        setCurrentStatusValue(statusValues.perndingApproval)
         setStatus("Pending Approval");
       })
       .catch((e: any) => {
@@ -1088,6 +1094,7 @@ export default function InvoiceDetails() {
       )
       .then((response: any) => {
         if (response.status == 200) {
+            setCurrentStatusValue(response.data.status)
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -1399,8 +1406,9 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          {(status === "AR Review" ||
-            (status === "Open" && missTransType !== 1)) &&
+          {console.log('status', currentStatusValue , statusValues.arReview ,statusValues.open ,missTransType )}
+          {(currentStatusValue == statusValues.arReview ||
+            (currentStatusValue == statusValues.open && missTransType !== 1)) &&
             (getPermissions(missTransType, "Delete") ||
               getPermissions(missTransType, "DeleteInvoice")) && (
               <div className="upper-delete-button">
@@ -1414,7 +1422,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {status === "Approved" && getPermissions(missTransType, "Void") && (
+          {currentStatusValue == statusValues.approved && getPermissions(missTransType, "Void") && (
             <div className="void-button">
               <Button
                 className="secondary-btn small"
@@ -1465,7 +1473,7 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          {(status === "AR Review" || status === "Declined") &&
+          {(currentStatusValue == statusValues.arReview || currentStatusValue === statusValues.declined) &&
             missTransType == 1 &&
             getPermissions(1, "Edit") && (
               <div className="saveBtnContainer">
@@ -1485,7 +1493,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {(status === "AR Review" || status === "Open") &&
+          {(currentStatusValue == statusValues.arReview || currentStatusValue == statusValues.open) &&
             getPermissions(missTransType, "Edit") && (
               <div className="saveBtnContainer">
                 <Button
@@ -1498,11 +1506,11 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {(status === "Approved" &&
+          {(currentStatusValue == statusValues.approved &&
             missTransType !== 4 &&
             missTransType !== 7 &&
             getPermissions(missTransType, "AddPayment")) ||
-          (status === "Invoiced" &&
+          (currentStatusValue == statusValues.invoiced &&
             missTransType === 7 &&
             getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
@@ -1668,7 +1676,7 @@ export default function InvoiceDetails() {
             <></>
           )}
 
-          {(status === "Approved" &&
+          {(currentStatusValue == statusValues.approved &&
             missTransType === 4) 
             ? (
             <div className="addPaymentButton">
@@ -1771,8 +1779,8 @@ export default function InvoiceDetails() {
             <></>
           )}
 
-          {(status === "Pending Approval" ||
-            (status === "AR Review" && missTransType !== 1)) &&
+          {(currentStatusValue === statusValues.perndingApproval ||
+            (currentStatusValue === statusValues.arReview && missTransType !== 1)) &&
             getPermissions(missTransType, "Reject") && (
               <div className="decline-invoice">
                 <Button
@@ -1790,7 +1798,7 @@ export default function InvoiceDetails() {
               </div>
             )}
 
-          {(status === "AR Review" || status === "Declined") &&
+          {(currentStatusValue === statusValues.arReview || currentStatusValue === statusValues.declined) &&
             missTransType == 1 &&
             getPermissions(missTransType, "Send") && (
               <div className="submit_customer">
@@ -1803,8 +1811,8 @@ export default function InvoiceDetails() {
                 />
               </div>
             )}
-          {(status === "Pending Approval" ||
-            (status === "AR Review" && missTransType != 1)) &&
+          {(currentStatusValue === statusValues.perndingApproval ||
+            (currentStatusValue === statusValues.arReview && missTransType != 1)) &&
             getPermissions(missTransType, "Approve") && (
               <Button
                 data-testid="approve-button"
@@ -1822,9 +1830,9 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {(status === "Approved" ||
-            status === "Paid" ||
-            status === "Partial Paid") &&
+          {(currentStatusValue === statusValues.approved  ||
+            currentStatusValue === statusValues.paid ||
+            currentStatusValue === statusValues.partiallyPaid) &&
             missTransType === 3 &&
             getPermissions(2, "Add") && (
               <Button
@@ -1838,7 +1846,7 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {(status === "Declined" || status === "Open") &&
+          {(currentStatusValue === statusValues.declined || currentStatusValue === statusValues.open) &&
             missTransType !== 1 &&
             permission?.InvoiceDetails.includes("Send") && (
               <Button
@@ -1954,7 +1962,7 @@ export default function InvoiceDetails() {
             {missTransType != 7 && (
               <>
                 <p className="ponumber">PO Number</p>
-                {status === "AR Review" || status === "Open" ? (
+                {currentStatusValue === statusValues.arReview || currentStatusValue === statusValues.open ? (
                   <input
                     data-testid="PONUMBER"
                     onChange={(e: any) => {
@@ -1975,7 +1983,7 @@ export default function InvoiceDetails() {
           </div>
           <div className="divContainer">
             <p className="heading">Invoice Date</p>
-            {status === "AR Review" || status === "Open" ? (
+            {currentStatusValue === statusValues.arReview || currentStatusValue === statusValues.open ? (
               <div className="dpContainer">
                 <DatePicker
                   label="invoiceDate"
@@ -2005,7 +2013,7 @@ export default function InvoiceDetails() {
                     {status !== "Open" && (
                       <>
                         <p className="heading">Invoice Approval</p>
-                        {status === "AR Review" || status === "Open" ? (
+                        {currentStatusValue === statusValues.arReview || currentStatusValue === statusValues.open ? (
                           <div className="dpContainer dpMidMargin">
                             <DatePicker
                               minDate={handleMinDate("approvalDate")}
@@ -2024,7 +2032,7 @@ export default function InvoiceDetails() {
 
                         {isClient == "false" && (
                           <>
-                            {status !== "Open" && (
+                            {currentStatusValue !== statusValues.open && (
                               <div className="autoapproveContainer">
                                 <Checkbox
                                   onChange={(e: any) => {
@@ -2064,7 +2072,7 @@ export default function InvoiceDetails() {
                 )}
 
                 <p className="heading">Payment Due</p>
-                {status === "AR Review" || status === "Open" ? (
+                {currentStatusValue === statusValues.arReview || currentStatusValue === statusValues.open ? (
                   <div className="dpContainer">
                     <DatePicker
                       minDate={handleMinDate("paymentDate")}
@@ -2116,7 +2124,7 @@ export default function InvoiceDetails() {
         </div>
       )}
 
-      {(status === "Paid" || status === "Partial Paid") &&
+      {(currentStatusValue === statusValues.paid || currentStatusValue === statusValues.partiallyPaid) &&
       (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
@@ -2130,6 +2138,8 @@ export default function InvoiceDetails() {
             topPanel={topPanel}
             setTopPanel={setTopPanel}
             setStatus={setStatus}
+            currentStatusValue={currentStatusValue}
+            setCurrentStatusValue={setCurrentStatusValue}
           />
         </div>
       ) : (
@@ -2355,6 +2365,7 @@ export default function InvoiceDetails() {
                 cid={cid}
                 id={id}
                 transactionType={missTransType}
+                currentStatusValue={currentStatusValue}
               ></NotesWidget>
 
               <FileUploadWidget
@@ -2493,6 +2504,7 @@ export default function InvoiceDetails() {
                   })
                     .then((res: any) => {
                       if (res.status == 200) {
+                        setCurrentStatusValue(res.data.status)
                         lookupData.data.invoiceStatuses.forEach((e: any) => {
                           if (e.value === res.data.status) {
                             setStatus(
