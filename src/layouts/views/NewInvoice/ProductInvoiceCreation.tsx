@@ -207,14 +207,14 @@ const ProductInvoiceCreation = ({
                   data-testid="product_name"
                 >
                   <>
-                    <input
+                    {/* <input
                       type="text"
                       data-testid="product_open"
                       onClick={() => setOpen(true)}
                       id="click_input"
                       placeholder="Please Select"
                       autoComplete="off"
-                    />
+                    /> */}
                     <Dropdown
                       handleDropOptionClick={(opt: any) => {
                         setProductService(opt.label);

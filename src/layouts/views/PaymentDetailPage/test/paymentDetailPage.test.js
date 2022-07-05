@@ -209,8 +209,6 @@ describe("Payment details page multiple", () => {
   });
 
   test("save multiple", async () => {
-    let showCancel;
-    showCancel = true;
     render(
       <HashRouter>
         <PaymentDetailPage />
