@@ -172,22 +172,84 @@
 
         .invoice_bottom {
           display: flex;
-          align-items: center;
-          gap: 20px;
-          justify-content: flex-end;
-          width: 98%;
-
-          p {
-            color: $primary-blue;
-            font-size: 1rem;
-            font-weight: 600;
+          flex-direction: column;
+          align-items: flex-end;
+          padding: 2rem 3rem;
+          width: -webkit-fill-available;
+  
+          .spacerclass {
+            width: 70%;
           }
-          h3 {
-            color: $primary-blue;
-            background-color: $active;
-            padding: 1rem 3rem;
-            border-radius: 8px;
-            font-weight: 600;
+          .rowBox {
+            width: 30%;
+          }
+          .rowFee {
+            display: flex;
+            border-bottom-style: solid;
+            border-color: $light-gray;
+            border-width: 2px;
+            width: -webkit-fill-available;
+            padding-right: 2.156rem;
+            padding-left: 2.156rem;
+            padding-bottom: 0.4rem;
+            padding-top: 0.4rem;
+            justify-content: space-between;
+  
+            .title {
+              font-weight: 400;
+              font-size: 1rem;
+              color: $secondary-gray;
+              font-family: "CircularXX", sans-serif;
+            }
+  
+            .amount {
+              font-weight: 600;
+              font-size: 1rem;
+              color: #041e42;
+            }
+          }
+  
+          .row2 {
+            display: flex;
+            width: 30%;
+            justify-content: space-between;
+            padding-right: 3.6rem;
+  
+            .title {
+              font-weight: 400;
+              font-size: 1rem;
+              color: $secondary-gray;
+            }
+  
+            .amount {
+              font-weight: 600;
+              font-size: 1rem;
+              color: #041e42;
+            }
+          }
+  
+          .totalRow {
+            display: flex;
+            align-items: center;
+            padding-left: 2.156rem;
+            width: -webkit-fill-available;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+  
+            p {
+              color: $primary-blue;
+              font-weight: 600;
+              font-size: 1rem;
+            }
+  
+            .total {
+              color: $primary-blue;
+              background-color: $active;
+              padding: 1rem 1.7778rem;
+              border-radius: 0.5556rem;
+              font-weight: 600;
+              font-size: 1.3333rem;
+            }
           }
         }
       }

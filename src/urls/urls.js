@@ -342,3 +342,7 @@ export const getPaymentDetailApi = (invoiceId) => {
 export const editPaymentDetailApi = () => {
   return baseURL + services.atlasInvoiceService + `/Invoices/editpayment`
 }
+
+export const saveEditNoteApi = (id) => {
+  return baseURL + services.atlasInvoiceService + `/InvoiceNote/${id}`
+}

@@ -67,6 +67,8 @@ const NewInvoice = () => {
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [vatValue, setVatValue] = useState<any>(0);
+
   //steps for payroll
   const stepsName = [
     sharedSteps.newInvoice,
@@ -336,6 +338,7 @@ const NewInvoice = () => {
     setPaymentTermsOptions,
     paymentMethodOptions,
     setPaymentMethodOptions,
+    setVatValue
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -411,7 +414,8 @@ const NewInvoice = () => {
     setCountryInitialData,
     tempDataCountry,
     setTempDataCountry,
-    currencyOptions
+    currencyOptions,
+    vatValue
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -634,6 +638,8 @@ const NewInvoice = () => {
       (c: any) => c.customerId === stepperOneData?.customerId
     );
 
+    const totalBalanceWithVatValue = balance + balance * (vatValue / 100)
+
     let data = {
       QbCustomerId: parseInt(qbIdValue),
       qbInvoiceNo: 0,
@@ -648,8 +654,8 @@ const NewInvoice = () => {
       CreatedDate: format(invoiceDate, "yyyy-MM-dd"),
       submissiondate: format(invoiceDate, "yyyy-MM-dd"),
       // DueDate: "2022-05-23T12:31:21.125Z",
-      TotalAmount: balance, //  total balance
-      InvoiceBalance: balance, //  total balance
+      TotalAmount: totalBalanceWithVatValue, //  total balance
+      InvoiceBalance: totalBalanceWithVatValue, //  total balance
       IsClientVisible: true, // hard code
       CreatedBy: stepperOneData?.customerId, //
       ModifiedBy: stepperOneData?.customerId, //

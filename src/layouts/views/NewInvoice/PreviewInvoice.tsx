@@ -363,7 +363,7 @@ const PreviewInvoice = ({
                       </div>
                       <div className="heading">
                         <p>
-                          {"Payroll Invoice No." +
+                          {"Payroll Invoice No. " +
                             apiData?.data?.invoice?.invoiceNo}{" "}
                         </p>
                       </div>

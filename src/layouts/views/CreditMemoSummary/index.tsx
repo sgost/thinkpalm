@@ -289,10 +289,9 @@ export default function CreditMemoSummary(props: any) {
       // subtotal = subtotal + parseInt(a.totalAmount);
       subtotal = subtotal + a.totalAmount;
     }
-    console.log('subtotal',subtotal , vatValue)
     setSubTotalAmount(subtotal);
     if(vatValue != undefined ){
-      setVatAmount(subtotal * (vatValue / 100));
+      setVatAmount(subtotal * (vatValue / 100))
     }
     const totalAmountVar = subtotal + subtotal * (vatValue / 100)
     if (creditMemoData.status != 9) {
@@ -730,7 +729,7 @@ export default function CreditMemoSummary(props: any) {
             <div className="totalRow">
               <p>Total Balance</p>
               <p className="total">
-                {currency} {toCurrencyFormat(subTotalAmount + vatTotal)}
+                {currency} {toCurrencyFormat(creditMemoData.totalAmount)}
               </p>
             </div>
           </div>
@@ -763,6 +762,7 @@ export default function CreditMemoSummary(props: any) {
           cid={cid}
           id={id}
           transactionType={creditMemoData?.transactionType}
+          creditMemoData={creditMemoData}
         ></NotesWidget>
         <FileUploadWidget
           status={status}
