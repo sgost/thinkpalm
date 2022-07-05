@@ -364,7 +364,10 @@ const ProductInvoiceCreation = ({
                       type="number"
                       min="0"
                       defaultValue={item.amount}
-                      onKeyDown={(e) => blockInvalidChar(e)}
+                      onKeyDown={(e) => {
+                        ["e", "E", "+", "-"].includes(e.key) &&
+                          e.preventDefault();
+                      }}
                       className="inputField"
                       onChange={(e) => {
                         if (e.target.value.split(".")[1]?.length >= 2)

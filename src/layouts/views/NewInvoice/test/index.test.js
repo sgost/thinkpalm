@@ -2277,6 +2277,7 @@ describe("Stepper for Credit Memo  1, 2 and 3 api country fail ", () => {
 
     const AmountInputField = await screen.findByTestId(/Amount/);
     expect(AmountInputField).toBeInTheDocument();
+    fireEvent.keyDown(AmountInputField);
     fireEvent.change(AmountInputField, { target: { value: 1 } });
     const addNewText = await screen.findAllByText(/Add New Item/);
     expect(addNewText[0]).toBeInTheDocument();
