@@ -289,16 +289,16 @@ export default function CreditMemoSummary(props: any) {
       // subtotal = subtotal + parseInt(a.totalAmount);
       subtotal = subtotal + a.totalAmount;
     }
-    console.log('subtotal',subtotal , vatValue)
+    console.log('subtotal', subtotal, vatValue)
     setSubTotalAmount(subtotal);
-    if(vatValue != undefined ){
+    if (vatValue != undefined) {
       setVatAmount(subtotal * (vatValue / 100));
     }
     const totalAmountVar = subtotal + subtotal * (vatValue / 100)
     if (creditMemoData.status != 9) {
       setPayload({ ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar })
     } else {
-      setPayload({...payload, invoiceBalance: 0,  totalAmount: totalAmountVar})
+      setPayload({ ...payload, invoiceBalance: 0, totalAmount: totalAmountVar })
     }
   };
   /* istanbul ignore next */
@@ -763,6 +763,7 @@ export default function CreditMemoSummary(props: any) {
           cid={cid}
           id={id}
           transactionType={creditMemoData?.transactionType}
+          creditMemoData={creditMemoData}
         ></NotesWidget>
         <FileUploadWidget
           status={status}
