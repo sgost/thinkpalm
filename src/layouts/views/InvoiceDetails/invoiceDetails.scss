@@ -962,6 +962,18 @@
                 word-break: break-all;
                 width: -webkit-fill-available;
               }
+
+              p {
+                display: flex;
+                background-color: $active;
+                padding: 1rem;
+                border-radius: 4px;
+                color: $primary-gray;
+                margin: 1rem 0px;
+                font-size: 0.8rem;
+                word-break: break-all;
+                line-height: 2rem;
+              }
             }
           }
         }

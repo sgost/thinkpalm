@@ -27,7 +27,6 @@ export default function NotesWidget(props: any) {
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const tempToken = localStorage.getItem("accessToken");
   const permission: any = getDecodedToken();
-  const [payloads, setPayloads] = useState<any>(creditMemoData);
 
   useEffect(() => {
     if (isPaymentPage) {
@@ -44,24 +43,17 @@ export default function NotesWidget(props: any) {
   //save note
   const editNote = (value: any, index: any) => {
     let noteNum;
-    creditMemoData.invoiceNotes.map((item, i) => {
+    creditMemoData.invoiceNotes.filter((item: any, i: any) => {
       if (i == index) {
         noteNum = item.id;
       }
     })
-
-    console.log('noteNum', noteNum)
-    console.log('ee', value);
-    console.log('index', index);
     notes[index].note = value;
     setNotes([...notes])
-    saveEditNote(noteNum)
+    saveEditNote(noteNum, value)
   }
 
-  console.log('notes', notes)
-
-
-  const saveEditNote = (index: any) => {
+  const saveEditNote = (index: any, value: any) => {
     const url = saveEditNoteApi(index);
     let currDate = new Date();
 
@@ -71,25 +63,22 @@ export default function NotesWidget(props: any) {
       headers: getHeaders(tempToken, cid, isClient),
       data: {
         invoiceId: id,
-        noteType: "1",
-        note: false,
+        noteType: 2,
+        note: value,
         isCustomerVisible: true,
-        exportToQuickbooks: true,
+        exportToQuickbooks: false,
         createdDate: currDate,
-        modifiedBy: id,
-        modifiedByUser: {
-          document: {
-            invoiceNotes: payloads.invoiceNotes
-          }
-        },
-        displayInPDF: isVisibleOnPDFInvoice,
+        modifiedBy: "00000000-0000-0000-0000-000000000000",
+        modifiedByUser: null,
+        displayInPDF: false,
         customerId: cid,
+        declineOption: null,
+        id: index
       },
     })
       .then((res: any) => {
         setNotes([res.data, ...notes]);
         setNoteText("");
-        console.log('ress', res)
       })
       .catch((e: any) => {
         console.log(e);
@@ -97,8 +86,6 @@ export default function NotesWidget(props: any) {
   }
 
 
-
-  console.log('creditMemoData', creditMemoData)
   /* istanbul ignore next */
   return (
     <div className="box">
@@ -161,7 +148,7 @@ export default function NotesWidget(props: any) {
                         <Icon color="#b4b3bb" icon="info" size="small" />
                       </div>
                       <div className="noteBtn">
-                        <span onClick={() => saveEditNote(index)}>
+                        <span>
                           <Icon color="#526FD6" icon="edit" size="small" />
                         </span>
                         <span>
@@ -171,6 +158,7 @@ export default function NotesWidget(props: any) {
                     </div>
                     <div className="note">
                       <input type="text" value={item.note} className="noteInput" onChange={(e) => editNote(e.target.value, index)} />
+                      <p>{item.note}</p>
                     </div>
                   </div>
                 );
