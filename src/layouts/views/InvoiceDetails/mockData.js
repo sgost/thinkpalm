@@ -483,7 +483,7 @@ export const apiInvoiceMockData = {
     currencyId: 840,
     qbInvoiceNo: 21241,
     invoiceNo: "1001002",
-    status: 3,
+    status: 10,
     transactionType: 7,
     createdDate: "2022-04-08T00:00:00",
     paymentDate: null,

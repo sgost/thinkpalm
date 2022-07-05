@@ -160,6 +160,13 @@ export const getInvoiceDetailsUrl = (id) => {
   );
 };
 
+/* istanbul ignore next */
+export const changeInvoiceStatusAPI = (invoiceId, statusCode) => {
+  return (
+    baseURL + services.atlasInvoiceService + "/Invoices/" + invoiceId + "/" + statusCode
+  );
+}
+
 export const getBillingAddressUrl = (cid) => {
   return (
     baseURL + services.atlasCustomerService + `/Customer?customerId=${cid}`

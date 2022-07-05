@@ -2,6 +2,12 @@
 @import "../../../styles/styles";
 
 .atlas-payment-invoices {
+  .ponumber{
+    font-size: 0.8889rem;
+    margin-bottom: 0.4rem;
+    color: #041e42;
+    font-weight: 450;
+  }
   .invoiceDetailsContainer {
     padding-bottom: 2.222rem;
 
@@ -65,7 +71,9 @@
 
         .addPaymentButton {
           margin-right: 2.1rem;
-
+          button.a-button.medium{
+            height: 2.8rem;
+          }
           button.a-button.medium {
             margin-right: -2rem;
           }
@@ -166,15 +174,19 @@
       }
 
       button.a-button.small {
-        border: 2px solid #526fd6 !important;
+        border: 0.1111rem solid #526fd6 !important;
 
         &:disabled {
-          border: 2px solid #cbd4f3 !important;
+          border: 0.1111rem solid #cbd4f3 !important;
         }
       }
 
       .download-invoice-dropdown {
         position: relative;
+        svg{
+          width: 1.3333rem;
+          height: 1.3333rem;
+        }
       }
 
       .cp-download {
@@ -406,6 +418,8 @@
 
         .poNoInput {
           height: 2rem;
+          border: 0.056rem solid #ced4da !important;
+          border-radius: 0.2rem;
         }
 
         .poNo {
@@ -1217,7 +1231,7 @@
           border: 2px solid #526fd6;
 
           &:disabled {
-            border: 2px solid #cbd4f3 !important;
+            border: 0.1111rem solid #cbd4f3 !important;
           }
         }
 
@@ -1715,11 +1729,38 @@
       }
     }
   }
-
   .initialsImg {
     background-color: $alt-bg;
     font-size: 0.8rem;
     border-radius: 12rem;
     padding: 0.3rem 0.23rem;
+  }
+
+  .sent-popup{
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem;
+    .sent-popup-header{
+      font-size: 1.75rem;
+      padding-bottom: 2.5rem;
+      font-weight: 500;
+    }
+    .sent-popout-body{
+      font-size: 1.125rem;
+    }
+    .sent-popout-action{
+      display: flex;
+      justify-content: end;
+      margin-top: 3.5rem;
+    }
+    .no-sent-btn{
+      width: 4.6875rem;
+      height: 2.953rem;
+      margin-right: 1.125rem;
+    }
+    .yes-sent-btn{
+      width: 4.875rem;
+      height: 3.125rem;
+    }
   }
 }

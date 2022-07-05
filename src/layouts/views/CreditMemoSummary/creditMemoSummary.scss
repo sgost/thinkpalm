@@ -37,6 +37,9 @@
         .react-datepicker__input-container {
           .a-input {
             width: -webkit-fill-available !important;
+            &:disabled{
+              border: 0.056rem solid #ced4da !important;
+            }
           }
         }
         .input-component{
@@ -101,7 +104,7 @@
 
         .a-dropdown.is-disabled {
           background: #f5f5f6 !important;
-          border: 1px solid #ebebed !important;
+          border: 0.056rem solid #ced4da !important;
           box-shadow: none;
           opacity: 1;
           pointer-events: none;
