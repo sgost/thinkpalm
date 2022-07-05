@@ -2,12 +2,13 @@
 @import "../../../styles/styles";
 
 .atlas-payment-invoices {
-  .ponumber{
+  .ponumber {
     font-size: 0.8889rem;
     margin-bottom: 0.4rem;
     color: #041e42;
     font-weight: 450;
   }
+
   .invoiceDetailsContainer {
     padding-bottom: 2.222rem;
 
@@ -71,9 +72,11 @@
 
         .addPaymentButton {
           margin-right: 2.1rem;
-          button.a-button.medium{
+
+          button.a-button.medium {
             height: 2.8rem;
           }
+
           button.a-button.medium {
             margin-right: -2rem;
           }
@@ -183,7 +186,8 @@
 
       .download-invoice-dropdown {
         position: relative;
-        svg{
+
+        svg {
           width: 1.3333rem;
           height: 1.3333rem;
         }
@@ -959,10 +963,25 @@
               .noteBtn {
                 display: flex;
                 gap: 1rem;
+                cursor: pointer;
               }
             }
 
             .note {
+              .noteInput {
+                display: flex;
+                outline: note;
+                background-color: $active;
+                padding: 1.5rem 1rem;
+                border-radius: 4px;
+                color: $primary-gray;
+                margin: 1rem 0px;
+                font-size: 0.8rem;
+                word-break: break-all;
+                width: -webkit-fill-available;
+                border: 1px solid #526fd6;
+              }
+
               p {
                 display: flex;
                 background-color: $active;
@@ -1729,6 +1748,7 @@
       }
     }
   }
+
   .initialsImg {
     background-color: $alt-bg;
     font-size: 0.8rem;
@@ -1736,29 +1756,34 @@
     padding: 0.3rem 0.23rem;
   }
 
-  .sent-popup{
+  .sent-popup {
     display: flex;
     flex-direction: column;
     padding: 2.5rem;
-    .sent-popup-header{
+
+    .sent-popup-header {
       font-size: 1.75rem;
       padding-bottom: 2.5rem;
       font-weight: 500;
     }
-    .sent-popout-body{
+
+    .sent-popout-body {
       font-size: 1.125rem;
     }
-    .sent-popout-action{
+
+    .sent-popout-action {
       display: flex;
       justify-content: end;
       margin-top: 3.5rem;
     }
-    .no-sent-btn{
+
+    .no-sent-btn {
       width: 4.6875rem;
       height: 2.953rem;
       margin-right: 1.125rem;
     }
-    .yes-sent-btn{
+
+    .yes-sent-btn {
       width: 4.875rem;
       height: 3.125rem;
     }
