@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Dropdown, Icon, DatePicker } from "atlasuikit";
 import axios from "axios";
 import "./NewInvoiceCreation.scss";
-import { getCountryByCustomer, getHeaders, urls } from "../../../urls/urls";
+import { getCountryByCustomer, getHeaders, getVatValue, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
 import Input from "../../../components/Input/input";
@@ -35,6 +35,7 @@ const NewInvoiceCreation = ({
   setQbIdValue,
   paymentTermsOptions,
   setPaymentTermsOptions,
+  setVatValue
 }: any) => {
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
@@ -178,6 +179,24 @@ const NewInvoiceCreation = ({
       });
   };
 
+  const vatDetailApi = () => {
+
+    const headers = {
+      headers: getHeaders(tempToken, currentOrgId, "false"),
+    };
+
+    axios
+    .get(getVatValue(stepperOneData?.customerId), headers)
+    .then((resp) => {
+      if (resp.status == 200) {
+        setVatValue(resp?.data?.feeConfiguration?.percentage);
+      }
+    })
+    .catch((resp) => {
+      console.log(resp);
+    });
+  }
+
   const handleDropOption = (
     item: any,
     options: any,
@@ -213,6 +232,17 @@ const NewInvoiceCreation = ({
       getCustomerDropdownOptions();
     }
   }, [stepperOneData?.type]);
+
+  useEffect(() => {
+    if (
+      (stepperOneData?.type === "Credit Memo" ||
+      stepperOneData?.type === "Proforma" ||
+      stepperOneData?.type === "Miscellaneous")
+      && (stepperOneData?.customerId)
+    ) {
+      vatDetailApi();
+    }
+  }, [stepperOneData?.type, stepperOneData?.customerId]);
 
   useEffect(() => {
     if (stepperOneData?.type === "Payroll") {
