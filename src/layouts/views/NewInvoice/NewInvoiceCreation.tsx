@@ -93,7 +93,21 @@ const NewInvoiceCreation = ({
         }
       )
       .then((response: any) => {
-        const preData: any = preparedCustomerData(response.data);
+        let preData: any = preparedCustomerData(response.data);
+
+        //guids are coming randomly either small or capital , coverting them to lowercases
+        let key, keys = Object.keys(decToken.Permissions);
+        let n = keys.length;
+        let lowerCaseDecToken : any = decToken
+        while (n--) {
+          key = keys[n];
+          lowerCaseDecToken.Permissions[key.toLowerCase()] = decToken.Permissions[key];
+        }
+        console.log('lowerCaseDecToken',lowerCaseDecToken)
+        preData = preData.filter((item: any) => {
+           return lowerCaseDecToken?.Permissions[item.customerId.toLowerCase()]?.Payments?.InvoiceList?.includes('Add') || false
+        })
+
         setCustomerOption(preData);
         setLoading(false);
       })
