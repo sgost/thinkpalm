@@ -713,6 +713,8 @@ export default function CreditMemoSummary(props: any) {
         )}
         <div className="feeSummaryCalc">
           <div className="rowBox">
+            {/*
+            Commenting this until we receive vat calculation story with further clarity
             <div className="rowFee">
               <p className="title">Subtotal Due</p>
               <p className="amount">
@@ -724,7 +726,7 @@ export default function CreditMemoSummary(props: any) {
               <p className="amount">
                 {currency} {toCurrencyFormat(vatTotal)}
               </p>
-            </div>
+            </div> */}
             <div className="totalRow">
               <p>Total Balance</p>
               <p className="total">
