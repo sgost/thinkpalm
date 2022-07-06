@@ -1472,7 +1472,9 @@ export default function InvoiceDetails() {
                       onClick={() =>
                         missTransType != 7
                           ? setIsDownloadOpen(!isDownloadOpen)
-                          : function noRefCheck() {}
+                          : function noRefCheck() {
+                            console.log("download didn't open")
+                          }
                       }
                       className={`${
                         missTransType == 7 || deleteDisableButtons === true

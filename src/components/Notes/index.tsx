@@ -17,7 +17,6 @@ export default function NotesWidget(props: any) {
     id,
     setNotes,
     transactionType,
-    status,
     isPaymentPage,
     setPaymentNote,
     currentStatusValue,
