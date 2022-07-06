@@ -21,6 +21,8 @@
             font-size: 1rem;
             position: relative;
             width: -webkit-fill-available;
+            width: -moz-available;
+            width: fill-available;
         }
         .disable-input{
             background: #F5F5F6 !important;
