@@ -282,7 +282,7 @@ export default function NotesWidget(props: any) {
                 handleOnClick={() => {
                   const url = urls.saveNote;
                   let currDate = new Date();
-
+                  
                   axios({
                     method: "POST",
                     url: url,
@@ -301,7 +301,7 @@ export default function NotesWidget(props: any) {
                     },
                   })
                     .then((res: any) => {
-                      setNotes([res.data, ...notes]);
+                      setNotes([res.data.model, ...notes]);
                       setNoteText("");
                     })
                     .catch((e: any) => {
