@@ -15,7 +15,9 @@
         }
 
         .a-dropdown__search {
-          width: 74%;
+          width: -webkit-fill-available;
+          width: -moz-available;
+          width: fill-available;
         }
       }
       .ui-datepicker-req {

@@ -31,4 +31,12 @@
             color: #B4B3BB !important;
         }
     }
+    .a-progress__items{
+        .count{
+            svg{
+                width: 1.3333rem;
+                height: 1.3333rem;
+            }
+        }
+    }
 }
