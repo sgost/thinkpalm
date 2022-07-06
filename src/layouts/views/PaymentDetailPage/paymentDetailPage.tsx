@@ -824,8 +824,7 @@ const PaymentDetailPage = () => {
                     </div>
                   </div>
                   {invoiceItem != null &&
-                    invoiceItem?.qbInvoiceNo != 0 &&
-                    invoiceItem?.qbInvoiceNo != undefined && (
+                    invoiceItem?.qbInvoiceNo != undefined && invoiceItem?.qbInvoiceNo > 0 &&  (
                       <p>QBO No. {invoiceItem.qbInvoiceNo}</p>
                     )}
                 </div>
