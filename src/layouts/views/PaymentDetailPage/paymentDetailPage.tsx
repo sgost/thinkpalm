@@ -779,17 +779,11 @@ const PaymentDetailPage = () => {
               : isFullAmount;
 
           const paymentHeader =
-<<<<<<< HEAD
             invoiceItem.transactionTypeLabel === "Credit Memo" ? (
               <p>Refund Details</p>
             ) : (
               <p>Payment Details</p>
             );
-=======
-            invoiceItem.transactionTypeLabel === "Credit Memo"
-              ? <p>Refund Details</p>
-              : <p>Payment Details</p>;
->>>>>>> 5458de911d2b63a1acb487b051339dd85d3519cc
           return (
             <div className="paymentPageInvoiceInfo">
               <div className="paymentPageTopBar">
