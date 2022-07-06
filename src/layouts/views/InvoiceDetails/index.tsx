@@ -174,7 +174,6 @@ export default function InvoiceDetails() {
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
-  const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
     {
@@ -380,27 +379,27 @@ export default function InvoiceDetails() {
 
                     action:
                       res.data?.invoice?.status === 2 ||
-                      res.data?.invoice?.status === 12
+                        res.data?.invoice?.status === 12
                         ? {
-                            value: (
-                              <div
-                                data-testid="delete-icon"
-                                onClick={() => {
-                                  setDeleteEmployeeModalOpen({
-                                    isModalOpen: true,
-                                    data: item,
-                                  });
-                                }}
-                              >
-                                <Icon
-                                  icon="trash"
-                                  color="#E32C15"
-                                  size="large"
-                                />
-                              </div>
-                            ),
-                            color: "#E32C15",
-                          }
+                          value: (
+                            <div
+                              data-testid="delete-icon"
+                              onClick={() => {
+                                setDeleteEmployeeModalOpen({
+                                  isModalOpen: true,
+                                  data: item,
+                                });
+                              }}
+                            >
+                              <Icon
+                                icon="trash"
+                                color="#E32C15"
+                                size="large"
+                              />
+                            </div>
+                          ),
+                          color: "#E32C15",
+                        }
                         : "",
                   });
                 });
@@ -1291,7 +1290,6 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
-            setReCalButtonDisable(false);
           }, 3000);
         }
       })
@@ -1349,13 +1347,11 @@ export default function InvoiceDetails() {
       })
       .catch((error: any) => {
         console.log(error);
-        setReCalButtonDisable(false);
         setApprovalMsg("Invoice Recalculaton Failed");
         setTimeout(() => {
           setApprovalMsg("");
         }, 3000);
       });
-    setReCalButtonDisable(true);
   };
 
   const handleMinDate = (dateType: string) => {
@@ -1400,6 +1396,16 @@ export default function InvoiceDetails() {
   const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
   const TotalBal = topPanel.total != "undefined" ? topPanel.total : 0;
 
+
+
+  //download btn
+  const downDisFun = () => {
+    if (missTransType == 7 || deleteDisableButtons === true) {
+      return "download_disable"
+    } else {
+      return "download"
+    }
+  }
   return (
     <>
       {loading ? (
@@ -1476,12 +1482,7 @@ export default function InvoiceDetails() {
                             console.log("download didn't open")
                           }
                       }
-                      className={`${
-                        missTransType == 7 || deleteDisableButtons === true
-                          ? "download_disable"
-                          : "download"
-                      }`}
-                      // className="download"
+                      className={downDisFun()}
                     >
                       <p className="text">Download</p>
                       <Icon
@@ -1514,7 +1515,6 @@ export default function InvoiceDetails() {
                 getPermissions(1, "Edit") && (
                   <div className="saveBtnContainer">
                     <Button
-                      disabled={reCalButtonDisable}
                       handleOnClick={() => {
                         reCalculate();
                       }}
@@ -1547,9 +1547,9 @@ export default function InvoiceDetails() {
                 missTransType !== 4 &&
                 missTransType !== 7 &&
                 getPermissions(missTransType, "AddPayment")) ||
-              (currentStatusValue == statusValues.invoiced &&
-                missTransType === 7 &&
-                getPermissions(missTransType, "AddPayment")) ? (
+                (currentStatusValue == statusValues.invoiced &&
+                  missTransType === 7 &&
+                  getPermissions(missTransType, "AddPayment")) ? (
                 <div className="addPaymentButton">
                   <Button
                     className="primary-blue medium"
@@ -1601,22 +1601,22 @@ export default function InvoiceDetails() {
                             apiData?.data?.invoice?.exchangeRate,
                           totalAmount:
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(topPanel.total) ||
+                            " " +
+                            toCurrencyFormat(topPanel.total) ||
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(
-                                apiData?.data?.invoice?.totalAmount
-                              ),
+                            " " +
+                            toCurrencyFormat(
+                              apiData?.data?.invoice?.totalAmount
+                            ),
                           invoiceBalance:
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(topPanel.open) ||
+                            " " +
+                            toCurrencyFormat(topPanel.open) ||
                             getBillingCurrency() +
-                              " " +
-                              toCurrencyFormat(
-                                apiData?.data?.invoice?.invoiceBalance
-                              ),
+                            " " +
+                            toCurrencyFormat(
+                              apiData?.data?.invoice?.invoiceBalance
+                            ),
                           invoiceFrom:
                             creditMemoData?.invoiceFrom ||
                             apiData?.data?.invoice?.invoiceFrom,
@@ -1692,12 +1692,12 @@ export default function InvoiceDetails() {
                       ];
                       navigate(
                         "/pay/invoicedetails" +
-                          id +
-                          "/" +
-                          cid +
-                          "/" +
-                          isClient +
-                          "/payments",
+                        id +
+                        "/" +
+                        cid +
+                        "/" +
+                        isClient +
+                        "/payments",
                         {
                           state: {
                             InvoiceId:
@@ -1717,7 +1717,7 @@ export default function InvoiceDetails() {
               )}
 
               {currentStatusValue == statusValues.approved &&
-              missTransType === 4 ? (
+                missTransType === 4 ? (
                 <div className="addPaymentButton">
                   <Button
                     className="primary-blue medium"
@@ -1794,12 +1794,12 @@ export default function InvoiceDetails() {
                       ];
                       navigate(
                         "/pay/invoicedetails" +
-                          id +
-                          "/" +
-                          cid +
-                          "/" +
-                          isClient +
-                          "/payments",
+                        id +
+                        "/" +
+                        cid +
+                        "/" +
+                        isClient +
+                        "/payments",
                         {
                           state: {
                             InvoiceId: creditMemoData.invoiceNo,
@@ -2013,7 +2013,7 @@ export default function InvoiceDetails() {
                   <>
                     <p className="ponumber">PO Number</p>
                     {currentStatusValue === statusValues.arReview ||
-                    currentStatusValue === statusValues.open ? (
+                      currentStatusValue === statusValues.open ? (
                       <input
                         data-testid="PONUMBER"
                         onChange={(e: any) => {
@@ -2035,7 +2035,7 @@ export default function InvoiceDetails() {
               <div className="divContainer">
                 <p className="heading">Invoice Date</p>
                 {currentStatusValue === statusValues.arReview ||
-                currentStatusValue === statusValues.open ? (
+                  currentStatusValue === statusValues.open ? (
                   <div className="dpContainer">
                     <DatePicker
                       label="invoiceDate"
@@ -2066,7 +2066,7 @@ export default function InvoiceDetails() {
                           <>
                             <p className="heading">Invoice Approval</p>
                             {currentStatusValue === statusValues.arReview ||
-                            currentStatusValue === statusValues.open ? (
+                              currentStatusValue === statusValues.open ? (
                               <div className="dpContainer dpMidMargin">
                                 <DatePicker
                                   minDate={handleMinDate("approvalDate")}
@@ -2128,7 +2128,7 @@ export default function InvoiceDetails() {
 
                     <p className="heading">Payment Due</p>
                     {currentStatusValue === statusValues.arReview ||
-                    currentStatusValue === statusValues.open ? (
+                      currentStatusValue === statusValues.open ? (
                       <div className="dpContainer">
                         <DatePicker
                           minDate={handleMinDate("paymentDate")}
@@ -2182,9 +2182,9 @@ export default function InvoiceDetails() {
 
           {(currentStatusValue === statusValues.paid ||
             currentStatusValue === statusValues.partiallyPaid) &&
-          (missTransType === 1 ||
-            missTransType === 2 ||
-            missTransType === 3) ? (
+            (missTransType === 1 ||
+              missTransType === 2 ||
+              missTransType === 3) ? (
             <div className="paymentCompnent">
               <PaymentDetailContainer
                 setPaymentDetailData={setPaymentDetailData}
@@ -2772,11 +2772,11 @@ export default function InvoiceDetails() {
                           <span>
                             {"Effective Start Date: "}
                             {isCompensatioModalOpen &&
-                            isCompensatioModalOpen.data &&
-                            isCompensatioModalOpen?.data?.startDate
+                              isCompensatioModalOpen.data &&
+                              isCompensatioModalOpen?.data?.startDate
                               ? moment(
-                                  isCompensatioModalOpen?.data?.startDate
-                                ).format("D MMM YYYY")
+                                isCompensatioModalOpen?.data?.startDate
+                              ).format("D MMM YYYY")
                               : ""}
                           </span>
                         </div>
