@@ -1396,6 +1396,16 @@ export default function InvoiceDetails() {
   const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
   const TotalBal = topPanel.total != "undefined" ? topPanel.total : 0;
 
+
+
+  //download btn
+  const downDisFun = () => {
+    if (missTransType == 7 || deleteDisableButtons === true) {
+      return "download_disable"
+    } else {
+      return "download"
+    }
+  }
   return (
     <>
       {loading ? (
@@ -1472,10 +1482,7 @@ export default function InvoiceDetails() {
                             console.log("download didn't open")
                           }
                       }
-                      className={((missTransType == 7) || (deleteDisableButtons === true))
-                        ? "download_disable"
-                        : "download"
-                      }
+                      className={downDisFun()}
                     >
                       <p className="text">Download</p>
                       <Icon
