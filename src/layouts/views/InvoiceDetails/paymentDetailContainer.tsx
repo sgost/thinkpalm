@@ -13,7 +13,6 @@ import {
 import { statusValues } from "./statusValues";
 
 const PaymentDetailContainer = ({
-  status,
   cid,
   lookupData,
   paymentDetailData,
