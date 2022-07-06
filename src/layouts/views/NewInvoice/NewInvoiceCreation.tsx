@@ -103,7 +103,6 @@ const NewInvoiceCreation = ({
           key = keys[n];
           lowerCaseDecToken.Permissions[key.toLowerCase()] = decToken.Permissions[key];
         }
-        console.log('lowerCaseDecToken',lowerCaseDecToken)
         preData = preData.filter((item: any) => {
            return lowerCaseDecToken?.Permissions[item.customerId.toLowerCase()]?.Payments?.InvoiceList?.includes('Add') || false
         })
