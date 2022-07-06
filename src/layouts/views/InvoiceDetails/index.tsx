@@ -1407,7 +1407,6 @@ export default function InvoiceDetails() {
           />
         </div>
         <div className="buttons">
-          {console.log('status', currentStatusValue , statusValues.arReview ,statusValues.open ,missTransType )}
           {(currentStatusValue == statusValues.arReview ||
             (currentStatusValue == statusValues.open && missTransType !== 1)) &&
             (getPermissions(missTransType, "Delete") ||
