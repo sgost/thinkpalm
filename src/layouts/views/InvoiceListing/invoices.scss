@@ -32,7 +32,9 @@
     }
 
     .a-dropdown__search {
-      width: 70.5%;
+      width: -webkit-fill-available;
+      width: -moz-available;
+      width: fill-available;
     }
   }
 

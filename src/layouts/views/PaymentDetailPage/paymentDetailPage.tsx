@@ -98,11 +98,11 @@ const PaymentDetailPage = () => {
     if (!navigateToInvoice) {
       navigate(
         "/pay/invoicedetails" +
-          state.state.inveoicesData[0].id +
-          "/" +
-          state.state.inveoicesData[0].customerId +
-          "/" +
-          "false",
+        state.state.inveoicesData[0].id +
+        "/" +
+        state.state.inveoicesData[0].customerId +
+        "/" +
+        "false",
         {
           state: {
             InvoiceId: state.state.inveoicesData[0].invoiceNo,
@@ -576,18 +576,18 @@ const PaymentDetailPage = () => {
         invoiceids: invoiceIds,
         paymentnotes: paymentNote?.note
           ? [
-              {
-                noteType: "2",
-                note: paymentNote.note,
-                isCustomerVisible: paymentNote.isVisibleToCustomer,
-                exportToQuickbooks: paymentNote.isExportToQb,
-                createdDate: currDate,
-                modifiedBy: "00000000-0000-0000-0000-000000000000",
-                modifiedByUser: null,
-                displayInPDF: paymentNote.currDate,
-                customerId: state.state.inveoicesData[0].customerId,
-              },
-            ]
+            {
+              noteType: "2",
+              note: paymentNote.note,
+              isCustomerVisible: paymentNote.isVisibleToCustomer,
+              exportToQuickbooks: paymentNote.isExportToQb,
+              createdDate: currDate,
+              modifiedBy: "00000000-0000-0000-0000-000000000000",
+              modifiedByUser: null,
+              displayInPDF: paymentNote.currDate,
+              customerId: state.state.inveoicesData[0].customerId,
+            },
+          ]
           : [],
         paymentdocuments: [],
         Payments: [
@@ -616,10 +616,10 @@ const PaymentDetailPage = () => {
             multiPaymentBlocks.length === 1
               ? isFullAmount
                 ? parseFloat(
-                    state?.state?.inveoicesData[0]?.invoiceBalance
-                      ?.split(" ")[1]
-                      .replace(",", "")
-                  )
+                  state?.state?.inveoicesData[0]?.invoiceBalance
+                    ?.split(" ")[1]
+                    .replace(",", "")
+                )
                 : parseFloat(totals[i].text)
               : parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
@@ -642,18 +642,18 @@ const PaymentDetailPage = () => {
         invoiceids: invoiceIds,
         paymentnotes: paymentNote?.note
           ? [
-              {
-                noteType: "2",
-                note: paymentNote.note,
-                isCustomerVisible: paymentNote.isVisibleToCustomer,
-                exportToQuickbooks: paymentNote.isExportToQb,
-                createdDate: currDate,
-                modifiedBy: "00000000-0000-0000-0000-000000000000",
-                modifiedByUser: null,
-                displayInPDF: paymentNote.currDate,
-                customerId: state.state.inveoicesData[0].customerId,
-              },
-            ]
+            {
+              noteType: "2",
+              note: paymentNote.note,
+              isCustomerVisible: paymentNote.isVisibleToCustomer,
+              exportToQuickbooks: paymentNote.isExportToQb,
+              createdDate: currDate,
+              modifiedBy: "00000000-0000-0000-0000-000000000000",
+              modifiedByUser: null,
+              displayInPDF: paymentNote.currDate,
+              customerId: state.state.inveoicesData[0].customerId,
+            },
+          ]
           : [],
         paymentdocuments: [],
         Payments: arrData,
@@ -677,11 +677,11 @@ const PaymentDetailPage = () => {
           } else {
             navigate(
               "/pay/invoicedetails" +
-                state.state.inveoicesData[0].id +
-                "/" +
-                state.state.inveoicesData[0].customerId +
-                "/" +
-                "false",
+              state.state.inveoicesData[0].id +
+              "/" +
+              state.state.inveoicesData[0].customerId +
+              "/" +
+              "false",
               {
                 state: {
                   InvoiceId: state.state.inveoicesData[0].invoiceNo,
@@ -721,36 +721,36 @@ const PaymentDetailPage = () => {
             steps={
               state?.state?.checkPage
                 ? [
-                    {
-                      isActive: true,
-                      key: "Invoices",
-                      label: "Invoices",
-                      onClickLabel: () => {
-                        setHideTopCheck(false);
-                      },
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: "Invoices",
+                    onClickLabel: () => {
+                      setHideTopCheck(false);
                     },
+                  },
 
-                    {
-                      isActive: true,
-                      key: "Invoices",
-                      label: breadcrumbsLabel(),
-                      onClickLabel: () => {
-                        setNavigateToInvoice(false);
-                      },
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: breadcrumbsLabel(),
+                    onClickLabel: () => {
+                      setNavigateToInvoice(false);
                     },
-                    sharedBreadCrumbs.payments,
-                  ]
+                  },
+                  sharedBreadCrumbs.payments,
+                ]
                 : [
-                    {
-                      isActive: true,
-                      key: "Invoices",
-                      label: "Invoices",
-                      onClickLabel: () => {
-                        setHideTopCheck(false);
-                      },
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: "Invoices",
+                    onClickLabel: () => {
+                      setHideTopCheck(false);
                     },
-                    sharedBreadCrumbs.payments,
-                  ]
+                  },
+                  sharedBreadCrumbs.payments,
+                ]
             }
           />
         </div>
@@ -779,11 +779,17 @@ const PaymentDetailPage = () => {
               : isFullAmount;
 
           const paymentHeader =
+<<<<<<< HEAD
             invoiceItem.transactionTypeLabel === "Credit Memo" ? (
               <p>Refund Details</p>
             ) : (
               <p>Payment Details</p>
             );
+=======
+            invoiceItem.transactionTypeLabel === "Credit Memo"
+              ? <p>Refund Details</p>
+              : <p>Payment Details</p>;
+>>>>>>> 5458de911d2b63a1acb487b051339dd85d3519cc
           return (
             <div className="paymentPageInvoiceInfo">
               <div className="paymentPageTopBar">
@@ -898,7 +904,7 @@ const PaymentDetailPage = () => {
                                 }}
                                 isOpen={
                                   toggleState.index == i &&
-                                  toggleState.invoicesIndex == invoicesIndex
+                                    toggleState.invoicesIndex == invoicesIndex
                                     ? isCurrencyDropdownOpen
                                     : false
                                 }
@@ -934,7 +940,7 @@ const PaymentDetailPage = () => {
                                 }}
                                 isOpen={
                                   toggleState.index == i &&
-                                  toggleState.invoicesIndex == invoicesIndex
+                                    toggleState.invoicesIndex == invoicesIndex
                                     ? isLocationDropdownOpen
                                     : false
                                 }
@@ -987,7 +993,7 @@ const PaymentDetailPage = () => {
                             <div
                               className={
                                 invoiceItem.transactionTypeLabel ===
-                                "Credit Memo"
+                                  "Credit Memo"
                                   ? "paymentCreditMemoInnerLowerBlock row"
                                   : "paymentInnerLowerBlock row"
                               }
@@ -1016,7 +1022,7 @@ const PaymentDetailPage = () => {
                                   }}
                                   isOpen={
                                     toggleState.index == i &&
-                                    toggleState.invoicesIndex == invoicesIndex
+                                      toggleState.invoicesIndex == invoicesIndex
                                       ? isBankDropdownOpen
                                       : false
                                   }
@@ -1029,7 +1035,7 @@ const PaymentDetailPage = () => {
                                   }
                                   title={
                                     invoiceItem.transactionTypeLabel ===
-                                    "Credit Memo"
+                                      "Credit Memo"
                                       ? "Credited from bank"
                                       : "Deposited to bank"
                                   }
@@ -1057,7 +1063,7 @@ const PaymentDetailPage = () => {
                                   }}
                                   isOpen={
                                     toggleState.index == i &&
-                                    toggleState.invoicesIndex == invoicesIndex
+                                      toggleState.invoicesIndex == invoicesIndex
                                       ? isPaymentMethodDropdownOpen
                                       : false
                                   }
@@ -1074,33 +1080,33 @@ const PaymentDetailPage = () => {
 
                               {invoiceItem.transactionTypeLabel ===
                                 "Credit Memo" && (
-                                <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
-                                  <div className="invoiceNumber">
-                                    <span>Invoice Number</span>
-                                    <input
-                                      value={invoiceNumber}
-                                      name="Reference No"
-                                      type="number"
-                                      placeholder="Enter Invoice Number"
-                                      min="0"
-                                      pattern="[+-]?\d+(?:[.,]\d+)?"
-                                      onKeyDown={(e) => {
-                                        ["e", "E", "+", "-", "."].includes(
-                                          e.key
-                                        ) && e.preventDefault();
-                                      }}
-                                      onChange={(e) => {
-                                        setInvoiceNumber(e.target.value);
-                                      }}
-                                    />
+                                  <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
+                                    <div className="invoiceNumber">
+                                      <span>Invoice Number</span>
+                                      <input
+                                        value={invoiceNumber}
+                                        name="Reference No"
+                                        type="number"
+                                        placeholder="Enter Invoice Number"
+                                        min="0"
+                                        pattern="[+-]?\d+(?:[.,]\d+)?"
+                                        onKeyDown={(e) => {
+                                          ["e", "E", "+", "-", "."].includes(
+                                            e.key
+                                          ) && e.preventDefault();
+                                        }}
+                                        onChange={(e) => {
+                                          setInvoiceNumber(e.target.value);
+                                        }}
+                                      />
+                                    </div>
                                   </div>
-                                </div>
-                              )}
+                                )}
                             </div>
 
                             <div className="PaymentPageTotalAmount">
                               {invoiceItem.transactionTypeLabel ===
-                              "Credit Memo" ? (
+                                "Credit Memo" ? (
                                 <p>Refund Amount</p>
                               ) : (
                                 <p>Amount</p>
@@ -1114,26 +1120,26 @@ const PaymentDetailPage = () => {
                                 )}
                               {(!isFullAmount ||
                                 multiPaymentBlocks.length > 1) && (
-                                <input
-                                  type="number"
-                                  value={
-                                    totals.find(
-                                      (e: any) =>
-                                        e.invoiceKey === invoiceItem.id &&
-                                        e.blockKey === item.id
-                                    )?.text || ""
-                                  }
-                                  onChange={(e) => {
-                                    handleInputText(
-                                      e.target.value,
-                                      totals,
-                                      setTotals,
-                                      invoiceItem.id,
-                                      item.id
-                                    );
-                                  }}
-                                />
-                              )}
+                                  <input
+                                    type="number"
+                                    value={
+                                      totals.find(
+                                        (e: any) =>
+                                          e.invoiceKey === invoiceItem.id &&
+                                          e.blockKey === item.id
+                                      )?.text || ""
+                                    }
+                                    onChange={(e) => {
+                                      handleInputText(
+                                        e.target.value,
+                                        totals,
+                                        setTotals,
+                                        invoiceItem.id,
+                                        item.id
+                                      );
+                                    }}
+                                  />
+                                )}
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
@@ -1142,10 +1148,10 @@ const PaymentDetailPage = () => {
                                     label="Full Amount"
                                     onChange={(e: any) =>
                                       invoiceItem.transactionTypeLabel ===
-                                      "Credit Memo"
+                                        "Credit Memo"
                                         ? setCreditMemoFullAmountChecked(
-                                            e.target.checked
-                                          )
+                                          e.target.checked
+                                        )
                                         : setIsFullAmount(e.target.checked)
                                     }
                                   />
@@ -1368,10 +1374,21 @@ const PaymentDetailPage = () => {
               className="primary-blue small"
               label="Proceed"
               handleOnClick={() => {
-                getCurrencyAndDepositBankAndLocationDropdownOption();
-                getPaymentMethodDropdownOption();
-                setReferenceNo([]);
-                useShowCancel(false);
+                navigate(
+                  "/pay/invoicedetails" +
+                  state.state.inveoicesData[0].id +
+                  "/" +
+                  state.state.inveoicesData[0].customerId +
+                  "/" +
+                  "false",
+                  {
+                    state: {
+                      InvoiceId: state.state.inveoicesData[0].invoiceNo,
+                      transactionType: state.state.inveoicesData[0].transactionType,
+                      rowDetails: state,
+                    },
+                  }
+                );
               }}
             />
           </div>

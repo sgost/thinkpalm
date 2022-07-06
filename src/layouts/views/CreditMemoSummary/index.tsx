@@ -509,7 +509,7 @@ export default function CreditMemoSummary(props: any) {
                     search
                   />
                 </div>
-                <div className="UI-line-text-box">
+                <div className="UI-line-text-box description">
                   <Input
                     setValue={(value: any) => {
                       setEditDescription(index, value);
@@ -651,7 +651,7 @@ export default function CreditMemoSummary(props: any) {
                   title="Product Service"
                 />
               </div>
-              <div className="UI-line-text-box">
+              <div className="UI-line-text-box description">
                 <Input
                   setValue={setNewDescription}
                   value={newDescription}

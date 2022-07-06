@@ -653,7 +653,7 @@ export default function InvoiceDetails() {
   }, [lookupData, apiData]);
   useEffect(() => {
     if (lookupData?.data && creditMemoData) {
-        setCurrentStatusValue(creditMemoData.status)
+      setCurrentStatusValue(creditMemoData.status)
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === creditMemoData.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -1095,7 +1095,7 @@ export default function InvoiceDetails() {
       )
       .then((response: any) => {
         if (response.status == 200) {
-            setCurrentStatusValue(response.data.status)
+          setCurrentStatusValue(response.data.status)
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -1365,11 +1365,15 @@ export default function InvoiceDetails() {
   const declineCheckboxDisable = () => {
     let isDisable = true;
 
-    declineCheckboxLabel?.map((item: any) => {
-      if (item?.isSelected === true && inputValue != "") {
-        isDisable = false;
-      }
-    });
+    if (missTransType != 1 && inputValue != "") {
+      isDisable = false;
+    } else {
+      declineCheckboxLabel?.map((item: any) => {
+        if (item?.isSelected === true && inputValue != "" && missTransType === 1) {
+          isDisable = false;
+        }
+      });
+    }
     return isDisable;
   };
   const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
@@ -1509,9 +1513,9 @@ export default function InvoiceDetails() {
             missTransType !== 4 &&
             missTransType !== 7 &&
             getPermissions(missTransType, "AddPayment")) ||
-          (currentStatusValue == statusValues.invoiced &&
-            missTransType === 7 &&
-            getPermissions(missTransType, "AddPayment")) ? (
+            (currentStatusValue == statusValues.invoiced &&
+              missTransType === 7 &&
+              getPermissions(missTransType, "AddPayment")) ? (
             <div className="addPaymentButton">
               <Button
                 className="primary-blue medium"
@@ -1676,7 +1680,7 @@ export default function InvoiceDetails() {
           )}
 
           {(currentStatusValue == statusValues.approved &&
-            missTransType === 4) 
+            missTransType === 4)
             ? (
               <div className="addPaymentButton">
                 <Button
@@ -1829,7 +1833,7 @@ export default function InvoiceDetails() {
               />
             )}
 
-          {(currentStatusValue === statusValues.approved  ||
+          {(currentStatusValue === statusValues.approved ||
             currentStatusValue === statusValues.paid ||
             currentStatusValue === statusValues.partiallyPaid) &&
             missTransType === 3 &&
@@ -2124,7 +2128,7 @@ export default function InvoiceDetails() {
       )}
 
       {(currentStatusValue === statusValues.paid || currentStatusValue === statusValues.partiallyPaid) &&
-      (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
+        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
         <div className="paymentCompnent">
           <PaymentDetailContainer
             setPaymentDetailData={setPaymentDetailData}

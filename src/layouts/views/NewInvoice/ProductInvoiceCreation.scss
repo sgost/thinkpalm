@@ -79,7 +79,9 @@
       }
    
     .a-dropdown__search {
-      width: 74%;
+      width: -webkit-fill-available;
+      width: -moz-available;
+      width: fill-available;
     }
     .col-md-3.input-component,  .col-md-3.select-component{
       width: 17.777rem;
@@ -134,7 +136,9 @@
     }
 
     .a-dropdown__search {
-      width: 74%;
+      width: -webkit-fill-available;
+      width: -moz-available;
+      width: fill-available;
     }
     .uantity_mount{
       margin-top: 0;
