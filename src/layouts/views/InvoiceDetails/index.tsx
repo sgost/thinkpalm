@@ -1472,11 +1472,10 @@ export default function InvoiceDetails() {
                             console.log("download didn't open")
                           }
                       }
-                      className={`${missTransType == 7 || deleteDisableButtons === true
-                          ? "download_disable"
-                          : "download"
-                        }`}
-                    // className="download"
+                      className={((missTransType == 7) || (deleteDisableButtons === true))
+                        ? "download_disable"
+                        : "download"
+                      }
                     >
                       <p className="text">Download</p>
                       <Icon
