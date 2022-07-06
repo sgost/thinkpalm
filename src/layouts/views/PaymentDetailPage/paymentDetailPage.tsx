@@ -79,6 +79,7 @@ const PaymentDetailPage = () => {
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
+  const [isSaveBtnDisable, setisSaveBtnDisable] = useState(false)
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -346,6 +347,11 @@ const PaymentDetailPage = () => {
   };
 
   const isSaveDisable = () => {
+
+    if(isSaveBtnDisable){
+      return true
+    }
+
     let isDisable = false;
 
     if (state?.state?.inveoicesData?.length > 1) {
@@ -554,6 +560,8 @@ const PaymentDetailPage = () => {
   };
 
   const handleSave = () => {
+    setisSaveBtnDisable(true)
+
     state?.state?.inveoicesData.map((item: any) => {
       if (item?.transactionTypeLabel === "Credit Memo") {
         handleCreditMemoSave();
