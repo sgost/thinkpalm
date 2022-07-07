@@ -82,23 +82,27 @@
         .download {
           display: flex;
           align-items: center;
-          background-color: $white;
           border-style: solid;
-          border-color: $primary-blue;
           border-radius: 4px;
           height: 2.5rem;
-          font-size: 1rem;
-          border-width: 0.1rem;
+          font-size: 1.1rem;
+          border-width: 0rem;
           cursor: pointer;
+          font-weight: 500;
 
           .text {
-            padding: 0px 1.1111rem;
+            padding: 0px 0.3rem;
             margin: 0px;
             color: $primary-blue;
           }
 
           .icon {
-            margin-top: 0.667rem;
+            margin-top: 1.267rem;
+          }
+
+          svg {
+            width: 2.4rem;
+            height: 2.4rem;
           }
         }
 
