@@ -1255,6 +1255,7 @@ export default function InvoiceDetails() {
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
+    setBtnDis(true);
     axios({
       method: "POST",
       url: convertMissInvoice(id),
@@ -1262,8 +1263,10 @@ export default function InvoiceDetails() {
     }).then((resp: any) => {
       if (resp) {
         handleApproveInvoice(8);
-        setBtnDis(true);
       }
+    }).catch( err => {
+      setBtnDis(false);
+      console.log(err)
     });
   };
 
