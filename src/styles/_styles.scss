@@ -127,6 +127,8 @@
       .a-dpicker__container{
         input{
           width: -webkit-fill-available;
+          width: -moz-available;
+          width: fill-available;
         }
       }
     }
@@ -136,5 +138,21 @@
     margin-bottom: 1.5rem;
     padding-right: 1.6667rem;
     position: relative;
+  }
+  svg.react-datepicker__icon{
+    width: 1.3333rem;
+    height: 1.3333rem;
+  }
+  .a-dropdown__search{
+    width: -webkit-fill-available;
+    width: -moz-available;
+    width: fill-available;
+  }
+  .a-dropdown .search-icon:before{
+    top: 1.6rem;
+  }
+  .a-breadcrumb svg{
+    width: 1.1111rem;
+    height: 1.1111rem;
   }
 }

@@ -573,6 +573,27 @@ export default function InvoiceListing() {
       });
   };
 
+  const allTableOptions = searchText
+  ? {
+    ...searchedTableData,
+    enableMultiSelect: true,
+    onRowCheckboxChange: onRowCheckboxChange,
+    fallback: ''
+  }
+  : isClient
+    ? {
+      ...clientTableData,
+      enableMultiSelect: true,
+      onRowCheckboxChange: onRowCheckboxChange,
+      fallback: ''
+    }
+    : {
+      ...internalTabledata,
+      enableMultiSelect: true,
+      onRowCheckboxChange: onRowCheckboxChange,
+      fallback: ''
+    }
+
   return (
     <>
       <div className="container">
@@ -1042,28 +1063,7 @@ export default function InvoiceListing() {
           <>
             {!localStorage.redirectingInvoiceState && !isLoader && (
               <Table
-                options={
-                  searchText
-                    ? {
-                      ...searchedTableData,
-                      enableMultiSelect: true,
-                      onRowCheckboxChange: onRowCheckboxChange,
-                      fallback: ''
-                    }
-                    : isClient
-                      ? {
-                        ...clientTableData,
-                        enableMultiSelect: true,
-                        onRowCheckboxChange: onRowCheckboxChange,
-                        fallback: ''
-                      }
-                      : {
-                        ...internalTabledata,
-                        enableMultiSelect: true,
-                        onRowCheckboxChange: onRowCheckboxChange,
-                        fallback: ''
-                      }
-                }
+                options={allTableOptions}
                 colSort
                 className="table"
                 pagination

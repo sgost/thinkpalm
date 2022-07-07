@@ -65,7 +65,7 @@ export default function CreditMemoSummary(props: any) {
   const [productOptions, setProductOptions] = useState([]);
   const [multipleProductArr, setMultipleProductArr] = useState<any>([]);
   const [multipleCountryArr, setMultipleCountryArr] = useState<any>([]);
-  const [payload, setPayload] = useState<any>(creditMemoData);
+  let payload = creditMemoData;
   const showAddFields = () => {
     setAddSectionCheck(true);
   };
@@ -214,7 +214,6 @@ export default function CreditMemoSummary(props: any) {
     obj.invoiceId = creditMemoData.id;
     payload?.invoiceItems.push(obj);
     cleanNewObject();
-    reCalculateTotal();
     callUpdateAPI();
   };
 
@@ -241,12 +240,12 @@ export default function CreditMemoSummary(props: any) {
         headers: headers,
       })
       .then((resp) => {
+        const creditMemoCopy = JSON.parse(JSON.stringify(resp.data)) 
         if ((resp.status == 200 || resp.status == 201) && resp.data) {
           setAddSectionCheck(false);
           setEditCheck(creditMemoData.invoiceItems.length + 1);
           setFieldValues(resp.data.invoiceItems);
-          setCreditMemoData(resp.data);
-          setPayload(resp.data);
+          setCreditMemoData(creditMemoCopy);
         }
       })
       .catch(() => {
@@ -295,9 +294,9 @@ export default function CreditMemoSummary(props: any) {
     }
     const totalAmountVar = subtotal + subtotal * (vatValue / 100)
     if (creditMemoData.status != 9) {
-      setPayload({ ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar })
+      payload = { ...payload, invoiceBalance: totalAmountVar, totalAmount: totalAmountVar }
     } else {
-      setPayload({...payload, invoiceBalance: 0,  totalAmount: totalAmountVar})
+      payload = { ...payload, invoiceBalance: 0, totalAmount: totalAmountVar }
     }
   };
   /* istanbul ignore next */
@@ -510,7 +509,7 @@ export default function CreditMemoSummary(props: any) {
                     search
                   />
                 </div>
-                <div className="UI-line-text-box">
+                <div className="UI-line-text-box description">
                   <Input
                     setValue={(value: any) => {
                       setEditDescription(index, value);
@@ -652,7 +651,7 @@ export default function CreditMemoSummary(props: any) {
                   title="Product Service"
                 />
               </div>
-              <div className="UI-line-text-box">
+              <div className="UI-line-text-box description">
                 <Input
                   setValue={setNewDescription}
                   value={newDescription}
@@ -714,6 +713,8 @@ export default function CreditMemoSummary(props: any) {
         )}
         <div className="feeSummaryCalc">
           <div className="rowBox">
+            {/*
+            Commenting this until we receive vat calculation story with further clarity
             <div className="rowFee">
               <p className="title">Subtotal Due</p>
               <p className="amount">
@@ -725,7 +726,7 @@ export default function CreditMemoSummary(props: any) {
               <p className="amount">
                 {currency} {toCurrencyFormat(vatTotal)}
               </p>
-            </div>
+            </div> */}
             <div className="totalRow">
               <p>Total Balance</p>
               <p className="total">

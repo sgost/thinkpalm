@@ -161,6 +161,8 @@
             padding-top: 4.5rem;
             border-radius: 0.5rem 0.5rem 0 0;
             width: -webkit-fill-available;
+            width: -moz-available;
+            width: fill-available;
 
             .mt-4 {
                 margin-top: 1.5rem;
@@ -410,11 +412,15 @@
 
     .line-between {
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
         border-top: 1px solid #EBEBED;
     }
 
     .file-row {
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
         padding-left: 4.5rem;
         margin-top: 4rem;
         margin-right: 4.5rem;
@@ -440,6 +446,8 @@
         font-family: 'CircularXX', sans-serif !important;
         margin-bottom: 2.5rem;
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
         padding-top: 2.5rem;
         box-shadow: 0px -2px 4px rgba(112, 128, 144, 0.05);
 
@@ -456,6 +464,8 @@
         justify-content: flex-end;
         font-family: 'CircularXX', sans-serif !important;
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
         padding-top: 2.5rem;
 
         button.a-button.medium {
@@ -508,6 +518,8 @@
     .popup-modal-wrapper {
         margin: 2rem;
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
 
         .modal-heading {
             font-family: 'circularmed', sans-serif;
@@ -529,6 +541,8 @@
             justify-content: flex-end;
             font-family: 'CircularXX', sans-serif !important;
             width: -webkit-fill-available;
+            width: -moz-available;
+            width: fill-available;
             padding-top: 2.5rem;
 
             button.a-button.medium {
@@ -542,6 +556,8 @@
     .reject-reason-wrapper {
         margin: 2.5rem;
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
 
         .form-group {
             display: flex;

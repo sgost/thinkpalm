@@ -124,6 +124,8 @@
     .dpStepContainer {
       .a-dpicker .react-datepicker__input-container input {
         width: -webkit-fill-available;
+        width: -moz-available;
+        width: fill-available;
       }
 
       .a-dpicker__container {

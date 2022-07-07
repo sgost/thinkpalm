@@ -13,7 +13,6 @@ import {
 import { statusValues } from "./statusValues";
 
 const PaymentDetailContainer = ({
-  status,
   cid,
   lookupData,
   paymentDetailData,
@@ -77,6 +76,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   const [addPaymentMethodDropdownOptions, setAddPaymentMethodDropdownOption] =
     useState<any>([]);
   const [isToaster, setIsToaster] = useState(false);
+  const [isSaveDisable, setIsSaveDisable] = useState(false)
 
   useEffect(() => {
     if (paymentDetailData) {
@@ -398,7 +398,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   };
 
   const savePaymentDetail = () => {
-
+    setIsSaveDisable(true)
     let arr: any = [];
     arr.push({
       totalAmount: addAmount,
@@ -435,6 +435,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         axios
           .get(paymentdetailApi, headers)
           .then((response: any) => {
+            setIsSaveDisable(false)
             setPaymentDetailData(response?.data?.payments);
             setAddPaymentSectionCheck(false);
             setEditChecked(null);
@@ -451,10 +452,12 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
           })
           .catch((e: any) => {
             console.log("error e", e);
+            setIsSaveDisable(false)
           });
       })
       .catch((err) => {
         console.log(err);
+        setIsSaveDisable(false)
       });
   };
 
@@ -858,7 +861,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                         !newPaymentMethod ||
                         !newReferenceNo ||
                         !addAmount ||
-                        AddInstallmentSaveDisable()
+                        AddInstallmentSaveDisable() ||
+                        isSaveDisable
                       }
                     />
                   </div>
