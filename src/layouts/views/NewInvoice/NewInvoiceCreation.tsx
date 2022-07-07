@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Dropdown, Icon, DatePicker } from "atlasuikit";
 import axios from "axios";
 import "./NewInvoiceCreation.scss";
-import { getCountryByCustomer, getHeaders, urls } from "../../../urls/urls";
+import { getCountryByCustomer, getHeaders, getVatValue, urls } from "../../../urls/urls";
 import { Loader } from "../../../components/Comman/Utils/utils";
 import moment from "moment";
 import Input from "../../../components/Input/input";
@@ -31,12 +31,11 @@ const NewInvoiceCreation = ({
   setReceivableAccountOptions,
   currencyOptions,
   setCurrencyOptions,
-  qbIdOptions,
-  setQbIdOptions,
   qbIdValue,
   setQbIdValue,
   paymentTermsOptions,
   setPaymentTermsOptions,
+  setVatValue
 }: any) => {
   // Dropdown open
   const [isCustomerOpen, setIsCustomerOpen] = useState(false);
@@ -48,7 +47,7 @@ const NewInvoiceCreation = ({
   const [isInvoicer, setIsInvoicer] = useState(false);
   const [isRecAcc, setIsRecAcc] = useState(false);
   const [isCurrency, setIsCurrency] = useState(false);
-  const [isQbId, setIsQbId] = useState(false);
+  const [_isQbId, setIsQbId] = useState(false);
   const [isPaymentTerms, setIsPaymentTerms] = useState(false);
 
   const tempToken: any = localStorage.getItem("accessToken");
@@ -94,7 +93,20 @@ const NewInvoiceCreation = ({
         }
       )
       .then((response: any) => {
-        const preData: any = preparedCustomerData(response.data);
+        let preData: any = preparedCustomerData(response.data);
+
+        //guids are coming randomly either small or capital , coverting them to lowercases
+        let key, keys = Object.keys(decToken.Permissions);
+        let n = keys.length;
+        let lowerCaseDecToken : any = decToken
+        while (n--) {
+          key = keys[n];
+          lowerCaseDecToken.Permissions[key.toLowerCase()] = decToken.Permissions[key];
+        }
+        preData = preData.filter((item: any) => {
+           return lowerCaseDecToken?.Permissions[item.customerId.toLowerCase()]?.Payments?.InvoiceList?.includes('Add') || false
+        })
+
         setCustomerOption(preData);
         setLoading(false);
       })
@@ -180,6 +192,24 @@ const NewInvoiceCreation = ({
       });
   };
 
+  const vatDetailApi = () => {
+
+    const headers = {
+      headers: getHeaders(tempToken, currentOrgId, "false"),
+    };
+
+    axios
+    .get(getVatValue(stepperOneData?.customerId), headers)
+    .then((resp) => {
+      if (resp.status == 200) {
+        setVatValue(resp?.data?.feeConfiguration?.percentage);
+      }
+    })
+    .catch((resp) => {
+      console.log(resp);
+    });
+  }
+
   const handleDropOption = (
     item: any,
     options: any,
@@ -215,6 +245,17 @@ const NewInvoiceCreation = ({
       getCustomerDropdownOptions();
     }
   }, [stepperOneData?.type]);
+
+  useEffect(() => {
+    if (
+      (stepperOneData?.type === "Credit Memo" ||
+      stepperOneData?.type === "Proforma" ||
+      stepperOneData?.type === "Miscellaneous")
+      && (stepperOneData?.customerId)
+    ) {
+      vatDetailApi();
+    }
+  }, [stepperOneData?.type, stepperOneData?.customerId]);
 
   useEffect(() => {
     if (stepperOneData?.type === "Payroll") {

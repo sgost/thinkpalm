@@ -207,14 +207,14 @@ const ProductInvoiceCreation = ({
                   data-testid="product_name"
                 >
                   <>
-                    <input
+                    {/* <input
                       type="text"
                       data-testid="product_open"
                       onClick={() => setOpen(true)}
                       id="click_input"
                       placeholder="Please Select"
                       autoComplete="off"
-                    />
+                    /> */}
                     <Dropdown
                       handleDropOptionClick={(opt: any) => {
                         setProductService(opt.label);
@@ -364,7 +364,10 @@ const ProductInvoiceCreation = ({
                       type="number"
                       min="0"
                       defaultValue={item.amount}
-                      onKeyDown={(e) => blockInvalidChar(e)}
+                      onKeyDown={(e) => {
+                        ["e", "E", "+", "-"].includes(e.key) &&
+                          e.preventDefault();
+                      }}
                       className="inputField"
                       onChange={(e) => {
                         if (e.target.value.split(".")[1]?.length >= 2)

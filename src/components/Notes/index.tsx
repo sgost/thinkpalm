@@ -2,11 +2,12 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { Button, Icon, NoDataCard, Checkbox } from "atlasuikit";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { urls, getHeaders } from "../../urls/urls";
+import { urls, getHeaders, saveEditNoteApi } from "../../urls/urls";
 import axios from "axios";
 import "../../layouts/views/InvoiceDetails/invoiceDetails.scss";
 import { getDecodedToken } from "../getDecodedToken";
 import { getPermissions } from "../Comman/Utils/utils";
+import { statusValues } from "../../layouts/views/InvoiceDetails/statusValues";
 
 export default function NotesWidget(props: any) {
   const {
@@ -16,15 +17,18 @@ export default function NotesWidget(props: any) {
     id,
     setNotes,
     transactionType,
-    status,
     isPaymentPage,
     setPaymentNote,
+    currentStatusValue,
+    creditMemoData
   } = props;
+
   const [noteText, setNoteText] = useState("");
   const [isVisibleToCustomer, setIsVisibleToCustomer] = useState(false);
   const [isExportToQb, setIsExportToQb] = useState(false);
   const [isVisibleOnPDFInvoice, setisVisibleOnPDFInvoice] = useState(false);
   const tempToken = localStorage.getItem("accessToken");
+  const [updateEdit, setUpdateEdit] = useState(null);
   const permission: any = getDecodedToken();
 
   useEffect(() => {
@@ -37,6 +41,83 @@ export default function NotesWidget(props: any) {
       });
     }
   }, [noteText, isVisibleToCustomer, isExportToQb, isVisibleOnPDFInvoice]);
+
+
+
+  const getNoteIdFun = (index: any) => {
+    let noteNum;
+    creditMemoData.invoiceNotes.filter((item: any, i: any) => {
+      if (i == index) {
+        noteNum = item.id;
+      }
+    })
+    return noteNum;
+  }
+
+  //edit
+  const editOpen = (index: any) => {
+    setUpdateEdit(index)
+  }
+
+  //save note
+  const editNote = (value: any, index: any) => {
+    let noteId = getNoteIdFun(index);
+    console.log('noteId', noteId)
+    notes[index].note = value;
+    setNotes([...notes])
+    saveEditNote(noteId, value)
+  }
+
+
+  const saveEditNote = (index: any, value: any) => {
+    const url = saveEditNoteApi(index);
+    let currDate = new Date();
+
+    axios({
+      method: "PUT",
+      url: url,
+      headers: getHeaders(tempToken, cid, isClient),
+      data: {
+        invoiceId: id,
+        noteType: 2,
+        note: value,
+        isCustomerVisible: true,
+        exportToQuickbooks: false,
+        createdDate: currDate,
+        modifiedBy: "00000000-0000-0000-0000-000000000000",
+        modifiedByUser: null,
+        displayInPDF: false,
+        customerId: cid,
+        declineOption: null,
+        id: index
+      },
+    })
+      .then((_res: any) => {
+        setNoteText("");
+      })
+      .catch((e: any) => {
+        console.log(e);
+      });
+  }
+
+
+  //delete Notes
+  const deleteNote = (index: any) => {
+    let noteId = getNoteIdFun(index);
+    const url = saveEditNoteApi(noteId);
+    axios({
+      method: "DELETE",
+      url: url,
+      headers: getHeaders(tempToken, cid, isClient),
+    })
+      .then((_e: any) => {
+        notes.splice(index, 1);
+        setNotes([...notes]);
+      })
+      .catch((e: any) => {
+        console.log(e);
+      });
+  }
 
   /* istanbul ignore next */
   return (
@@ -86,7 +167,7 @@ export default function NotesWidget(props: any) {
                 />
               </div>
             ) : (
-              notes.map((item: any) => {
+              notes.map((item: any, index: any) => {
                 return (
                   <div className="notesSubContainer">
                     <div className="noteInfoBtn">
@@ -100,12 +181,26 @@ export default function NotesWidget(props: any) {
                         <Icon color="#b4b3bb" icon="info" size="small" />
                       </div>
                       <div className="noteBtn">
-                        {/* <Icon color="#526FD6" icon="edit" size="small" /> */}
-                        {/* <Icon color="#E32C15" icon="trash" size="large" /> */}
+                        {(updateEdit === index) ?
+                          (<span onClick={() => setUpdateEdit(null)} data-testid="note-save">
+                            <Icon color="#526FD6" icon="checkMark" size="small" />
+                          </span>)
+                          :
+                          (<span onClick={() => editOpen(index)} data-testid="note-edit">
+                            <Icon color="#526FD6" icon="edit" size="small" />
+                          </span>)
+                        }
+                        <span onClick={() => deleteNote(index)} data-testid="note-delete">
+                          <Icon color="#E32C15" icon="trash" size="large" />
+                        </span>
                       </div>
                     </div>
                     <div className="note">
-                      <p>{item.note}</p>
+                      {(updateEdit === index) ?
+                        (<input type="text" value={item.note} className="noteInput" onChange={(e) => editNote(e.target.value, index)} data-testid="note-input" />)
+                        :
+                        (<p>{item.note}</p>)
+                      }
                     </div>
                   </div>
                 );
@@ -123,7 +218,7 @@ export default function NotesWidget(props: any) {
               value={noteText}
               onChange={(e: any) => setNoteText(e.target.value)}
               placeholder="Add a note here..."
-              disabled={status === "Declined"}
+              disabled={currentStatusValue === statusValues.declined}
             />
             <span>Characters left: {400 - noteText.length}</span>
           </div>
@@ -186,7 +281,7 @@ export default function NotesWidget(props: any) {
                 handleOnClick={() => {
                   const url = urls.saveNote;
                   let currDate = new Date();
-
+                  
                   axios({
                     method: "POST",
                     url: url,
@@ -205,7 +300,7 @@ export default function NotesWidget(props: any) {
                     },
                   })
                     .then((res: any) => {
-                      setNotes([res.data, ...notes]);
+                      setNotes([res.data.model, ...notes]);
                       setNoteText("");
                     })
                     .catch((e: any) => {

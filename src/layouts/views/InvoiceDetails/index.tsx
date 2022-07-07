@@ -21,7 +21,6 @@ import moment from "moment";
 import GetFlag, { getFlagPath } from "./getFlag";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import avatar from "./avatar.png";
 import BillsTable from "../BillsTable";
 import deleteSvg from "../../../assets/icons/deletesvg.svg";
 import {
@@ -45,6 +44,7 @@ import {
   getUpdateInvoiceCalanderPoNoUrl,
   getEmployeeCompensationData,
   getPaymentDetailApi,
+  changeInvoiceStatusAPI,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -58,6 +58,7 @@ import {
 import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
 import cn from "classnames";
+import { statusValues } from "./statusValues";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -77,6 +78,7 @@ export default function InvoiceDetails() {
   };
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
+  const [sentPopup, setSentPopup] = useState(true);
   const [missTransType] = useState(state.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
@@ -119,6 +121,7 @@ export default function InvoiceDetails() {
 
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
+  const [currentStatusValue, setCurrentStatusValue] = useState(0);
   const [voidFileData, setVoidFileData] = useState<any>({});
   const [isErr, setIsErr] = useState(false);
   const [inputValue, setInputValue] = useState("");
@@ -139,6 +142,7 @@ export default function InvoiceDetails() {
   const [feeSummaryTotalDue, setFeeSummaryTotalDue] = useState(0);
   const [isAutoApprove, setIsAutoApprove] = useState(false);
   const [creditMemoData, setCreditMemoData] = useState<any>(null);
+  const [payrollData, setPayrollData] = useState<any>(null);
   const [topPanel, setTopPanel] = useState<any>(topPanelObj);
   const [vatValue, setVatValue] = useState();
   const [logsData, setLogsData] = useState<any>([]); // mockLogsdata
@@ -170,7 +174,6 @@ export default function InvoiceDetails() {
   const [invoiceSaved, setInvoiceSavedValue] = useState("");
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
-  const [reCalButtonDisable, setReCalButtonDisable] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
     {
@@ -205,6 +208,7 @@ export default function InvoiceDetails() {
     },
   ]);
   const [declineLabel, setDeclineLabel] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -274,6 +278,7 @@ export default function InvoiceDetails() {
           axios
             .get(api, headers)
             .then((res: any) => {
+              setPayrollData(res.data.invoice);
               if (res.status !== 200) {
                 throw new Error("Something went wrong");
               }
@@ -504,6 +509,7 @@ export default function InvoiceDetails() {
               settotalCountrySummaryDue(totalCountrySummaryDueTemp);
               setFeeSummary(feeSummaryTemp);
               setIsAutoApprove(res.data.isAutoApprove);
+              setLoading(false)
             })
             .catch((e: any) => {
               console.log("error e", e);
@@ -530,7 +536,6 @@ export default function InvoiceDetails() {
             .get(getVatValue(cid), headers)
             .then((resp) => {
               if (resp.status == 200) {
-                console.log('fee config', resp?.data?.feeConfiguration?.percentage)
                 setVatValue(resp?.data?.feeConfiguration?.percentage);
               }
             })
@@ -639,6 +644,7 @@ export default function InvoiceDetails() {
 
   useEffect(() => {
     if (lookupData?.data && apiData?.data) {
+      setCurrentStatusValue(apiData.data.invoice.status);
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === apiData.data.invoice.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -648,6 +654,7 @@ export default function InvoiceDetails() {
   }, [lookupData, apiData]);
   useEffect(() => {
     if (lookupData?.data && creditMemoData) {
+      setCurrentStatusValue(creditMemoData.status);
       lookupData.data.invoiceStatuses.forEach((e: any) => {
         if (e.value === creditMemoData.status) {
           setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -740,7 +747,11 @@ export default function InvoiceDetails() {
   }, [showAutoApprovedToast]);
 
   useEffect(() => {
-    if ((status === "Paid" || status === "Partial Paid") && id) {
+    if (
+      (currentStatusValue === statusValues.paid ||
+        currentStatusValue === statusValues.partiallyPaid) &&
+      id
+    ) {
       const headers = {
         headers: getHeaders(tempToken, cid, isClient),
       };
@@ -756,7 +767,7 @@ export default function InvoiceDetails() {
           console.log("error e", e);
         });
     }
-  }, [id, status]);
+  }, [id, currentStatusValue]);
 
   const handleSaveDisable = () => {
     const invDate = new Date(
@@ -797,7 +808,6 @@ export default function InvoiceDetails() {
   const getBillingCurrency = () => {
     if (apiData?.data) {
       return apiData?.data?.invoice?.currency?.code;
-      
     } else if (creditMemoData) {
       return creditMemoData?.currency?.code;
     } else {
@@ -805,6 +815,36 @@ export default function InvoiceDetails() {
     }
   };
 
+  /* istanbul ignore next */
+  const callCloseInvoiceAPI = () => {
+    setSentPopup(false);
+    let sentStatus = lookupData.data.invoiceStatuses.filter(
+      (x: any) => x.text == "Sent"
+    );
+    const headers = {
+      headers: getHeaders(tempToken, cid, isClient),
+    };
+    axios
+      .put(
+        changeInvoiceStatusAPI(apiData?.data?.invoice?.id, sentStatus[0].value),
+        null,
+        headers
+      )
+      .then((resp: any) => {
+        if (resp.status == 201) {
+          let tempInovoice = apiData;
+          tempInovoice.data.invoice = resp.data;
+          setApiData((current: any) => {
+            return {
+              ...current,
+              invoice: {
+                ...resp.data,
+              },
+            };
+          });
+        }
+      });
+  };
   const sharedColumns = {
     grossWages: tableSharedColumns.grossWages,
     allowances: tableSharedColumns.allowances,
@@ -887,15 +927,16 @@ export default function InvoiceDetails() {
       method: "GET",
       url: getDownloadUrl(id),
       headers: getHeaders(tempToken, cid, isClient),
-    }).then((res: any) => {
-      if (res.status === 200) {
-        let url = res.data.url;
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = `${res.data.name}`;
-        a.click();
-      }
     })
+      .then((res: any) => {
+        if (res.status === 200) {
+          let url = res.data.url;
+          let a = document.createElement("a");
+          a.href = url;
+          a.download = `${res.data.name}`;
+          a.click();
+        }
+      })
       .catch((e: any) => {
         console.log("error", e);
       });
@@ -915,6 +956,7 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         if (res?.status === 201) {
+          setCurrentStatusValue(res?.data?.status);
           if (res?.data?.status === 2) {
             setStatus("AR Review");
           } else if (res?.data?.status === 8) {
@@ -958,6 +1000,7 @@ export default function InvoiceDetails() {
       ],
     })
       .then((_res: any) => {
+        setCurrentStatusValue(statusValues.perndingApproval);
         setStatus("Pending Approval");
       })
       .catch((e: any) => {
@@ -1065,6 +1108,7 @@ export default function InvoiceDetails() {
       )
       .then((response: any) => {
         if (response.status == 200) {
+          setCurrentStatusValue(response.data.status);
           lookupData.data.invoiceStatuses.forEach((e: any) => {
             if (e.value === response.data.status) {
               setStatus(e.text === "In Review" ? "AR Review" : e.text);
@@ -1211,6 +1255,7 @@ export default function InvoiceDetails() {
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
+    setBtnDis(true);
     axios({
       method: "POST",
       url: convertMissInvoice(id),
@@ -1218,8 +1263,10 @@ export default function InvoiceDetails() {
     }).then((resp: any) => {
       if (resp) {
         handleApproveInvoice(8);
-        setBtnDis(true);
       }
+    }).catch( err => {
+      setBtnDis(false);
+      console.log(err)
     });
   };
 
@@ -1246,7 +1293,6 @@ export default function InvoiceDetails() {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
             setInvoiceSavedValue("");
-            setReCalButtonDisable(false);
           }, 3000);
         }
       })
@@ -1259,6 +1305,8 @@ export default function InvoiceDetails() {
   const deleteEmployee = async () => {
     const headers = getHeaders(tempToken, cid, isClient);
     let deleteEmployeeApi = urls.deleteEmployeeApi;
+
+    setLoading(true);
 
     await axios
       .post(
@@ -1279,6 +1327,7 @@ export default function InvoiceDetails() {
             ...deleteEmployeeModalOpen,
             isModalOpen: false,
           });
+          initialApiCall();
         }
       })
       .catch((e: any) => {
@@ -1301,13 +1350,11 @@ export default function InvoiceDetails() {
       })
       .catch((error: any) => {
         console.log(error);
-        setReCalButtonDisable(false);
         setApprovalMsg("Invoice Recalculaton Failed");
         setTimeout(() => {
           setApprovalMsg("");
         }, 3000);
       });
-    setReCalButtonDisable(true);
   };
 
   const handleMinDate = (dateType: string) => {
@@ -1334,911 +1381,848 @@ export default function InvoiceDetails() {
   const declineCheckboxDisable = () => {
     let isDisable = true;
 
-    declineCheckboxLabel?.map((item: any) => {
-      if (item?.isSelected === true && inputValue != "") {
-        isDisable = false;
-      }
-    });
+    if (missTransType != 1 && inputValue != "") {
+      isDisable = false;
+    } else {
+      declineCheckboxLabel?.map((item: any) => {
+        if (
+          item?.isSelected === true &&
+          inputValue != "" &&
+          missTransType === 1
+        ) {
+          isDisable = false;
+        }
+      });
+    }
     return isDisable;
   };
   const openBal = topPanel.open != "undefined" ? topPanel.open : 0;
   const TotalBal = topPanel.total != "undefined" ? topPanel.total : 0;
 
-  return (
-    <div className="invoiceDetailsContainer">
-      <div className="invoiceDetailsHeaderRow">
-        {invoiceSaved === "Saved" && (
-          <ToastNotification
-            data-testid="toast-notify"
-            showNotification
-            toastMessage="Your record has been saved successfully..!"
-            toastPosition="bottom-right"
-          />
-        )}
-        <div className="breadcrumbs">
-          <BreadCrumb
-            hideHeaderTitle={hideTopCheck}
-            hideHeaderTabs={hideTopCheck}
-            steps={[
-              {
-                isActive: true,
-                key: "Invoices",
-                label: "Invoices",
-                onClickLabel: () => {
-                  setHideTopCheck(false);
-                },
-              },
-              {
-                key: "profile",
-                label: getTransactionLabel(),
-              },
-            ]}
-          />
-        </div>
-        <div className="buttons">
-          {(status === "AR Review" ||
-            (status === "Open" && missTransType !== 1)) &&
-            (getPermissions(missTransType, "Delete") ||
-              getPermissions(missTransType, "DeleteInvoice")) && (
-              <div className="upper-delete-button">
-                <div
-                  className="delete-invoice"
-                  onClick={() => setDeleteConfirmModalOpen(true)}
-                >
-                  <img src={deleteSvg} />
-                  <h5>Delete Invoice</h5>
-                </div>
-              </div>
-            )}
 
-          {status === "Approved" && getPermissions(missTransType, "Void") && (
-            <div className="void-button">
-              <Button
-                className="secondary-btn small"
-                label="Void Invoice"
-                handleOnClick={() => {
-                  setIsVoidOpen(true);
-                }}
+
+  //download btn
+  const downDisFun = () => {
+    if (missTransType == 7 || deleteDisableButtons === true) {
+      return "download_disable"
+    } else {
+      return "download"
+    }
+  }
+  return (
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="invoiceDetailsContainer">
+          <div className="invoiceDetailsHeaderRow">
+            {invoiceSaved === "Saved" && (
+              <ToastNotification
+                data-testid="toast-notify"
+                showNotification
+                toastMessage="Your record has been saved successfully..!"
+                toastPosition="bottom-right"
+              />
+            )}
+            <div className="breadcrumbs">
+              <BreadCrumb
+                hideHeaderTitle={hideTopCheck}
+                hideHeaderTabs={hideTopCheck}
+                steps={[
+                  {
+                    isActive: true,
+                    key: "Invoices",
+                    label: "Invoices",
+                    onClickLabel: () => {
+                      setHideTopCheck(false);
+                    },
+                  },
+                  {
+                    key: "profile",
+                    label: getTransactionLabel(),
+                  },
+                ]}
               />
             </div>
-          )}
-          <div className="download-invoice-dropdown">
-            {(permission?.InvoiceDetails.includes("Download") ||
-              missTransType != 1) &&
-              missTransType !== 7 && (
-                <div
-                  onClick={() =>
-                    missTransType != 7
-                      ? setIsDownloadOpen(!isDownloadOpen)
-                      : function noRefCheck() { }
-                  }
-                  className={`${missTransType == 7 || deleteDisableButtons === true
-                    ? "download_disable"
-                    : "download"
-                    }`}
-                // className="download"
-                >
-                  <p className="text">Download</p>
-                  <Icon
-                    className="icon"
-                    color="#526fd6"
-                    icon="chevronDown"
-                    size="medium"
+            <div className="buttons">
+              {(currentStatusValue == statusValues.arReview ||
+                (currentStatusValue == statusValues.open &&
+                  missTransType !== 1)) &&
+                (getPermissions(missTransType, "Delete") ||
+                  getPermissions(missTransType, "DeleteInvoice")) && (
+                  <div className="upper-delete-button">
+                    <div
+                      className="delete-invoice"
+                      onClick={() => setDeleteConfirmModalOpen(true)}
+                    >
+                      <img src={deleteSvg} />
+                      <h5>Delete Invoice</h5>
+                    </div>
+                  </div>
+                )}
+
+              {currentStatusValue == statusValues.approved &&
+                getPermissions(missTransType, "Void") && (
+                  <div className="void-button">
+                    <Button
+                      className="secondary-btn small"
+                      label="Void Invoice"
+                      handleOnClick={() => {
+                        setIsVoidOpen(true);
+                      }}
+                    />
+                  </div>
+                )}
+              <div className="download-invoice-dropdown">
+                {(permission?.InvoiceDetails.includes("Download") ||
+                  missTransType != 1) &&
+                  missTransType !== 7 && (
+                    <div
+                      onClick={() =>
+                        missTransType != 7
+                          ? setIsDownloadOpen(!isDownloadOpen)
+                          : function noRefCheck() {
+                            console.log("download didn't open")
+                          }
+                      }
+                      className={downDisFun()}
+                    >
+                      <p className="text">Download</p>
+                      <Icon
+                        className="icon"
+                        color="#526fd6"
+                        icon="chevronDown"
+                        size="medium"
+                      />
+                    </div>
+                  )}
+
+                {isDownloadOpen && (
+                  <div className="openDownloadDropdown">
+                    <p onClick={() => downloadFunction()}>Invoice as PDF</p>
+                    <p onClick={() => downloadExcelFunction()}>
+                      Invoice as Excel
+                    </p>
+                    {missTransType == 1 && (
+                      <p onClick={() => downloadEmployeeBreakdownFunction()}>
+                        Employee Breakdown
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {(currentStatusValue == statusValues.arReview ||
+                currentStatusValue === statusValues.declined) &&
+                missTransType == 1 &&
+                getPermissions(1, "Edit") && (
+                  <div className="saveBtnContainer">
+                    <Button
+                      handleOnClick={() => {
+                        reCalculate();
+                      }}
+                      className="secondary-btn small"
+                      icon={{
+                        color: "#526FD6",
+                        icon: "autorenew",
+                        size: "small",
+                      }}
+                      label="Re-Calculate"
+                    />
+                  </div>
+                )}
+
+              {(currentStatusValue == statusValues.arReview ||
+                currentStatusValue == statusValues.open) &&
+                getPermissions(missTransType, "Edit") && (
+                  <div className="saveBtnContainer">
+                    <Button
+                      data-testid="save-button"
+                      className="secondary-btn small"
+                      label="Save"
+                      disabled={saveButtonDisable}
+                      handleOnClick={handleEditSave}
+                    />
+                  </div>
+                )}
+
+              {(currentStatusValue == statusValues.approved &&
+                missTransType !== 4 &&
+                missTransType !== 7 &&
+                getPermissions(missTransType, "AddPayment")) ||
+                (currentStatusValue == statusValues.invoiced &&
+                  missTransType === 7 &&
+                  getPermissions(missTransType, "AddPayment")) ? (
+                <div className="addPaymentButton">
+                  <Button
+                    disabled={topPanel.open <= 0}
+                    className="primary-blue medium"
+                    icon={{
+                      color: "#fff",
+                      icon: "add",
+                      size: "medium",
+                    }}
+                    label="Add Payment"
+                    handleOnClick={() => {
+                      const checkedInvoice = [
+                        {
+                          customerId: cid,
+                          customerName:
+                            topPanel.to || apiData?.data?.invoice?.customerName,
+                          customerLocation:
+                            topPanel.location ||
+                            apiData?.data?.invoice?.customerLocation,
+                          currencyId:
+                            creditMemoData?.currencyId ||
+                            apiData?.data?.invoice?.currencyId,
+                          qbInvoiceNo:
+                            creditMemoData?.qbInvoiceNo ||
+                            apiData?.data?.invoice?.qbInvoiceNo,
+                          invoiceNo:
+                            creditMemoData?.invoiceNo ||
+                            apiData?.data?.invoice?.invoiceNo,
+                          status: 4,
+                          statusLabel: "Approved",
+                          transactionType: missTransType,
+                          transactionTypeLabel: getTransactionLabelForPayment(),
+                          createdDate: moment(topPanel.invoiceDate).format(
+                            "DD/MMM/YYYY"
+                          ),
+                          paymentDate:
+                            creditMemoData?.paymentDate ||
+                            apiData?.data?.invoice?.paymentDate,
+                          approvalDate:
+                            creditMemoData?.approvalDate ||
+                            apiData?.data?.invoice?.approvalDate,
+                          submissionDate:
+                            creditMemoData?.submissionDate ||
+                            apiData?.data?.invoice?.submissionDate,
+                          dueDate: moment(topPanel.paymentDue).format(
+                            "DD/MMM/YYYY"
+                          ),
+                          exchangeRate:
+                            creditMemoData?.exchangeRate ||
+                            apiData?.data?.invoice?.exchangeRate,
+                          totalAmount:
+                            getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(topPanel.total) ||
+                            getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(
+                              apiData?.data?.invoice?.totalAmount
+                            ),
+                          invoiceBalance:
+                            getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(topPanel.open) ||
+                            getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(
+                              apiData?.data?.invoice?.invoiceBalance
+                            ),
+                          invoiceFrom:
+                            creditMemoData?.invoiceFrom ||
+                            apiData?.data?.invoice?.invoiceFrom,
+                          regionItemCode:
+                            creditMemoData?.regionItemCode ||
+                            apiData?.data?.regionItemCode,
+                          isClientVisible:
+                            creditMemoData?.isClientVisible ||
+                            apiData?.data?.invoice?.isClientVisible,
+                          depositTo:
+                            creditMemoData?.depositTo ||
+                            apiData?.data?.invoice?.depositTo,
+                          createdBy:
+                            creditMemoData?.createdBy ||
+                            apiData?.data?.invoice?.createdBy,
+                          modifiedBy:
+                            creditMemoData?.modifiedBy ||
+                            apiData?.data?.invoice?.modifiedBy,
+                          eorSubscriptionId:
+                            creditMemoData?.eorSubscriptionId ||
+                            apiData?.data?.invoice?.eorSubscriptionId,
+                          invoicerId:
+                            creditMemoData?.invoicerId ||
+                            apiData?.data?.invoice?.invoicerId,
+                          bankingDetailId:
+                            creditMemoData?.bankingDetailId ||
+                            apiData?.data?.invoice?.bankingDetailId,
+                          paymentMethod:
+                            creditMemoData?.paymentMethod ||
+                            apiData?.data?.invoice?.paymentMethod,
+                          poNumber:
+                            creditMemoData?.poNumber ||
+                            apiData?.data?.invoice?.invoiceFrom,
+                          ageingNotPaid:
+                            creditMemoData?.ageingNotPaid ||
+                            apiData?.data?.invoice?.ageingNotPaid,
+                          ageingPaid:
+                            creditMemoData?.ageingPaid ||
+                            apiData?.data?.invoice?.ageingPaid,
+                          invoiceDocuments:
+                            creditMemoData?.invoiceDocuments ||
+                            apiData?.data?.invoice?.invoiceDocuments,
+                          invoiceItems:
+                            creditMemoData?.invoiceItems ||
+                            apiData?.data?.invoice?.invoiceItems,
+                          invoiceNotes:
+                            creditMemoData?.invoiceNotes ||
+                            apiData?.data?.invoice?.invoiceNotes,
+                          invoiceRelatedInvoices:
+                            creditMemoData?.invoiceRelatedInvoices ||
+                            apiData?.data?.invoice?.invoiceRelatedInvoices,
+                          invoiceRelatedRelatedInvoices:
+                            creditMemoData?.invoiceRelatedRelatedInvoices ||
+                            apiData?.data?.invoice
+                              ?.invoiceRelatedRelatedInvoices,
+                          payrolls:
+                            creditMemoData?.payrolls ||
+                            apiData?.data?.invoice?.payrolls,
+                          customer:
+                            creditMemoData?.customer ||
+                            apiData?.data?.invoice?.customer,
+                          currency: {
+                            code: "USD",
+                            description: "US Dollar",
+                            id: 840,
+                          },
+                          id: id,
+                          exportToQB: {
+                            value: "Not Exported",
+                            color: "#767676",
+                          },
+                        },
+                      ];
+                      navigate(
+                        "/pay/invoicedetails" +
+                        id +
+                        "/" +
+                        cid +
+                        "/" +
+                        isClient +
+                        "/payments",
+                        {
+                          state: {
+                            InvoiceId:
+                              apiData?.data?.invoice?.invoiceNo ||
+                              creditMemoData.invoiceNo,
+                            transactionType: missTransType,
+                            inveoicesData: checkedInvoice,
+                            checkPage: true,
+                          },
+                        }
+                      );
+                    }}
                   />
                 </div>
+              ) : (
+                <></>
               )}
 
-            {isDownloadOpen && (
-              <div className="openDownloadDropdown">
-                <p onClick={() => downloadFunction()}>Invoice as PDF</p>
-                <p onClick={() => downloadExcelFunction()}>Invoice as Excel</p>
-                {missTransType == 1 && (
-                  <p onClick={() => downloadEmployeeBreakdownFunction()}>
-                    Employee Breakdown
-                  </p>
+              {currentStatusValue == statusValues.approved &&
+                missTransType === 4 ? (
+                <div className="addPaymentButton">
+                  <Button
+                    className="primary-blue medium"
+                    icon={{
+                      color: "#fff",
+                      icon: "add",
+                      size: "medium",
+                    }}
+                    label="Refund Payment"
+                    handleOnClick={() => {
+                      const checkedInvoice = [
+                        {
+                          customerId: cid,
+                          customerName: topPanel.to,
+                          customerLocation: topPanel.location,
+                          currencyId: creditMemoData?.currencyId,
+                          qbInvoiceNo: creditMemoData?.qbInvoiceNo,
+                          invoiceNo: creditMemoData?.invoiceNo,
+                          status: 4,
+                          statusLabel: "Approved",
+                          transactionType: missTransType,
+                          transactionTypeLabel: getTransactionLabelForPayment(),
+                          createdDate: moment(topPanel.invoiceDate).format(
+                            "DD/MMM/YYYY"
+                          ),
+                          paymentDate: creditMemoData?.paymentDate,
+                          approvalDate: creditMemoData?.approvalDate,
+                          submissionDate: creditMemoData?.submissionDate,
+                          dueDate: moment(topPanel.paymentDue).format(
+                            "DD/MMM/YYYY"
+                          ),
+                          exchangeRate: creditMemoData?.exchangeRate,
+                          totalAmount:
+                            getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(topPanel.total),
+                          invoiceBalance:
+                            getBillingCurrency() +
+                            " " +
+                            toCurrencyFormat(topPanel.open),
+                          invoiceFrom: creditMemoData?.invoiceFrom,
+                          regionItemCode: creditMemoData?.regionItemCode,
+                          isClientVisible: creditMemoData?.isClientVisible,
+                          depositTo: creditMemoData?.depositTo,
+                          createdBy: creditMemoData?.createdBy,
+                          modifiedBy: creditMemoData?.modifiedBy,
+                          eorSubscriptionId: creditMemoData?.eorSubscriptionId,
+                          invoicerId: creditMemoData?.invoicerId,
+                          bankingDetailId: creditMemoData?.bankingDetailId,
+                          paymentMethod: creditMemoData?.paymentMethod,
+                          poNumber: creditMemoData?.poNumber,
+                          ageingNotPaid: creditMemoData?.ageingNotPaid,
+                          ageingPaid: creditMemoData?.ageingPaid,
+                          invoiceDocuments: creditMemoData?.invoiceDocuments,
+                          invoiceItems: creditMemoData?.invoiceItems,
+                          invoiceNotes: creditMemoData?.invoiceNotes,
+                          invoiceRelatedInvoices:
+                            creditMemoData?.invoiceRelatedInvoices,
+                          invoiceRelatedRelatedInvoices:
+                            creditMemoData?.invoiceRelatedRelatedInvoices,
+                          payrolls: creditMemoData?.payrolls,
+                          customer: creditMemoData?.customer,
+                          currency: {
+                            code: "USD",
+                            description: "US Dollar",
+                            id: 840,
+                          },
+                          id: id,
+                          exportToQB: {
+                            value: "Not Exported",
+                            color: "#767676",
+                          },
+                        },
+                      ];
+                      navigate(
+                        "/pay/invoicedetails" +
+                        id +
+                        "/" +
+                        cid +
+                        "/" +
+                        isClient +
+                        "/payments",
+                        {
+                          state: {
+                            InvoiceId: creditMemoData.invoiceNo,
+                            transactionType: missTransType,
+                            inveoicesData: checkedInvoice,
+                            checkPage: true,
+                          },
+                        }
+                      );
+                    }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+
+              {(currentStatusValue === statusValues.perndingApproval ||
+                (currentStatusValue === statusValues.arReview &&
+                  missTransType !== 1)) &&
+                getPermissions(missTransType, "Reject") && (
+                  <div className="decline-invoice">
+                    <Button
+                      data-testid="decline-button"
+                      disabled={deleteDisableButtons === true}
+                      label="Decline Invoice"
+                      className="secondary-btn small"
+                      icon={{
+                        icon: "remove",
+                        size: "medium",
+                        color: "#526FD6",
+                      }}
+                      handleOnClick={() => setIsOpen(true)}
+                    />
+                  </div>
                 )}
+
+              {(currentStatusValue === statusValues.arReview ||
+                currentStatusValue === statusValues.declined) &&
+                missTransType == 1 &&
+                getPermissions(missTransType, "Send") && (
+                  <div className="submit_customer">
+                    <Button
+                      className="primary-blue small"
+                      label="Submit to Customer"
+                      handleOnClick={() => {
+                        handleApproveAR();
+                      }}
+                    />
+                  </div>
+                )}
+              {(currentStatusValue === statusValues.perndingApproval ||
+                (currentStatusValue === statusValues.arReview &&
+                  missTransType != 1)) &&
+                getPermissions(missTransType, "Approve") && (
+                  <Button
+                    data-testid="approve-button"
+                    disabled={
+                      missTransType == 7 || deleteDisableButtons === true
+                    }
+                    handleOnClick={() => {
+                      handleApproveInvoice(4);
+                    }}
+                    className="primary-blue small"
+                    icon={{
+                      color: "#fff",
+                      icon: "checkMark",
+                      size: "medium",
+                    }}
+                    label="Approve Invoice"
+                  />
+                )}
+
+              {(currentStatusValue === statusValues.approved ||
+                currentStatusValue === statusValues.paid ||
+                currentStatusValue === statusValues.partiallyPaid) &&
+                missTransType === 3 &&
+                getPermissions(2, "Add") && (
+                  <Button
+                    disabled={btnDis}
+                    data-testid="convert-button"
+                    label="Change to Miscellaneous"
+                    className="secondary-btn small change-miss"
+                    handleOnClick={() => {
+                      migrationInvoice();
+                    }}
+                  />
+                )}
+
+              {(currentStatusValue === statusValues.declined ||
+                currentStatusValue === statusValues.open) &&
+                missTransType !== 1 &&
+                permission?.InvoiceDetails.includes("Send") && (
+                  <Button
+                    data-testid="review-button"
+                    className="primary-blue small"
+                    icon={{
+                      color: "#fff",
+                      icon: "checkMark",
+                      size: "medium",
+                    }}
+                    label="Send for Review"
+                    handleOnClick={() => {
+                      handleApproveInvoice(2);
+                    }}
+                  />
+                )}
+            </div>
+            {missTransType === 7 && (
+              <div
+                className={cn("cp-download", {
+                  "is-drop-open": isDropdownOpen,
+                  "is-drop-closed": !isDropdownOpen,
+                })}
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onBlur={() => setIsDropdownOpen(false)}
+              >
+                <ButtonDropdown
+                  menuItems={{
+                    options: [
+                      { value: "pdf", label: "Invoice as PDF" },
+                      { value: "xlsx", label: "Invoice as Excel" },
+                    ],
+                    labelKeyName: "label",
+                  }}
+                  onChange={(selected: any) =>
+                    console.log("selected", selected)
+                  }
+                >
+                  Download
+                  <Icon
+                    color="#526FD6"
+                    className="chevron-down"
+                    icon="chevronDown"
+                    size="large"
+                    viewBox="-6 -3 24 13"
+                    width="34"
+                    height="34"
+                  />
+                  <Icon
+                    color="#526FD6"
+                    className="chevron-up"
+                    icon="chevronUp"
+                    size="large"
+                    viewBox="-6 -3 24 13"
+                    width="34"
+                    height="34"
+                  />
+                </ButtonDropdown>
               </div>
             )}
           </div>
 
-          {(status === "AR Review" || status === "Declined") &&
-            missTransType == 1 &&
-            getPermissions(1, "Edit") && (
-              <div className="saveBtnContainer">
-                <Button
-                  disabled={reCalButtonDisable}
-                  handleOnClick={() => {
-                    reCalculate();
-                  }}
-                  className="secondary-btn small"
-                  icon={{
-                    color: "#526FD6",
-                    icon: "autorenew",
-                    size: "small",
-                  }}
-                  label="Re-Calculate"
-                />
+          <div className="payrollInvoiceInfo">
+            <div className="topBar">
+              <div className="invoic-status">
+                <p className="status">{status}</p>
               </div>
-            )}
-
-          {(status === "AR Review" || status === "Open") &&
-            getPermissions(missTransType, "Edit") && (
-              <div className="saveBtnContainer">
-                <Button
-                  data-testid="save-button"
-                  className="secondary-btn small"
-                  label="Save"
-                  disabled={saveButtonDisable}
-                  handleOnClick={handleEditSave}
-                />
+              <div className="topBarrow">
+                <div className="invoiceNo">
+                  <div className="qbo_wrapper">
+                    <Icon color="#FFFFFF" icon="orderSummary" size="large" />
+                    <p>{getTransactionLabel()}</p>
+                  </div>
+                  {creditMemoData != null && creditMemoData?.qbInvoiceNo > 0 && (
+                      <p className="qbo">
+                        QBO No. {creditMemoData?.qbInvoiceNo}
+                      </p>
+                    )}
+                </div>
+                <div className="amount">
+                  {missTransType != 7 && (
+                    <p>
+                      Open{" "}
+                      <span>
+                        {getBillingCurrency()} {toCurrencyFormat(openBal)}
+                      </span>
+                    </p>
+                  )}
+                  <p>
+                    Total{" "}
+                    <span className="totalPadding">
+                      {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
+                    </span>
+                  </p>
+                </div>
               </div>
-            )}
+            </div>
 
-          {(status === "Approved" &&
-            missTransType !== 4 &&
-            missTransType !== 7 &&
-            getPermissions(missTransType, "AddPayment")) ||
-            (status === "Invoiced" &&
-              missTransType === 7 &&
-              getPermissions(missTransType, "AddPayment")) ? (
-            <div className="addPaymentButton">
-              <Button
-                className="primary-blue medium"
-                icon={{
-                  color: "#fff",
-                  icon: "add",
-                  size: "medium",
-                }}
-                label="Add Payment"
-                handleOnClick={() => {
-                  const checkedInvoice = [
-                    {
-                      customerId: cid,
-                      customerName:
-                        topPanel.to || apiData?.data?.invoice?.customerName,
-                      customerLocation:
-                        topPanel.location ||
-                        apiData?.data?.invoice?.customerLocation,
-                      currencyId:
-                        creditMemoData?.currencyId ||
-                        apiData?.data?.invoice?.currencyId,
-                      qbInvoiceNo:
-                        creditMemoData?.qbInvoiceNo ||
-                        apiData?.data?.invoice?.qbInvoiceNo,
-                      invoiceNo:
-                        creditMemoData?.invoiceNo ||
-                        apiData?.data?.invoice?.invoiceNo,
-                      status: 4,
-                      statusLabel: "Approved",
-                      transactionType: missTransType,
-                      transactionTypeLabel: getTransactionLabelForPayment(),
-                      createdDate: moment(topPanel.invoiceDate).format(
+            <div className="infoDetails">
+              <div className="column1 divContainer">
+                <p className="heading">From</p>
+                <p className="value">{topPanel.from}</p>
+              </div>
+              <div className="divContainer">
+                <p className="heading">To</p>
+                <p className="value">{topPanel.to}</p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.street}
+                </p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.city}
+                </p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.state}
+                </p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.country}
+                </p>
+                {missTransType != 7 && (
+                  <>
+                    <p className="ponumber">PO Number</p>
+                    {currentStatusValue === statusValues.arReview ||
+                      currentStatusValue === statusValues.open ? (
+                      <input
+                        data-testid="PONUMBER"
+                        onChange={(e: any) => {
+                          setPoNumber(
+                            Math.abs(parseInt(e.target.value)).toString()
+                          );
+                          setIsEditFieldsChanges(true);
+                        }}
+                        value={poNumber ? poNumber : topPanel.poNumber}
+                        type="number"
+                        className="poNoInput"
+                      />
+                    ) : (
+                      <p className="value">{topPanel.poNumber} </p>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="divContainer">
+                <p className="heading">Invoice Date</p>
+                {currentStatusValue === statusValues.arReview ||
+                  currentStatusValue === statusValues.open ? (
+                  <div className="dpContainer">
+                    <DatePicker
+                      label="invoiceDate"
+                      placeholderText={moment(topPanel.invoiceDate).format(
                         "DD/MMM/YYYY"
-                      ),
-                      paymentDate:
-                        creditMemoData?.paymentDate ||
-                        apiData?.data?.invoice?.paymentDate,
-                      approvalDate:
-                        creditMemoData?.approvalDate ||
-                        apiData?.data?.invoice?.approvalDate,
-                      submissionDate:
-                        creditMemoData?.submissionDate ||
-                        apiData?.data?.invoice?.submissionDate,
-                      dueDate: moment(topPanel.paymentDue).format(
-                        "DD/MMM/YYYY"
-                      ),
-                      exchangeRate:
-                        creditMemoData?.exchangeRate ||
-                        apiData?.data?.invoice?.exchangeRate,
-                      totalAmount:
-                        getBillingCurrency() +
-                        " " +
-                        toCurrencyFormat(topPanel.total) ||
-                        getBillingCurrency() +
-                        " " +
-                        toCurrencyFormat(apiData?.data?.invoice?.totalAmount),
-                      invoiceBalance:
-                        getBillingCurrency() +
-                        " " +
-                        toCurrencyFormat(topPanel.open) ||
-                        getBillingCurrency() +
-                        " " +
-                        toCurrencyFormat(
-                          apiData?.data?.invoice?.invoiceBalance
-                        ),
-                      invoiceFrom:
-                        creditMemoData?.invoiceFrom ||
-                        apiData?.data?.invoice?.invoiceFrom,
-                      regionItemCode:
-                        creditMemoData?.regionItemCode ||
-                        apiData?.data?.regionItemCode,
-                      isClientVisible:
-                        creditMemoData?.isClientVisible ||
-                        apiData?.data?.invoice?.isClientVisible,
-                      depositTo:
-                        creditMemoData?.depositTo ||
-                        apiData?.data?.invoice?.depositTo,
-                      createdBy:
-                        creditMemoData?.createdBy ||
-                        apiData?.data?.invoice?.createdBy,
-                      modifiedBy:
-                        creditMemoData?.modifiedBy ||
-                        apiData?.data?.invoice?.modifiedBy,
-                      eorSubscriptionId:
-                        creditMemoData?.eorSubscriptionId ||
-                        apiData?.data?.invoice?.eorSubscriptionId,
-                      invoicerId:
-                        creditMemoData?.invoicerId ||
-                        apiData?.data?.invoice?.invoicerId,
-                      bankingDetailId:
-                        creditMemoData?.bankingDetailId ||
-                        apiData?.data?.invoice?.bankingDetailId,
-                      paymentMethod:
-                        creditMemoData?.paymentMethod ||
-                        apiData?.data?.invoice?.paymentMethod,
-                      poNumber:
-                        creditMemoData?.poNumber ||
-                        apiData?.data?.invoice?.invoiceFrom,
-                      ageingNotPaid:
-                        creditMemoData?.ageingNotPaid ||
-                        apiData?.data?.invoice?.ageingNotPaid,
-                      ageingPaid:
-                        creditMemoData?.ageingPaid ||
-                        apiData?.data?.invoice?.ageingPaid,
-                      invoiceDocuments:
-                        creditMemoData?.invoiceDocuments ||
-                        apiData?.data?.invoice?.invoiceDocuments,
-                      invoiceItems:
-                        creditMemoData?.invoiceItems ||
-                        apiData?.data?.invoice?.invoiceItems,
-                      invoiceNotes:
-                        creditMemoData?.invoiceNotes ||
-                        apiData?.data?.invoice?.invoiceNotes,
-                      invoiceRelatedInvoices:
-                        creditMemoData?.invoiceRelatedInvoices ||
-                        apiData?.data?.invoice?.invoiceRelatedInvoices,
-                      invoiceRelatedRelatedInvoices:
-                        creditMemoData?.invoiceRelatedRelatedInvoices ||
-                        apiData?.data?.invoice?.invoiceRelatedRelatedInvoices,
-                      payrolls:
-                        creditMemoData?.payrolls ||
-                        apiData?.data?.invoice?.payrolls,
-                      customer:
-                        creditMemoData?.customer ||
-                        apiData?.data?.invoice?.customer,
-                      currency: {
-                        code: "USD",
-                        description: "US Dollar",
-                        id: 840,
-                      },
-                      id: id,
-                      exportToQB: {
-                        value: "Not Exported",
-                        color: "#767676",
-                      },
-                    },
-                  ];
-                  navigate(
-                    "/pay/invoicedetails" +
-                    id +
-                    "/" +
-                    cid +
-                    "/" +
-                    isClient +
-                    "/payments",
-                    {
-                      state: {
-                        InvoiceId:
-                          apiData?.data?.invoice?.invoiceNo ||
-                          creditMemoData.invoiceNo,
-                        transactionType: missTransType,
-                        inveoicesData: checkedInvoice,
-                        checkPage: true,
-                      },
-                    }
-                  );
+                      )}
+                      handleDateChange={(date: any) => {
+                        setInvoiceDate(date);
+                        setIsEditFieldsChanges(true);
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <p className="value">{topPanel.invoiceDate}</p>
+                )}
+                {missTransType == 7 && (
+                  <>
+                    <p className="heading">Due Date</p>
+                    <p className="value">{topPanel.paymentDue}</p>
+                  </>
+                )}
+
+                {missTransType != 7 && (
+                  <>
+                    {missTransType === 1 && (
+                      <>
+                        {status !== statusValues.open && (
+                          <>
+                            <p className="heading">Invoice Approval</p>
+                            {currentStatusValue === statusValues.arReview ||
+                              currentStatusValue === statusValues.open ? (
+                              <div className="dpContainer dpMidMargin">
+                                <DatePicker
+                                  minDate={handleMinDate("approvalDate")}
+                                  placeholderText={moment(
+                                    topPanel.invoiceApproval
+                                  ).format("DD/MMM/YYYY")}
+                                  handleDateChange={(date: any) => {
+                                    setInvoiceChanges(date);
+                                    setIsEditFieldsChanges(true);
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <p className="value">
+                                {topPanel.invoiceApproval}
+                              </p>
+                            )}
+
+                            {isClient == "false" && (
+                              <>
+                                {currentStatusValue !== statusValues.open && (
+                                  <div className="autoapproveContainer">
+                                    <Checkbox
+                                      onChange={(e: any) => {
+                                        setIsAutoApprove(e.target.checked);
+                                        axios({
+                                          url: getAutoApproveCheckUrl(
+                                            id,
+                                            e.target.checked
+                                          ),
+                                          method: "POST",
+                                          headers: getHeaders(
+                                            tempToken,
+                                            cid,
+                                            isClient
+                                          ),
+                                        })
+                                          .then((res: any) => {
+                                            if (res.status === 200) {
+                                              setShowAutoApprovedToast(true);
+                                            }
+                                          })
+                                          .catch((err: any) => {
+                                            setIsAutoApprove(!e.target.checked);
+                                            console.log(err);
+                                          });
+                                      }}
+                                      label="Auto-Approval after 24h"
+                                      checked={isAutoApprove}
+                                    />
+                                  </div>
+                                )}{" "}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
+
+                    <p className="heading">Payment Due</p>
+                    {currentStatusValue === statusValues.arReview ||
+                      currentStatusValue === statusValues.open ? (
+                      <div className="dpContainer">
+                        <DatePicker
+                          minDate={handleMinDate("paymentDate")}
+                          placeholderText={moment(topPanel.paymentDue).format(
+                            "DD/MMM/YYYY"
+                          )}
+                          handleDateChange={(date: any) => {
+                            setPaymentDue(date);
+                            setIsEditFieldsChanges(true);
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <p className="value">{topPanel.paymentDue}</p>
+                    )}
+                  </>
+                )}
+              </div>
+              <div className="lastCloumn divContainer">
+                <p className="heading">Location</p>
+                <p className="value">{topPanel.location}</p>
+                <p className="heading">Region</p>
+                <p className="value">{topPanel.region}</p>
+                <p className="heading">Billing Currency</p>
+                <p className="value">{getBillingCurrency()}</p>
+              </div>
+            </div>
+          </div>
+
+          {showAutoApprovedToast && (
+            <div className="toast">
+              {isAutoApprove === true
+                ? "Invoice set to Auto-approve successfully"
+                : "Auto-approval removed from Invoice successfully"}
+              <span
+                data-testid="toast-cross-button"
+                className="toast-action"
+                onClick={() => {
+                  setShowAutoApprovedToast(false);
                 }}
+              >
+                <Icon
+                  icon="remove"
+                  color="#ffff"
+                  size="medium"
+                  viewBox="-6 -6 20 20"
+                />
+              </span>
+            </div>
+          )}
+
+          {(currentStatusValue === statusValues.paid ||
+            currentStatusValue === statusValues.partiallyPaid) &&
+            (missTransType === 1 ||
+              missTransType === 2 ||
+              missTransType === 3) ? (
+            <div className="paymentCompnent">
+              <PaymentDetailContainer
+                setPaymentDetailData={setPaymentDetailData}
+                status={status}
+                cid={cid}
+                lookupData={lookupData}
+                paymentDetailData={paymentDetailData}
+                getBillingCurrency={getBillingCurrency}
+                id={id}
+                topPanel={topPanel}
+                setTopPanel={setTopPanel}
+                setStatus={setStatus}
+                currentStatusValue={currentStatusValue}
+                setCurrentStatusValue={setCurrentStatusValue}
               />
             </div>
           ) : (
             <></>
           )}
 
-          {(status === "Pending Approval" ||
-            (status === "AR Review" && missTransType !== 1)) &&
-            getPermissions(missTransType, "Reject") && (
-              <div className="decline-invoice">
-                <Button
-                  data-testid="decline-button"
-                  disabled={deleteDisableButtons === true}
-                  label="Decline Invoice"
-                  className="secondary-btn small"
-                  icon={{
-                    icon: "remove",
-                    size: "medium",
-                    color: "#526FD6",
-                  }}
-                  handleOnClick={() => setIsOpen(true)}
-                />
-              </div>
-            )}
-
-          {(status === "AR Review" || status === "Declined") &&
-            missTransType == 1 &&
-            getPermissions(missTransType, "Send") && (
-              <div className="submit_customer">
-                <Button
-                  className="primary-blue small"
-                  label="Submit to Customer"
-                  handleOnClick={() => {
-                    handleApproveAR();
-                  }}
-                />
-              </div>
-            )}
-          {(status === "Pending Approval" ||
-            (status === "AR Review" && missTransType != 1)) &&
-            getPermissions(missTransType, "Approve") && (
-              <Button
-                data-testid="approve-button"
-                disabled={missTransType == 7 || deleteDisableButtons === true}
-                handleOnClick={() => {
-                  handleApproveInvoice(4);
-                }}
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Approve Invoice"
-              />
-            )}
-
-          {((status === 'Approved') || (status === 'Paid') || (status === 'Partial Paid')) &&
-            missTransType === 3 &&
-            getPermissions(2, "Add") && (
-              <Button
-                disabled={btnDis}
-                data-testid="convert-button"
-                label="Change to Miscellaneous"
-                className="secondary-btn small change-miss"
-                handleOnClick={() => {
-                  migrationInvoice();
-                }}
-              />
-            )}
-
-          {(status === "Declined" || status === "Open") &&
-            missTransType !== 1 &&
-            permission?.InvoiceDetails.includes("Send") && (
-              <Button
-                data-testid="review-button"
-                className="primary-blue small"
-                icon={{
-                  color: "#fff",
-                  icon: "checkMark",
-                  size: "medium",
-                }}
-                label="Send for Review"
-                handleOnClick={() => {
-                  handleApproveInvoice(2);
-                }}
-              />
-            )}
-        </div>
-        {missTransType === 7 && (
-          <div
-            className={cn("cp-download", {
-              "is-drop-open": isDropdownOpen,
-              "is-drop-closed": !isDropdownOpen,
-            })}
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            onBlur={() => setIsDropdownOpen(false)}
-          >
-            <ButtonDropdown
-              menuItems={{
-                options: [
-                  { value: "pdf", label: "Invoice as PDF" },
-                  { value: "xlsx", label: "Invoice as Excel" },
-                ],
-                labelKeyName: "label",
-              }}
-              onChange={(selected: any) => console.log("selected", selected)}
-            >
-              Download
-              <Icon
-                color="#526FD6"
-                className="chevron-down"
-                icon="chevronDown"
-                size="large"
-                viewBox="-6 -3 24 13"
-                width="34"
-                height="34"
-              />
-              <Icon
-                color="#526FD6"
-                className="chevron-up"
-                icon="chevronUp"
-                size="large"
-                viewBox="-6 -3 24 13"
-                width="34"
-                height="34"
-              />
-            </ButtonDropdown>
-          </div>
-        )}
-      </div>
-
-      <div className="payrollInvoiceInfo">
-        <div className="topBar">
-          <div className="invoic-status">
-            <p className="status">{status}</p>
-          </div>
-          <div className="topBarrow">
-            <div className="invoiceNo">
-              <div className="qbo_wrapper">
-                <Icon color="#FFFFFF" icon="orderSummary" size="large" />
-                <p>{getTransactionLabel()}</p>
-              </div>
-              {creditMemoData != null && creditMemoData?.qbInvoiceNo != 0 && (
-                <p className="qbo">QBO No. {creditMemoData?.qbInvoiceNo}</p>
-              )}
-            </div>
-            <div className="amount">
-              {missTransType != 7 && (
-                <p>
-                  Open{" "}
-                  <span>
-                    {getBillingCurrency()} {toCurrencyFormat(openBal)}
-                  </span>
-                </p>
-              )}
-              <p>
-                Total{" "}
-                <span>
-                  {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
-                </span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="infoDetails">
-          <div className="column1 divContainer">
-            <p className="heading">From</p>
-            <p className="value">{topPanel.from}</p>
-          </div>
-          <div className="divContainer">
-            <p className="heading">To</p>
-            <p className="value">{topPanel.to}</p>
-            <p className="address">
-              {addressData?.data?.billingAddress?.street}
-            </p>
-            <p className="address">{addressData?.data?.billingAddress?.city}</p>
-            <p className="address">
-              {addressData?.data?.billingAddress?.state}
-            </p>
-            <p className="address">
-              {addressData?.data?.billingAddress?.country}
-            </p>
-            {missTransType != 7 && (
-              <>
-                <p className="ponumber">PO Number</p>
-                {status === "AR Review" || status === "Open" ? (
-                  <input
-                    data-testid="PONUMBER"
-                    onChange={(e: any) => {
-                      setPoNumber(
-                        Math.abs(parseInt(e.target.value)).toString()
-                      );
-                      setIsEditFieldsChanges(true);
-                    }}
-                    value={poNumber ? poNumber : topPanel.poNumber}
-                    type="number"
-                    className="poNoInput"
-                  />
-                ) : (
-                  <p className="value">{topPanel.poNumber} </p>
-                )}
-              </>
-            )}
-          </div>
-          <div className="divContainer">
-            <p className="heading">Invoice Date</p>
-            {status === "AR Review" || status === "Open" ? (
-              <div className="dpContainer">
-                <DatePicker
-                  label="invoiceDate"
-                  placeholderText={moment(topPanel.invoiceDate).format(
-                    "DD/MMM/YYYY"
-                  )}
-                  handleDateChange={(date: any) => {
-                    setInvoiceDate(date);
-                    setIsEditFieldsChanges(true);
-                  }}
-                />
-              </div>
-            ) : (
-              <p className="value">{topPanel.invoiceDate}</p>
-            )}
-            {missTransType == 7 && (
-              <>
-                <p className="heading">Due Date</p>
-                <p className="value">{topPanel.paymentDue}</p>
-              </>
-            )}
-
-            {missTransType != 7 && (
-              <>
-                {missTransType === 1 && (
-                  <>
-                    {status !== "Open" && (
-                      <>
-                        <p className="heading">Invoice Approval</p>
-                        {status === "AR Review" || status === "Open" ? (
-                          <div className="dpContainer dpMidMargin">
-                            <DatePicker
-                              minDate={handleMinDate("approvalDate")}
-                              placeholderText={moment(
-                                topPanel.invoiceApproval
-                              ).format("DD/MMM/YYYY")}
-                              handleDateChange={(date: any) => {
-                                setInvoiceChanges(date);
-                                setIsEditFieldsChanges(true);
-                              }}
-                            />
-                          </div>
-                        ) : (
-                          <p className="value">{topPanel.invoiceApproval}</p>
-                        )}
-
-                        {isClient == "false" && (
-                          <>
-                            {status !== "Open" && (
-                              <div className="autoapproveContainer">
-                                <Checkbox
-                                  onChange={(e: any) => {
-                                    setIsAutoApprove(e.target.checked);
-                                    axios({
-                                      url: getAutoApproveCheckUrl(
-                                        id,
-                                        e.target.checked
-                                      ),
-                                      method: "POST",
-                                      headers: getHeaders(
-                                        tempToken,
-                                        cid,
-                                        isClient
-                                      ),
-                                    })
-                                      .then((res: any) => {
-                                        if (res.status === 200) {
-                                          setShowAutoApprovedToast(true);
-                                        }
-                                      })
-                                      .catch((err: any) => {
-                                        setIsAutoApprove(!e.target.checked);
-                                        console.log(err);
-                                      });
-                                  }}
-                                  label="Auto-Approval after 24h"
-                                  checked={isAutoApprove}
-                                />
-                              </div>
-                            )}{" "}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-
-                <p className="heading">Payment Due</p>
-                {status === "AR Review" || status === "Open" ? (
-                  <div className="dpContainer">
-                    <DatePicker
-                      minDate={handleMinDate("paymentDate")}
-                      placeholderText={moment(topPanel.paymentDue).format(
-                        "DD/MMM/YYYY"
-                      )}
-                      handleDateChange={(date: any) => {
-                        setPaymentDue(date);
-                        setIsEditFieldsChanges(true);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <p className="value">{topPanel.paymentDue}</p>
-                )}
-              </>
-            )}
-          </div>
-          <div className="lastCloumn divContainer">
-            <p className="heading">Location</p>
-            <p className="value">{topPanel.location}</p>
-            <p className="heading">Region</p>
-            <p className="value">{topPanel.region}</p>
-            <p className="heading">Billing Currency</p>
-            <p className="value">{getBillingCurrency()}</p>
-          </div>
-        </div>
-      </div>
-
-      {showAutoApprovedToast && (
-        <div className="toast">
-          {isAutoApprove === true
-            ? "Invoice set to Auto-approve successfully"
-            : "Auto-approval removed from Invoice successfully"}
-          <span
-            data-testid="toast-cross-button"
-            className="toast-action"
-            onClick={() => {
-              setShowAutoApprovedToast(false);
-            }}
-          >
-            <Icon
-              icon="remove"
-              color="#ffff"
-              size="medium"
-              viewBox="-6 -6 20 20"
-            />
-          </span>
-        </div>
-      )}
-
-      {(status === "Paid" || status === "Partial Paid") &&
-        (missTransType === 1 || missTransType === 2 || missTransType === 3) ? (
-        <div className="paymentCompnent">
-          <PaymentDetailContainer
-            setPaymentDetailData={setPaymentDetailData}
-            status={status}
-            cid={cid}
-            lookupData={lookupData}
-            paymentDetailData={paymentDetailData}
-            getBillingCurrency={getBillingCurrency}
-            id={id}
-            topPanel={topPanel}
-            setTopPanel={setTopPanel}
-            setStatus={setStatus}
-          />
-        </div>
-      ) : (
-        <></>
-      )}
-
-      {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (
-        <CreditMemoSummary
-          status={status}
-          notes={notes}
-          setNotes={setNotes}
-          documents={documents}
-          setDocuments={setDocuments}
-          isClient={isClient}
-          cid={cid}
-          id={id}
-          creditMemoData={creditMemoData}
-          serviceCountries={lookupData?.data.serviceCountries}
-          currency={getBillingCurrency()}
-          vatValue={vatValue}
-          setCreditMemoData={setCreditMemoData}
-          isLogsOpen={isLogsOpen}
-          changeLogs={changeLogs}
-          setIsLogsOpen={setIsLogsOpen}
-          dataAvailable={dataAvailable}
-          logsData={logsData}
-          viewLimit={viewLimit}
-          setInitial={setInitial}
-          setLimitFor={setLimitFor}
-          setChangeLogs={setChangeLogs}
-          setDataAvailable={setDataAvailable}
-          initail={initail}
-          limitFor={limitFor}
-        ></CreditMemoSummary>
-      )}
-
-      {missTransType != 7 &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 2 && (
-          <div className="tab">
-            <p
-              onClick={() => setActiveTab("payroll")}
-              className={
-                activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
-              }
-            >
-              Payroll Journal
-            </p>
-            <p
-              onClick={() => setActiveTab("master")}
-              className={
-                activeTab === "master" ? "tabTextActive" : "tabTextPassive"
-              }
-            >
-              Master Invoice
-            </p>
-            <p
-              onClick={() => setActiveTab("files")}
-              className={
-                activeTab === "files" ? "tabTextActive" : "tabTextPassive"
-              }
-            >
-              Files & Notes
-            </p>
-          </div>
-        )}
-
-      {activeTab === "master" &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 7 &&
-        missTransType != 2 && (
-          <div className="master">
-            <h3 className="tableHeader">Country Summary</h3>
-            <Table
-              options={{
-                ...countrySummaryOptions,
-                ...{ data: countrySummary },
-              }}
-              colSort
-            />
-            <div className="countrySummaryCalc">
-              <p>Total Due</p>
-              <h3>
-                {getBillingCurrency()}{" "}
-                {toCurrencyFormat(totalCountrySummaryDue)}
-              </h3>
-            </div>
-
-            <h3 className="tableHeader">Fee Summary</h3>
-            <Table
-              options={{ ...feeSummaryOptions, ...{ data: feeSummary } }}
-              colSort
-            />
-            <div className="feeSummaryCalc">
-              <div className="rowFee">
-                <p className="title">Incoming Wire Payment</p>
-                <p className="amount">
-                  {getBillingCurrency()} {toCurrencyFormat(incomingWirePayment)}
-                </p>
-              </div>
-              <div className="row2">
-                <p className="title">Contract Termination Fee</p>
-                <p className="amount">
-                  {getBillingCurrency()}{" "}
-                  {toCurrencyFormat(contractTerminationFee)}
-                </p>
-              </div>
-              <div className="totalRow">
-                <p>Total Due</p>
-                <h3>
-                  {getBillingCurrency()} {toCurrencyFormat(feeSummaryTotalDue)}
-                </h3>
-              </div>
-            </div>
-          </div>
-        )}
-      {activeTab === "payroll" &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 7 &&
-        missTransType != 2 && (
-          <div className="payroll">
-            {payrollTables.map((item: any) => {
-              return (
-                <div>
-                  <div className="countryHeader">
-                    <GetFlag code={item.countryCode} />
-                    <h3>{item.country}</h3>
-                  </div>
-                  <div>
-                    <Table
-                      options={{
-                        ...payrollOptions,
-                        ...{ data: item.data },
-                      }}
-                      colSort
-                    />
-                    <div className="feeSummaryCalc">
-                      <div className="rowFee">
-                        <p className="title">Country Subtotal Due</p>
-                        <p className="amount">
-                          {item.currencyCode +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.subTotalDue)}
-                        </p>
-                      </div>
-                      <div className="rowFee">
-                        <p className="title">
-                          Country EXC Rate {item.exchangeRate}
-                        </p>
-                        <p className="amount">
-                          {getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.subTotalDue * item.exchangeRate
-                            )}
-                        </p>
-                      </div>
-                      <div className="rowFee">
-                        <p className="title">In Country Processing Fee</p>
-                        <p className="amount">
-                          {getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(
-                              item.feeSummary.inCountryProcessingFee
-                            )}
-                        </p>
-                      </div>
-                      <div className="rowFee">
-                        <p className="title">FX Bill</p>
-                        <p className="amount">
-                          {getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.fxBill)}
-                        </p>
-                      </div>
-                      <div className="row2">
-                        <p className="title">Total Country VAT</p>
-                        <p className="amount">
-                          {getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.feeSummary.totalCountryVat)}
-                        </p>
-                      </div>
-                      <div className="totalRow">
-                        <p>Country Total Due</p>
-                        <h3>
-                          {getBillingCurrency() +
-                            " " +
-                            toCurrencyFormat(item.countryTotalDue)}
-                        </h3>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            <div className="totalContainer">
-              <div>
-                <p>Total</p>
-                <h3>
-                  {getBillingCurrency()} {toCurrencyFormat(total)}
-                </h3>
-              </div>
-            </div>
-          </div>
-        )}
-      {activeTab === "files" &&
-        missTransType != 4 &&
-        missTransType != 3 &&
-        missTransType != 7 &&
-        missTransType != 2 && (
-          <>
-            <div className="filesNotes">
-              <NotesWidget
-                status={status}
-                notes={notes}
-                setNotes={setNotes}
-                isClient={isClient}
-                cid={cid}
-                id={id}
-                transactionType={missTransType}
-              ></NotesWidget>
-
-              <FileUploadWidget
-                status={status}
-                documents={documents}
-                setDocuments={setDocuments}
-                isClient={isClient}
-                cid={cid}
-                id={id}
-                transactionType={missTransType}
-              ></FileUploadWidget>
-            </div>
-            <LogsCompo
+          {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (
+            <CreditMemoSummary
+              status={status}
+              notes={notes}
+              setNotes={setNotes}
+              documents={documents}
+              setDocuments={setDocuments}
+              isClient={isClient}
+              cid={cid}
+              id={id}
+              creditMemoData={creditMemoData}
+              serviceCountries={lookupData?.data.serviceCountries}
+              currency={getBillingCurrency()}
+              vatValue={vatValue}
+              setCreditMemoData={setCreditMemoData}
               isLogsOpen={isLogsOpen}
               changeLogs={changeLogs}
               setIsLogsOpen={setIsLogsOpen}
@@ -2251,391 +2235,659 @@ export default function InvoiceDetails() {
               setDataAvailable={setDataAvailable}
               initail={initail}
               limitFor={limitFor}
-            ></LogsCompo>
-          </>
-        )}
-      {missTransType == 7 && (
-        <BillsTable
-          currency={getBillingCurrency()}
-          tableData={billTableData?.data}
-          customerId={cid}
-          billStatus={status}
-          invoiceId={state.InvoiceId}
-          navigate={navigate}
-          totalAmount={apiData?.data?.invoice?.totalAmount}
-          state={state}
-        ></BillsTable>
-      )}
+            ></CreditMemoSummary>
+          )}
 
-      {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
-
-      <div className="decline-modal">
-        <Modal
-          isOpen={isOpen}
-          handleClose={() => {
-            setIsOpen(false);
-            setInputValue("");
-          }}
-        >
-          <div>
-            <h3>Add A Reason</h3>
-            <div className="text-line">
-              <p>Please add a comment to indicate your reasons to decline</p>
+          {missTransType === 1 && (
+            <div className="tab">
+              <p
+                onClick={() => setActiveTab("payroll")}
+                className={
+                  activeTab === "payroll" ? "tabTextActive" : "tabTextPassive"
+                }
+              >
+                Payroll Journal
+              </p>
+              <p
+                onClick={() => setActiveTab("master")}
+                className={
+                  activeTab === "master" ? "tabTextActive" : "tabTextPassive"
+                }
+              >
+                Master Invoice
+              </p>
+              <p
+                onClick={() => setActiveTab("files")}
+                className={
+                  activeTab === "files" ? "tabTextActive" : "tabTextPassive"
+                }
+              >
+                Files & Notes
+              </p>
             </div>
-            <div className="text-invoive-no">
-              <p>{getTransactionLabel()}.</p>
-            </div>
+          )}
 
-            <div className="dec_check_main">
-              {declineCheckboxLabel &&
-                declineCheckboxLabel?.map((item: any, index: any) => {
-                  return (
-                    <div className="dec_check_wrapp">
-                      <Checkbox
-                        data-testid="check1"
-                        id="sampleCheckbox"
-                        disabled={
-                          declineCheckboxLabel[index].isDisable === true
-                        }
-                        onChange={(e: any) => {
-                          const declineData = [...declineCheckboxLabel];
-                          declineData[index].isSelected = e.target.checked;
-                          declineData.forEach((i, k) => {
-                            if (i.label === item.label) {
-                              setDeclineLabel(declineData[k].label);
-                            }
-                            if (i.label != item.label) {
-                              declineData[k].isDisable = e.target.checked;
-                            }
-                          });
-                          setDeclineCheckboxLabel(declineData);
-                        }}
-                        checked={declineCheckboxLabel[index].isSelected}
-                      />
-                      <label className="dec_check_label">{item.label}</label>
+          {activeTab === "master" && missTransType === 1 && (
+            <div className="master">
+              <h3 className="tableHeader">Country Summary</h3>
+              <Table
+                options={{
+                  ...countrySummaryOptions,
+                  ...{ data: countrySummary },
+                }}
+                colSort
+              />
+              <div className="countrySummaryCalc">
+                <p>Total Due</p>
+                <h3>
+                  {getBillingCurrency()}{" "}
+                  {toCurrencyFormat(totalCountrySummaryDue)}
+                </h3>
+              </div>
+
+              <h3 className="tableHeader">Fee Summary</h3>
+              <Table
+                options={{ ...feeSummaryOptions, ...{ data: feeSummary } }}
+                colSort
+              />
+              <div className="feeSummaryCalc">
+                <div className="rowFee">
+                  <p className="title">Incoming Wire Payment</p>
+                  <p className="amount">
+                    {getBillingCurrency()}{" "}
+                    {toCurrencyFormat(incomingWirePayment)}
+                  </p>
+                </div>
+                <div className="row2">
+                  <p className="title">Contract Termination Fee</p>
+                  <p className="amount">
+                    {getBillingCurrency()}{" "}
+                    {toCurrencyFormat(contractTerminationFee)}
+                  </p>
+                </div>
+                <div className="totalRow">
+                  <p>Total Due</p>
+                  <h3>
+                    {getBillingCurrency()}{" "}
+                    {toCurrencyFormat(feeSummaryTotalDue)}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          )}
+          {activeTab === "payroll" && missTransType === 1 && (
+            <div className="payroll">
+              {payrollTables.map((item: any) => {
+                return (
+                  <div>
+                    <div className="countryHeader">
+                      <GetFlag code={item.countryCode} />
+                      <h3>{item.country}</h3>
                     </div>
-                  );
-                })}
-            </div>
+                    <div>
+                      <Table
+                        options={{
+                          ...payrollOptions,
+                          ...{ data: item.data },
+                        }}
+                        colSort
+                      />
+                      <div className="feeSummaryCalc">
+                        <div className="rowFee">
+                          <p className="title">Country Subtotal Due</p>
+                          <p className="amount">
+                            {item.currencyCode +
+                              " " +
+                              toCurrencyFormat(item.feeSummary.subTotalDue)}
+                          </p>
+                        </div>
+                        <div className="rowFee">
+                          <p className="title">
+                            Country EXC Rate {item.exchangeRate}
+                          </p>
+                          <p className="amount">
+                            {getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(
+                                item.feeSummary.subTotalDue * item.exchangeRate
+                              )}
+                          </p>
+                        </div>
+                        <div className="rowFee">
+                          <p className="title">In Country Processing Fee</p>
+                          <p className="amount">
+                            {getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(
+                                item.feeSummary.inCountryProcessingFee
+                              )}
+                          </p>
+                        </div>
+                        <div className="rowFee">
+                          <p className="title">FX Bill</p>
+                          <p className="amount">
+                            {getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(item.feeSummary.fxBill)}
+                          </p>
+                        </div>
+                        <div className="row2">
+                          <p className="title">Total Country VAT</p>
+                          <p className="amount">
+                            {getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(item.feeSummary.totalCountryVat)}
+                          </p>
+                        </div>
+                        <div className="totalRow">
+                          <p>Country Total Due</p>
+                          <h3>
+                            {getBillingCurrency() +
+                              " " +
+                              toCurrencyFormat(item.countryTotalDue)}
+                          </h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
 
-            <div className="text-invoice-comment">
-              <label>
-                Comment<span className="comment">*</span>
-              </label>
-              <textarea
-                value={inputValue}
-                className="textarea-box"
-                placeholder="Please Enter a Reason"
-                rows={2}
-                cols={50}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
+              <div className="totalContainer">
+                <div>
+                  <p>Total</p>
+                  <h3>
+                    {getBillingCurrency()} {toCurrencyFormat(total)}
+                  </h3>
+                </div>
+              </div>
             </div>
-            <div className="decline-modal-button">
-              <Button
-                data-testid="decline-cancel-button"
-                label="Cancel"
-                className="secondary-btn medium cancel-button"
-                handleOnClick={() => {
-                  setIsOpen(false);
-                  setInputValue("");
-                }}
-              />
-              <Button
-                data-testid="decline-button-submit"
-                disabled={declineCheckboxDisable()}
-                label="Decline Invoice"
-                className="primary-blue medium decline-button"
-                handleOnClick={() => {
-                  let currDate = new Date();
-                  axios({
-                    method: "POST",
-                    url: urls.declineInvoice,
-                    headers: getHeaders(tempToken, cid, isClient),
-                    data: {
-                      invoiceId: id,
-                      noteType: "1",
-                      note: inputValue,
-                      createdDate: currDate,
-                      customerId: cid,
-                      DeclineOption: declineLabel,
-                    },
-                  })
-                    .then((res: any) => {
-                      if (res.status == 200) {
-                        lookupData.data.invoiceStatuses.forEach((e: any) => {
-                          if (e.value === res.data.status) {
-                            setStatus(
-                              e.text === "In Review" ? "AR Review" : e.text
-                            );
-                          }
-                        });
-                        setInputValue("");
-                        setIsOpen(false);
-                        setDeleteDisableButtons(true);
-                      }
-                    })
-                    .catch((e: any) => {
-                      console.log(e);
-                      setInputValue("");
+          )}
+          {activeTab === "files" && missTransType === 1 && (
+            <>
+              <div className="filesNotes">
+                <NotesWidget
+                  status={status}
+                  notes={notes}
+                  setNotes={setNotes}
+                  isClient={isClient}
+                  cid={cid}
+                  id={id}
+                  transactionType={missTransType}
+                  currentStatusValue={currentStatusValue}
+                  creditMemoData={payrollData}
+                ></NotesWidget>
+
+                <FileUploadWidget
+                  status={status}
+                  documents={documents}
+                  setDocuments={setDocuments}
+                  isClient={isClient}
+                  cid={cid}
+                  id={id}
+                  transactionType={missTransType}
+                ></FileUploadWidget>
+              </div>
+              <LogsCompo
+                isLogsOpen={isLogsOpen}
+                changeLogs={changeLogs}
+                setIsLogsOpen={setIsLogsOpen}
+                dataAvailable={dataAvailable}
+                logsData={logsData}
+                viewLimit={viewLimit}
+                setInitial={setInitial}
+                setLimitFor={setLimitFor}
+                setChangeLogs={setChangeLogs}
+                setDataAvailable={setDataAvailable}
+                initail={initail}
+                limitFor={limitFor}
+              ></LogsCompo>
+            </>
+          )}
+          {missTransType == 7 && (
+            <BillsTable
+              currency={getBillingCurrency()}
+              tableData={billTableData?.data}
+              customerId={cid}
+              billStatus={status}
+              invoiceId={state.InvoiceId}
+              invoiceStatus={apiData?.data?.invoice?.status}
+              navigate={navigate}
+              totalAmount={apiData?.data?.invoice?.totalAmount}
+              state={state}
+            ></BillsTable>
+          )}
+
+          {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
+
+          <div className="decline-modal">
+            <Modal
+              isOpen={isOpen}
+              handleClose={() => {
+                setIsOpen(false);
+                setInputValue("");
+              }}
+            >
+              <div>
+                <h3>Add A Reason</h3>
+                <div className="text-line">
+                  <p>
+                    Please add a comment to indicate your reasons to decline
+                  </p>
+                </div>
+                <div className="text-invoive-no">
+                  <p>{getTransactionLabel()}.</p>
+                </div>
+
+                <div className="dec_check_main">
+                  {declineCheckboxLabel &&
+                    missTransType === 1 &&
+                    declineCheckboxLabel?.map((item: any, index: any) => {
+                      return (
+                        <div className="dec_check_wrapp">
+                          <Checkbox
+                            data-testid="check1"
+                            id="sampleCheckbox"
+                            disabled={
+                              declineCheckboxLabel[index].isDisable === true
+                            }
+                            onChange={(e: any) => {
+                              const declineData = [...declineCheckboxLabel];
+                              declineData[index].isSelected = e.target.checked;
+                              declineData.forEach((i, k) => {
+                                if (i.label === item.label) {
+                                  setDeclineLabel(declineData[k].label);
+                                }
+                                if (i.label != item.label) {
+                                  declineData[k].isDisable = e.target.checked;
+                                }
+                              });
+                              setDeclineCheckboxLabel(declineData);
+                            }}
+                            checked={declineCheckboxLabel[index].isSelected}
+                          />
+                          <label className="dec_check_label">
+                            {item.label}
+                          </label>
+                        </div>
+                      );
+                    })}
+                </div>
+
+                <div className="text-invoice-comment">
+                  <label>
+                    Comment<span className="comment">*</span>
+                  </label>
+                  <textarea
+                    value={inputValue}
+                    className="textarea-box"
+                    placeholder="Please Enter a Reason"
+                    rows={2}
+                    cols={50}
+                    onChange={(e) => setInputValue(e.target.value)}
+                  />
+                </div>
+                <div className="decline-modal-button">
+                  <Button
+                    data-testid="decline-cancel-button"
+                    label="Cancel"
+                    className="secondary-btn medium cancel-button"
+                    handleOnClick={() => {
                       setIsOpen(false);
-                    });
-                }}
-              />
-            </div>
+                      setInputValue("");
+                    }}
+                  />
+                  <Button
+                    data-testid="decline-button-submit"
+                    disabled={declineCheckboxDisable()}
+                    label="Decline Invoice"
+                    className="primary-blue medium decline-button"
+                    handleOnClick={() => {
+                      let currDate = new Date();
+                      axios({
+                        method: "POST",
+                        url: urls.declineInvoice,
+                        headers: getHeaders(tempToken, cid, isClient),
+                        data: {
+                          invoiceId: id,
+                          noteType: "1",
+                          note: inputValue,
+                          createdDate: currDate,
+                          customerId: cid,
+                          DeclineOption: declineLabel,
+                        },
+                      })
+                        .then((res: any) => {
+                          if (res.status == 200) {
+                            setCurrentStatusValue(res.data.status);
+                            lookupData.data.invoiceStatuses.forEach(
+                              (e: any) => {
+                                if (e.value === res.data.status) {
+                                  setStatus(
+                                    e.text === "In Review"
+                                      ? "AR Review"
+                                      : e.text
+                                  );
+                                }
+                              }
+                            );
+                            setInputValue("");
+                            setIsOpen(false);
+                            setDeleteDisableButtons(true);
+                          }
+                        })
+                        .catch((e: any) => {
+                          console.log(e);
+                          setInputValue("");
+                          setIsOpen(false);
+                        });
+                    }}
+                  />
+                </div>
+              </div>
+            </Modal>
           </div>
-        </Modal>
-      </div>
 
-      <div className="void-modal">
-        <Modal
-          isOpen={isVoidOpen}
-          handleClose={() => {
-            setIsVoidOpen(false);
-            setInputVoidValue("");
-            setVoidFileData({});
-          }}
-        >
-          <div>
-            <h3>Void Invoice</h3>
-            <h6>Enter Note</h6>
+          <div className="void-modal">
+            <Modal
+              isOpen={isVoidOpen}
+              handleClose={() => {
+                setIsVoidOpen(false);
+                setInputVoidValue("");
+                setVoidFileData({});
+              }}
+            >
+              <div>
+                <h3>Void Invoice</h3>
+                <h6>Enter Note</h6>
 
+                <div>
+                  <textarea
+                    value={inputVoidValue}
+                    className="textarea-box"
+                    placeholder="Enter note here"
+                    rows={2}
+                    cols={50}
+                    onChange={(e) => setInputVoidValue(e.target.value)}
+                  />
+                </div>
+
+                <div className="attachment-container">
+                  <input
+                    data-testid="attachmenttestId"
+                    type="file"
+                    id="attachmentId"
+                    style={{ display: "none" }}
+                    onChange={(e: any) => setVoidFileData(e.target.files["0"])}
+                  />
+                  <label htmlFor="attachmentId" className="attachment">
+                    <Icon icon="attachment" size="large" color="#526fd6" />
+                    <h4>Add Attachment</h4>
+                  </label>
+                  <p>{voidFileData?.name}</p>
+                </div>
+
+                <div className="void-button">
+                  <Button
+                    data-testid="void-button-id"
+                    className="primary-blue small"
+                    label="Void"
+                    disabled={!inputVoidValue}
+                    handleOnClick={() => {
+                      setIsVoidConfirmOptionOpen(true);
+                      setIsVoidOpen(false);
+                    }}
+                  />
+                </div>
+              </div>
+            </Modal>
+          </div>
+
+          <div className="void-confirm-modal">
+            <Modal isOpen={isVoidConfirmOptionOpen}>
+              <div>
+                <h4>Are you sure you want to void this invoice?</h4>
+
+                <div className="void-confirm-button">
+                  <Button
+                    data-testid="Void-button-Cancel"
+                    label="Cancel"
+                    className="secondary-btn medium"
+                    handleOnClick={() => {
+                      setIsVoidConfirmOptionOpen(false);
+                      setVoidFileData({});
+                      setInputVoidValue("");
+                    }}
+                  />
+                  <Button
+                    data-testid="Void-button-submit"
+                    label="Void"
+                    className="primary-blue medium decline-button"
+                    handleOnClick={() => handleVoid()}
+                  />
+                </div>
+              </div>
+            </Modal>
+          </div>
+
+          <div className="delete-confirm-modal">
+            <Modal isOpen={deleteConfirmModalOpen}>
+              <div>
+                <h4>
+                  Are you sure you want to Delete this invoice permanently?
+                </h4>
+
+                <div className="delete-confirm-button">
+                  <Button
+                    data-testid="delete-button-Cancel"
+                    label="Cancel"
+                    className="secondary-btn medium"
+                    handleOnClick={() => {
+                      setDeleteConfirmModalOpen(false);
+                    }}
+                  />
+                  <Button
+                    data-testid="delete-button-submit"
+                    label={deleteFun()}
+                    className="primary-blue medium delete-button"
+                    handleOnClick={() => handleDeleteInvoice()}
+                  />
+                </div>
+              </div>
+            </Modal>
+          </div>
+
+          {/* istanbul ignore next */}
+          <div className="compensation-full-container">
+            <Modal
+              isOpen={isCompensatioModalOpen.modalOpen}
+              handleClose={() => {
+                setIsCompensatioModalOpen({
+                  ...isCompensatioModalOpen,
+                  modalOpen: false,
+                });
+              }}
+            >
+              <div className="compensation-inner-container">
+                <Cards className={`profile-header-container`}>
+                  <div className="section-1">
+                    {isCompensatioModalOpen?.data?.personalDetails?.photoUrl ? (
+                      <div className="img-container">
+                        <AvatarHandler
+                          // handleClick={handleAvatarClick}
+                          // initials={user.initials}
+                          source={
+                            isCompensatioModalOpen?.data?.personalDetails
+                              ?.photoUrl
+                          }
+                          style={{
+                            "background-color": "#FFFFF",
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div className="img-container-logo">
+                        <p className="user_initials">
+                          {isCompensatioModalOpen?.data?.personalDetails
+                            ?.firstName[0] +
+                            " " +
+                            isCompensatioModalOpen?.data?.personalDetails
+                              ?.lastName[0]}
+                        </p>
+                      </div>
+                    )}
+                    <div className="col-6">
+                      <div className="header">
+                        {isCompensatioModalOpen?.data?.fullName}
+                      </div>
+                      <div className="sub-header">
+                        {isCompensatioModalOpen?.data?.jobTitle}
+                      </div>
+                    </div>
+                    <div className="col-3 info-text-container">
+                      <div className="info-text" id="work-phone">
+                        <Icon color="#fff" icon="mobile" size="large" />
+                        &nbsp;
+                        <span>
+                          {isCompensatioModalOpen?.data?.phone?.countryCode}
+                          {isCompensatioModalOpen?.data?.phone?.number}
+                        </span>
+                      </div>
+                      <div className="info-text">
+                        <Icon color="#E0E5F8" icon="email" size="large" />
+                        &nbsp;
+                        <span>{isCompensatioModalOpen?.data?.email}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="section-2">
+                    <div className="col-3"></div>
+                    <div className="col-6 misc-info">
+                      <div className="col-6">
+                        <div className="misc-info__item">
+                          <Icon color="#767676" icon="pound" size="medium" />
+                          &nbsp;
+                          <span>C928422111</span>
+                        </div>
+                        <div className="misc-info__item">
+                          <Icon color="#767676" icon="calendar" size="medium" />
+                          &nbsp;
+                          <span>
+                            {"Effective Start Date: "}
+                            {isCompensatioModalOpen &&
+                              isCompensatioModalOpen.data &&
+                              isCompensatioModalOpen?.data?.startDate
+                              ? moment(
+                                isCompensatioModalOpen?.data?.startDate
+                              ).format("D MMM YYYY")
+                              : ""}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className="misc-info__item misc-info__item__2">
+                          <Icon color="#767676" icon="location" size="medium" />
+                          &nbsp;
+                          <span>{isCompensatioModalOpen?.data?.location}</span>
+                        </div>
+                      </div>
+                      <div className="col-4"></div>
+                    </div>
+                    <div className="compensation-invoice-status">
+                      <p>Active</p>
+                    </div>
+                  </div>
+                </Cards>
+                <div className="compensation-text">Compensation</div>
+                <div className="compensation-table">
+                  <Table options={compensationTableOptions} colSort />
+                </div>
+              </div>
+            </Modal>
+          </div>
+
+          <div className="delete-employee-modal">
+            <Modal
+              isOpen={deleteEmployeeModalOpen.isModalOpen}
+              handleClose={() => {
+                setDeleteEmployeeModalOpen({
+                  ...deleteEmployeeModalOpen,
+                  isModalOpen: false,
+                });
+              }}
+            >
+              <div className="delete-employee-inner-container">
+                <h1>Are you sure you want to delete this employee?</h1>
+                <div className="delete-emplyee-buttons">
+                  <Button
+                    data-testid="delete-button-Cancel"
+                    label="Cancel"
+                    className="secondary-btn medium"
+                    handleOnClick={() => {
+                      setDeleteEmployeeModalOpen({
+                        ...deleteEmployeeModalOpen,
+                        isModalOpen: false,
+                      });
+                    }}
+                  />
+                  <Button
+                    data-testid="delete-button-submit"
+                    label="Delete Employee"
+                    className="primary-blue medium employee-button"
+                    handleOnClick={() => deleteEmployee()}
+                  />
+                </div>
+              </div>
+            </Modal>
+          </div>
+          {missTransType == 7 && apiData?.data?.invoice?.status == 10 && (
             <div>
-              <textarea
-                value={inputVoidValue}
-                className="textarea-box"
-                placeholder="Enter note here"
-                rows={2}
-                cols={50}
-                onChange={(e) => setInputVoidValue(e.target.value)}
-              />
-            </div>
-
-            <div className="attachment-container">
-              <input
-                data-testid="attachmenttestId"
-                type="file"
-                id="attachmentId"
-                style={{ display: "none" }}
-                onChange={(e: any) => setVoidFileData(e.target.files["0"])}
-              />
-              <label htmlFor="attachmentId" className="attachment">
-                <Icon icon="attachment" size="large" color="#526fd6" />
-                <h4>Add Attachment</h4>
-              </label>
-              <p>{voidFileData?.name}</p>
-            </div>
-
-            <div className="void-button">
-              <Button
-                data-testid="void-button-id"
-                className="primary-blue small"
-                label="Void"
-                disabled={!inputVoidValue}
-                handleOnClick={() => {
-                  setIsVoidConfirmOptionOpen(true);
-                  setIsVoidOpen(false);
-                }}
-              />
-            </div>
-          </div>
-        </Modal>
-      </div>
-
-      <div className="void-confirm-modal">
-        <Modal isOpen={isVoidConfirmOptionOpen}>
-          <div>
-            <h4>Are you sure you want to void this invoice?</h4>
-
-            <div className="void-confirm-button">
-              <Button
-                data-testid="Void-button-Cancel"
-                label="Cancel"
-                className="secondary-btn medium"
-                handleOnClick={() => {
-                  setIsVoidConfirmOptionOpen(false);
-                  setVoidFileData({});
-                  setInputVoidValue("");
-                }}
-              />
-              <Button
-                data-testid="Void-button-submit"
-                label="Void"
-                className="primary-blue medium decline-button"
-                handleOnClick={() => handleVoid()}
-              />
-            </div>
-          </div>
-        </Modal>
-      </div>
-
-      <div className="delete-confirm-modal">
-        <Modal isOpen={deleteConfirmModalOpen}>
-          <div>
-            <h4>Are you sure you want to Delete this invoice permanently?</h4>
-
-            <div className="delete-confirm-button">
-              <Button
-                data-testid="delete-button-Cancel"
-                label="Cancel"
-                className="secondary-btn medium"
-                handleOnClick={() => {
-                  setDeleteConfirmModalOpen(false);
-                }}
-              />
-              <Button
-                data-testid="delete-button-submit"
-                label={deleteFun()}
-                className="primary-blue medium delete-button"
-                handleOnClick={() => handleDeleteInvoice()}
-              />
-            </div>
-          </div>
-        </Modal>
-      </div>
-
-      {/* istanbul ignore next */}
-      <div className="compensation-full-container">
-        <Modal
-          isOpen={isCompensatioModalOpen.modalOpen}
-          handleClose={() => {
-            setIsCompensatioModalOpen({
-              ...isCompensatioModalOpen,
-              modalOpen: false,
-            });
-          }}
-        >
-          <div className="compensation-inner-container">
-            <Cards className={`profile-header-container`}>
-              <div className="section-1">
-                {isCompensatioModalOpen?.data?.personalDetails?.photoUrl ? (
-                  <div className="img-container">
-                    <AvatarHandler
-                      // handleClick={handleAvatarClick}
-                      // initials={user.initials}
-                      source={
-                        isCompensatioModalOpen?.data?.personalDetails?.photoUrl
+              <Modal
+                isOpen={sentPopup}
+                width="31.3125rem"
+                height="auto"
+                handleClose={
+                  /* istanbul ignore next */ () => {
+                    setSentPopup(false);
+                  }
+                }
+              >
+                <div className="sent-popup">
+                  <div className="sent-popup-header">
+                    Final Invoice Confirmation
+                  </div>
+                  <div className="sent-popout-body">
+                    Do you want to request an email receipt against the final
+                    invoice?
+                  </div>
+                  <div className="sent-popout-action">
+                    <Button
+                      data-testid=""
+                      label="No"
+                      className="secondary-btn medium no-sent-btn"
+                      handleOnClick={
+                        /* istanbul ignore next */ () => {
+                          setSentPopup(false);
+                        }
                       }
-                      style={{
-                        "background-color": "#FFFFF",
-                      }}
+                    />
+                    <Button
+                      data-testid=""
+                      label="Yes"
+                      className="primary-blue medium yes-sent-btn"
+                      handleOnClick={
+                        /* istanbul ignore next */ () => {
+                          callCloseInvoiceAPI();
+                        }
+                      }
                     />
                   </div>
-                ) : (
-                  <div className="img-container-logo">
-                    <p className="user_initials">
-                      {isCompensatioModalOpen?.data?.personalDetails
-                        ?.firstName[0] +
-                        " " +
-                        isCompensatioModalOpen?.data?.personalDetails
-                          ?.lastName[0]}
-                    </p>
-                  </div>
-                )}
-                <div className="col-6">
-                  <div className="header">
-                    {isCompensatioModalOpen?.data?.fullName}
-                  </div>
-                  <div className="sub-header">
-                    {isCompensatioModalOpen?.data?.jobTitle}
-                  </div>
                 </div>
-                <div className="col-3 info-text-container">
-                  <div className="info-text" id="work-phone">
-                    <Icon color="#fff" icon="mobile" size="large" />
-                    &nbsp;
-                    <span>
-                      {isCompensatioModalOpen?.data?.phone?.countryCode}
-                      {isCompensatioModalOpen?.data?.phone?.number}
-                    </span>
-                  </div>
-                  <div className="info-text">
-                    <Icon color="#E0E5F8" icon="email" size="large" />
-                    &nbsp;
-                    <span>{isCompensatioModalOpen?.data?.email}</span>
-                  </div>
-                </div>
-              </div>
-              <div className="section-2">
-                <div className="col-3"></div>
-                <div className="col-6 misc-info">
-                  <div className="col-6">
-                    <div className="misc-info__item">
-                      <Icon color="#767676" icon="pound" size="medium" />
-                      &nbsp;
-                      <span>C928422111</span>
-                    </div>
-                    <div className="misc-info__item">
-                      <Icon color="#767676" icon="calendar" size="medium" />
-                      &nbsp;
-                      <span>
-                        {"Effective Start Date: "}
-                        {isCompensatioModalOpen &&
-                          isCompensatioModalOpen.data &&
-                          isCompensatioModalOpen?.data?.startDate
-                          ? moment(
-                            isCompensatioModalOpen?.data?.startDate
-                          ).format("D MMM YYYY")
-                          : ""}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <div className="misc-info__item misc-info__item__2">
-                      <Icon color="#767676" icon="location" size="medium" />
-                      &nbsp;
-                      <span>{isCompensatioModalOpen?.data?.location}</span>
-                    </div>
-                  </div>
-                  <div className="col-4"></div>
-                </div>
-                <div className="compensation-invoice-status">
-                  <p>Active</p>
-                </div>
-              </div>
-            </Cards>
-            <div className="compensation-text">Compensation</div>
-            <div className="compensation-table">
-              <Table options={compensationTableOptions} colSort />
+              </Modal>
             </div>
-          </div>
-        </Modal>
-      </div>
-
-      <div className="delete-employee-modal">
-        <Modal
-          isOpen={deleteEmployeeModalOpen.isModalOpen}
-          handleClose={() => {
-            setDeleteEmployeeModalOpen({
-              ...deleteEmployeeModalOpen,
-              isModalOpen: false,
-            });
-          }}
-        >
-          <div className="delete-employee-inner-container">
-            <h1>Are you sure you want to delete this employee?</h1>
-            <div className="delete-emplyee-buttons">
-              <Button
-                data-testid="delete-button-Cancel"
-                label="Cancel"
-                className="secondary-btn medium"
-                handleOnClick={() => {
-                  setDeleteEmployeeModalOpen({
-                    ...deleteEmployeeModalOpen,
-                    isModalOpen: false,
-                  });
-                }}
-              />
-              <Button
-                data-testid="delete-button-submit"
-                label="Delete Employee"
-                className="primary-blue medium employee-button"
-                handleOnClick={() => deleteEmployee()}
-              />
-            </div>
-          </div>
-        </Modal>
-      </div>
-    </div>
+          )}
+        </div>
+      )}
+    </>
   );
 }

@@ -2,12 +2,13 @@
 @import "../../../styles/styles";
 
 .atlas-payment-invoices {
-  .ponumber{
+  .ponumber {
     font-size: 0.8889rem;
     margin-bottom: 0.4rem;
     color: #041e42;
     font-weight: 450;
   }
+
   .invoiceDetailsContainer {
     padding-bottom: 2.222rem;
 
@@ -71,10 +72,9 @@
 
         .addPaymentButton {
           margin-right: 2.1rem;
-          button.a-button.medium{
-            height: 2.8rem;
-          }
+
           button.a-button.medium {
+            height: 2.8rem;
             margin-right: -2rem;
           }
         }
@@ -82,23 +82,27 @@
         .download {
           display: flex;
           align-items: center;
-          background-color: $white;
           border-style: solid;
-          border-color: $primary-blue;
           border-radius: 4px;
           height: 2.5rem;
-          font-size: 1rem;
-          border-width: 0.1rem;
+          font-size: 1.1rem;
+          border-width: 0rem;
           cursor: pointer;
+          font-weight: 500;
 
           .text {
-            padding: 0px 1.1111rem;
+            padding: 0px 0.3rem;
             margin: 0px;
             color: $primary-blue;
           }
 
           .icon {
-            margin-top: 0.667rem;
+            margin-top: 1.267rem;
+          }
+
+          svg {
+            width: 2.4rem;
+            height: 2.4rem;
           }
         }
 
@@ -183,7 +187,8 @@
 
       .download-invoice-dropdown {
         position: relative;
-        svg{
+
+        svg {
           width: 1.3333rem;
           height: 1.3333rem;
         }
@@ -312,6 +317,10 @@
             flex-direction: column;
             gap: 0.556rem;
             font-weight: 450;
+
+            .totalPadding {
+              padding-left: 0.36rem;
+            }
 
             p {
               color: #cbd4f3;
@@ -961,10 +970,25 @@
               .noteBtn {
                 display: flex;
                 gap: 1rem;
+                cursor: pointer;
               }
             }
 
             .note {
+              .noteInput {
+                display: flex;
+                outline: note;
+                background-color: $active;
+                padding: 1.5rem 1rem;
+                border-radius: 4px;
+                color: $primary-gray;
+                margin: 1rem 0px;
+                font-size: 0.8rem;
+                word-break: break-all;
+                width: -webkit-fill-available;
+                border: 1px solid #526fd6;
+              }
+
               p {
                 display: flex;
                 background-color: $active;
@@ -1737,5 +1761,38 @@
     font-size: 0.8rem;
     border-radius: 12rem;
     padding: 0.3rem 0.23rem;
+  }
+
+  .sent-popup {
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem;
+
+    .sent-popup-header {
+      font-size: 1.75rem;
+      padding-bottom: 2.5rem;
+      font-weight: 500;
+    }
+
+    .sent-popout-body {
+      font-size: 1.125rem;
+    }
+
+    .sent-popout-action {
+      display: flex;
+      justify-content: end;
+      margin-top: 3.5rem;
+    }
+
+    .no-sent-btn {
+      width: 4.6875rem;
+      height: 2.953rem;
+      margin-right: 1.125rem;
+    }
+
+    .yes-sent-btn {
+      width: 4.875rem;
+      height: 3.125rem;
+    }
   }
 }

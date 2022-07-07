@@ -24,8 +24,7 @@ const PaymentDetailPage = () => {
 
   const tempToken = localStorage.getItem("accessToken");
 
-
-  const [showCancel, useShowCancel] = useState(false)
+  const [showCancel, useShowCancel] = useState(false);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [navigateToInvoice, setNavigateToInvoice] = useState(true);
   const [isCurrencyDropdownOpen, setIsCurrencyDropdownOpen] = useState(false);
@@ -66,6 +65,7 @@ const PaymentDetailPage = () => {
   const [paymentDate, setpaymentDate] = useState<any>([]);
   const [multiPaymentDate, setMultiPaymentDate] = useState<any>(null);
   const [referenceNo, setReferenceNo] = useState<any>([]);
+  const [invoiceNumber, setInvoiceNumber] = useState<any>("");
   const [multiRefNo, setMultiRefNo] = useState("");
   const [multiPaymentBlocks, setMultiPaymentBlocks] = useState(
     state.state.inveoicesData.map((e: any) => ({
@@ -74,9 +74,12 @@ const PaymentDetailPage = () => {
     }))
   );
   const [isFullAmount, setIsFullAmount] = useState(true);
+  const [creditMemoFullAmountChecked, setCreditMemoFullAmountChecked] =
+    useState(false);
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
+  const [isSaveBtnDisable, setisSaveBtnDisable] = useState(false)
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -85,16 +88,13 @@ const PaymentDetailPage = () => {
   }, [hideTopCheck]);
 
   useEffect(() => {
-    if(multiPaymentBlocks.length > 1){
-      setIsFullAmount(false)
+    if (multiPaymentBlocks.length > 1) {
+      setIsFullAmount(false);
+    } else {
+      setIsFullAmount(true);
     }
-    else{
-      setIsFullAmount(true)
-    }
-  }, [multiPaymentBlocks])
-  
+  }, [multiPaymentBlocks]);
 
-  /* istanbul ignore next */
   useEffect(() => {
     if (!navigateToInvoice) {
       navigate(
@@ -267,7 +267,6 @@ const PaymentDetailPage = () => {
     );
 
     arr[index].options.forEach((e: any, _i: number) => {
-
       if (e.value === item.value) {
         e.isSelected = !e.isSelected;
       } else {
@@ -348,6 +347,11 @@ const PaymentDetailPage = () => {
   };
 
   const isSaveDisable = () => {
+
+    if(isSaveBtnDisable){
+      return true
+    }
+
     let isDisable = false;
 
     if (state?.state?.inveoicesData?.length > 1) {
@@ -410,7 +414,8 @@ const PaymentDetailPage = () => {
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
-        (a: any, b: any) => a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(',','')),
+        (a: any, b: any) =>
+          a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(",", "")),
         0
       );
 
@@ -436,20 +441,16 @@ const PaymentDetailPage = () => {
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
-              const one = b?.invoiceBalance?.split(" ")
+              const one = b?.invoiceBalance?.split(" ");
               let two;
               let three;
               if (one?.length) {
-                two = one?.[1]
+                two = one?.[1];
               }
               if (two) {
-                three = two?.replace(/,/g, "")
+                three = two?.replace(/,/g, "");
               }
-              return (
-                a +
-                parseFloat(three)
-              );
-
+              return a + parseFloat(three);
             },
             0
           );
@@ -559,6 +560,18 @@ const PaymentDetailPage = () => {
   };
 
   const handleSave = () => {
+    setisSaveBtnDisable(true)
+
+    state?.state?.inveoicesData.map((item: any) => {
+      if (item?.transactionTypeLabel === "Credit Memo") {
+        handleCreditMemoSave();
+      } else {
+        handlePaymentSave();
+      }
+    });
+  };
+
+  const handlePaymentSave = () => {
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
       return e.id;
@@ -603,7 +616,6 @@ const PaymentDetailPage = () => {
           },
         ],
       };
-
     } else {
       let arrData: Array<any> = [];
       for (let i = 0; i < currencyOptions.length; i++) {
@@ -612,9 +624,9 @@ const PaymentDetailPage = () => {
             multiPaymentBlocks.length === 1
               ? isFullAmount
                 ? parseFloat(
-                  state?.state?.inveoicesData[0]?.invoiceBalance?.split(
-                    " "
-                  )[1].replace(",","")
+                  state?.state?.inveoicesData[0]?.invoiceBalance
+                    ?.split(" ")[1]
+                    .replace(",", "")
                 )
                 : parseFloat(totals[i].text)
               : parseFloat(totals[i].text),
@@ -694,6 +706,12 @@ const PaymentDetailPage = () => {
       });
   };
 
+  const handleCreditMemoSave = () => {
+    alert("credit memo refund data");
+  };
+
+  console.log("state", state);
+
   /* istanbul ignore next */
   const breadcrumbsLabel = () => {
     return state.state.inveoicesData.map((item: any) => {
@@ -749,7 +767,7 @@ const PaymentDetailPage = () => {
             className="secondary-btn medium"
             label="Cancel"
             handleOnClick={() => {
-              useShowCancel(true)
+              useShowCancel(true);
             }}
           />
           <Button
@@ -763,19 +781,33 @@ const PaymentDetailPage = () => {
 
       {state?.state?.inveoicesData?.map(
         (invoiceItem: any, invoicesIndex: number) => {
+          const checkedCondition =
+            invoiceItem.transactionTypeLabel === "Credit Memo"
+              ? creditMemoFullAmountChecked
+              : isFullAmount;
+
+          const paymentHeader =
+            invoiceItem.transactionTypeLabel === "Credit Memo" ? (
+              <p>Refund Details</p>
+            ) : (
+              <p>Payment Details</p>
+            );
           return (
             <div className="paymentPageInvoiceInfo">
               <div className="paymentPageTopBar">
-                {/* <div className="invoic-status">
-            <p className="status">{status}</p>
-          </div> */}
                 <div className="paymentHeaderContainer">
                   <div className="paymentTopBarrow">
                     <div className="paymentInvoivceNo">
                       <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                       <p>
-                        {invoiceItem.transactionTypeLabel} {" Invoice No. "}{" "}
-                        {invoiceItem.invoiceNo} Payment
+                        {invoiceItem.transactionTypeLabel}{" "}
+                        {invoiceItem.transactionTypeLabel === "Credit Memo"
+                          ? "No. "
+                          : " Invoice No. "}{" "}
+                        {invoiceItem.invoiceNo}{" "}
+                        {invoiceItem.transactionTypeLabel === "Credit Memo"
+                          ? "Refund Payment"
+                          : "Payment"}
                       </p>
                     </div>
 
@@ -791,8 +823,10 @@ const PaymentDetailPage = () => {
                       </div>
                     </div>
                   </div>
-
-                  <p>QBO No. 730</p>
+                  {invoiceItem != null &&
+                    invoiceItem?.qbInvoiceNo != undefined && invoiceItem?.qbInvoiceNo > 0 &&  (
+                      <p>QBO No. {invoiceItem.qbInvoiceNo}</p>
+                    )}
                 </div>
               </div>
 
@@ -815,10 +849,9 @@ const PaymentDetailPage = () => {
                                 : "paymentPageTitleHeaderNoTitle"
                             }
                           >
-                            {i == 0 ? <p>Payment Details</p> : <></>}
-                            {i == 0 ? (
-                              <></>
-                            ) : (
+                            {paymentHeader}
+
+                            {i != 0 && (
                               <div className="paymentPageEdit">
                                 <Button
                                   className="secondary-btn medium"
@@ -928,11 +961,11 @@ const PaymentDetailPage = () => {
                                 <span>Reference No</span>
                                 <input
                                   value={
-                                    (referenceNo.find(
+                                    referenceNo.find(
                                       (e: any) =>
                                         e.invoiceKey === invoiceItem.id &&
                                         e.blockKey === item.id
-                                    )?.text || "")
+                                    )?.text || ""
                                   }
                                   name="Reference No"
                                   type="number"
@@ -958,7 +991,14 @@ const PaymentDetailPage = () => {
                           </div>
 
                           <div className="paymentInstallmentLowerBlock">
-                            <div className="paymentInnerLowerBlock row">
+                            <div
+                              className={
+                                invoiceItem.transactionTypeLabel ===
+                                  "Credit Memo"
+                                  ? "paymentCreditMemoInnerLowerBlock row"
+                                  : "paymentInnerLowerBlock row"
+                              }
+                            >
                               <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
@@ -966,7 +1006,10 @@ const PaymentDetailPage = () => {
                                     setIsCurrencyDropdownOpen(false);
                                     setIsLocationDropdownOpen(false);
                                     setIsPaymentMethodDropdownOpen(false);
-                                    setToggleState({ index: i, invoicesIndex });
+                                    setToggleState({
+                                      index: i,
+                                      invoicesIndex,
+                                    });
                                   }}
                                   handleDropOptionClick={(sel: any) => {
                                     handlePaymentDropOption(
@@ -991,9 +1034,15 @@ const PaymentDetailPage = () => {
                                         e.blockKey === item.id
                                     )?.options || []
                                   }
-                                  title="Deposited to bank"
+                                  title={
+                                    invoiceItem.transactionTypeLabel ===
+                                      "Credit Memo"
+                                      ? "Credited from bank"
+                                      : "Deposited to bank"
+                                  }
                                 />
                               </div>
+
                               <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
@@ -1029,10 +1078,40 @@ const PaymentDetailPage = () => {
                                   title="Payment Method"
                                 />
                               </div>
+
+                              {invoiceItem.transactionTypeLabel ===
+                                "Credit Memo" && (
+                                  <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
+                                    <div className="invoiceNumber">
+                                      <span>Invoice Number</span>
+                                      <input
+                                        value={invoiceNumber}
+                                        name="Reference No"
+                                        type="number"
+                                        placeholder="Enter Invoice Number"
+                                        min="0"
+                                        pattern="[+-]?\d+(?:[.,]\d+)?"
+                                        onKeyDown={(e) => {
+                                          ["e", "E", "+", "-", "."].includes(
+                                            e.key
+                                          ) && e.preventDefault();
+                                        }}
+                                        onChange={(e) => {
+                                          setInvoiceNumber(e.target.value);
+                                        }}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
                             </div>
 
                             <div className="PaymentPageTotalAmount">
-                              <p>Amount</p>
+                              {invoiceItem.transactionTypeLabel ===
+                                "Credit Memo" ? (
+                                <p>Refund Amount</p>
+                              ) : (
+                                <p>Amount</p>
+                              )}
 
                               {isFullAmount &&
                                 multiPaymentBlocks.length === 1 && (
@@ -1066,10 +1145,15 @@ const PaymentDetailPage = () => {
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
                                     id="fullAmt"
-                                    checked={isFullAmount}
+                                    checked={checkedCondition}
                                     label="Full Amount"
                                     onChange={(e: any) =>
-                                      setIsFullAmount(e.target.checked)
+                                      invoiceItem.transactionTypeLabel ===
+                                        "Credit Memo"
+                                        ? setCreditMemoFullAmountChecked(
+                                          e.target.checked
+                                        )
+                                        : setIsFullAmount(e.target.checked)
                                     }
                                   />
                                 </div>
@@ -1273,7 +1357,9 @@ const PaymentDetailPage = () => {
       )}
       <div className="cancel_modal">
         <Modal
-          handleClose={() => { useShowCancel(false) }}
+          handleClose={() => {
+            useShowCancel(false);
+          }}
           isOpen={showCancel}
         >
           <p className="cancel_note">Your changes will be unsaved!</p>
@@ -1281,16 +1367,29 @@ const PaymentDetailPage = () => {
             <Button
               label="cancel"
               className="secondary-btn small"
-              handleOnClick={() => { useShowCancel(false) }}
+              handleOnClick={() => {
+                useShowCancel(false);
+              }}
             />
             <Button
               className="primary-blue small"
               label="Proceed"
               handleOnClick={() => {
-                getCurrencyAndDepositBankAndLocationDropdownOption();
-                getPaymentMethodDropdownOption();
-                setReferenceNo([]);
-                useShowCancel(false);
+                navigate(
+                  "/pay/invoicedetails" +
+                  state.state.inveoicesData[0].id +
+                  "/" +
+                  state.state.inveoicesData[0].customerId +
+                  "/" +
+                  "false",
+                  {
+                    state: {
+                      InvoiceId: state.state.inveoicesData[0].invoiceNo,
+                      transactionType: state.state.inveoicesData[0].transactionType,
+                      rowDetails: state,
+                    },
+                  }
+                );
               }}
             />
           </div>

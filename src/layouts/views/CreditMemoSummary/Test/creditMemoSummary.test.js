@@ -19,77 +19,77 @@ localStorage.setItem("current-org-id", "E291C9F0-2476-4238-85CB-7AFECDD085E4");
 
 const data = [
     {
-      customerEmail: 'danielal@email.com',
-      date: 'Wed Jun 22 2022',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: 'Wed Jun 22 2022',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '2',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '2',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '3',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '3',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '4',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '4',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '5',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '5',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     }
-  ];
+];
 
-  const logsData = [
+const logsData = [
     {
-      customerEmail: 'danielal@email.com',
-      date: 'Wed Jun 22 2022',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: 'Wed Jun 22 2022',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '2',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '2',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '3',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '3',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '4',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '4',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
-      customerEmail: 'danielal@email.com',
-      date: '5',
-      fieldName: 'pay type',
-      newValue: 'NGN 70',
-      oldValue: 'NGN 65'
+        customerEmail: 'danielal@email.com',
+        date: '5',
+        fieldName: 'pay type',
+        newValue: 'NGN 70',
+        oldValue: 'NGN 65'
     },
     {
         customerEmail: 'danielal@email.com',
@@ -97,50 +97,50 @@ const data = [
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      },
-      {
+    },
+    {
         customerEmail: 'danielal@email.com',
         date: '2',
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      },
-      {
+    },
+    {
         customerEmail: 'danielal@email.com',
         date: '3',
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      },
-      {
+    },
+    {
         customerEmail: 'danielal@email.com',
         date: '4',
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      },
-      {
+    },
+    {
         customerEmail: 'danielal@email.com',
         date: '5',
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      },
-      {
+    },
+    {
         customerEmail: 'danielal@email.com',
         date: '5',
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      },
-      {
+    },
+    {
         customerEmail: 'danielal@email.com',
         date: '5',
         fieldName: 'pay type',
         newValue: 'NGN 70',
         oldValue: 'NGN 65'
-      }
-  ];
+    }
+];
 
 describe("Credit Memo Summary", () => {
     beforeAll(() => {
@@ -513,7 +513,7 @@ describe("Notes fail", () => {
                     id={id}
                     cid={cid}
                     isClient={"true"}
-                    setNotes={() => { }}   
+                    setNotes={() => { }}
                     setDocuments={() => { }}
                     // invoiceItems={mockCreditMemoData.invoiceItems}
                     creditMemoData={mockCreditMemoData}

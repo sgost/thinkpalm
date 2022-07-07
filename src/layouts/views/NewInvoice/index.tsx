@@ -67,6 +67,8 @@ const NewInvoice = () => {
   const [stepsCount, setStepsCount] = useState(1);
   const [hideTopCheck, setHideTopCheck] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [vatValue, setVatValue] = useState<any>(0);
+
   //steps for payroll
   const stepsName = [
     sharedSteps.newInvoice,
@@ -336,6 +338,7 @@ const NewInvoice = () => {
     setPaymentTermsOptions,
     paymentMethodOptions,
     setPaymentMethodOptions,
+    setVatValue
   };
   //stepper two payroll props
   const stepperTwoProps = {
@@ -411,7 +414,8 @@ const NewInvoice = () => {
     setCountryInitialData,
     tempDataCountry,
     setTempDataCountry,
-    currencyOptions
+    currencyOptions,
+    vatValue
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -442,11 +446,16 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 && 
+        paymentTermsOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
-      return !(stepperOneData?.customer !== "" && invoiceDate !== "");
+      return !(
+        stepperOneData?.customer !== "" && 
+        invoiceDate !== "" && 
+        invoicerOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1);
     }
 
     let condition: any = [];
@@ -456,9 +465,9 @@ const NewInvoice = () => {
       todos.forEach((item) => {
         if (
           item.product.length &&
-          item.amount.length &&
+          parseFloat(item.amount) > 0 &&
           item.date.length &&
-          item.quantity.length &&
+          parseFloat(item.quantity) > 0 &&
           item.country.length
         ) {
           condition.push(false);
@@ -629,16 +638,14 @@ const NewInvoice = () => {
       (c: any) => c.customerId === stepperOneData?.customerId
     );
 
-    const currencyId = currencyOptions.find(
-      (c: any) => c.text === customer?.billingCurrency
-    );
+    const totalBalanceWithVatValue = balance + balance * (vatValue / 100)
 
     let data = {
       QbCustomerId: parseInt(qbIdValue),
       qbInvoiceNo: 0,
       CustomerId: stepperOneData?.customerId,
       CustomerName: stepperOneData.customer, // customer name
-      CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is India , backend will provice it in future
+      CustomerLocation: customer?.billingAddress?.country || "", // currently its coming null thats why fallback is empty string , backend will provice it in future
       // CurrencyId: currencyId?.currency?.id, // backend will provide it
       Status: 1, // hard code
       TransactionType: transactionTypeVar, //
@@ -647,8 +654,8 @@ const NewInvoice = () => {
       CreatedDate: format(invoiceDate, "yyyy-MM-dd"),
       submissiondate: format(invoiceDate, "yyyy-MM-dd"),
       // DueDate: "2022-05-23T12:31:21.125Z",
-      TotalAmount: balance, //  total balance
-      InvoiceBalance: balance, //  total balance
+      TotalAmount: totalBalanceWithVatValue, //  total balance
+      InvoiceBalance: totalBalanceWithVatValue, //  total balance
       IsClientVisible: true, // hard code
       CreatedBy: stepperOneData?.customerId, //
       ModifiedBy: stepperOneData?.customerId, //
@@ -659,11 +666,8 @@ const NewInvoice = () => {
       InvoiceRelatedRelatedInvoices: [],
       // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
-      BankDetailId: receivableAccountOptions.find((e: any) => e.isSelected)?.id,
-      CurrencyId:
-        stepperOneData.type === "Credit Memo"
-          ? currencyId?.value
-          : currencyOptions.find((e: any) => e.isSelected)?.value,
+      BankDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.id,
+      CurrencyId: currencyOptions.find((e: any) => e.isSelected)?.value,
     };
 
     if (!isInvoiceCreated) {
