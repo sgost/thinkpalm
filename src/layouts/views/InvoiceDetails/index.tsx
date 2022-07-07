@@ -1555,6 +1555,7 @@ export default function InvoiceDetails() {
                   getPermissions(missTransType, "AddPayment")) ? (
                 <div className="addPaymentButton">
                   <Button
+                    disabled={topPanel.open <= 0}
                     className="primary-blue medium"
                     icon={{
                       color: "#fff",
