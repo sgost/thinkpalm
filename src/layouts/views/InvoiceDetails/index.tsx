@@ -1975,14 +1975,14 @@ export default function InvoiceDetails() {
                 <div className="amount">
                   {missTransType != 7 && (
                     <p>
-                      Open{" "}
+                      Open&nbsp;
                       <span>
                         {getBillingCurrency()} {toCurrencyFormat(openBal)}
                       </span>
                     </p>
                   )}
                   <p>
-                    Total{" "}
+                    Total&nbsp;&nbsp;
                     <span>
                       {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                     </span>
@@ -2064,7 +2064,7 @@ export default function InvoiceDetails() {
                   <>
                     {missTransType === 1 && (
                       <>
-                        {status !== "Open" && (
+                        {status !== statusValues.open && (
                           <>
                             <p className="heading">Invoice Approval</p>
                             {currentStatusValue === statusValues.arReview ||
