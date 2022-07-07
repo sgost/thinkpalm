@@ -20,13 +20,14 @@ const LogsCompo = (props: any) => {
         initail,
         limitFor } = props;
 
+    const changeLogsFilter = changeLogs.filter((e: any) => e.description !== '' && changeLogs);
 
     return (
         <Cards className="invoice-logs">
             <Logs
                 custom
                 isOpen={isLogsOpen}
-                data={changeLogs}
+                data={changeLogsFilter}
                 title="View Change Log"
                 name="View-change-log"
                 handleUpDown={() => setIsLogsOpen(!isLogsOpen)}
