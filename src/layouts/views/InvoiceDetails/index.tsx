@@ -1975,15 +1975,15 @@ export default function InvoiceDetails() {
                 <div className="amount">
                   {missTransType != 7 && (
                     <p>
-                      Open&nbsp;
+                      Open{" "}
                       <span>
                         {getBillingCurrency()} {toCurrencyFormat(openBal)}
                       </span>
                     </p>
                   )}
                   <p>
-                    Total&nbsp;&nbsp;
-                    <span>
+                    Total{" "}
+                    <span className="totalPadding">
                       {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                     </span>
                   </p>
