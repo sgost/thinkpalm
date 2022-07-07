@@ -465,9 +465,9 @@ const NewInvoice = () => {
       todos.forEach((item) => {
         if (
           item.product.length &&
-          item.amount.length &&
+          parseFloat(item.amount) > 0 &&
           item.date.length &&
-          item.quantity.length &&
+          parseFloat(item.quantity) > 0 &&
           item.country.length
         ) {
           condition.push(false);
