@@ -471,6 +471,11 @@ export default function InvoiceListing() {
 
     /* istanbul ignore next */
     checkedInvoices.forEach((e: any) => {
+      
+      if(e.invoiceBalance.split(' ')[1] <= 0){
+        bool = true;
+      }
+
       if (e.status != 4 && e.status != 10) {
         bool = true;
       }
