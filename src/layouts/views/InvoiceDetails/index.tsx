@@ -1984,7 +1984,7 @@ export default function InvoiceDetails() {
                   )}
                   <p>
                     Total{" "}
-                    <span>
+                    <span className="totalPadding">
                       {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                     </span>
                   </p>
@@ -2065,7 +2065,7 @@ export default function InvoiceDetails() {
                   <>
                     {missTransType === 1 && (
                       <>
-                        {status !== "Open" && (
+                        {status !== statusValues.open && (
                           <>
                             <p className="heading">Invoice Approval</p>
                             {currentStatusValue === statusValues.arReview ||
