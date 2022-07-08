@@ -44,8 +44,8 @@ export default function CreditMemoSummary(props: any) {
   } = props;
   const [newServiceDate, setNewServiceDate] = useState<Date>(new Date());
   const [newDescription, setNewDescription] = useState("");
-  const [newQuantity, setNewQuantity] = useState<number>(0);
-  const [newAmount, setNewAmount] = useState<any>(0);
+  const [newQuantity, setNewQuantity] = useState<any>();
+  const [newAmount, setNewAmount] = useState<any>();
   const [newCountry, setNewCountry] = useState<any>();
   const [newProduct, setNewProduct] = useState<any>();
   const [_newTotalAmount, setNewTotalAmount] = useState<any>();
@@ -683,6 +683,7 @@ export default function CreditMemoSummary(props: any) {
                     type="number"
                     disable={false}
                     required={true}
+                    placeholder="0"
                   ></Input>
                 </div>
                 <div className="amount-box">
@@ -695,6 +696,7 @@ export default function CreditMemoSummary(props: any) {
                     type="amount"
                     disable={false}
                     required={true}
+                    placeholder="0"
                   ></Input>
                 </div>
               </div>
