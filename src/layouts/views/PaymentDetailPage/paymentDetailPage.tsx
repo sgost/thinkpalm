@@ -1127,7 +1127,8 @@ const PaymentDetailPage = () => {
                               { isFullAmount == false && 
                                 multiPaymentBlocks.length >= 1 ? (
                                   <input
-                                  type="text" 
+                                    type="text" 
+                                    placeholder="Enter amount"
                                     value={
                                       totals.find(
                                         (e: any) =>
@@ -1137,6 +1138,7 @@ const PaymentDetailPage = () => {
                                     }
                                     onChange={(e) => {
                                       let  value = '';
+                                      console.log("invoiceItem.transactionTypeLabel", invoiceItem.transactionTypeLabel)
                                       if(invoiceItem.transactionTypeLabel ===
                                         "Credit Memo") {
                                           const m = e.target.value.match(/\d+/g);

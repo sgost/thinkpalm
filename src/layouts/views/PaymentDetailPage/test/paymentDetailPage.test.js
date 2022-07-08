@@ -691,4 +691,74 @@ describe("single credit refund", () => {
     const saveBtn = screen.getByText(/save/i);
     fireEvent.click(saveBtn);
   });
+
+  test("save single with manual amount", async () => {
+    render(
+      <HashRouter>
+        <PaymentDetailPage />
+      </HashRouter>
+    );
+
+    const refundText = screen.getByText(/Refund Details/);
+    fireEvent.click(refundText);
+
+    const dd = screen.getAllByPlaceholderText(/please select/i);
+    fireEvent.click(dd[0]);
+    const selDates = await waitFor(() => screen.getAllByText(/15/));
+    fireEvent.click(selDates[2]);
+
+    const currencyText = screen.getByText("Currency");
+    fireEvent.click(currencyText);
+
+    const currencyValue = screen.getByText("USD");
+    fireEvent.click(currencyValue);
+
+    const locationText = screen.getByText("Location");
+    fireEvent.click(locationText);
+
+    const locationValue = screen.getByText("USA -- United States of America");
+    fireEvent.click(locationValue);
+
+    const referenceText = screen.getByPlaceholderText(/enter reference no/i);
+    expect(referenceText).toBeInTheDocument();
+    fireEvent.keyDown(referenceText);
+    fireEvent.change(referenceText, { target: { value: "1234" } });
+
+    const depositBankText = screen.getByText("Credited from bank");
+    fireEvent.click(depositBankText);
+
+    const depositBankValue = screen.getByText("HSBC (UK) 0175 - USD");
+    fireEvent.click(depositBankValue);
+
+    const paymentText = screen.getByText("Payment Method");
+    fireEvent.click(paymentText);
+
+    const paymentValue = screen.getByText("ACHCredit");
+    fireEvent.click(paymentValue);
+
+    const invoiceNumberText =
+      screen.getByPlaceholderText(/Enter Invoice Number/i);
+    expect(invoiceNumberText).toBeInTheDocument();
+    fireEvent.keyDown(invoiceNumberText);
+    fireEvent.change(invoiceNumberText, { target: { value: "1234" } });
+
+    const amount =
+      screen.getByPlaceholderText(/Enter amount/);
+    expect(amount).toBeInTheDocument();
+    fireEvent.change(amount, { target: { value: "-12" } });
+
+    // const customerCheckbox = await screen.findByText(/Full Amount/);
+    // fireEvent.click(customerCheckbox);
+
+    // const addPaymentInstallmentButton = screen.getByText(
+    //   "Add payment Installment"
+    // );
+    // fireEvent.click(addPaymentInstallmentButton);
+
+    // const deleteButton = screen.getByText("Delete Item");
+    // fireEvent.click(deleteButton);
+
+    const saveBtn = screen.getByText(/save/i);
+    fireEvent.click(saveBtn);
+  });
 });
