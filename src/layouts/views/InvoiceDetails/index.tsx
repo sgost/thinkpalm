@@ -1231,7 +1231,7 @@ export default function InvoiceDetails() {
       case 7:
         return "Contractor";
       case 4:
-        return "Credit";
+        return "Credit Memo";
       case 3:
         return "Proforma";
       case 2:

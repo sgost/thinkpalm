@@ -625,7 +625,6 @@
         .paymentInstallmentLowerBlock {
           display: flex;
           margin-bottom: 3rem;
-          justify-content: space-between;
 
           .paymentInnerLowerBlock {
             display: flex;
@@ -691,7 +690,7 @@
 
           .PaymentPageTotalAmount {
             margin-top: -3rem;
-            margin-left: 1rem;
+            margin-left: 11rem;
 
             p {
               color: $primary-blue;

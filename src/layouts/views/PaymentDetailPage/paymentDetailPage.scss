@@ -232,6 +232,10 @@
               width: 14.778rem;
             }
 
+            .atlas-payment-invoices .react-datepicker-popper {
+              z-index: 99 !important;
+          }
+
             span.react-datepicker__label:after {
               content: "*";
               color: red;
@@ -362,17 +366,18 @@
           }
 
           .PaymentPageTotalAmount {
-            margin-top: -3rem;
+            margin-top: -2.4rem;
             margin-left: 1rem;
 
             p {
               color: $primary-blue;
               margin-bottom: 0rem;
               font-weight: 600;
+              margin-bottom: 0.4rem;
             }
 
             input {
-              height: 2.5rem;
+              height: 2.2rem;
             }
 
             .amountPaymentPage {
