@@ -73,9 +73,7 @@ const PaymentDetailPage = () => {
       parentId: e.id,
     }))
   );
-  const [isFullAmount, setIsFullAmount] = useState(true);
-  const [creditMemoFullAmountChecked, setCreditMemoFullAmountChecked] =
-    useState(false);
+  const [isFullAmount, setIsFullAmount] = useState<any>();
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
@@ -90,9 +88,12 @@ const PaymentDetailPage = () => {
   useEffect(() => {
     if (multiPaymentBlocks.length > 1) {
       setIsFullAmount(false);
-    } else {
+    } 
+    else if (state?.state?.inveoicesData?.[0].transactionTypeLabel !== "Credit Memo" && multiPaymentBlocks.length == 1){
       setIsFullAmount(true);
     }
+
+
   }, [multiPaymentBlocks]);
 
   useEffect(() => {
@@ -435,9 +436,14 @@ const PaymentDetailPage = () => {
     let tempRefNo: any = [];
     let tempPaymentDate: any = [];
     let tempTotals: any = [];
-
+    let check  =true; 
     state?.state?.inveoicesData?.forEach(
       (invoiceItem: any, _invoicesIndex: number) => {
+        check =   invoiceItem?.transactionTypeLabel === "Credit Memo"
+            ? false
+            : true;
+
+           
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
@@ -476,7 +482,8 @@ const PaymentDetailPage = () => {
         });
       }
     );
-
+    console.log("check",check)
+  setIsFullAmount(check)
     setpaymentDate(tempPaymentDate);
     setReferenceNo(tempRefNo);
     setTotals(tempTotals);
@@ -781,11 +788,6 @@ const PaymentDetailPage = () => {
 
       {state?.state?.inveoicesData?.map(
         (invoiceItem: any, invoicesIndex: number) => {
-          const checkedCondition =
-            invoiceItem.transactionTypeLabel === "Credit Memo"
-              ? creditMemoFullAmountChecked
-              : isFullAmount;
-
           const paymentHeader =
             invoiceItem.transactionTypeLabel === "Credit Memo" ? (
               <p>Refund Details</p>
@@ -849,7 +851,10 @@ const PaymentDetailPage = () => {
                                 : "paymentPageTitleHeaderNoTitle"
                             }
                           >
-                            {paymentHeader}
+                            {
+                              i == 0 &&
+                            paymentHeader
+                            }
 
                             {i != 0 && (
                               <div className="paymentPageEdit">
@@ -1113,14 +1118,14 @@ const PaymentDetailPage = () => {
                                 <p>Amount</p>
                               )}
 
-                              {isFullAmount &&
-                                multiPaymentBlocks.length === 1 && (
+                              { isFullAmount  &&
+                                multiPaymentBlocks?.length === 1 ? (
                                   <div className="amountPaymentPage">
                                     {invoiceItem.invoiceBalance}
                                   </div>
-                                )}
-                              {(!isFullAmount ||
-                                multiPaymentBlocks.length > 1) && (
+                                ) : <></>}
+                              { isFullAmount == false && 
+                                multiPaymentBlocks.length >= 1 ? (
                                   <input
                                     type="number"
                                     value={
@@ -1140,20 +1145,15 @@ const PaymentDetailPage = () => {
                                       );
                                     }}
                                   />
-                                )}
+                                ) : <></>}
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
                                     id="fullAmt"
-                                    checked={checkedCondition}
+                                    checked={isFullAmount}
                                     label="Full Amount"
                                     onChange={(e: any) =>
-                                      invoiceItem.transactionTypeLabel ===
-                                        "Credit Memo"
-                                        ? setCreditMemoFullAmountChecked(
-                                          e.target.checked
-                                        )
-                                        : setIsFullAmount(e.target.checked)
+                                      setIsFullAmount(e.target.checked)
                                     }
                                   />
                                 </div>
