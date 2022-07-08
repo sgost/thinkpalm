@@ -80,12 +80,12 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 24px 24px 0px;
+        padding: 24px 18px 0px;
         background: #ffffff;
         box-shadow: 0px 12px 24px rgba(112, 128, 144, 0.1);
         border-radius: 0px 0px 4px 4px;
         z-index: 10;
-        width: 100%;
+        width: auto;
 
         .a-dpicker .react-datepicker__month-container {
           width: 16.667rem;

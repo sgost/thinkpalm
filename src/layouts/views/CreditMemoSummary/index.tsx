@@ -702,7 +702,12 @@ export default function CreditMemoSummary(props: any) {
               </div>
               <div className="line-sec-width">
                 <Input
-                  value={(newQuantity * newAmount).toString()}
+                  value={
+                    newAmount ? 
+                    (newQuantity * newAmount).toString()
+                    :
+                    0
+                  }
                   setValue={setNewTotalAmount}
                   label="Total Amount"
                   type="text"
