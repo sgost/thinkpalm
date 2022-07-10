@@ -73,9 +73,7 @@ const PaymentDetailPage = () => {
       parentId: e.id,
     }))
   );
-  const [isFullAmount, setIsFullAmount] = useState(true);
-  const [creditMemoFullAmountChecked, setCreditMemoFullAmountChecked] =
-    useState(false);
+  const [isFullAmount, setIsFullAmount] = useState<any>();
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
@@ -90,9 +88,12 @@ const PaymentDetailPage = () => {
   useEffect(() => {
     if (multiPaymentBlocks.length > 1) {
       setIsFullAmount(false);
-    } else {
+    } 
+    else if (state?.state?.inveoicesData?.[0].transactionTypeLabel !== "Credit Memo" && multiPaymentBlocks.length == 1){
       setIsFullAmount(true);
     }
+
+
   }, [multiPaymentBlocks]);
 
   useEffect(() => {
@@ -410,7 +411,7 @@ const PaymentDetailPage = () => {
 
       //checking total amount is greater open amount
       const totalAmount = totals.reduce(
-        (a: any, b: any) => a + parseFloat(b.text),
+        (a: any, b: any) => a + parseFloat(state?.state?.inveoicesData?.[0].transactionTypeLabel === "Credit Memo" ? b.text.substring(1):b.text ),
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
@@ -418,7 +419,7 @@ const PaymentDetailPage = () => {
           a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(",", "")),
         0
       );
-
+      
       if (totalAmount > openAmount) {
         if (!isToaster) setIsToaster(true);
         isDisable = true;
@@ -435,9 +436,14 @@ const PaymentDetailPage = () => {
     let tempRefNo: any = [];
     let tempPaymentDate: any = [];
     let tempTotals: any = [];
-
+    let check  =true; 
     state?.state?.inveoicesData?.forEach(
       (invoiceItem: any, _invoicesIndex: number) => {
+        check =   invoiceItem?.transactionTypeLabel === "Credit Memo"
+            ? false
+            : true;
+
+           
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
@@ -476,7 +482,7 @@ const PaymentDetailPage = () => {
         });
       }
     );
-
+    setIsFullAmount(check)
     setpaymentDate(tempPaymentDate);
     setReferenceNo(tempRefNo);
     setTotals(tempTotals);
@@ -781,11 +787,6 @@ const PaymentDetailPage = () => {
 
       {state?.state?.inveoicesData?.map(
         (invoiceItem: any, invoicesIndex: number) => {
-          const checkedCondition =
-            invoiceItem.transactionTypeLabel === "Credit Memo"
-              ? creditMemoFullAmountChecked
-              : isFullAmount;
-
           const paymentHeader =
             invoiceItem.transactionTypeLabel === "Credit Memo" ? (
               <p>Refund Details</p>
@@ -833,6 +834,10 @@ const PaymentDetailPage = () => {
               {state?.state?.inveoicesData?.length === 1 && (
                 <div className="paaymentInstallmetOuterContainer">
                   {multiPaymentBlocks?.map((item: any, i: any) => {
+                    let creditMemoBalance = invoiceItem.invoiceBalance.split(" ");
+                    let creditMemoCurrency = creditMemoBalance[0]
+                    let creditMemoAmount = - creditMemoBalance[1]
+                    let newCreditMemoBalance = creditMemoCurrency.concat(" ",creditMemoAmount);
                     if (item.parentId === invoiceItem.id)
                       return (
                         <div
@@ -849,7 +854,10 @@ const PaymentDetailPage = () => {
                                 : "paymentPageTitleHeaderNoTitle"
                             }
                           >
-                            {paymentHeader}
+                            {
+                              i == 0 &&
+                            paymentHeader
+                            }
 
                             {i != 0 && (
                               <div className="paymentPageEdit">
@@ -1113,26 +1121,40 @@ const PaymentDetailPage = () => {
                                 <p>Amount</p>
                               )}
 
-                              {isFullAmount &&
-                                multiPaymentBlocks.length === 1 && (
+                              { isFullAmount  &&
+                                multiPaymentBlocks?.length === 1 ? (
                                   <div className="amountPaymentPage">
-                                    {invoiceItem.invoiceBalance}
+                                    {invoiceItem.transactionTypeLabel ===
+                                      "Credit Memo" ? 
+                                      newCreditMemoBalance 
+                                       : 
+                                       invoiceItem.invoiceBalance
+                                    }
                                   </div>
-                                )}
-                              {(!isFullAmount ||
-                                multiPaymentBlocks.length > 1) && (
+                                ) : <></>}
+                              { isFullAmount == false && 
+                                multiPaymentBlocks.length >= 1 ? (
                                   <input
-                                    type="number"
+                                    type="text" 
+                                    placeholder="Enter amount"
                                     value={
                                       totals.find(
                                         (e: any) =>
                                           e.invoiceKey === invoiceItem.id &&
                                           e.blockKey === item.id
-                                      )?.text || ""
+                                      )?.text ||  ""
                                     }
                                     onChange={(e) => {
+                                      let  value = '';
+                                      console.log("invoiceItem.transactionTypeLabel", invoiceItem.transactionTypeLabel)
+                                      if(invoiceItem.transactionTypeLabel ===
+                                        "Credit Memo") {
+                                          const m = e.target.value.match(/\d+/g);
+                                          value = m === null ? '-' : `-${m}`;
+                                        }
                                       handleInputText(
-                                        e.target.value,
+                                        invoiceItem.transactionTypeLabel ===
+                                        "Credit Memo"?  value : e.target.value ,
                                         totals,
                                         setTotals,
                                         invoiceItem.id,
@@ -1140,20 +1162,15 @@ const PaymentDetailPage = () => {
                                       );
                                     }}
                                   />
-                                )}
+                                ) : <></>}
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
                                     id="fullAmt"
-                                    checked={checkedCondition}
+                                    checked={isFullAmount}
                                     label="Full Amount"
                                     onChange={(e: any) =>
-                                      invoiceItem.transactionTypeLabel ===
-                                        "Credit Memo"
-                                        ? setCreditMemoFullAmountChecked(
-                                          e.target.checked
-                                        )
-                                        : setIsFullAmount(e.target.checked)
+                                      setIsFullAmount(e.target.checked)
                                     }
                                   />
                                 </div>

@@ -318,11 +318,17 @@
             gap: 0.556rem;
             font-weight: 450;
 
+            .totalPadding {
+              padding-left: 0.36rem;
+            }
+
             p {
               color: #cbd4f3;
               margin: 0px;
               font-size: 1.111rem;
-
+              &:last-child{
+                letter-spacing: 0.0333rem;
+              }
               span {
                 color: $white;
                 font-size: 1.111rem;
@@ -625,7 +631,6 @@
         .paymentInstallmentLowerBlock {
           display: flex;
           margin-bottom: 3rem;
-          justify-content: space-between;
 
           .paymentInnerLowerBlock {
             display: flex;
@@ -691,7 +696,7 @@
 
           .PaymentPageTotalAmount {
             margin-top: -3rem;
-            margin-left: 1rem;
+            margin-left: 11rem;
 
             p {
               color: $primary-blue;

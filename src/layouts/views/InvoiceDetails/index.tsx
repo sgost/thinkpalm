@@ -1230,7 +1230,7 @@ export default function InvoiceDetails() {
       case 7:
         return "Contractor";
       case 4:
-        return "Credit";
+        return "Credit Memo";
       case 3:
         return "Proforma";
       case 2:
@@ -1555,6 +1555,7 @@ export default function InvoiceDetails() {
                   getPermissions(missTransType, "AddPayment")) ? (
                 <div className="addPaymentButton">
                   <Button
+                    disabled={topPanel.open <= 0}
                     className="primary-blue medium"
                     icon={{
                       color: "#fff",
@@ -1983,7 +1984,7 @@ export default function InvoiceDetails() {
                   )}
                   <p>
                     Total{" "}
-                    <span>
+                    <span className="totalPadding">
                       {getBillingCurrency()} {toCurrencyFormat(TotalBal)}
                     </span>
                   </p>
@@ -2064,7 +2065,7 @@ export default function InvoiceDetails() {
                   <>
                     {missTransType === 1 && (
                       <>
-                        {status !== "Open" && (
+                        {status !== statusValues.open && (
                           <>
                             <p className="heading">Invoice Approval</p>
                             {currentStatusValue === statusValues.arReview ||
