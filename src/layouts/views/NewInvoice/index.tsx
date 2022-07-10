@@ -491,18 +491,20 @@ const NewInvoice = () => {
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
       setLoading(true);
+      if(CreateManualPayrollRes.invoiceId == null){
       const apiData = employeeApiData;
 
       let payLoadData = [];
+      let count =0;
       for (const [key, _value] of Object.entries(selectedRowPostData)) {
         const newPreapredData = apiData[key];
-
+        count = count + selectedRowPostData[key].length;
         newPreapredData.employeeDetail.compensation.payItems =
           selectedRowPostData[key];
 
         payLoadData.push(newPreapredData);
       }
-
+      setSelectedRowDataLength(count);
       const data = {
         customerId: stepperOneData?.customerId,
         userId: stepperOneData?.customerId,
@@ -531,6 +533,60 @@ const NewInvoice = () => {
         .catch((e: any) => {
           console.log(e);
         });
+      }else{
+
+       //Vaidehi changes starts
+       let countReCal =0;
+       for (const [key, _value] of Object.entries(selectedRowPostData)) {
+         countReCal = countReCal + selectedRowPostData[key].length;
+       }
+     if(countReCal> selectedRowDataLength){
+       setSelectedRowDataLength(countReCal);
+       const apiDataReCal = employeeApiData;
+     let payLoadDataReCal = [];
+     for (const [key, _value] of Object.entries(selectedRowPostData)) {
+       const newPreapredDataReCal = apiDataReCal[key];
+
+       newPreapredDataReCal.employeeDetail.compensation.payItems =
+         selectedRowPostData[key];
+
+         payLoadDataReCal.push(newPreapredDataReCal);
+     }
+
+     const dataReCal = {
+       customerId: stepperOneData?.customerId,
+       userId: stepperOneData?.customerId,
+       transactionType: 1,
+       calendarTypeId: 0,
+       countryId: stepperOneData?.countryId,
+       month: stepperOneData?.monthId,
+       year: stepperOneData?.yearId,
+       employeeDetail: {
+         employees: payLoadDataReCal,
+       },
+     };
+     axios({
+       method: "POST",
+       url: recalculateManualInvoice(CreateManualPayrollRes?.invoiceId),
+       headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+       data: dataReCal,
+     })
+       .then((res: any) => {
+         if (res.data) {
+           setCreateManualPayrollRes(res.data);
+           setStepsCount(stepsCount + 1);
+           setLoading(false);
+         }
+       })
+       .catch((e: any) => {
+         console.log(e);
+       });
+
+      } else{
+       setStepsCount(stepsCount + 1);
+       setLoading(false);
+     }//vaidehi changes ends
+     }
     }
     if (stepsCount == 3 && stepperOneData.type == "Payroll") {
       setLoading(true);
