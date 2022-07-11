@@ -59,6 +59,7 @@ import PaymentDetailContainer from "./paymentDetailContainer";
 import format from "date-fns/format";
 import cn from "classnames";
 import { statusValues } from "./statusValues";
+import RefundDetailContainer from "./refundDetailContainer";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -758,10 +759,13 @@ export default function InvoiceDetails() {
 
       let paymentdetailApi = getPaymentDetailApi(id);
 
+      setLoading(true)
+
       axios
         .get(paymentdetailApi, headers)
         .then((res: any) => {
           setPaymentDetailData(res?.data?.payments);
+          setLoading(false)
         })
         .catch((e: any) => {
           console.log("error e", e);
@@ -2202,10 +2206,37 @@ export default function InvoiceDetails() {
                 setStatus={setStatus}
                 currentStatusValue={currentStatusValue}
                 setCurrentStatusValue={setCurrentStatusValue}
+                loading={loading}
+                setLoading={setLoading}
+                toCurrencyFormat={toCurrencyFormat}
               />
             </div>
           ) : (
             <></>
+          )}
+  
+          {/* istanbul ignore next */}
+          { 
+          // currentStatusValue === statusValues.paid
+           (missTransType === 4 ) 
+            && (
+            <div className="paymentCompnent">
+              <RefundDetailContainer
+                setPaymentDetailData={setPaymentDetailData}
+                status={status}
+                cid={cid}
+                lookupData={lookupData}
+                paymentDetailData={paymentDetailData}
+                getBillingCurrency={getBillingCurrency}
+                id={id}
+                topPanel={topPanel}
+                setTopPanel={setTopPanel}
+                setStatus={setStatus}
+                currentStatusValue={currentStatusValue}
+                setCurrentStatusValue={setCurrentStatusValue}
+                toCurrencyFormat={toCurrencyFormat}
+              />
+            </div>
           )}
 
           {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (

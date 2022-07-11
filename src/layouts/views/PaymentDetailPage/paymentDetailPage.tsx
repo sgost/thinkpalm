@@ -561,18 +561,6 @@ const PaymentDetailPage = () => {
   };
 
   const handleSave = () => {
-    setisSaveBtnDisable(true)
-
-    state?.state?.inveoicesData.map((item: any) => {
-      if (item?.transactionTypeLabel === "Credit Memo") {
-        handleCreditMemoSave();
-      } else {
-        handlePaymentSave();
-      }
-    });
-  };
-
-  const handlePaymentSave = () => {
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
       return e.id;
@@ -707,13 +695,9 @@ const PaymentDetailPage = () => {
       });
   };
 
-  const handleCreditMemoSave = () => {
-    alert("credit memo refund data");
-  };
 
   console.log("state", state);
 
-  /* istanbul ignore next */
   const breadcrumbsLabel = () => {
     return state.state.inveoicesData.map((item: any) => {
       return item.transactionTypeLabel + " Invoice No. " + item.invoiceNo;
