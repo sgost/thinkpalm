@@ -119,6 +119,9 @@ export default function NotesWidget(props: any) {
       });
   }
 
+
+  const noteFilter = notes.filter((item: any) => item.note !== "" && notes)
+
   /* istanbul ignore next */
   return (
     <div className="box">
@@ -152,7 +155,7 @@ export default function NotesWidget(props: any) {
           style={{ width: "110%", height: "26.75rem" }}
         >
           <div className="notesContainer">
-            {!notes.length ? (
+            {!noteFilter.length ? (
               <div>
                 <NoDataCard
                   title=""
@@ -167,7 +170,7 @@ export default function NotesWidget(props: any) {
                 />
               </div>
             ) : (
-              notes.map((item: any, index: any) => {
+              noteFilter.map((item: any, index: any) => {
                 return (
                   <div className="notesSubContainer">
                     <div className="noteInfoBtn">
@@ -281,7 +284,7 @@ export default function NotesWidget(props: any) {
                 handleOnClick={() => {
                   const url = urls.saveNote;
                   let currDate = new Date();
-                  
+
                   axios({
                     method: "POST",
                     url: url,
@@ -301,6 +304,7 @@ export default function NotesWidget(props: any) {
                   })
                     .then((res: any) => {
                       setNotes([res.data.model, ...notes]);
+                      creditMemoData.invoiceNotes.push(res.data.model);
                       setNoteText("");
                     })
                     .catch((e: any) => {
