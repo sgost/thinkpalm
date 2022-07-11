@@ -57,7 +57,7 @@ export default function CreditMemoSummary(props: any) {
   const [editCheck, setEditCheck] = useState<any>();
   const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
   const [vatAmount, setVatAmount] = useState<any>(0);
-  const [subTotalAmount, setSubTotalAmount] = useState<any>(
+  const [_subTotalAmount, setSubTotalAmount] = useState<any>(
     creditMemoData.totalAmount
   );
   const [rawProducts, setRawProducts] = useState<any>();
@@ -396,7 +396,8 @@ export default function CreditMemoSummary(props: any) {
 
 
   //Verifying vatAmount Type
-  let vatTotal = vatAmount != 'undefined' ? vatAmount : 0;
+  //Commenting this until we receive vat calculation story with further clarity
+  // let _vatTotal = vatAmount != 'undefined' ? vatAmount : 0;
 
   return (
     <div className="credit-summary-wrapper">
