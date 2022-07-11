@@ -45,7 +45,7 @@ const RefundDetailContainer = ({
   const [refundAddAmount, setRefundAddAmount] = useState<any>(0.0);
   const [refundDepositBankOpen, setRefundDepositBankOpen] = useState(false);
   const [refundPaymentMethodOpen, setRefundPaymentMethodOpen] = useState(false);
-  const [editChecked, setEditChecked] = useState<any>();
+  const [refundEditChecked, setRefundEditChecked] = useState<any>();
   const [refundNewCurrency, setRefundNewCurrency] = useState<any>();
   const [refundNewLocation, setRefundNewLocation] = useState<any>();
   const [refundNewDepositBank, setRefundNewDepositBank] = useState<any>();
@@ -60,10 +60,10 @@ const RefundDetailContainer = ({
     location: lookupData?.data?.locations,
   });
   const [paymentMethodData, setPaymentMethodData] = useState([]);
-  const [paymentDate, setPaymentDate] = useState();
-  const [editAmount, setEditAmount] = useState<any>({});
-  const [editButtonDisable, setEditButtonDisable] = useState(false);
-  const [editDisableToggle, setEditDisableToggle] = useState(false);
+  const [refundPaymentDate, setRefundPaymentDate] = useState();
+  const [refundEditAmount, setRefundEditAmount] = useState<any>({});
+  const [refundEditButtonDisable, setRefundEditButtonDisable] = useState(false);
+  const [refundEditDisableToggle, setEditDisableToggle] = useState(false);
   const [currencyDropdownOptions, setCurrencyDropdownOption] = useState<any>(
     []
   );
@@ -445,7 +445,7 @@ const RefundDetailContainer = ({
           .then((response: any) => {
             setPaymentDetailData(response?.data?.payments);
             setAddRefundSectionCheck(false);
-            setEditChecked(null);
+            setRefundEditChecked(null);
             setReferenceNo(null);
             cleanNewRefundObject();
             setTopPanel({
@@ -467,13 +467,15 @@ const RefundDetailContainer = ({
   };
 
   const editRefundChanges = (item: any, key: any) => {
-    let arr = [];
+    let editRefundArr = [];
 
-    arr.push({
+    editRefundArr.push({
       paymentinvoiceid: item?.paymentInvoiceId,
       totalAmount:
-        editAmount && editAmount[key] ? editAmount[key] : item.totalAmount,
-      paymentDate: paymentDate ? paymentDate : item.paymentDate,
+        refundEditAmount && refundEditAmount[key]
+          ? refundEditAmount[key]
+          : item.totalAmount,
+      paymentDate: refundPaymentDate ? refundPaymentDate : item.paymentDate,
       currencyId: currencyDropdownOptions[key]?.find((e: any) => e.isSelected)
         ?.value,
       location: locationDropdownOptions[key]?.find((e: any) => e.isSelected)
@@ -491,7 +493,7 @@ const RefundDetailContainer = ({
     const payload = {
       invoiceids: [id],
       paymentnotes: [],
-      Payments: arr,
+      Payments: editRefundArr,
     };
 
     axios({
@@ -506,11 +508,11 @@ const RefundDetailContainer = ({
           let obj = { ...referenceNo };
           obj[key] = res?.data?.payments[key]?.referenceNo;
           setReferenceNo(obj);
-          let objAm = { ...editAmount };
+          let objAm = { ...refundEditAmount };
           objAm[key] = res?.data?.payments[key]?.totalAmount;
-          setEditAmount(objAm);
-          setEditChecked(null);
-          setEditButtonDisable(false);
+          setRefundEditAmount(objAm);
+          setRefundEditChecked(null);
+          setRefundEditButtonDisable(false);
           setTopPanel({
             ...topPanel,
             open: res?.data?.invoice?.invoiceBalance,
@@ -539,9 +541,9 @@ const RefundDetailContainer = ({
     let isDisable = false;
 
     const openAmount = topPanel?.open;
-    const editTotalAmount = editAmount;
+    const editTotalAmount = refundEditAmount;
 
-    if (editDisableToggle && editTotalAmount[key] > openAmount) {
+    if (refundEditDisableToggle && editTotalAmount[key] > openAmount) {
       if (!isToaster) setIsToaster(true);
       isDisable = true;
     }
@@ -573,13 +575,12 @@ const RefundDetailContainer = ({
                 {key == 0 ? <p>Refund Details</p> : <></>}
                 <div className="topButtonActions">
                   {permission?.InvoiceDetails.includes("Edit") &&
-                    editChecked != key &&
+                    refundEditChecked != key &&
                     currentStatusValue === statusValues.paid && (
                       <div className="paymentDetailEdit">
                         <Button
-                          disabled={editButtonDisable}
+                          disabled={refundEditButtonDisable}
                           className="primary-blue medium"
-                          data-testid="payment-edit-button"
                           icon={{
                             color: "#fff",
                             icon: "edit",
@@ -587,14 +588,14 @@ const RefundDetailContainer = ({
                           }}
                           label="Edit"
                           handleOnClick={() => {
-                            setEditButtonDisable(true);
-                            setEditChecked(key);
+                            setRefundEditButtonDisable(true);
+                            setRefundEditChecked(key);
                           }}
                         />
                       </div>
                     )}
 
-                  {editChecked == key && (
+                  {refundEditChecked == key && (
                     <div className="paymentPageCancelSave">
                       <div className="paymentDetailCancel">
                         <Button
@@ -612,15 +613,15 @@ const RefundDetailContainer = ({
                               .then((res: any) => {
                                 setPaymentDetailData(res?.data?.payments);
                                 setAddRefundSectionCheck(false);
-                                setEditChecked(null);
+                                setRefundEditChecked(null);
                                 let obj = { ...referenceNo };
                                 obj[key] = res.data?.payments[key].referenceNo;
                                 setReferenceNo(obj);
-                                let objAm = { ...editAmount };
+                                let objAm = { ...refundEditAmount };
                                 objAm[key] =
                                   res.data?.payments[key].totalAmount;
-                                setEditAmount(objAm);
-                                setEditButtonDisable(false);
+                                setRefundEditAmount(objAm);
+                                setRefundEditButtonDisable(false);
                                 setTopPanel({
                                   ...topPanel,
                                   open: res?.data?.invoice?.invoiceBalance,
@@ -653,10 +654,10 @@ const RefundDetailContainer = ({
                   <DatePicker
                     label="Payment Date"
                     value={moment(item.paymentDate).format("DD MMM YYYY")}
-                    disabled={editChecked != key}
+                    disabled={refundEditChecked != key}
                     required
                     handleDateChange={(date: any) => {
-                      setPaymentDate(date);
+                      setRefundPaymentDate(date);
                       paymentApiData[key].paymentDate = date;
                       setPaymentApiData([...paymentApiData]);
                     }}
@@ -681,7 +682,7 @@ const RefundDetailContainer = ({
                     }}
                     options={currencyDropdownOptions[key] || []}
                     isOpen={refundCurrencyEditOpen == key}
-                    isDisabled={editChecked != key}
+                    isDisabled={refundEditChecked != key}
                     title="Currency"
                   />
                 </div>
@@ -704,20 +705,26 @@ const RefundDetailContainer = ({
                     }}
                     options={locationDropdownOptions[key] || []}
                     isOpen={refundLocationEditOpen == key}
-                    isDisabled={editChecked != key}
+                    isDisabled={refundEditChecked != key}
                     title="Location"
                   />
                 </div>
 
                 <div className="paymentInstallmentContainerDropdowns">
                   <div className="referenceNoInput">
-                    <span className={editChecked != key ? "disable-label" : ""}>
+                    <span
+                      className={
+                        refundEditChecked != key ? "disable-label" : ""
+                      }
+                    >
                       Reference No
                     </span>
                     <input
                       data-testid={item.referenceNo}
                       key={item.referenceNo}
-                      className={editChecked != key ? "disable-input" : ""}
+                      className={
+                        refundEditChecked != key ? "disable-input" : ""
+                      }
                       value={referenceNo && referenceNo[key]}
                       defaultValue={item.referenceNo}
                       name="Reference No"
@@ -729,7 +736,7 @@ const RefundDetailContainer = ({
                         ["e", "E", "+", "-", "."].includes(e.key) &&
                           e.preventDefault();
                       }}
-                      disabled={editChecked != key}
+                      disabled={refundEditChecked != key}
                       onChange={(e) => {
                         let obj = { ...referenceNo };
                         obj[key] = e.target.value;
@@ -763,7 +770,7 @@ const RefundDetailContainer = ({
                       }}
                       options={bankToDepositDropdownOptions[key] || []}
                       isOpen={refundDepositBankEditOpen == key}
-                      isDisabled={editChecked != key}
+                      isDisabled={refundEditChecked != key}
                       title="Credited from bank"
                     />
                   </div>
@@ -786,7 +793,7 @@ const RefundDetailContainer = ({
                       }}
                       options={paymentMethodDropdownOptions[key] || []}
                       isOpen={refundPaymentMethodEditOpen == key}
-                      isDisabled={editChecked != key}
+                      isDisabled={refundEditChecked != key}
                       title="Payment Method"
                     />
                   </div>
@@ -794,21 +801,25 @@ const RefundDetailContainer = ({
                   <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                     <div className="invoiceNumber">
                       <span
-                        className={editChecked != key ? "disable-label" : ""}
+                        className={
+                          refundEditChecked != key ? "disable-label" : ""
+                        }
                       >
                         Invoice Number
                       </span>
                       <input
                         data-testid={item.invoiceNumber}
                         key={item.invoiceNumber}
-                        className={editChecked != key ? "disable-input" : ""}
+                        className={
+                          refundEditChecked != key ? "disable-input" : ""
+                        }
                         value={invoiceNumber && invoiceNumber[key]}
                         name="Reference No"
                         type="number"
                         placeholder="Enter Invoice Number"
                         defaultValue={item.invoiceNumber}
                         min="0"
-                        disabled={editChecked != key}
+                        disabled={refundEditChecked != key}
                         pattern="[+-]?\d+(?:[.,]\d+)?"
                         onKeyDown={(e) => {
                           ["e", "E", "+", "-", "."].includes(e.key) &&
@@ -828,8 +839,8 @@ const RefundDetailContainer = ({
                   <p>Refund Amount</p>
                   <div className="amountPaymentPage">
                     {getBillingCurrency()}{" "}
-                    {editAmount[key]
-                      ? toCurrencyFormat(editAmount[key])
+                    {refundEditAmount[key]
+                      ? toCurrencyFormat(refundEditAmount[key])
                       : toCurrencyFormat(item.totalAmount)}
                   </div>
                 </div>
