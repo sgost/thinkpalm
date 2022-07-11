@@ -260,7 +260,7 @@ const ProductInvoiceCreation = ({
                 {/* Description */}
 
                 <div className=" col-md-3 input-component">
-                  <span id="desc_label">Description</span>
+                  <span id="desc_label">Description<span style={{ color: "red" }}>*</span></span>
                   <input
                     type="text"
                     className="font-color"

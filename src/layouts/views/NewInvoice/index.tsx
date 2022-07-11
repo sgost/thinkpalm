@@ -446,14 +446,14 @@ const NewInvoice = () => {
         receivableAccountOptions.findIndex(
           (e: any) => e.isSelected === true
         ) !== -1 &&
-        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 && 
+        currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
         paymentTermsOptions.findIndex((e: any) => e.isSelected === true) !== -1
       );
     }
     if (stepsCount == 1 && stepperOneData.type === "Credit Memo") {
       return !(
-        stepperOneData?.customer !== "" && 
-        invoiceDate !== "" && 
+        stepperOneData?.customer !== "" &&
+        invoiceDate !== "" &&
         invoicerOptions.findIndex((e: any) => e.isSelected === true) !== -1 &&
         currencyOptions.findIndex((e: any) => e.isSelected === true) !== -1);
     }
@@ -465,10 +465,10 @@ const NewInvoice = () => {
       todos.forEach((item) => {
         if (
           item.product.length &&
-          item.amount.length &&
+          parseFloat(item.amount) > 0 &&
           item.date.length &&
-          item.quantity.length &&
-          item.country.length
+          parseFloat(item.quantity) > 0 &&
+          item.country.length && item.description !== ""
         ) {
           condition.push(false);
         } else {

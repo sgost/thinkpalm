@@ -240,6 +240,8 @@ const InvoicePreviewPop = ({
 
               <div className="invoice_bottom">
                 <div className="rowBox">
+                  {/*
+                  uncomment this after vat story is received and implemented
                   <div className="rowFee">
                     <p className="title">Subtotal Due</p>
                     <p className="amount">
@@ -252,7 +254,7 @@ const InvoicePreviewPop = ({
                     <p className="amount">
                       {getCustlBillingCurrency()} {vatAmount.toFixed(2)}
                     </p>
-                  </div>
+                  </div> */}
                   <div className="totalRow">
                     <p>Total Balance</p>
                     <p className="total">

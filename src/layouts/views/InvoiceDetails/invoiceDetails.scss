@@ -318,11 +318,17 @@
             gap: 0.556rem;
             font-weight: 450;
 
+            .totalPadding {
+              padding-left: 0.36rem;
+            }
+
             p {
               color: #cbd4f3;
               margin: 0px;
               font-size: 1.111rem;
-
+              &:last-child{
+                letter-spacing: 0.0333rem;
+              }
               span {
                 color: $white;
                 font-size: 1.111rem;
