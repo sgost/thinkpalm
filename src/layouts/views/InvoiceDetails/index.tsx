@@ -2219,7 +2219,7 @@ export default function InvoiceDetails() {
           { 
           // currentStatusValue === statusValues.paid
            (missTransType === 4 ) 
-            ? (
+            && (
             <div className="paymentCompnent">
               <RefundDetailContainer
                 setPaymentDetailData={setPaymentDetailData}
@@ -2237,8 +2237,6 @@ export default function InvoiceDetails() {
                 toCurrencyFormat={toCurrencyFormat}
               />
             </div>
-          ) : (
-            <></>
           )}
 
           {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (

@@ -558,6 +558,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
     setAddPaymentSectionCheck(true);
   };
 
+  const paymentButtonClassName = addPaymentSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"
+
   return (
     <>
     {
@@ -1005,10 +1007,10 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       )}
 
       {permission?.InvoiceDetails?.includes("Add") &&
-      currentStatusValue === statusValues.partiallyPaid ? (
+      currentStatusValue === statusValues.partiallyPaid && (
         <div className="addPaymentInstallmentButton">
           <div
-            className={addPaymentSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"}
+            className={paymentButtonClassName}
             onClick={() => addPaymentInstallmentBlocks()}
             aria-disabled={addPaymentSectionCheck}
             data-testid="add-installment"
@@ -1026,8 +1028,6 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             Add payment Installment
           </div>
         </div>
-      ) : (
-        <></>
       )}
 
       {isToaster && (
