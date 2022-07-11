@@ -18,6 +18,7 @@ import {
   createManualInvoice,
   getHeaders,
   getUpdateCreditMemoUrl,
+  calculateInvoiceUrl,
   updateInvoiceStatus,
   urls,
 } from "../../../urls/urls";
@@ -141,6 +142,7 @@ const NewInvoice = () => {
   const [qbIdValue, setQbIdValue] = useState('')
   const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
   const [paymentMethodOptions, setPaymentMethodOptions] = useState<any>([]);
+  const [selectedRowDataLength, setSelectedRowDataLength] = useState(0);
 
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
@@ -567,7 +569,7 @@ const NewInvoice = () => {
      };
      axios({
        method: "POST",
-       url: recalculateManualInvoice(CreateManualPayrollRes?.invoiceId),
+       url: calculateInvoiceUrl(CreateManualPayrollRes?.invoiceId),
        headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
        data: dataReCal,
      })
