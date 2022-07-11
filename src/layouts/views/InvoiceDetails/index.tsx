@@ -2208,6 +2208,7 @@ export default function InvoiceDetails() {
                 setCurrentStatusValue={setCurrentStatusValue}
                 loading={loading}
                 setLoading={setLoading}
+                toCurrencyFormat={toCurrencyFormat}
               />
             </div>
           ) : (
@@ -2233,6 +2234,7 @@ export default function InvoiceDetails() {
                 setStatus={setStatus}
                 currentStatusValue={currentStatusValue}
                 setCurrentStatusValue={setCurrentStatusValue}
+                toCurrencyFormat={toCurrencyFormat}
               />
             </div>
           ) : (

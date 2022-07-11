@@ -31,6 +31,7 @@ const RefundDetailContainer = ({
   setStatus,
   currentStatusValue,
   setCurrentStatusValue,
+  toCurrencyFormat,
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -63,25 +64,31 @@ const RefundDetailContainer = ({
   const [refundPaymentDate, setRefundPaymentDate] = useState();
   const [refundEditAmount, setRefundEditAmount] = useState<any>({});
   const [refundEditButtonDisable, setRefundEditButtonDisable] = useState(false);
-  const [refundEditDisableToggle, setEditDisableToggle] = useState(false);
-  const [currencyDropdownOptions, setCurrencyDropdownOption] = useState<any>(
-    []
-  );
-  const [bankToDepositDropdownOptions, setBankToDepositDropdownOption] =
+  const [refundEditDisableToggle, setRefundEditDisableToggle] = useState(false);
+  const [refundCurrencyDropdownOptions, setRefundCurrencyDropdownOption] =
     useState<any>([]);
-  const [locationDropdownOptions, setLocationDropdownOption] = useState<any>(
-    []
-  );
-  const [paymentMethodDropdownOptions, setPaymentMethodDropdownOption] =
+  const [
+    refundBankToDepositDropdownOptions,
+    setRefundBankToDepositDropdownOption,
+  ] = useState<any>([]);
+  const [refundLocationDropdownOptions, setRefundLocationDropdownOption] =
     useState<any>([]);
-  const [addCurrencyDropdownOptions, setAddCurrencyDropdownOption] =
+  const [
+    refundPaymentMethodDropdownOptions,
+    setRefundPaymentMethodDropdownOption,
+  ] = useState<any>([]);
+  const [refundAddCurrencyDropdownOptions, setRefundAddCurrencyDropdownOption] =
     useState<any>([]);
-  const [addBankToDepositDropdownOptions, setAddBankToDepositDropdownOption] =
+  const [
+    refundAddBankToDepositDropdownOptions,
+    setRefundAddBankToDepositDropdownOption,
+  ] = useState<any>([]);
+  const [refundAddLocationDropdownOptions, setRefundAddLocationDropdownOption] =
     useState<any>([]);
-  const [addLocationDropdownOptions, setAddLocationDropdownOption] =
-    useState<any>([]);
-  const [addPaymentMethodDropdownOptions, setAddPaymentMethodDropdownOption] =
-    useState<any>([]);
+  const [
+    refundAddPaymentMethodDropdownOptions,
+    setRefundAddPaymentMethodDropdownOption,
+  ] = useState<any>([]);
   const [isToaster, setIsToaster] = useState(false);
   const [invoiceNumber, setInvoiceNumber] = useState<any>("");
 
@@ -103,9 +110,9 @@ const RefundDetailContainer = ({
     const locationDataOptions: any = preparelocationRefundDropdownOptionData(
       lookupData?.data?.locations
     );
-    setAddCurrencyDropdownOption(currencyDataOptions);
-    setAddBankToDepositDropdownOption(depositToBankDataOptions);
-    setAddLocationDropdownOption(locationDataOptions);
+    setRefundAddCurrencyDropdownOption(currencyDataOptions);
+    setRefundAddBankToDepositDropdownOption(depositToBankDataOptions);
+    setRefundAddLocationDropdownOption(locationDataOptions);
   };
 
   const getPaymentMethodRefundDropdownOptionData = () => {
@@ -120,7 +127,7 @@ const RefundDetailContainer = ({
           preparePaymentMethodRefundDropdownOptionData(
             res?.data?.paymentMethods
           );
-        setAddPaymentMethodDropdownOption(paymentMethodDropdownData);
+        setRefundAddPaymentMethodDropdownOption(paymentMethodDropdownData);
         setPaymentMethodData(paymentMethodDropdownData);
       })
       .catch((e: any) => {
@@ -179,27 +186,27 @@ const RefundDetailContainer = ({
     setIsOpen: any,
     index: number
   ) => {
-    let arr = [...options];
+    let array = [...options];
 
-    arr &&
-      arr[index]?.forEach((e: any, i: number) => {
+    array &&
+      array[index]?.forEach((e: any, i: number) => {
         if (e.value === item.value) {
-          arr[index][i] = {
+          array[index][i] = {
             ...e,
             label: e.label,
             value: e.value,
             isSelected: !e.isSelected,
           };
         } else {
-          arr[index][i] = {
-            ...arr[index][i],
+          array[index][i] = {
+            ...array[index][i],
             isSelected: false,
           };
         }
       });
     set([]);
     setTimeout(() => {
-      set([...arr]);
+      set([...array]);
     }, 1);
     setIsOpen(paymentApiData.length + 1);
   };
@@ -207,40 +214,40 @@ const RefundDetailContainer = ({
   const refundCurrencyDropOptionClick = (option: any) =>
     handleRefundAddOptionClick({
       option,
-      dropOptions: addCurrencyDropdownOptions,
+      dropOptions: refundAddCurrencyDropdownOptions,
       updateIsOpen: setRefundCurrencyOpen,
       isDropOpen: refundCurrencyOpen,
-      updateOptions: setAddCurrencyDropdownOption,
+      updateOptions: setRefundAddCurrencyDropdownOption,
       type: "currency",
     });
 
   const refundLocationDropOptionClick = (option: any) =>
     handleRefundAddOptionClick({
       option,
-      dropOptions: addLocationDropdownOptions,
+      dropOptions: refundAddLocationDropdownOptions,
       updateIsOpen: setRefundLocationOpen,
       isDropOpen: refundLocationOpen,
-      updateOptions: setAddLocationDropdownOption,
+      updateOptions: setRefundAddLocationDropdownOption,
       type: "location",
     });
 
   const refundDepositBankDropOptionClick = (option: any) =>
     handleRefundAddOptionClick({
       option,
-      dropOptions: addBankToDepositDropdownOptions,
+      dropOptions: refundAddBankToDepositDropdownOptions,
       updateIsOpen: setRefundDepositBankOpen,
       isDropOpen: refundDepositBankOpen,
-      updateOptions: setAddBankToDepositDropdownOption,
+      updateOptions: setRefundAddBankToDepositDropdownOption,
       type: "bankDeposit",
     });
 
   const refundPaymentMethodDropOptionClick = (option: any) =>
     handleRefundAddOptionClick({
       option,
-      dropOptions: addPaymentMethodDropdownOptions,
+      dropOptions: refundAddPaymentMethodDropdownOptions,
       updateIsOpen: setRefundPaymentMethodOpen,
       isDropOpen: refundPaymentMethodOpen,
-      updateOptions: setAddPaymentMethodDropdownOption,
+      updateOptions: setRefundAddPaymentMethodDropdownOption,
       type: "paymentMethod",
     });
 
@@ -272,11 +279,11 @@ const RefundDetailContainer = ({
   };
 
   const updateRefundDropdowns = (paymentDetailDatas: any) => {
-    let billingCurrencyArr: any = [];
+    let billingCurrencyArray: any = [];
 
     if (lookupData?.data?.billingCurrencies) {
       paymentDetailDatas?.forEach((item: any) => {
-        billingCurrencyArr.push(
+        billingCurrencyArray.push(
           lookupData?.data?.billingCurrencies?.map((x: any) => {
             return {
               isSelected: x.value == item.currencyId,
@@ -286,14 +293,14 @@ const RefundDetailContainer = ({
           })
         );
       });
-      setCurrencyDropdownOption(billingCurrencyArr);
+      setRefundCurrencyDropdownOption(billingCurrencyArray);
     }
 
-    let bankToDepositArr: any = [];
+    let bankToDepositArray: any = [];
 
     if (lookupData?.data?.depositToOptions) {
       paymentDetailDatas?.forEach((item: any) => {
-        bankToDepositArr.push(
+        bankToDepositArray.push(
           lookupData?.data?.depositToOptions?.map((x: any) => {
             return {
               isSelected: x.value == item.depositedtoBank,
@@ -303,14 +310,14 @@ const RefundDetailContainer = ({
           })
         );
       });
-      setBankToDepositDropdownOption(bankToDepositArr);
+      setRefundBankToDepositDropdownOption(bankToDepositArray);
     }
 
-    let locationArr: any = [];
+    let locationArray: any = [];
 
     if (lookupData?.data?.locations) {
       paymentDetailDatas?.forEach((item: any) => {
-        locationArr.push(
+        locationArray.push(
           lookupData?.data?.locations?.map((x: any) => {
             return {
               isSelected: x.value == item.location,
@@ -320,15 +327,15 @@ const RefundDetailContainer = ({
           })
         );
       });
-      setLocationDropdownOption(locationArr);
+      setRefundLocationDropdownOption(locationArray);
     }
 
-    const getSubscriptionLookup = subscriptionLookup();
+    const getSubscriptionLookupApi = subscriptionLookup();
     const headers = {
       headers: getHeaders(tempToken, cid, "false"),
     };
     axios
-      .get(getSubscriptionLookup, headers)
+      .get(getSubscriptionLookupApi, headers)
       .then((res: any) => {
         if (res?.data?.paymentMethods) {
           let paymentMethodArr: any = [];
@@ -343,7 +350,7 @@ const RefundDetailContainer = ({
               })
             );
           });
-          setPaymentMethodDropdownOption(paymentMethodArr);
+          setRefundPaymentMethodDropdownOption(paymentMethodArr);
         }
       })
       .catch((e: any) => {
@@ -351,19 +358,11 @@ const RefundDetailContainer = ({
       });
   };
 
-  const toCurrencyFormat = (amount: any) => {
-    const cFormat = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-    return cFormat.format(amount).slice(1);
-  };
-
   const cleanNewRefundObject = () => {
     setRefundNewPaymentDate("");
     setRefundNewCurrency(null);
 
-    setAddLocationDropdownOption(
+    setRefundAddLocationDropdownOption(
       allRefundDropdownData?.location?.map((item: any) => {
         return {
           isSelected: false,
@@ -372,7 +371,7 @@ const RefundDetailContainer = ({
         };
       })
     );
-    setAddCurrencyDropdownOption(
+    setRefundAddCurrencyDropdownOption(
       allRefundDropdownData?.currency?.map((items: any) => {
         return {
           isSelected: false,
@@ -381,7 +380,7 @@ const RefundDetailContainer = ({
         };
       })
     );
-    setAddBankToDepositDropdownOption(
+    setRefundAddBankToDepositDropdownOption(
       allRefundDropdownData?.depositBank?.map((itemsNew: any) => {
         return {
           isSelected: false,
@@ -390,7 +389,7 @@ const RefundDetailContainer = ({
         };
       })
     );
-    setAddPaymentMethodDropdownOption(
+    setRefundAddPaymentMethodDropdownOption(
       paymentMethodData?.map((x: any) => {
         return {
           isSelected: false,
@@ -476,21 +475,23 @@ const RefundDetailContainer = ({
           ? refundEditAmount[key]
           : item.totalAmount,
       paymentDate: refundPaymentDate ? refundPaymentDate : item.paymentDate,
-      currencyId: currencyDropdownOptions[key]?.find((e: any) => e.isSelected)
-        ?.value,
-      location: locationDropdownOptions[key]?.find((e: any) => e.isSelected)
-        ?.value,
-      referenceNo:
-        referenceNo && referenceNo[key] ? referenceNo[key] : item.referenceNo,
-      depositedtoBank: bankToDepositDropdownOptions[key]?.find(
+      currencyId: refundCurrencyDropdownOptions[key]?.find(
         (e: any) => e.isSelected
       )?.value,
-      paymentMethod: paymentMethodDropdownOptions[key]?.find(
+      location: refundLocationDropdownOptions[key]?.find(
+        (e: any) => e.isSelected
+      )?.value,
+      referenceNo:
+        referenceNo && referenceNo[key] ? referenceNo[key] : item.referenceNo,
+      depositedtoBank: refundBankToDepositDropdownOptions[key]?.find(
+        (e: any) => e.isSelected
+      )?.value,
+      paymentMethod: refundPaymentMethodDropdownOptions[key]?.find(
         (e: any) => e.isSelected
       )?.value,
     });
 
-    const payload = {
+    const refundPayload = {
       invoiceids: [id],
       paymentnotes: [],
       Payments: editRefundArr,
@@ -500,7 +501,7 @@ const RefundDetailContainer = ({
       method: "POST",
       url: editPaymentDetailApi(),
       headers: getHeaders(tempToken, cid, "false"),
-      data: payload,
+      data: refundPayload,
     })
       .then(async (res) => {
         if (res.status == 200) {
@@ -674,13 +675,13 @@ const RefundDetailContainer = ({
                     handleDropOptionClick={(data: any) => {
                       handleRefundDropOptionData(
                         data,
-                        currencyDropdownOptions,
-                        setCurrencyDropdownOption,
+                        refundCurrencyDropdownOptions,
+                        setRefundCurrencyDropdownOption,
                         setRefundCurrencyEditOpen,
                         key
                       );
                     }}
-                    options={currencyDropdownOptions[key] || []}
+                    options={refundCurrencyDropdownOptions[key] || []}
                     isOpen={refundCurrencyEditOpen == key}
                     isDisabled={refundEditChecked != key}
                     title="Currency"
@@ -697,13 +698,13 @@ const RefundDetailContainer = ({
                     handleDropOptionClick={(data: any) => {
                       handleRefundDropOptionData(
                         data,
-                        locationDropdownOptions,
-                        setLocationDropdownOption,
+                        refundLocationDropdownOptions,
+                        setRefundLocationDropdownOption,
                         setRefundLocationEditOpen,
                         key
                       );
                     }}
-                    options={locationDropdownOptions[key] || []}
+                    options={refundLocationDropdownOptions[key] || []}
                     isOpen={refundLocationEditOpen == key}
                     isDisabled={refundEditChecked != key}
                     title="Location"
@@ -762,13 +763,13 @@ const RefundDetailContainer = ({
                       handleDropOptionClick={(data: any) => {
                         handleRefundDropOptionData(
                           data,
-                          bankToDepositDropdownOptions,
-                          setBankToDepositDropdownOption,
+                          refundBankToDepositDropdownOptions,
+                          setRefundBankToDepositDropdownOption,
                           setRefundDepositBankEditOpen,
                           key
                         );
                       }}
-                      options={bankToDepositDropdownOptions[key] || []}
+                      options={refundBankToDepositDropdownOptions[key] || []}
                       isOpen={refundDepositBankEditOpen == key}
                       isDisabled={refundEditChecked != key}
                       title="Credited from bank"
@@ -785,13 +786,13 @@ const RefundDetailContainer = ({
                       handleDropOptionClick={(data: any) => {
                         handleRefundDropOptionData(
                           data,
-                          paymentMethodDropdownOptions,
-                          setPaymentMethodDropdownOption,
+                          refundPaymentMethodDropdownOptions,
+                          setRefundPaymentMethodDropdownOption,
                           setPaymentMethodEditOpen,
                           key
                         );
                       }}
-                      options={paymentMethodDropdownOptions[key] || []}
+                      options={refundPaymentMethodDropdownOptions[key] || []}
                       isOpen={refundPaymentMethodEditOpen == key}
                       isDisabled={refundEditChecked != key}
                       title="Payment Method"
@@ -904,7 +905,7 @@ const RefundDetailContainer = ({
                 testId="currencyOpen-id"
                 handleDropdownClick={setRefundCurrencyOpen}
                 handleDropOptionClick={refundCurrencyDropOptionClick}
-                options={addCurrencyDropdownOptions || []}
+                options={refundAddCurrencyDropdownOptions || []}
                 isOpen={refundCurrencyOpen}
                 isDisabled={false}
                 title="Currency"
@@ -916,7 +917,7 @@ const RefundDetailContainer = ({
                 testId="locationOpen-id"
                 handleDropdownClick={setRefundLocationOpen}
                 handleDropOptionClick={refundLocationDropOptionClick}
-                options={addLocationDropdownOptions || []}
+                options={refundAddLocationDropdownOptions || []}
                 isOpen={refundLocationOpen}
                 isDisabled={false}
                 title="Location"
@@ -952,7 +953,7 @@ const RefundDetailContainer = ({
                   testId="Deposited-id"
                   handleDropdownClick={setRefundDepositBankOpen}
                   handleDropOptionClick={refundDepositBankDropOptionClick}
-                  options={addBankToDepositDropdownOptions || []}
+                  options={refundAddBankToDepositDropdownOptions || []}
                   isOpen={refundDepositBankOpen}
                   isDisabled={false}
                   title="Credited from bank"
@@ -964,7 +965,7 @@ const RefundDetailContainer = ({
                   testId="payment-id"
                   handleDropdownClick={setRefundPaymentMethodOpen}
                   handleDropOptionClick={refundPaymentMethodDropOptionClick}
-                  options={addPaymentMethodDropdownOptions || []}
+                  options={refundAddPaymentMethodDropdownOptions || []}
                   isOpen={refundPaymentMethodOpen}
                   isDisabled={false}
                   title="Payment Method"

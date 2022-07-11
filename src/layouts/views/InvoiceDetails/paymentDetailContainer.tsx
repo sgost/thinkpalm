@@ -26,7 +26,8 @@ const PaymentDetailContainer = ({
   currentStatusValue,
   setCurrentStatusValue,
   loading,
-  setLoading
+  setLoading,
+  toCurrencyFormat
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -343,14 +344,6 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       .catch((e: any) => {
         console.log("error", e);
       });
-  };
-
-  const toCurrencyFormat = (amount: any) => {
-    const cFormat = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-    return cFormat.format(amount).slice(1);
   };
 
   const cleanNewPaymentObject = () => {
