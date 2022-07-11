@@ -146,35 +146,35 @@ const RefundDetailContainer = ({
     });
   };
 
-  const prepareDepositToBankRefundDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const prepareDepositToBankRefundDropdownOptionData = (bankData: any) => {
+    return bankData?.map((bankItem: any) => {
       return {
-        ...item,
+        ...bankItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: bankItem.text,
+        value: bankItem.value,
       };
     });
   };
 
-  const preparelocationRefundDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const preparelocationRefundDropdownOptionData = (locationData: any) => {
+    return locationData?.map((locationItem: any) => {
       return {
-        ...item,
+        ...locationItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: locationItem.text,
+        value: locationItem.value,
       };
     });
   };
 
-  const preparePaymentMethodRefundDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const preparePaymentMethodRefundDropdownOptionData = (paymentMethodData: any) => {
+    return paymentMethodData?.map((paymentMethodItem: any) => {
       return {
-        ...item,
+        ...paymentMethodItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: paymentMethodItem.text,
+        value: paymentMethodItem.value,
       };
     });
   };
@@ -559,6 +559,8 @@ const RefundDetailContainer = ({
   const addPaymentInstallmentBlocks = () => {
     setAddRefundSectionCheck(true);
   };
+
+  const addPaymentButtonClassName = addRefundSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"
 
   return (
     <div className="paymentDisplayContainer">
@@ -1065,11 +1067,7 @@ const RefundDetailContainer = ({
       currentStatusValue === statusValues.paid ? (
         <div className="addPaymentInstallmentButton">
           <div
-            className={
-              addRefundSectionCheck
-                ? "addPaymentInstallmentIconDisable"
-                : "addPaymentInstallmentIcon"
-            }
+            className={addPaymentButtonClassName}
             onClick={() => addPaymentInstallmentBlocks()}
             aria-disabled={addRefundSectionCheck}
             data-testid="add-installment"
