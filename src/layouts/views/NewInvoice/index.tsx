@@ -537,7 +537,7 @@ const NewInvoice = () => {
         });
       }else{
 
-       //Vaidehi changes starts
+      
        let countReCal =0;
        for (const [key, _value] of Object.entries(selectedRowPostData)) {
          countReCal = countReCal + selectedRowPostData[key].length;
@@ -575,7 +575,6 @@ const NewInvoice = () => {
      })
        .then((res: any) => {
          if (res.data) {
-          // setCreateManualPayrollRes(res.data);
            setStepsCount(stepsCount + 1);
            setLoading(false);
          }
@@ -587,7 +586,7 @@ const NewInvoice = () => {
       } else{
        setStepsCount(stepsCount + 1);
        setLoading(false);
-     }//vaidehi changes ends
+     }
      }
     }
     if (stepsCount == 3 && stepperOneData.type == "Payroll") {
