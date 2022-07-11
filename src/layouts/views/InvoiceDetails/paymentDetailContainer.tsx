@@ -11,6 +11,7 @@ import {
   urls,
 } from "../../../urls/urls";
 import { statusValues } from "./statusValues";
+import { Loader } from "../../../components/Comman/Utils/utils";
 
 const PaymentDetailContainer = ({
   cid,
@@ -23,7 +24,9 @@ const PaymentDetailContainer = ({
   setTopPanel,
   setStatus,
   currentStatusValue,
-  setCurrentStatusValue
+  setCurrentStatusValue,
+  loading,
+  setLoading
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -35,7 +38,7 @@ const PaymentDetailContainer = ({
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [locationOpen, setLocationOpen] = useState(false);
   const [referenceNo, setReferenceNo] = useState<any>();
-  const [addAmount, setAddAmount] = useState<any>(0.0);
+  const [addAmount, setAddAmount] = useState<any>();
   const [depositBankOpen, setDepositBankOpen] = useState(false);
   const [paymentMethodOpen, setPaymentMethodOpen] = useState(false);
   const [editChecked, setEditChecked] = useState<any>();
@@ -417,6 +420,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       Payments: arr,
     };
 
+    setLoading(true);
+
     axios({
       method: "POST",
       url: urls.savePayments,
@@ -447,6 +452,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
               setStatus("Paid")
               setCurrentStatusValue(statusValues.paid)
             }
+            setLoading(false);
           })
           .catch((e: any) => {
             console.log("error e", e);
@@ -485,6 +491,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       Payments: arr,
     };
 
+    setLoading(true);
+
     axios({
       method: "POST",
       url: editPaymentDetailApi(),
@@ -506,6 +514,11 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             ...topPanel,
             open: res?.data?.invoice?.invoiceBalance,
           });
+          if(res?.data?.invoice?.invoiceBalance === 0) {
+            setStatus("Paid")
+            setCurrentStatusValue(statusValues.paid)
+          }
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -529,10 +542,10 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
    const EditInstallmentSaveDisable = (key: any) => {
     let isDisable = false;
 
-    const openAmount = topPanel?.open
+    const totalmount = topPanel?.total
     const editTotalAmount = editAmount
 
-     if (editDisableToggle && editTotalAmount[key] > openAmount) {
+     if (editDisableToggle && editTotalAmount[key] > totalmount) {
       if (!isToaster) setIsToaster(true);
       isDisable = true;
     }
@@ -549,6 +562,11 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   };
 
   return (
+    <>
+    {
+      loading ? 
+      <Loader />
+      :
     <div className="paymentDisplayContainer">
       {paymentApiData &&
         paymentApiData?.map((item: any, key: any) => {
@@ -795,6 +813,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                         placeholder="Please enter"
                         min="0"
                         pattern="[+-]?\d+(?:[.,]\d+)?"
+                        disabled={editChecked != key}
                         onKeyDown={(e) => {
                           ["e", "E", "+", "-"].includes(e.key) &&
                             e.preventDefault();
@@ -957,7 +976,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                     data-testid="addAmount"
                     value={addAmount}
                     type="number"
-                    placeholder="Please enter"
+                    placeholder="0"
                     onChange={(e) => {
                       setAddAmount(parseFloat(e.target.value));
                     }}
@@ -991,7 +1010,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       currentStatusValue === statusValues.partiallyPaid ? (
         <div className="addPaymentInstallmentButton">
           <div
-            className="addPaymentInstallmentIcon"
+            className={addPaymentSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"}
             onClick={() => addPaymentInstallmentBlocks()}
             aria-disabled={addPaymentSectionCheck}
             data-testid="add-installment"
@@ -1021,6 +1040,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         />
       )}
     </div>
+    }
+    </>
   );
 };
 
