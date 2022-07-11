@@ -18,6 +18,7 @@ import {
   createManualInvoice,
   getHeaders,
   getUpdateCreditMemoUrl,
+  calculateInvoiceUrl,
   updateInvoiceStatus,
   urls,
 } from "../../../urls/urls";
@@ -141,6 +142,7 @@ const NewInvoice = () => {
   const [qbIdValue, setQbIdValue] = useState('')
   const [paymentTermsOptions, setPaymentTermsOptions] = useState<any>([]);
   const [paymentMethodOptions, setPaymentMethodOptions] = useState<any>([]);
+  const [selectedRowDataLength, setSelectedRowDataLength] = useState(0);
 
   //stepper two payroll TableOptions
   const [tableOptions, setTableOptions] = useState({
@@ -491,18 +493,20 @@ const NewInvoice = () => {
     }
     if (stepsCount == 2 && stepperOneData.type == "Payroll") {
       setLoading(true);
+      if(CreateManualPayrollRes.invoiceId == null){
       const apiData = employeeApiData;
 
       let payLoadData = [];
+      let count =0;
       for (const [key, _value] of Object.entries(selectedRowPostData)) {
         const newPreapredData = apiData[key];
-
+        count = count + selectedRowPostData[key].length;
         newPreapredData.employeeDetail.compensation.payItems =
           selectedRowPostData[key];
 
         payLoadData.push(newPreapredData);
       }
-
+      setSelectedRowDataLength(count);
       const data = {
         customerId: stepperOneData?.customerId,
         userId: stepperOneData?.customerId,
@@ -531,6 +535,59 @@ const NewInvoice = () => {
         .catch((e: any) => {
           console.log(e);
         });
+      }else{
+
+      
+       let countReCal =0;
+       for (const [key, _value] of Object.entries(selectedRowPostData)) {
+         countReCal = countReCal + selectedRowPostData[key].length;
+       }
+     if(countReCal> selectedRowDataLength){
+       setSelectedRowDataLength(countReCal);
+       const apiDataReCal = employeeApiData;
+     let payLoadDataReCal = [];
+     for (const [key, _value] of Object.entries(selectedRowPostData)) {
+       const newPreapredDataReCal = apiDataReCal[key];
+
+       newPreapredDataReCal.employeeDetail.compensation.payItems =
+         selectedRowPostData[key];
+
+         payLoadDataReCal.push(newPreapredDataReCal);
+     }
+
+     const dataReCal = {
+       customerId: stepperOneData?.customerId,
+       userId: stepperOneData?.customerId,
+       transactionType: 1,
+       calendarTypeId: 0,
+       countryId: stepperOneData?.countryId,
+       month: stepperOneData?.monthId,
+       year: stepperOneData?.yearId,
+       employeeDetail: {
+         employees: payLoadDataReCal,
+       },
+     };
+     axios({
+       method: "POST",
+       url: calculateInvoiceUrl(CreateManualPayrollRes?.invoiceId),
+       headers: getHeaders(accessToken, stepperOneData?.customerId, "false"),
+       data: dataReCal,
+     })
+       .then((res: any) => {
+         if (res.data) {
+           setStepsCount(stepsCount + 1);
+           setLoading(false);
+         }
+       })
+       .catch((e: any) => {
+         console.log(e);
+       });
+
+      } else{
+       setStepsCount(stepsCount + 1);
+       setLoading(false);
+     }
+     }
     }
     if (stepsCount == 3 && stepperOneData.type == "Payroll") {
       setLoading(true);

@@ -26,6 +26,7 @@ import {
   CountryApi,
   getRelatedInvoiceUrl,
   getHeaders,
+  calculateInvoiceUrl,
   getVatValue,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
@@ -234,6 +235,7 @@ describe("Stepper 2", () => {
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
 
+
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
     mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
@@ -405,7 +407,124 @@ describe("Stepper 2", () => {
     expect(Go_Invoice).toBeInTheDocument();
     fireEvent.click(Go_Invoice);
   });
+
+
+  test("dropDown Value change stepper 1 then stepper 2 complete and next button previous recalculate part", async () => {
+    const { container } = render(
+      <HashRouter>
+        <NewInvoice />
+      </HashRouter>
+    );
+
+    const payrollTab = await screen.findAllByText(/New Invoice/);
+
+    expect(payrollTab[0]).toBeInTheDocument();
+    const pleaseSelectDropDown = await screen.findAllByText(/Please Select/);
+    fireEvent.click(pleaseSelectDropDown[0]);
+
+    const typeDropDownValue = await screen.findByText(/Payroll/);
+    expect(typeDropDownValue).toBeInTheDocument();
+    fireEvent.click(typeDropDownValue);
+
+    fireEvent.click(pleaseSelectDropDown[1]);
+
+    const customerDropValue = await screen.findByText(
+      /DSM Nutritional Products AG/
+    );
+    expect(customerDropValue).toBeInTheDocument();
+    fireEvent.click(customerDropValue);
+
+    const countryDropDown = await screen.findByText("Countries");
+    fireEvent.click(countryDropDown);
+
+    const countryDropValue = await screen.findByText(/Kenya/);
+    expect(countryDropValue).toBeInTheDocument();
+    fireEvent.click(countryDropValue);
+
+    // fireEvent.click(pleaseSelectDropDown[2]);
+    const monthDropValue = await screen.findByText(/January/);
+    expect(monthDropValue).toBeInTheDocument();
+    fireEvent.click(monthDropValue);
+
+    // fireEvent.click(pleaseSelectDropDown[3]);
+    const YearDropValue = await screen.findByText(/2022/);
+    expect(YearDropValue).toBeInTheDocument();
+    fireEvent.click(YearDropValue);
+
+    const nextButton = await screen.findByTestId("next-button");
+    expect(nextButton).toBeInTheDocument();
+    fireEvent.click(nextButton);
+
+    const SelectEmployeeText = await screen.findAllByText(/Select Employees/);
+    expect(SelectEmployeeText[0]).toBeInTheDocument();
+
+    const billedPayrollItem = await screen.findAllByText(
+      /Show Billed Payroll Items/
+    );
+    fireEvent.click(billedPayrollItem[0]);
+
+    //again click for false the checkbox
+    fireEvent.click(billedPayrollItem[0]);
+
+    const SelectEmployeeName = await screen.findAllByText(/Thomas George/);
+    expect(SelectEmployeeName[0]).toBeInTheDocument();
+
+    //again click for true the checkbox
+    fireEvent.click(billedPayrollItem[0]);
+
+    const showHideButton = await screen.findByTestId("showHide-button");
+    expect(showHideButton).toBeInTheDocument();
+    fireEvent.click(showHideButton);
+
+    const amount = await screen.findAllByText(/71000/);
+    expect(amount[0]).toBeInTheDocument();
+
+    const labelText = await screen.findAllByLabelText("");
+    fireEvent.click(labelText[1]);
+
+    const stepTwoNextButton = await screen.findByTestId("next-button");
+    expect(stepTwoNextButton).toBeInTheDocument();
+    fireEvent.click(stepTwoNextButton);
+
+    const previewText = await screen.findAllByText(
+      /Please preview the new payroll invoice has been created./
+    );
+    expect(previewText[0]).toBeInTheDocument();
+
+    //Previous button for recal
+    const stepTwoBackButton = await screen.findByTestId("back-button");
+    expect(stepTwoBackButton).toBeInTheDocument();
+    fireEvent.click(stepTwoBackButton);
+
+    //again click for true the checkbox
+    //fireEvent.click(billedPayrollItem[0]);
+
+    const SelectEmployeeName1 = await screen.findAllByText(/Thomas George/);
+    expect(SelectEmployeeName1[0]).toBeInTheDocument();
+
+    const showHideButton1 = await screen.findByTestId("showHide-button");
+    expect(showHideButton1).toBeInTheDocument();
+    fireEvent.click(showHideButton1);
+
+    const amount1 = await screen.findAllByText(/75000/);
+    expect(amount1[0]).toBeInTheDocument();
+
+    const labelText1 = await screen.findAllByLabelText("");
+    fireEvent.click(labelText1[1]);
+
+    const stepTwoNextButton1 = await screen.findByTestId("next-button");
+    expect(stepTwoNextButton1).toBeInTheDocument();
+    fireEvent.click(stepTwoNextButton1);
+
+  });
+
+
+
 });
+
+
+
+
 
 describe("Stepper 2 show table click", () => {
   beforeAll(() => {
@@ -496,6 +615,8 @@ describe("Stepper 2 api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(500, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(500,mockapidata.resForRecalInvoice);
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 1", async () => {
@@ -731,6 +852,8 @@ describe("Stepper 3", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -960,6 +1083,8 @@ describe("Stepper 3 invoice detail api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -1180,6 +1305,8 @@ describe("Stepper 3 fee api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(500, mockapidata.resFeeData);
 
@@ -1343,6 +1470,8 @@ describe("Stepper 3 address api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -1560,6 +1689,8 @@ describe("Stepper 3 country api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+        .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
