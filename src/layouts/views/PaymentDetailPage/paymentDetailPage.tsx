@@ -88,8 +88,8 @@ const PaymentDetailPage = () => {
   useEffect(() => {
     if (multiPaymentBlocks.length > 1) {
       setIsFullAmount(false);
-    } 
-    else if (state?.state?.inveoicesData?.[0].transactionTypeLabel !== "Credit Memo" && multiPaymentBlocks.length == 1){
+    }
+    else if (state?.state?.inveoicesData?.[0].transactionTypeLabel !== "Credit Memo" && multiPaymentBlocks.length == 1) {
       setIsFullAmount(true);
     }
 
@@ -349,7 +349,7 @@ const PaymentDetailPage = () => {
 
   const isSaveDisable = () => {
 
-    if(isSaveBtnDisable){
+    if (isSaveBtnDisable) {
       return true
     }
 
@@ -382,11 +382,6 @@ const PaymentDetailPage = () => {
           isDisable = true;
         }
       });
-      referenceNo.forEach((item: any) => {
-        if (!item.text) {
-          isDisable = true;
-        }
-      });
       bankToDepositOptions.forEach((items: any) => {
         if (items.options.findIndex((obj: any) => obj.isSelected) == -1) {
           isDisable = true;
@@ -411,7 +406,7 @@ const PaymentDetailPage = () => {
 
       //checking total amount is greater open amount
       const totalAmount = totals.reduce(
-        (a: any, b: any) => a + parseFloat(state?.state?.inveoicesData?.[0].transactionTypeLabel === "Credit Memo" ? b.text.substring(1):b.text ),
+        (a: any, b: any) => a + parseFloat(state?.state?.inveoicesData?.[0].transactionTypeLabel === "Credit Memo" ? b.text.substring(1) : b.text),
         0
       );
       const openAmount = state?.state?.inveoicesData?.reduce(
@@ -419,7 +414,7 @@ const PaymentDetailPage = () => {
           a + parseFloat(b?.invoiceBalance?.split(" ")[1].replace(",", "")),
         0
       );
-      
+
       if (totalAmount > openAmount) {
         if (!isToaster) setIsToaster(true);
         isDisable = true;
@@ -436,14 +431,14 @@ const PaymentDetailPage = () => {
     let tempRefNo: any = [];
     let tempPaymentDate: any = [];
     let tempTotals: any = [];
-    let check  =true; 
+    let check = true;
     state?.state?.inveoicesData?.forEach(
       (invoiceItem: any, _invoicesIndex: number) => {
-        check =   invoiceItem?.transactionTypeLabel === "Credit Memo"
-            ? false
-            : true;
+        check = invoiceItem?.transactionTypeLabel === "Credit Memo"
+          ? false
+          : true;
 
-           
+
         if (state?.state?.inveoicesData?.length > 1) {
           const total = state?.state?.inveoicesData?.reduce(
             (a: any, b: any) => {
@@ -825,7 +820,7 @@ const PaymentDetailPage = () => {
                     </div>
                   </div>
                   {invoiceItem != null &&
-                    invoiceItem?.qbInvoiceNo != undefined && invoiceItem?.qbInvoiceNo > 0 &&  (
+                    invoiceItem?.qbInvoiceNo != undefined && invoiceItem?.qbInvoiceNo > 0 && (
                       <p>QBO No. {invoiceItem.qbInvoiceNo}</p>
                     )}
                 </div>
@@ -837,7 +832,7 @@ const PaymentDetailPage = () => {
                     let creditMemoBalance = invoiceItem.invoiceBalance.split(" ");
                     let creditMemoCurrency = creditMemoBalance[0]
                     let creditMemoAmount = - creditMemoBalance[1]
-                    let newCreditMemoBalance = creditMemoCurrency.concat(" ",creditMemoAmount);
+                    let newCreditMemoBalance = creditMemoCurrency.concat(" ", creditMemoAmount);
                     if (item.parentId === invoiceItem.id)
                       return (
                         <div
@@ -856,7 +851,7 @@ const PaymentDetailPage = () => {
                           >
                             {
                               i == 0 &&
-                            paymentHeader
+                              paymentHeader
                             }
 
                             {i != 0 && (
@@ -966,7 +961,7 @@ const PaymentDetailPage = () => {
 
                             <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <div className="referenceNoInput">
-                                <span>Reference No</span>
+                                <span className="Reference">Reference No</span>
                                 <input
                                   value={
                                     referenceNo.find(
@@ -1121,48 +1116,48 @@ const PaymentDetailPage = () => {
                                 <p>Amount</p>
                               )}
 
-                              { isFullAmount  &&
+                              {isFullAmount &&
                                 multiPaymentBlocks?.length === 1 ? (
-                                  <div className="amountPaymentPage">
-                                    {invoiceItem.transactionTypeLabel ===
-                                      "Credit Memo" ? 
-                                      newCreditMemoBalance 
-                                       : 
-                                       invoiceItem.invoiceBalance
-                                    }
-                                  </div>
-                                ) : <></>}
-                              { isFullAmount == false && 
+                                <div className="amountPaymentPage">
+                                  {invoiceItem.transactionTypeLabel ===
+                                    "Credit Memo" ?
+                                    newCreditMemoBalance
+                                    :
+                                    invoiceItem.invoiceBalance
+                                  }
+                                </div>
+                              ) : <></>}
+                              {isFullAmount == false &&
                                 multiPaymentBlocks.length >= 1 ? (
-                                  <input
-                                    type="text" 
-                                    placeholder="Enter amount"
-                                    value={
-                                      totals.find(
-                                        (e: any) =>
-                                          e.invoiceKey === invoiceItem.id &&
-                                          e.blockKey === item.id
-                                      )?.text ||  ""
+                                <input
+                                  type="text"
+                                  placeholder="Enter amount"
+                                  value={
+                                    totals.find(
+                                      (e: any) =>
+                                        e.invoiceKey === invoiceItem.id &&
+                                        e.blockKey === item.id
+                                    )?.text || ""
+                                  }
+                                  onChange={(e) => {
+                                    let value = '';
+                                    console.log("invoiceItem.transactionTypeLabel", invoiceItem.transactionTypeLabel)
+                                    if (invoiceItem.transactionTypeLabel ===
+                                      "Credit Memo") {
+                                      const m = e.target.value.match(/\d+/g);
+                                      value = m === null ? '-' : `-${m}`;
                                     }
-                                    onChange={(e) => {
-                                      let  value = '';
-                                      console.log("invoiceItem.transactionTypeLabel", invoiceItem.transactionTypeLabel)
-                                      if(invoiceItem.transactionTypeLabel ===
-                                        "Credit Memo") {
-                                          const m = e.target.value.match(/\d+/g);
-                                          value = m === null ? '-' : `-${m}`;
-                                        }
-                                      handleInputText(
-                                        invoiceItem.transactionTypeLabel ===
-                                        "Credit Memo"?  value : e.target.value ,
-                                        totals,
-                                        setTotals,
-                                        invoiceItem.id,
-                                        item.id
-                                      );
-                                    }}
-                                  />
-                                ) : <></>}
+                                    handleInputText(
+                                      invoiceItem.transactionTypeLabel ===
+                                        "Credit Memo" ? value : e.target.value,
+                                      totals,
+                                      setTotals,
+                                      invoiceItem.id,
+                                      item.id
+                                    );
+                                  }}
+                                />
+                              ) : <></>}
                               {i == 0 && multiPaymentBlocks.length == 1 ? (
                                 <div className="fullAmountPaymentCheckbox">
                                   <Checkbox
