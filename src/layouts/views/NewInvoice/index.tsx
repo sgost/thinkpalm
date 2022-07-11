@@ -575,7 +575,7 @@ const NewInvoice = () => {
      })
        .then((res: any) => {
          if (res.data) {
-           setCreateManualPayrollRes(res.data);
+          // setCreateManualPayrollRes(res.data);
            setStepsCount(stepsCount + 1);
            setLoading(false);
          }
