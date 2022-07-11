@@ -26,6 +26,7 @@ import {
   CountryApi,
   getRelatedInvoiceUrl,
   getHeaders,
+  calculateInvoiceUrl,
   getVatValue,
 } from "../../../../urls/urls";
 import FinishCreditMemo from "../FinishCreditMemo";
@@ -233,6 +234,7 @@ describe("Stepper 2", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -496,6 +498,8 @@ describe("Stepper 2 api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(500, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(500,mockapidata.resForRecalInvoice);
   });
 
   test("dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 1", async () => {
@@ -731,6 +735,8 @@ describe("Stepper 3", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -960,6 +966,8 @@ describe("Stepper 3 invoice detail api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -1180,6 +1188,8 @@ describe("Stepper 3 fee api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(500, mockapidata.resFeeData);
 
@@ -1343,6 +1353,8 @@ describe("Stepper 3 address api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+      .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 
@@ -1560,6 +1572,8 @@ describe("Stepper 3 country api fail", () => {
     mock
       .onPost(createManualInvoice())
       .reply(200, mockapidata.resForCreateManualInvoice);
+      mock.onPost(calculateInvoiceUrl())
+        .reply(200,mockapidata.resForRecalInvoice);
 
     mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
 

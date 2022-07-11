@@ -352,6 +352,10 @@ export const mockapidata = {
     invoiceId: "e9a959b9-a1a2-486e-938c-de1b8bac4b03",
     invoiceNo: "1100110",
   },
+  resForRecalInvoice: {
+    invoiceId: "e9a959b9-a1a2-486e-938c-de1b8bac4b03",
+    invoiceNo: "1100110",
+  },
   resFeeData: [
     {
       name: "HRIS Platform",
