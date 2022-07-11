@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, DatePicker, Dropdown, Icon, ToastNotification } from "atlasuikit";
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Icon,
+  ToastNotification,
+} from "atlasuikit";
 import { getDecodedToken } from "../../../components/getDecodedToken";
 import axios from "axios";
 import moment from "moment";
@@ -11,9 +17,9 @@ import {
   urls,
 } from "../../../urls/urls";
 import { statusValues } from "./statusValues";
-import { Loader } from "../../../components/Comman/Utils/utils";
 
-const PaymentDetailContainer = ({
+/* istanbul ignore next */
+const RefundDetailContainer = ({
   cid,
   lookupData,
   paymentDetailData,
@@ -25,87 +31,91 @@ const PaymentDetailContainer = ({
   setStatus,
   currentStatusValue,
   setCurrentStatusValue,
-  loading,
-  setLoading,
-  toCurrencyFormat
+  toCurrencyFormat,
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
 
-  const [currencyEditOpen, setCurrencyEditOpen] = useState();
-  const [locationEditOpen, setLocationEditOpen] = useState();
-  const [depositBankEditOpen, setDepositBankEditOpen] = useState();
-  const [paymentMethodEditOpen, setPaymentMethodEditOpen] = useState();
-  const [currencyOpen, setCurrencyOpen] = useState(false);
-  const [locationOpen, setLocationOpen] = useState(false);
+  const [refundCurrencyEditOpen, setRefundCurrencyEditOpen] = useState();
+  const [refundLocationEditOpen, setRefundLocationEditOpen] = useState();
+  const [refundDepositBankEditOpen, setRefundDepositBankEditOpen] = useState();
+  const [refundPaymentMethodEditOpen, setPaymentMethodEditOpen] = useState();
+  const [refundCurrencyOpen, setRefundCurrencyOpen] = useState(false);
+  const [refundLocationOpen, setRefundLocationOpen] = useState(false);
   const [referenceNo, setReferenceNo] = useState<any>();
-  const [addAmount, setAddAmount] = useState<any>();
-  const [depositBankOpen, setDepositBankOpen] = useState(false);
-  const [paymentMethodOpen, setPaymentMethodOpen] = useState(false);
-  const [editChecked, setEditChecked] = useState<any>();
-  const [newCurrency, setNewCurrency] = useState<any>();
-  const [newLocation, setNewLocation] = useState<any>();
-  const [newDepositBank, setNewDepositBank] = useState<any>();
-  const [newPaymentMethod, setNewPaymentMethod] = useState<any>();
-  const [newReferenceNo, setNewReferenceNo] = useState<any>();
+  const [refundAddAmount, setRefundAddAmount] = useState<any>(0.0);
+  const [refundDepositBankOpen, setRefundDepositBankOpen] = useState(false);
+  const [refundPaymentMethodOpen, setRefundPaymentMethodOpen] = useState(false);
+  const [refundEditChecked, setRefundEditChecked] = useState<any>();
+  const [refundNewCurrency, setRefundNewCurrency] = useState<any>();
+  const [refundNewLocation, setRefundNewLocation] = useState<any>();
+  const [refundNewDepositBank, setRefundNewDepositBank] = useState<any>();
+  const [refundNewPaymentMethod, setRefundNewPaymentMethod] = useState<any>();
+  const [refundNewReferenceNo, setRefundNewReferenceNo] = useState<any>();
   const [paymentApiData, setPaymentApiData] = useState<any>(paymentDetailData);
-  const [addPaymentSectionCheck, setAddPaymentSectionCheck] = useState(false);
-  const [newPaymentDate, setNewPaymentDate] = useState<any>();
-  const [allDropdownData] = useState({
+  const [addRefundSectionCheck, setAddRefundSectionCheck] = useState(false);
+  const [refundNewPaymentDate, setRefundNewPaymentDate] = useState<any>();
+  const [allRefundDropdownData] = useState({
     currency: lookupData?.data?.billingCurrencies,
     depositBank: lookupData?.data?.depositToOptions,
     location: lookupData?.data?.locations,
   });
   const [paymentMethodData, setPaymentMethodData] = useState([]);
-  const [paymentDate, setPaymentDate] = useState();
-  const [editAmount, setEditAmount] = useState<any>({});
-  const [editButtonDisable, setEditButtonDisable] = useState(false);
-const [editDisableToggle, setEditDisableToggle] = useState(false)
-  const [currencyDropdownOptions, setCurrencyDropdownOption] = useState<any>(
-    []
-  );
-  const [bankToDepositDropdownOptions, setBankToDepositDropdownOption] =
+  const [refundPaymentDate, setRefundPaymentDate] = useState();
+  const [refundEditAmount, setRefundEditAmount] = useState<any>({});
+  const [refundEditButtonDisable, setRefundEditButtonDisable] = useState(false);
+  const [refundEditDisableToggle, setRefundEditDisableToggle] = useState(false);
+  const [refundCurrencyDropdownOptions, setRefundCurrencyDropdownOption] =
     useState<any>([]);
-  const [locationDropdownOptions, setLocationDropdownOption] = useState<any>(
-    []
-  );
-  const [paymentMethodDropdownOptions, setPaymentMethodDropdownOption] =
+  const [
+    refundBankToDepositDropdownOptions,
+    setRefundBankToDepositDropdownOption,
+  ] = useState<any>([]);
+  const [refundLocationDropdownOptions, setRefundLocationDropdownOption] =
     useState<any>([]);
-  const [addCurrencyDropdownOptions, setAddCurrencyDropdownOption] =
+  const [
+    refundPaymentMethodDropdownOptions,
+    setRefundPaymentMethodDropdownOption,
+  ] = useState<any>([]);
+  const [refundAddCurrencyDropdownOptions, setRefundAddCurrencyDropdownOption] =
     useState<any>([]);
-  const [addBankToDepositDropdownOptions, setAddBankToDepositDropdownOption] =
+  const [
+    refundAddBankToDepositDropdownOptions,
+    setRefundAddBankToDepositDropdownOption,
+  ] = useState<any>([]);
+  const [refundAddLocationDropdownOptions, setRefundAddLocationDropdownOption] =
     useState<any>([]);
-  const [addLocationDropdownOptions, setAddLocationDropdownOption] =
-    useState<any>([]);
-  const [addPaymentMethodDropdownOptions, setAddPaymentMethodDropdownOption] =
-    useState<any>([]);
+  const [
+    refundAddPaymentMethodDropdownOptions,
+    setRefundAddPaymentMethodDropdownOption,
+  ] = useState<any>([]);
   const [isToaster, setIsToaster] = useState(false);
-  const [isSaveDisable, setIsSaveDisable] = useState(false)
+  const [invoiceNumber, setInvoiceNumber] = useState<any>("");
 
   useEffect(() => {
     if (paymentDetailData) {
       setPaymentApiData(paymentDetailData);
-      updateDropdowns(paymentDetailData);
+      updateRefundDropdowns(paymentDetailData);
     }
   }, [paymentDetailData]);
 
-  const getCurrencyAndDepositBankAndLocationDropdownOption = () => {
-    const currencyDataOptions: any = prepareCurrencyDropdownOptionData(
+  const getCurrencyAndDepositBankAndLocationRefundDropdownOption = () => {
+    const currencyDataOptions: any = prepareCurrencyRefundDropdownOptionData(
       lookupData?.data?.billingCurrencies
     );
     const depositToBankDataOptions: any =
-      prepareDepositToBankDropdownOptionData(
+      prepareDepositToBankRefundDropdownOptionData(
         lookupData?.data?.depositToOptions
       );
-    const locationDataOptions: any = preparelocationDropdownOptionData(
+    const locationDataOptions: any = preparelocationRefundDropdownOptionData(
       lookupData?.data?.locations
     );
-    setAddCurrencyDropdownOption(currencyDataOptions);
-    setAddBankToDepositDropdownOption(depositToBankDataOptions);
-    setAddLocationDropdownOption(locationDataOptions);
+    setRefundAddCurrencyDropdownOption(currencyDataOptions);
+    setRefundAddBankToDepositDropdownOption(depositToBankDataOptions);
+    setRefundAddLocationDropdownOption(locationDataOptions);
   };
 
-  const getPaymentMethodDropdownOptionData = () => {
+  const getPaymentMethodRefundDropdownOptionData = () => {
     const getSubscriptionLookup = subscriptionLookup();
     const headers = {
       headers: getHeaders(tempToken, cid, "false"),
@@ -113,10 +123,11 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
     axios
       .get(getSubscriptionLookup, headers)
       .then((res: any) => {
-        const paymentMethodDropdownData: any = preparePaymentMethodDropdownOptionData(
-          res?.data?.paymentMethods
-        );
-        setAddPaymentMethodDropdownOption(paymentMethodDropdownData);
+        const paymentMethodDropdownData: any =
+          preparePaymentMethodRefundDropdownOptionData(
+            res?.data?.paymentMethods
+          );
+        setRefundAddPaymentMethodDropdownOption(paymentMethodDropdownData);
         setPaymentMethodData(paymentMethodDropdownData);
       })
       .catch((e: any) => {
@@ -124,7 +135,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       });
   };
 
-  const prepareCurrencyDropdownOptionData = (data: any) => {
+  const prepareCurrencyRefundDropdownOptionData = (data: any) => {
     return data?.map((item: any) => {
       return {
         ...item,
@@ -135,111 +146,112 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
     });
   };
 
-  const prepareDepositToBankDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const prepareDepositToBankRefundDropdownOptionData = (bankData: any) => {
+    return bankData?.map((bankItem: any) => {
       return {
-        ...item,
+        ...bankItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: bankItem.text,
+        value: bankItem.value,
       };
     });
   };
 
-  const preparelocationDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const preparelocationRefundDropdownOptionData = (locationData: any) => {
+    return locationData?.map((locationItem: any) => {
       return {
-        ...item,
+        ...locationItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: locationItem.text,
+        value: locationItem.value,
       };
     });
   };
 
-  const preparePaymentMethodDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const preparePaymentMethodRefundDropdownOptionData = (paymentMethodData: any) => {
+    return paymentMethodData?.map((paymentMethodItem: any) => {
       return {
-        ...item,
+        ...paymentMethodItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: paymentMethodItem.text,
+        value: paymentMethodItem.value,
       };
     });
   };
 
-  const handlePaymentDropOptionData = (
+  const handleRefundDropOptionData = (
     item: any,
     options: any,
     set: any,
     setIsOpen: any,
     index: number
   ) => {
-    let arr = [...options];
+    let array = [...options];
 
-   arr && arr[index]?.forEach((e: any, i: number) => {
-      if (e.value === item.value) {
-        arr[index][i] = {
-          ...e,
-          label: e.label,
-          value: e.value,
-          isSelected: !e.isSelected,
-        };
-      } else {
-        arr[index][i] = {
-          ...arr[index][i],
-          isSelected: false,
-        };
-      }
-    });
+    array &&
+      array[index]?.forEach((e: any, i: number) => {
+        if (e.value === item.value) {
+          array[index][i] = {
+            ...e,
+            label: e.label,
+            value: e.value,
+            isSelected: !e.isSelected,
+          };
+        } else {
+          array[index][i] = {
+            ...array[index][i],
+            isSelected: false,
+          };
+        }
+      });
     set([]);
     setTimeout(() => {
-      set([...arr]);
+      set([...array]);
     }, 1);
     setIsOpen(paymentApiData.length + 1);
   };
 
-  const currencyDropOptionClick = (option: any) =>
-    handleAddOptionClick({
+  const refundCurrencyDropOptionClick = (option: any) =>
+    handleRefundAddOptionClick({
       option,
-      dropOptions: addCurrencyDropdownOptions,
-      updateIsOpen: setCurrencyOpen,
-      isDropOpen: currencyOpen,
-      updateOptions: setAddCurrencyDropdownOption,
+      dropOptions: refundAddCurrencyDropdownOptions,
+      updateIsOpen: setRefundCurrencyOpen,
+      isDropOpen: refundCurrencyOpen,
+      updateOptions: setRefundAddCurrencyDropdownOption,
       type: "currency",
     });
 
-  const locationDropOptionClick = (option: any) =>
-    handleAddOptionClick({
+  const refundLocationDropOptionClick = (option: any) =>
+    handleRefundAddOptionClick({
       option,
-      dropOptions: addLocationDropdownOptions,
-      updateIsOpen: setLocationOpen,
-      isDropOpen: locationOpen,
-      updateOptions: setAddLocationDropdownOption,
+      dropOptions: refundAddLocationDropdownOptions,
+      updateIsOpen: setRefundLocationOpen,
+      isDropOpen: refundLocationOpen,
+      updateOptions: setRefundAddLocationDropdownOption,
       type: "location",
     });
 
-  const depositBankDropOptionClick = (option: any) =>
-    handleAddOptionClick({
+  const refundDepositBankDropOptionClick = (option: any) =>
+    handleRefundAddOptionClick({
       option,
-      dropOptions: addBankToDepositDropdownOptions,
-      updateIsOpen: setDepositBankOpen,
-      isDropOpen: depositBankOpen,
-      updateOptions: setAddBankToDepositDropdownOption,
+      dropOptions: refundAddBankToDepositDropdownOptions,
+      updateIsOpen: setRefundDepositBankOpen,
+      isDropOpen: refundDepositBankOpen,
+      updateOptions: setRefundAddBankToDepositDropdownOption,
       type: "bankDeposit",
     });
 
-  const paymentMethodDropOptionClick = (option: any) =>
-    handleAddOptionClick({
+  const refundPaymentMethodDropOptionClick = (option: any) =>
+    handleRefundAddOptionClick({
       option,
-      dropOptions: addPaymentMethodDropdownOptions,
-      updateIsOpen: setPaymentMethodOpen,
-      isDropOpen: paymentMethodOpen,
-      updateOptions: setAddPaymentMethodDropdownOption,
+      dropOptions: refundAddPaymentMethodDropdownOptions,
+      updateIsOpen: setRefundPaymentMethodOpen,
+      isDropOpen: refundPaymentMethodOpen,
+      updateOptions: setRefundAddPaymentMethodDropdownOption,
       type: "paymentMethod",
     });
 
-  const handleAddOptionClick = (args: any) => {
+  const handleRefundAddOptionClick = (args: any) => {
     const {
       option,
       dropOptions,
@@ -254,24 +266,24 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       return opt;
     });
     if (type == "currency") {
-      setNewCurrency(option);
+      setRefundNewCurrency(option);
     } else if (type == "location") {
-      setNewLocation(option);
+      setRefundNewLocation(option);
     } else if (type == "bankDeposit") {
-      setNewDepositBank(option);
+      setRefundNewDepositBank(option);
     } else if (type == "paymentMethod") {
-      setNewPaymentMethod(option);
+      setRefundNewPaymentMethod(option);
     }
 
     updateOptions(updatedOptions);
   };
 
-  const updateDropdowns = (paymentDetailDatas: any) => {
-    let billingCurrencyArr: any = [];
+  const updateRefundDropdowns = (paymentDetailDatas: any) => {
+    let billingCurrencyArray: any = [];
 
     if (lookupData?.data?.billingCurrencies) {
       paymentDetailDatas?.forEach((item: any) => {
-        billingCurrencyArr.push(
+        billingCurrencyArray.push(
           lookupData?.data?.billingCurrencies?.map((x: any) => {
             return {
               isSelected: x.value == item.currencyId,
@@ -281,14 +293,14 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
           })
         );
       });
-      setCurrencyDropdownOption(billingCurrencyArr);
+      setRefundCurrencyDropdownOption(billingCurrencyArray);
     }
 
-    let bankToDepositArr: any = [];
+    let bankToDepositArray: any = [];
 
     if (lookupData?.data?.depositToOptions) {
       paymentDetailDatas?.forEach((item: any) => {
-        bankToDepositArr.push(
+        bankToDepositArray.push(
           lookupData?.data?.depositToOptions?.map((x: any) => {
             return {
               isSelected: x.value == item.depositedtoBank,
@@ -298,14 +310,14 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
           })
         );
       });
-      setBankToDepositDropdownOption(bankToDepositArr);
+      setRefundBankToDepositDropdownOption(bankToDepositArray);
     }
 
-    let locationArr: any = [];
+    let locationArray: any = [];
 
     if (lookupData?.data?.locations) {
       paymentDetailDatas?.forEach((item: any) => {
-        locationArr.push(
+        locationArray.push(
           lookupData?.data?.locations?.map((x: any) => {
             return {
               isSelected: x.value == item.location,
@@ -315,15 +327,15 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
           })
         );
       });
-      setLocationDropdownOption(locationArr);
+      setRefundLocationDropdownOption(locationArray);
     }
 
-    const getSubscriptionLookup = subscriptionLookup();
+    const getSubscriptionLookupApi = subscriptionLookup();
     const headers = {
       headers: getHeaders(tempToken, cid, "false"),
     };
     axios
-      .get(getSubscriptionLookup, headers)
+      .get(getSubscriptionLookupApi, headers)
       .then((res: any) => {
         if (res?.data?.paymentMethods) {
           let paymentMethodArr: any = [];
@@ -338,7 +350,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
               })
             );
           });
-          setPaymentMethodDropdownOption(paymentMethodArr);
+          setRefundPaymentMethodDropdownOption(paymentMethodArr);
         }
       })
       .catch((e: any) => {
@@ -346,12 +358,12 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       });
   };
 
-  const cleanNewPaymentObject = () => {
-    setNewPaymentDate("");
-    setNewCurrency(null);
+  const cleanNewRefundObject = () => {
+    setRefundNewPaymentDate("");
+    setRefundNewCurrency(null);
 
-    setAddLocationDropdownOption(
-      allDropdownData?.location?.map((item: any) => {
+    setRefundAddLocationDropdownOption(
+      allRefundDropdownData?.location?.map((item: any) => {
         return {
           isSelected: false,
           label: item.text,
@@ -359,8 +371,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         };
       })
     );
-    setAddCurrencyDropdownOption(
-      allDropdownData?.currency?.map((items: any) => {
+    setRefundAddCurrencyDropdownOption(
+      allRefundDropdownData?.currency?.map((items: any) => {
         return {
           isSelected: false,
           label: items.text,
@@ -368,8 +380,8 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         };
       })
     );
-    setAddBankToDepositDropdownOption(
-      allDropdownData?.depositBank?.map((itemsNew: any) => {
+    setRefundAddBankToDepositDropdownOption(
+      allRefundDropdownData?.depositBank?.map((itemsNew: any) => {
         return {
           isSelected: false,
           label: itemsNew.text,
@@ -377,7 +389,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         };
       })
     );
-    setAddPaymentMethodDropdownOption(
+    setRefundAddPaymentMethodDropdownOption(
       paymentMethodData?.map((x: any) => {
         return {
           isSelected: false,
@@ -386,24 +398,23 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         };
       })
     );
-    setNewLocation(null);
-    setNewDepositBank(null);
-    setNewPaymentMethod(null);
-    setNewReferenceNo("");
-    setAddAmount(null);
+    setRefundNewLocation(null);
+    setRefundNewDepositBank(null);
+    setRefundNewPaymentMethod(null);
+    setRefundNewReferenceNo("");
+    setRefundAddAmount(null);
   };
 
-  const savePaymentDetail = () => {
-    setIsSaveDisable(true)
+  const saveRefundDetail = () => {
     let arr: any = [];
     arr.push({
-      totalAmount: addAmount,
-      paymentDate: newPaymentDate,
-      currencyId: newCurrency?.value,
-      location: newLocation?.value,
-      referenceNo: newReferenceNo,
-      depositedtoBank: newDepositBank.value,
-      paymentMethod: newPaymentMethod?.value,
+      totalAmount: refundAddAmount,
+      paymentDate: refundNewPaymentDate,
+      currencyId: refundNewCurrency?.value,
+      location: refundNewLocation?.value,
+      referenceNo: refundNewReferenceNo,
+      depositedtoBank: refundNewDepositBank.value,
+      paymentMethod: refundNewPaymentMethod?.value,
     });
 
     const data: any = {
@@ -413,8 +424,6 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
       paymentdocuments: [],
       Payments: arr,
     };
-
-    setLoading(true);
 
     axios({
       method: "POST",
@@ -433,68 +442,66 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         axios
           .get(paymentdetailApi, headers)
           .then((response: any) => {
-            setIsSaveDisable(false)
             setPaymentDetailData(response?.data?.payments);
-            setAddPaymentSectionCheck(false);
-            setEditChecked(null);
+            setAddRefundSectionCheck(false);
+            setRefundEditChecked(null);
             setReferenceNo(null);
-            cleanNewPaymentObject();
+            cleanNewRefundObject();
             setTopPanel({
               ...topPanel,
               open: response?.data?.invoice?.invoiceBalance,
             });
-            if(response?.data?.invoice?.invoiceBalance === 0) {
-              setStatus("Paid")
-              setCurrentStatusValue(statusValues.paid)
+            if (response?.data?.invoice?.invoiceBalance === 0) {
+              setStatus("Paid");
+              setCurrentStatusValue(statusValues.paid);
             }
-            setLoading(false);
           })
           .catch((e: any) => {
             console.log("error e", e);
-            setIsSaveDisable(false)
           });
       })
       .catch((err) => {
         console.log(err);
-        setIsSaveDisable(false)
       });
   };
 
-  const editPaymentChanges = (item: any, key: any) => {
-    let arr = [];
+  const editRefundChanges = (item: any, key: any) => {
+    let editRefundArr = [];
 
-    arr.push({
+    editRefundArr.push({
       paymentinvoiceid: item?.paymentInvoiceId,
       totalAmount:
-        editAmount && editAmount[key] ? editAmount[key] : item.totalAmount,
-      paymentDate: paymentDate ? paymentDate : item.paymentDate,
-      currencyId: currencyDropdownOptions[key]?.find((e: any) => e.isSelected)
-        ?.value,
-      location: locationDropdownOptions[key]?.find((e: any) => e.isSelected)
-        ?.value,
-      referenceNo:
-        referenceNo && referenceNo[key] ? referenceNo[key] : item.referenceNo,
-      depositedtoBank: bankToDepositDropdownOptions[key]?.find(
+        refundEditAmount && refundEditAmount[key]
+          ? refundEditAmount[key]
+          : item.totalAmount,
+      paymentDate: refundPaymentDate ? refundPaymentDate : item.paymentDate,
+      currencyId: refundCurrencyDropdownOptions[key]?.find(
         (e: any) => e.isSelected
       )?.value,
-      paymentMethod: paymentMethodDropdownOptions[key]?.find(
+      location: refundLocationDropdownOptions[key]?.find(
+        (e: any) => e.isSelected
+      )?.value,
+      referenceNo:
+        referenceNo && referenceNo[key] ? referenceNo[key] : item.referenceNo,
+      depositedtoBank: refundBankToDepositDropdownOptions[key]?.find(
+        (e: any) => e.isSelected
+      )?.value,
+      paymentMethod: refundPaymentMethodDropdownOptions[key]?.find(
         (e: any) => e.isSelected
       )?.value,
     });
 
-    const payload = {
+    const refundPayload = {
       invoiceids: [id],
       paymentnotes: [],
-      Payments: arr,
+      Payments: editRefundArr,
     };
-
-    setLoading(true);
 
     axios({
       method: "POST",
       url: editPaymentDetailApi(),
       headers: getHeaders(tempToken, cid, "false"),
-      data: payload,
+      data: refundPayload,
     })
       .then(async (res) => {
         if (res.status == 200) {
@@ -502,20 +509,15 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
           let obj = { ...referenceNo };
           obj[key] = res?.data?.payments[key]?.referenceNo;
           setReferenceNo(obj);
-          let objAm = { ...editAmount };
+          let objAm = { ...refundEditAmount };
           objAm[key] = res?.data?.payments[key]?.totalAmount;
-          setEditAmount(objAm);
-          setEditChecked(null);
-          setEditButtonDisable(false);
+          setRefundEditAmount(objAm);
+          setRefundEditChecked(null);
+          setRefundEditButtonDisable(false);
           setTopPanel({
             ...topPanel,
             open: res?.data?.invoice?.invoiceBalance,
           });
-          if(res?.data?.invoice?.invoiceBalance === 0) {
-            setStatus("Paid")
-            setCurrentStatusValue(statusValues.paid)
-          }
-          setLoading(false);
         }
       })
       .catch((err) => {
@@ -526,44 +528,41 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   const AddInstallmentSaveDisable = () => {
     let isDisable = false;
 
-    const totalAmount = addAmount
-    const openAmount = topPanel?.open
+    const totalAmount = refundAddAmount;
+    const openAmount = topPanel?.open;
 
     if (totalAmount > openAmount) {
       if (!isToaster) setIsToaster(true);
       isDisable = true;
-    } 
+    }
     return isDisable;
-  }
+  };
 
-   const EditInstallmentSaveDisable = (key: any) => {
+  const EditInstallmentSaveDisable = (key: any) => {
     let isDisable = false;
 
-    const totalmount = topPanel?.total
-    const editTotalAmount = editAmount
+    const openAmount = topPanel?.open;
+    const editTotalAmount = refundEditAmount;
 
-     if (editDisableToggle && editTotalAmount[key] > totalmount) {
+    if (refundEditDisableToggle && editTotalAmount[key] > openAmount) {
       if (!isToaster) setIsToaster(true);
       isDisable = true;
     }
     return isDisable;
-  }
+  };
 
   useEffect(() => {
-    getCurrencyAndDepositBankAndLocationDropdownOption();
-    getPaymentMethodDropdownOptionData();
+    getCurrencyAndDepositBankAndLocationRefundDropdownOption();
+    getPaymentMethodRefundDropdownOptionData();
   }, []);
 
   const addPaymentInstallmentBlocks = () => {
-    setAddPaymentSectionCheck(true);
+    setAddRefundSectionCheck(true);
   };
 
+  const addPaymentButtonClassName = addRefundSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"
+
   return (
-    <>
-    {
-      loading ? 
-      <Loader />
-      :
     <div className="paymentDisplayContainer">
       {paymentApiData &&
         paymentApiData?.map((item: any, key: any) => {
@@ -576,15 +575,15 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                     : "paymentPageTitleHeaderNoTitle"
                 }
               >
-                {key == 0 ? <p>Payment Details</p> : <></>}
+                {key == 0 ? <p>Refund Details</p> : <></>}
                 <div className="topButtonActions">
                   {permission?.InvoiceDetails.includes("Edit") &&
-                    editChecked != key && currentStatusValue === statusValues.partiallyPaid && (
+                    refundEditChecked != key &&
+                    currentStatusValue === statusValues.paid && (
                       <div className="paymentDetailEdit">
                         <Button
-                          disabled={editButtonDisable}
+                          disabled={refundEditButtonDisable}
                           className="primary-blue medium"
-                          data-testid="payment-edit-button"
                           icon={{
                             color: "#fff",
                             icon: "edit",
@@ -592,14 +591,14 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                           }}
                           label="Edit"
                           handleOnClick={() => {
-                            setEditButtonDisable(true);
-                            setEditChecked(key);
+                            setRefundEditButtonDisable(true);
+                            setRefundEditChecked(key);
                           }}
                         />
                       </div>
                     )}
 
-                  {editChecked == key && (
+                  {refundEditChecked == key && (
                     <div className="paymentPageCancelSave">
                       <div className="paymentDetailCancel">
                         <Button
@@ -616,16 +615,16 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                               .get(paymentdetailApi, headers)
                               .then((res: any) => {
                                 setPaymentDetailData(res?.data?.payments);
-                                setAddPaymentSectionCheck(false);
-                                setEditChecked(null);
+                                setAddRefundSectionCheck(false);
+                                setRefundEditChecked(null);
                                 let obj = { ...referenceNo };
                                 obj[key] = res.data?.payments[key].referenceNo;
                                 setReferenceNo(obj);
-                                let objAm = { ...editAmount };
+                                let objAm = { ...refundEditAmount };
                                 objAm[key] =
                                   res.data?.payments[key].totalAmount;
-                                setEditAmount(objAm);
-                                setEditButtonDisable(false);
+                                setRefundEditAmount(objAm);
+                                setRefundEditButtonDisable(false);
                                 setTopPanel({
                                   ...topPanel,
                                   open: res?.data?.invoice?.invoiceBalance,
@@ -640,12 +639,11 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
 
                       <div className="paymentDetailSave">
                         <Button
-                        disabled={
-                          EditInstallmentSaveDisable(key)}
+                          disabled={EditInstallmentSaveDisable(key)}
                           className="primary-blue medium"
                           label="Save Changes"
                           handleOnClick={() => {
-                            editPaymentChanges(item, key);
+                            editRefundChanges(item, key);
                           }}
                         />
                       </div>
@@ -659,10 +657,10 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                   <DatePicker
                     label="Payment Date"
                     value={moment(item.paymentDate).format("DD MMM YYYY")}
-                    disabled={editChecked != key}
+                    disabled={refundEditChecked != key}
                     required
                     handleDateChange={(date: any) => {
-                      setPaymentDate(date);
+                      setRefundPaymentDate(date);
                       paymentApiData[key].paymentDate = date;
                       setPaymentApiData([...paymentApiData]);
                     }}
@@ -673,21 +671,21 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                   <Dropdown
                     handleDropdownClick={(b: boolean) => {
                       b
-                        ? setCurrencyEditOpen(key)
-                        : setCurrencyEditOpen(paymentApiData.length + 1);
+                        ? setRefundCurrencyEditOpen(key)
+                        : setRefundCurrencyEditOpen(paymentApiData.length + 1);
                     }}
                     handleDropOptionClick={(data: any) => {
-                      handlePaymentDropOptionData(
+                      handleRefundDropOptionData(
                         data,
-                        currencyDropdownOptions,
-                        setCurrencyDropdownOption,
-                        setCurrencyEditOpen,
+                        refundCurrencyDropdownOptions,
+                        setRefundCurrencyDropdownOption,
+                        setRefundCurrencyEditOpen,
                         key
                       );
                     }}
-                    options={currencyDropdownOptions[key] || []}
-                    isOpen={currencyEditOpen == key}
-                    isDisabled={editChecked != key}
+                    options={refundCurrencyDropdownOptions[key] || []}
+                    isOpen={refundCurrencyEditOpen == key}
+                    isDisabled={refundEditChecked != key}
                     title="Currency"
                   />
                 </div>
@@ -696,34 +694,40 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                   <Dropdown
                     handleDropdownClick={(b: boolean) => {
                       b
-                        ? setLocationEditOpen(key)
-                        : setLocationEditOpen(paymentApiData.length + 1);
+                        ? setRefundLocationEditOpen(key)
+                        : setRefundLocationEditOpen(paymentApiData.length + 1);
                     }}
                     handleDropOptionClick={(data: any) => {
-                      handlePaymentDropOptionData(
+                      handleRefundDropOptionData(
                         data,
-                        locationDropdownOptions,
-                        setLocationDropdownOption,
-                        setLocationEditOpen,
+                        refundLocationDropdownOptions,
+                        setRefundLocationDropdownOption,
+                        setRefundLocationEditOpen,
                         key
                       );
                     }}
-                    options={locationDropdownOptions[key] || []}
-                    isOpen={locationEditOpen == key}
-                    isDisabled={editChecked != key}
+                    options={refundLocationDropdownOptions[key] || []}
+                    isOpen={refundLocationEditOpen == key}
+                    isDisabled={refundEditChecked != key}
                     title="Location"
                   />
                 </div>
 
                 <div className="paymentInstallmentContainerDropdowns">
                   <div className="referenceNoInput">
-                    <span className={editChecked != key ? "disable-label" : ""}>
+                    <span
+                      className={
+                        refundEditChecked != key ? "disable-label" : ""
+                      }
+                    >
                       Reference No
                     </span>
                     <input
                       data-testid={item.referenceNo}
                       key={item.referenceNo}
-                      className={editChecked != key ? "disable-input" : ""}
+                      className={
+                        refundEditChecked != key ? "disable-input" : ""
+                      }
                       value={referenceNo && referenceNo[key]}
                       defaultValue={item.referenceNo}
                       name="Reference No"
@@ -735,7 +739,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                         ["e", "E", "+", "-", "."].includes(e.key) &&
                           e.preventDefault();
                       }}
-                      disabled={editChecked != key}
+                      disabled={refundEditChecked != key}
                       onChange={(e) => {
                         let obj = { ...referenceNo };
                         obj[key] = e.target.value;
@@ -753,22 +757,24 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                       testId="deposite-bank"
                       handleDropdownClick={(b: boolean) => {
                         b
-                          ? setDepositBankEditOpen(key)
-                          : setDepositBankEditOpen(paymentApiData.length + 1);
+                          ? setRefundDepositBankEditOpen(key)
+                          : setRefundDepositBankEditOpen(
+                              paymentApiData.length + 1
+                            );
                       }}
                       handleDropOptionClick={(data: any) => {
-                        handlePaymentDropOptionData(
+                        handleRefundDropOptionData(
                           data,
-                          bankToDepositDropdownOptions,
-                          setBankToDepositDropdownOption,
-                          setDepositBankEditOpen,
+                          refundBankToDepositDropdownOptions,
+                          setRefundBankToDepositDropdownOption,
+                          setRefundDepositBankEditOpen,
                           key
                         );
                       }}
-                      options={bankToDepositDropdownOptions[key] || []}
-                      isOpen={depositBankEditOpen == key}
-                      isDisabled={editChecked != key}
-                      title="Deposited to bank"
+                      options={refundBankToDepositDropdownOptions[key] || []}
+                      isOpen={refundDepositBankEditOpen == key}
+                      isDisabled={refundEditChecked != key}
+                      title="Credited from bank"
                     />
                   </div>
 
@@ -780,83 +786,117 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                           : setPaymentMethodEditOpen(paymentApiData.length + 1);
                       }}
                       handleDropOptionClick={(data: any) => {
-                        handlePaymentDropOptionData(
+                        handleRefundDropOptionData(
                           data,
-                          paymentMethodDropdownOptions,
-                          setPaymentMethodDropdownOption,
+                          refundPaymentMethodDropdownOptions,
+                          setRefundPaymentMethodDropdownOption,
                           setPaymentMethodEditOpen,
                           key
                         );
                       }}
-                      options={paymentMethodDropdownOptions[key] || []}
-                      isOpen={paymentMethodEditOpen == key}
-                      isDisabled={editChecked != key}
+                      options={refundPaymentMethodDropdownOptions[key] || []}
+                      isOpen={refundPaymentMethodEditOpen == key}
+                      isDisabled={refundEditChecked != key}
                       title="Payment Method"
                     />
                   </div>
 
+                  <div className="paymentInstallmentContainerDropdowns">
+                    <div className="invoiceNumber">
+                      <span
+                        className={
+                          refundEditChecked != key ? "disable-label" : ""
+                        }
+                      >
+                        Invoice Number
+                      </span>
+                      <input
+                        data-testid={item.invoiceNumber}
+                        key={item.invoiceNumber}
+                        className={
+                          refundEditChecked != key ? "disable-input" : ""
+                        }
+                        value={invoiceNumber && invoiceNumber[key]}
+                        name="Reference No"
+                        type="number"
+                        placeholder="Enter Invoice Number"
+                        defaultValue={item.invoiceNumber}
+                        min="0"
+                        disabled={refundEditChecked != key}
+                        pattern="[+-]?\d+(?:[.,]\d+)?"
+                        onKeyDown={(e) => {
+                          ["e", "E", "+", "-", "."].includes(e.key) &&
+                            e.preventDefault();
+                        }}
+                        onChange={(e) => {
+                          let obj = { ...invoiceNumber };
+                          obj[key] = e.target.value;
+                          setInvoiceNumber(obj);
+                        }}
+                      />
+                    </div>
+                  </div>
+
                   <div className="PaymentPageTotalAmountInput">
                     <div className="amountPaymentPageInput">
-                      <span>Amount</span>
-                      <input
-                        data-testid={item.totalAmount}
-                        key={item.totalAmount}
-                        defaultValue={item.totalAmount}
-                        value={editAmount && editAmount[key]}
-                        type="number"
+                      <span
                         className={
-                          editChecked != key ? "disable-input-color" : ""
+                          refundEditChecked != key ? "disable-label" : ""
                         }
-                        placeholder="Please enter"
+                      >
+                        Amount
+                      </span>
+                      <input
+                        data-testid="addAmount"
+                        value={refundEditAmount}
+                        className={
+                          refundEditChecked != key ? "disable-input" : ""
+                        }
+                        type="number"
+                        placeholder="0"
+                        onChange={(e) => {
+                          setRefundEditAmount(parseFloat(e.target.value));
+                        }}
                         min="0"
                         pattern="[+-]?\d+(?:[.,]\d+)?"
-                        disabled={editChecked != key}
                         onKeyDown={(e) => {
                           ["e", "E", "+", "-"].includes(e.key) &&
                             e.preventDefault();
                         }}
-                        onChange={(e) => {
-                          const obj: any = { ...editAmount };
-                          obj[key] = parseFloat(e.target.value);
-                          setEditAmount(obj);
-                          setEditDisableToggle(true)
-                        }}
                       />
-                    </div>
-                    <div className="fullAmountPaymentNoInput">
-                      Payment #765248
                     </div>
                   </div>
                 </div>
+              </div>
 
+              <div className="paymentLowerAmountBlock">
                 <div className="PaymentPageTotalAmount">
-                  <p>Amount</p>
+                  <p>Refund Amount</p>
                   <div className="amountPaymentPage">
                     {getBillingCurrency()}{" "}
-                    {editAmount[key]
-                      ? toCurrencyFormat(editAmount[key])
+                    {refundEditAmount[key]
+                      ? toCurrencyFormat(refundEditAmount[key])
                       : toCurrencyFormat(item.totalAmount)}
                   </div>
-                  <div className="fullAmountPaymentNo">Payment #765248</div>
                 </div>
               </div>
             </div>
           );
         })}
 
-      {addPaymentSectionCheck && (
+      {addRefundSectionCheck && (
         <div className="paymentInstallmentContainer border-line">
           <div className="paymentPageTitleHeaderNoTitle">
             <div className="topButtonActions">
-              {addPaymentSectionCheck && (
+              {addRefundSectionCheck && (
                 <div className="paymentPageCancelSave">
                   <div className="paymentDetailCancel">
                     <Button
                       className="secondary-btn"
                       label="Cancel"
                       handleOnClick={() => {
-                        setAddPaymentSectionCheck(false);
-                        cleanNewPaymentObject();
+                        setAddRefundSectionCheck(false);
+                        cleanNewRefundObject();
                       }}
                     />
                   </div>
@@ -864,17 +904,15 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                     <Button
                       className="primary-blue medium"
                       label="Save"
-                      handleOnClick={savePaymentDetail}
+                      handleOnClick={saveRefundDetail}
                       disabled={
-                        !newPaymentDate ||
-                        !newCurrency ||
-                        !newLocation ||
-                        !newDepositBank ||
-                        !newPaymentMethod ||
-                        !newReferenceNo ||
-                        !addAmount ||
-                        AddInstallmentSaveDisable() ||
-                        isSaveDisable
+                        !refundNewPaymentDate ||
+                        !refundNewCurrency ||
+                        !refundNewLocation ||
+                        !refundNewDepositBank ||
+                        !refundNewPaymentMethod ||
+                        !refundAddAmount ||
+                        AddInstallmentSaveDisable()
                       }
                     />
                   </div>
@@ -889,7 +927,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                 label="Payment Date"
                 disabled={false}
                 handleDateChange={(date: any) => {
-                  setNewPaymentDate(date);
+                  setRefundNewPaymentDate(date);
                 }}
                 required
               />
@@ -898,10 +936,10 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             <div className="paymentInstallmentContainerDropdowns">
               <Dropdown
                 testId="currencyOpen-id"
-                handleDropdownClick={setCurrencyOpen}
-                handleDropOptionClick={currencyDropOptionClick}
-                options={addCurrencyDropdownOptions || []}
-                isOpen={currencyOpen}
+                handleDropdownClick={setRefundCurrencyOpen}
+                handleDropOptionClick={refundCurrencyDropOptionClick}
+                options={refundAddCurrencyDropdownOptions || []}
+                isOpen={refundCurrencyOpen}
                 isDisabled={false}
                 title="Currency"
               />
@@ -910,10 +948,10 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             <div className="paymentInstallmentContainerDropdowns">
               <Dropdown
                 testId="locationOpen-id"
-                handleDropdownClick={setLocationOpen}
-                handleDropOptionClick={locationDropOptionClick}
-                options={addLocationDropdownOptions || []}
-                isOpen={locationOpen}
+                handleDropdownClick={setRefundLocationOpen}
+                handleDropOptionClick={refundLocationDropOptionClick}
+                options={refundAddLocationDropdownOptions || []}
+                isOpen={refundLocationOpen}
                 isDisabled={false}
                 title="Location"
               />
@@ -923,7 +961,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
               <div className="referenceNoInput">
                 <span>Reference No</span>
                 <input
-                  value={newReferenceNo}
+                  value={refundNewReferenceNo}
                   name="Reference No"
                   type="number"
                   placeholder="Enter reference No"
@@ -934,7 +972,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                       e.preventDefault();
                   }}
                   onChange={(e) => {
-                    setNewReferenceNo(e.target.value);
+                    setRefundNewReferenceNo(e.target.value);
                   }}
                 />
               </div>
@@ -946,25 +984,46 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
               <div className="paymentInstallmentContainerDropdowns">
                 <Dropdown
                   testId="Deposited-id"
-                  handleDropdownClick={setDepositBankOpen}
-                  handleDropOptionClick={depositBankDropOptionClick}
-                  options={addBankToDepositDropdownOptions || []}
-                  isOpen={depositBankOpen}
+                  handleDropdownClick={setRefundDepositBankOpen}
+                  handleDropOptionClick={refundDepositBankDropOptionClick}
+                  options={refundAddBankToDepositDropdownOptions || []}
+                  isOpen={refundDepositBankOpen}
                   isDisabled={false}
-                  title="Deposited to bank"
+                  title="Credited from bank"
                 />
               </div>
 
               <div className="paymentInstallmentContainerDropdowns">
                 <Dropdown
                   testId="payment-id"
-                  handleDropdownClick={setPaymentMethodOpen}
-                  handleDropOptionClick={paymentMethodDropOptionClick}
-                  options={addPaymentMethodDropdownOptions || []}
-                  isOpen={paymentMethodOpen}
+                  handleDropdownClick={setRefundPaymentMethodOpen}
+                  handleDropOptionClick={refundPaymentMethodDropOptionClick}
+                  options={refundAddPaymentMethodDropdownOptions || []}
+                  isOpen={refundPaymentMethodOpen}
                   isDisabled={false}
                   title="Payment Method"
                 />
+              </div>
+
+              <div className="paymentInstallmentContainerDropdowns">
+                <div className="invoiceNumber">
+                  <span>Invoice Number</span>
+                  <input
+                    value={invoiceNumber}
+                    name="Reference No"
+                    type="number"
+                    placeholder="Enter Invoice Number"
+                    min="0"
+                    pattern="[+-]?\d+(?:[.,]\d+)?"
+                    onKeyDown={(e) => {
+                      ["e", "E", "+", "-", "."].includes(e.key) &&
+                        e.preventDefault();
+                    }}
+                    onChange={(e) => {
+                      setInvoiceNumber(e.target.value);
+                    }}
+                  />
+                </div>
               </div>
 
               <div className="PaymentPageTotalAmountInput">
@@ -972,11 +1031,11 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                   <span>Amount</span>
                   <input
                     data-testid="addAmount"
-                    value={addAmount}
+                    value={refundAddAmount}
                     type="number"
                     placeholder="0"
                     onChange={(e) => {
-                      setAddAmount(parseFloat(e.target.value));
+                      setRefundAddAmount(parseFloat(e.target.value));
                     }}
                     min="0"
                     pattern="[+-]?\d+(?:[.,]\d+)?"
@@ -986,31 +1045,31 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                     }}
                   />
                 </div>
-                <div className="fullAmountPaymentNoInput">Payment #765248</div>
               </div>
             </div>
+          </div>
 
+          <div className="paymentLowerAmountBlock">
             <div className="PaymentPageTotalAmount">
-              <p>Amount</p>
+              <p>Refund Amount</p>
               <div className="amountPaymentPage">
                 {getBillingCurrency()}{" "}
-                {addAmount
-                  ? toCurrencyFormat(addAmount)
+                {refundAddAmount
+                  ? toCurrencyFormat(refundAddAmount)
                   : toCurrencyFormat(0.0)}
               </div>
-              <div className="fullAmountPaymentNo">Payment #765248</div>
             </div>
           </div>
         </div>
       )}
 
       {permission?.InvoiceDetails?.includes("Add") &&
-      currentStatusValue === statusValues.partiallyPaid ? (
+      currentStatusValue === statusValues.paid ? (
         <div className="addPaymentInstallmentButton">
           <div
-            className={addPaymentSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"}
+            className={addPaymentButtonClassName}
             onClick={() => addPaymentInstallmentBlocks()}
-            aria-disabled={addPaymentSectionCheck}
+            aria-disabled={addRefundSectionCheck}
             data-testid="add-installment"
           >
             <span>
@@ -1038,9 +1097,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
         />
       )}
     </div>
-    }
-    </>
   );
 };
 
-export default PaymentDetailContainer;
+export default RefundDetailContainer;
