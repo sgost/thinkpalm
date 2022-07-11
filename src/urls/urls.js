@@ -263,12 +263,6 @@ export const createManualInvoice = () => {
   );
 };
 
-export const recalculateManualInvoice = (invoiceid) => {
-  return (
-    baseURL  + atlasIdgService + `/InvoiceData/recalculate/${invoiceid}`
-  );
-};
-
 export const updateInvoiceStatus = (invoiceId) => {
   return baseURL + services.atlasInvoiceService + `/Invoices/${invoiceId}/2`;
 };
