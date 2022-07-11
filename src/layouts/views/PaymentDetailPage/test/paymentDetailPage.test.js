@@ -247,7 +247,7 @@ describe("Payment details page multiple", () => {
     const paymentValue = screen.getByText("ACHCredit");
     fireEvent.click(paymentValue);
 
-    const saveBtn = screen.getByText(/save/i);
+    const saveBtn = screen.getByText("Pay");
     fireEvent.click(saveBtn);
 
     const cancelBtn = screen.getByText(/Cancel/i);
@@ -299,7 +299,7 @@ describe("Payment details page multiple", () => {
     const paymentValue = screen.getByText("ACHCredit");
     fireEvent.click(paymentValue);
 
-    const saveBtn = screen.getByText(/save/i);
+    const saveBtn = screen.getByText("Pay");
     fireEvent.click(saveBtn);
 
     const cancelBtn = screen.getByText(/Cancel/i);
@@ -361,7 +361,7 @@ describe("Payment details page multiple", () => {
   //   // const fullAmountText = await screen.findByText("Full Amount");
   //   // fireEvent.click(fullAmountText);
 
-  //   const saveBtn = await screen.findByText(/save/i);
+  //   const saveBtn = await screen.findByText("Pay");
   //   fireEvent.click(saveBtn);
 
   //   // const addPaymentInstallmentButton = await screen.findByText(
@@ -456,7 +456,7 @@ describe("single payment", () => {
 
     fireEvent.click(customerCheckbox);
 
-    const saveBtn = screen.getByText(/Save/);
+    const saveBtn = screen.getByText("Pay");
     fireEvent.click(saveBtn);
   });
 });
@@ -539,7 +539,7 @@ describe("save api fail", () => {
     const paymentValue = screen.getByText("ACHCredit");
     fireEvent.click(paymentValue);
 
-    const saveBtn = screen.getByText(/Save/);
+    const saveBtn = screen.getByText("Pay");
     fireEvent.click(saveBtn);
   });
 });
@@ -688,7 +688,7 @@ describe("single credit refund", () => {
     // const deleteButton = screen.getByText("Delete Item");
     // fireEvent.click(deleteButton);
 
-    const saveBtn = screen.getByText(/save/i);
+    const saveBtn = screen.getByText("Pay");
     fireEvent.click(saveBtn);
   });
 
@@ -758,7 +758,7 @@ describe("single credit refund", () => {
     // const deleteButton = screen.getByText("Delete Item");
     // fireEvent.click(deleteButton);
 
-    const saveBtn = screen.getByText(/save/i);
+    const saveBtn = screen.getByText("Pay");
     fireEvent.click(saveBtn);
   });
 });
