@@ -2216,9 +2216,9 @@ export default function InvoiceDetails() {
           )}
   
           {/* istanbul ignore next */}
-          {/* {(currentStatusValue === statusValues.paid)  */}
-           {/* && */}
-          { (missTransType === 4 ) 
+          { 
+          // currentStatusValue === statusValues.paid
+           (missTransType === 4 ) 
             ? (
             <div className="paymentCompnent">
               <RefundDetailContainer

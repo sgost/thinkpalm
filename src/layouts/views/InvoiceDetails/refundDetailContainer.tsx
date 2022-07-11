@@ -799,7 +799,7 @@ const RefundDetailContainer = ({
                     />
                   </div>
 
-                  <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
+                  <div className="paymentInstallmentContainerDropdowns">
                     <div className="invoiceNumber">
                       <span
                         className={
@@ -834,8 +834,40 @@ const RefundDetailContainer = ({
                       />
                     </div>
                   </div>
-                </div>
 
+                  <div className="PaymentPageTotalAmountInput">
+                    <div className="amountPaymentPageInput">
+                      <span
+                        className={
+                          refundEditChecked != key ? "disable-label" : ""
+                        }
+                      >
+                        Amount
+                      </span>
+                      <input
+                        data-testid="addAmount"
+                        value={refundEditAmount}
+                        className={
+                          refundEditChecked != key ? "disable-input" : ""
+                        }
+                        type="number"
+                        placeholder="0"
+                        onChange={(e) => {
+                          setRefundEditAmount(parseFloat(e.target.value));
+                        }}
+                        min="0"
+                        pattern="[+-]?\d+(?:[.,]\d+)?"
+                        onKeyDown={(e) => {
+                          ["e", "E", "+", "-"].includes(e.key) &&
+                            e.preventDefault();
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="paymentLowerAmountBlock">
                 <div className="PaymentPageTotalAmount">
                   <p>Refund Amount</p>
                   <div className="amountPaymentPage">
@@ -877,7 +909,6 @@ const RefundDetailContainer = ({
                         !refundNewLocation ||
                         !refundNewDepositBank ||
                         !refundNewPaymentMethod ||
-                        !refundNewReferenceNo ||
                         !refundAddAmount ||
                         AddInstallmentSaveDisable()
                       }
@@ -972,7 +1003,7 @@ const RefundDetailContainer = ({
                 />
               </div>
 
-              <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
+              <div className="paymentInstallmentContainerDropdowns">
                 <div className="invoiceNumber">
                   <span>Invoice Number</span>
                   <input
@@ -992,8 +1023,31 @@ const RefundDetailContainer = ({
                   />
                 </div>
               </div>
-            </div>
 
+              <div className="PaymentPageTotalAmountInput">
+                <div className="amountPaymentPageInput">
+                  <span>Amount</span>
+                  <input
+                    data-testid="addAmount"
+                    value={refundAddAmount}
+                    type="number"
+                    placeholder="0"
+                    onChange={(e) => {
+                      setRefundAddAmount(parseFloat(e.target.value));
+                    }}
+                    min="0"
+                    pattern="[+-]?\d+(?:[.,]\d+)?"
+                    onKeyDown={(e) => {
+                      ["e", "E", "+", "-"].includes(e.key) &&
+                        e.preventDefault();
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="paymentLowerAmountBlock">
             <div className="PaymentPageTotalAmount">
               <p>Refund Amount</p>
               <div className="amountPaymentPage">
