@@ -135,35 +135,35 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
     });
   };
 
-  const prepareDepositToBankDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const prepareDepositToBankDropdownOptionData = (paymentBankData: any) => {
+    return paymentBankData?.map((paymentBankdataItem: any) => {
       return {
-        ...item,
+        ...paymentBankdataItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: paymentBankdataItem.text,
+        value: paymentBankdataItem.value,
       };
     });
   };
 
-  const preparelocationDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const preparelocationDropdownOptionData = (paymentLocationData: any) => {
+    return paymentLocationData?.map((paymentLocationItem: any) => {
       return {
-        ...item,
+        ...paymentLocationItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: paymentLocationItem.text,
+        value: paymentLocationItem.value,
       };
     });
   };
 
-  const preparePaymentMethodDropdownOptionData = (data: any) => {
-    return data?.map((item: any) => {
+  const preparePaymentMethodDropdownOptionData = (paymentNameData: any) => {
+    return paymentNameData?.map((paymentNameItem: any) => {
       return {
-        ...item,
+        ...paymentNameItem,
         isSelected: false,
-        label: item.text,
-        value: item.value,
+        label: paymentNameItem.text,
+        value: paymentNameItem.value,
       };
     });
   };
@@ -559,6 +559,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
   };
 
   const paymentButtonClassName = addPaymentSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"
+  const newAddAmount = addAmount ? toCurrencyFormat(addAmount) : toCurrencyFormat(0.0)
 
   return (
     <>
@@ -996,9 +997,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
               <p>Amount</p>
               <div className="amountPaymentPage">
                 {getBillingCurrency()}{" "}
-                {addAmount
-                  ? toCurrencyFormat(addAmount)
-                  : toCurrencyFormat(0.0)}
+                {newAddAmount}
               </div>
               <div className="fullAmountPaymentNo">Payment #765248</div>
             </div>

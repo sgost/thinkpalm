@@ -305,13 +305,9 @@ export default function InvoiceDetails() {
                         <span
                           style={{ fontWeight: 600 }}
                           onClick={() => {
-                            // (status === "Declined" || status === "AR Review") &&
                             (res.data?.invoice?.status === 2 ||
                               res.data?.invoice?.status === 12) &&
                               handleCompensationModal(item);
-                            // : (
-                            //   <></>
-                            // );
                           }}
                         >
                           {item.employeeId}
@@ -334,13 +330,9 @@ export default function InvoiceDetails() {
                           <span
                             style={{ fontWeight: 600 }}
                             onClick={() => {
-                              // (status === "Declined" || status === "AR Review") &&
                               (res.data?.invoice?.status === 2 ||
                                 res.data?.invoice?.status === 12) &&
                                 handleCompensationModal(item);
-                              // : (
-                              //   <></>
-                              // );
                             }}
                           >
                             {item.firstName + " " + item.lastName}
@@ -1045,11 +1037,11 @@ export default function InvoiceDetails() {
       .get(downloadEmployeeBreakdwonApi, headers)
       .then((res: any) => {
         if (res.status === 200) {
-          let url2 = res.data.url;
-          let a = document.createElement("a");
-          a.href = url2;
-          a.download = `${res.data.name}`;
-          a.click();
+          let url = res.data.url;
+          let b = document.createElement("a");
+          b.href = url;
+          b.download = `${res.data.name}`;
+          b.click();
         }
       })
       .catch((e: any) => {
