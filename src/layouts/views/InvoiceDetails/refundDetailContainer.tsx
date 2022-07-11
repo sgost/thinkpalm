@@ -64,7 +64,7 @@ const RefundDetailContainer = ({
   const [refundPaymentDate, setRefundPaymentDate] = useState();
   const [refundEditAmount, setRefundEditAmount] = useState<any>({});
   const [refundEditButtonDisable, setRefundEditButtonDisable] = useState(false);
-  const [refundEditDisableToggle, setRefundEditDisableToggle] = useState(false);
+  const [refundEditDisableToggle, _setRefundEditDisableToggle] = useState(false);
   const [refundCurrencyDropdownOptions, setRefundCurrencyDropdownOption] =
     useState<any>([]);
   const [
@@ -168,8 +168,8 @@ const RefundDetailContainer = ({
     });
   };
 
-  const preparePaymentMethodRefundDropdownOptionData = (paymentMethodData: any) => {
-    return paymentMethodData?.map((paymentMethodItem: any) => {
+  const preparePaymentMethodRefundDropdownOptionData = (paymentData: any) => {
+    return paymentData?.map((paymentMethodItem: any) => {
       return {
         ...paymentMethodItem,
         isSelected: false,
@@ -1064,7 +1064,7 @@ const RefundDetailContainer = ({
       )}
 
       {permission?.InvoiceDetails?.includes("Add") &&
-      currentStatusValue === statusValues.paid ? (
+      currentStatusValue === statusValues.paid && (
         <div className="addPaymentInstallmentButton">
           <div
             className={addPaymentButtonClassName}
@@ -1085,8 +1085,6 @@ const RefundDetailContainer = ({
             Add payment Installment
           </div>
         </div>
-      ) : (
-        <></>
       )}
 
       {isToaster && (
