@@ -773,7 +773,7 @@ const PaymentDetailPage = () => {
           />
           <Button
             className="primary-blue medium"
-            label="Save"
+            label="Pay"
             handleOnClick={handleSave}
             disabled={isSaveDisable()}
           />
