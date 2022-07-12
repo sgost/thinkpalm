@@ -10,7 +10,8 @@ const InvoicePreviewPop = ({
   stepperOneData,
   todos,
   invoiceId,
-  vatValue,
+  // uncomment this after vat story is received and implemented
+  // vatValue,
 }: any) => {
   const [invoiceData, setInvoiceData] = useState<any>(null);
   const [_countriesData, setCountriesData] = useState<any>(null);
@@ -66,12 +67,14 @@ const InvoicePreviewPop = ({
   const amountPush = todos.map((item: any) =>
     emptyAmount.push(item.quantity * item.amount)
   );
-  const newAmount = emptyAmount.reduce(
-    (partialSum: any, a: any) => partialSum + a,
-    0
-  );
+  //uncomment this after vat story is received and implemented
+  // const newAmount = emptyAmount.reduce(
+  //   (partialSum: any, a: any) => partialSum + a,
+  //   0
+  // );
 
-  const vatAmount = newAmount * (vatValue / 100);
+  // uncomment this after vat story is received and implemented
+  // const vatAmount = newAmount * (vatValue / 100);
 
   return (
     <div id="popover_main">

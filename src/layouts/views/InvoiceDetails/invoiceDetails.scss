@@ -767,7 +767,7 @@
           display: flex;
           justify-content: flex-end;
 
-          .PaymentPageTotalAmount {
+          .refundPageTotalAmount {
             margin-top: -2rem;
             margin-right: 5rem;
 
@@ -784,21 +784,6 @@
               border-radius: 8px;
               font-size: 1.5rem;
               font-weight: 500;
-            }
-
-            .fullAmountPaymentCheckbox {
-              margin-top: 0.7rem;
-              margin-left: 0.5rem;
-
-              .a-checkbox-wrapper input[type="checkbox"] {
-                height: 0.8rem;
-                width: 0.8rem;
-              }
-
-              .a-checkbox-wrapper label {
-                font-weight: 500;
-                top: 0rem;
-              }
             }
           }
         }

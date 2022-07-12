@@ -77,7 +77,7 @@ const PaymentDetailPage = () => {
   const [totals, setTotals] = useState<any>([]);
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
-  const [isSaveBtnDisable, setisSaveBtnDisable] = useState(false)
+  const [isSaveBtnDisable, _setisSaveBtnDisable] = useState(false)
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -617,8 +617,8 @@ const PaymentDetailPage = () => {
                     ?.split(" ")[1]
                     .replace(",", "")
                 )
-                : parseFloat(totals[i].text)
-              : parseFloat(totals[i].text),
+                : parseFloat(totals[i].text.substring(1))
+              : parseFloat(totals[i].text.substring(1)),
           paymentDate: paymentDate[i]?.date,
           currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
             ?.value,

@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    Icon,
     Cards,
     Logs,
 } from "atlasuikit";

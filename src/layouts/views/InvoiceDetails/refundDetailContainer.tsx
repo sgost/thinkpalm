@@ -870,7 +870,7 @@ const RefundDetailContainer = ({
               </div>
 
               <div className="paymentLowerAmountBlock">
-                <div className="PaymentPageTotalAmount">
+                <div className="refundPageTotalAmount">
                   <p>Refund Amount</p>
                   <div className="amountPaymentPage">
                     {getBillingCurrency()}{" "}
@@ -1050,7 +1050,7 @@ const RefundDetailContainer = ({
           </div>
 
           <div className="paymentLowerAmountBlock">
-            <div className="PaymentPageTotalAmount">
+            <div className="refundPageTotalAmount">
               <p>Refund Amount</p>
               <div className="amountPaymentPage">
                 {getBillingCurrency()}{" "}
