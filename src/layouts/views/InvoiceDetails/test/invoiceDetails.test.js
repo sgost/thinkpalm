@@ -2672,7 +2672,243 @@ describe("delete employee on AR Review status", () => {
   });
 });
 
-describe("payment detail on partial paid", () => {
+describe("payment detail on partial paid edit", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        InvoiceId: "1101078",
+        transactionType: 2,
+        rowDetails: {
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "Italy",
+          currencyId: 1,
+          qbInvoiceNo: 0,
+          invoiceNo: "1101078",
+          status: 6,
+          statusLabel: "Partially Paid",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "5 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "15 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "undefined 300.00",
+          invoiceBalance: "undefined 96.00",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: 1,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: null,
+          id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      },
+    }));
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
+      .reply(201);
+
+    mock
+      .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.newGetRelatedData);
+
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+    mock
+      .onGet(
+        urls.invoiceLogs.replace(
+          "{invoice-id}",
+          "0d40412b-f901-4cab-b886-8f30e1bc9a71"
+        )
+      )
+      .reply(200, mockapidata.resInvoiceNotesData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resSuscriptionLookup);
+    mock.onGet(productInvoice()).reply(200, mockapidata.dd);
+
+    mock.onPost(editPaymentDetailApi()).reply(200, mockapidata.resForEditPaymentDetailApi);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+  });
+
+  test("payment edit", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    const paymentText = await screen.findByText(/Payment Details/);
+    expect(paymentText).toBeInTheDocument();
+
+    const textEdit = await screen.findAllByText(/Edit/);
+    expect(textEdit[0]).toBeInTheDocument();
+    fireEvent.click(textEdit[0]);
+
+    const textEditCancel = await screen.findAllByText(/Cancel Edit/);
+    expect(textEditCancel[0]).toBeInTheDocument();
+    fireEvent.click(textEditCancel[0]);
+
+    const textEdit2 = await screen.findAllByText(/Edit/);
+
+    expect(textEdit2[1]).toBeInTheDocument();
+
+    fireEvent.click(textEdit2[1]);
+
+    const textEdiEUR = await screen.findAllByText(/EUR/);
+    expect(textEdiEUR[0]).toBeInTheDocument();
+    fireEvent.click(textEdiEUR[0]);
+
+    const textEdiUSD = await screen.findAllByText(/USD/);
+    expect(textEdiUSD[0]).toBeInTheDocument();
+    fireEvent.click(textEdiUSD[0]);
+
+    const textEditSave = await screen.findAllByText(/Save Changes/);
+    expect(textEditSave[0]).toBeInTheDocument();
+    fireEvent.click(textEditSave[0]);
+
+    const textEdit3 = await screen.findAllByText(/Edit/);
+    expect(textEdit3[2]).toBeInTheDocument();
+    fireEvent.click(textEdit3[2]);
+
+    const textref = await screen.findAllByTestId(/0149/);
+    expect(textref[0]).toBeInTheDocument();
+    fireEvent.change(textref[0], { target: { value: "01499" } });
+
+    const textAm = await screen.findAllByTestId(/111/);
+    expect(textAm[0]).toBeInTheDocument();
+    fireEvent.change(textAm[0], { target: { value: "014" } });
+
+    const textLocation = await screen.findAllByText(
+      /USA -- United States of America/
+    );
+    expect(textLocation[0]).toBeInTheDocument();
+    fireEvent.click(textLocation[0]);
+
+    const textLocation2 = await screen.findAllByText(/GBR -- United Kingdom/);
+    expect(textLocation2[0]).toBeInTheDocument();
+    fireEvent.click(textLocation2[0]);
+
+    const textBank = await screen.findAllByTestId(/deposite-bank/);
+    expect(textBank[2]).toBeInTheDocument();
+
+    const textEditSave2 = await screen.findAllByText(/Save Changes/);
+    expect(textEditSave2[0]).toBeInTheDocument();
+    fireEvent.click(textEditSave2[0]);
+
+    const textAddPaymentInstallment = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment[0]);
+
+    const cancelButton = await screen.findAllByText(/Cancel/);
+    expect(cancelButton[0]).toBeInTheDocument();
+    fireEvent.click(cancelButton[0]);
+
+    const textAddPaymentInstallment2 = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment2[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment2[0]);
+
+    const textBankww = await screen.findAllByTestId(/Deposited-id/);
+    fireEvent.click(textBankww[0]);
+
+    const locationid = await screen.findAllByTestId(/locationOpen-id/);
+    fireEvent.click(locationid[0]);
+
+    const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
+    fireEvent.click(currencyid[0]);
+
+    const paymentid = await screen.findAllByTestId(/payment-id/);
+    fireEvent.click(paymentid[0]);
+
+    const referenceText = await screen.findAllByPlaceholderText(
+      /Enter reference No/
+    );
+    expect(referenceText[32]).toBeInTheDocument();
+    fireEvent.keyDown(referenceText[32]);
+    fireEvent.change(referenceText[32], { target: { value: "000987" } });
+
+    const addAmountText = await screen.findAllByTestId(/addAmount/);
+    expect(addAmountText[0]).toBeInTheDocument();
+    fireEvent.keyDown(addAmountText[0]);
+    fireEvent.change(addAmountText[0], { target: { value: "2" } });
+
+    const addSave2 = await screen.findAllByText(/Save/);
+    expect(addSave2[0]).toBeInTheDocument();
+    fireEvent.click(addSave2[1]);
+
+  });
+});
+
+describe("payment detail on partial paid payment add", () => {
   beforeAll(() => {
     useParams.mockImplementation(() => ({
       id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
@@ -2789,14 +3025,372 @@ describe("payment detail on partial paid", () => {
 
     mock.onPost(urls.savePayments).reply(200, mockapidata.dd);
 
-    mock.onPost(editPaymentDetailApi()).reply(200, mockapidata.resForEditPaymentDetailApi);
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+  });
+
+  test("payment add", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    const paymentText = await screen.findByText(/Payment Details/);
+    expect(paymentText).toBeInTheDocument();
+
+    const textAddPaymentInstallment = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment[0]);
+
+    const textBankww = await screen.findAllByTestId(/Deposited-id/);
+    fireEvent.click(textBankww[0]);
+
+    const locationid = await screen.findAllByTestId(/locationOpen-id/);
+    fireEvent.click(locationid[0]);
+
+    const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
+    fireEvent.click(currencyid[0]);
+
+    const paymentid = await screen.findAllByTestId(/payment-id/);
+    fireEvent.click(paymentid[0]);
+
+    const referenceText = await screen.findAllByPlaceholderText(
+      /Enter reference No/
+    );
+    expect(referenceText[34]).toBeInTheDocument();
+    fireEvent.keyDown(referenceText[34]);
+    fireEvent.change(referenceText[34], { target: { value: "000987098" } });
+
+    const addAmountText = await screen.findAllByTestId(/addAmount/);
+    expect(addAmountText[0]).toBeInTheDocument();
+    fireEvent.keyDown(addAmountText[0]);
+    fireEvent.change(addAmountText[0], { target: { value: "2" } });
+
+    const paymentDate = await screen.findAllByPlaceholderText(
+      /Please Select/
+    );
+    fireEvent.change(paymentDate[34], { target: { value: "22 July 2022" } });
+
+    const addSave2 = await screen.findAllByText(/Save/);
+    fireEvent.click(addSave2[0]);
+
+    const textAddPaymentInstallment2 = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment2[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment2[0]);
+
+    const cancelButton = await screen.findAllByText(/Cancel/);
+    expect(cancelButton[0]).toBeInTheDocument();
+    fireEvent.click(cancelButton[0]);
+
+  });
+});
+
+describe("payment detail on partial paid payment add - save api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        InvoiceId: "1101078",
+        transactionType: 2,
+        rowDetails: {
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "Italy",
+          currencyId: 1,
+          qbInvoiceNo: 0,
+          invoiceNo: "1101078",
+          status: 6,
+          statusLabel: "Partially Paid",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "5 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "15 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "undefined 300.00",
+          invoiceBalance: "undefined 96.00",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: 1,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: null,
+          id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      },
+    }));
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
+      .reply(201);
+
+    mock
+      .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.newGetRelatedData);
+
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(500, mockapidata.resForPaymentDetailApi);
+    mock
+      .onGet(
+        urls.invoiceLogs.replace(
+          "{invoice-id}",
+          "0d40412b-f901-4cab-b886-8f30e1bc9a71"
+        )
+      )
+      .reply(200, mockapidata.resInvoiceNotesData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resSuscriptionLookup);
+    mock.onGet(productInvoice()).reply(200, mockapidata.dd);
+
+    mock.onPost(urls.savePayments).reply(500, mockapidata.dd);
 
     mock
       .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
       .reply(200, mockapidata.resForPaymentDetailApi);
   });
 
-  test("tabs are working", async () => {
+  test("payment add - save api fail", async () => {
+    const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
+
+    render(
+      <HashRouter>
+        <InvoiceDetails />
+      </HashRouter>
+    );
+
+    const paymentText = await screen.findByText(/Payment Details/);
+    expect(paymentText).toBeInTheDocument();
+
+    const textAddPaymentInstallment = await screen.findAllByText(
+      /Add payment Installment/
+    );
+    expect(textAddPaymentInstallment[0]).toBeInTheDocument();
+    fireEvent.click(textAddPaymentInstallment[0]);
+
+    const textBankww = await screen.findAllByTestId(/Deposited-id/);
+    fireEvent.click(textBankww[0]);
+
+    const locationid = await screen.findAllByTestId(/locationOpen-id/);
+    fireEvent.click(locationid[0]);
+
+    const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
+    fireEvent.click(currencyid[0]);
+
+    const paymentid = await screen.findAllByTestId(/payment-id/);
+    fireEvent.click(paymentid[0]);
+
+    const referenceText = await screen.findAllByPlaceholderText(
+      /Enter reference No/
+    );
+    expect(referenceText[34]).toBeInTheDocument();
+    fireEvent.keyDown(referenceText[34]);
+    fireEvent.change(referenceText[34], { target: { value: "000987098" } });
+
+    const addAmountText = await screen.findAllByTestId(/addAmount/);
+    expect(addAmountText[0]).toBeInTheDocument();
+    fireEvent.keyDown(addAmountText[0]);
+    fireEvent.change(addAmountText[0], { target: { value: "2" } });
+
+    const paymentDate = await screen.findAllByPlaceholderText(
+      /Please Select/
+    );
+    fireEvent.change(paymentDate[34], { target: { value: "22 July 2022" } });
+
+    const addSave2 = await screen.findAllByText(/Save/);
+    fireEvent.click(addSave2[0]);
+
+  });
+});
+
+describe("payment detail on partial paid edit api fail", () => {
+  beforeAll(() => {
+    useParams.mockImplementation(() => ({
+      id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+      cid: "E291C9F0-2476-4238-85CB-7AFECDD085E4",
+      isClient: "false",
+    }));
+
+    useLocation.mockImplementation(() => ({
+      state: {
+        InvoiceId: "1101078",
+        transactionType: 2,
+        rowDetails: {
+          customerId: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          customerName: "DSM Nutritional Products AG",
+          customerLocation: "Italy",
+          currencyId: 1,
+          qbInvoiceNo: 0,
+          invoiceNo: "1101078",
+          status: 6,
+          statusLabel: "Partially Paid",
+          transactionType: 2,
+          transactionTypeLabel: "Miscellaneous",
+          createdDate: "5 Jul 2022",
+          paymentDate: null,
+          approvalDate: null,
+          submissionDate: null,
+          dueDate: "15 Jul 2022",
+          exchangeRate: 1,
+          totalAmount: "undefined 300.00",
+          invoiceBalance: "undefined 96.00",
+          invoiceFrom: null,
+          regionItemCode: null,
+          isClientVisible: true,
+          depositTo: null,
+          createdBy: "a9bbee6d-797a-4724-a86a-5b1a2e28763f",
+          modifiedBy: "504bc42f-b5a7-48ca-b5cc-2210d019287a",
+          eorSubscriptionId: null,
+          invoicerId: "1794f943-90b2-4d26-b81c-6e01cfa07e80",
+          bankingDetailId: null,
+          paymentMethod: 1,
+          poNumber: null,
+          ageingNotPaid: null,
+          ageingPaid: null,
+          invoiceDocuments: [],
+          invoiceItems: [],
+          invoiceNotes: [],
+          invoiceRelatedInvoices: [],
+          invoiceRelatedRelatedInvoices: [],
+          payrolls: [],
+          customer: null,
+          currency: null,
+          id: "0d40412b-f901-4cab-b886-8f30e1bc9a71",
+          exportToQB: {
+            value: "Not Exported",
+            color: "#767676",
+          },
+        },
+      },
+    }));
+
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01"));
+
+    const mock = new MockAdapter(axios);
+
+    mockapidata.resData.invoice.status = 6;
+    mock.onGet(urls.invoiceDetails + id).reply(200, mockapidata.resData);
+    mock.onGet(urls.billsPerInvoice + invoiceId).reply(200, BillsByInvoiceId);
+    mock
+      .onGet(getBillingAddressUrl(cid))
+      .reply(200, mockapidata.resAddressData);
+
+    mock.onGet(urls.countries).reply(200, mockapidata.resCountriesData);
+
+    mock.onGet(urls.fee).reply(200, mockapidata.resFeeData);
+
+    mock.onGet(urls.lookup).reply(200, mockapidata.resLookupData);
+
+    mock
+      .onGet(getNotesUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.notes);
+
+    mock
+      .onPut(getApproveUrlNo("0d40412b-f901-4cab-b886-8f30e1bc9a71", 2))
+      .reply(201);
+
+    mock
+      .onPut(getApproveUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(201);
+
+    mock.onPost(urls.saveNote).reply(200, mockapidata.notesPost);
+
+    mock
+      .onGet(getRelatedInvoiceUrl("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.newGetRelatedData);
+
+    mock.onGet(getVatValue(cid)).reply(200, mockapidata.resForVatDetail);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+    mock
+      .onGet(
+        urls.invoiceLogs.replace(
+          "{invoice-id}",
+          "0d40412b-f901-4cab-b886-8f30e1bc9a71"
+        )
+      )
+      .reply(200, mockapidata.resInvoiceNotesData);
+
+    mock
+      .onGet(subscriptionLookup())
+      .reply(200, mockapidata.resSuscriptionLookup);
+    mock.onGet(productInvoice()).reply(200, mockapidata.dd);
+
+    mock.onPost(editPaymentDetailApi()).reply(500, mockapidata.resForEditPaymentDetailApi);
+
+    mock
+      .onGet(getPaymentDetailApi("0d40412b-f901-4cab-b886-8f30e1bc9a71"))
+      .reply(200, mockapidata.resForPaymentDetailApi);
+  });
+
+  test("edit api failed", async () => {
     const file = new File(["hello"], "hello.pdf", { type: "application/pdf" });
 
     render(
@@ -2833,76 +3427,6 @@ describe("payment detail on partial paid", () => {
     const textEditSave = await screen.findAllByText(/Save Changes/);
     expect(textEditSave[0]).toBeInTheDocument();
     fireEvent.click(textEditSave[0]);
-
-    const textEdit3 = await screen.findAllByText(/Edit/);
-    expect(textEdit3[2]).toBeInTheDocument();
-    fireEvent.click(textEdit3[2]);
-
-    const textref = await screen.findAllByTestId(/0149/);
-    expect(textref[0]).toBeInTheDocument();
-    fireEvent.change(textref[0], { target: { value: "01499" } });
-
-    const textAm = await screen.findAllByTestId(/111/);
-    expect(textAm[0]).toBeInTheDocument();
-    fireEvent.change(textAm[0], { target: { value: "014" } });
-
-    const textLocation = await screen.findAllByText(
-      /USA -- United States of America/
-    );
-    expect(textLocation[0]).toBeInTheDocument();
-    fireEvent.click(textLocation[0]);
-
-    const textLocation2 = await screen.findAllByText(/GBR -- United Kingdom/);
-    expect(textLocation2[0]).toBeInTheDocument();
-    fireEvent.click(textLocation2[0]);
-
-    const textBank = await screen.findAllByTestId(/deposite-bank/);
-    expect(textBank[2]).toBeInTheDocument();
-    // fireEvent.click(textBank[2])
-
-    const textEditSave2 = await screen.findAllByText(/Save Changes/);
-    expect(textEditSave2[0]).toBeInTheDocument();
-    fireEvent.click(textEditSave2[0]);
-
-    const textAddPaymentInstallment = await screen.findAllByText(
-      /Add payment Installment/
-    );
-    expect(textAddPaymentInstallment[0]).toBeInTheDocument();
-    fireEvent.click(textAddPaymentInstallment[0]);
-
-    const cancelButton = await screen.findAllByText(/Cancel/);
-    expect(cancelButton[0]).toBeInTheDocument();
-    fireEvent.click(cancelButton[0]);
-
-    const textAddPaymentInstallment2 = await screen.findAllByText(
-      /Add payment Installment/
-    );
-    expect(textAddPaymentInstallment2[0]).toBeInTheDocument();
-    fireEvent.click(textAddPaymentInstallment2[0]);
-
-    const textBankww = await screen.findAllByTestId(/Deposited-id/);
-    fireEvent.click(textBankww[0]);
-
-    const locationid = await screen.findAllByTestId(/locationOpen-id/);
-    fireEvent.click(locationid[0]);
-
-    const currencyid = await screen.findAllByTestId(/currencyOpen-id/);
-    fireEvent.click(currencyid[0]);
-
-    const paymentid = await screen.findAllByTestId(/payment-id/);
-    fireEvent.click(paymentid[0]);
-
-    const referenceText = await screen.findAllByPlaceholderText(
-      /Enter reference No/
-    );
-    expect(referenceText[32]).toBeInTheDocument();
-    fireEvent.keyDown(referenceText[32]);
-    fireEvent.change(referenceText[32], { target: { value: "000987" } });
-
-    const addAmountText = await screen.findAllByTestId(/addAmount/);
-    expect(addAmountText[0]).toBeInTheDocument();
-    fireEvent.keyDown(addAmountText[0]);
-    fireEvent.change(addAmountText[0], { target: { value: "2" } });
 
   });
 });
@@ -3189,3 +3713,4 @@ describe("refund payment button click test cases on Apprroved", () => {
     fireEvent.click(addPaymentButton);
   });
 });
+

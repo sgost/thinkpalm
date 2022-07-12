@@ -811,7 +811,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
                         className={
                           editChecked != key ? "disable-input-color" : ""
                         }
-                        placeholder="Please enter"
+                        placeholder="0"
                         min="0"
                         pattern="[+-]?\d+(?:[.,]\d+)?"
                         disabled={editChecked != key}
