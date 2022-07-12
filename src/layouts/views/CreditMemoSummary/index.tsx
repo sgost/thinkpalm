@@ -56,7 +56,7 @@ export default function CreditMemoSummary(props: any) {
   const [addSectionCheck, setAddSectionCheck] = useState(false);
   const [editCheck, setEditCheck] = useState<any>();
   const [fieldValues, setFieldValues] = useState(creditMemoData.invoiceItems);
-  const [vatAmount, setVatAmount] = useState<any>(0);
+  const [_vatAmount, setVatAmount] = useState<any>(0);
   const [_subTotalAmount, setSubTotalAmount] = useState<any>(
     creditMemoData.totalAmount
   );

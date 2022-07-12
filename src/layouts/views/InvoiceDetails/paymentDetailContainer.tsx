@@ -511,6 +511,7 @@ const [editDisableToggle, setEditDisableToggle] = useState(false)
             ...topPanel,
             open: res?.data?.invoice?.invoiceBalance,
           });
+          setPaymentDetailData(res?.data?.payments);
           if(res?.data?.invoice?.invoiceBalance === 0) {
             setStatus("Paid")
             setCurrentStatusValue(statusValues.paid)
