@@ -17,6 +17,7 @@ import {
   urls,
 } from "../../../urls/urls";
 import { statusValues } from "./statusValues";
+import { Loader } from "../../../components/Comman/Utils/utils";
 
 /* istanbul ignore next */
 const RefundDetailContainer = ({
@@ -30,8 +31,10 @@ const RefundDetailContainer = ({
   setTopPanel,
   setStatus,
   currentStatusValue,
-  setCurrentStatusValue,
+  // setCurrentStatusValue,
   toCurrencyFormat,
+  loading,
+  setLoading
 }: any) => {
   const permission: any = getDecodedToken();
   const tempToken = localStorage.getItem("accessToken");
@@ -64,7 +67,7 @@ const RefundDetailContainer = ({
   const [refundPaymentDate, setRefundPaymentDate] = useState();
   const [refundEditAmount, setRefundEditAmount] = useState<any>({});
   const [refundEditButtonDisable, setRefundEditButtonDisable] = useState(false);
-  const [refundEditDisableToggle, _setRefundEditDisableToggle] = useState(false);
+  const [refundEditDisableToggle, setRefundEditDisableToggle] = useState(false);
   const [refundCurrencyDropdownOptions, setRefundCurrencyDropdownOption] =
     useState<any>([]);
   const [
@@ -425,6 +428,8 @@ const RefundDetailContainer = ({
       Payments: arr,
     };
 
+    setLoading(true);
+
     axios({
       method: "POST",
       url: urls.savePayments,
@@ -452,9 +457,10 @@ const RefundDetailContainer = ({
               open: response?.data?.invoice?.invoiceBalance,
             });
             if (response?.data?.invoice?.invoiceBalance === 0) {
-              setStatus("Paid");
-              setCurrentStatusValue(statusValues.paid);
+              setStatus("Applied");
+              // setCurrentStatusValue(statusValues.paid);
             }
+            setLoading(false);
           })
           .catch((e: any) => {
             console.log("error e", e);
@@ -497,6 +503,8 @@ const RefundDetailContainer = ({
       Payments: editRefundArr,
     };
 
+    setLoading(true);
+
     axios({
       method: "POST",
       url: editPaymentDetailApi(),
@@ -518,6 +526,11 @@ const RefundDetailContainer = ({
             ...topPanel,
             open: res?.data?.invoice?.invoiceBalance,
           });
+          if(res?.data?.invoice?.invoiceBalance === 0) {
+            setStatus("Applied")
+            // setCurrentStatusValue(statusValues.paid)
+          }
+          setLoading(false);
         }
       })
       .catch((err) => {
@@ -541,10 +554,10 @@ const RefundDetailContainer = ({
   const EditInstallmentSaveDisable = (key: any) => {
     let isDisable = false;
 
-    const openAmount = topPanel?.open;
+    const totalmount = topPanel?.total
     const editTotalAmount = refundEditAmount;
 
-    if (refundEditDisableToggle && editTotalAmount[key] > openAmount) {
+    if (refundEditDisableToggle && editTotalAmount[key] > totalmount) {
       if (!isToaster) setIsToaster(true);
       isDisable = true;
     }
@@ -563,6 +576,11 @@ const RefundDetailContainer = ({
   const addPaymentButtonClassName = addRefundSectionCheck ? "addPaymentInstallmentIconDisable" : "addPaymentInstallmentIcon"
 
   return (
+    <>
+    {
+      loading ?
+      <Loader />
+      :
     <div className="paymentDisplayContainer">
       {paymentApiData &&
         paymentApiData?.map((item: any, key: any) => {
@@ -848,14 +866,18 @@ const RefundDetailContainer = ({
                       </span>
                       <input
                         data-testid="addAmount"
-                        value={refundEditAmount}
-                        className={
-                          refundEditChecked != key ? "disable-input" : ""
-                        }
+                        key={item.totalAmount}
+                        defaultValue={item.totalAmount}
+                        value={refundEditAmount && refundEditAmount[key]}
+                        disabled={refundEditChecked != key}
+                        className={refundEditChecked != key ? "disable-input" : ""}
                         type="number"
                         placeholder="0"
                         onChange={(e) => {
-                          setRefundEditAmount(parseFloat(e.target.value));
+                          const obj: any = { ...refundEditChecked };
+                          obj[key] = parseFloat(e.target.value);
+                          setRefundEditAmount(obj);
+                          setRefundEditDisableToggle(true)
                         }}
                         min="0"
                         pattern="[+-]?\d+(?:[.,]\d+)?"
@@ -1095,6 +1117,8 @@ const RefundDetailContainer = ({
         />
       )}
     </div>
+     }
+    </>
   );
 };
 

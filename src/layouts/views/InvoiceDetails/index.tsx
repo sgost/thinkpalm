@@ -2207,7 +2207,6 @@ export default function InvoiceDetails() {
             <></>
           )}
   
-          {/* istanbul ignore next */}
           { 
           // currentStatusValue === statusValues.paid
            (missTransType === 4 ) 
@@ -2227,6 +2226,8 @@ export default function InvoiceDetails() {
                 currentStatusValue={currentStatusValue}
                 setCurrentStatusValue={setCurrentStatusValue}
                 toCurrencyFormat={toCurrencyFormat}
+                loading={loading}
+                setLoading={setLoading}
               />
             </div>
           )}
