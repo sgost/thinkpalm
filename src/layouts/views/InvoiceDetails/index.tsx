@@ -913,9 +913,14 @@ export default function InvoiceDetails() {
     const cFormat = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
+      minimumFractionDigits: 20
     });
 
-    return cFormat.format(amount).slice(1);
+    let currencyFormat = cFormat.format(amount).slice(1)
+    let index = currencyFormat.indexOf('.')
+    currencyFormat = currencyFormat.slice(0, index + 3)
+
+    return currencyFormat
   };
 
   const downloadFunction = () => {
