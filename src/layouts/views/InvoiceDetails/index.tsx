@@ -920,7 +920,6 @@ export default function InvoiceDetails() {
     let index = currencyFormat.indexOf('.')
     currencyFormat = currencyFormat.slice(0, index + 3)
 
-    // return cFormat.format(amount).slice(1);
     return currencyFormat
   };
 
