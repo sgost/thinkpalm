@@ -45,6 +45,7 @@ import {
   getEmployeeCompensationData,
   getPaymentDetailApi,
   changeInvoiceStatusAPI,
+  getGenerateSinglePdfUrl,
 } from "../../../urls/urls";
 import CreditMemoSummary from "../CreditMemoSummary";
 import { tableSharedColumns } from "../../../sharedColumns/sharedColumns";
@@ -60,6 +61,7 @@ import format from "date-fns/format";
 import cn from "classnames";
 import { statusValues } from "./statusValues";
 import RefundDetailContainer from "./refundDetailContainer";
+import AtlasLoader from "../../../components/Loader/AtlasLoader";
 
 export default function InvoiceDetails() {
   const { state }: any = useLocation();
@@ -176,6 +178,7 @@ export default function InvoiceDetails() {
   const [saveButtonDisable, setSaveButtonDisable] = useState(true);
   const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isCPLoader, setIsCPLoader] = useState(false);
   const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
     {
       label: "Employee Salary is not correct",
@@ -1958,9 +1961,7 @@ export default function InvoiceDetails() {
                   "is-drop-open": isDropdownOpen,
                   "is-drop-closed": !isDropdownOpen,
                 })}
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                onBlur={() => setIsDropdownOpen(false)}
-              >
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                 <ButtonDropdown
                   menuItems={{
                     options: [
@@ -1969,9 +1970,30 @@ export default function InvoiceDetails() {
                     ],
                     labelKeyName: "label",
                   }}
-                  onChange={(selected: any) =>
-                    console.log("selected", selected)
-                  }
+                  handleOutsideClick={() => setIsDropdownOpen(false)}
+                  onChange={({value}: any) => {
+                    console.log("selected", value);
+                    setIsCPLoader(true);
+                    const headers = {
+                      headers: getHeaders(tempToken, cid, isClient),
+                    };
+                    const pdfApi = getGenerateSinglePdfUrl(state.rowDetails?.id);
+                    if(value === "pdf") {
+                      axios
+                      .get(pdfApi, headers)
+                      .then((res: any) => {
+                        if (res.status === 200) {
+                          window.open(res.data.url);
+                        }
+                      })
+                      .catch((e: any) => {
+                        console.log("error", e);
+                      })
+                      .finally(() => {
+                        setIsCPLoader(false);
+                      });
+                    }
+                  }}
                 >
                   Download
                   <Icon
@@ -1997,7 +2019,10 @@ export default function InvoiceDetails() {
             )}
           </div>
 
-          <div className="payrollInvoiceInfo">
+          <div className={cn("payrollInvoiceInfo", {
+            "cp-invoice-info": missTransType === 7
+          })}>
+            {missTransType === 7 && isCPLoader &&  <AtlasLoader />}
             <div className="topBar">
               <div className="invoic-status">
                 <p className="status">{status}</p>
