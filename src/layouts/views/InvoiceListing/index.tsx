@@ -169,7 +169,7 @@ export default function InvoiceListing() {
   }, []);
 
   useEffect(() => {
-    const data = internalTabledata ? internalTabledata : clientTableData;
+    const data = internalTabledata && internalTabledata?.data?.length ? internalTabledata : clientTableData;
     if (data?.data && lookupData && toggle) {
       const statuses: any = data?.data?.map((item: any) => {
         if (item.statusLabel) {
