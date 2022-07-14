@@ -443,6 +443,17 @@
       }
     }
 
+    .cp-invoice-info {
+      position: relative;
+      margin-top: 1.5rem;
+      
+      .loaderContainer {
+        position: absolute;
+        width: 100%;
+        top: 10rem;
+      }
+    }
+
     .paymentDisplayContainer {
       background-color: $white;
       border-radius: 0.4444rem;
