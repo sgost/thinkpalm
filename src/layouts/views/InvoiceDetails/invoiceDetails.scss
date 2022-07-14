@@ -326,7 +326,7 @@
               color: #cbd4f3;
               margin: 0px;
               font-size: 1.111rem;
-             
+
               span {
                 color: $white;
                 font-size: 1.111rem;
@@ -648,7 +648,7 @@
                 .disable-input {
                   background: #f5f5f6 !important;
                 }
-  
+
                 .disable-label {
                   color: #b4b3bb !important;
                 }
@@ -686,7 +686,7 @@
                 .disable-input {
                   background: #f5f5f6 !important;
                 }
-    
+
                 .disable-label {
                   color: #b4b3bb !important;
                 }
@@ -761,7 +761,7 @@
           }
         }
 
-        .paymentLowerAmountBlock{
+        .paymentLowerAmountBlock {
           display: flex;
           justify-content: flex-end;
 
@@ -813,7 +813,7 @@
           }
         }
 
-        .addPaymentInstallmentIconDisable{
+        .addPaymentInstallmentIconDisable {
           display: flex;
           align-items: center;
           color: #767676;
@@ -1094,6 +1094,7 @@
             padding: 0.8rem;
             padding-bottom: 3rem;
             resize: none;
+            border-color: #B4B3BB;
           }
 
           textarea:focus {
@@ -1345,7 +1346,7 @@
 
         .decline-button {
           max-width: 11rem;
-          margin : 0 0 0 1rem;
+          margin: 0 0 0 1rem;
         }
       }
     }
