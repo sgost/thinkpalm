@@ -88,8 +88,8 @@ export const ToastContainer = ({
   ) : null;
 };
 
-export const Loader = () => {
-  return <AtlasLoader />;
+export const Loader = ({isOverlay= false}) => {
+  return <AtlasLoader isOverlay={isOverlay} />;
 };
 
 export const getPermissions = (transactionType: any, permission: string) => {

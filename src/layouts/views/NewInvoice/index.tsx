@@ -417,7 +417,8 @@ const NewInvoice = () => {
     tempDataCountry,
     setTempDataCountry,
     currencyOptions,
-    vatValue
+    vatValue,
+    loading
   };
 
   const disableFunForStepOnePayroll = () => {
@@ -641,6 +642,7 @@ const NewInvoice = () => {
   }, [hideTopCheck]);
 
   const handleInvoiceCreation = () => {
+    setLoading(true)
     let invoiceItems = todos.map((e: any) => {
       return {
         ServiceDate: e.date, // ?
@@ -735,12 +737,14 @@ const NewInvoice = () => {
         data: data,
       })
         .then((res: any) => {
+          setLoading(false)
           setInvoiceId(res.data.id);
           setIsInvoiceCreated(true);
           SetinvoicePreviewData(res.data);
           setStepsCount(3);
         })
         .catch((e: any) => {
+          setLoading(false)
           console.log(e);
         });
     } else {
@@ -754,11 +758,13 @@ const NewInvoice = () => {
         },
       })
         .then((res: any) => {
+          setLoading(false)
           setInvoiceId(res.data.id);
           SetinvoicePreviewData(res.data);
           setStepsCount(3);
         })
         .catch((e: any) => {
+          setLoading(false)
           console.log(e);
         });
     }

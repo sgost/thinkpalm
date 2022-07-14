@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import LoaderAnimation from "./loader.json";
 import "./AtlasLoader.scss";
 
-export default function AtlasLoader() {
+export default function AtlasLoader({isOverlay}: any) {
   useEffect(() => {
     Lottie.loadAnimation({
       container: document.querySelector("#atlas-loader"),
@@ -15,7 +15,7 @@ export default function AtlasLoader() {
   }, []);
 
   return (
-    <div data-testid='loader' className="loaderContainer">
+    <div data-testid='loader' className={isOverlay ? "loaderContainerOverlay" : 'loaderContainer'}>
       <div id="atlas-loader" />
     </div>
   );

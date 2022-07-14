@@ -45,10 +45,6 @@ export default function InvoiceListing() {
   const [customerOpen, setCustomerOpen] = useState(false);
   const [weAreSorryModalAction, setWeAreSorryModalAction] =
     useState<boolean>(false);
-  const [showSuccessToast, setShowSuccessToast] = useState({
-    type: false,
-    message: "Downloading...",
-  });
   const [dropdownLabel, setDropdownLabel] = useState({
     types: "",
     status: "",
@@ -100,7 +96,7 @@ export default function InvoiceListing() {
   const [toggle, setToggle] = useState(true);
   const [toggleForType, setToggleForType] = useState(true);
   const [isLoader, setIsLoader] = useState(false)
-
+  const [isOverlayLoader, setIsOverlayLoader] = useState(false)
   let api = ``;
 
   const apiFunc = () => {
@@ -348,13 +344,7 @@ export default function InvoiceListing() {
     }
   }, [apiData, transactionTypes, statusType, dateFrom, dateTo]);
 
-  useEffect(() => {
-    if (showSuccessToast.type) {
-      setTimeout(() => {
-        setShowSuccessToast({ ...showSuccessToast, type: false });
-      }, 4000);
-    }
-  }, [showSuccessToast.type]);
+ 
 
   useEffect(() => {
     if (isClient) {
@@ -389,10 +379,10 @@ export default function InvoiceListing() {
   }, [searchText]);
 
   const downloadFunction = () => {
+    setIsOverlayLoader(true)
     const download = (res: any) => {
       if (res.status === 200) {
         setDownloadDisable(false);
-        setShowSuccessToast({ type: true, message: "Downloaded..." });
         let url = res.data.url;
         let a = document.createElement("a");
         a.href = url;
@@ -402,7 +392,6 @@ export default function InvoiceListing() {
     };
 
     setDownloadDisable(true);
-    setShowSuccessToast({ ...showSuccessToast, type: true });
     const headers = {
       headers: getHeaders(accessToken, customerID, isClient),
     };
@@ -412,12 +401,13 @@ export default function InvoiceListing() {
         .get(pdfApi, headers)
         .then((res: any) => {
           download(res);
+          setIsOverlayLoader(false)
         })
         .catch((e: any) => {
           console.log("error", e);
+          setIsOverlayLoader(false)
         });
     } else if (multiInvoiceId) {
-      setShowSuccessToast({ ...showSuccessToast, type: true });
       const multiPdfApi = getGenerateMultiplePdfUrl();
       axios({
         method: "post",
@@ -427,9 +417,11 @@ export default function InvoiceListing() {
       })
         .then((res: any) => {
           download(res);
+          setIsOverlayLoader(false)
         })
         .catch((e: any) => {
           console.log("error", e);
+          setIsOverlayLoader(false)
         });
     }
   };
@@ -1036,26 +1028,8 @@ export default function InvoiceListing() {
           </div>
         )}
 
-        {showSuccessToast.type && (
-          <div className="toast">
-            {showSuccessToast.message}
-            <span
-              data-testid="remove-button-toast"
-              className="toast-action"
-              onClick={() => {
-                setShowSuccessToast({ ...showSuccessToast, type: false });
-              }}
-            >
-              <Icon
-                icon="remove"
-                color="#ffff"
-                size="medium"
-                viewBox="-6 -6 20 20"
-              />
-            </span>
-          </div>
-        )}
         {isLoader && <Loader />}
+        {isOverlayLoader && <Loader isOverlay={true} />}
         {(searchText && !searchedTableData) || (!isClient && !internalTabledata.data.length && !isLoader) || (isClient && !clientTableData.data.length && !isLoader) ? (
           <NoSearchCard
             style={{

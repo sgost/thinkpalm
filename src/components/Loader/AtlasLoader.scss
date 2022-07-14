@@ -7,3 +7,21 @@
     width: 10rem;
   }
 }
+
+.loaderContainerOverlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.25);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 10000;
+
+  #atlas-loader {
+    width: 10rem;
+    padding-left: 8.333rem;
+  }
+}
