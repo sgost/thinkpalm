@@ -112,7 +112,7 @@ export default function InvoiceDetails() {
   const [apiData, setApiData] = useState<any>(null);
   const [billTableData, setBillTableData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
-  const [_countriesData, setCountriesData] = useState<any>(null);
+  const [countriesData, setCountriesData] = useState<any>(null);
   const [feeData, setFeeData] = useState<any>(null);
   const [lookupData, setLookupData] = useState<any>(null);
   const [documents, setDocuments] = useState<any>([]);
@@ -210,6 +210,7 @@ export default function InvoiceDetails() {
   ]);
   const [declineLabel, setDeclineLabel] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isReCalculateDisable, setIsReCalculateDisable] = useState(false)
 
   useEffect(() => {
     if (logsData.length === 0) return;
@@ -236,6 +237,233 @@ export default function InvoiceDetails() {
       navigate("/pay");
     }
   }, [hideTopCheck]);
+
+  const invoicePayrollDetailCalculation = (res: any, countryRes: any) => {
+    setPayrollData(res.data.invoice);
+    if (res.status !== 200) {
+      throw new Error("Something went wrong");
+    }
+    let billingCurrency = countryRes.data.find(
+      (e: any) => e.currencyId === res.data.invoice.currencyId
+    );
+    let data: any = [];
+    let countrySummaryTemp: any = [];
+    let tempTotal = 0;
+    let countrySumTotalArrTemp: any = [];
+    let feeSummaryTemp: any = [];
+
+    res.data?.countryPayroll.forEach((e: any) => {
+      let country = e.countryName;
+      let countryCode = e.countryCode;
+      let currencyCode = e.currencyCode;
+      let arr: any = [];
+
+      e.payrollItems.forEach((item: any) => {
+        arr.push({
+          employeeID: {
+            value: (
+              <span
+                style={{ fontWeight: 600 }}
+                onClick={() => {
+                  (res.data?.invoice?.status === 2 ||
+                    res.data?.invoice?.status === 12) &&
+                    handleCompensationModal(item);
+                }}
+              >
+                {item.employeeId}
+              </span>
+            ),
+          },
+          name: {
+            value: (
+              <span style={{ display: "flex", alignItems: "center" }}>
+                {item?.employeeProfilePicture ? (
+                  <img
+                    style={{ borderRadius: 12 }}
+                    src={item?.employeeProfilePicture}
+                  />
+                ) : (
+                  <span className="initialsImg">
+                    {item?.firstName[0] + " " + item?.lastName[0]}
+                  </span>
+                )}
+                <span
+                  style={{ fontWeight: 600 }}
+                  onClick={() => {
+                    (res.data?.invoice?.status === 2 ||
+                      res.data?.invoice?.status === 12) &&
+                      handleCompensationModal(item);
+                  }}
+                >
+                  {item.firstName + " " + item.lastName}
+                </span>
+              </span>
+            ),
+            // img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
+            // style: { borderRadius: 12 },
+          },
+          grossWages:
+            currencyCode + " " + toCurrencyFormat(item.totalWage),
+          // item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+          allowances:
+            currencyCode + " " + toCurrencyFormat(item.allowance),
+
+          // item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+          expenseReimb:
+            currencyCode + " " + toCurrencyFormat(item.expenseRe),
+
+          // item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+          employerLiability:
+            currencyCode + " " + toCurrencyFormat(item.liability),
+
+          // item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+          countryVAT: item.countryVat.toFixed(2),
+          adminFees:
+            billingCurrency.currency.code +
+            " " +
+            toCurrencyFormat(item.adminFee),
+          // item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+          healthcareBenefits:
+            billingCurrency.currency.code +
+            " " +
+            toCurrencyFormat(item.healthcare),
+
+          // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
+
+          action:
+            res.data?.invoice?.status === 2 ||
+              res.data?.invoice?.status === 12
+              ? {
+                value: (
+                  <div
+                    data-testid="delete-icon"
+                    onClick={() => {
+                      setDeleteEmployeeModalOpen({
+                        isModalOpen: true,
+                        data: item,
+                      });
+                    }}
+                  >
+                    <Icon
+                      icon="trash"
+                      color="#E32C15"
+                      size="large"
+                    />
+                  </div>
+                ),
+                color: "#E32C15",
+              }
+              : "",
+        });
+      });
+
+      tempTotal += e.countryTotalDue;
+
+      data.push({
+        country,
+        countryCode,
+        exchangeRate: e.exchangeRate,
+        currencyCode: e.currencyCode,
+        countryTotalDue: e.countryTotalDue,
+        feeSummary: e.feeSummary,
+        data: arr,
+      });
+
+      //For Country Summary
+
+      let totalGrossWages = e.payrollItems.reduce(
+        (a: any, b: any) => a + (b.totalWage || 0),
+        0
+      );
+      let totalAllowances = e.payrollItems.reduce(
+        (a: any, b: any) => a + (b.allowance || 0),
+        0
+      );
+      let totalExpenseReimb = e.payrollItems.reduce(
+        (a: any, b: any) => a + (b.expenseRe || 0),
+        0
+      );
+      let totalEmployerLiability = e.payrollItems.reduce(
+        (a: any, b: any) => a + (b.liability || 0),
+        0
+      );
+      let totalCountryVAT = e.payrollItems.reduce(
+        (a: any, b: any) => a + (b.countryVat || 0),
+        0
+      );
+
+      function precisionRound(number: number, precision: number) {
+        if (precision < 0) {
+          const factor = Math.pow(10, precision);
+          return Math.round(number * factor) / factor;
+        } else {
+          return +(
+            Math.round(Number(number + "e+" + precision)) +
+            "e-" +
+            precision
+          );
+        }
+      }
+
+      let countrySumTotalTemp =
+        precisionRound(
+          (totalGrossWages + totalAllowances) * e.exchangeRate,
+          2
+        ) +
+        precisionRound(totalExpenseReimb * e.exchangeRate, 2) +
+        precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
+        precisionRound(totalCountryVAT * e.exchangeRate, 2);
+
+      countrySumTotalArrTemp.push(countrySumTotalTemp);
+
+      countrySummaryTemp.push({
+        country: {
+          value: e.countryName,
+          img: { src: getFlagPath(e.countryCode) },
+        },
+        currency: e.currencyCode,
+        employees: e.payrollItems.length,
+        grossWages: toCurrencyFormat(totalGrossWages),
+        allowances: toCurrencyFormat(totalAllowances),
+        expenseReimb: toCurrencyFormat(totalExpenseReimb),
+        employerLiability: toCurrencyFormat(totalEmployerLiability),
+        countryVAT: toCurrencyFormat(totalCountryVAT),
+        exchangeRate: e.exchangeRate,
+        total: toCurrencyFormat(countrySumTotalTemp),
+      });
+
+      //Fee Summary Calculation
+      feeSummaryTemp.push({
+        country: {
+          value: e.countryName,
+          img: { src: getFlagPath(e.countryCode) },
+        },
+        currency: e.currencyCode,
+        adminFees: toCurrencyFormat(e.feeSummary.adminFee),
+        OnOffboardings: e.feeSummary.boardingFee,
+        fxRate: e.feeSummary.fxRate,
+        fxBill: e.feeSummary.fxBill,
+        benefits: toCurrencyFormat(e.feeSummary.healthCare),
+        employeeContribution: e.employeeContributionCreditTotal,
+        total: toCurrencyFormat(e.feeSummary.total),
+      });
+    });
+
+    //Set states here
+    setPayrollTables(data);
+    setTotal(tempTotal);
+    setDocuments(res.data.invoice.invoiceDocuments);
+    setApiData(res);
+    setCountrySummary(countrySummaryTemp);
+    let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
+      (a: any, b: any) => a + (b || 0),
+      0
+    );
+    settotalCountrySummaryDue(totalCountrySummaryDueTemp);
+    setFeeSummary(feeSummaryTemp);
+    setIsAutoApprove(res.data.isAutoApprove);
+    setLoading(false)
+  }
 
   const initialApiCall = () => {
     const headers = {
@@ -279,230 +507,7 @@ export default function InvoiceDetails() {
           axios
             .get(api, headers)
             .then((res: any) => {
-              setPayrollData(res.data.invoice);
-              if (res.status !== 200) {
-                throw new Error("Something went wrong");
-              }
-              let billingCurrency = countryRes.data.find(
-                (e: any) => e.currencyId === res.data.invoice.currencyId
-              );
-              let data: any = [];
-              let countrySummaryTemp: any = [];
-              let tempTotal = 0;
-              let countrySumTotalArrTemp: any = [];
-              let feeSummaryTemp: any = [];
-
-              res.data?.countryPayroll.forEach((e: any) => {
-                let country = e.countryName;
-                let countryCode = e.countryCode;
-                let currencyCode = e.currencyCode;
-                let arr: any = [];
-
-                e.payrollItems.forEach((item: any) => {
-                  arr.push({
-                    employeeID: {
-                      value: (
-                        <span
-                          style={{ fontWeight: 600 }}
-                          onClick={() => {
-                            (res.data?.invoice?.status === 2 ||
-                              res.data?.invoice?.status === 12) &&
-                              handleCompensationModal(item);
-                          }}
-                        >
-                          {item.employeeId}
-                        </span>
-                      ),
-                    },
-                    name: {
-                      value: (
-                        <span style={{ display: "flex", alignItems: "center" }}>
-                          {item?.employeeProfilePicture ? (
-                            <img
-                              style={{ borderRadius: 12 }}
-                              src={item?.employeeProfilePicture}
-                            />
-                          ) : (
-                            <span className="initialsImg">
-                              {item?.firstName[0] + " " + item?.lastName[0]}
-                            </span>
-                          )}
-                          <span
-                            style={{ fontWeight: 600 }}
-                            onClick={() => {
-                              (res.data?.invoice?.status === 2 ||
-                                res.data?.invoice?.status === 12) &&
-                                handleCompensationModal(item);
-                            }}
-                          >
-                            {item.firstName + " " + item.lastName}
-                          </span>
-                        </span>
-                      ),
-                      // img: { src: item?.employeeProfilePicture ? item.employeeProfilePicture : avatar },
-                      // style: { borderRadius: 12 },
-                    },
-                    grossWages:
-                      currencyCode + " " + toCurrencyFormat(item.totalWage),
-                    // item.totalWage.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                    allowances:
-                      currencyCode + " " + toCurrencyFormat(item.allowance),
-
-                    // item.allowance.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                    expenseReimb:
-                      currencyCode + " " + toCurrencyFormat(item.expenseRe),
-
-                    // item.expenseRe.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                    employerLiability:
-                      currencyCode + " " + toCurrencyFormat(item.liability),
-
-                    // item.liability.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                    countryVAT: item.countryVat.toFixed(2),
-                    adminFees:
-                      billingCurrency.currency.code +
-                      " " +
-                      toCurrencyFormat(item.adminFee),
-                    // item.adminFee.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-                    healthcareBenefits:
-                      billingCurrency.currency.code +
-                      " " +
-                      toCurrencyFormat(item.healthcare),
-
-                    // item.healthcare.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,")
-
-                    action:
-                      res.data?.invoice?.status === 2 ||
-                        res.data?.invoice?.status === 12
-                        ? {
-                          value: (
-                            <div
-                              data-testid="delete-icon"
-                              onClick={() => {
-                                setDeleteEmployeeModalOpen({
-                                  isModalOpen: true,
-                                  data: item,
-                                });
-                              }}
-                            >
-                              <Icon
-                                icon="trash"
-                                color="#E32C15"
-                                size="large"
-                              />
-                            </div>
-                          ),
-                          color: "#E32C15",
-                        }
-                        : "",
-                  });
-                });
-
-                tempTotal += e.countryTotalDue;
-
-                data.push({
-                  country,
-                  countryCode,
-                  exchangeRate: e.exchangeRate,
-                  currencyCode: e.currencyCode,
-                  countryTotalDue: e.countryTotalDue,
-                  feeSummary: e.feeSummary,
-                  data: arr,
-                });
-
-                //For Country Summary
-
-                let totalGrossWages = e.payrollItems.reduce(
-                  (a: any, b: any) => a + (b.totalWage || 0),
-                  0
-                );
-                let totalAllowances = e.payrollItems.reduce(
-                  (a: any, b: any) => a + (b.allowance || 0),
-                  0
-                );
-                let totalExpenseReimb = e.payrollItems.reduce(
-                  (a: any, b: any) => a + (b.expenseRe || 0),
-                  0
-                );
-                let totalEmployerLiability = e.payrollItems.reduce(
-                  (a: any, b: any) => a + (b.liability || 0),
-                  0
-                );
-                let totalCountryVAT = e.payrollItems.reduce(
-                  (a: any, b: any) => a + (b.countryVat || 0),
-                  0
-                );
-
-                function precisionRound(number: number, precision: number) {
-                  if (precision < 0) {
-                    const factor = Math.pow(10, precision);
-                    return Math.round(number * factor) / factor;
-                  } else {
-                    return +(
-                      Math.round(Number(number + "e+" + precision)) +
-                      "e-" +
-                      precision
-                    );
-                  }
-                }
-
-                let countrySumTotalTemp =
-                  precisionRound(
-                    (totalGrossWages + totalAllowances) * e.exchangeRate,
-                    2
-                  ) +
-                  precisionRound(totalExpenseReimb * e.exchangeRate, 2) +
-                  precisionRound(totalEmployerLiability * e.exchangeRate, 2) +
-                  precisionRound(totalCountryVAT * e.exchangeRate, 2);
-
-                countrySumTotalArrTemp.push(countrySumTotalTemp);
-
-                countrySummaryTemp.push({
-                  country: {
-                    value: e.countryName,
-                    img: { src: getFlagPath(e.countryCode) },
-                  },
-                  currency: e.currencyCode,
-                  employees: e.payrollItems.length,
-                  grossWages: toCurrencyFormat(totalGrossWages),
-                  allowances: toCurrencyFormat(totalAllowances),
-                  expenseReimb: toCurrencyFormat(totalExpenseReimb),
-                  employerLiability: toCurrencyFormat(totalEmployerLiability),
-                  countryVAT: toCurrencyFormat(totalCountryVAT),
-                  exchangeRate: e.exchangeRate,
-                  total: toCurrencyFormat(countrySumTotalTemp),
-                });
-
-                //Fee Summary Calculation
-                feeSummaryTemp.push({
-                  country: {
-                    value: e.countryName,
-                    img: { src: getFlagPath(e.countryCode) },
-                  },
-                  currency: e.currencyCode,
-                  adminFees: toCurrencyFormat(e.feeSummary.adminFee),
-                  OnOffboardings: e.feeSummary.boardingFee,
-                  fxRate: e.feeSummary.fxRate,
-                  fxBill: e.feeSummary.fxBill,
-                  benefits: toCurrencyFormat(e.feeSummary.healthCare),
-                  employeeContribution: e.employeeContributionCreditTotal,
-                  total: toCurrencyFormat(e.feeSummary.total),
-                });
-              });
-
-              //Set states here
-              setPayrollTables(data);
-              setTotal(tempTotal);
-              setDocuments(res.data.invoice.invoiceDocuments);
-              setApiData(res);
-              setCountrySummary(countrySummaryTemp);
-              let totalCountrySummaryDueTemp = countrySumTotalArrTemp.reduce(
-                (a: any, b: any) => a + (b || 0),
-                0
-              );
-              settotalCountrySummaryDue(totalCountrySummaryDueTemp);
-              setFeeSummary(feeSummaryTemp);
-              setIsAutoApprove(res.data.isAutoApprove);
-              setLoading(false)
+              invoicePayrollDetailCalculation(res, countryRes);
             })
             .catch((e: any) => {
               console.log("error e", e);
@@ -913,9 +918,14 @@ export default function InvoiceDetails() {
     const cFormat = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
+      minimumFractionDigits: 20
     });
 
-    return cFormat.format(amount).slice(1);
+    let currencyFormat = cFormat.format(amount).slice(1)
+    let index = currencyFormat.indexOf('.')
+    currencyFormat = currencyFormat.slice(0, index + 3)
+
+    return currencyFormat
   };
 
   const downloadFunction = () => {
@@ -1331,20 +1341,24 @@ export default function InvoiceDetails() {
       });
   };
   const reCalculate = () => {
+    setIsReCalculateDisable(true)
     axios({
       method: "POST",
       url: calculateInvoiceUrl(id),
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((resp: any) => {
+        setIsReCalculateDisable(false)
         if (resp) {
           setApprovalMsg("Invoice Recalculated successfully");
+          invoicePayrollDetailCalculation(resp, countriesData);
           setTimeout(() => {
             setApprovalMsg("");
           }, 3000);
         }
       })
       .catch((error: any) => {
+        setIsReCalculateDisable(false)
         console.log(error);
         setApprovalMsg("Invoice Recalculaton Failed");
         setTimeout(() => {
@@ -1514,6 +1528,7 @@ export default function InvoiceDetails() {
                 getPermissions(1, "Edit") && (
                   <div className="saveBtnContainer">
                     <Button
+                      disabled={isReCalculateDisable}
                       handleOnClick={() => {
                         reCalculate();
                       }}
@@ -2482,7 +2497,12 @@ export default function InvoiceDetails() {
             ></BillsTable>
           )}
 
-          {approvalMsg && <p className="approvalMsg">{approvalMsg}</p>}
+          {approvalMsg && 
+            <ToastNotification
+              showNotification={true}
+              toastMessage={approvalMsg}
+              toastPosition="bottom-right"
+            />}
 
           <div className="decline-modal">
             <Modal
