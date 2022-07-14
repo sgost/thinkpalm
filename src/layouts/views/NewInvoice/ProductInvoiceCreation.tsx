@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import axios from "axios";
 import "./ProductInvoiceCreation.scss";
 import { productInvoice, CountryApi, getHeaders } from "../../../urls/urls";
+import { Loader } from "../../../components/Comman/Utils/utils";
 
 const ProductInvoiceCreation = ({
   todos,
@@ -26,6 +27,7 @@ const ProductInvoiceCreation = ({
   tempDataCountry,
   setTempDataCountry,
   currencyOptions,
+  loading
 }: any) => {
   const tempToken = localStorage.getItem("accessToken");
   const cid = localStorage.getItem("current-org-id");
@@ -150,6 +152,9 @@ const ProductInvoiceCreation = ({
   }
 
   return (
+    loading ? 
+      <Loader />
+    :
     <div>
       {todos?.map((item: any, i: any) => (
         <div className="newinvoice_main">

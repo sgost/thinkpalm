@@ -210,6 +210,7 @@ export default function InvoiceDetails() {
   ]);
   const [declineLabel, setDeclineLabel] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isOverlayLoader, setIsOverlayLoader] = useState(false)
   const [isReCalculateDisable, setIsReCalculateDisable] = useState(false)
 
   useEffect(() => {
@@ -929,12 +930,14 @@ export default function InvoiceDetails() {
   };
 
   const downloadFunction = () => {
+    setIsOverlayLoader(true)
     axios({
       method: "GET",
       url: getDownloadUrl(id),
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
+        setIsOverlayLoader(false)
         if (res.status === 200) {
           let url = res.data.url;
           let a = document.createElement("a");
@@ -944,12 +947,14 @@ export default function InvoiceDetails() {
         }
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log("error", e);
       });
     setIsDownloadOpen(false);
   };
 
   const handleApproveInvoice = (no: any) => {
+    setIsOverlayLoader(true)
     const approveApi =
       missTransType == 2 || missTransType == 3 || missTransType == 4
         ? getApproveUrlNo(id, no)
@@ -961,6 +966,7 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
+        setIsOverlayLoader(false)
         if (res?.status === 201) {
           setCurrentStatusValue(res?.data?.status);
           if (res?.data?.status === 2) {
@@ -983,6 +989,7 @@ export default function InvoiceDetails() {
         }
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log("error", e);
         setApprovalMsg("Invoice approve failed");
         setTimeout(() => {
@@ -1015,6 +1022,7 @@ export default function InvoiceDetails() {
   };
 
   const downloadExcelFunction = () => {
+    setIsOverlayLoader(true)
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
     };
@@ -1023,6 +1031,7 @@ export default function InvoiceDetails() {
     axios
       .get(downloadApi, headers)
       .then((res: any) => {
+        setIsOverlayLoader(false)
         if (res.status === 200) {
           let url2 = res.data.url;
           let a = document.createElement("a");
@@ -1032,12 +1041,14 @@ export default function InvoiceDetails() {
         }
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log("error", e);
       });
     setIsDownloadOpen(false);
   };
 
   const downloadEmployeeBreakdownFunction = () => {
+    setIsOverlayLoader(true)
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
     };
@@ -1046,6 +1057,7 @@ export default function InvoiceDetails() {
     axios
       .get(downloadEmployeeBreakdwonApi, headers)
       .then((res: any) => {
+        setIsOverlayLoader(false)
         if (res.status === 200) {
           let url = res.data.url;
           let b = document.createElement("a");
@@ -1055,12 +1067,14 @@ export default function InvoiceDetails() {
         }
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log("error", e);
       });
     setIsDownloadOpen(false);
   };
 
   const handleVoid = async () => {
+    setIsOverlayLoader(true)
     const headers = getHeaders(tempToken, cid, isClient);
 
     let formData = new FormData();
@@ -1070,6 +1084,7 @@ export default function InvoiceDetails() {
         headers: headers,
       })
       .then(async (res: any) => {
+        
         await axios
           .post(
             urls.voidCreateDoc,
@@ -1095,6 +1110,7 @@ export default function InvoiceDetails() {
           });
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log(e);
       });
 
@@ -1113,6 +1129,7 @@ export default function InvoiceDetails() {
         }
       )
       .then((response: any) => {
+        setIsOverlayLoader(false)
         if (response.status == 200) {
           setCurrentStatusValue(response.data.status);
           lookupData.data.invoiceStatuses.forEach((e: any) => {
@@ -1128,6 +1145,7 @@ export default function InvoiceDetails() {
         }
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log(e);
         setVoidFileData({});
         setIsVoidConfirmOptionOpen(false);
@@ -1136,6 +1154,7 @@ export default function InvoiceDetails() {
   };
 
   const handleDeleteInvoice = async () => {
+    setIsOverlayLoader(true)
     const headers = {
       headers: getHeaders(tempToken, cid, isClient),
     };
@@ -1149,6 +1168,7 @@ export default function InvoiceDetails() {
     await axios
       .delete(deleteApi, headers)
       .then((res: any) => {
+        setIsOverlayLoader(false)
         if (res.data === true) {
           setDeleteApp(true);
           navigate("/pay");
@@ -1158,6 +1178,7 @@ export default function InvoiceDetails() {
         }
       })
       .catch((e: any) => {
+        setIsOverlayLoader(false)
         console.log("error", e);
       });
   };
@@ -1261,22 +1282,26 @@ export default function InvoiceDetails() {
   // To change the the invoice into Miscellineous
 
   const migrationInvoice = () => {
+    setIsOverlayLoader(true)
     setBtnDis(true);
     axios({
       method: "POST",
       url: convertMissInvoice(id),
       headers: getHeaders(tempToken, cid, isClient),
     }).then((resp: any) => {
+      setIsOverlayLoader(false)
       if (resp) {
         handleApproveInvoice(8);
       }
     }).catch( err => {
+      setIsOverlayLoader(false)
       setBtnDis(false);
       console.log(err)
     });
   };
 
   const handleEditSave = () => {
+    setIsOverlayLoader(true)
     axios({
       method: "PUT",
       url: getUpdateInvoiceCalanderPoNoUrl(id),
@@ -1295,6 +1320,7 @@ export default function InvoiceDetails() {
       },
     })
       .then((resp: any) => {
+        setIsOverlayLoader(false)
         if (resp) {
           setInvoiceSavedValue("Saved");
           setTimeout(() => {
@@ -1303,6 +1329,7 @@ export default function InvoiceDetails() {
         }
       })
       .catch((err: any) => {
+        setIsOverlayLoader(false)
         console.log(err);
       });
     setSaveButtonDisable(true);
@@ -1342,6 +1369,7 @@ export default function InvoiceDetails() {
   };
   const reCalculate = () => {
     setIsReCalculateDisable(true)
+    setIsOverlayLoader(true)
     axios({
       method: "POST",
       url: calculateInvoiceUrl(id),
@@ -1349,6 +1377,7 @@ export default function InvoiceDetails() {
     })
       .then((resp: any) => {
         setIsReCalculateDisable(false)
+        setIsOverlayLoader(false)
         if (resp) {
           setApprovalMsg("Invoice Recalculated successfully");
           invoicePayrollDetailCalculation(resp, countriesData);
@@ -1358,6 +1387,7 @@ export default function InvoiceDetails() {
         }
       })
       .catch((error: any) => {
+        setIsOverlayLoader(false)
         setIsReCalculateDisable(false)
         console.log(error);
         setApprovalMsg("Invoice Recalculaton Failed");
@@ -2587,6 +2617,7 @@ export default function InvoiceDetails() {
                     label="Decline Invoice"
                     className="primary-blue medium decline-button"
                     handleOnClick={() => {
+                      setIsOverlayLoader(true)
                       let currDate = new Date();
                       axios({
                         method: "POST",
@@ -2602,6 +2633,7 @@ export default function InvoiceDetails() {
                         },
                       })
                         .then((res: any) => {
+                          setIsOverlayLoader(false)
                           if (res.status == 200) {
                             setCurrentStatusValue(res.data.status);
                             lookupData.data.invoiceStatuses.forEach(
@@ -2621,6 +2653,7 @@ export default function InvoiceDetails() {
                           }
                         })
                         .catch((e: any) => {
+                          setIsOverlayLoader(false)
                           console.log(e);
                           setInputValue("");
                           setIsOpen(false);
@@ -2932,6 +2965,7 @@ export default function InvoiceDetails() {
           )}
         </div>
       )}
+      {isOverlayLoader && <Loader isOverlay={true} />}
     </>
   );
 }
