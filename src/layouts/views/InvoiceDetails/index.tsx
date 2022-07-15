@@ -1593,7 +1593,7 @@ export default function InvoiceDetails() {
               {(currentStatusValue == statusValues.approved &&
                 missTransType !== 4 &&
                 missTransType !== 7 &&
-                getPermissions(missTransType, "AddPayment")) ||
+                (getPermissions(missTransType, "Paid") || getPermissions(missTransType, "Pay"))) ||
                 (currentStatusValue == statusValues.invoiced &&
                   missTransType === 7 &&
                   getPermissions(missTransType, "AddPayment")) ? (
