@@ -726,7 +726,7 @@ const NewInvoice = () => {
       InvoiceRelatedRelatedInvoices: [],
       // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
-      BankDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.Id,
+      BankingDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.Id,
       CurrencyId: currencyOptions.find((e: any) => e.isSelected)?.value,
     };
 
