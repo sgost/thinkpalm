@@ -522,10 +522,6 @@ describe("Stepper 2", () => {
 
 });
 
-
-
-
-
 describe("Stepper 2 show table click", () => {
   beforeAll(() => {
     const mock = new MockAdapter(axios);
@@ -2140,14 +2136,14 @@ describe("New Invoice for Miscellaneous ", () => {
       /usa\-\-unitedstatesofamerica/i
     );
     fireEvent.click(invoiceDropDownValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-    const raDropDownValue = await screen.findByText(/hsbc\(usa\)3371\-usd/i);
-    fireEvent.click(raDropDownValue);
+   
+    const receivable = await screen.findAllByTestId(/receivable/);
+    expect(receivable[0]).toBeInTheDocument();
+    fireEvent.click(receivable[0]);
 
     fireEvent.click(pleaseSelectDropDown[2]);
-    const currencyDropDownValue = await screen.findByText(/eur/i);
-    fireEvent.click(currencyDropDownValue);
+    const currencyDropDownValue = await screen.findAllByText(/GBP/i);
+    fireEvent.click(currencyDropDownValue[2]);
 
     const qb = screen.getByRole('spinbutton')
     fireEvent.change(qb, { target: { value: "1234" } });
