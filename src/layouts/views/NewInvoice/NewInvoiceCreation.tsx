@@ -385,12 +385,17 @@ const NewInvoiceCreation = ({
                         setIsInvoicer
                       );
 
+                      setStepperOneData({
+                        ...stepperOneData,
+                        invoicer: item.label,
+                      });
+
                       let tempRecAccOptions: Array<any> = [];
                       item.receivableAccounts?.forEach((recAcc: any) => {
                         tempRecAccOptions.push({
                           ...recAcc,
                           isSelected: false,
-                          label: recAcc.text,
+                          label: recAcc.text + " " + "(Acc No. " + recAcc.accountNumber + ")"  + " – " + recAcc.currency,
                           value: recAcc.value,
                         });
                       });
@@ -418,13 +423,26 @@ const NewInvoiceCreation = ({
                 stepperOneData?.type !== "Credit Memo" && (
                   <div className="dropdown col-md-4 select-component">
                     <Dropdown
-                      isDisabled={!stepperOneData?.type}
+                      testId="receivable"
+                      isDisabled={!stepperOneData?.invoicer}
                       handleDropOptionClick={(item: any) => {
                         handleDropOption(
                           item,
                           receivableAccountOptions,
                           setReceivableAccountOptions,
                           setIsRecAcc
+                        );
+                         let obj;
+                        currencyOptions?.map((itemNew:any)=>{
+                          if(itemNew.text == item.currency){
+                            obj = itemNew
+                          }
+                        })
+                        handleDropOption(
+                          obj,
+                          currencyOptions,
+                          setCurrencyOptions,
+                          setIsCurrency
                         );
                       }}
                       handleDropdownClick={(b: boolean) => {
@@ -481,7 +499,7 @@ const NewInvoiceCreation = ({
                 stepperOneData?.type !== "Credit Memo" && (
                   <div className="lastDropdown col-md-4 select-component">
                     <Dropdown
-                      isDisabled={!stepperOneData?.type}
+                      isDisabled={true}
                       handleDropOptionClick={(items: any) => {
                         handleDropOption(
                           items,

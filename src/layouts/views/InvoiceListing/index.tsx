@@ -99,6 +99,8 @@ export default function InvoiceListing() {
   const [isOverlayLoader, setIsOverlayLoader] = useState(false)
   const [toastNotif, setToastNotif] = useState('')
   const [isAddpaymentDisable, setIsAddpaymentDisable] = useState(true)
+  const [dropdownsDisableInStarting, setDropdownsDisableInStarting] = useState(true)
+  
   let api = ``;
 
   const apiFunc = () => {
@@ -120,7 +122,7 @@ export default function InvoiceListing() {
       return api;
     }
   };
-  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient, setIsLoader);
+  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient, setIsLoader, setDropdownsDisableInStarting);
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -667,6 +669,7 @@ export default function InvoiceListing() {
               "Add" && (
                 <Button
                   label="New Invoice"
+                  disabled={dropdownsDisableInStarting}
                   className="primary-blue medium"
                   icon={{
                     icon: "add",
@@ -681,10 +684,12 @@ export default function InvoiceListing() {
 
         {!localStorage.redirectingInvoiceState && (
           <div className="dropdowns">
-            <div className="inputContainer">
+            <div 
+            className={dropdownsDisableInStarting ? "disableSearch" : "inputContainer"} >
               <Icon icon="search" size="medium" />
               <input
                 className="input"
+                disabled={dropdownsDisableInStarting}
                 placeholder={
                   isClient ? "Search Invoices" : "Search by Invoice, Customer"
                 }
@@ -712,6 +717,7 @@ export default function InvoiceListing() {
               {permission.InvoiceList.includes("InternalView") && (
                 <div className="customerSelection">
                   <Dropdown
+                    isDisabled={dropdownsDisableInStarting}
                     data-testid="customer-type"
                     title="Customer"
                     multiple
@@ -762,6 +768,7 @@ export default function InvoiceListing() {
               )}
 
               <DatepickerDropdown
+                dropdownsDisableInStarting={dropdownsDisableInStarting}
                 title="Date"
                 isOpen={isDateOpen}
                 setIsOpen={setIsDateOpen}
@@ -931,6 +938,7 @@ export default function InvoiceListing() {
 
               <Dropdown
                 title="Type"
+                isDisabled={dropdownsDisableInStarting}
                 multiple
                 isOpen={isTypeOpen}
                 handleDropdownClick={(bool: any) => {
@@ -980,6 +988,7 @@ export default function InvoiceListing() {
 
               <Dropdown
                 title="Status"
+                isDisabled={dropdownsDisableInStarting}
                 multiple
                 isOpen={isStatusOpen}
                 handleDropdownClick={(bool: any) => {

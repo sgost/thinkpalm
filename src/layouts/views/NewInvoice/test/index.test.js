@@ -506,9 +506,6 @@ describe("Stepper 2", () => {
     expect(showHideButton1).toBeInTheDocument();
     fireEvent.click(showHideButton1);
 
-    const amount1 = await screen.findAllByText(/75000/);
-    expect(amount1[0]).toBeInTheDocument();
-
     const labelText1 = await screen.findAllByLabelText("");
     fireEvent.click(labelText1[1]);
 
@@ -521,10 +518,6 @@ describe("Stepper 2", () => {
 
 
 });
-
-
-
-
 
 describe("Stepper 2 show table click", () => {
   beforeAll(() => {
@@ -2140,14 +2133,14 @@ describe("New Invoice for Miscellaneous ", () => {
       /usa\-\-unitedstatesofamerica/i
     );
     fireEvent.click(invoiceDropDownValue);
-
-    fireEvent.click(pleaseSelectDropDown[1]);
-    const raDropDownValue = await screen.findByText(/hsbc\(usa\)3371\-usd/i);
-    fireEvent.click(raDropDownValue);
+   
+    const receivable = await screen.findAllByTestId(/receivable/);
+    expect(receivable[0]).toBeInTheDocument();
+    fireEvent.click(receivable[0]);
 
     fireEvent.click(pleaseSelectDropDown[2]);
-    const currencyDropDownValue = await screen.findByText(/eur/i);
-    fireEvent.click(currencyDropDownValue);
+    const currencyDropDownValue = await screen.findAllByText(/GBP/i);
+    fireEvent.click(currencyDropDownValue[2]);
 
     const qb = screen.getByRole('spinbutton')
     fireEvent.change(qb, { target: { value: "1234" } });

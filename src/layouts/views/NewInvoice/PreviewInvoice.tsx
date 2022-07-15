@@ -397,6 +397,21 @@ const PreviewInvoice = ({
                     <p className="newInvoiceValue">
                       {apiData?.data?.invoiceFrom?.companyName}
                     </p>
+                    <p className="newInvoiceAddress">
+                      {apiData?.data?.invoiceFrom?.addressLine1}
+                    </p>
+                    <p className="newInvoiceAddress">
+                      {apiData?.data?.invoiceFrom?.addressLine2}
+                    </p>
+                    <p className="address">
+                      {apiData?.data?.invoiceFrom?.city}
+                    </p>
+                    <p className="address">
+                      {apiData?.data?.invoiceFrom?.state}
+                    </p>
+                    <p className="address">
+                      {apiData?.data?.invoiceFrom?.country}
+                    </p>
                   </div>
                   <div>
                     <p className="newInvoiceHeading">To</p>
@@ -404,7 +419,10 @@ const PreviewInvoice = ({
                       {apiData?.data?.invoice?.customerName}
                     </p>
                     <p className="newInvoiceAddress">
-                      {addressData?.data?.billingAddress?.street}
+                      {addressData?.data?.billingAddress?.street1}
+                    </p>
+                    <p className="newInvoiceAddress">
+                      {addressData?.data?.billingAddress?.street2}
                     </p>
                     <p className="address">
                       {addressData?.data?.billingAddress?.city}
@@ -413,7 +431,8 @@ const PreviewInvoice = ({
                       {addressData?.data?.billingAddress?.state}
                     </p>
                     <p className="address">
-                      {addressData?.data?.billingAddress?.country}
+                      {addressData?.data?.billingAddress?.country},{" "}
+                      {addressData?.data?.billingAddress?.postalCode}
                     </p>
                   </div>
                   <div>
