@@ -397,6 +397,21 @@ const PreviewInvoice = ({
                     <p className="newInvoiceValue">
                       {apiData?.data?.invoiceFrom?.companyName}
                     </p>
+                    <p className="newInvoiceAddress">
+                      {apiData?.data?.invoiceFrom?.addressLine1}
+                    </p>
+                    <p className="newInvoiceAddress">
+                      {apiData?.data?.invoiceFrom?.addressLine2}
+                    </p>
+                    <p className="address">
+                      {apiData?.data?.invoiceFrom?.city}
+                    </p>
+                    <p className="address">
+                      {apiData?.data?.invoiceFrom?.state}
+                    </p>
+                    <p className="address">
+                      {apiData?.data?.invoiceFrom?.country}
+                    </p>
                   </div>
                   <div>
                     <p className="newInvoiceHeading">To</p>

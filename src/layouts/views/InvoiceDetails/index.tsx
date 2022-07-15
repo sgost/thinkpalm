@@ -699,6 +699,7 @@ export default function InvoiceDetails() {
       model.from = apiData?.data?.invoiceFrom?.companyName;
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
+      model.fromAddress = apiData?.data?.invoiceFrom;
       model.poNumber = apiData?.data?.invoice?.poNumber;
       model.invoiceDate = moment(
         state.transactionType == 7
@@ -724,6 +725,8 @@ export default function InvoiceDetails() {
       let model: any = topPanelObj;
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
+      model.toAddress = addressData?.data?.billingAddress?.street;
+      model.fromAddress = creditMemoData?.invoiceFrom;
       model.poNumber = creditMemoData?.poNumber || "";
       model.invoiceDate = creditMemoData?.submissionDate
         ? moment(creditMemoData?.submissionDate).format("DD MMM YYYY")
@@ -2063,6 +2066,21 @@ export default function InvoiceDetails() {
               <div className="column1 divContainer">
                 <p className="heading">From</p>
                 <p className="value">{topPanel.from}</p>
+                <p className="address">
+                  {topPanel.fromAddress?.addressLine1}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.addressLine2}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.city}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.country}
+                </p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.country}
+                </p>
               </div>
               <div className="divContainer">
                 <p className="heading">To</p>
