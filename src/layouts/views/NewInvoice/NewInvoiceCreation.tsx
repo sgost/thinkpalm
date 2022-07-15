@@ -423,6 +423,7 @@ const NewInvoiceCreation = ({
                 stepperOneData?.type !== "Credit Memo" && (
                   <div className="dropdown col-md-4 select-component">
                     <Dropdown
+                      testId="receivable"
                       isDisabled={!stepperOneData?.invoicer}
                       handleDropOptionClick={(item: any) => {
                         handleDropOption(
