@@ -169,29 +169,29 @@ describe("internal view", () => {
   // });
 
   test("Customer Type clickable", async () => {
-    const customerType = await screen.getByText(/Customer/);
-    fireEvent.click(customerType);
+    const customerType = await screen.getAllByText(/Customer/);
+    fireEvent.click(customerType[0]);
     const open = await screen.findByText(/Merkel Economic Group Ltd 2024/);
     fireEvent.click(open);
   });
 
   test("Status clickable", async () => {
-    const status = await waitFor(() => screen.getByText(/Status/));
-    fireEvent.click(status);
+    const status = await waitFor(() => screen.getAllByText(/Status/));
+    fireEvent.click(status[0]);
     const open = await screen.findByText(/Open/);
     fireEvent.click(open);
   });
 
   test("Type clickable", async () => {
-    const status = await waitFor(() => screen.getByText(/Type/));
-    fireEvent.click(status);
+    const status = await waitFor(() => screen.getAllByText(/Type/));
+    fireEvent.click(status[0]);
     const paid = await waitFor(() => screen.getAllByText(/Payroll/));
     fireEvent.click(paid[0]);
   });
 
   test("Clear filters clickable", async () => {
-    const status = await waitFor(() => screen.getByText(/Type/));
-    fireEvent.click(status);
+    const status = await waitFor(() => screen.getAllByText(/Type/));
+    fireEvent.click(status[0]);
     const paid = await waitFor(() => screen.getAllByText(/Payroll/));
     fireEvent.click(paid[0]);
     const clear = await waitFor(() => screen.getByText(/Clear Filters/));

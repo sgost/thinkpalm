@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getHeaders } from "../../urls/urls";
 
-const getRequest = (url: any, token: any, cid?: any, isClient: any, setLoader:any) => {
+const getRequest = (url: any, token: any, cid?: any, isClient: any, setLoader:any, setDropdownsDisableInStarting: any) => {
   const [data, setData] = useState([]);
 
   const headers = {
@@ -17,6 +17,7 @@ const getRequest = (url: any, token: any, cid?: any, isClient: any, setLoader:an
         .then((res: any) => {
           setData(res);
           setLoader(false)
+          setDropdownsDisableInStarting(false)
         })
         .catch((e: any) => {
           console.log("error", e);
