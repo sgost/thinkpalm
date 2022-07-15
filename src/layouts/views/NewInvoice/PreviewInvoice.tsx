@@ -419,7 +419,10 @@ const PreviewInvoice = ({
                       {apiData?.data?.invoice?.customerName}
                     </p>
                     <p className="newInvoiceAddress">
-                      {addressData?.data?.billingAddress?.street}
+                      {addressData?.data?.billingAddress?.street1}
+                    </p>
+                    <p className="newInvoiceAddress">
+                      {addressData?.data?.billingAddress?.street2}
                     </p>
                     <p className="address">
                       {addressData?.data?.billingAddress?.city}
@@ -428,7 +431,8 @@ const PreviewInvoice = ({
                       {addressData?.data?.billingAddress?.state}
                     </p>
                     <p className="address">
-                      {addressData?.data?.billingAddress?.country}
+                      {addressData?.data?.billingAddress?.country},{" "}
+                      {addressData?.data?.billingAddress?.postalCode}
                     </p>
                   </div>
                   <div>
