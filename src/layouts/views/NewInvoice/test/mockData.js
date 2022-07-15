@@ -10630,14 +10630,20 @@ export const mockapidata = {
         receivableAccounts: [
           {
             value: 4,
-            text: "HSBC(USA)3371-USD",
+            benefeciaryAddress: {street1: "4th Floor Cordy House", street2: "87-95 Curtain Road", city: "London", state: "London"},
+           benefeciaryName: "Atlas Technology Solutions UK Limited",
+           branchName: "",
+            accountNumber: "123456789",
+            text: "Bank of UK (GBP)",
             order: 4,
+            country: "UK",
+            currency:'GBP',
             isActive: true,
             id: "87cdcb34-b4e7-4c00-a006-2544918fa71b",
-            bankName: null,
             ifscCode: null,
             swiftCode: null,
           },
+    
         ],
       },
       {
