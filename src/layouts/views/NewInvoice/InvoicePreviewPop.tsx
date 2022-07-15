@@ -150,6 +150,21 @@ const InvoicePreviewPop = ({
                   <p className="creditMemoInvoiceValue">
                     {invoiceData?.invoiceFrom?.companyName}
                   </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.addressLine1}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.addressLine2}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.city}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.state}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.country}
+                  </p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">To</p>
