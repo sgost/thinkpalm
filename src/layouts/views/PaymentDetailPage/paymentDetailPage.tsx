@@ -1148,9 +1148,10 @@ const PaymentDetailPage = () => {
                                     id="fullAmt"
                                     checked={isFullAmount}
                                     label="Full Amount"
-                                    onChange={(e: any) =>
-                                      setIsFullAmount(e.target.checked)
-                                    }
+                                    onClick={()=> setIsFullAmount(!isFullAmount)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                                    // onChange={(e: any) =>
+                                    //   setIsFullAmount(e.target.checked)
+                                    // }
                                   />
                                 </div>
                               ) : (

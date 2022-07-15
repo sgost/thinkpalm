@@ -230,9 +230,10 @@ export default function NotesWidget(props: any) {
               <div className="btnContainercheckbox">
                 <div className="check_wrapper">
                   <Checkbox
-                    onChange={(e: any) => {
-                      setIsVisibleToCustomer(e.target.checked);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setIsVisibleToCustomer(e.target.checked);
+                    // }}
+                    onClick={()=> setIsVisibleToCustomer(!isVisibleToCustomer)} //changing from onChange to onClick due atlast ui kit causing issue in latest
                     checked={isVisibleToCustomer}
                   />
                   <label
@@ -245,9 +246,10 @@ export default function NotesWidget(props: any) {
                 <div className="check_wrapper">
                   <Checkbox
                     label="Export to Quickbooks"
-                    onChange={(e: any) => {
-                      setIsExportToQb(e.target.checked);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setIsExportToQb(e.target.checked);
+                    // }}
+                    onClick={()=> setIsExportToQb(!isExportToQb)} //changing from onChange to onClick due atlast ui kit causing issue in latest
                     checked={isExportToQb}
                   />
                   <label
@@ -260,9 +262,10 @@ export default function NotesWidget(props: any) {
                 <div className="check_wrapper">
                   <Checkbox
                     label="Visible on PDF Invoice"
-                    onChange={(e: any) => {
-                      setisVisibleOnPDFInvoice(e.target.checked);
-                    }}
+                    // onChange={(e: any) => {
+                    //   setisVisibleOnPDFInvoice(e.target.checked);
+                    // }}
+                    onClick={()=> setisVisibleOnPDFInvoice(!isVisibleOnPDFInvoice)} //changing from onChange to onClick due atlast ui kit causing issue in latest
                     checked={isVisibleOnPDFInvoice}
                   />
                   <label
