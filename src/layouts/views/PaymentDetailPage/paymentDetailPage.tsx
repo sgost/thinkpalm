@@ -17,6 +17,7 @@ import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
 import { format } from "date-fns";
 import { sharedBreadCrumbs } from "../../../sharedColumns/sharedSteps";
+import { Loader } from "../../../components/Comman/Utils/utils";
 
 const PaymentDetailPage = () => {
   const state: any = useLocation();
@@ -78,6 +79,7 @@ const PaymentDetailPage = () => {
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
   const [isSaveBtnDisable, _setisSaveBtnDisable] = useState(false)
+  const [isOverlayLoader, setIsOverlayLoader] = useState(false)
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -561,6 +563,8 @@ const PaymentDetailPage = () => {
   };
 
   const handleSave = () => {
+
+    setIsOverlayLoader(true)
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
       return e.id;
@@ -617,8 +621,12 @@ const PaymentDetailPage = () => {
                     ?.split(" ")[1]
                     .replace(",", "")
                 )
-                : parseFloat(totals[i].text.substring(1))
-              : parseFloat(totals[i].text.substring(1)),
+                : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ?
+                    parseFloat(totals[i].text.substring(1)) :
+                    parseFloat(totals[i].text)
+              : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ? 
+                  parseFloat(totals[i].text.substring(1)) :
+                  parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
           currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
             ?.value,
@@ -656,7 +664,7 @@ const PaymentDetailPage = () => {
         Payments: arrData,
       };
     }
-
+    
     axios({
       method: "POST",
       url: urls.savePayments,
@@ -668,6 +676,7 @@ const PaymentDetailPage = () => {
       data: data,
     })
       .then((res) => {
+        setIsOverlayLoader(false)
         if (res.status == 200) {
           if (state.state.inveoicesData.length > 1) {
             navigate("/pay");
@@ -691,12 +700,10 @@ const PaymentDetailPage = () => {
         }
       })
       .catch((err) => {
+        setIsOverlayLoader(false)
         console.log(err);
       });
   };
-
-
-  console.log("state", state);
 
   const breadcrumbsLabel = () => {
     return state.state.inveoicesData.map((item: any) => {
@@ -1392,6 +1399,7 @@ const PaymentDetailPage = () => {
           </div>
         </Modal>
       </div>
+      {isOverlayLoader && <Loader isOverlay />}
     </div>
   );
 };

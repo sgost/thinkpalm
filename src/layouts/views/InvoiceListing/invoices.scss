@@ -121,6 +121,39 @@
         }
       }
 
+      .disableSearch {
+        padding: 0px 0.2778rem 0px 1.1111rem;
+        align-items: center;
+        border-radius: 0.222rem;
+        cursor: pointer;
+        display: flex;
+        font-size: 0.778rem;
+        height: 2.778rem;
+        position: relative;
+        width: 15.1111rem;
+        z-index: 998;
+        pointer-events: none;
+        opacity: 0.7;
+        background: #f5f5f6!important;
+        border: 1px solid #ebebed!important;
+        svg {
+        width: 1.3333rem;
+        height: 1.3333rem;
+        }
+        .input {
+        border-style: hidden;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 140%;
+        display: flex;
+        align-items: center;
+        color: #373636;
+        margin: 0px 0.4444rem;
+        height: 2.188rem;
+        width: 100%;
+        }
+        }
+
       .pickers {
         display: flex;
         justify-content: space-between;
