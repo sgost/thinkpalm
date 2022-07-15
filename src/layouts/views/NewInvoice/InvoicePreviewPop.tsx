@@ -178,8 +178,10 @@ const InvoicePreviewPop = ({
                     {billingData?.shippingAddress?.street2}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.state},{" "}
-                    {billingData?.shippingAddress?.city}
+                  {billingData?.shippingAddress?.city}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {billingData?.shippingAddress?.state}       
                   </p>
                   <p className="creditMemoInvoiceAddress">
                     {billingData?.shippingAddress?.country},{" "}

@@ -2076,17 +2076,20 @@ export default function InvoiceDetails() {
                   {topPanel.fromAddress?.city}
                 </p>
                 <p className="address">
-                  {topPanel.fromAddress?.country}
+                  {topPanel.fromAddress?.state}
                 </p>
                 <p className="address">
-                  {addressData?.data?.billingAddress?.country}
+                  {topPanel.fromAddress?.country}
                 </p>
               </div>
               <div className="divContainer">
                 <p className="heading">To</p>
                 <p className="value">{topPanel.to}</p>
                 <p className="address">
-                  {addressData?.data?.billingAddress?.street}
+                  {addressData?.data?.billingAddress?.street1}
+                </p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.street2}
                 </p>
                 <p className="address">
                   {addressData?.data?.billingAddress?.city}
@@ -2095,7 +2098,8 @@ export default function InvoiceDetails() {
                   {addressData?.data?.billingAddress?.state}
                 </p>
                 <p className="address">
-                  {addressData?.data?.billingAddress?.country}
+                  {addressData?.data?.billingAddress?.country},{" "}
+                  {addressData?.data?.billingAddress?.postalCode}
                 </p>
                 {missTransType != 7 && (
                   <>
