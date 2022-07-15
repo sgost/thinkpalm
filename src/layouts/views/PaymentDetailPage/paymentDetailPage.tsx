@@ -1073,7 +1073,7 @@ const PaymentDetailPage = () => {
                                       <span>Invoice Number</span>
                                       <input
                                         value={invoiceNumber}
-                                        name="Reference No"
+                                        name="Invoice No"
                                         type="number"
                                         placeholder="Enter Invoice Number"
                                         min="0"
