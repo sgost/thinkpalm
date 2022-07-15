@@ -10,7 +10,7 @@ interface Iprops {
   handleDropOptionClick: Function;
 }
 
-export default function DatepickerDropdown({
+export default function   DatepickerDropdown({
   title,
   isOpen,
   setIsOpen,
@@ -20,6 +20,7 @@ export default function DatepickerDropdown({
   setDateFrom,
   selectedDate,
   setSelectedDate,
+  dropdownsDisableInStarting
 }: any) {
   const displayDate = () => {
     if (selectedDate.startDate && selectedDate.endDate) {
@@ -74,7 +75,7 @@ export default function DatepickerDropdown({
     <div
       ref={wrapperRef}
       data-testid="datedd"
-      className={`dropdownContainer ${isOpen && "dateRangePickerdropdownActive"
+      className={dropdownsDisableInStarting ? "dateDisable" : `dropdownContainer ${isOpen && "dateRangePickerdropdownActive"
         }`}
     >
       <span className="title">{title}</span>
