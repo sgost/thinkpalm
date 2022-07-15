@@ -292,6 +292,7 @@ const NewInvoice = () => {
     typeId: "",
     yearId: "",
     monthId: "",
+    invoicer: ""
   });
 
   //flag to stop multiple post calls for invoice Creation
