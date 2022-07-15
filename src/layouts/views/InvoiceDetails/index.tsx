@@ -1976,8 +1976,7 @@ export default function InvoiceDetails() {
                   }}
                   handleOutsideClick={() => setIsDropdownOpen(false)}
                   onChange={({ value }: any) => {
-                    console.log("selected", value);
-                    setIsCPLoader(true);
+                    setIsCPLoader(value === "pdf");
                     const headers = {
                       headers: getHeaders(tempToken, cid, isClient),
                     };
