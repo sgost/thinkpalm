@@ -127,8 +127,38 @@ const NewInvoice = () => {
   const [YearOptions, setYearOptions] = useState([
     {
       isSelected: false,
+      label: CurrentYear - 1,
+      value: CurrentYear - 1,
+    },
+    {
+      isSelected: false,
       label: CurrentYear,
       value: CurrentYear,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 1,
+      value: CurrentYear + 1,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 2,
+      value: CurrentYear + 2,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 3,
+      value: CurrentYear + 3,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 4,
+      value: CurrentYear + 4,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 5,
+      value: CurrentYear + 5,
     },
   ]);
 
@@ -280,6 +310,30 @@ const NewInvoice = () => {
       },
     ]);
   }, []);
+
+  useEffect(() => {
+    let monthObj: any = {}
+    let yearObj: any = {}
+
+    MonthOptions?.map((month:any) => {
+      if(month.value == new Date().getMonth() + 1) {
+        month.isSelected = true
+        monthObj = month
+      }
+    })
+
+    YearOptions?.map((year:any) => {
+      if(year.value == new Date().getFullYear()) {
+        year.isSelected = true
+        yearObj = year
+      }
+    })
+
+    setStepperOneData({...stepperOneData,
+         month: monthObj.label, monthId: monthObj.value, 
+         year: yearObj.label, yearId: yearObj.value 
+    })
+  }, [])
 
   //stepper one  Data
   const [stepperOneData, setStepperOneData] = useState({

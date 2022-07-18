@@ -572,6 +572,7 @@ const NewInvoiceCreation = ({
               <div className="row">
                 <div className="col-md-4 select-component">
                   <Dropdown
+                  isDisabled={!stepperOneData?.customer}
                     handleDropOptionClick={(item: any) => {
                       handleDropOption(
                         item,
