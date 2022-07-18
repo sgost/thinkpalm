@@ -113,8 +113,6 @@ export const getPermissions = (transactionType: any, permission: string) => {
 export const getManualInvoiceCreationPermissions = (transactionType: any, permission: string) => {
   const decTok = getDecodedToken();
 
-  console.log( decTok , transactionType , permission , decTok.ProformaInvoiceCreation.includes(permission) )
-
   switch (transactionType) {
     case 'Payroll':
       return decTok?.ManualPayrollInvoiceCreation?.includes(permission);

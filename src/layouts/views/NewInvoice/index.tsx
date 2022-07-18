@@ -729,6 +729,7 @@ const NewInvoice = () => {
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
       BankingDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.Id,
       CurrencyId: currencyOptions.find((e: any) => e.isSelected)?.value,
+      PaymentTerms: paymentTermsOptions.find((e: any) => e.isSelected)?.value || null
     };
 
     if (!isInvoiceCreated) {
