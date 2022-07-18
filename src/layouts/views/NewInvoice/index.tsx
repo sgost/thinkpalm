@@ -665,14 +665,7 @@ const NewInvoice = () => {
       balance += parseFloat(item.amount) * parseFloat(item.quantity);
     });
 
-    const payTerms =
-      stepperOneData.type === "Credit Memo"
-        ? 7
-        : parseInt(
-          paymentTermsOptions
-            .find((e: any) => e.isSelected)
-            ?.text.split(" ")[0]
-        );
+    const payTerms = parseInt(paymentTermsOptions.find((e: any) => e.isSelected)?.text.split(" ")[0]);
 
     let dueDate = new Date(invoiceDate);
     let result = dueDate.setDate(invoiceDate.getDate() + payTerms + 1);
@@ -729,7 +722,11 @@ const NewInvoice = () => {
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
       BankDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.Id,
       CurrencyId: currencyOptions.find((e: any) => e.isSelected)?.value,
+      PaymentTerms: paymentTermsOptions.find((e: any) => e.isSelected)?.value
     };
+
+    console.log(data)
+    return
 
     if (!isInvoiceCreated) {
       axios({

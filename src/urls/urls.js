@@ -6,7 +6,7 @@ const validateIsURLValid = () => {
   ) {
     return process?.env?.ATLAS_ENVIRONMENT;
   }
-  return "dev";
+  return "qa";
 };
 /* istanbul ignore next */
 
