@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
+import { BreadCrumb, Layouts, Progress, Button, ToastNotification} from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
 import InvoicePreviewPop from "./InvoicePreviewPop";
 import ProductInvoiceCreation from "./ProductInvoiceCreation";
@@ -24,6 +24,7 @@ import {
 } from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
+import { getManualInvoiceCreationPermissions } from "../../../components/Comman/Utils/utils";
 const NewInvoice = () => {
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
@@ -58,6 +59,7 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
+  const [isToaster, setIsToaster] = useState('')
 
   const navigate = useNavigate();
 
@@ -771,6 +773,29 @@ const NewInvoice = () => {
     }
   };
 
+  const isNextButtonVisiable = ()=> {
+    if(stepsCount == 2 && !getManualInvoiceCreationPermissions(stepperOneData?.type, 'Save')){
+      return false
+    }
+    if(stepsCount == 4){
+      return false
+    }
+
+    return true
+  }
+
+  const isPreviousButtonVisiable = () => {
+
+    if(stepsCount == 3 && getManualInvoiceCreationPermissions(stepperOneData?.type, 'Edit')){
+      return true
+    }
+    if(stepsCount == 2 && getManualInvoiceCreationPermissions(stepperOneData?.type, 'Edit')){
+      return true
+    }
+
+    return false
+  }
+
   return (
     <div className="newinvoice-container">
       <div className="breadcrumbs">
@@ -874,22 +899,24 @@ const NewInvoice = () => {
       <div
         className={stepsCount === 1 ? "Stepper-buttons" : "stepper-two-buttons"}
       >
-        {(stepsCount == 2 || stepsCount == 3) && (
-          <Button
-            data-testid="back-button"
-            icon={{
-              icon: "chevronLeft",
-              size: "medium",
-              color: "#fff",
-            }}
-            handleOnClick={() => {
-              setStepsCount(stepsCount - 1);
-            }}
-            className="primary-blue medium previous-button"
-            label="Previous"
-          />
-        )}
-        {stepsCount != 4 && (
+        <div>
+          {isPreviousButtonVisiable() && (
+            <Button
+              data-testid="back-button"
+              icon={{
+                icon: "chevronLeft",
+                size: "medium",
+                color: "#fff",
+              }}
+              handleOnClick={() => {
+                setStepsCount(stepsCount - 1);
+              }}
+              className="primary-blue medium previous-button"
+              label="Previous"
+            />
+          )}
+        </div>
+        {isNextButtonVisiable() && (
           <Button
             disabled={
               stepperOneData?.type === "Payroll"
@@ -910,6 +937,13 @@ const NewInvoice = () => {
           />
         )}
       </div>
+
+      {stepsCount == 2 && !getManualInvoiceCreationPermissions(stepperOneData?.type, 'Save') && 
+        <ToastNotification
+        showNotification
+        toastMessage='You do not have save permission'
+        toastPosition="bottom-right"
+      />}
     </div>
   );
 };
