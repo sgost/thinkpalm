@@ -243,22 +243,24 @@ export default function NotesWidget(props: any) {
                     Visible to Customer
                   </label>
                 </div>
-                <div className="check_wrapper">
-                  <Checkbox
-                    label="Export to Quickbooks"
-                    // onChange={(e: any) => {
-                    //   setIsExportToQb(e.target.checked);
-                    // }}
-                    onClick={()=> setIsExportToQb(!isExportToQb)} //changing from onChange to onClick due atlast ui kit causing issue in latest
-                    checked={isExportToQb}
-                  />
-                  <label
-                    className="check_label"
-                    onClick={() => setIsExportToQb(!isExportToQb)}
-                  >
-                    Export to Quickbooks
-                  </label>
-                </div>
+                {getPermissions(transactionType, "Export") && 
+                  <div className="check_wrapper">
+                    <Checkbox
+                      label="Export to Quickbooks"
+                      // onChange={(e: any) => {
+                      //   setIsExportToQb(e.target.checked);
+                      // }}
+                      onClick={()=> setIsExportToQb(!isExportToQb)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                      checked={isExportToQb}
+                    />
+                    <label
+                      className="check_label"
+                      onClick={() => setIsExportToQb(!isExportToQb)}
+                    >
+                      Export to Quickbooks
+                    </label>
+                  </div>
+                  }
                 <div className="check_wrapper">
                   <Checkbox
                     label="Visible on PDF Invoice"
