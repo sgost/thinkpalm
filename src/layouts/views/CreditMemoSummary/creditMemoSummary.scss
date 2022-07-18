@@ -20,6 +20,12 @@
           width: fill-available;
         }
       }
+      .description {
+        span.form-label:after {
+          content: "*";
+          color: red;
+        }
+      }
       .ui-datepicker-req {
         span.react-datepicker__label:after {
           content: "*";
