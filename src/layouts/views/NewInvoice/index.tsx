@@ -720,7 +720,7 @@ const NewInvoice = () => {
       CreatedBy: stepperOneData?.customerId, //
       ModifiedBy: stepperOneData?.customerId, //
       InvoiceDocuments: [],
-      InvoiceItems: invoiceItems,
+      invoiceItems: invoiceItems,
       InvoiceNotes: [],
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
