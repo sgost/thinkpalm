@@ -623,7 +623,8 @@ export default function CreditMemoSummary(props: any) {
                         newAmount == "0" ||
                         newAmount == "" ||
                         !newCountry ||
-                        !newProduct
+                        !newProduct || 
+                        !newDescription
                       }
                     />
                   </>
