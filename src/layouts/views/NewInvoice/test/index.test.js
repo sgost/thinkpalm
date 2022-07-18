@@ -506,9 +506,6 @@ describe("Stepper 2", () => {
     expect(showHideButton1).toBeInTheDocument();
     fireEvent.click(showHideButton1);
 
-    const amount1 = await screen.findAllByText(/75000/);
-    expect(amount1[0]).toBeInTheDocument();
-
     const labelText1 = await screen.findAllByLabelText("");
     fireEvent.click(labelText1[1]);
 

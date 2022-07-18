@@ -94,7 +94,7 @@ export default function FileUploadWidget(props: any) {
                   ],
                 }}
                 label={{
-                  footer: "235 MB",
+                  // footer: "", //removing 235 MB untill api provides it
                   header: item.document.documentName,
                 }}
               />
