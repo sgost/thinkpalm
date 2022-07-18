@@ -618,7 +618,6 @@ export default function InvoiceListing() {
       <div className="container">
         <div className="listingBtnContainer">
           <div className="add_payment_invoice">
-            {permission.InvoiceList.includes("AddPayment") && (
               <>
                 {isAddpaymentDisable ? (
                   <Button
@@ -662,7 +661,6 @@ export default function InvoiceListing() {
                   </ButtonDropdown>
                 )}
               </>
-            )}
           </div>
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
