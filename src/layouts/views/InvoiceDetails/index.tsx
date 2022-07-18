@@ -2042,7 +2042,7 @@ export default function InvoiceDetails() {
                   {(creditMemoData != null && creditMemoData?.qbInvoiceNo > 0) || 
                   (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) && (
                       <p className="qbo">
-                        QBO No. {creditMemoData?.qbInvoiceNo}
+                        QBO No. {creditMemoData?.qbInvoiceNo || apiData?.data?.invoice?.qbInvoiceNo}
                       </p>
                     )}
                 </div>
