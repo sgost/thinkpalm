@@ -59,7 +59,6 @@ const NewInvoice = () => {
   const [newArrPushs, setNewArrPushs] = useState<any>([]);
   const [Opens, setOpens] = useState(false);
   const [invoiceId, setInvoiceId] = useState();
-  const [isToaster, setIsToaster] = useState('')
 
   const navigate = useNavigate();
 
