@@ -82,7 +82,7 @@ export default function InvoiceDetails() {
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
   const [sentPopup, setSentPopup] = useState(true);
-  const [missTransType] = useState(state.transactionType); //To change the the invoice transictionType number
+  const [missTransType] = useState(state?.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -987,8 +987,10 @@ export default function InvoiceDetails() {
               setApprovalMsg("");
             }, 3000);
           }
+          initialApiCall()
         } else {
           setApprovalMsg("Invoice approve failed");
+          initialApiCall()
         }
       })
       .catch((e: any) => {
@@ -1295,6 +1297,7 @@ export default function InvoiceDetails() {
       setIsOverlayLoader(false)
       if (resp) {
         handleApproveInvoice(8);
+        initialApiCall()
       }
     }).catch( err => {
       setIsOverlayLoader(false)
@@ -2033,7 +2036,8 @@ export default function InvoiceDetails() {
                     <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                     <p>{getTransactionLabel()}</p>
                   </div>
-                  {creditMemoData != null && creditMemoData?.qbInvoiceNo > 0 && (
+                  {(creditMemoData != null && creditMemoData?.qbInvoiceNo > 0) || 
+                  (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) && (
                       <p className="qbo">
                         QBO No. {creditMemoData?.qbInvoiceNo}
                       </p>
