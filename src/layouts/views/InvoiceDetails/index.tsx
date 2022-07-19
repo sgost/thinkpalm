@@ -495,6 +495,7 @@ export default function InvoiceDetails() {
               date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
               customerEmail: log?.email,
               description: log?.note,
+              noteType: log?.noteType
             }));
             setLogsData([...logsDetails]);
           })
@@ -973,6 +974,7 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         setIsOverlayLoader(false);
+        initialApiCall(); //calling API to update change log
         setDeleteDisableButtons(false);
         if (res?.status === 201) {
           setCurrentStatusValue(res?.data?.status);
@@ -2039,8 +2041,8 @@ export default function InvoiceDetails() {
                     <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                     <p>{getTransactionLabel()}</p>
                   </div>
-                  {(creditMemoData != null && creditMemoData?.qbInvoiceNo > 0) || 
-                  (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) && (
+                  {(creditMemoData != null && creditMemoData?.qbInvoiceNo > 0) ||
+                    (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) && (
                       <p className="qbo">
                         QBO No. {creditMemoData?.qbInvoiceNo || apiData?.data?.invoice?.qbInvoiceNo}
                       </p>

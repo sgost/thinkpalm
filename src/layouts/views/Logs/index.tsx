@@ -19,7 +19,7 @@ const LogsCompo = (props: any) => {
         initail,
         limitFor } = props;
 
-    const changeLogsFilter = changeLogs.filter((e: any) => e.description !== '' && changeLogs);
+    const changeLogsFilter = changeLogs.filter((e: any) => (e.description !== '' && e.noteType == 2) && changeLogs);
 
     return (
         <Cards className="invoice-logs">
