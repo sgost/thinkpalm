@@ -276,8 +276,8 @@ export default function CreditMemoSummary(props: any) {
         };
       })
     );
-    setNewQuantity(0);
-    setNewAmount(0);
+    setNewQuantity(null);
+    setNewAmount(null);
     setNewTotalAmount("");
   };
   /* istanbul ignore next */
