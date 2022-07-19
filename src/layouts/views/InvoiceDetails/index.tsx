@@ -974,7 +974,6 @@ export default function InvoiceDetails() {
     })
       .then((res: any) => {
         setIsOverlayLoader(false);
-        initialApiCall(); //calling API to update change log
         setDeleteDisableButtons(false);
         if (res?.status === 201) {
           setCurrentStatusValue(res?.data?.status);
@@ -993,10 +992,10 @@ export default function InvoiceDetails() {
               setApprovalMsg("");
             }, 3000);
           }
-          initialApiCall()
+          initialApiCall();
         } else {
           setApprovalMsg("Invoice approve failed");
-          initialApiCall()
+          initialApiCall();
         }
       })
       .catch((e: any) => {

@@ -526,7 +526,7 @@ const RefundDetailContainer = ({
             ...topPanel,
             open: res?.data?.invoice?.invoiceBalance,
           });
-          if(res?.data?.invoice?.invoiceBalance === 0) {
+          if (res?.data?.invoice?.invoiceBalance === 0) {
             setStatus("Applied")
             // setCurrentStatusValue(statusValues.paid)
           }
@@ -577,547 +577,547 @@ const RefundDetailContainer = ({
 
   return (
     <>
-    {
-      loading ?
-      <Loader />
-      :
-    <div className="paymentDisplayContainer">
-      {paymentApiData &&
-        paymentApiData?.map((item: any, key: any) => {
-          return (
-            <div className="paymentInstallmentContainer">
-              <div
-                className={
-                  key == 0
-                    ? "paymentPageTitleHeader"
-                    : "paymentPageTitleHeaderNoTitle"
-                }
-              >
-                {key == 0 ? <p>Refund Details</p> : <></>}
-                <div className="topButtonActions">
-                  {permission?.InvoiceDetails.includes("Edit") &&
-                    refundEditChecked != key &&
-                    currentStatusValue === statusValues.paid && (
-                      <div className="paymentDetailEdit">
-                        <Button
-                          disabled={refundEditButtonDisable}
-                          className="primary-blue medium"
-                          icon={{
-                            color: "#fff",
-                            icon: "edit",
-                            size: "small",
-                          }}
-                          label="Edit"
-                          handleOnClick={() => {
-                            setRefundEditButtonDisable(true);
-                            setRefundEditChecked(key);
-                          }}
-                        />
-                      </div>
-                    )}
-
-                  {refundEditChecked == key && (
-                    <div className="paymentPageCancelSave">
-                      <div className="paymentDetailCancel">
-                        <Button
-                          className="secondary-btn"
-                          label="Cancel Edit"
-                          handleOnClick={() => {
-                            const headers = {
-                              headers: getHeaders(tempToken, cid, "false"),
-                            };
-
-                            let paymentdetailApi = getPaymentDetailApi(id);
-
-                            axios
-                              .get(paymentdetailApi, headers)
-                              .then((res: any) => {
-                                setPaymentDetailData(res?.data?.payments);
-                                setAddRefundSectionCheck(false);
-                                setRefundEditChecked(null);
-                                let obj = { ...referenceNo };
-                                obj[key] = res.data?.payments[key].referenceNo;
-                                setReferenceNo(obj);
-                                let objAm = { ...refundEditAmount };
-                                objAm[key] =
-                                  res.data?.payments[key].totalAmount;
-                                setRefundEditAmount(objAm);
-                                setRefundEditButtonDisable(false);
-                                setTopPanel({
-                                  ...topPanel,
-                                  open: res?.data?.invoice?.invoiceBalance,
-                                });
-                              })
-                              .catch((e: any) => {
-                                console.log("error e", e);
-                              });
-                          }}
-                        />
-                      </div>
-
-                      <div className="paymentDetailSave">
-                        <Button
-                          disabled={EditInstallmentSaveDisable(key)}
-                          className="primary-blue medium"
-                          label="Save Changes"
-                          handleOnClick={() => {
-                            editRefundChanges(item, key);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="paymentInstallmentUpperBlock">
-                <div className="paymentInstallmentDatepicker">
-                  <DatePicker
-                    label="Payment Date"
-                    value={moment(item.paymentDate).format("DD MMM YYYY")}
-                    disabled={refundEditChecked != key}
-                    required
-                    handleDateChange={(date: any) => {
-                      setRefundPaymentDate(date);
-                      paymentApiData[key].paymentDate = date;
-                      setPaymentApiData([...paymentApiData]);
-                    }}
-                  />
-                </div>
-
-                <div className="paymentInstallmentContainerDropdowns">
-                  <Dropdown
-                    handleDropdownClick={(b: boolean) => {
-                      b
-                        ? setRefundCurrencyEditOpen(key)
-                        : setRefundCurrencyEditOpen(paymentApiData.length + 1);
-                    }}
-                    handleDropOptionClick={(data: any) => {
-                      handleRefundDropOptionData(
-                        data,
-                        refundCurrencyDropdownOptions,
-                        setRefundCurrencyDropdownOption,
-                        setRefundCurrencyEditOpen,
-                        key
-                      );
-                    }}
-                    options={refundCurrencyDropdownOptions[key] || []}
-                    isOpen={refundCurrencyEditOpen == key}
-                    isDisabled={refundEditChecked != key}
-                    title="Currency"
-                  />
-                </div>
-
-                <div className="paymentInstallmentContainerDropdowns">
-                  <Dropdown
-                    handleDropdownClick={(b: boolean) => {
-                      b
-                        ? setRefundLocationEditOpen(key)
-                        : setRefundLocationEditOpen(paymentApiData.length + 1);
-                    }}
-                    handleDropOptionClick={(data: any) => {
-                      handleRefundDropOptionData(
-                        data,
-                        refundLocationDropdownOptions,
-                        setRefundLocationDropdownOption,
-                        setRefundLocationEditOpen,
-                        key
-                      );
-                    }}
-                    options={refundLocationDropdownOptions[key] || []}
-                    isOpen={refundLocationEditOpen == key}
-                    isDisabled={refundEditChecked != key}
-                    title="Location"
-                  />
-                </div>
-
-                <div className="paymentInstallmentContainerDropdowns">
-                  <div className="referenceNoInput">
-                    <span
+      {
+        loading ?
+          <Loader />
+          :
+          <div className="paymentDisplayContainer">
+            {paymentApiData &&
+              paymentApiData?.map((item: any, key: any) => {
+                return (
+                  <div className="paymentInstallmentContainer">
+                    <div
                       className={
-                        refundEditChecked != key ? "disable-label" : ""
+                        key == 0
+                          ? "paymentPageTitleHeader"
+                          : "paymentPageTitleHeaderNoTitle"
                       }
                     >
-                      Reference No
-                    </span>
-                    <input
-                      data-testid={item.referenceNo}
-                      key={item.referenceNo}
-                      className={
-                        refundEditChecked != key ? "disable-input" : ""
-                      }
-                      value={referenceNo && referenceNo[key]}
-                      defaultValue={item.referenceNo}
-                      name="Reference No"
-                      type="text"
-                      placeholder="Enter reference No"
-                      min="0"
-                      pattern="[+-]?\d+(?:[.,]\d+)?"
-                      onKeyDown={(e) => {
-                        ["e", "E", "+", "-", "."].includes(e.key) &&
-                          e.preventDefault();
-                      }}
-                      disabled={refundEditChecked != key}
-                      onChange={(e) => {
-                        let obj = { ...referenceNo };
-                        obj[key] = e.target.value;
-                        setReferenceNo(obj);
-                      }}
-                    />
+                      {key == 0 ? <p>Refund Details</p> : <></>}
+                      <div className="topButtonActions">
+                        {permission?.InvoiceDetails.includes("Edit") &&
+                          refundEditChecked != key &&
+                          currentStatusValue === statusValues.paid && (
+                            <div className="paymentDetailEdit">
+                              <Button
+                                disabled={refundEditButtonDisable}
+                                className="primary-blue medium"
+                                icon={{
+                                  color: "#fff",
+                                  icon: "edit",
+                                  size: "small",
+                                }}
+                                label="Edit"
+                                handleOnClick={() => {
+                                  setRefundEditButtonDisable(true);
+                                  setRefundEditChecked(key);
+                                }}
+                              />
+                            </div>
+                          )}
+
+                        {refundEditChecked == key && (
+                          <div className="paymentPageCancelSave">
+                            <div className="paymentDetailCancel">
+                              <Button
+                                className="secondary-btn"
+                                label="Cancel Edit"
+                                handleOnClick={() => {
+                                  const headers = {
+                                    headers: getHeaders(tempToken, cid, "false"),
+                                  };
+
+                                  let paymentdetailApi = getPaymentDetailApi(id);
+
+                                  axios
+                                    .get(paymentdetailApi, headers)
+                                    .then((res: any) => {
+                                      setPaymentDetailData(res?.data?.payments);
+                                      setAddRefundSectionCheck(false);
+                                      setRefundEditChecked(null);
+                                      let obj = { ...referenceNo };
+                                      obj[key] = res.data?.payments[key].referenceNo;
+                                      setReferenceNo(obj);
+                                      let objAm = { ...refundEditAmount };
+                                      objAm[key] =
+                                        res.data?.payments[key].totalAmount;
+                                      setRefundEditAmount(objAm);
+                                      setRefundEditButtonDisable(false);
+                                      setTopPanel({
+                                        ...topPanel,
+                                        open: res?.data?.invoice?.invoiceBalance,
+                                      });
+                                    })
+                                    .catch((e: any) => {
+                                      console.log("error e", e);
+                                    });
+                                }}
+                              />
+                            </div>
+
+                            <div className="paymentDetailSave">
+                              <Button
+                                disabled={EditInstallmentSaveDisable(key)}
+                                className="primary-blue medium"
+                                label="Save Changes"
+                                handleOnClick={() => {
+                                  editRefundChanges(item, key);
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="paymentInstallmentUpperBlock">
+                      <div className="paymentInstallmentDatepicker">
+                        <DatePicker
+                          label="Payment Date"
+                          value={moment(item.paymentDate).format("DD MMM YYYY")}
+                          disabled={refundEditChecked != key}
+                          required
+                          handleDateChange={(date: any) => {
+                            setRefundPaymentDate(date);
+                            paymentApiData[key].paymentDate = date;
+                            setPaymentApiData([...paymentApiData]);
+                          }}
+                        />
+                      </div>
+
+                      <div className="paymentInstallmentContainerDropdowns">
+                        <Dropdown
+                          handleDropdownClick={(b: boolean) => {
+                            b
+                              ? setRefundCurrencyEditOpen(key)
+                              : setRefundCurrencyEditOpen(paymentApiData.length + 1);
+                          }}
+                          handleDropOptionClick={(data: any) => {
+                            handleRefundDropOptionData(
+                              data,
+                              refundCurrencyDropdownOptions,
+                              setRefundCurrencyDropdownOption,
+                              setRefundCurrencyEditOpen,
+                              key
+                            );
+                          }}
+                          options={refundCurrencyDropdownOptions[key] || []}
+                          isOpen={refundCurrencyEditOpen == key}
+                          isDisabled={refundEditChecked != key}
+                          title="Currency"
+                        />
+                      </div>
+
+                      <div className="paymentInstallmentContainerDropdowns">
+                        <Dropdown
+                          handleDropdownClick={(b: boolean) => {
+                            b
+                              ? setRefundLocationEditOpen(key)
+                              : setRefundLocationEditOpen(paymentApiData.length + 1);
+                          }}
+                          handleDropOptionClick={(data: any) => {
+                            handleRefundDropOptionData(
+                              data,
+                              refundLocationDropdownOptions,
+                              setRefundLocationDropdownOption,
+                              setRefundLocationEditOpen,
+                              key
+                            );
+                          }}
+                          options={refundLocationDropdownOptions[key] || []}
+                          isOpen={refundLocationEditOpen == key}
+                          isDisabled={refundEditChecked != key}
+                          title="Location"
+                        />
+                      </div>
+
+                      <div className="paymentInstallmentContainerDropdowns">
+                        <div className="referenceNoInput">
+                          <span
+                            className={
+                              refundEditChecked != key ? "disable-label" : ""
+                            }
+                          >
+                            Reference No
+                          </span>
+                          <input
+                            data-testid={item.referenceNo}
+                            key={item.referenceNo}
+                            className={
+                              refundEditChecked != key ? "disable-input" : ""
+                            }
+                            value={referenceNo && referenceNo[key]}
+                            defaultValue={item.referenceNo}
+                            name="Reference No"
+                            type="text"
+                            placeholder="Enter reference No"
+                            min="0"
+                            pattern="[+-]?\d+(?:[.,]\d+)?"
+                            onKeyDown={(e) => {
+                              ["e", "E", "+", "-", "."].includes(e.key) &&
+                                e.preventDefault();
+                            }}
+                            disabled={refundEditChecked != key}
+                            onChange={(e) => {
+                              let obj = { ...referenceNo };
+                              obj[key] = e.target.value;
+                              setReferenceNo(obj);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="paymentInstallmentLowerBlock">
+                      <div className="paymentInnerLowerBlock">
+                        <div className="paymentInstallmentContainerDropdowns">
+                          <Dropdown
+                            testId="deposite-bank"
+                            handleDropdownClick={(b: boolean) => {
+                              b
+                                ? setRefundDepositBankEditOpen(key)
+                                : setRefundDepositBankEditOpen(
+                                  paymentApiData.length + 1
+                                );
+                            }}
+                            handleDropOptionClick={(data: any) => {
+                              handleRefundDropOptionData(
+                                data,
+                                refundBankToDepositDropdownOptions,
+                                setRefundBankToDepositDropdownOption,
+                                setRefundDepositBankEditOpen,
+                                key
+                              );
+                            }}
+                            options={refundBankToDepositDropdownOptions[key] || []}
+                            isOpen={refundDepositBankEditOpen == key}
+                            isDisabled={refundEditChecked != key}
+                            title="Credited from bank"
+                          />
+                        </div>
+
+                        <div className="paymentInstallmentContainerDropdowns">
+                          <Dropdown
+                            handleDropdownClick={(b: boolean) => {
+                              b
+                                ? setPaymentMethodEditOpen(key)
+                                : setPaymentMethodEditOpen(paymentApiData.length + 1);
+                            }}
+                            handleDropOptionClick={(data: any) => {
+                              handleRefundDropOptionData(
+                                data,
+                                refundPaymentMethodDropdownOptions,
+                                setRefundPaymentMethodDropdownOption,
+                                setPaymentMethodEditOpen,
+                                key
+                              );
+                            }}
+                            options={refundPaymentMethodDropdownOptions[key] || []}
+                            isOpen={refundPaymentMethodEditOpen == key}
+                            isDisabled={refundEditChecked != key}
+                            title="Payment Method"
+                          />
+                        </div>
+
+                        <div className="paymentInstallmentContainerDropdowns">
+                          <div className="invoiceNumber">
+                            <span
+                              className={
+                                refundEditChecked != key ? "disable-label" : ""
+                              }
+                            >
+                              Invoice Number
+                            </span>
+                            <input
+                              data-testid={item.invoiceNumber}
+                              key={item.invoiceNumber}
+                              className={
+                                refundEditChecked != key ? "disable-input" : ""
+                              }
+                              value={invoiceNumber && invoiceNumber[key]}
+                              name="Reference No"
+                              type="number"
+                              placeholder="Enter Invoice Number"
+                              defaultValue={item.invoiceNumber}
+                              min="0"
+                              disabled={refundEditChecked != key}
+                              pattern="[+-]?\d+(?:[.,]\d+)?"
+                              onKeyDown={(e) => {
+                                ["e", "E", "+", "-", "."].includes(e.key) &&
+                                  e.preventDefault();
+                              }}
+                              onChange={(e) => {
+                                let obj = { ...invoiceNumber };
+                                obj[key] = e.target.value;
+                                setInvoiceNumber(obj);
+                              }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="PaymentPageTotalAmountInput">
+                          <div className="amountPaymentPageInput">
+                            <span
+                              className={
+                                refundEditChecked != key ? "disable-label" : ""
+                              }
+                            >
+                              Amount
+                            </span>
+                            <input
+                              data-testid="addAmount"
+                              key={item.totalAmount}
+                              defaultValue={item.totalAmount}
+                              value={refundEditAmount && refundEditAmount[key]}
+                              disabled={refundEditChecked != key}
+                              className={refundEditChecked != key ? "disable-input" : ""}
+                              type="number"
+                              placeholder="0"
+                              onChange={(e) => {
+                                const obj: any = { ...refundEditChecked };
+                                obj[key] = parseFloat(e.target.value);
+                                setRefundEditAmount(obj);
+                                setRefundEditDisableToggle(true)
+                              }}
+                              min="0"
+                              pattern="[+-]?\d+(?:[.,]\d+)?"
+                              onKeyDown={(e) => {
+                                ["e", "E", "+", "-"].includes(e.key) &&
+                                  e.preventDefault();
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="paymentLowerAmountBlock">
+                      <div className="refundPageTotalAmount">
+                        <p>Refund Amount</p>
+                        <div className="amountPaymentPage">
+                          {getBillingCurrency()}{" "}
+                          {refundEditAmount[key]
+                            ? toCurrencyFormat(refundEditAmount[key])
+                            : toCurrencyFormat(item.totalAmount)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+            {addRefundSectionCheck && (
+              <div className="paymentInstallmentContainer border-line">
+                <div className="paymentPageTitleHeaderNoTitle">
+                  <div className="topButtonActions">
+                    {addRefundSectionCheck && (
+                      <div className="paymentPageCancelSave">
+                        <div className="paymentDetailCancel">
+                          <Button
+                            className="secondary-btn"
+                            label="Cancel"
+                            handleOnClick={() => {
+                              setAddRefundSectionCheck(false);
+                              cleanNewRefundObject();
+                            }}
+                          />
+                        </div>
+                        <div className="paymentDetailSave">
+                          <Button
+                            className="primary-blue medium"
+                            label="Save"
+                            handleOnClick={saveRefundDetail}
+                            disabled={
+                              !refundNewPaymentDate ||
+                              !refundNewCurrency ||
+                              !refundNewLocation ||
+                              !refundNewDepositBank ||
+                              !refundNewPaymentMethod ||
+                              !refundAddAmount ||
+                              AddInstallmentSaveDisable()
+                            }
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
 
-              <div className="paymentInstallmentLowerBlock">
-                <div className="paymentInnerLowerBlock">
-                  <div className="paymentInstallmentContainerDropdowns">
-                    <Dropdown
-                      testId="deposite-bank"
-                      handleDropdownClick={(b: boolean) => {
-                        b
-                          ? setRefundDepositBankEditOpen(key)
-                          : setRefundDepositBankEditOpen(
-                              paymentApiData.length + 1
-                            );
+                <div className="paymentInstallmentUpperBlock">
+                  <div className="paymentInstallmentDatepicker">
+                    <DatePicker
+                      label="Payment Date"
+                      disabled={false}
+                      handleDateChange={(date: any) => {
+                        setRefundNewPaymentDate(date);
                       }}
-                      handleDropOptionClick={(data: any) => {
-                        handleRefundDropOptionData(
-                          data,
-                          refundBankToDepositDropdownOptions,
-                          setRefundBankToDepositDropdownOption,
-                          setRefundDepositBankEditOpen,
-                          key
-                        );
-                      }}
-                      options={refundBankToDepositDropdownOptions[key] || []}
-                      isOpen={refundDepositBankEditOpen == key}
-                      isDisabled={refundEditChecked != key}
-                      title="Credited from bank"
+                      required
                     />
                   </div>
 
                   <div className="paymentInstallmentContainerDropdowns">
                     <Dropdown
-                      handleDropdownClick={(b: boolean) => {
-                        b
-                          ? setPaymentMethodEditOpen(key)
-                          : setPaymentMethodEditOpen(paymentApiData.length + 1);
-                      }}
-                      handleDropOptionClick={(data: any) => {
-                        handleRefundDropOptionData(
-                          data,
-                          refundPaymentMethodDropdownOptions,
-                          setRefundPaymentMethodDropdownOption,
-                          setPaymentMethodEditOpen,
-                          key
-                        );
-                      }}
-                      options={refundPaymentMethodDropdownOptions[key] || []}
-                      isOpen={refundPaymentMethodEditOpen == key}
-                      isDisabled={refundEditChecked != key}
-                      title="Payment Method"
+                      testId="currencyOpen-id"
+                      handleDropdownClick={setRefundCurrencyOpen}
+                      handleDropOptionClick={refundCurrencyDropOptionClick}
+                      options={refundAddCurrencyDropdownOptions || []}
+                      isOpen={refundCurrencyOpen}
+                      isDisabled={false}
+                      title="Currency"
                     />
                   </div>
 
                   <div className="paymentInstallmentContainerDropdowns">
-                    <div className="invoiceNumber">
-                      <span
-                        className={
-                          refundEditChecked != key ? "disable-label" : ""
-                        }
-                      >
-                        Invoice Number
-                      </span>
+                    <Dropdown
+                      testId="locationOpen-id"
+                      handleDropdownClick={setRefundLocationOpen}
+                      handleDropOptionClick={refundLocationDropOptionClick}
+                      options={refundAddLocationDropdownOptions || []}
+                      isOpen={refundLocationOpen}
+                      isDisabled={false}
+                      title="Location"
+                    />
+                  </div>
+
+                  <div className="paymentInstallmentContainerDropdowns">
+                    <div className="referenceNoInput">
+                      <span>Reference No</span>
                       <input
-                        data-testid={item.invoiceNumber}
-                        key={item.invoiceNumber}
-                        className={
-                          refundEditChecked != key ? "disable-input" : ""
-                        }
-                        value={invoiceNumber && invoiceNumber[key]}
+                        value={refundNewReferenceNo}
                         name="Reference No"
                         type="number"
-                        placeholder="Enter Invoice Number"
-                        defaultValue={item.invoiceNumber}
+                        placeholder="Enter reference No"
                         min="0"
-                        disabled={refundEditChecked != key}
                         pattern="[+-]?\d+(?:[.,]\d+)?"
                         onKeyDown={(e) => {
                           ["e", "E", "+", "-", "."].includes(e.key) &&
                             e.preventDefault();
                         }}
                         onChange={(e) => {
-                          let obj = { ...invoiceNumber };
-                          obj[key] = e.target.value;
-                          setInvoiceNumber(obj);
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="PaymentPageTotalAmountInput">
-                    <div className="amountPaymentPageInput">
-                      <span
-                        className={
-                          refundEditChecked != key ? "disable-label" : ""
-                        }
-                      >
-                        Amount
-                      </span>
-                      <input
-                        data-testid="addAmount"
-                        key={item.totalAmount}
-                        defaultValue={item.totalAmount}
-                        value={refundEditAmount && refundEditAmount[key]}
-                        disabled={refundEditChecked != key}
-                        className={refundEditChecked != key ? "disable-input" : ""}
-                        type="number"
-                        placeholder="0"
-                        onChange={(e) => {
-                          const obj: any = { ...refundEditChecked };
-                          obj[key] = parseFloat(e.target.value);
-                          setRefundEditAmount(obj);
-                          setRefundEditDisableToggle(true)
-                        }}
-                        min="0"
-                        pattern="[+-]?\d+(?:[.,]\d+)?"
-                        onKeyDown={(e) => {
-                          ["e", "E", "+", "-"].includes(e.key) &&
-                            e.preventDefault();
+                          setRefundNewReferenceNo(e.target.value);
                         }}
                       />
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="paymentLowerAmountBlock">
-                <div className="refundPageTotalAmount">
-                  <p>Refund Amount</p>
-                  <div className="amountPaymentPage">
-                    {getBillingCurrency()}{" "}
-                    {refundEditAmount[key]
-                      ? toCurrencyFormat(refundEditAmount[key])
-                      : toCurrencyFormat(item.totalAmount)}
+                <div className="paymentInstallmentLowerBlock">
+                  <div className="paymentInnerLowerBlock">
+                    <div className="paymentInstallmentContainerDropdowns">
+                      <Dropdown
+                        testId="Deposited-id"
+                        handleDropdownClick={setRefundDepositBankOpen}
+                        handleDropOptionClick={refundDepositBankDropOptionClick}
+                        options={refundAddBankToDepositDropdownOptions || []}
+                        isOpen={refundDepositBankOpen}
+                        isDisabled={false}
+                        title="Credited from bank"
+                      />
+                    </div>
+
+                    <div className="paymentInstallmentContainerDropdowns">
+                      <Dropdown
+                        testId="payment-id"
+                        handleDropdownClick={setRefundPaymentMethodOpen}
+                        handleDropOptionClick={refundPaymentMethodDropOptionClick}
+                        options={refundAddPaymentMethodDropdownOptions || []}
+                        isOpen={refundPaymentMethodOpen}
+                        isDisabled={false}
+                        title="Payment Method"
+                      />
+                    </div>
+
+                    <div className="paymentInstallmentContainerDropdowns">
+                      <div className="invoiceNumber">
+                        <span>Invoice Number</span>
+                        <input
+                          value={invoiceNumber}
+                          name="Reference No"
+                          type="number"
+                          placeholder="Enter Invoice Number"
+                          min="0"
+                          pattern="[+-]?\d+(?:[.,]\d+)?"
+                          onKeyDown={(e) => {
+                            ["e", "E", "+", "-", "."].includes(e.key) &&
+                              e.preventDefault();
+                          }}
+                          onChange={(e) => {
+                            setInvoiceNumber(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="PaymentPageTotalAmountInput">
+                      <div className="amountPaymentPageInput">
+                        <span>Amount</span>
+                        <input
+                          data-testid="addAmount"
+                          value={refundAddAmount}
+                          type="number"
+                          placeholder="0"
+                          onChange={(e) => {
+                            setRefundAddAmount(parseFloat(e.target.value));
+                          }}
+                          min="0"
+                          pattern="[+-]?\d+(?:[.,]\d+)?"
+                          onKeyDown={(e) => {
+                            ["e", "E", "+", "-"].includes(e.key) &&
+                              e.preventDefault();
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="paymentLowerAmountBlock">
+                  <div className="refundPageTotalAmount">
+                    <p>Refund Amount</p>
+                    <div className="amountPaymentPage">
+                      {getBillingCurrency()}{" "}
+                      {refundAddAmount
+                        ? toCurrencyFormat(refundAddAmount)
+                        : toCurrencyFormat(0.0)}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            )}
 
-      {addRefundSectionCheck && (
-        <div className="paymentInstallmentContainer border-line">
-          <div className="paymentPageTitleHeaderNoTitle">
-            <div className="topButtonActions">
-              {addRefundSectionCheck && (
-                <div className="paymentPageCancelSave">
-                  <div className="paymentDetailCancel">
-                    <Button
-                      className="secondary-btn"
-                      label="Cancel"
-                      handleOnClick={() => {
-                        setAddRefundSectionCheck(false);
-                        cleanNewRefundObject();
-                      }}
-                    />
-                  </div>
-                  <div className="paymentDetailSave">
-                    <Button
-                      className="primary-blue medium"
-                      label="Save"
-                      handleOnClick={saveRefundDetail}
-                      disabled={
-                        !refundNewPaymentDate ||
-                        !refundNewCurrency ||
-                        !refundNewLocation ||
-                        !refundNewDepositBank ||
-                        !refundNewPaymentMethod ||
-                        !refundAddAmount ||
-                        AddInstallmentSaveDisable()
-                      }
-                    />
+            {permission?.InvoiceDetails?.includes("Add") &&
+              currentStatusValue === statusValues.paid && (
+                <div className="addPaymentInstallmentButton">
+                  <div
+                    className={addPaymentButtonClassName}
+                    onClick={() => addPaymentInstallmentBlocks()}
+                    aria-disabled={addRefundSectionCheck}
+                    data-testid="add-installment"
+                  >
+                    <span>
+                      <Icon
+                        icon="add"
+                        size="small"
+                        width="20"
+                        height="20"
+                        color="white"
+                        style={{ margin: `0 4px 0 0` }}
+                      />
+                    </span>
+                    Add payment Installment
                   </div>
                 </div>
               )}
-            </div>
-          </div>
 
-          <div className="paymentInstallmentUpperBlock">
-            <div className="paymentInstallmentDatepicker">
-              <DatePicker
-                label="Payment Date"
-                disabled={false}
-                handleDateChange={(date: any) => {
-                  setRefundNewPaymentDate(date);
-                }}
-                required
+            {isToaster && (
+              <ToastNotification
+                showNotification
+                toastMessage="Entered amount can not be greater than open amount!"
+                toastPosition="bottom-right"
               />
-            </div>
-
-            <div className="paymentInstallmentContainerDropdowns">
-              <Dropdown
-                testId="currencyOpen-id"
-                handleDropdownClick={setRefundCurrencyOpen}
-                handleDropOptionClick={refundCurrencyDropOptionClick}
-                options={refundAddCurrencyDropdownOptions || []}
-                isOpen={refundCurrencyOpen}
-                isDisabled={false}
-                title="Currency"
-              />
-            </div>
-
-            <div className="paymentInstallmentContainerDropdowns">
-              <Dropdown
-                testId="locationOpen-id"
-                handleDropdownClick={setRefundLocationOpen}
-                handleDropOptionClick={refundLocationDropOptionClick}
-                options={refundAddLocationDropdownOptions || []}
-                isOpen={refundLocationOpen}
-                isDisabled={false}
-                title="Location"
-              />
-            </div>
-
-            <div className="paymentInstallmentContainerDropdowns">
-              <div className="referenceNoInput">
-                <span>Reference No</span>
-                <input
-                  value={refundNewReferenceNo}
-                  name="Reference No"
-                  type="number"
-                  placeholder="Enter reference No"
-                  min="0"
-                  pattern="[+-]?\d+(?:[.,]\d+)?"
-                  onKeyDown={(e) => {
-                    ["e", "E", "+", "-", "."].includes(e.key) &&
-                      e.preventDefault();
-                  }}
-                  onChange={(e) => {
-                    setRefundNewReferenceNo(e.target.value);
-                  }}
-                />
-              </div>
-            </div>
+            )}
           </div>
-
-          <div className="paymentInstallmentLowerBlock">
-            <div className="paymentInnerLowerBlock">
-              <div className="paymentInstallmentContainerDropdowns">
-                <Dropdown
-                  testId="Deposited-id"
-                  handleDropdownClick={setRefundDepositBankOpen}
-                  handleDropOptionClick={refundDepositBankDropOptionClick}
-                  options={refundAddBankToDepositDropdownOptions || []}
-                  isOpen={refundDepositBankOpen}
-                  isDisabled={false}
-                  title="Credited from bank"
-                />
-              </div>
-
-              <div className="paymentInstallmentContainerDropdowns">
-                <Dropdown
-                  testId="payment-id"
-                  handleDropdownClick={setRefundPaymentMethodOpen}
-                  handleDropOptionClick={refundPaymentMethodDropOptionClick}
-                  options={refundAddPaymentMethodDropdownOptions || []}
-                  isOpen={refundPaymentMethodOpen}
-                  isDisabled={false}
-                  title="Payment Method"
-                />
-              </div>
-
-              <div className="paymentInstallmentContainerDropdowns">
-                <div className="invoiceNumber">
-                  <span>Invoice Number</span>
-                  <input
-                    value={invoiceNumber}
-                    name="Reference No"
-                    type="number"
-                    placeholder="Enter Invoice Number"
-                    min="0"
-                    pattern="[+-]?\d+(?:[.,]\d+)?"
-                    onKeyDown={(e) => {
-                      ["e", "E", "+", "-", "."].includes(e.key) &&
-                        e.preventDefault();
-                    }}
-                    onChange={(e) => {
-                      setInvoiceNumber(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div className="PaymentPageTotalAmountInput">
-                <div className="amountPaymentPageInput">
-                  <span>Amount</span>
-                  <input
-                    data-testid="addAmount"
-                    value={refundAddAmount}
-                    type="number"
-                    placeholder="0"
-                    onChange={(e) => {
-                      setRefundAddAmount(parseFloat(e.target.value));
-                    }}
-                    min="0"
-                    pattern="[+-]?\d+(?:[.,]\d+)?"
-                    onKeyDown={(e) => {
-                      ["e", "E", "+", "-"].includes(e.key) &&
-                        e.preventDefault();
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="paymentLowerAmountBlock">
-            <div className="refundPageTotalAmount">
-              <p>Refund Amount</p>
-              <div className="amountPaymentPage">
-                {getBillingCurrency()}{" "}
-                {refundAddAmount
-                  ? toCurrencyFormat(refundAddAmount)
-                  : toCurrencyFormat(0.0)}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {permission?.InvoiceDetails?.includes("Add") &&
-      currentStatusValue === statusValues.paid && (
-        <div className="addPaymentInstallmentButton">
-          <div
-            className={addPaymentButtonClassName}
-            onClick={() => addPaymentInstallmentBlocks()}
-            aria-disabled={addRefundSectionCheck}
-            data-testid="add-installment"
-          >
-            <span>
-              <Icon
-                icon="add"
-                size="small"
-                width="20"
-                height="20"
-                color="white"
-                style={{ margin: `0 4px 0 0` }}
-              />
-            </span>
-            Add payment Installment
-          </div>
-        </div>
-      )}
-
-      {isToaster && (
-        <ToastNotification
-          showNotification
-          toastMessage="Entered amount can not be greater than open amount!"
-          toastPosition="bottom-right"
-        />
-      )}
-    </div>
-     }
+      }
     </>
   );
 };
