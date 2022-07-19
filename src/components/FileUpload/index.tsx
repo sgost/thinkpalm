@@ -111,6 +111,19 @@ export default function FileUploadWidget(props: any) {
                 /* istanbul ignore next */
                 (file: any) => {
                   const headers = getHeaders(tempToken, cid, isClient);
+                  const handleResponse = (response: any, res: any)=> {
+                    setDocuments([
+                      ...documents,
+                      {
+                        documentId: response.data.documentId,
+                        document: {
+                          documentName: res.data.fileName,
+                          url: res.data.url,
+                        },
+                      },
+                    ]);
+                    setIsFileError(false);
+                  }
                   setTimeout(() => {
                     let formData = new FormData();
                     formData.append("asset", file[0]);
@@ -145,17 +158,7 @@ export default function FileUploadWidget(props: any) {
                               }
                             )
                             .then((response: any) => {
-                              setDocuments([
-                                ...documents,
-                                {
-                                  documentId: response.data.documentId,
-                                  document: {
-                                    documentName: res.data.fileName,
-                                    url: res.data.url,
-                                  },
-                                },
-                              ]);
-                              setIsFileError(false);
+                              handleResponse(response, res)
                             })
                             .catch((e: any) => {
                               console.log(e);
@@ -183,17 +186,7 @@ export default function FileUploadWidget(props: any) {
                             }
                           )
                           .then((response: any) => {
-                            setDocuments([
-                              ...documents,
-                              {
-                                documentId: response.data.documentId,
-                                document: {
-                                  documentName: res.data.fileName,
-                                  url: res.data.url,
-                                },
-                              },
-                            ]);
-                            setIsFileError(false);
+                            handleResponse(response, res)
                           })
                           .catch((e: any) => {
                             console.log(e);
