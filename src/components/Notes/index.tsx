@@ -120,7 +120,7 @@ export default function NotesWidget(props: any) {
   }
 
 
-  const noteFilter = notes.filter((item: any) => item.note !== "" && notes)
+  const noteFilter = notes.filter((item: any) => (item.note !== "" && item.noteType == 1) && notes)
 
   /* istanbul ignore next */
   return (
@@ -233,7 +233,7 @@ export default function NotesWidget(props: any) {
                     // onChange={(e: any) => {
                     //   setIsVisibleToCustomer(e.target.checked);
                     // }}
-                    onClick={()=> setIsVisibleToCustomer(!isVisibleToCustomer)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                    onClick={() => setIsVisibleToCustomer(!isVisibleToCustomer)} //changing from onChange to onClick due atlast ui kit causing issue in latest
                     checked={isVisibleToCustomer}
                   />
                   <label
@@ -243,14 +243,14 @@ export default function NotesWidget(props: any) {
                     Visible to Customer
                   </label>
                 </div>
-                {getPermissions(transactionType, "Export") && 
+                {getPermissions(transactionType, "Export") &&
                   <div className="check_wrapper">
                     <Checkbox
                       label="Export to Quickbooks"
                       // onChange={(e: any) => {
                       //   setIsExportToQb(e.target.checked);
                       // }}
-                      onClick={()=> setIsExportToQb(!isExportToQb)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                      onClick={() => setIsExportToQb(!isExportToQb)} //changing from onChange to onClick due atlast ui kit causing issue in latest
                       checked={isExportToQb}
                     />
                     <label
@@ -260,14 +260,14 @@ export default function NotesWidget(props: any) {
                       Export to Quickbooks
                     </label>
                   </div>
-                  }
+                }
                 <div className="check_wrapper">
                   <Checkbox
                     label="Visible on PDF Invoice"
                     // onChange={(e: any) => {
                     //   setisVisibleOnPDFInvoice(e.target.checked);
                     // }}
-                    onClick={()=> setisVisibleOnPDFInvoice(!isVisibleOnPDFInvoice)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                    onClick={() => setisVisibleOnPDFInvoice(!isVisibleOnPDFInvoice)} //changing from onChange to onClick due atlast ui kit causing issue in latest
                     checked={isVisibleOnPDFInvoice}
                   />
                   <label
@@ -296,7 +296,7 @@ export default function NotesWidget(props: any) {
                     headers: getHeaders(tempToken, cid, isClient),
                     data: {
                       invoiceId: id,
-                      noteType: "2",
+                      noteType: 1,
                       note: noteText,
                       isCustomerVisible: isVisibleToCustomer,
                       exportToQuickbooks: isExportToQb,
