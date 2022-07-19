@@ -143,9 +143,9 @@ describe("New Invoice", () => {
     expect(yearDropDown).toBeInTheDocument();
     fireEvent.click(yearDropDown);
 
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
   });
 });
 
@@ -291,9 +291,9 @@ describe("Stepper 2", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -344,9 +344,9 @@ describe("Stepper 2", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -447,9 +447,9 @@ describe("Stepper 2", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -574,9 +574,9 @@ describe("Stepper 2 show table click", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -650,9 +650,9 @@ describe("Stepper 2 api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -745,9 +745,9 @@ describe("Stepper 2 getEmployee exceptional error api fail  ", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -813,9 +813,9 @@ describe("Stepper 2 getEmployee No Emplyee Error api fail  ", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -899,9 +899,9 @@ describe("Stepper 3", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -953,9 +953,9 @@ describe("Stepper 3", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1006,9 +1006,9 @@ describe("Stepper 3", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1133,9 +1133,9 @@ describe("Stepper 3 invoice detail api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1187,9 +1187,9 @@ describe("Stepper 3 invoice detail api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1240,9 +1240,9 @@ describe("Stepper 3 invoice detail api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1352,9 +1352,9 @@ describe("Stepper 3 fee api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1405,9 +1405,9 @@ describe("Stepper 3 fee api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1517,9 +1517,9 @@ describe("Stepper 3 address api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1571,9 +1571,9 @@ describe("Stepper 3 address api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1624,9 +1624,9 @@ describe("Stepper 3 address api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1736,9 +1736,9 @@ describe("Stepper 3 country api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1790,9 +1790,9 @@ describe("Stepper 3 country api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
@@ -1843,9 +1843,9 @@ describe("Stepper 3 country api fail", () => {
     fireEvent.click(monthDropValue);
 
     // fireEvent.click(pleaseSelectDropDown[3]);
-    const YearDropValue = await screen.findByText(/2022/);
-    expect(YearDropValue).toBeInTheDocument();
-    fireEvent.click(YearDropValue);
+    const YearDropValue = await screen.findAllByText(/2022/);
+    expect(YearDropValue[0]).toBeInTheDocument();
+    fireEvent.click(YearDropValue[0]);
 
     const nextButton = await screen.findByTestId("next-button");
     expect(nextButton).toBeInTheDocument();
