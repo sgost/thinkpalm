@@ -495,6 +495,7 @@ export default function InvoiceDetails() {
               date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
               customerEmail: log?.email,
               description: log?.note,
+              noteType: log?.noteType
             }));
             setLogsData([...logsDetails]);
           })
@@ -991,10 +992,10 @@ export default function InvoiceDetails() {
               setApprovalMsg("");
             }, 3000);
           }
-          initialApiCall()
+          initialApiCall();
         } else {
           setApprovalMsg("Invoice approve failed");
-          initialApiCall()
+          initialApiCall();
         }
       })
       .catch((e: any) => {

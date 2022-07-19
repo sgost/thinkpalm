@@ -562,6 +562,16 @@ const PaymentDetailPage = () => {
     );
   };
 
+  const amoutNote = () => {
+    let amount;
+    if (isFullAmount) {
+      amount = "Paid";
+    } else {
+      amount = "Partially Paid"
+    }
+    return amount;
+  }
+
   const handleSave = () => {
 
     setIsOverlayLoader(true)
@@ -575,21 +585,19 @@ const PaymentDetailPage = () => {
       data = {
         PaymentType: 2,
         invoiceids: invoiceIds,
-        paymentnotes: paymentNote?.note
-          ? [
-            {
-              noteType: "2",
-              note: paymentNote.note,
-              isCustomerVisible: paymentNote.isVisibleToCustomer,
-              exportToQuickbooks: paymentNote.isExportToQb,
-              createdDate: currDate,
-              modifiedBy: "00000000-0000-0000-0000-000000000000",
-              modifiedByUser: null,
-              displayInPDF: paymentNote.currDate,
-              customerId: state.state.inveoicesData[0].customerId,
-            },
-          ]
-          : [],
+        paymentnotes: [
+          {
+            noteType: "2",
+            note: paymentNote?.note ? paymentNote.note : amoutNote(),
+            isCustomerVisible: paymentNote.isVisibleToCustomer,
+            exportToQuickbooks: paymentNote.isExportToQb,
+            createdDate: currDate,
+            modifiedBy: "00000000-0000-0000-0000-000000000000",
+            modifiedByUser: null,
+            displayInPDF: paymentNote.currDate,
+            customerId: state.state.inveoicesData[0].customerId,
+          }
+        ],
         paymentdocuments: [],
         Payments: [
           {
@@ -622,11 +630,11 @@ const PaymentDetailPage = () => {
                     .replace(",", "")
                 )
                 : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ?
-                    parseFloat(totals[i].text.substring(1)) :
-                    parseFloat(totals[i].text)
-              : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ? 
                   parseFloat(totals[i].text.substring(1)) :
-                  parseFloat(totals[i].text),
+                  parseFloat(totals[i].text)
+              : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ?
+                parseFloat(totals[i].text.substring(1)) :
+                parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
           currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
             ?.value,
@@ -645,26 +653,24 @@ const PaymentDetailPage = () => {
       data = {
         PaymentType: 1,
         invoiceids: invoiceIds,
-        paymentnotes: paymentNote?.note
-          ? [
-            {
-              noteType: "2",
-              note: paymentNote.note,
-              isCustomerVisible: paymentNote.isVisibleToCustomer,
-              exportToQuickbooks: paymentNote.isExportToQb,
-              createdDate: currDate,
-              modifiedBy: "00000000-0000-0000-0000-000000000000",
-              modifiedByUser: null,
-              displayInPDF: paymentNote.currDate,
-              customerId: state.state.inveoicesData[0].customerId,
-            },
-          ]
-          : [],
+        paymentnotes: [
+          {
+            noteType: "2",
+            note: paymentNote?.note ? paymentNote.note : amoutNote(),
+            isCustomerVisible: paymentNote.isVisibleToCustomer,
+            exportToQuickbooks: paymentNote.isExportToQb,
+            createdDate: currDate,
+            modifiedBy: "00000000-0000-0000-0000-000000000000",
+            modifiedByUser: null,
+            displayInPDF: paymentNote.currDate,
+            customerId: state.state.inveoicesData[0].customerId,
+          },
+        ],
         paymentdocuments: [],
         Payments: arrData,
       };
     }
-    
+
     axios({
       method: "POST",
       url: urls.savePayments,
@@ -1155,10 +1161,10 @@ const PaymentDetailPage = () => {
                                     id="fullAmt"
                                     checked={isFullAmount}
                                     label="Full Amount"
-                                    onClick={()=> setIsFullAmount(!isFullAmount)} //changing from onChange to onClick due atlast ui kit causing issue in latest
-                                    // onChange={(e: any) =>
-                                    //   setIsFullAmount(e.target.checked)
-                                    // }
+                                    onClick={() => setIsFullAmount(!isFullAmount)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                                  // onChange={(e: any) =>
+                                  //   setIsFullAmount(e.target.checked)
+                                  // }
                                   />
                                 </div>
                               ) : (

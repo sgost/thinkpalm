@@ -230,7 +230,7 @@
           margin-bottom: 5rem;
 
           .paymentInstallmentDatepicker {
-            margin-left: 0;
+            margin-right: 2.222rem;
 
             .a-dpicker .react-datepicker__input-container input {
               width: 14.778rem;
@@ -247,7 +247,7 @@
           }
 
           .paymentInstallmentContainerDropdowns {
-            // margin-left: 1rem;
+             margin-right: 2.222rem;
 
             .a-dropdown {
               z-index: inherit;
@@ -362,7 +362,7 @@
             // width: 45rem;
 
             .paymentInstallmentContainerDropdowns {
-              margin-left: 0rem;
+              margin-right: 2.222rem;
 
               .a-dropdown {
                 z-index: inherit;

@@ -172,26 +172,26 @@ const InvoicePreviewPop = ({
                     {invoiceData?.customerName}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.street1}
+                    {billingData?.billingAddress?.street1}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.street2}
+                    {billingData?.billingAddress?.street2}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                  {billingData?.shippingAddress?.city}
+                  {billingData?.billingAddress?.city}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.state}       
+                    {billingData?.billingAddress?.state}       
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.country},{" "}
-                    {billingData?.shippingAddress?.postalCode}
+                    {billingData?.billingAddress?.country},{" "}
+                    {billingData?.billingAddress?.postalCode}
                   </p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">Invoice Date</p>
                   <p className="creditMemoInvoiceValue">
-                    {moment(invoiceData?.createdDate).format("DD MMM YYYY")}
+                    {moment(invoiceData?.submissionDate).format("DD MMM YYYY")}
                   </p>
 
                   <p className="creditMemoInvoiceHeading">Payment Due</p>
