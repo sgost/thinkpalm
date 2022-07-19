@@ -124,6 +124,47 @@ export default function FileUploadWidget(props: any) {
                         }
                       )
                       .then((res: any) => {
+
+                        if(props.isPaymentPage){
+                          props.paymentPageData.forEach((payitem: any)=> {
+                            axios
+                            .post(
+                              urls.createDocument,
+                              {
+                                invoiceId: payitem.id,
+                                customerId: payitem.customerId,
+  
+                                document: {
+                                  url: res.data.url,
+  
+                                  documentName: res.data.fileName,
+                                },
+                              },
+                              {
+                                headers:  getHeaders(tempToken, payitem.customerId, isClient),
+                              }
+                            )
+                            .then((response: any) => {
+                              setDocuments([
+                                ...documents,
+                                {
+                                  documentId: response.data.documentId,
+                                  document: {
+                                    documentName: res.data.fileName,
+                                    url: res.data.url,
+                                  },
+                                },
+                              ]);
+                              setIsFileError(false);
+                            })
+                            .catch((e: any) => {
+                              console.log(e);
+                              setIsFileError(true);
+                            });
+                          })
+                          return
+                        }
+
                         axios
                           .post(
                             urls.createDocument,

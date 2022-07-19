@@ -22,7 +22,6 @@ import { Loader } from "../../../components/Comman/Utils/utils";
 const PaymentDetailPage = () => {
   const state: any = useLocation();
   const navigate = useNavigate();
-
   const tempToken = localStorage.getItem("accessToken");
 
   const [showCancel, useShowCancel] = useState(false);
@@ -881,11 +880,13 @@ const PaymentDetailPage = () => {
                             <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
-                                  setIsCurrencyDropdownOpen(b);
-                                  setIsLocationDropdownOpen(false);
-                                  setIsBankDropdownOpen(false);
-                                  setIsPaymentMethodDropdownOpen(false);
-                                  setToggleState({ index: i, invoicesIndex });
+                                  if(b){
+                                    setIsCurrencyDropdownOpen(b);
+                                    setIsLocationDropdownOpen(false);
+                                    setIsBankDropdownOpen(false);
+                                    setIsPaymentMethodDropdownOpen(false);
+                                    setToggleState({ index: i, invoicesIndex });
+                                  }
                                 }}
                                 handleDropOptionClick={(sel: any) => {
                                   handlePaymentDropOption(
@@ -917,11 +918,13 @@ const PaymentDetailPage = () => {
                             <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
-                                  setIsLocationDropdownOpen(b);
-                                  setIsCurrencyDropdownOpen(false);
-                                  setIsBankDropdownOpen(false);
-                                  setIsPaymentMethodDropdownOpen(false);
-                                  setToggleState({ index: i, invoicesIndex });
+                                  if(b){
+                                    setIsLocationDropdownOpen(b);
+                                    setIsCurrencyDropdownOpen(false);
+                                    setIsBankDropdownOpen(false);
+                                    setIsPaymentMethodDropdownOpen(false);
+                                    setToggleState({ index: i, invoicesIndex });
+                                  }
                                 }}
                                 handleDropOptionClick={(sel: any) => {
                                   handlePaymentDropOption(
@@ -996,14 +999,16 @@ const PaymentDetailPage = () => {
                               <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
-                                    setIsBankDropdownOpen(b);
-                                    setIsCurrencyDropdownOpen(false);
-                                    setIsLocationDropdownOpen(false);
-                                    setIsPaymentMethodDropdownOpen(false);
-                                    setToggleState({
-                                      index: i,
-                                      invoicesIndex,
-                                    });
+                                    if(b){
+                                      setIsBankDropdownOpen(b);
+                                      setIsCurrencyDropdownOpen(false);
+                                      setIsLocationDropdownOpen(false);
+                                      setIsPaymentMethodDropdownOpen(false);
+                                      setToggleState({
+                                        index: i,
+                                        invoicesIndex,
+                                      });
+                                    }
                                   }}
                                   handleDropOptionClick={(sel: any) => {
                                     handlePaymentDropOption(
@@ -1040,11 +1045,13 @@ const PaymentDetailPage = () => {
                               <div className="paymentInstallmentContainerDropdowns col-md-3 p-0">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
-                                    setIsPaymentMethodDropdownOpen(b);
-                                    setIsCurrencyDropdownOpen(false);
-                                    setIsLocationDropdownOpen(false);
-                                    setIsBankDropdownOpen(false);
-                                    setToggleState({ index: i, invoicesIndex });
+                                    if(b){
+                                      setIsPaymentMethodDropdownOpen(b);
+                                      setIsCurrencyDropdownOpen(false);
+                                      setIsLocationDropdownOpen(false);
+                                      setIsBankDropdownOpen(false);
+                                      setToggleState({ index: i, invoicesIndex });
+                                    }
                                   }}
                                   handleDropOptionClick={(sel: any) => {
                                     handlePaymentDropOption(
@@ -1347,9 +1354,10 @@ const PaymentDetailPage = () => {
           documents={documents}
           setDocuments={setDocuments}
           isClient="false"
-          cid="a9bbee6d-797a-4724-a86a-5b1a2e28763f"
-          id="32fbfee0-809d-4828-ab55-e4deebeb5157"
+          cid={state.state.inveoicesData[0].customerId}
+          id={state.state.inveoicesData[0].id}
           isPaymentPage={true}
+          paymentPageData={state.state.inveoicesData}
         ></FileUploadWidget>
       </div>
       {isToaster && (
