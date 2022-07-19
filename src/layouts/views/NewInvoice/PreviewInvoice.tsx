@@ -438,7 +438,7 @@ const PreviewInvoice = ({
                   <div>
                     <p className="newInvoiceHeading">Invoice Date</p>
                     <p className="newInvoiceValue">
-                      {moment(apiData?.data?.invoice?.createdDate).format(
+                      {moment(apiData?.data?.invoice?.submissionDate).format(
                         "DD MMM YYYY"
                       )}
                     </p>

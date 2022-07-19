@@ -191,7 +191,7 @@ const InvoicePreviewPop = ({
                 <div>
                   <p className="creditMemoInvoiceHeading">Invoice Date</p>
                   <p className="creditMemoInvoiceValue">
-                    {moment(invoiceData?.createdDate).format("DD MMM YYYY")}
+                    {moment(invoiceData?.submissionDate).format("DD MMM YYYY")}
                   </p>
 
                   <p className="creditMemoInvoiceHeading">Payment Due</p>
