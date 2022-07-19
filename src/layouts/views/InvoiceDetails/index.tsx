@@ -1627,7 +1627,7 @@ export default function InvoiceDetails() {
                             creditMemoData?.currencyId ||
                             apiData?.data?.invoice?.currencyId,
                           qbInvoiceNo:
-                            creditMemoData?.qbInvoiceNo ||
+                          creditMemoData?.qbInvoiceNo ||
                             apiData?.data?.invoice?.qbInvoiceNo,
                           invoiceNo:
                             creditMemoData?.invoiceNo ||
@@ -2040,11 +2040,12 @@ export default function InvoiceDetails() {
                     <p>{getTransactionLabel()}</p>
                   </div>
                   {(creditMemoData != null && creditMemoData?.qbInvoiceNo > 0) || 
-                  (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) && (
+                  (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) ? (
                       <p className="qbo">
                         QBO No. {creditMemoData?.qbInvoiceNo || apiData?.data?.invoice?.qbInvoiceNo}
                       </p>
-                    )}
+                    )
+                  : <></>}
                 </div>
                 <div className="amount">
                   {missTransType != 7 && (
