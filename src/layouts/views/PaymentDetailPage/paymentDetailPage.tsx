@@ -559,6 +559,15 @@ const PaymentDetailPage = () => {
     setMultiPaymentBlocks(
       multiPaymentBlocks.filter((todo: any) => todo.id !== item.id)
     );
+    // console.log('tots', totals.filter((tot: any) => tot.blockKey !== item.id))
+
+    setCurrencyOption(currencyOptions.filter((e: any) => e.blockKey !== item.id));
+    setBankToDepositOption(bankToDepositOptions.filter((e: any) => e.blockKey !== item.id));
+    setLocationOption(locationOptions.filter((e: any) => e.blockKey !== item.id));
+    setPaymentMethodOption(paymentMethodOptions.filter((e: any) => e.blockKey !== item.id));
+    setReferenceNo(referenceNo.filter((e: any) => e.blockKey !== item.id));
+    setpaymentDate(paymentDate.filter((e: any) => e.blockKey !== item.id));
+    setTotals(totals.filter((tot: any) => tot.blockKey !== item.id))
   };
 
   const handleSave = () => {
