@@ -12,6 +12,67 @@
     height: .889rem !important;
     top: .878rem;
   }
+  .dateDisable {
+    pointer-events: none;
+    opacity: 0.7;
+    background: #f5f5f6!important;
+    border: 1px solid #ebebed!important;
+    align-items: center;
+    border-radius: 0.222rem;
+    cursor: pointer;
+    display: flex;
+    font-size: 0.778rem;
+    height: 2.778rem;
+    justify-content: center;
+    justify-content: space-between;
+    position: relative;
+    width: 15.1111rem;
+    z-index: 998;
+
+    .title {
+      color: #b4b3bb!important;
+      font-size: 0.889rem;
+      left: 0;
+      position: absolute;
+      top: -1.333rem;
+    }
+
+    .dropdown {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0px 0.78rem 0px 0rem;
+      color:  #767676 ;
+      justify-content: space-between;
+      width: 15.1111rem;
+
+      .text {
+        color: #373636 !important;
+        display: inline-block;
+        font-size: 1rem;
+        overflow: hidden;
+        padding-left: 0.5rem;
+        padding-right: 3rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: fit-content;
+      }
+      
+      .icon {
+        position: absolute;
+        right: 0px;
+        top: 2px;
+        svg{
+          width: 2.2222rem;
+          height: 2.2222rem;
+          path{
+            fill: #7e7e7e;
+          }
+        }
+      }
+    }
+  }
+
   .dropdownContainer {
     align-items: center;
     background: #fff !important;

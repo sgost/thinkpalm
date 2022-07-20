@@ -18,7 +18,7 @@ const noteIndex = 41077;
 const noteData = [
     {
         "invoiceId": "03f0e8d3-abed-4835-8d51-7ada2e92acda",
-        "noteType": 2,
+        "noteType": 1,
         "note": "rrr",
         "isCustomerVisible": false,
         "exportToQuickbooks": false,

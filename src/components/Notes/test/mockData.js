@@ -73,7 +73,7 @@ export const creditMemoData = {
     "invoiceNotes": [
         {
             "invoiceId": "03f0e8d3-abed-4835-8d51-7ada2e92acda",
-            "noteType": 2,
+            "noteType": 1,
             "note": "rrr",
             "isCustomerVisible": false,
             "exportToQuickbooks": false,
@@ -124,7 +124,7 @@ export const editApiMock = {
     "message": "Operation completed.",
     "model": {
         "invoiceId": "03f0e8d3-abed-4835-8d51-7ada2e92acda",
-        "noteType": 2,
+        "noteType": 1,
         "note": "rrrs",
         "isCustomerVisible": true,
         "exportToQuickbooks": false,

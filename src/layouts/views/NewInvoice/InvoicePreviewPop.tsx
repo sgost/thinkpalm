@@ -150,6 +150,21 @@ const InvoicePreviewPop = ({
                   <p className="creditMemoInvoiceValue">
                     {invoiceData?.invoiceFrom?.companyName}
                   </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.addressLine1}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.addressLine2}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.city}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.state}
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {invoiceData?.invoiceFrom?.country}
+                  </p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">To</p>
@@ -157,24 +172,26 @@ const InvoicePreviewPop = ({
                     {invoiceData?.customerName}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.street1}
+                    {billingData?.billingAddress?.street1}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.street2}
+                    {billingData?.billingAddress?.street2}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.state},{" "}
-                    {billingData?.shippingAddress?.city}
+                  {billingData?.billingAddress?.city}
                   </p>
                   <p className="creditMemoInvoiceAddress">
-                    {billingData?.shippingAddress?.country},{" "}
-                    {billingData?.shippingAddress?.postalCode}
+                    {billingData?.billingAddress?.state}       
+                  </p>
+                  <p className="creditMemoInvoiceAddress">
+                    {billingData?.billingAddress?.country},{" "}
+                    {billingData?.billingAddress?.postalCode}
                   </p>
                 </div>
                 <div>
                   <p className="creditMemoInvoiceHeading">Invoice Date</p>
                   <p className="creditMemoInvoiceValue">
-                    {moment(invoiceData?.createdDate).format("DD MMM YYYY")}
+                    {moment(invoiceData?.submissionDate).format("DD MMM YYYY")}
                   </p>
 
                   <p className="creditMemoInvoiceHeading">Payment Due</p>

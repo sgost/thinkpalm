@@ -827,9 +827,9 @@ const PaymentDetailContainer = ({
                               }}
                             />
                           </div>
-                          <div className="fullAmountPaymentNoInput">
+                          {/* <div className="fullAmountPaymentNoInput">
                             Payment #765248
-                          </div>
+                          </div> */}
                         </div>
                       </div>
 
@@ -841,7 +841,7 @@ const PaymentDetailContainer = ({
                             ? toCurrencyFormat(editAmount[key])
                             : toCurrencyFormat(item.totalAmount)}
                         </div>
-                        <div className="fullAmountPaymentNo">Payment #765248</div>
+                        {/* <div className="fullAmountPaymentNo">Payment #765248</div> */}
                       </div>
                     </div>
                   </div>
@@ -989,7 +989,7 @@ const PaymentDetailContainer = ({
                           }}
                         />
                       </div>
-                      <div className="fullAmountPaymentNoInput">Payment #765248</div>
+                      {/* <div className="fullAmountPaymentNoInput">Payment #765248</div> */}
                     </div>
                   </div>
 
@@ -999,7 +999,7 @@ const PaymentDetailContainer = ({
                       {getBillingCurrency()}{" "}
                       {newAddAmount}
                     </div>
-                    <div className="fullAmountPaymentNo">Payment #765248</div>
+                    {/* <div className="fullAmountPaymentNo">Payment #765248</div> */}
                   </div>
                 </div>
               </div>

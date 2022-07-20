@@ -109,3 +109,21 @@ export const getPermissions = (transactionType: any, permission: string) => {
       return true;
   }
 };
+
+export const getManualInvoiceCreationPermissions = (transactionType: any, permission: string) => {
+  const decTok = getDecodedToken();
+
+  switch (transactionType) {
+    case 'Payroll':
+      return decTok?.ManualPayrollInvoiceCreation?.includes(permission);
+    case 'Miscellaneous':
+      return decTok?.MiscellaneousInvoiceCreation?.includes(permission);
+    case 'Proforma':
+      return decTok.ProformaInvoiceCreation.includes(permission);
+    case 'Credit Memo':
+      return decTok.CreditMemoInvoiceCreation.includes(permission);
+
+    default:
+      return true;
+  }
+};

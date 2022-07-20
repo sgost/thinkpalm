@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { BreadCrumb, Layouts, Progress, Button } from "atlasuikit";
+import { BreadCrumb, Layouts, Progress, Button, ToastNotification} from "atlasuikit";
 import NewInvoiceCreation from "./NewInvoiceCreation";
 import InvoicePreviewPop from "./InvoicePreviewPop";
 import ProductInvoiceCreation from "./ProductInvoiceCreation";
@@ -24,6 +24,7 @@ import {
 } from "../../../urls/urls";
 import { sharedSteps } from "../../../sharedColumns/sharedSteps";
 import { format } from "date-fns";
+import { getManualInvoiceCreationPermissions } from "../../../components/Comman/Utils/utils";
 const NewInvoice = () => {
   const [task, setTask] = useState("");
   const [productInitialData, setProductInitialData] = useState({});
@@ -126,8 +127,38 @@ const NewInvoice = () => {
   const [YearOptions, setYearOptions] = useState([
     {
       isSelected: false,
+      label: CurrentYear - 1,
+      value: CurrentYear - 1,
+    },
+    {
+      isSelected: false,
       label: CurrentYear,
       value: CurrentYear,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 1,
+      value: CurrentYear + 1,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 2,
+      value: CurrentYear + 2,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 3,
+      value: CurrentYear + 3,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 4,
+      value: CurrentYear + 4,
+    },
+    {
+      isSelected: false,
+      label: CurrentYear + 5,
+      value: CurrentYear + 5,
     },
   ]);
 
@@ -280,6 +311,30 @@ const NewInvoice = () => {
     ]);
   }, []);
 
+  useEffect(() => {
+    let monthObj: any = {}
+    let yearObj: any = {}
+
+    MonthOptions?.map((month:any) => {
+      if(month.value == new Date().getMonth() + 1) {
+        month.isSelected = true
+        monthObj = month
+      }
+    })
+
+    YearOptions?.map((year:any) => {
+      if(year.value == new Date().getFullYear()) {
+        year.isSelected = true
+        yearObj = year
+      }
+    })
+
+    setStepperOneData({...stepperOneData,
+         month: monthObj.label, monthId: monthObj.value, 
+         year: yearObj.label, yearId: yearObj.value 
+    })
+  }, [])
+
   //stepper one  Data
   const [stepperOneData, setStepperOneData] = useState({
     customer: "",
@@ -292,6 +347,7 @@ const NewInvoice = () => {
     typeId: "",
     yearId: "",
     monthId: "",
+    invoicer: ""
   });
 
   //flag to stop multiple post calls for invoice Creation
@@ -719,14 +775,15 @@ const NewInvoice = () => {
       CreatedBy: stepperOneData?.customerId, //
       ModifiedBy: stepperOneData?.customerId, //
       InvoiceDocuments: [],
-      InvoiceItems: invoiceItems,
+      invoiceItems: invoiceItems,
       InvoiceNotes: [],
       InvoiceRelatedInvoices: [],
       InvoiceRelatedRelatedInvoices: [],
       // PaymentMethod: paymentMethodOptions.find((e: any) => e.isSelected)?.value,
       InvoicerId: invoicerOptions.find((e: any) => e.isSelected)?.id,
-      BankDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.id,
+      BankingDetailId: stepperOneData.type === "Credit Memo" ? null : receivableAccountOptions.find((e: any) => e.isSelected)?.Id,
       CurrencyId: currencyOptions.find((e: any) => e.isSelected)?.value,
+      PaymentTerms: paymentTermsOptions.find((e: any) => e.isSelected)?.value || null
     };
 
     if (!isInvoiceCreated) {
@@ -769,6 +826,29 @@ const NewInvoice = () => {
         });
     }
   };
+
+  const isNextButtonVisiable = ()=> {
+    if(stepsCount == 2 && !getManualInvoiceCreationPermissions(stepperOneData?.type, 'Save')){
+      return false
+    }
+    if(stepsCount == 4){
+      return false
+    }
+
+    return true
+  }
+
+  const isPreviousButtonVisiable = () => {
+
+    if(stepsCount == 3 && getManualInvoiceCreationPermissions(stepperOneData?.type, 'Edit')){
+      return true
+    }
+    if(stepsCount == 2 && getManualInvoiceCreationPermissions(stepperOneData?.type, 'Edit')){
+      return true
+    }
+
+    return false
+  }
 
   return (
     <div className="newinvoice-container">
@@ -873,22 +953,24 @@ const NewInvoice = () => {
       <div
         className={stepsCount === 1 ? "Stepper-buttons" : "stepper-two-buttons"}
       >
-        {(stepsCount == 2 || stepsCount == 3) && (
-          <Button
-            data-testid="back-button"
-            icon={{
-              icon: "chevronLeft",
-              size: "medium",
-              color: "#fff",
-            }}
-            handleOnClick={() => {
-              setStepsCount(stepsCount - 1);
-            }}
-            className="primary-blue medium previous-button"
-            label="Previous"
-          />
-        )}
-        {stepsCount != 4 && (
+        <div>
+          {isPreviousButtonVisiable() && (
+            <Button
+              data-testid="back-button"
+              icon={{
+                icon: "chevronLeft",
+                size: "medium",
+                color: "#fff",
+              }}
+              handleOnClick={() => {
+                setStepsCount(stepsCount - 1);
+              }}
+              className="primary-blue medium previous-button"
+              label="Previous"
+            />
+          )}
+        </div>
+        {isNextButtonVisiable() && (
           <Button
             disabled={
               stepperOneData?.type === "Payroll"
@@ -909,6 +991,13 @@ const NewInvoice = () => {
           />
         )}
       </div>
+
+      {stepsCount == 2 && !getManualInvoiceCreationPermissions(stepperOneData?.type, 'Save') && 
+        <ToastNotification
+        showNotification
+        toastMessage='You do not have save permission'
+        toastPosition="bottom-right"
+      />}
     </div>
   );
 };

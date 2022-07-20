@@ -17,11 +17,11 @@ import axios from "axios";
 import FileUploadWidget from "../../../components/FileUpload";
 import { format } from "date-fns";
 import { sharedBreadCrumbs } from "../../../sharedColumns/sharedSteps";
+import { Loader } from "../../../components/Comman/Utils/utils";
 
 const PaymentDetailPage = () => {
   const state: any = useLocation();
   const navigate = useNavigate();
-
   const tempToken = localStorage.getItem("accessToken");
 
   const [showCancel, useShowCancel] = useState(false);
@@ -78,6 +78,7 @@ const PaymentDetailPage = () => {
   const [multiTotal, setMultiTotal] = useState<any>(0);
   const [isToaster, setIsToaster] = useState(false);
   const [isSaveBtnDisable, _setisSaveBtnDisable] = useState(false)
+  const [isOverlayLoader, setIsOverlayLoader] = useState(false)
 
   useEffect(() => {
     if (!hideTopCheck) {
@@ -560,7 +561,19 @@ const PaymentDetailPage = () => {
     );
   };
 
+  const amoutNote = () => {
+    let amount;
+    if (isFullAmount) {
+      amount = "Paid";
+    } else {
+      amount = "Partially Paid"
+    }
+    return amount;
+  }
+
   const handleSave = () => {
+
+    setIsOverlayLoader(true)
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
       return e.id;
@@ -571,21 +584,19 @@ const PaymentDetailPage = () => {
       data = {
         PaymentType: 2,
         invoiceids: invoiceIds,
-        paymentnotes: paymentNote?.note
-          ? [
-            {
-              noteType: "2",
-              note: paymentNote.note,
-              isCustomerVisible: paymentNote.isVisibleToCustomer,
-              exportToQuickbooks: paymentNote.isExportToQb,
-              createdDate: currDate,
-              modifiedBy: "00000000-0000-0000-0000-000000000000",
-              modifiedByUser: null,
-              displayInPDF: paymentNote.currDate,
-              customerId: state.state.inveoicesData[0].customerId,
-            },
-          ]
-          : [],
+        paymentnotes: [
+          {
+            noteType: "2",
+            note: paymentNote?.note ? paymentNote.note : amoutNote(),
+            isCustomerVisible: paymentNote.isVisibleToCustomer,
+            exportToQuickbooks: paymentNote.isExportToQb,
+            createdDate: currDate,
+            modifiedBy: "00000000-0000-0000-0000-000000000000",
+            modifiedByUser: null,
+            displayInPDF: paymentNote.currDate,
+            customerId: state.state.inveoicesData[0].customerId,
+          }
+        ],
         paymentdocuments: [],
         Payments: [
           {
@@ -617,8 +628,12 @@ const PaymentDetailPage = () => {
                     ?.split(" ")[1]
                     .replace(",", "")
                 )
-                : parseFloat(totals[i].text.substring(1))
-              : parseFloat(totals[i].text.substring(1)),
+                : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ?
+                  parseFloat(totals[i].text.substring(1)) :
+                  parseFloat(totals[i].text)
+              : state?.state?.inveoicesData?.[0].transactionTypeLabel == "Credit Memo" ?
+                parseFloat(totals[i].text.substring(1)) :
+                parseFloat(totals[i].text),
           paymentDate: paymentDate[i]?.date,
           currencyId: currencyOptions[i].options.find((e: any) => e.isSelected)
             ?.value,
@@ -637,21 +652,19 @@ const PaymentDetailPage = () => {
       data = {
         PaymentType: 1,
         invoiceids: invoiceIds,
-        paymentnotes: paymentNote?.note
-          ? [
-            {
-              noteType: "2",
-              note: paymentNote.note,
-              isCustomerVisible: paymentNote.isVisibleToCustomer,
-              exportToQuickbooks: paymentNote.isExportToQb,
-              createdDate: currDate,
-              modifiedBy: "00000000-0000-0000-0000-000000000000",
-              modifiedByUser: null,
-              displayInPDF: paymentNote.currDate,
-              customerId: state.state.inveoicesData[0].customerId,
-            },
-          ]
-          : [],
+        paymentnotes: [
+          {
+            noteType: "2",
+            note: paymentNote?.note ? paymentNote.note : amoutNote(),
+            isCustomerVisible: paymentNote.isVisibleToCustomer,
+            exportToQuickbooks: paymentNote.isExportToQb,
+            createdDate: currDate,
+            modifiedBy: "00000000-0000-0000-0000-000000000000",
+            modifiedByUser: null,
+            displayInPDF: paymentNote.currDate,
+            customerId: state.state.inveoicesData[0].customerId,
+          },
+        ],
         paymentdocuments: [],
         Payments: arrData,
       };
@@ -668,6 +681,7 @@ const PaymentDetailPage = () => {
       data: data,
     })
       .then((res) => {
+        setIsOverlayLoader(false)
         if (res.status == 200) {
           if (state.state.inveoicesData.length > 1) {
             navigate("/pay");
@@ -691,12 +705,10 @@ const PaymentDetailPage = () => {
         }
       })
       .catch((err) => {
+        setIsOverlayLoader(false)
         console.log(err);
       });
   };
-
-
-  console.log("state", state);
 
   const breadcrumbsLabel = () => {
     return state.state.inveoicesData.map((item: any) => {
@@ -874,11 +886,13 @@ const PaymentDetailPage = () => {
                             <div className="paymentInstallmentContainerDropdowns">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
-                                  setIsCurrencyDropdownOpen(b);
-                                  setIsLocationDropdownOpen(false);
-                                  setIsBankDropdownOpen(false);
-                                  setIsPaymentMethodDropdownOpen(false);
-                                  setToggleState({ index: i, invoicesIndex });
+                                  if(b){
+                                    setIsCurrencyDropdownOpen(b);
+                                    setIsLocationDropdownOpen(false);
+                                    setIsBankDropdownOpen(false);
+                                    setIsPaymentMethodDropdownOpen(false);
+                                    setToggleState({ index: i, invoicesIndex });
+                                  }
                                 }}
                                 handleDropOptionClick={(sel: any) => {
                                   handlePaymentDropOption(
@@ -910,11 +924,13 @@ const PaymentDetailPage = () => {
                             <div className="paymentInstallmentContainerDropdowns">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
-                                  setIsLocationDropdownOpen(b);
-                                  setIsCurrencyDropdownOpen(false);
-                                  setIsBankDropdownOpen(false);
-                                  setIsPaymentMethodDropdownOpen(false);
-                                  setToggleState({ index: i, invoicesIndex });
+                                  if(b){
+                                    setIsLocationDropdownOpen(b);
+                                    setIsCurrencyDropdownOpen(false);
+                                    setIsBankDropdownOpen(false);
+                                    setIsPaymentMethodDropdownOpen(false);
+                                    setToggleState({ index: i, invoicesIndex });
+                                  }
                                 }}
                                 handleDropOptionClick={(sel: any) => {
                                   handlePaymentDropOption(
@@ -989,14 +1005,16 @@ const PaymentDetailPage = () => {
                               <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
-                                    setIsBankDropdownOpen(b);
-                                    setIsCurrencyDropdownOpen(false);
-                                    setIsLocationDropdownOpen(false);
-                                    setIsPaymentMethodDropdownOpen(false);
-                                    setToggleState({
-                                      index: i,
-                                      invoicesIndex,
-                                    });
+                                    if(b){
+                                      setIsBankDropdownOpen(b);
+                                      setIsCurrencyDropdownOpen(false);
+                                      setIsLocationDropdownOpen(false);
+                                      setIsPaymentMethodDropdownOpen(false);
+                                      setToggleState({
+                                        index: i,
+                                        invoicesIndex,
+                                      });
+                                    }
                                   }}
                                   handleDropOptionClick={(sel: any) => {
                                     handlePaymentDropOption(
@@ -1033,11 +1051,13 @@ const PaymentDetailPage = () => {
                               <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
-                                    setIsPaymentMethodDropdownOpen(b);
-                                    setIsCurrencyDropdownOpen(false);
-                                    setIsLocationDropdownOpen(false);
-                                    setIsBankDropdownOpen(false);
-                                    setToggleState({ index: i, invoicesIndex });
+                                    if(b){
+                                      setIsPaymentMethodDropdownOpen(b);
+                                      setIsCurrencyDropdownOpen(false);
+                                      setIsLocationDropdownOpen(false);
+                                      setIsBankDropdownOpen(false);
+                                      setToggleState({ index: i, invoicesIndex });
+                                    }
                                   }}
                                   handleDropOptionClick={(sel: any) => {
                                     handlePaymentDropOption(
@@ -1073,7 +1093,7 @@ const PaymentDetailPage = () => {
                                       <span>Invoice Number</span>
                                       <input
                                         value={invoiceNumber}
-                                        name="Reference No"
+                                        name="Invoice No"
                                         type="number"
                                         placeholder="Enter Invoice Number"
                                         min="0"
@@ -1148,9 +1168,10 @@ const PaymentDetailPage = () => {
                                     id="fullAmt"
                                     checked={isFullAmount}
                                     label="Full Amount"
-                                    onChange={(e: any) =>
-                                      setIsFullAmount(e.target.checked)
-                                    }
+                                    onClick={() => setIsFullAmount(!isFullAmount)} //changing from onChange to onClick due atlast ui kit causing issue in latest
+                                  // onChange={(e: any) =>
+                                  //   setIsFullAmount(e.target.checked)
+                                  // }
                                   />
                                 </div>
                               ) : (
@@ -1339,9 +1360,10 @@ const PaymentDetailPage = () => {
           documents={documents}
           setDocuments={setDocuments}
           isClient="false"
-          cid="a9bbee6d-797a-4724-a86a-5b1a2e28763f"
-          id="32fbfee0-809d-4828-ab55-e4deebeb5157"
+          cid={state.state.inveoicesData[0].customerId}
+          id={state.state.inveoicesData[0].id}
           isPaymentPage={true}
+          paymentPageData={state.state.inveoicesData}
         ></FileUploadWidget>
       </div>
       {isToaster && (
@@ -1391,6 +1413,7 @@ const PaymentDetailPage = () => {
           </div>
         </Modal>
       </div>
+      {isOverlayLoader && <Loader isOverlay />}
     </div>
   );
 };

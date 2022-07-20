@@ -82,7 +82,7 @@ export default function InvoiceDetails() {
   const permission: any = getDecodedToken();
   const [btnDis, setBtnDis] = useState(false);
   const [sentPopup, setSentPopup] = useState(true);
-  const [missTransType] = useState(state.transactionType); //To change the the invoice transictionType number
+  const [missTransType] = useState(state?.transactionType); //To change the the invoice transictionType number
   const [activeTab, setActiveTab] = useState("payroll");
   const [isDownloadOpen, setIsDownloadOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -495,6 +495,7 @@ export default function InvoiceDetails() {
               date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
               customerEmail: log?.email,
               description: log?.note,
+              noteType: log?.noteType
             }));
             setLogsData([...logsDetails]);
           })
@@ -699,6 +700,7 @@ export default function InvoiceDetails() {
       model.from = apiData?.data?.invoiceFrom?.companyName;
       model.to = apiData?.data?.invoice?.customerName;
       model.toAddress = addressData?.data?.billingAddress?.street;
+      model.fromAddress = apiData?.data?.invoiceFrom;
       model.poNumber = apiData?.data?.invoice?.poNumber;
       model.invoiceDate = moment(
         state.transactionType == 7
@@ -724,6 +726,8 @@ export default function InvoiceDetails() {
       let model: any = topPanelObj;
       model.from = creditMemoData.invoiceFrom.companyName;
       model.to = creditMemoData?.customerName;
+      model.toAddress = addressData?.data?.billingAddress?.street;
+      model.fromAddress = creditMemoData?.invoiceFrom;
       model.poNumber = creditMemoData?.poNumber || "";
       model.invoiceDate = creditMemoData?.submissionDate
         ? moment(creditMemoData?.submissionDate).format("DD MMM YYYY")
@@ -969,7 +973,8 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        setIsOverlayLoader(false)
+        setIsOverlayLoader(false);
+        setDeleteDisableButtons(false);
         if (res?.status === 201) {
           setCurrentStatusValue(res?.data?.status);
           if (res?.data?.status === 2) {
@@ -987,8 +992,10 @@ export default function InvoiceDetails() {
               setApprovalMsg("");
             }, 3000);
           }
+          initialApiCall();
         } else {
           setApprovalMsg("Invoice approve failed");
+          initialApiCall();
         }
       })
       .catch((e: any) => {
@@ -1087,7 +1094,7 @@ export default function InvoiceDetails() {
         headers: headers,
       })
       .then(async (res: any) => {
-        
+
         await axios
           .post(
             urls.voidCreateDoc,
@@ -1295,8 +1302,9 @@ export default function InvoiceDetails() {
       setIsOverlayLoader(false)
       if (resp) {
         handleApproveInvoice(8);
+        initialApiCall()
       }
-    }).catch( err => {
+    }).catch(err => {
       setIsOverlayLoader(false)
       setBtnDis(false);
       console.log(err)
@@ -1593,7 +1601,7 @@ export default function InvoiceDetails() {
               {(currentStatusValue == statusValues.approved &&
                 missTransType !== 4 &&
                 missTransType !== 7 &&
-                getPermissions(missTransType, "AddPayment")) ||
+                (getPermissions(missTransType, "Paid") || getPermissions(missTransType, "Pay"))) ||
                 (currentStatusValue == statusValues.invoiced &&
                   missTransType === 7 &&
                   getPermissions(missTransType, "AddPayment")) ? (
@@ -1620,7 +1628,7 @@ export default function InvoiceDetails() {
                             creditMemoData?.currencyId ||
                             apiData?.data?.invoice?.currencyId,
                           qbInvoiceNo:
-                            creditMemoData?.qbInvoiceNo ||
+                          creditMemoData?.qbInvoiceNo ||
                             apiData?.data?.invoice?.qbInvoiceNo,
                           invoiceNo:
                             creditMemoData?.invoiceNo ||
@@ -1971,27 +1979,26 @@ export default function InvoiceDetails() {
                     labelKeyName: "label",
                   }}
                   handleOutsideClick={() => setIsDropdownOpen(false)}
-                  onChange={({value}: any) => {
-                    console.log("selected", value);
-                    setIsCPLoader(true);
+                  onChange={({ value }: any) => {
+                    setIsCPLoader(value === "pdf");
                     const headers = {
                       headers: getHeaders(tempToken, cid, isClient),
                     };
                     const pdfApi = getGenerateSinglePdfUrl(state.rowDetails?.id);
-                    if(value === "pdf") {
+                    if (value === "pdf") {
                       axios
-                      .get(pdfApi, headers)
-                      .then((res: any) => {
-                        if (res.status === 200) {
-                          window.open(res.data.url);
-                        }
-                      })
-                      .catch((e: any) => {
-                        console.log("error", e);
-                      })
-                      .finally(() => {
-                        setIsCPLoader(false);
-                      });
+                        .get(pdfApi, headers)
+                        .then((res: any) => {
+                          if (res.status === 200) {
+                            window.open(res.data.url);
+                          }
+                        })
+                        .catch((e: any) => {
+                          console.log("error", e);
+                        })
+                        .finally(() => {
+                          setIsCPLoader(false);
+                        });
                     }
                   }}
                 >
@@ -2022,7 +2029,7 @@ export default function InvoiceDetails() {
           <div className={cn("payrollInvoiceInfo", {
             "cp-invoice-info": missTransType === 7
           })}>
-            {missTransType === 7 && isCPLoader &&  <AtlasLoader />}
+            {missTransType === 7 && isCPLoader && <AtlasLoader />}
             <div className="topBar">
               <div className="invoic-status">
                 <p className="status">{status}</p>
@@ -2033,11 +2040,13 @@ export default function InvoiceDetails() {
                     <Icon color="#FFFFFF" icon="orderSummary" size="large" />
                     <p>{getTransactionLabel()}</p>
                   </div>
-                  {creditMemoData != null && creditMemoData?.qbInvoiceNo > 0 && (
+                  {(creditMemoData != null && creditMemoData?.qbInvoiceNo > 0) || 
+                  (apiData?.data?.invoice?.qbInvoiceNo != null && apiData?.data?.invoice?.qbInvoiceNo > 0) ? (
                       <p className="qbo">
-                        QBO No. {creditMemoData?.qbInvoiceNo}
+                        QBO No. {creditMemoData?.qbInvoiceNo || apiData?.data?.invoice?.qbInvoiceNo}
                       </p>
-                    )}
+                    )
+                  : <></>}
                 </div>
                 <div className="amount">
                   {missTransType != 7 && (
@@ -2062,12 +2071,30 @@ export default function InvoiceDetails() {
               <div className="column1 divContainer">
                 <p className="heading">From</p>
                 <p className="value">{topPanel.from}</p>
+                <p className="address">
+                  {topPanel.fromAddress?.addressLine1}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.addressLine2}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.city}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.state}
+                </p>
+                <p className="address">
+                  {topPanel.fromAddress?.country}
+                </p>
               </div>
               <div className="divContainer">
                 <p className="heading">To</p>
                 <p className="value">{topPanel.to}</p>
                 <p className="address">
-                  {addressData?.data?.billingAddress?.street}
+                  {addressData?.data?.billingAddress?.street1}
+                </p>
+                <p className="address">
+                  {addressData?.data?.billingAddress?.street2}
                 </p>
                 <p className="address">
                   {addressData?.data?.billingAddress?.city}
@@ -2076,7 +2103,8 @@ export default function InvoiceDetails() {
                   {addressData?.data?.billingAddress?.state}
                 </p>
                 <p className="address">
-                  {addressData?.data?.billingAddress?.country}
+                  {addressData?.data?.billingAddress?.country},{" "}
+                  {addressData?.data?.billingAddress?.postalCode}
                 </p>
                 {missTransType != 7 && (
                   <>
@@ -2276,31 +2304,31 @@ export default function InvoiceDetails() {
           ) : (
             <></>
           )}
-  
-          { 
-          // currentStatusValue === statusValues.paid
-           (missTransType === 4 ) 
+
+          {
+            // currentStatusValue === statusValues.paid
+            (missTransType === 4)
             && (
-            <div className="paymentCompnent">
-              <RefundDetailContainer
-                setPaymentDetailData={setPaymentDetailData}
-                status={status}
-                cid={cid}
-                lookupData={lookupData}
-                paymentDetailData={paymentDetailData}
-                getBillingCurrency={getBillingCurrency}
-                id={id}
-                topPanel={topPanel}
-                setTopPanel={setTopPanel}
-                setStatus={setStatus}
-                currentStatusValue={currentStatusValue}
-                setCurrentStatusValue={setCurrentStatusValue}
-                toCurrencyFormat={toCurrencyFormat}
-                loading={loading}
-                setLoading={setLoading}
-              />
-            </div>
-          )}
+              <div className="paymentCompnent">
+                <RefundDetailContainer
+                  setPaymentDetailData={setPaymentDetailData}
+                  status={status}
+                  cid={cid}
+                  lookupData={lookupData}
+                  paymentDetailData={paymentDetailData}
+                  getBillingCurrency={getBillingCurrency}
+                  id={id}
+                  topPanel={topPanel}
+                  setTopPanel={setTopPanel}
+                  setStatus={setStatus}
+                  currentStatusValue={currentStatusValue}
+                  setCurrentStatusValue={setCurrentStatusValue}
+                  toCurrencyFormat={toCurrencyFormat}
+                  loading={loading}
+                  setLoading={setLoading}
+                />
+              </div>
+            )}
 
           {(missTransType == 4 || missTransType == 3 || missTransType == 2) && (
             <CreditMemoSummary
@@ -2552,7 +2580,7 @@ export default function InvoiceDetails() {
             ></BillsTable>
           )}
 
-          {approvalMsg && 
+          {approvalMsg &&
             <ToastNotification
               showNotification={true}
               toastMessage={approvalMsg}

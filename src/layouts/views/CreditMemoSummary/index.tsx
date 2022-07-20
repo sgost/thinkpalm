@@ -276,8 +276,8 @@ export default function CreditMemoSummary(props: any) {
         };
       })
     );
-    setNewQuantity(0);
-    setNewAmount(0);
+    setNewQuantity(null);
+    setNewAmount(null);
     setNewTotalAmount("");
   };
   /* istanbul ignore next */
@@ -623,7 +623,8 @@ export default function CreditMemoSummary(props: any) {
                         newAmount == "0" ||
                         newAmount == "" ||
                         !newCountry ||
-                        !newProduct
+                        !newProduct || 
+                        !newDescription
                       }
                     />
                   </>

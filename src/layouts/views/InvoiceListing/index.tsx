@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./invoices.scss";
-import { Icon, Button, Table, Dropdown, ButtonDropdown, NoSearchCard } from "atlasuikit";
+import { Icon, Button, Table, Dropdown, ButtonDropdown, NoSearchCard, ToastNotification} from "atlasuikit";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import axios from "axios";
@@ -97,6 +97,10 @@ export default function InvoiceListing() {
   const [toggleForType, setToggleForType] = useState(true);
   const [isLoader, setIsLoader] = useState(false)
   const [isOverlayLoader, setIsOverlayLoader] = useState(false)
+  const [toastNotif, setToastNotif] = useState('')
+  const [isAddpaymentDisable, setIsAddpaymentDisable] = useState(true)
+  const [dropdownsDisableInStarting, setDropdownsDisableInStarting] = useState(true)
+  
   let api = ``;
 
   const apiFunc = () => {
@@ -118,7 +122,7 @@ export default function InvoiceListing() {
       return api;
     }
   };
-  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient, setIsLoader);
+  const apiData: any = getRequest(apiFunc(), accessToken, customerId, isClient, setIsLoader, setDropdownsDisableInStarting);
 
   const clearFilter = () => {
     setTransactionTypes("");
@@ -378,6 +382,11 @@ export default function InvoiceListing() {
     }
   }, [searchText]);
 
+  useEffect(() => {
+    setIsAddpaymentDisable(handleAddNewPaymentDisable())
+  }, [checkedInvoices])
+  
+
   const downloadFunction = () => {
     setIsOverlayLoader(true)
     const download = (res: any) => {
@@ -464,6 +473,19 @@ export default function InvoiceListing() {
     /* istanbul ignore next */
     checkedInvoices.forEach((e: any) => {
       
+     if(
+       (e.transactionType == 1 && !permission.InvoiceDetails.includes('Paid')) ||
+       (e.transactionType == 2 && !permission.MiscellaneousInvoice.includes('Pay')) ||
+       (e.transactionType == 3 && !permission.ProformaInvoice.includes('Pay')) ||
+       (e.transactionType == 4 && !permission.CreditMemoInvoice.includes('Pay')) 
+     ){
+        setToastNotif('Selected Invoice does not have payment parmission')
+        setTimeout(() => {
+          setToastNotif('')
+        }, 5000);
+        bool = true;
+     }
+
       if(e.invoiceBalance.split(' ')[1] <= 0){
         bool = true;
       }
@@ -596,9 +618,8 @@ export default function InvoiceListing() {
       <div className="container">
         <div className="listingBtnContainer">
           <div className="add_payment_invoice">
-            {permission.InvoiceList.includes("AddPayment") && (
               <>
-                {handleAddNewPaymentDisable() ? (
+                {isAddpaymentDisable ? (
                   <Button
                     className="primary-blue medium"
                     disabled
@@ -640,13 +661,13 @@ export default function InvoiceListing() {
                   </ButtonDropdown>
                 )}
               </>
-            )}
           </div>
           <div className="new-invoice-button">
             {permission?.InvoiceList?.find((str: any) => str === "Add") ===
               "Add" && (
                 <Button
                   label="New Invoice"
+                  disabled={dropdownsDisableInStarting}
                   className="primary-blue medium"
                   icon={{
                     icon: "add",
@@ -661,10 +682,12 @@ export default function InvoiceListing() {
 
         {!localStorage.redirectingInvoiceState && (
           <div className="dropdowns">
-            <div className="inputContainer">
+            <div 
+            className={dropdownsDisableInStarting ? "disableSearch" : "inputContainer"} >
               <Icon icon="search" size="medium" />
               <input
                 className="input"
+                disabled={dropdownsDisableInStarting}
                 placeholder={
                   isClient ? "Search Invoices" : "Search by Invoice, Customer"
                 }
@@ -692,6 +715,7 @@ export default function InvoiceListing() {
               {permission.InvoiceList.includes("InternalView") && (
                 <div className="customerSelection">
                   <Dropdown
+                    isDisabled={dropdownsDisableInStarting}
                     data-testid="customer-type"
                     title="Customer"
                     multiple
@@ -742,6 +766,7 @@ export default function InvoiceListing() {
               )}
 
               <DatepickerDropdown
+                dropdownsDisableInStarting={dropdownsDisableInStarting}
                 title="Date"
                 isOpen={isDateOpen}
                 setIsOpen={setIsDateOpen}
@@ -911,6 +936,7 @@ export default function InvoiceListing() {
 
               <Dropdown
                 title="Type"
+                isDisabled={dropdownsDisableInStarting}
                 multiple
                 isOpen={isTypeOpen}
                 handleDropdownClick={(bool: any) => {
@@ -960,6 +986,7 @@ export default function InvoiceListing() {
 
               <Dropdown
                 title="Status"
+                isDisabled={dropdownsDisableInStarting}
                 multiple
                 isOpen={isStatusOpen}
                 handleDropdownClick={(bool: any) => {
@@ -1075,6 +1102,12 @@ export default function InvoiceListing() {
           </>
         )}
       </div>
+      
+      {toastNotif && <ToastNotification
+        showNotification
+        toastMessage={toastNotif}
+        toastPosition="bottom-right"
+      />}
       <ToastContainer
         showToast={showToast}
         setShowToast={setShowToast}
