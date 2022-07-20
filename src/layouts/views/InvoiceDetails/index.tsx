@@ -179,6 +179,8 @@ export default function InvoiceDetails() {
   const [isEditFieldsChanges, setIsEditFieldsChanges] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCPLoader, setIsCPLoader] = useState(false);
+  const [boxCheck, setBoxCheck] = useState(0);
+  console.log('boxCheck', boxCheck);
   const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
     {
       label: "Employee Salary is not correct",
@@ -2611,11 +2613,12 @@ export default function InvoiceDetails() {
                     missTransType === 1 &&
                     declineCheckboxLabel?.map((item: any, index: any) => {
                       return (
-                        <div className="dec_check_wrapp">
+                        <div className="dec_check_wrapp" onClick={() => setBoxCheck(index)}>
                           <Checkbox
                             data-testid="check1"
                             id="sampleCheckbox"
                             onChange={(e: any) => {
+
                               const declineData = [...declineCheckboxLabel];
                               declineData[index].isSelected = e.target.checked;
                               declineData.forEach((i, k) => {
@@ -2628,7 +2631,7 @@ export default function InvoiceDetails() {
                               });
                               setDeclineCheckboxLabel(declineData);
                             }}
-                            checked={declineCheckboxLabel[index].isSelected}
+                            checked={boxCheck === index && declineCheckboxLabel[index].isSelected}
                           />
                           <label className="dec_check_label">
                             {item.label}
