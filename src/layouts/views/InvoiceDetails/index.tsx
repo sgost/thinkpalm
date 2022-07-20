@@ -2122,7 +2122,7 @@ export default function InvoiceDetails() {
                         className="poNoInput"
                       />
                     ) : (
-                      <p className="value">{topPanel.poNumber} </p>
+                      <p className="value">{poNumber ? poNumber : topPanel.poNumber} </p>
                     )}
                   </>
                 )}
