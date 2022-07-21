@@ -64,6 +64,8 @@ const PaymentDetailPage = () => {
     useState<any>([]);
   const [paymentDate, setpaymentDate] = useState<any>([]);
   const [multiPaymentDate, setMultiPaymentDate] = useState<any>(null);
+  const [payDate, setPaydate] = useState<any>(null)
+  console.log('multiPaymentDate', multiPaymentDate);
   const [referenceNo, setReferenceNo] = useState<any>([]);
   const [invoiceNumber, setInvoiceNumber] = useState<any>("");
   const [multiRefNo, setMultiRefNo] = useState("");
@@ -580,6 +582,8 @@ const PaymentDetailPage = () => {
 
   const handleSave = () => {
 
+    console.log('multiPaymentDate', multiPaymentDate)
+
     setIsOverlayLoader(true)
     let data: any = null;
     const invoiceIds = state.state?.inveoicesData.map((e: any) => {
@@ -602,6 +606,7 @@ const PaymentDetailPage = () => {
             modifiedByUser: null,
             displayInPDF: paymentNote.currDate,
             customerId: state.state.inveoicesData[0].customerId,
+            paymentDate: format(payDate, "yyyy-MM-dd")
           }
         ],
         paymentdocuments: [],
@@ -670,6 +675,7 @@ const PaymentDetailPage = () => {
             modifiedByUser: null,
             displayInPDF: paymentNote.currDate,
             customerId: state.state.inveoicesData[0].customerId,
+            paymentDate: format(payDate, "yyyy-MM-dd")
           },
         ],
         paymentdocuments: [],
@@ -878,6 +884,7 @@ const PaymentDetailPage = () => {
                               <DatePicker
                                 label="Payment Date"
                                 handleDateChange={function (date: any) {
+                                  setPaydate(date)
                                   handleDate(
                                     date,
                                     paymentDate,
@@ -893,7 +900,7 @@ const PaymentDetailPage = () => {
                             <div className="paymentInstallmentContainerDropdowns">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
-                                  if(b){
+                                  if (b) {
                                     setIsCurrencyDropdownOpen(b);
                                     setIsLocationDropdownOpen(false);
                                     setIsBankDropdownOpen(false);
@@ -931,7 +938,7 @@ const PaymentDetailPage = () => {
                             <div className="paymentInstallmentContainerDropdowns">
                               <Dropdown
                                 handleDropdownClick={(b: boolean) => {
-                                  if(b){
+                                  if (b) {
                                     setIsLocationDropdownOpen(b);
                                     setIsCurrencyDropdownOpen(false);
                                     setIsBankDropdownOpen(false);
@@ -1012,7 +1019,7 @@ const PaymentDetailPage = () => {
                               <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
-                                    if(b){
+                                    if (b) {
                                       setIsBankDropdownOpen(b);
                                       setIsCurrencyDropdownOpen(false);
                                       setIsLocationDropdownOpen(false);
@@ -1058,7 +1065,7 @@ const PaymentDetailPage = () => {
                               <div className="paymentInstallmentContainerDropdowns">
                                 <Dropdown
                                   handleDropdownClick={(b: boolean) => {
-                                    if(b){
+                                    if (b) {
                                       setIsPaymentMethodDropdownOpen(b);
                                       setIsCurrencyDropdownOpen(false);
                                       setIsLocationDropdownOpen(false);
@@ -1235,7 +1242,9 @@ const PaymentDetailPage = () => {
                   <DatePicker
                     label="Payment Date"
                     handleDateChange={function (date: any) {
+                      console.log("dddddd", date)
                       setMultiPaymentDate(date);
+                      console.log(multiPaymentDate)
                     }}
                     required
                   />

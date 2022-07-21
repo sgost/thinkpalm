@@ -180,7 +180,6 @@ export default function InvoiceDetails() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCPLoader, setIsCPLoader] = useState(false);
   const [boxCheck, setBoxCheck] = useState(0);
-  console.log('boxCheck', boxCheck);
   const [declineCheckboxLabel, setDeclineCheckboxLabel] = useState([
     {
       label: "Employee Salary is not correct",
@@ -494,9 +493,9 @@ export default function InvoiceDetails() {
           .get(urls.invoiceLogs.replace("{invoice-id}", id), headers)
           .then((res: any) => {
             const logsDetails: any = res?.data?.map((log: any) => ({
-              date: moment(log?.createdDate).format("DD MMM YYYY, hh:mm"),
+              date: moment(log?.createdDate).format("DD MMM YYYY"),
               customerEmail: log?.email,
-              description: log?.note,
+              description: <a>{log?.note}  <b>{(log?.paidDate !== '' && log?.note == "Paid") ? log?.paidDate : (log?.partiallyPaidDate !== '' && log?.note == "Partially Paid") ? log?.partiallyPaidDate : ''}</b></a>,
               noteType: log?.noteType
             }));
             setLogsData([...logsDetails]);
@@ -505,16 +504,14 @@ export default function InvoiceDetails() {
             console.log("error", e);
           });
 
-        if (
-          missTransType != 7 &&
-          missTransType != 4 &&
-          missTransType != 3 &&
-          missTransType != 2
-        ) {
+        if (missTransType === 1) {
           axios
             .get(api, headers)
             .then((res: any) => {
+              setCurrentStatusValue(res?.data?.invoice?.status);
               invoicePayrollDetailCalculation(res, countryRes);
+              setIsOverlayLoader(false);
+              setDeleteDisableButtons(false);
             })
             .catch((e: any) => {
               console.log("error e", e);
@@ -528,6 +525,9 @@ export default function InvoiceDetails() {
           axios
             .get(getRelatedInvoiceUrl(id), headers)
             .then((response) => {
+              setCurrentStatusValue(response?.data?.status);
+              setIsOverlayLoader(false);
+              setDeleteDisableButtons(false);
               if (response.status == 200) {
                 setCreditMemoData(response.data);
                 setNotes(response.data.invoiceNotes);
@@ -975,26 +975,22 @@ export default function InvoiceDetails() {
       headers: getHeaders(tempToken, cid, isClient),
     })
       .then((res: any) => {
-        setIsOverlayLoader(false);
-        setDeleteDisableButtons(false);
         if (res?.status === 201) {
-          setCurrentStatusValue(res?.data?.status);
           if (res?.data?.status === 2) {
-            setStatus("AR Review");
+            initialApiCall();
           } else if (res?.data?.status === 8) {
-            setStatus("Closed");
+            initialApiCall();
             setApprovalMsg("Invoice Converted successfully");
             setTimeout(() => {
               setApprovalMsg("");
             }, 3000);
           } else {
-            setStatus("Approved");
+            initialApiCall();
             setApprovalMsg("Invoice approve successfully");
             setTimeout(() => {
               setApprovalMsg("");
             }, 3000);
           }
-          initialApiCall();
         } else {
           setApprovalMsg("Invoice approve failed");
           initialApiCall();
@@ -2613,20 +2609,20 @@ export default function InvoiceDetails() {
                     missTransType === 1 &&
                     declineCheckboxLabel?.map((item: any, index: any) => {
                       return (
-                        <div className="dec_check_wrapp" onClick={() => setBoxCheck(index)}>
+                        <div className="dec_check_wrapp">
                           <Checkbox
                             data-testid="check1"
                             id="sampleCheckbox"
                             onChange={(e: any) => {
-
+                              setBoxCheck(index);
                               const declineData = [...declineCheckboxLabel];
                               declineData[index].isSelected = e.target.checked;
                               declineData.forEach((i, k) => {
-                                if (i.label === item.label) {
-                                  setDeclineLabel(declineData[k].label);
+                                if ((i.label === item.label)) {
+                                  setDeclineLabel(e.target.checked == true ? declineData[k].label : "");
                                 }
                                 if (i.label != item.label) {
-                                  declineData[k].isDisable = e.target.checked;
+                                  declineData[k].isSelected = e.target.checked;
                                 }
                               });
                               setDeclineCheckboxLabel(declineData);

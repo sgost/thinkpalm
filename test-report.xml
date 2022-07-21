@@ -1,166 +1,249 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testExecutions version="1">
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
-    <testCase name="Bills Table Render" duration="427"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\Logs\test\logs.test.js">
+    <testCase name="View Change Log View Change Log" duration="57"/>
+    <testCase name="View Change Log View Change Log" duration="13"/>
+    <testCase name="View Change Log View More" duration="17"/>
+    <testCase name="View Change Log View Less" duration="46"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\components\Notes\test\notes.test.js">
-    <testCase name="Credit Memo Summary Render Notes" duration="252"/>
-    <testCase name="Notes fail Render CM" duration="199"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\BillsTable\test\BillsTable.test.js">
+    <testCase name="Bills Table Render" duration="329"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\Logs\test\logs.test.js">
-    <testCase name="View Change Log View Change Log" duration="70"/>
-    <testCase name="View Change Log View Change Log" duration="28"/>
-    <testCase name="View Change Log View More" duration="32"/>
-    <testCase name="View Change Log View Less" duration="81"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\components\Notes\test\notes.test.js">
+    <testCase name="Credit Memo Summary Render Notes" duration="249"/>
+    <testCase name="Notes fail Render CM" duration="208"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
-    <testCase name="Credit Memo Summary Render CM" duration="1130"/>
-    <testCase name="Credit Memo Summary Render CM with status = 2" duration="1606"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; delete a summary" duration="1090"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="1182"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="894"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="898"/>
-    <testCase name="Credit Memo Summary Product Service" duration="237"/>
-    <testCase name="Credit Memo Summary Enter description" duration="357"/>
-    <testCase name="Credit Memo Summary Service Country" duration="239"/>
-    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="1403"/>
-    <testCase name="Notes fail Render CM" duration="217"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\CreditMemoSummary\Test\creditMemoSummary.test.js">
+    <testCase name="Credit Memo Summary Render CM" duration="617"/>
+    <testCase name="Credit Memo Summary Render CM with status = 2" duration="774"/>
+    <testCase name="Credit Memo Summary Render CM =&gt; delete a summary" duration="441"/>
+    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="660"/>
+    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="675"/>
+    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="675"/>
+    <testCase name="Credit Memo Summary Product Service" duration="138"/>
+    <testCase name="Credit Memo Summary Enter description" duration="231"/>
+    <testCase name="Credit Memo Summary Service Country" duration="128"/>
+    <testCase name="Credit Memo Summary Render CM =&gt; edit a summary" duration="864"/>
+    <testCase name="Notes fail Render CM" duration="113"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\App.test.tsx">
-    <testCase name="renders learn react link" duration="480"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
+    <testCase name="internal view Datepicker dropdowns clickoutside clickable" duration="636"/>
+    <testCase name="internal view Datepicker dropdowns today clickable" duration="605"/>
+    <testCase name="internal view Datepicker dropdowns Yesterday clickable" duration="472"/>
+    <testCase name="internal view Datepicker dropdowns This Week clickable" duration="362"/>
+    <testCase name="internal view Datepicker dropdowns This Month clickable" duration="361"/>
+    <testCase name="internal view Datepicker dropdowns Last Month clickable" duration="378"/>
+    <testCase name="internal view Datepicker dropdowns This Quarter clickable" duration="332"/>
+    <testCase name="internal view Datepicker dropdowns This Year clickable" duration="415"/>
+    <testCase name="internal view Datepicker dropdowns Last Year clickable" duration="338"/>
+    <testCase name="internal view Customer Type clickable" duration="253"/>
+    <testCase name="internal view Status clickable" duration="290"/>
+    <testCase name="internal view Type clickable" duration="283"/>
+    <testCase name="internal view Clear filters clickable" duration="533"/>
+    <testCase name="internal view search" duration="248"/>
+    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="480"/>
+    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="392"/>
+    <testCase name="Internal View Download click for multi invoice  api fail Click multi invoice download api fail Click" duration="331"/>
+    <testCase name="Internal View click on New Invoice New Invoice button clickable" duration="138"/>
+    <testCase name="Internal View Download click on table row table row clickable" duration="144"/>
+    <testCase name="Internal View click on Add New Payment Add New Payment button clickable" duration="220"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceListing\test\invoices.test.js">
-    <testCase name="internal view Datepicker dropdowns clickoutside clickable" duration="1074"/>
-    <testCase name="internal view Datepicker dropdowns today clickable" duration="1018"/>
-    <testCase name="internal view Datepicker dropdowns Yesterday clickable" duration="782"/>
-    <testCase name="internal view Datepicker dropdowns This Week clickable" duration="648"/>
-    <testCase name="internal view Datepicker dropdowns This Month clickable" duration="609"/>
-    <testCase name="internal view Datepicker dropdowns Last Month clickable" duration="830"/>
-    <testCase name="internal view Datepicker dropdowns This Quarter clickable" duration="542"/>
-    <testCase name="internal view Datepicker dropdowns This Year clickable" duration="558"/>
-    <testCase name="internal view Datepicker dropdowns Last Year clickable" duration="519"/>
-    <testCase name="internal view Customer Type clickable" duration="360"/>
-    <testCase name="internal view Status clickable" duration="429"/>
-    <testCase name="internal view Type clickable" duration="421"/>
-    <testCase name="internal view Clear filters clickable" duration="771"/>
-    <testCase name="internal view search" duration="315"/>
-    <testCase name="Internal View Download click and checkbox Click table row clickable" duration="652"/>
-    <testCase name="Internal View Download click for single invoice  api fail Click table row clickable" duration="504"/>
-    <testCase name="Internal View Download click for multi invoice  api fail Click multi invoice download api fail Click" duration="365"/>
-    <testCase name="Internal View click on New Invoice New Invoice button clickable" duration="255"/>
-    <testCase name="Internal View Download click on table row table row clickable" duration="266"/>
-    <testCase name="Internal View click on Add New Payment Add New Payment button clickable" duration="422"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\App.test.tsx">
+    <testCase name="renders learn react link" duration="251"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js">
-    <testCase name="Payment details page multiple save multiple" duration="8075"/>
-    <testCase name="Payment details page multiple Test case for the payment details revert Modal" duration="5141">
-      <failure message="Error: thrown: &quot;Exceeded timeout of 5000 ms for a test."><![CDATA[Error: thrown: "Exceeded timeout of 5000 ms for a test.
-Use jest.setTimeout(newTimeout) to increase the timeout value, if this is a long-running test."
-    at C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js:263:3
-    at _dispatchDescribe (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:98:26)
-    at describe (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-circus\build\index.js:60:5)
-    at Object.<anonymous> (C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js:193:1)
-    at Runtime._execModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1646:24)
-    at Runtime._loadModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1185:12)
-    at Runtime.requireModule (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runtime\build\index.js:1009:12)
-    at jestAdapter (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:13)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
-    at runTestInternal (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:389:16)
-    at runTest (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runner\build\runTest.js:475:34)
-    at Object.worker (C:\Projects\New folder\Atlas-Payments-UI\node_modules\jest-runner\build\testWorker.js:133:12)]]></failure>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js">
+    <testCase name="Payment details page multiple save multiple" duration="5283">
+      <failure message="RangeError: Invalid time value"><![CDATA[RangeError: Invalid time value
+    at format (D:\Thinkpalm\Atlas-Payments-UI\node_modules\date-fns\format\index.js:392:11)
+    at handleSave (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\paymentDetailPage.tsx:609:26)
+    at HTMLUnknownElement.callCallback (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
+    at invokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
+    at HTMLUnknownElementImpl._dispatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
+    at HTMLUnknownElementImpl.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
+    at HTMLUnknownElement.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
+    at Object.invokeGuardedCallbackDev (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
+    at invokeGuardedCallback (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
+    at invokeGuardedCallbackAndCatchFirstError (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4070:25)
+    at executeDispatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8243:3)
+    at processDispatchQueueItemsInOrder (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8275:7)
+    at processDispatchQueue (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8288:5)
+    at dispatchEventsForPlugins (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8299:3)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8508:12
+    at batchedEventUpdates$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22396:12)
+    at batchedEventUpdates (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3745:12)
+    at dispatchEventForPluginEventSystem (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8507:3)
+    at attemptToDispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:6005:3)
+    at dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:5924:19)
+    at unstable_runWithPriority (D:\Thinkpalm\Atlas-Payments-UI\node_modules\scheduler\cjs\scheduler.development.js:468:12)
+    at runWithPriority$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11276:10)
+    at discreteUpdates$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22413:14)
+    at discreteUpdates (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3756:12)
+    at dispatchDiscreteEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:5889:3)
+    at HTMLDivElement.callTheUserObjectsOperation (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
+    at invokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
+    at HTMLSpanElementImpl._dispatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
+    at HTMLSpanElementImpl.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
+    at HTMLSpanElement.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:25:20
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:66:16
+    at batchedUpdates$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22380:12)
+    at act (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom-test-utils.development.js:1042:14)
+    at Object.eventWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:65:28)
+    at fireEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:16:35)
+    at Function.fireEvent.<computed> [as click] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:36)
+    at Function.click (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js:251:15)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\regeneratorRuntime.js:86:17)
+    at Generator._invoke (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\regeneratorRuntime.js:66:24)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\regeneratorRuntime.js:117:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
     </testCase>
-    <testCase name="Payment details page multiple payment page breadcrumbs click" duration="580"/>
-    <testCase name="single payment save single" duration="4593"/>
-    <testCase name="Payment details page lookup and subscription lookup api fail payment page" duration="80"/>
-    <testCase name="save api fail save api fail" duration="3740"/>
-    <testCase name="Payment details page click on detail page breadcrumb breadcrumb" duration="204"/>
-    <testCase name="Payment details page click on invoice page breadcrumb Invoices" duration="203"/>
-    <testCase name="single credit refund save single" duration="3794"/>
-    <testCase name="single credit refund save single with manual amount" duration="3527"/>
+    <testCase name="Payment details page multiple Test case for the payment details revert Modal" duration="3313">
+      <failure message="RangeError: Invalid time value"><![CDATA[RangeError: Invalid time value
+    at format (D:\Thinkpalm\Atlas-Payments-UI\node_modules\date-fns\format\index.js:392:11)
+    at handleSave (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\paymentDetailPage.tsx:609:26)
+    at HTMLUnknownElement.callCallback (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3945:14)
+    at HTMLUnknownElement.callTheUserObjectsOperation (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
+    at invokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
+    at HTMLUnknownElementImpl._dispatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
+    at HTMLUnknownElementImpl.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
+    at HTMLUnknownElement.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
+    at Object.invokeGuardedCallbackDev (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3994:16)
+    at invokeGuardedCallback (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4056:31)
+    at invokeGuardedCallbackAndCatchFirstError (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:4070:25)
+    at executeDispatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8243:3)
+    at processDispatchQueueItemsInOrder (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8275:7)
+    at processDispatchQueue (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8288:5)
+    at dispatchEventsForPlugins (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8299:3)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8508:12
+    at batchedEventUpdates$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22396:12)
+    at batchedEventUpdates (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3745:12)
+    at dispatchEventForPluginEventSystem (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:8507:3)
+    at attemptToDispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:6005:3)
+    at dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:5924:19)
+    at unstable_runWithPriority (D:\Thinkpalm\Atlas-Payments-UI\node_modules\scheduler\cjs\scheduler.development.js:468:12)
+    at runWithPriority$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:11276:10)
+    at discreteUpdates$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22413:14)
+    at discreteUpdates (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:3756:12)
+    at dispatchDiscreteEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:5889:3)
+    at HTMLDivElement.callTheUserObjectsOperation (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventListener.js:26:30)
+    at innerInvokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:338:25)
+    at invokeEventListeners (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:274:3)
+    at HTMLSpanElementImpl._dispatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:221:9)
+    at HTMLSpanElementImpl.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\events\EventTarget-impl.js:94:17)
+    at HTMLSpanElement.dispatchEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\jsdom\lib\jsdom\living\generated\EventTarget.js:231:34)
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:25:20
+    at D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:66:16
+    at batchedUpdates$1 (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom.development.js:22380:12)
+    at act (D:\Thinkpalm\Atlas-Payments-UI\node_modules\react-dom\cjs\react-dom-test-utils.development.js:1042:14)
+    at Object.eventWrapper (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\react\dist\pure.js:65:28)
+    at fireEvent (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:16:35)
+    at Function.fireEvent.<computed> [as click] (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\dom\dist\events.js:125:36)
+    at Function.click (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@testing-library\react\dist\fire-event.js:18:52)
+    at _callee2$ (D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\PaymentDetailPage\test\paymentDetailPage.test.js:303:15)
+    at tryCatch (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\regeneratorRuntime.js:86:17)
+    at Generator._invoke (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\regeneratorRuntime.js:66:24)
+    at Generator.next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\regeneratorRuntime.js:117:21)
+    at asyncGeneratorStep (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:24)
+    at _next (D:\Thinkpalm\Atlas-Payments-UI\node_modules\@babel\runtime\helpers\asyncToGenerator.js:25:9)]]></failure>
+    </testCase>
+    <testCase name="Payment details page multiple payment page breadcrumbs click" duration="175"/>
+    <testCase name="single payment save single" duration="2553"/>
+    <testCase name="Payment details page lookup and subscription lookup api fail payment page" duration="45"/>
+    <testCase name="save api fail save api fail" duration="2492"/>
+    <testCase name="Payment details page click on detail page breadcrumb breadcrumb" duration="260"/>
+    <testCase name="Payment details page click on invoice page breadcrumb Invoices" duration="243"/>
+    <testCase name="single credit refund save single" duration="2852"/>
+    <testCase name="single credit refund save single with manual amount" duration="2528"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
-    <testCase name="Invoice details tabs are working" duration="1476"/>
-    <testCase name="Invoice details download clickable " duration="759"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\InvoiceDetails\test\invoiceDetails.test.js">
+    <testCase name="Invoice details tabs are working" duration="869"/>
+    <testCase name="Invoice details download clickable " duration="452"/>
     <testCase name="Invoice details approve invoice clickable " duration="480"/>
-    <testCase name="Invoice details publish notes" duration="458"/>
-    <testCase name="Invoice details download file" duration="516"/>
-    <testCase name="Invoice details delete file" duration="382"/>
-    <testCase name="Invoice details Navigate with breadcrumbs" duration="393"/>
-    <testCase name="Invoice details Decline invoice click on cancel button" duration="385"/>
-    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="904"/>
-    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="554"/>
-    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="608"/>
-    <testCase name="void test cases on Apprroved tabs are working" duration="784"/>
-    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="714"/>
-    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="830"/>
-    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="441"/>
-    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="341"/>
-    <testCase name="api fail tabs are working" duration="61"/>
-    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po vaidehi ponum" duration="360"/>
-    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po vaidehi invoice date" duration="381"/>
-    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po tabs are working" duration="587"/>
-    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po save invoice calander and po" duration="269"/>
-    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="359"/>
-    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="375"/>
-    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="358"/>
-    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="307"/>
-    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="323"/>
-    <testCase name="Invoice details fee api fail tabs are working" duration="66"/>
-    <testCase name="Invoice details invoice detail api fail tabs are working" duration="282"/>
-    <testCase name="Invoice details lookup api fail tabs are working" duration="178"/>
-    <testCase name="Invoice details countries api fail tabs are working" duration="53"/>
-    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="524"/>
-    <testCase name="Invoice details view change log click publish notes" duration="24"/>
-    <testCase name="add payment button click test cases on Apprroved tabs are working" duration="264"/>
-    <testCase name="delete employee on AR Review status api fail tabs are working" duration="558"/>
-    <testCase name="delete employee on AR Review status tabs are working" duration="527"/>
-    <testCase name="payment detail on partial paid edit payment edit" duration="8450"/>
-    <testCase name="payment detail on partial paid payment add payment add" duration="3583"/>
-    <testCase name="payment detail on partial paid payment add - save api fail payment add - save api fail" duration="2053"/>
-    <testCase name="payment detail on partial paid edit api fail edit api failed" duration="2417"/>
-    <testCase name="subscription api fail on payment detail on partial paid subscription api fail" duration="844"/>
-    <testCase name="refund payment button click test cases on Apprroved tabs are working" duration="354"/>
+    <testCase name="Invoice details publish notes" duration="283"/>
+    <testCase name="Invoice details download file" duration="228"/>
+    <testCase name="Invoice details delete file" duration="254"/>
+    <testCase name="Invoice details Navigate with breadcrumbs" duration="217"/>
+    <testCase name="Invoice details Decline invoice click on cancel button" duration="191"/>
+    <testCase name="Invoice details Decline invoice onchange textarea and click on decline button" duration="287"/>
+    <testCase name="Api returns transaction type = 7 Render Invoice Details" duration="155"/>
+    <testCase name="Invoice details decline api fail case handling Decline invoice onchange textarea click on decline button failed api" duration="204"/>
+    <testCase name="void test cases on Apprroved tabs are working" duration="520"/>
+    <testCase name="void test cases on Apprroved Upload Api Failed tabs are working" duration="510"/>
+    <testCase name="void test cases on Apprroved Create Api Failed tabs are working" duration="479"/>
+    <testCase name="void test cases on Apprroved Void Api Failed tabs are working" duration="317"/>
+    <testCase name="void test cases on Apprroved and click on cancel tabs are working" duration="260"/>
+    <testCase name="api fail tabs are working" duration="36"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po vaidehi ponum" duration="283"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po vaidehi invoice date" duration="299"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po tabs are working" duration="358"/>
+    <testCase name="delete test cases on AR Reveiew on true  , and save invoice calander and po save invoice calander and po" duration="238"/>
+    <testCase name="delete test cases on AR Reveiew click on cancel button tabs are working" duration="414"/>
+    <testCase name="delete test cases on AR Reveiew on false tabs are working" duration="472"/>
+    <testCase name="delete test cases on AR Reveiew on api fail tabs are working" duration="337"/>
+    <testCase name="Invoice details auto approve checkbox click approve invoice clickable " duration="412"/>
+    <testCase name="Invoice details auto approve checkbox click api fail approve invoice clickable " duration="275"/>
+    <testCase name="Invoice details fee api fail tabs are working" duration="71"/>
+    <testCase name="Invoice details invoice detail api fail tabs are working" duration="270"/>
+    <testCase name="Invoice details lookup api fail tabs are working" duration="252"/>
+    <testCase name="Invoice details countries api fail tabs are working" duration="46"/>
+    <testCase name="Invoice details employeeBreakDown api fail download clickable " duration="428"/>
+    <testCase name="Invoice details view change log click publish notes" duration="15"/>
+    <testCase name="add payment button click test cases on Apprroved tabs are working" duration="185"/>
+    <testCase name="delete employee on AR Review status api fail tabs are working" duration="443"/>
+    <testCase name="delete employee on AR Review status tabs are working" duration="362"/>
+    <testCase name="payment detail on partial paid edit payment edit" duration="5057"/>
+    <testCase name="payment detail on partial paid payment add payment add" duration="2314"/>
+    <testCase name="payment detail on partial paid payment add - save api fail payment add - save api fail" duration="1506"/>
+    <testCase name="payment detail on partial paid edit api fail edit api failed" duration="1933"/>
+    <testCase name="subscription api fail on payment detail on partial paid subscription api fail" duration="718"/>
+    <testCase name="refund payment button click test cases on Apprroved tabs are working" duration="329"/>
   </file>
-  <file path="C:\Projects\New folder\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
-    <testCase name="New Invoice breadcumbs are working" duration="483"/>
-    <testCase name="New Invoice dropDown Value change stepper 1" duration="462"/>
-    <testCase name="step one getCustomerSubscription api fail  dropDown Value change" duration="197"/>
-    <testCase name="step one getCOuntry api fail dropDown Value change" duration="235"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="736"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="1037"/>
-    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button previous recalculate part" duration="1047"/>
-    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="442"/>
-    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 1" duration="632"/>
-    <testCase name="Stepper 2 getEmployee exceptional error api fail   dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 2" duration="396"/>
-    <testCase name="Stepper 2 getEmployee No Emplyee Error api fail   dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 3" duration="706"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="720"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="612"/>
-    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="643"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="293"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="345"/>
-    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 4" duration="655"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="348"/>
-    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 5" duration="538"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="266"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="328"/>
-    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 6" duration="659"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="313"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="327"/>
-    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 7" duration="466"/>
-    <testCase name="New Invoice for Proforma  breadcumbs are working" duration="48"/>
-    <testCase name="New Invoice for Proforma  dropDown Value change stepper 1" duration="5603"/>
-    <testCase name="New Invoice for Proforma vat api fail  breadcumbs are working" duration="60"/>
-    <testCase name="New Invoice for Proforma vat api fail  dropDown Value change stepper 1" duration="5279"/>
-    <testCase name="step one Proforma getCustomer api fail  dropDown Value change" duration="55"/>
-    <testCase name="New Invoice for Miscellaneous  breadcumbs are working" duration="40"/>
-    <testCase name="New Invoice for Miscellaneous  dropDown Value change stepper 1" duration="10449"/>
-    <testCase name="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" duration="9202"/>
-    <testCase name="Stepper for Credit Memo  1, 2 and 3 api country fail  dropDown Value change stepper 1 then stepper 2 country api fail" duration="8423"/>
-    <testCase name="Invoice preview Pop final stepper" duration="7"/>
-    <testCase name="Invoice preview Pop Preview Invoice" duration="10"/>
+  <file path="D:\Thinkpalm\Atlas-Payments-UI\src\layouts\views\NewInvoice\test\index.test.js">
+    <testCase name="New Invoice breadcumbs are working" duration="304"/>
+    <testCase name="New Invoice dropDown Value change stepper 1" duration="308"/>
+    <testCase name="step one getCustomerSubscription api fail  dropDown Value change" duration="140"/>
+    <testCase name="step one getCOuntry api fail dropDown Value change" duration="161"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="574"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="847"/>
+    <testCase name="Stepper 2 dropDown Value change stepper 1 then stepper 2 complete and next button previous recalculate part" duration="903"/>
+    <testCase name="Stepper 2 show table click dropDown Value change stepper 1 then stepper 2 click on  " duration="327"/>
+    <testCase name="Stepper 2 api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 1" duration="415"/>
+    <testCase name="Stepper 2 getEmployee exceptional error api fail   dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 2" duration="264"/>
+    <testCase name="Stepper 2 getEmployee No Emplyee Error api fail   dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 3" duration="271"/>
+    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button" duration="361"/>
+    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 click on  back button" duration="258"/>
+    <testCase name="Stepper 3 dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data stepper 3 then finish " duration="521"/>
+    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="235"/>
+    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="406"/>
+    <testCase name="Stepper 3 invoice detail api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 4" duration="671"/>
+    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="272"/>
+    <testCase name="Stepper 3 fee api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 5" duration="423"/>
+    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="193"/>
+    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="231"/>
+    <testCase name="Stepper 3 address api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 6" duration="406"/>
+    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button" duration="204"/>
+    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 click on  back button" duration="202"/>
+    <testCase name="Stepper 3 country api fail dropDown Value change stepper 1 then stepper 2 complete and next button then row click in select table data   stepper 3 then finish 7" duration="332"/>
+    <testCase name="New Invoice for Proforma  breadcumbs are working" duration="29"/>
+    <testCase name="New Invoice for Proforma  dropDown Value change stepper 1" duration="3388"/>
+    <testCase name="New Invoice for Proforma vat api fail  breadcumbs are working" duration="33"/>
+    <testCase name="New Invoice for Proforma vat api fail  dropDown Value change stepper 1" duration="3790"/>
+    <testCase name="step one Proforma getCustomer api fail  dropDown Value change" duration="47"/>
+    <testCase name="New Invoice for Miscellaneous  breadcumbs are working" duration="27"/>
+    <testCase name="New Invoice for Miscellaneous  dropDown Value change stepper 1" duration="8099"/>
+    <testCase name="Stepper for Credit Memo  1, 2 and 3  dropDown Value change stepper 1 then stepper 2 complete and next button for credit memo" duration="8477"/>
+    <testCase name="Stepper for Credit Memo  1, 2 and 3 api country fail  dropDown Value change stepper 1 then stepper 2 country api fail" duration="7835"/>
+    <testCase name="Invoice preview Pop final stepper" duration="9"/>
+    <testCase name="Invoice preview Pop Preview Invoice" duration="15"/>
     <testCase name="Invoice preview Pop related api fail final stepper" duration="7"/>
-    <testCase name="Invoice preview Pop related api fail Preview Invoice" duration="13"/>
-    <testCase name="final stepper final stepper" duration="7"/>
-    <testCase name="final stepper with 201 status code final stepper" duration="5"/>
+    <testCase name="Invoice preview Pop related api fail Preview Invoice" duration="11"/>
+    <testCase name="final stepper final stepper" duration="4"/>
+    <testCase name="final stepper with 201 status code final stepper" duration="2"/>
   </file>
 </testExecutions>
